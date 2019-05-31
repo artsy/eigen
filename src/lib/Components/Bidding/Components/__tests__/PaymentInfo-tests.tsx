@@ -8,7 +8,7 @@ import { PaymentInfo } from "../PaymentInfo"
 
 import { BidInfoRow } from "../../Components/BidInfoRow"
 
-import { Theme } from "@artsy/palette"
+import { BiddingThemeProvider } from "../BiddingThemeProvider"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
@@ -23,9 +23,9 @@ jest.useFakeTimers()
 it("renders properly", () => {
   const component = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <PaymentInfo {...initialProps} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     .toJSON()
   expect(component).toMatchSnapshot()
@@ -34,9 +34,9 @@ it("renders properly", () => {
 it("shows the billing address that the user typed in the billing address form", () => {
   const billingAddressRow = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <PaymentInfo {...initialProps} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     .root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
@@ -48,9 +48,9 @@ it("shows the billing address that the user typed in the billing address form", 
 it("shows the cc info that the user had typed into the form", () => {
   const creditCardRow = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <PaymentInfo {...initialProps} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     .root.findAllByType(BidInfoRow)[0]
   creditCardRow.instance.props.onPress()

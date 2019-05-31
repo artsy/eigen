@@ -3,16 +3,16 @@ import { TextInput } from "react-native"
 import * as renderer from "react-test-renderer"
 import { SelectCountry } from "../SelectCountry"
 
-import { Theme } from "@artsy/palette"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
 it("Sets up the right view hierarchy", () => {
   const nav = {} as any
 
   const component = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <SelectCountry navigator={nav} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     .toJSON()
   expect(component).toMatchSnapshot()
@@ -20,7 +20,7 @@ it("Sets up the right view hierarchy", () => {
 
 it("pre-populates the country field if initial country is provided", () => {
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <SelectCountry
         country={{
           longName: "United States",
@@ -28,7 +28,7 @@ it("pre-populates the country field if initial country is provided", () => {
         }}
         navigator={{} as any}
       />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   const countryInput = component.root.findByType(TextInput)

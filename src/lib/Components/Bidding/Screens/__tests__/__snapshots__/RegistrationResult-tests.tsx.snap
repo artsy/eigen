@@ -60,10 +60,10 @@ exports[`Registration result component renders registration complete properly 1`
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 40,
-              "marginLeft": 40,
-              "marginRight": 40,
-              "marginTop": 20,
+              "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 5,
               "textAlign": "center",
             },
             Object {},
@@ -79,7 +79,7 @@ exports[`Registration result component renders registration complete properly 1`
           Array [
             Object {
               "display": "flex",
-              "marginBottom": 5,
+              "marginBottom": 30,
             },
           ]
         }
@@ -214,10 +214,10 @@ exports[`Registration result component renders registration error properly 1`] =
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 40,
-              "marginLeft": 40,
-              "marginRight": 40,
-              "marginTop": 20,
+              "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 5,
               "textAlign": "center",
             },
             Object {},
@@ -233,7 +233,7 @@ exports[`Registration result component renders registration error properly 1`] =
           Array [
             Object {
               "display": "flex",
-              "marginBottom": 5,
+              "marginBottom": 30,
             },
           ]
         }
@@ -381,10 +381,10 @@ exports[`Registration result component renders registration pending properly 1`]
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 40,
-              "marginLeft": 40,
-              "marginRight": 40,
-              "marginTop": 20,
+              "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 5,
               "textAlign": "center",
             },
             Object {},
@@ -400,7 +400,7 @@ exports[`Registration result component renders registration pending properly 1`]
           Array [
             Object {
               "display": "flex",
-              "marginBottom": 5,
+              "marginBottom": 30,
             },
           ]
         }

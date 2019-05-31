@@ -132,8 +132,8 @@ exports[`renders properly 1`] = `
               "fontFamily": "Unica77LL-Regular",
               "fontSize": 12,
               "lineHeight": 16,
-              "marginBottom": 10,
-              "marginLeft": 30,
+              "marginBottom": 3,
+              "marginLeft": 10,
             },
             Object {},
           ]
@@ -273,8 +273,8 @@ exports[`renders properly 1`] = `
               "fontFamily": "Unica77LL-Regular",
               "fontSize": 12,
               "lineHeight": 16,
-              "marginBottom": 10,
-              "marginLeft": 30,
+              "marginBottom": 3,
+              "marginLeft": 10,
             },
             Object {},
           ]

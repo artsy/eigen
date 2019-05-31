@@ -75,9 +75,9 @@ exports[`renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 22,
                 "lineHeight": 28,
-                "marginBottom": 60,
-                "marginLeft": 40,
-                "marginRight": 40,
+                "marginBottom": 40,
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 0,
                 "textAlign": "center",
               },
@@ -110,7 +110,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]
@@ -179,7 +179,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]
@@ -247,7 +247,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]
@@ -315,7 +315,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]
@@ -383,7 +383,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]
@@ -451,7 +451,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]
@@ -519,7 +519,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]
@@ -586,7 +586,7 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 20,
+                  "marginBottom": 5,
                 },
                 Object {},
               ]

@@ -10,15 +10,15 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import { Theme } from "@artsy/palette"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
     const component = renderer
       .create(
-        <Theme>
+        <BiddingThemeProvider>
           <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       .toJSON()
     expect(component).toMatchSnapshot()
@@ -26,9 +26,9 @@ describe("Registration result component", () => {
   it("renders registration complete properly", () => {
     const component = renderer
       .create(
-        <Theme>
+        <BiddingThemeProvider>
           <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       .toJSON()
     expect(component).toMatchSnapshot()
@@ -36,9 +36,9 @@ describe("Registration result component", () => {
   it("renders registration error properly", () => {
     const component = renderer
       .create(
-        <Theme>
+        <BiddingThemeProvider>
           <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       .toJSON()
     expect(component).toMatchSnapshot()
@@ -47,9 +47,9 @@ describe("Registration result component", () => {
   it("dismisses the controller when the continue button is pressed", () => {
     jest.useFakeTimers()
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
     mockDismiss.mockReturnValueOnce(Promise.resolve())

@@ -4,14 +4,14 @@ import * as renderer from "react-test-renderer"
 
 import { Title } from "../Title"
 
-import { Theme } from "@artsy/palette"
+import { BiddingThemeProvider } from "../BiddingThemeProvider"
 
 it("renders properly", () => {
   const bg = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <Title>Confirm your bid</Title>
-      </Theme>
+      </BiddingThemeProvider>
     )
     .toJSON()
   expect(bg).toMatchSnapshot()

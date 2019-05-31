@@ -6,8 +6,9 @@ import * as renderer from "react-test-renderer"
 import { TimeOffsetProvider } from "../TimeOffsetProvider"
 
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
-import { Theme } from "@artsy/palette"
 import { metaphysics } from "../../../../metaphysics"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+
 const mockphysics = metaphysics as jest.Mock<any>
 
 const SECONDS = 1000
@@ -43,11 +44,11 @@ it("injects timeOffsetInMilliSeconds as a context", () => {
   )
 
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <TimeOffsetProvider>
         <TestConsumer />
       </TimeOffsetProvider>
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   jest.runAllTicks()

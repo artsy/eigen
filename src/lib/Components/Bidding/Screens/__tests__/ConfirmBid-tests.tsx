@@ -40,7 +40,7 @@ import { SecondaryOutlineButton } from "lib/Components/Buttons"
 import { Modal } from "lib/Components/Modal"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
-import { Theme } from "@artsy/palette"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
@@ -58,9 +58,9 @@ beforeEach(() => {
 it("renders properly", () => {
   const component = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialProps} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     .toJSON()
   expect(component).toMatchSnapshot()
@@ -68,9 +68,9 @@ it("renders properly", () => {
 
 it("enables the bid button when checkbox is ticked", () => {
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <ConfirmBid {...initialProps} />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   expect(component.root.findByType(Button).instance.props.onPress).toBeFalsy()
@@ -82,9 +82,9 @@ it("enables the bid button when checkbox is ticked", () => {
 
 it("enables the bid button by default if the user is registered", () => {
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <ConfirmBid {...initialPropsForRegisteredUser} />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   expect(component.root.findByType(Button).instance.props.onPress).toBeDefined()
@@ -92,9 +92,9 @@ it("enables the bid button by default if the user is registered", () => {
 
 it("displays the artwork title correctly with date", () => {
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <ConfirmBid {...initialProps} />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   expect(serifChildren(component)).toContain(", 2015")
@@ -103,9 +103,9 @@ it("displays the artwork title correctly with date", () => {
 it("displays the artwork title correctly without date", () => {
   const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <ConfirmBid {...datelessProps} />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork.title},`)
@@ -114,9 +114,9 @@ it("displays the artwork title correctly without date", () => {
 describe.only("checkbox and payment info display", () => {
   it("shows no checkbox or payment info if the user is registered", () => {
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForRegisteredUser} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(0)
@@ -128,9 +128,9 @@ describe.only("checkbox and payment info display", () => {
 
   it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialProps} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(1)
@@ -139,9 +139,9 @@ describe.only("checkbox and payment info display", () => {
 
   it("shows a checkbox and payment info if the user is not registered and has no cc on file", () => {
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(1)
@@ -152,9 +152,9 @@ describe.only("checkbox and payment info display", () => {
 describe("when pressing bid button", () => {
   it("commits mutation", () => {
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialProps} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     component.root.instance.setState({ conditionsOfSaleChecked: true })
 
@@ -166,9 +166,9 @@ describe("when pressing bid button", () => {
 
   it("shows a spinner", () => {
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialProps} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     component.root.instance.setState({ conditionsOfSaleChecked: true })
     relay.commitMutation = jest.fn()
@@ -183,9 +183,9 @@ describe("when pressing bid button", () => {
     relay.commitMutation = jest.fn()
 
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForUnqualifiedUser} navigator={navigator} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     component.root.instance.setState({
@@ -220,9 +220,9 @@ describe("when pressing bid button", () => {
   describe("when pressing bid", () => {
     it("commits the mutation", () => {
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
@@ -237,9 +237,9 @@ describe("when pressing bid button", () => {
       it("does not verify bid position", () => {
         // Probably due to a network problem.
         const component = renderer.create(
-          <Theme>
+          <BiddingThemeProvider>
             <ConfirmBid {...initialProps} />
-          </Theme>
+          </BiddingThemeProvider>
         )
         component.root.instance.setState({ conditionsOfSaleChecked: true })
         console.error = jest.fn() // Silences component logging.
@@ -256,9 +256,9 @@ describe("when pressing bid button", () => {
 
       it("displays an error message on a network failure", () => {
         const component = renderer.create(
-          <Theme>
+          <BiddingThemeProvider>
             <ConfirmBid {...initialProps} />
-          </Theme>
+          </BiddingThemeProvider>
         )
         component.root.instance.setState({ conditionsOfSaleChecked: true })
         console.error = jest.fn() // Silences component logging.
@@ -294,9 +294,9 @@ describe("when pressing bid button", () => {
         }) as any
 
         const component = renderer.create(
-          <Theme>
+          <BiddingThemeProvider>
             <ConfirmBid {...initialProps} />
-          </Theme>
+          </BiddingThemeProvider>
         )
 
         component.root.findByType(Checkbox).instance.props.onPress()
@@ -329,9 +329,9 @@ describe("editing bid amount", () => {
     fakeNavigator.push({ component: ConfirmBid, id: "", title: "", passProps: fakeNavigatorProps })
 
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForRegisteredUser} navigator={fakeNavigator} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
@@ -354,9 +354,9 @@ describe("polling to verify bid position", () => {
   describe("bid success", () => {
     it("polls for new results", () => {
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -389,9 +389,9 @@ describe("polling to verify bid position", () => {
 
     it("shows error when polling attempts exceed max", () => {
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
@@ -417,9 +417,9 @@ describe("polling to verify bid position", () => {
 
     it("shows successful bid result when highest bidder", () => {
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
@@ -441,9 +441,9 @@ describe("polling to verify bid position", () => {
 
     it("shows outbid bidSuccessResult when outbid", () => {
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
@@ -465,9 +465,9 @@ describe("polling to verify bid position", () => {
 
     it("shows reserve not met when reserve is not met", () => {
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
@@ -490,9 +490,9 @@ describe("polling to verify bid position", () => {
     it("updates the main auction screen", () => {
       const mockedMockNavigator = { push: jest.fn() }
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} navigator={mockedMockNavigator as any} refreshSaleArtwork={jest.fn()} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
@@ -533,9 +533,9 @@ describe("polling to verify bid position", () => {
   describe("bid failure", () => {
     it("shows the error screen with a failure", () => {
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialProps} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -560,9 +560,9 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the billing address that the user typed in the billing address form", () => {
     const billingAddressRow = renderer
       .create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialPropsForUnqualifiedUser} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       .root.findAllByType(TouchableWithoutFeedback)[2]
 
@@ -578,9 +578,9 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the credit card form when the user tap the edit text in the credit card row", () => {
     const creditcardRow = renderer
       .create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialPropsForUnqualifiedUser} />
-        </Theme>
+        </BiddingThemeProvider>
       )
       .root.findAllByType(TouchableWithoutFeedback)[1]
 
@@ -595,9 +595,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     jest.useFakeTimers()
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
@@ -627,9 +627,9 @@ describe("ConfirmBid for unqualified user", () => {
     }) as any
 
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
@@ -662,9 +662,9 @@ describe("ConfirmBid for unqualified user", () => {
     }) as any
 
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
@@ -696,9 +696,9 @@ describe("ConfirmBid for unqualified user", () => {
     }) as any
 
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
@@ -729,9 +729,9 @@ describe("ConfirmBid for unqualified user", () => {
     }) as any
 
     const component = renderer.create(
-      <Theme>
+      <BiddingThemeProvider>
         <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </Theme>
+      </BiddingThemeProvider>
     )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
@@ -766,9 +766,9 @@ describe("ConfirmBid for unqualified user", () => {
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
       const component = renderer.create(
-        <Theme>
+        <BiddingThemeProvider>
           <ConfirmBid {...initialPropsForUnqualifiedUser} />
-        </Theme>
+        </BiddingThemeProvider>
       )
 
       // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.

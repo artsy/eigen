@@ -4,7 +4,7 @@ import * as renderer from "react-test-renderer"
 
 import { MaxBidPicker } from "../MaxBidPicker"
 
-import { Theme } from "@artsy/palette"
+import { BiddingThemeProvider } from "../BiddingThemeProvider"
 
 const Bids = [
   {
@@ -20,9 +20,9 @@ const Bids = [
 it("renders properly", () => {
   const bg = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <MaxBidPicker bids={Bids} selectedValue={0} onValueChange={jest.fn()} />
-      </Theme>
+      </BiddingThemeProvider>
     )
     .toJSON()
   expect(bg).toMatchSnapshot()

@@ -1,4 +1,4 @@
-import { Sans, Serif, Theme } from "@artsy/palette"
+import { Sans, Serif } from "@artsy/palette"
 import React from "react"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
@@ -7,6 +7,7 @@ import { Button } from "../../Components/Button"
 import { BillingAddress } from "../BillingAddress"
 
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
 const selectCountry = (component, navigator, country) => {
   // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
@@ -22,9 +23,9 @@ const selectCountry = (component, navigator, country) => {
 it("renders properly", () => {
   const component = renderer
     .create(
-      <Theme>
+      <BiddingThemeProvider>
         <BillingAddress />
-      </Theme>
+      </BiddingThemeProvider>
     )
     .toJSON()
   expect(component).toMatchSnapshot()
@@ -32,9 +33,9 @@ it("renders properly", () => {
 
 it("shows an error message for each field", () => {
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <BillingAddress />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   component.root.findByType(Button).instance.props.onPress()
@@ -51,9 +52,9 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   const onSubmitMock = jest.fn()
 
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
@@ -74,9 +75,9 @@ it("updates the validation for country when coming back from the select country 
   const fakeNavigator = new FakeNavigator()
 
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
@@ -99,9 +100,9 @@ it("updates the validation for country when coming back from the select country 
 
 it("pre-fills the fields if initial billing address is provided", () => {
   const component = renderer.create(
-    <Theme>
+    <BiddingThemeProvider>
       <BillingAddress billingAddress={billingAddress} />
-    </Theme>
+    </BiddingThemeProvider>
   )
 
   expect(textInputComponent(component, "Full name").props.value).toEqual("Yuki Stockmeier")
