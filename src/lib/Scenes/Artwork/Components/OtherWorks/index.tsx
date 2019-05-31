@@ -28,7 +28,6 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{
   {
     artwork: graphql`
       fragment OtherWorks_artwork on Artwork {
-        id
         context {
           __typename
         }

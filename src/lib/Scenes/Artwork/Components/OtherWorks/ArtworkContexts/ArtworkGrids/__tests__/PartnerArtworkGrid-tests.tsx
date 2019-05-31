@@ -3,11 +3,11 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import React from "react"
 import { Header } from "../../../Header"
-import { ArtistArtworkGrid } from "../ArtistArtworkGrid"
+import { PartnerArtworkGrid } from "../PartnerArtworkGrid"
 
-describe("ArtistArtworkGrid", () => {
-  it("renders ArtistArtworkGrid with correct components", () => {
-    const component = mount(<ArtistArtworkGrid artwork={ArtworkFixture} />)
+describe("PartnerArtworkGrid", () => {
+  it("renders PartnerArtworkGrid with correct components", () => {
+    const component = mount(<PartnerArtworkGrid artwork={ArtworkFixture} />)
     expect(component.find(Header).length).toEqual(1)
     expect(
       component
@@ -15,22 +15,22 @@ describe("ArtistArtworkGrid", () => {
         .at(0)
         .render()
         .text()
-    ).toEqual("Other works by Abbas Kiarostami")
+    ).toEqual("Other works from CAMA Gallery")
     expect(component.find(GenericGrid).length).toEqual(1)
     expect(component.find(GenericGrid).props().artworks.length).toEqual(8)
   })
 
-  it("does not include grid when there are no artworks for the artist", () => {
+  it("does not include grid when there are no artworks", () => {
     const artworkWithoutPartnerArtworks = {
       ...ArtworkFixture,
-      artist: {
+      partner: {
         name: "CAMA Gallery",
-        artworks_connection: {
+        artworksConnection: {
           edges: [],
         },
       },
     }
-    const component = mount(<ArtistArtworkGrid artwork={artworkWithoutPartnerArtworks} />)
+    const component = mount(<PartnerArtworkGrid artwork={artworkWithoutPartnerArtworks} />)
     expect(component.text()).toEqual(null)
   })
 })

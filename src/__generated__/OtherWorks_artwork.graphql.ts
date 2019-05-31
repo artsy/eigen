@@ -5,7 +5,6 @@ import { ArtworkContextArtist_artwork$ref } from "./ArtworkContextArtist_artwork
 declare const _OtherWorks_artwork$ref: unique symbol;
 export type OtherWorks_artwork$ref = typeof _OtherWorks_artwork$ref;
 export type OtherWorks_artwork = {
-    readonly id: string;
     readonly context: {
         readonly __typename: string;
     } | null;
@@ -22,13 +21,6 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -54,5 +46,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '36e03b7e36a72ce4dc1afb0635369554';
+(node as any).hash = '45f8f813fecb6d063c68a7ca6b8f9615';
 export default node;

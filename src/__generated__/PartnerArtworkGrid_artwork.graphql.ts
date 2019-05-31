@@ -2,12 +2,12 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _ArtistArtworkGrid_artwork$ref: unique symbol;
-export type ArtistArtworkGrid_artwork$ref = typeof _ArtistArtworkGrid_artwork$ref;
-export type ArtistArtworkGrid_artwork = {
-    readonly artist: {
+declare const _PartnerArtworkGrid_artwork$ref: unique symbol;
+export type PartnerArtworkGrid_artwork$ref = typeof _PartnerArtworkGrid_artwork$ref;
+export type PartnerArtworkGrid_artwork = {
+    readonly partner: {
         readonly name: string | null;
-        readonly artworks_connection: {
+        readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly " $fragmentRefs": GenericGrid_artworks$ref;
@@ -15,14 +15,14 @@ export type ArtistArtworkGrid_artwork = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": ArtistArtworkGrid_artwork$ref;
+    readonly " $refType": PartnerArtworkGrid_artwork$ref;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "ArtistArtworkGrid_artwork",
+  "name": "PartnerArtworkGrid_artwork",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [
@@ -36,10 +36,10 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "artist",
+      "name": "partner",
       "storageKey": null,
       "args": null,
-      "concreteType": "Artist",
+      "concreteType": "Partner",
       "plural": false,
       "selections": [
         {
@@ -52,7 +52,7 @@ const node: ReaderFragment = {
         {
           "kind": "LinkedField",
           "alias": null,
-          "name": "artworks_connection",
+          "name": "artworksConnection",
           "storageKey": null,
           "args": [
             {
@@ -64,6 +64,11 @@ const node: ReaderFragment = {
               "kind": "Literal",
               "name": "first",
               "value": 8
+            },
+            {
+              "kind": "Literal",
+              "name": "for_sale",
+              "value": true
             },
             {
               "kind": "Literal",
@@ -107,5 +112,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e28ff10bf2e5be6bdd87e5c5647a9581';
+(node as any).hash = 'ed16f2f9265312bdde2cc1b56f9975eb';
 export default node;
