@@ -18,6 +18,7 @@
 
 - Switch to use metaphysics v2 schema - justin/alloy
 - Fixes a bug where artist search results in consignments overlap with search bar - yuki24
+- Fixes a bug where location search in the consignments flow stopped working after MP V2 upgrade - zephraph
 
 ### 1.11.4
 
