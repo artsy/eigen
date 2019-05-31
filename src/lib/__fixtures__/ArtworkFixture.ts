@@ -494,4 +494,66 @@ export const ArtworkFixture = {
       ],
     },
   },
+  layer: {
+    artworksConnection: {
+      edges: [
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "shirin-neshat-mehri-zarin-series",
+            title: "Mehri (Zarin series)",
+          },
+        },
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "mitra-tabrizian-leicestershire-1",
+            title: "Leicestershire",
+          },
+        },
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "shadi-ghadirian-white-square-number-10",
+            title: "White Square #10",
+          },
+        },
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "oded-balilty-hide-and-seek-superman-dead-sea",
+            title: "Hide and Seek, Superman, Dead sea",
+          },
+        },
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "bettina-pousttchi-framework",
+            title: "Framework",
+          },
+        },
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "shoja-azari-the-dance-of-alema-or-the-ugly-hamza",
+            title: "The Dance of Alema or The Ugly Hamza",
+          },
+        },
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "malekeh-nayiny-early-spring",
+            title: "Early spring",
+          },
+        },
+        {
+          node: {
+            " $fragmentRefs": null,
+            id: "reza-aramesh-action-143-slash-019-collage",
+            title: "Action 143/019-collage",
+          },
+        },
+      ],
+    },
+  },
 }

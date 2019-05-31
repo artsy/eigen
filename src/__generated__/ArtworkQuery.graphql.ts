@@ -91,6 +91,7 @@ fragment OtherWorks_artwork on Artwork {
 fragment ArtworkContextArtist_artwork on Artwork {
   ...ArtistArtworkGrid_artwork
   ...PartnerArtworkGrid_artwork
+  ...RelatedArtworkGrid_artwork
 }
 
 fragment ArtistArtworkGrid_artwork on Artwork {
@@ -112,6 +113,20 @@ fragment PartnerArtworkGrid_artwork on Artwork {
   partner {
     name
     artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+      edges {
+        node {
+          ...GenericGrid_artworks
+          id
+        }
+      }
+    }
+    id
+  }
+}
+
+fragment RelatedArtworkGrid_artwork on Artwork {
+  layer(id: "main") {
+    artworksConnection(first: 8) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -712,6 +727,36 @@ return {
               },
               (v6/*: any*/)
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "layer",
+            "storageKey": "layer(id:\"main\")",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "id",
+                "value": "main"
+              }
+            ],
+            "concreteType": "ArtworkLayer",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(first:8)",
+                "args": [
+                  (v8/*: any*/)
+                ],
+                "concreteType": "ArtworkConnection",
+                "plural": false,
+                "selections": (v13/*: any*/)
+              },
+              (v6/*: any*/)
+            ]
           }
         ]
       }
@@ -720,7 +765,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "8709a82c7a398898256aea4611bc3c49",
+    "id": "d6e9107372a0f3fedca7359e70b5ed51",
     "text": null,
     "metadata": {}
   }

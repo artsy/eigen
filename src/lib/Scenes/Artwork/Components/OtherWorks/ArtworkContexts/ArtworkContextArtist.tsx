@@ -3,7 +3,7 @@ import { ArtworkContextArtist_artwork } from "__generated__/ArtworkContextArtist
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ArtistArtworkGrid, PartnerArtworkGrid } from "./ArtworkGrids"
+import { ArtistArtworkGrid, PartnerArtworkGrid, RelatedArtworkGrid } from "./ArtworkGrids"
 
 export const ArtworkContextArtistFragmentContainer = createFragmentContainer<{
   artwork: ArtworkContextArtist_artwork
@@ -13,6 +13,7 @@ export const ArtworkContextArtistFragmentContainer = createFragmentContainer<{
       <Join separator={<Spacer my={2} />}>
         <ArtistArtworkGrid artwork={props.artwork} />
         <PartnerArtworkGrid artwork={props.artwork} />
+        <RelatedArtworkGrid artwork={props.artwork} />
       </Join>
     )
   },
@@ -21,6 +22,7 @@ export const ArtworkContextArtistFragmentContainer = createFragmentContainer<{
       fragment ArtworkContextArtist_artwork on Artwork {
         ...ArtistArtworkGrid_artwork
         ...PartnerArtworkGrid_artwork
+        ...RelatedArtworkGrid_artwork
       }
     `,
   }

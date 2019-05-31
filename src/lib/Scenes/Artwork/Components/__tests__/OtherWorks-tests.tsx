@@ -12,13 +12,14 @@ describe("OtherWorks", () => {
     }
     const component = shallow(<OtherWorks artwork={regularArtwork} />)
     expect(component.find(ArtworkContextArtist).length).toEqual(1)
-    expect(
-      component
-        .find(ArtworkContextArtist)
-        .at(0)
-        .render()
-        .text()
-    ).toEqual("Other works by Abbas Kiarostami")
+    const componentText = component
+      .find(ArtworkContextArtist)
+      .at(0)
+      .render()
+      .text()
+    expect(componentText).toContain("Other works by Abbas Kiarostami")
+    expect(componentText).toContain("Other works from CAMA Gallery")
+    expect(componentText).toContain("Related Works")
   })
 
   it("returns null for artwork with ArtworkContextAuction context", () => {
