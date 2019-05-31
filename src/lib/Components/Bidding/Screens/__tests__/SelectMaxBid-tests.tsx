@@ -6,7 +6,6 @@ import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import Spinner from "../../../../Components/Spinner"
 import { Button } from "../../Components/Button"
 
-import { Theme } from "@artsy/palette"
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
