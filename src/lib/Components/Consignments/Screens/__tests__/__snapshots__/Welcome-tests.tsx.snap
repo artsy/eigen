@@ -402,7 +402,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -415,6 +414,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -445,7 +445,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -458,6 +457,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -875,7 +875,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -888,6 +887,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -918,7 +918,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -931,6 +930,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -1348,7 +1348,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1361,6 +1360,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -1391,7 +1391,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1404,6 +1403,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -1821,7 +1821,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1834,6 +1833,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -1864,7 +1864,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1877,6 +1876,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -2294,7 +2294,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -2307,6 +2306,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -2337,7 +2337,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 }
               >
                 <Text
-                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -2350,6 +2349,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
+                      Object {},
                     ]
                   }
                 >

@@ -105,7 +105,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
   // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
-  screen.root.instance.setState({
+  screen.root.findByProps({ nextScreen: true }).instance.setState({
     billingAddress,
     creditCardFormParams,
     creditCardToken: {

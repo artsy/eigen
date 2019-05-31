@@ -30,7 +30,6 @@ exports[`renders properly for a user with a credit card 1`] = `
       }
     >
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -42,12 +41,13 @@ exports[`renders properly for a user with a credit card 1`] = `
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 10,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 20,
+              "marginBottom": 30,
+              "marginLeft": 40,
+              "marginRight": 40,
+              "marginTop": 40,
               "textAlign": "center",
             },
+            Object {},
           ]
         }
         textAlign="center"
@@ -66,7 +66,6 @@ exports[`renders properly for a user with a credit card 1`] = `
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="16px"
           lineHeight="22px"
@@ -77,13 +76,13 @@ exports[`renders properly for a user with a credit card 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
+              Object {},
             ]
           }
         >
           00d  04h  37m  27s
         </Text>
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="12px"
           lineHeight="16px"
@@ -94,6 +93,7 @@ exports[`renders properly for a user with a credit card 1`] = `
                 "fontSize": 12,
                 "lineHeight": 16,
               },
+              Object {},
             ]
           }
         >
@@ -101,7 +101,6 @@ exports[`renders properly for a user with a credit card 1`] = `
         </Text>
       </View>
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="18px"
         lineHeight="22px"
@@ -113,12 +112,13 @@ exports[`renders properly for a user with a credit card 1`] = `
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 18,
               "lineHeight": 22,
-              "marginBottom": 30,
-              "marginLeft": 40,
-              "marginRight": 40,
-              "marginTop": 30,
+              "marginBottom": 5,
+              "marginLeft": 60,
+              "marginRight": 60,
+              "marginTop": 5,
               "textAlign": "center",
             },
+            Object {},
           ]
         }
         textAlign="center"
@@ -192,7 +192,6 @@ exports[`renders properly for a user with a credit card 1`] = `
               }
             >
               <Text
-                className="Typography-sc-1pie2ao-0 ehDCiu"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
                 lineHeight="24px"
@@ -203,6 +202,7 @@ exports[`renders properly for a user with a credit card 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
+                    Object {},
                   ]
                 }
               >
@@ -217,7 +217,6 @@ exports[`renders properly for a user with a credit card 1`] = `
               }
             >
               <Text
-                className="Typography-sc-1pie2ao-0 ehDCiu"
                 color="#666"
                 fontFamily="Unica77LL-Regular"
                 fontSize="14px"
@@ -230,6 +229,7 @@ exports[`renders properly for a user with a credit card 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
+                    Object {},
                   ]
                 }
               >
@@ -258,7 +258,6 @@ exports[`renders properly for a user with a credit card 1`] = `
               }
             >
               <Text
-                className="Typography-sc-1pie2ao-0 ehDCiu"
                 color="black"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
@@ -271,6 +270,7 @@ exports[`renders properly for a user with a credit card 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
+                    Object {},
                   ]
                 }
               >
@@ -334,7 +334,6 @@ exports[`renders properly for a user with a credit card 1`] = `
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           color="black60"
           fontFamily="AGaramondPro-Regular"
           fontSize="14px"
@@ -347,8 +346,9 @@ exports[`renders properly for a user with a credit card 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 14,
                 "lineHeight": 18,
-                "marginTop": 5,
+                "marginTop": 20,
               },
+              Object {},
             ]
           }
         >
@@ -470,7 +470,6 @@ exports[`renders properly for a user without a credit card 1`] = `
       }
     >
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -482,12 +481,13 @@ exports[`renders properly for a user without a credit card 1`] = `
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 10,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 20,
+              "marginBottom": 30,
+              "marginLeft": 40,
+              "marginRight": 40,
+              "marginTop": 40,
               "textAlign": "center",
             },
+            Object {},
           ]
         }
         textAlign="center"
@@ -506,7 +506,6 @@ exports[`renders properly for a user without a credit card 1`] = `
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="16px"
           lineHeight="22px"
@@ -517,13 +516,13 @@ exports[`renders properly for a user without a credit card 1`] = `
                 "fontSize": 16,
                 "lineHeight": 22,
               },
+              Object {},
             ]
           }
         >
           00d  04h  37m  27s
         </Text>
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="12px"
           lineHeight="16px"
@@ -534,6 +533,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                 "fontSize": 12,
                 "lineHeight": 16,
               },
+              Object {},
             ]
           }
         >
@@ -541,7 +541,6 @@ exports[`renders properly for a user without a credit card 1`] = `
         </Text>
       </View>
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="18px"
         lineHeight="22px"
@@ -553,12 +552,13 @@ exports[`renders properly for a user without a credit card 1`] = `
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 18,
               "lineHeight": 22,
-              "marginBottom": 30,
-              "marginLeft": 40,
-              "marginRight": 40,
-              "marginTop": 30,
+              "marginBottom": 5,
+              "marginLeft": 60,
+              "marginRight": 60,
+              "marginTop": 5,
               "textAlign": "center",
             },
+            Object {},
           ]
         }
         textAlign="center"
@@ -622,7 +622,6 @@ exports[`renders properly for a user without a credit card 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Semibold"
             fontSize="16px"
             lineHeight="24px"
@@ -633,6 +632,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                   "fontSize": 16,
                   "lineHeight": 24,
                 },
+                Object {},
               ]
             }
           >
@@ -665,7 +665,6 @@ exports[`renders properly for a user without a credit card 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             color="purple100"
             fontFamily="Unica77LL-Regular"
             fontSize="12px"
@@ -679,9 +678,10 @@ exports[`renders properly for a user without a credit card 1`] = `
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 12,
                   "lineHeight": 16,
-                  "marginBottom": 3,
-                  "marginLeft": 10,
+                  "marginBottom": 10,
+                  "marginLeft": 30,
                 },
+                Object {},
               ]
             }
           >
@@ -744,7 +744,6 @@ exports[`renders properly for a user without a credit card 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Semibold"
             fontSize="16px"
             lineHeight="24px"
@@ -755,6 +754,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                   "fontSize": 16,
                   "lineHeight": 24,
                 },
+                Object {},
               ]
             }
           >
@@ -787,7 +787,6 @@ exports[`renders properly for a user without a credit card 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             color="purple100"
             fontFamily="Unica77LL-Regular"
             fontSize="12px"
@@ -801,9 +800,10 @@ exports[`renders properly for a user without a credit card 1`] = `
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 12,
                   "lineHeight": 16,
-                  "marginBottom": 3,
-                  "marginLeft": 10,
+                  "marginBottom": 10,
+                  "marginLeft": 30,
                 },
+                Object {},
               ]
             }
           >
@@ -894,7 +894,6 @@ exports[`renders properly for a user without a credit card 1`] = `
               }
             >
               <Text
-                className="Typography-sc-1pie2ao-0 ehDCiu"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
                 lineHeight="24px"
@@ -905,6 +904,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
+                    Object {},
                   ]
                 }
               >
@@ -919,7 +919,6 @@ exports[`renders properly for a user without a credit card 1`] = `
               }
             >
               <Text
-                className="Typography-sc-1pie2ao-0 ehDCiu"
                 color="#666"
                 fontFamily="Unica77LL-Regular"
                 fontSize="14px"
@@ -932,6 +931,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
+                    Object {},
                   ]
                 }
               >
@@ -960,7 +960,6 @@ exports[`renders properly for a user without a credit card 1`] = `
               }
             >
               <Text
-                className="Typography-sc-1pie2ao-0 ehDCiu"
                 color="black"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
@@ -973,6 +972,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
+                    Object {},
                   ]
                 }
               >
@@ -1036,7 +1036,6 @@ exports[`renders properly for a user without a credit card 1`] = `
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           color="black60"
           fontFamily="AGaramondPro-Regular"
           fontSize="14px"
@@ -1049,8 +1048,9 @@ exports[`renders properly for a user without a credit card 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 14,
                 "lineHeight": 18,
-                "marginTop": 5,
+                "marginTop": 20,
               },
+              Object {},
             ]
           }
         >

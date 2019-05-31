@@ -63,7 +63,6 @@ exports[`renders properly 1`] = `
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="AGaramondPro-Semibold"
           fontSize="22px"
           lineHeight="28px"
@@ -76,12 +75,13 @@ exports[`renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 22,
                 "lineHeight": 28,
-                "marginBottom": 40,
-                "marginLeft": 20,
-                "marginRight": 20,
+                "marginBottom": 60,
+                "marginLeft": 40,
+                "marginRight": 40,
                 "marginTop": 0,
                 "textAlign": "center",
               },
+              Object {},
             ]
           }
           textAlign="center"
@@ -100,7 +100,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -111,8 +110,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -169,7 +169,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -180,8 +179,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -237,7 +237,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -248,8 +247,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -305,7 +305,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -316,8 +315,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -373,7 +373,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -384,8 +383,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -441,7 +441,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -452,8 +451,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -509,7 +509,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -520,8 +519,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -576,7 +576,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -587,8 +586,9 @@ exports[`renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                   "lineHeight": 24,
-                  "marginBottom": 5,
+                  "marginBottom": 20,
                 },
+                Object {},
               ]
             }
           >
@@ -623,7 +623,6 @@ exports[`renders properly 1`] = `
             }
           >
             <Text
-              className="Typography-sc-1pie2ao-0 ehDCiu"
               color="black30"
               fontFamily="AGaramondPro-Regular"
               fontSize="16px"
@@ -636,6 +635,7 @@ exports[`renders properly 1`] = `
                     "fontSize": 16,
                     "lineHeight": 24,
                   },
+                  Object {},
                 ]
               }
             >

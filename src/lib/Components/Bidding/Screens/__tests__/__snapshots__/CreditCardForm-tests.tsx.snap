@@ -73,7 +73,6 @@ exports[`renders properly 1`] = `
         >
           <View>
             <Text
-              className="Typography-sc-1pie2ao-0 ehDCiu"
               fontFamily="AGaramondPro-Semibold"
               fontSize="22px"
               lineHeight="28px"
@@ -84,12 +83,13 @@ exports[`renders properly 1`] = `
                     "fontFamily": "AGaramondPro-Semibold",
                     "fontSize": 22,
                     "lineHeight": 28,
-                    "marginBottom": 20,
-                    "marginLeft": 20,
-                    "marginRight": 20,
-                    "marginTop": 20,
+                    "marginBottom": 32,
+                    "marginLeft": 32,
+                    "marginRight": 32,
+                    "marginTop": 32,
                     "textAlign": "center",
                   },
+                  Object {},
                 ]
               }
               textAlign="center"

@@ -38,6 +38,8 @@ import { Modal } from "lib/Components/Modal"
 import stripe from "tipsi-stripe"
 import { Address } from "../../types"
 
+import { Theme } from "@artsy/palette"
+
 let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
@@ -55,18 +57,34 @@ beforeEach(() => {
 })
 
 it("renders properly for a user without a credit card", () => {
-  const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />).toJSON()
+  const component = renderer
+    .create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
+    .toJSON()
   expect(component).toMatchSnapshot()
 })
 
 it("renders properly for a user with a credit card", () => {
-  const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />).toJSON()
+  const component = renderer
+    .create(
+      <Theme>
+        <Registration {...initialPropsForUserWithCreditCard} />
+      </Theme>
+    )
+    .toJSON()
   expect(component).toMatchSnapshot()
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
   const billingAddressRow = renderer
-    .create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    .create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
     .root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
   expect(nextStep.component).toEqual(BillingAddress)
@@ -78,7 +96,11 @@ it("shows the billing address that the user typed in the billing address form", 
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {
   const creditcardRow = renderer
-    .create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    .create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
     .root.findAllByType(BidInfoRow)[0]
 
   creditcardRow.instance.props.onPress()
@@ -87,14 +109,22 @@ it("shows the credit card form when the user tap the edit text in the credit car
 })
 
 it("shows the option for entering payment information if the user does not have a credit card on file", () => {
-  const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+  const component = renderer.create(
+    <Theme>
+      <Registration {...initialPropsForUserWithoutCreditCard} />
+    </Theme>
+  )
 
   expect(component.root.findAllByType(Checkbox).length).toEqual(1)
   expect(component.root.findAllByType(BidInfoRow).length).toEqual(2)
 })
 
 it("shows no option for entering payment information if the user has a credit card on file", () => {
-  const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+  const component = renderer.create(
+    <Theme>
+      <Registration {...initialPropsForUserWithCreditCard} />
+    </Theme>
+  )
 
   expect(component.root.findAllByType(Checkbox).length).toEqual(1)
   expect(component.root.findAllByType(BidInfoRow).length).toEqual(0)
@@ -119,8 +149,14 @@ describe("when pressing register button", () => {
 
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
-    component.root.instance.setState({ conditionsOfSaleChecked: true, billingAddress, creditCardToken: stripeToken })
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
+    component.root
+      .findByType(Registration)
+      .instance.setState({ conditionsOfSaleChecked: true, billingAddress, creditCardToken: stripeToken })
 
     await component.root.findByType(Button).instance.props.onPress()
 
@@ -159,8 +195,12 @@ describe("when pressing register button", () => {
   })
 
   it("when there is a credit card on file, it commits mutation", () => {
-    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
-    component.root.instance.setState({ conditionsOfSaleChecked: true })
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithCreditCard} />
+      </Theme>
+    )
+    component.root.findByType(Registration).instance.setState({ conditionsOfSaleChecked: true })
 
     mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
@@ -171,8 +211,12 @@ describe("when pressing register button", () => {
   })
 
   it("shows a spinner", () => {
-    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
-    component.root.instance.setState({ conditionsOfSaleChecked: true })
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithCreditCard} />
+      </Theme>
+    )
+    component.root.findByType(Registration).instance.setState({ conditionsOfSaleChecked: true })
     relay.commitMutation = jest.fn()
 
     component.root.findByType(Button).instance.props.onPress()
@@ -184,9 +228,13 @@ describe("when pressing register button", () => {
     const navigator = { push: jest.fn() } as any
     relay.commitMutation = jest.fn()
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} navigator={navigator} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} navigator={navigator} />
+      </Theme>
+    )
 
-    component.root.instance.setState({
+    component.root.findByType(Registration).instance.setState({
       conditionsOfSaleChecked: true,
       creditCardToken: stripeToken,
       billingAddress,
@@ -225,10 +273,14 @@ describe("when pressing register button", () => {
       throw new Error("Error tokenizing card")
     })
     console.error = jest.fn() // Silences component logging.
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
 
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Registration).instance.setState({ billingAddress })
+    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
 
@@ -247,11 +299,15 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Registration).instance.setState({ billingAddress })
+    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
 
@@ -278,10 +334,14 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
 
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Registration).instance.setState({ billingAddress })
+    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
 
@@ -303,11 +363,15 @@ describe("when pressing register button", () => {
       .fn()
       .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Registration).instance.setState({ billingAddress })
+    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
 
@@ -330,10 +394,14 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
 
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Registration).instance.setState({ billingAddress })
+    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
 
@@ -365,11 +433,15 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Registration).instance.setState({ billingAddress })
+    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
 
@@ -402,9 +474,13 @@ describe("when pressing register button", () => {
 
     mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithoutCreditCard} />
+      </Theme>
+    )
+    component.root.findByType(Registration).instance.setState({ billingAddress })
+    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
 
@@ -423,7 +499,11 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
     relay.commitMutation = jest.fn().mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithCreditCard} />
+      </Theme>
+    )
 
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
@@ -442,7 +522,11 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithCreditCard} />
+      </Theme>
+    )
 
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
@@ -459,7 +543,11 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithCreditCard} />
+      </Theme>
+    )
 
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
@@ -480,7 +568,11 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+    const component = renderer.create(
+      <Theme>
+        <Registration {...initialPropsForUserWithCreditCard} />
+      </Theme>
+    )
 
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()

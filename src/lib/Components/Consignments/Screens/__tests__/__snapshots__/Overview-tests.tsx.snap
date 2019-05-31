@@ -622,7 +622,6 @@ exports[`Sets up the right view hierarchy 1`] = `
               }
             >
               <Text
-                className="Typography-sc-1pie2ao-0 ehDCiu"
                 color="white"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
@@ -635,6 +634,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
+                    Object {},
                   ]
                 }
               >

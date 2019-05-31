@@ -49,7 +49,6 @@ exports[`renders properly 1`] = `
       top={10}
     />
     <Text
-      className="Typography-sc-1pie2ao-0 ehDCiu"
       fontFamily="AGaramondPro-Semibold"
       fontSize="22px"
       lineHeight="28px"
@@ -60,12 +59,13 @@ exports[`renders properly 1`] = `
             "fontFamily": "AGaramondPro-Semibold",
             "fontSize": 22,
             "lineHeight": 28,
-            "marginBottom": 20,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 20,
+            "marginBottom": 40,
+            "marginLeft": 40,
+            "marginRight": 40,
+            "marginTop": 40,
             "textAlign": "center",
           },
+          Object {},
         ]
       }
       textAlign="center"

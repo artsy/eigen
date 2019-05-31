@@ -6,8 +6,10 @@ import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import Spinner from "../../../../Components/Spinner"
 import { Button } from "../../Components/Button"
 
+import { Theme } from "@artsy/palette"
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { SelectMaxBid } from "../SelectMaxBid"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
@@ -69,7 +71,9 @@ beforeEach(() => {
 it("renders properly", () => {
   const component = renderer
     .create(
-      <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+      <BiddingThemeProvider>
+        <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+      </BiddingThemeProvider>
     )
     .toJSON()
   expect(component).toMatchSnapshot()
@@ -87,12 +91,14 @@ it("shows a spinner while fetching new bid increments", () => {
 
 it("refetches in next component's refreshSaleArtwork", () => {
   const component = renderer.create(
-    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    <BiddingThemeProvider>
+      <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    </BiddingThemeProvider>
   )
   component.root.findByType(Button).instance.props.onPress()
   const nextScreen = fakeNavigator.nextStep()
 
-  nextScreen.root.instance.props.refreshSaleArtwork()
+  nextScreen.root.findByProps({ nextScreen: true }).instance.props.refreshSaleArtwork()
 
   expect(fakeRelay.refetch).toHaveBeenCalledWith({ saleArtworkID: "sale-artwork-id" }, null, expect.anything(), {
     force: true,
@@ -102,7 +108,9 @@ it("refetches in next component's refreshSaleArtwork", () => {
 
 it("removes the spinner once the refetch is complete", () => {
   const component = renderer.create(
-    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    <BiddingThemeProvider>
+      <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    </BiddingThemeProvider>
   )
   component.root.findByType(Button).instance.props.onPress()
   const nextScreen = fakeNavigator.nextStep()
@@ -110,7 +118,7 @@ it("removes the spinner once the refetch is complete", () => {
     callback()
   })
 
-  nextScreen.root.instance.props.refreshSaleArtwork()
+  nextScreen.root.findByProps({ nextScreen: true }).instance.props.refreshSaleArtwork()
 
   expect(component.root.findAllByType(Spinner).length).toEqual(0)
 })

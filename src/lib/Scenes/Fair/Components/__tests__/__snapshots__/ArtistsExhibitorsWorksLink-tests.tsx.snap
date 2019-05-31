@@ -46,7 +46,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       }
     >
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Medium"
         fontSize="14px"
         lineHeight="20px"
@@ -57,6 +56,7 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               "fontSize": 14,
               "lineHeight": 20,
             },
+            Object {},
           ]
         }
       >
@@ -277,7 +277,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       }
     >
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Medium"
         fontSize="14px"
         lineHeight="20px"
@@ -288,6 +287,7 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               "fontSize": 14,
               "lineHeight": 20,
             },
+            Object {},
           ]
         }
       >
@@ -508,7 +508,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       }
     >
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Medium"
         fontSize="14px"
         lineHeight="20px"
@@ -519,6 +518,7 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               "fontSize": 14,
               "lineHeight": 20,
             },
+            Object {},
           ]
         }
       >

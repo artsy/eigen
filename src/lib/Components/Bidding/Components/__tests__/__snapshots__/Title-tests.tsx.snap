@@ -2,7 +2,6 @@
 
 exports[`renders properly 1`] = `
 <Text
-  className="Typography-sc-1pie2ao-0 ehDCiu"
   fontFamily="AGaramondPro-Semibold"
   fontSize="22px"
   lineHeight="28px"
@@ -19,6 +18,7 @@ exports[`renders properly 1`] = `
         "marginTop": 40,
         "textAlign": "center",
       },
+      Object {},
     ]
   }
   textAlign="center"

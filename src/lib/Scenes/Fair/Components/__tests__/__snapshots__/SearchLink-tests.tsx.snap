@@ -190,7 +190,6 @@ exports[`SearchLink Renders properly 1`] = `
       }
     >
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         color="#666"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
@@ -203,6 +202,7 @@ exports[`SearchLink Renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
+            Object {},
           ]
         }
       >

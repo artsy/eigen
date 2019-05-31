@@ -48,7 +48,6 @@ exports[`Registration result component renders registration complete properly 1`
         width={20}
       />
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -61,12 +60,13 @@ exports[`Registration result component renders registration complete properly 1`
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 20,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 5,
+              "marginBottom": 40,
+              "marginLeft": 40,
+              "marginRight": 40,
+              "marginTop": 20,
               "textAlign": "center",
             },
+            Object {},
           ]
         }
         textAlign="center"
@@ -79,13 +79,12 @@ exports[`Registration result component renders registration complete properly 1`
           Array [
             Object {
               "display": "flex",
-              "marginBottom": 30,
+              "marginBottom": 5,
             },
           ]
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           color="black60"
           fontFamily="Unica77LL-Regular"
           fontSize="14px"
@@ -99,6 +98,7 @@ exports[`Registration result component renders registration complete properly 1`
                 "lineHeight": 20,
                 "textAlign": "center",
               },
+              Object {},
             ]
           }
           textAlign="center"
@@ -132,7 +132,6 @@ to bid on works in this sale.
     }
   >
     <Text
-      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="black"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
@@ -145,6 +144,7 @@ to bid on works in this sale.
             "fontSize": 14,
             "lineHeight": 24,
           },
+          Object {},
         ]
       }
     >
@@ -202,7 +202,6 @@ exports[`Registration result component renders registration error properly 1`] =
         width={20}
       />
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -215,12 +214,13 @@ exports[`Registration result component renders registration error properly 1`] =
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 20,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 5,
+              "marginBottom": 40,
+              "marginLeft": 40,
+              "marginRight": 40,
+              "marginTop": 20,
               "textAlign": "center",
             },
+            Object {},
           ]
         }
         textAlign="center"
@@ -233,13 +233,12 @@ exports[`Registration result component renders registration error properly 1`] =
           Array [
             Object {
               "display": "flex",
-              "marginBottom": 30,
+              "marginBottom": 5,
             },
           ]
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           color="black60"
           fontFamily="Unica77LL-Regular"
           fontSize="14px"
@@ -253,6 +252,7 @@ exports[`Registration result component renders registration error properly 1`] =
                 "lineHeight": 20,
                 "textAlign": "center",
               },
+              Object {},
             ]
           }
           textAlign="center"
@@ -299,7 +299,6 @@ with any questions.
     }
   >
     <Text
-      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="black"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
@@ -312,6 +311,7 @@ with any questions.
             "fontSize": 14,
             "lineHeight": 24,
           },
+          Object {},
         ]
       }
     >
@@ -369,7 +369,6 @@ exports[`Registration result component renders registration pending properly 1`]
         width={20}
       />
       <Text
-        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -382,12 +381,13 @@ exports[`Registration result component renders registration pending properly 1`]
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
-              "marginBottom": 20,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 5,
+              "marginBottom": 40,
+              "marginLeft": 40,
+              "marginRight": 40,
+              "marginTop": 20,
               "textAlign": "center",
             },
+            Object {},
           ]
         }
         textAlign="center"
@@ -400,13 +400,12 @@ exports[`Registration result component renders registration pending properly 1`]
           Array [
             Object {
               "display": "flex",
-              "marginBottom": 30,
+              "marginBottom": 5,
             },
           ]
         }
       >
         <Text
-          className="Typography-sc-1pie2ao-0 ehDCiu"
           color="black60"
           fontFamily="Unica77LL-Regular"
           fontSize="14px"
@@ -420,6 +419,7 @@ exports[`Registration result component renders registration pending properly 1`]
                 "lineHeight": 20,
                 "textAlign": "center",
               },
+              Object {},
             ]
           }
           textAlign="center"
@@ -467,7 +467,6 @@ more information.
     }
   >
     <Text
-      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="black"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
@@ -480,6 +479,7 @@ more information.
             "fontSize": 14,
             "lineHeight": 24,
           },
+          Object {},
         ]
       }
     >

@@ -37,7 +37,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#cccccc"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
@@ -52,6 +51,7 @@ exports[`renders correctly 1`] = `
             "fontSize": 14,
             "lineHeight": 24,
           },
+          Object {},
         ]
       }
     >
@@ -81,7 +81,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#cccccc"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
@@ -96,6 +95,7 @@ exports[`renders correctly 1`] = `
             "fontSize": 14,
             "lineHeight": 24,
           },
+          Object {},
         ]
       }
     >
@@ -125,7 +125,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#cccccc"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
@@ -140,6 +139,7 @@ exports[`renders correctly 1`] = `
             "fontSize": 14,
             "lineHeight": 24,
           },
+          Object {},
         ]
       }
     >
