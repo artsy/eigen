@@ -17,12 +17,22 @@ const selectCountry = (component, navigator, country) => {
 
 // FIXME: Remove `.only`
 it("renders properly", () => {
-  const component = renderer.create(<BillingAddress />).toJSON()
+  const component = renderer
+    .create(
+      <Theme>
+        <BillingAddress />
+      </Theme>
+    )
+    .toJSON()
   expect(component).toMatchSnapshot()
 })
 
 it("shows an error message for each field", () => {
-  const component = renderer.create(<BillingAddress />)
+  const component = renderer.create(
+    <Theme>
+      <BillingAddress />
+    </Theme>
+  )
 
   component.root.findByType(Button).instance.props.onPress()
 
@@ -37,7 +47,11 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   const fakeNavigator = new FakeNavigator()
   const onSubmitMock = jest.fn()
 
-  const component = renderer.create(<BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />)
+  const component = renderer.create(
+    <Theme>
+      <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
+    </Theme>
+  )
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
   textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
@@ -56,7 +70,11 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
 it("updates the validation for country when coming back from the select country screen", () => {
   const fakeNavigator = new FakeNavigator()
 
-  const component = renderer.create(<BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />)
+  const component = renderer.create(
+    <Theme>
+      <BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />
+    </Theme>
+  )
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
   textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
@@ -77,7 +95,11 @@ it("updates the validation for country when coming back from the select country 
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
-  const component = renderer.create(<BillingAddress billingAddress={billingAddress} />)
+  const component = renderer.create(
+    <Theme>
+      <BillingAddress billingAddress={billingAddress} />
+    </Theme>
+  )
 
   expect(textInputComponent(component, "Full name").props.value).toEqual("Yuki Stockmeier")
   expect(textInputComponent(component, "Address line 1").props.value).toEqual("401 Broadway")

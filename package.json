@@ -107,6 +107,7 @@
     "@babel/plugin-transform-runtime": "7.4.0",
     "@babel/preset-typescript": "7.3.3",
     "@babel/runtime": "7.4.2",
+    "@codemod/cli": "^2.1.5",
     "@omakase/cli": "0.0.10",
     "@storybook/react-native": "3.3.11",
     "@types/chalk": "2.2.0",

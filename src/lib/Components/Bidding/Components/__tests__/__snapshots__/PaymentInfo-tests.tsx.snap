@@ -14,7 +14,6 @@ exports[`renders properly 1`] = `
           "borderWidth": 1,
           "width": "100%",
         },
-        undefined,
       ]
     }
     width="100%"
@@ -42,7 +41,6 @@ exports[`renders properly 1`] = `
           "paddingRight": 20,
           "paddingTop": 20,
         },
-        undefined,
       ]
     }
   >
@@ -55,12 +53,11 @@ exports[`renders properly 1`] = `
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bwzfXH uTxCW"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="16px"
         lineHeight="24px"
@@ -71,7 +68,6 @@ exports[`renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
-            undefined,
           ]
         }
       >
@@ -88,12 +84,11 @@ exports[`renders properly 1`] = `
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bwzfXH uTxCW"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
         lineHeight="24px"
@@ -105,7 +100,6 @@ exports[`renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
-            undefined,
           ]
         }
       >
@@ -121,12 +115,11 @@ exports[`renders properly 1`] = `
       style={
         Array [
           Object {},
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         color="purple100"
         fontFamily="Unica77LL-Regular"
         fontSize="12px"
@@ -143,7 +136,6 @@ exports[`renders properly 1`] = `
               "marginBottom": 3,
               "marginLeft": 10,
             },
-            undefined,
           ]
         }
       >
@@ -163,7 +155,6 @@ exports[`renders properly 1`] = `
           "borderWidth": 1,
           "width": "100%",
         },
-        undefined,
       ]
     }
     width="100%"
@@ -191,7 +182,6 @@ exports[`renders properly 1`] = `
           "paddingRight": 20,
           "paddingTop": 20,
         },
-        undefined,
       ]
     }
   >
@@ -204,12 +194,11 @@ exports[`renders properly 1`] = `
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bwzfXH uTxCW"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Semibold"
         fontSize="16px"
         lineHeight="24px"
@@ -220,7 +209,6 @@ exports[`renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
-            undefined,
           ]
         }
       >
@@ -237,12 +225,11 @@ exports[`renders properly 1`] = `
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bwzfXH uTxCW"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
         lineHeight="24px"
@@ -254,7 +241,6 @@ exports[`renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
-            undefined,
           ]
         }
       >
@@ -270,12 +256,11 @@ exports[`renders properly 1`] = `
       style={
         Array [
           Object {},
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         color="purple100"
         fontFamily="Unica77LL-Regular"
         fontSize="12px"
@@ -292,7 +277,6 @@ exports[`renders properly 1`] = `
               "marginBottom": 3,
               "marginLeft": 10,
             },
-            undefined,
           ]
         }
       >
@@ -312,7 +296,6 @@ exports[`renders properly 1`] = `
           "borderWidth": 1,
           "width": "100%",
         },
-        undefined,
       ]
     }
     width="100%"

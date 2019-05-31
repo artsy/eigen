@@ -3,6 +3,8 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import Provenance from "../Provenance"
 
+import { Theme } from "@artsy/palette"
+
 const emptyProps = { navigator: {} as any, route: {} as any }
 
 describe("callbacks", () => {
@@ -46,7 +48,13 @@ it("Sets up the right view hierarchy", () => {
   const nav = {} as any
   const route = {} as any
 
-  const tree = renderer.create(<Provenance navigator={nav} route={route} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Provenance navigator={nav} route={route} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 
@@ -56,7 +64,11 @@ describe("with an existing state", () => {
     const route = {} as any
 
     const tree = renderer
-      .create(<Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />)
+      .create(
+        <Theme>
+          <Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />
+        </Theme>
+      )
       .toJSON()
     expect(tree).toMatchSnapshot()
   })

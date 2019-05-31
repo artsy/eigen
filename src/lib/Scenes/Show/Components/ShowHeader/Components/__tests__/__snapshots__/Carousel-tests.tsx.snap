@@ -6,8 +6,8 @@ exports[`Carousel renders properly 1`] = `
   style={
     Array [
       Object {
-        "marginBottom": 8,
-        "marginTop": 8,
+        "marginBottom": 20,
+        "marginTop": 20,
       },
     ]
   }
@@ -79,7 +79,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -109,7 +109,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -138,7 +138,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -167,7 +167,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -196,7 +196,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -225,7 +225,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -254,7 +254,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -283,7 +283,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -312,7 +312,7 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
           ]
@@ -341,8 +341,8 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 8,
-              "paddingRight": 8,
+              "marginRight": 20,
+              "paddingRight": 20,
             },
           ]
         }

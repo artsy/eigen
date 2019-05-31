@@ -7,14 +7,42 @@ import { getTextTree } from "lib/utils/getTestWrapper"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { Conversations } from "../"
 
+import { Theme } from "@artsy/palette"
+
 describe("messaging inbox", () => {
   it("looks correct when rendered", () => {
-    const tree = renderer.create(<Conversations me={meProps} relay={{ hasMore: jest.fn() } as any} />).toJSON()
+    const tree = renderer
+      .create(
+        <Theme>
+          <Conversations
+            me={meProps}
+            relay={
+              {
+                hasMore: jest.fn(),
+              } as any
+            }
+          />
+        </Theme>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 
   it("looks correct when rendered without messages", () => {
-    const tree = renderer.create(<Conversations me={mePropsEmpty} relay={{ hasMore: jest.fn() } as any} />).toJSON()
+    const tree = renderer
+      .create(
+        <Theme>
+          <Conversations
+            me={mePropsEmpty}
+            relay={
+              {
+                hasMore: jest.fn(),
+              } as any
+            }
+          />
+        </Theme>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 

@@ -21,6 +21,8 @@ jest.mock("tipsi-stripe", () => ({
 }))
 import stripe from "tipsi-stripe"
 
+import { Theme } from "@artsy/palette"
+
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
@@ -42,12 +44,14 @@ beforeEach(() => {
 
 it("allows bidders with a qualified credit card to bid", () => {
   let screen = renderer.create(
-    <SelectMaxBid
-      me={Me.qualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
-    />
+    <Theme>
+      <SelectMaxBid
+        me={Me.qualifiedUser as any}
+        sale_artwork={SaleArtwork as any}
+        navigator={fakeNavigator as any}
+        relay={fakeRelay as any}
+      />
+    </Theme>
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
@@ -75,12 +79,14 @@ it("allows bidders with a qualified credit card to bid", () => {
 
 it("allows bidders without a qualified credit card to register a card and bid", async () => {
   let screen = renderer.create(
-    <SelectMaxBid
-      me={Me.unqualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
-    />
+    <Theme>
+      <SelectMaxBid
+        me={Me.unqualifiedUser as any}
+        sale_artwork={SaleArtwork as any}
+        navigator={fakeNavigator as any}
+        relay={fakeRelay as any}
+      />
+    </Theme>
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)

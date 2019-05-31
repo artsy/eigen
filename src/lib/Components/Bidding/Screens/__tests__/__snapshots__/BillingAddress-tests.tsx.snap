@@ -59,12 +59,11 @@ exports[`renders properly 1`] = `
               "marginRight": 20,
               "marginTop": 20,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bwzfXH uTxCW"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="AGaramondPro-Semibold"
           fontSize="22px"
           lineHeight="28px"
@@ -83,7 +82,6 @@ exports[`renders properly 1`] = `
                 "marginTop": 0,
                 "textAlign": "center",
               },
-              undefined,
             ]
           }
           textAlign="center"
@@ -98,12 +96,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -116,7 +113,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -156,7 +152,6 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -170,12 +165,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -188,7 +182,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -227,7 +220,6 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -241,12 +233,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -259,7 +250,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -298,7 +288,6 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -312,12 +301,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -330,7 +318,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -369,7 +356,6 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -383,12 +369,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -401,7 +386,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -440,7 +424,6 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -454,12 +437,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -472,7 +454,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -511,7 +492,6 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -525,12 +505,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -543,7 +522,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -582,7 +560,6 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -595,12 +572,11 @@ exports[`renders properly 1`] = `
               Object {
                 "marginBottom": 20,
               },
-              undefined,
             ]
           }
         >
           <Text
-            className="sc-bwzfXH uTxCW"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -613,7 +589,6 @@ exports[`renders properly 1`] = `
                   "lineHeight": 24,
                   "marginBottom": 5,
                 },
-                undefined,
               ]
             }
           >
@@ -644,12 +619,11 @@ exports[`renders properly 1`] = `
                   "paddingRight": 10,
                   "paddingTop": 10,
                 },
-                undefined,
               ]
             }
           >
             <Text
-              className="sc-bwzfXH uTxCW"
+              className="Typography-sc-1pie2ao-0 ehDCiu"
               color="black30"
               fontFamily="AGaramondPro-Regular"
               fontSize="16px"
@@ -662,7 +636,6 @@ exports[`renders properly 1`] = `
                     "fontSize": 16,
                     "lineHeight": 24,
                   },
-                  undefined,
                 ]
               }
             >
@@ -677,7 +650,6 @@ exports[`renders properly 1`] = `
               Object {
                 "height": 50,
               },
-              undefined,
             ]
           }
         >

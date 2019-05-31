@@ -120,7 +120,7 @@ export class Carousel extends React.Component<Props, State> {
     return (
       <>
         <PageList
-          innerRef={ref => {
+          ref={ref => {
             this.scrollView = ref
           }}
           onLayout={this.handleLayout}

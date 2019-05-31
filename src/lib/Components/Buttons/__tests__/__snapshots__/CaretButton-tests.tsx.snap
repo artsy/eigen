@@ -42,7 +42,7 @@ exports[`CaretButton renders properly 1`] = `
     style={
       Array [
         Object {
-          "marginLeft": 0.5,
+          "marginLeft": 5,
         },
         Object {
           "marginTop": 1.5,

@@ -6,6 +6,8 @@ import * as renderer from "react-test-renderer"
 
 import Message from "../Message"
 
+import { Theme } from "@artsy/palette"
+
 beforeAll(() => {
   NativeModules.ARNotificationsManager = { addListener: jest.fn(), remove: jest.fn() }
 })
@@ -35,14 +37,16 @@ it("looks correct when rendered", () => {
   }
   const tree = renderer
     .create(
-      <Message
-        conversationId={"420"}
-        initialText=""
-        firstMessage={false}
-        index={0}
-        senderName={senderName}
-        message={props as any}
-      />
+      <Theme>
+        <Message
+          conversationId={"420"}
+          initialText=""
+          firstMessage={false}
+          index={0}
+          senderName={senderName}
+          message={props as any}
+        />
+      </Theme>
     )
     .toJSON()
   expect(tree).toMatchSnapshot()

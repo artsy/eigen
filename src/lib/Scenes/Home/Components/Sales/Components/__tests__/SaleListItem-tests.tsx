@@ -5,8 +5,14 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import SaleListItem from "../SaleListItem"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const sale = renderer.create(<SaleListItem sale={props as any} containerWidth={750} />)
+  const sale = renderer.create(
+    <Theme>
+      <SaleListItem sale={props as any} containerWidth={750} />
+    </Theme>
+  )
   expect(sale).toMatchSnapshot()
 })
 

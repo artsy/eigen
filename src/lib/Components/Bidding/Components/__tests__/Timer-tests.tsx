@@ -8,6 +8,8 @@ import * as renderer from "react-test-renderer"
 import { mockTimezone } from "lib/tests/mockTimezone"
 import { Timer } from "../Timer"
 
+import { Theme } from "@artsy/palette"
+
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
 
@@ -56,36 +58,58 @@ it("formats the remaining time in '00d  00h  00m  00s'", () => {
   let timer
 
   // Thursday, May 14, 2018 10:24:31.000 AM UTC
-  timer = renderer.create(<Timer endsAt="2018-05-14T10:24:31+00:00" />)
+  timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-14T10:24:31+00:00" />
+    </Theme>
+  )
 
   expect(getTimerText(timer)).toEqual("03d  14h  01m  59s")
 
   // Thursday, May 10, 2018 8:42:32.000 PM UTC
-  timer = renderer.create(<Timer endsAt="2018-05-10T20:42:32+00:00" />)
+  timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-10T20:42:32+00:00" />
+    </Theme>
+  )
 
   expect(getTimerText(timer)).toEqual("00d  00h  20m  00s")
 
   // Thursday, May 10, 2018 8:22:42.000 PM UTC
-  timer = renderer.create(<Timer endsAt="2018-05-10T20:22:42+00:00" />)
+  timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-10T20:22:42+00:00" />
+    </Theme>
+  )
 
   expect(getTimerText(timer)).toEqual("00d  00h  00m  10s")
 })
 
 it("shows 'Ends' when it's an online-only sale with an ending time", () => {
-  const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+  const timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-14T20:00:00+00:00" />
+    </Theme>
+  )
 
   expect(getTimerLabel(timer)).toContain("Ends")
 })
 
 it("shows 'Live' when the liveStartsAt prop is given", () => {
-  const timer = renderer.create(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
+  const timer = renderer.create(
+    <Theme>
+      <Timer liveStartsAt="2018-05-14T20:00:00+00:00" />
+    </Theme>
+  )
 
   expect(getTimerLabel(timer)).toContain("Live")
 })
 
 it("shows 'Starts' the sale has not started yet", () => {
   const timer = renderer.create(
-    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={true} liveStartsAt="2018-05-14T20:00:00+00:00" />
+    <Theme>
+      <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={true} liveStartsAt="2018-05-14T20:00:00+00:00" />
+    </Theme>
   )
 
   expect(getTimerLabel(timer)).toContain("Starts")
@@ -93,12 +117,14 @@ it("shows 'Starts' the sale has not started yet", () => {
 
 it("shows 'Bidding closed' when the auction is closed", () => {
   const timer = renderer.create(
-    <Timer
-      startsAt="2018-04-14T20:00:00+00:00"
-      isPreview={false}
-      liveStartsAt="2018-05-14T20:00:00+00:00"
-      isClosed={true}
-    />
+    <Theme>
+      <Timer
+        startsAt="2018-04-14T20:00:00+00:00"
+        isPreview={false}
+        liveStartsAt="2018-05-14T20:00:00+00:00"
+        isClosed={true}
+      />
+    </Theme>
   )
 
   expect(getTimerLabel(timer)).toContain("Bidding closed")
@@ -106,14 +132,20 @@ it("shows 'Bidding closed' when the auction is closed", () => {
 
 it("shows 'In progress' when the auction is in live auction integration mode", () => {
   const timer = renderer.create(
-    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={false} liveStartsAt={pastTime} isClosed={false} />
+    <Theme>
+      <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={false} liveStartsAt={pastTime} isClosed={false} />
+    </Theme>
   )
 
   expect(getTimerLabel(timer)).toContain("In progress")
 })
 
 it("counts down to zero", () => {
-  const timer = renderer.create(<Timer endsAt="2018-05-14T10:23:10+00:00" />)
+  const timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-14T10:23:10+00:00" />
+    </Theme>
+  )
 
   expect(getTimerText(timer)).toEqual("03d  14h  00m  38s")
 
@@ -131,7 +163,11 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
 
   // Thursday, May 14, 2018 8:00:00.000 PM UTC
   // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
-  const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+  const timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-14T20:00:00+00:00" />
+    </Theme>
+  )
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM")
 })
@@ -139,11 +175,19 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
 it("displays the minutes when the sale does not end on the hour", () => {
   mockTimezone("America/New_York")
 
-  let timer = renderer.create(<Timer endsAt="2018-05-14T20:01:00+00:00" />)
+  let timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-14T20:01:00+00:00" />
+    </Theme>
+  )
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:01 PM")
 
-  timer = renderer.create(<Timer endsAt="2018-05-14T20:30:00+00:00" />)
+  timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-14T20:30:00+00:00" />
+    </Theme>
+  )
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:30 PM")
 })
@@ -151,7 +195,11 @@ it("displays the minutes when the sale does not end on the hour", () => {
 it("omits the minutes when the sale ends on the hour", () => {
   mockTimezone("America/New_York")
 
-  const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+  const timer = renderer.create(
+    <Theme>
+      <Timer endsAt="2018-05-14T20:00:00+00:00" />
+    </Theme>
+  )
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 4 PM")
 })

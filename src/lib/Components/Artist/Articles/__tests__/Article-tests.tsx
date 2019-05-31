@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 
 import Article from "../Article"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const article = {
     thumbnail_title: "Something Happened",
@@ -16,6 +18,12 @@ it("renders properly", () => {
       url: "artsy.net/image-url",
     },
   }
-  const articleComponent = renderer.create(<Article article={article as any} />).toJSON()
+  const articleComponent = renderer
+    .create(
+      <Theme>
+        <Article article={article as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(articleComponent).toMatchSnapshot()
 })

@@ -5,8 +5,16 @@ import * as renderer from "react-test-renderer"
 
 import Artwork from "../ArtworkGridItem"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
-  const artwork = renderer.create(<Artwork artwork={artworkProps() as any} />).toJSON()
+  const artwork = renderer
+    .create(
+      <Theme>
+        <Artwork artwork={artworkProps() as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(artwork).toMatchSnapshot()
 })
 
@@ -20,7 +28,13 @@ describe("in an open sale", () => {
         is_closed: false,
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
+    const artwork = renderer
+      .create(
+        <Theme>
+          <Artwork artwork={artworkProps(saleArtwork) as any} />
+        </Theme>
+      )
+      .toJSON()
     expect(artwork).toMatchSnapshot()
   })
 
@@ -33,14 +47,28 @@ describe("in an open sale", () => {
         is_closed: false,
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
+    const artwork = renderer
+      .create(
+        <Theme>
+          <Artwork artwork={artworkProps(saleArtwork) as any} />
+        </Theme>
+      )
+      .toJSON()
     expect(artwork).toMatchSnapshot()
   })
 
   it("safely handles a missing sale_artwork", () => {
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.sale_artwork = null
-    expect(() => renderer.create(<Artwork artwork={props as any} />).toJSON()).not.toThrowError()
+    expect(() =>
+      renderer
+        .create(
+          <Theme>
+            <Artwork artwork={props as any} />
+          </Theme>
+        )
+        .toJSON()
+    ).not.toThrowError()
   })
 })
 
@@ -54,7 +82,13 @@ describe("in a closed sale", () => {
         is_closed: true,
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
+    const artwork = renderer
+      .create(
+        <Theme>
+          <Artwork artwork={artworkProps(saleArtwork) as any} />
+        </Theme>
+      )
+      .toJSON()
     expect(artwork).toMatchSnapshot()
   })
 
@@ -68,7 +102,13 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
+    const artwork = renderer
+      .create(
+        <Theme>
+          <Artwork artwork={artworkProps(saleArtwork) as any} />
+        </Theme>
+      )
+      .toJSON()
     expect(artwork).toMatchSnapshot()
   })
 })

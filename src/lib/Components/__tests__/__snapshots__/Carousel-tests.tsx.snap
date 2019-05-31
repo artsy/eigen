@@ -43,8 +43,8 @@ Array [
           "display": "flex",
           "flexDirection": "row",
           "justifyContent": "center",
-          "marginBottom": 4,
-          "marginTop": 4,
+          "marginBottom": 10,
+          "marginTop": 10,
         },
       ]
     }

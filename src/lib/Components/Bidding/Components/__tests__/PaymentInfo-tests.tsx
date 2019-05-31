@@ -8,6 +8,8 @@ import { PaymentInfo } from "../PaymentInfo"
 
 import { BidInfoRow } from "../../Components/BidInfoRow"
 
+import { Theme } from "@artsy/palette"
+
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -19,12 +21,24 @@ const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 
 it("renders properly", () => {
-  const component = renderer.create(<PaymentInfo {...initialProps} />).toJSON()
+  const component = renderer
+    .create(
+      <Theme>
+        <PaymentInfo {...initialProps} />
+      </Theme>
+    )
+    .toJSON()
   expect(component).toMatchSnapshot()
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderer.create(<PaymentInfo {...initialProps} />).root.findAllByType(BidInfoRow)[1]
+  const billingAddressRow = renderer
+    .create(
+      <Theme>
+        <PaymentInfo {...initialProps} />
+      </Theme>
+    )
+    .root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
   expect(nextStep.component).toEqual(BillingAddress)
 
@@ -32,7 +46,13 @@ it("shows the billing address that the user typed in the billing address form", 
 })
 
 it("shows the cc info that the user had typed into the form", () => {
-  const creditCardRow = renderer.create(<PaymentInfo {...initialProps} />).root.findAllByType(BidInfoRow)[0]
+  const creditCardRow = renderer
+    .create(
+      <Theme>
+        <PaymentInfo {...initialProps} />
+      </Theme>
+    )
+    .root.findAllByType(BidInfoRow)[0]
   creditCardRow.instance.props.onPress()
   expect(nextStep.component).toEqual(CreditCardForm)
 

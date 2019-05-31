@@ -4,6 +4,8 @@ import * as renderer from "react-test-renderer"
 
 import { MaxBidPicker } from "../MaxBidPicker"
 
+import { Theme } from "@artsy/palette"
+
 const Bids = [
   {
     display: "$35,000 USD",
@@ -16,6 +18,12 @@ const Bids = [
 ]
 
 it("renders properly", () => {
-  const bg = renderer.create(<MaxBidPicker bids={Bids} selectedValue={0} onValueChange={jest.fn()} />).toJSON()
+  const bg = renderer
+    .create(
+      <Theme>
+        <MaxBidPicker bids={Bids} selectedValue={0} onValueChange={jest.fn()} />
+      </Theme>
+    )
+    .toJSON()
   expect(bg).toMatchSnapshot()
 })

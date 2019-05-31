@@ -60,10 +60,10 @@ exports[`renders properly 1`] = `
             "fontFamily": "AGaramondPro-Semibold",
             "fontSize": 22,
             "lineHeight": 28,
-            "marginBottom": 32,
-            "marginLeft": 32,
-            "marginRight": 32,
-            "marginTop": 32,
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 20,
             "textAlign": "center",
           },
         ]
@@ -131,10 +131,10 @@ exports[`renders properly 1`] = `
     style={
       Array [
         Object {
-          "marginBottom": 32,
-          "marginLeft": 32,
-          "marginRight": 32,
-          "marginTop": 32,
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
         },
       ]
     }

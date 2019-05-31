@@ -6,6 +6,8 @@ import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import { MaxBidPicker } from "../../Components/MaxBidPicker"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
+import { Theme } from "@artsy/palette"
+
 const SaleArtwork = {
   increments: [
     {
@@ -38,12 +40,22 @@ beforeEach(() => {
 })
 
 it("renders properly", () => {
-  const component = renderer.create(<SelectMaxBidEdit {...initialProps} />).toJSON()
+  const component = renderer
+    .create(
+      <Theme>
+        <SelectMaxBidEdit {...initialProps} />
+      </Theme>
+    )
+    .toJSON()
   expect(component).toMatchSnapshot()
 })
 
 it("passes the correct selection", () => {
-  const component = renderer.create(<SelectMaxBidEdit {...initialProps} selectedBidIndex={3} />)
+  const component = renderer.create(
+    <Theme>
+      <SelectMaxBidEdit {...initialProps} selectedBidIndex={3} />
+    </Theme>
+  )
   expect(component.root.findByType(MaxBidPicker).props.selectedValue).toEqual(3)
 })
 

@@ -5,7 +5,20 @@ import { RelayProp } from "react-relay"
 import * as renderer from "react-test-renderer"
 import { ShowHeader } from "../index"
 
+import { Theme } from "@artsy/palette"
+
 it("looks correct when rendered", () => {
-  const comp = renderer.create(<ShowHeader relay={{ environment: {} } as RelayProp} show={ShowFixture as any} />)
+  const comp = renderer.create(
+    <Theme>
+      <ShowHeader
+        relay={
+          {
+            environment: {},
+          } as RelayProp
+        }
+        show={ShowFixture as any}
+      />
+    </Theme>
+  )
   expect(comp).toMatchSnapshot()
 })

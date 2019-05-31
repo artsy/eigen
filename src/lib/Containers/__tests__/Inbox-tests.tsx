@@ -7,6 +7,8 @@ import * as renderer from "react-test-renderer"
 
 import Inbox, { Inbox as ActualInbox } from "../Inbox"
 
+import { Theme } from "@artsy/palette"
+
 jest.mock("../../Components/Inbox/Conversations", () => "Conversations")
 
 const emptyMeProps = {
@@ -15,7 +17,13 @@ const emptyMeProps = {
 }
 
 it("renders correctly", () => {
-  const tree = renderer.create(<Inbox me={meProps() as any} isVisible={true} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Inbox me={meProps() as any} isVisible={true} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 
