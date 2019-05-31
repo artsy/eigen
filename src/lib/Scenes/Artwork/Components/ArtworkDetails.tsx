@@ -1,5 +1,6 @@
 import { Box, Sans } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
+import { ArtistListItem } from "lib/Components/ArtistListItem"
 // import { capitalize } from "lodash"
 import React from "react"
 import { Text } from "react-native"
@@ -11,27 +12,41 @@ interface ArtworkDetailsProps {
 
 export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
   render() {
+    const listItems = [
+      { title: "Medium", value: this.props.artwork.medium },
+      {
+        title: "Condition",
+        value: this.props.artwork.conditionDescription ? this.props.artwork.conditionDescription.label : null,
+      },
+      { title: "Signature", value: this.props.artwork.signature },
+      {
+        title: "Certificate of Authenticity",
+        value: this.props.artwork.certificateOfAuthenticity ? this.props.artwork.certificateOfAuthenticity.label : null,
+      },
+      { title: "Frame", value: this.props.artwork.framed ? this.props.artwork.framed.label : null },
+      { title: "Series", value: this.props.artwork.series },
+      { title: "Publisher", value: this.props.artwork.publisher },
+      { title: "Manufacturer", value: this.props.artwork.manufacturer },
+      { title: "Image rights", value: this.props.artwork.image_rights },
+    ]
+
+    const displayItems = listItems.filter(i => i.value != null)
+
     return (
       <Box>
-        <Text>Artwork Details</Text>
-        <Text>Medium</Text>
-        <Text>{this.props.artwork.medium}</Text>
-        <Text>Condition</Text>
-        <Text>{JSON.stringify(this.props.artwork.conditionDescription)}</Text>
-        <Text>Signature</Text>
-        <Text>{JSON.stringify(this.props.artwork.signature)}</Text>
-        <Text>Certificate of Authenticity</Text>
-        <Text>{JSON.stringify(this.props.artwork.certificateOfAuthenticity)}</Text>
-        <Text>Frame</Text>
-        <Text>{JSON.stringify(this.props.artwork.framed)}</Text>
-        <Text>Series</Text>
-        <Text>{JSON.stringify(this.props.artwork.series)}</Text>
-        <Text>Publisher</Text>
-        <Text>{JSON.stringify(this.props.artwork.publisher)}</Text>
-        <Text>Manufacturer</Text>
-        <Text>{JSON.stringify(this.props.artwork.manufacturer)}</Text>
-        <Text>Image rights</Text>
-        <Text>{JSON.stringify(this.props.artwork.image_rights)}</Text>
+        <Sans size="4" weight="medium">
+          Artwork Details
+        </Sans>
+        {displayItems.map(i => (
+          <>
+            <Sans size="3" weight="medium">
+              {i.title}
+            </Sans>
+            <Sans size="3" weight="regular">
+              {i.value}
+            </Sans>
+          </>
+        ))}
       </Box>
     )
   }
