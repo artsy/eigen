@@ -3,7 +3,7 @@
  * instance and updates the contents with a reference to a palette <Theme>.
  *
  * To run:
- *  $ yarn codemod --dry --plugin ./scripts/update-tests-with-theme.js $(find src -name '*-tests.tsx')
+ *  $ yarn codemod --dry --plugin ./scripts/update-tests-with-theme.js <filename>
  */
 export default function({ types: t, template }) {
   const paletteThemeImport = template(`import { Theme } from "@artsy/palette"`, { sourceType: "module" })
