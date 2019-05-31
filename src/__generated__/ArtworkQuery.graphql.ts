@@ -4,6 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 export type ArtworkQueryVariables = {
     readonly artworkID: string;
+    readonly screenWidth: number;
 };
 export type ArtworkQueryResponse = {
     readonly artwork: {
@@ -20,6 +21,7 @@ export type ArtworkQuery = {
 /*
 query ArtworkQuery(
   $artworkID: String!
+  $screenWidth: Int!
 ) {
   artwork(id: $artworkID) {
     ...Artwork_artwork
@@ -28,6 +30,16 @@ query ArtworkQuery(
 }
 
 fragment Artwork_artwork on Artwork {
+  images {
+    url
+    width
+    height
+    thumbnail: resized(width: $screenWidth) {
+      width
+      height
+      url
+    }
+  }
   ...ArtworkTombstone_artwork
   ...ArtworkActions_artwork
   ...ArtworkAvailability_artwork
@@ -80,6 +92,12 @@ var v0 = [
     "name": "artworkID",
     "type": "String!",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "screenWidth",
+    "type": "Int!",
+    "defaultValue": null
   }
 ],
 v1 = [
@@ -92,11 +110,32 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "width",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "height",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -145,6 +184,40 @@ return {
         "plural": false,
         "selections": [
           {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "images",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": true,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "kind": "LinkedField",
+                "alias": "thumbnail",
+                "name": "resized",
+                "storageKey": null,
+                "args": [
+                  {
+                    "kind": "Variable",
+                    "name": "width",
+                    "variableName": "screenWidth"
+                  }
+                ],
+                "concreteType": "ResizedImageUrl",
+                "plural": false,
+                "selections": [
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v2/*: any*/)
+                ]
+              }
+            ]
+          },
+          {
             "kind": "ScalarField",
             "alias": null,
             "name": "title",
@@ -181,7 +254,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -189,7 +262,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v6/*: any*/)
             ]
           },
           {
@@ -240,10 +313,10 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v6/*: any*/)
             ]
           },
-          (v3/*: any*/),
+          (v6/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -274,8 +347,8 @@ return {
             "concreteType": "Partner",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/)
+              (v5/*: any*/),
+              (v6/*: any*/)
             ]
           }
         ]
@@ -285,11 +358,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "6eb32fbe8e061b64f42935fb575fb03b",
+    "id": "c2d7d635c997c0eaaf2c3925c1d6aaba",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '5d0f8dca3f718f5dd5d9dbe1489d31a1';
+(node as any).hash = '90954f9389d18c988bf5aa9ae9a95078';
 export default node;

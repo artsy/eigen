@@ -5,11 +5,12 @@ import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { View } from "react-native"
+import { Dimensions, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
+import { Carousel } from "./Components/Carousel"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
@@ -21,8 +22,8 @@ export class Artwork extends React.Component<Props> {
     const { artwork } = this.props
     return (
       <Theme>
-        <View>
-          <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
+        <ScrollView>
+          <Carousel items={artwork.images} />
           <Flex alignItems="center" mt={2}>
             <ArtworkActions artwork={artwork} />
             <ArtworkTombstone artwork={artwork} />
@@ -32,7 +33,7 @@ export class Artwork extends React.Component<Props> {
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
           </Flex>
-        </View>
+        </ScrollView>
       </Theme>
     )
   }
@@ -41,6 +42,16 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
+      images {
+        url
+        width
+        height
+        thumbnail: resized(width: $screenWidth) {
+          width
+          height
+          url
+        }
+      }
       ...ArtworkTombstone_artwork
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
@@ -54,13 +65,13 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkQuery($artworkID: String!) {
+        query ArtworkQuery($artworkID: String!, $screenWidth: Int!) {
           artwork(id: $artworkID) {
             ...Artwork_artwork
           }
         }
       `}
-      variables={{ artworkID }}
+      variables={{ artworkID, screenWidth: Dimensions.get("screen").width }}
       render={renderWithLoadProgress(ArtworkContainer)}
     />
   )
