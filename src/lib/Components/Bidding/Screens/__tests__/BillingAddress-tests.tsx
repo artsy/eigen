@@ -19,7 +19,6 @@ const selectCountry = (component, navigator, country) => {
     .instance.props.onCountrySelected(country)
 }
 
-// FIXME: Remove `.only`
 it("renders properly", () => {
   const component = renderer
     .create(

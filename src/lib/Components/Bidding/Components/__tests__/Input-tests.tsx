@@ -82,8 +82,7 @@ it("updates the border color when the parent component updates the error prop", 
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.black10)
 })
 
-// FIXME: Reenable test
-xit("allows for capturing the ref to the actual text input", () => {
+it("allows for capturing the ref to the actual text input", () => {
   // FXIME: This is a StyledNativeComponent instance. Find the appropriate type and replace any with it.
   let inputRef: any
 
@@ -93,7 +92,7 @@ xit("allows for capturing the ref to the actual text input", () => {
     </BiddingThemeProvider>
   )
 
-  const actualTextInput = component.root.findByType(TextInput).instance
+  const actualTextInput = component.root.findByType(Input).findByType(TextInput).instance
 
-  expect(inputRef.root).toBe(actualTextInput)
+  expect(inputRef).toBe(actualTextInput)
 })
