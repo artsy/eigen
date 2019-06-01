@@ -85,46 +85,18 @@ export function FullScreenCarousel({
     [setImageIndex]
   )
 
-  const scrollY = useMemo(() => new Animated.Value(screenHeight), [])
+  const opacity = useMemo(() => new Animated.Value(0), [])
+  // fade in
+  useEffect(() => {
+    Animated.spring(opacity, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start()
+  }, [])
 
   return (
     <Modal transparent>
-      <Animated.ScrollView
-        snapToInterval={screenHeight}
-        contentOffset={{ x: 0, y: screenHeight }}
-        decelerationRate="fast"
-        style={{
-          backgroundColor: "white",
-          opacity: scrollY.interpolate({
-            inputRange: [0, screenHeight],
-            outputRange: [0, 1],
-          }),
-        }}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {
-                  y: scrollY,
-                },
-              },
-            },
-          ],
-          {
-            useNativeDriver: true,
-            listener(ev) {
-              // @ts-ignore
-              if (ev.nativeEvent.contentOffset.y < 50) {
-                onDismiss()
-              }
-            },
-          }
-        )}
-        bounces={false}
-        directionalLockEnabled
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={{ height: screenHeight, opacity: 0 }} />
+      <Animated.View style={{ opacity }}>
         <FlatList<CarouselItem>
           data={items}
           horizontal
@@ -150,7 +122,7 @@ export function FullScreenCarousel({
                 centerContent
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
-                style={{ height: screenHeight }}
+                style={{ height: screenHeight, backgroundColor: "white" }}
               >
                 <Image
                   style={{
@@ -163,7 +135,7 @@ export function FullScreenCarousel({
             )
           }}
         />
-      </Animated.ScrollView>
+      </Animated.View>
     </Modal>
   )
 }
@@ -172,7 +144,8 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
   const measurements = useMemo(
     () => {
       const result: Measurements[] = []
-      for (const item of items) {
+      for (let item of items) {
+        item = item.thumbnail || item
         const sizes = getMeasurements({ item, boundingBox: cardBoundingBox })
         if (result.length === 0) {
           result.push({ ...sizes, cumulativeOffset: 0 })
@@ -243,6 +216,7 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
         canCancelContentTouches
         onScroll={onScroll}
         renderItem={({ item, index }) => {
+          item = item.thumbnail || item
           let styles = getMeasurements({ item, boundingBox: cardBoundingBox })
           if (index > 0) {
             const prevStyles = getMeasurements({ item: items[index - 1], boundingBox: cardBoundingBox })
@@ -281,6 +255,22 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
 }
 
 const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diameter, selected }) => {
+  const anim = useMemo(() => new Animated.Value(selected ? 1 : 0), [])
+  const dotColor = anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [color("black10"), "black"],
+  })
+
+  useEffect(
+    () => {
+      Animated.spring(anim, {
+        toValue: selected ? 1 : 0,
+        useNativeDriver: true,
+      }).start()
+    },
+    [selected]
+  )
+
   return (
     <View
       style={{
@@ -289,45 +279,26 @@ const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diam
         marginHorizontal: diameter * 0.8,
       }}
     >
-      <Spring
-        from={{
-          diameter: selected ? 0 : diameter,
+      <View
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          justifyContent: "center",
+          alignItems: "center",
         }}
-        to={{
-          diameter: selected ? diameter : 0,
-        }}
-        config={{ tension: 180, friction: 12 }}
       >
-        {props => (
-          <>
-            <Dot diameter={10 - diameter} backgroundColor={color("black10")} />
-            <Dot diameter={props.diameter * 1.2} backgroundColor="black" />
-          </>
-        )}
-      </Spring>
+        <Animated.View
+          style={{
+            borderRadius: diameter / 2,
+            width: diameter,
+            height: diameter,
+            backgroundColor: dotColor,
+          }}
+        />
+      </View>
     </View>
   )
 }
-
-const Dot: React.FC<{ diameter: number; backgroundColor: string }> = ({ diameter, backgroundColor }) => (
-  <View
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      justifyContent: "center",
-      alignItems: "center",
-    }}
-  >
-    <View
-      style={{
-        borderRadius: diameter / 2,
-        width: diameter,
-        height: diameter,
-        backgroundColor,
-      }}
-    />
-  </View>
-)
