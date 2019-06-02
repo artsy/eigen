@@ -235,7 +235,7 @@
 - (ARCellData *)jumpToArtwork
 {
   return [self tappableCellDataWithTitle:@"Artwork" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"pablo-picasso-le-reve-the-dream"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"peter-halley-untitled-11-dot-21-dot-95-dot-6"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

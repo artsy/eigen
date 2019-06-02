@@ -96,7 +96,7 @@ export function FullScreenCarousel({
 
   return (
     <Modal transparent>
-      <Animated.View style={{ opacity }}>
+      <Animated.View style={{ opacity, zIndex: 1 }}>
         <FlatList<CarouselItem>
           data={items}
           horizontal
@@ -265,7 +265,6 @@ const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diam
     () => {
       Animated.spring(anim, {
         toValue: selected ? 1 : 0,
-        useNativeDriver: true,
       }).start()
     },
     [selected]
