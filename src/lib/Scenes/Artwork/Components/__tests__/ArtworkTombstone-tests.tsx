@@ -180,11 +180,23 @@ const artworkTombstoneArtwork = {
   medium: "Painting",
   date: "1992",
   artists: [
-    { name: "Andy Warhol", href: "/artist/andy-warhol" },
-    { name: "Alex Katz", href: "/artist/alex-katz" },
-    { name: "Pablo Picasso", href: "/artist/pablo-picasso" },
-    { name: "Banksy", href: "/artist/banksy" },
-    { name: "Barbara Kruger", href: "/artist/barbara-kruger" },
+    { name: "Andy Warhol", href: "/artist/andy-warhol", id: "1234", gravityID: "andy-warhol", is_followed: false },
+    { name: "Alex Katz", href: "/artist/alex-katz", id: "4354", gravityID: "alex-katz", is_followed: false },
+    {
+      name: "Pablo Picasso",
+      href: "/artist/pablo-picasso",
+      id: "3433",
+      gravityID: "pablo-picasso",
+      is_followed: false,
+    },
+    { name: "Banksy", href: "/artist/banksy", id: "3468", gravityID: "banksy", is_followed: false },
+    {
+      name: "Barbara Kruger",
+      href: "/artist/barbara-kruger",
+      id: "9874",
+      gravityID: "barbara-kruger",
+      is_followed: false,
+    },
   ],
   cultural_maker: null,
   dimensions: {
