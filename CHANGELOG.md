@@ -20,6 +20,7 @@
 - Switch to use metaphysics v2 schema - justin/alloy
 - Fixes a bug where artist search results in consignments overlap with search bar - yuki24
 - Adds related works section to Artwork page - ashkan18
+- Allows user to save an artwork from the Artwork view - sweir27
 
 ### 1.11.4
 
