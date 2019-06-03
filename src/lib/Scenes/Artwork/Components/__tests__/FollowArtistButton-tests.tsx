@@ -1,184 +1,161 @@
-import { Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
-import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
-import { renderUntil } from "lib/tests/renderUntil"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "../FollowArtistButton"
+import { graphql, RelayProp } from "react-relay"
+import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "../FollowArtistButton"
 
 jest.unmock("react-relay")
-const Artwork = createFragmentContainer(
-  props => <FollowArtistButton artist={FollowArtistButtonArtist} />,
-  graphql`
-    fragment FollowArtistButton_artist on Artist {
-      __id
-      id
-      _id
-      is_followed
-      counts {
-        follows
-      }
-    }
-  `
-)
-it("renders a Relay tree", done => {
-  const wrapper = mount(
-    <MockRelayRenderer
-      Component={Artwork}
-      query={graphql`
-        query MockRelayRendererQuery {
-          artist(id: "andy-warhol") {
-            ...FollowArtistButton_artist
+
+describe("FollowArtistButton", () => {
+  describe("with AR enabled", () => {
+    it("renders buttons correctly", () => {
+      const component = mount(
+        <Theme>
+          <FollowArtistButton relay={{ environment: {} } as RelayProp} artist={followArtistButtonArtist} />
+        </Theme>
+      )
+      expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
+
+      expect(
+        component
+          .find(TouchableWithoutFeedback)
+          .at(0)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"Follow"`)
+    })
+  })
+
+  describe("Following an artist", () => {
+    const getWrapper = async ({ mockArtistData, mockFollowResults }) => {
+      return await renderRelayTree({
+        Component: FollowArtistButtonFragmentContainer,
+        query: graphql`
+          query FollowArtistButtonTestsQuery {
+            artist(id: "artistID") {
+              ...FollowArtistButton_artist
+            }
           }
-        }
-      `}
-      mockResolvers={{
-        Artist: () => ({
-          __id: "12345",
-          id: "andy-warhol",
-          _id: "34567",
+        `,
+        mockData: { artist: mockArtistData },
+        mockMutationResults: { followArtist: mockFollowResults },
+      })
+    }
+
+    it("correctly displays when the artist is already followed, and allows unfollowing", async () => {
+      const followArtistButtonArtistFollowed = {
+        ...followArtistButtonArtist,
+        is_followed: true,
+      }
+
+      const unfollowResponse = {
+        artist: {
+          id: followArtistButtonArtist.id,
           is_followed: false,
-          counts: {
-            follows: 6,
+        },
+      }
+
+      const followArtistButton = await getWrapper({
+        mockArtistData: followArtistButtonArtistFollowed,
+        mockFollowResults: unfollowResponse,
+      })
+
+      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      console.log("FOLLOW BUTTON", followButton.text())
+      expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
+      // expect(followButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
+
+      await followArtistButton
+        .find(TouchableWithoutFeedback)
+        .at(0)
+        .props()
+        .onPress()
+
+      await flushPromiseQueue()
+      followArtistButton.update()
+
+      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      console.log("FOLLOW BUTTONdsafsddsf", updatedFollowButton.text())
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      // expect(updatedFollowButton.props().color).toMatchInlineSnapshot(`"#000"`)
+    })
+
+    it.only("correctly displays when the work is not saved, and allows saving", async () => {
+      const followResponse = { artist: { id: followArtistButtonArtist.id, is_followed: true } }
+
+      const followArtistButton = await getWrapper({
+        mockArtistData: followArtistButtonArtist,
+        mockFollowResults: followResponse,
+      })
+
+      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      // expect(followButton.props().color).toMatchInlineSnapshot(`"#000"`)
+
+      await followArtistButton
+        .find(TouchableWithoutFeedback)
+        .at(0)
+        .props()
+        .onPress()
+
+      await flushPromiseQueue()
+      followArtistButton.update()
+
+      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Followed"`)
+      // expect(updatedFollowButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
+    })
+
+    // TODO Update once we can use relay's new facilities for testing
+    xit("handles errors in saving gracefully", async () => {
+      const followArtistButton = await renderRelayTree({
+        Component: FollowArtistButtonFragmentContainer,
+        query: graphql`
+          query FollowArtistButtonTestsErrorQuery {
+            artist(id: "artistID") {
+              ...FollowArtistButton_artist
+            }
+          }
+        `,
+        mockData: { artist: followArtistButtonArtist },
+        mockMutationResults: {
+          FollowArtistButtonFragmentContainer: () => {
+            return Promise.reject(new Error("failed to fetch"))
           },
-        }),
-      }}
-    />
-  )
-  setTimeout(() => {
-    expect(wrapper.find(TouchableWithoutFeedback).text()).toEqual("Follow")
-    // expect(wrapper.find("img").props().src).toEqual("http://test/image.jpg")
-    done()
-  }, 10)
+        },
+      })
+
+      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(followButton.props().color).toMatchInlineSnapshot(`"#000"`)
+
+      await followArtistButton
+        .find(TouchableWithoutFeedback)
+        .at(0)
+        .props()
+        .onPress()
+
+      await flushPromiseQueue()
+      followArtistButton.update()
+
+      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      // expect(updatedFollowButton.props().color).toMatchInlineSnapshot(`"#000"`)
+    })
+  })
 })
 
-// jest.unmock("react-relay")
+// const followArtistButtonArtist = {
+//   id: "artwork12345",
+//   internalID: "12345",
+//   is_saved: false,
+//   " $refType": null,
+// }
 
-// jest.mock("react-relay", () => ({
-//   commitMutation: jest.fn(),
-//   createFragmentContainer: component => component,
-// }))
-
-// const render = () =>
-//   renderUntil(
-// wrapper => {
-//   return wrapper.text().includes("Follow")
-// },
-// <MockRelayRenderer
-//   Component={({ artist }) => (
-//     <Theme>
-//       <FollowArtistButton artist={artist} />
-//     </Theme>
-//   )}
-//   query={graphql`
-//     query FollowArtistButtonTestsQuery {
-//       artist(id: "andy-warhol") {
-//         ...FollowArtistButton_artist
-//       }
-//     }
-//   `}
-//   mockData={{
-//     data: FollowArtistButtonArtist,
-//   }}
-// />
-//   wrapper => {
-//     return wrapper.text().includes("Follow")
-//   },
-//   <MockRelayRenderer
-//     Component={(props: any) => <FollowArtistButton artist={FollowArtistButtonArtist} {...props} />}
-//     query={graphql`
-//       query FollowArtistButtonTestsQuery {
-//         artist(id: "andy-warhol") {
-//           ...FollowArtistButton_artist
-//         }
-//       }
-//     `}
-//     mockResolvers={{
-//       artist: () => FollowArtistButtonArtist,
-//     }}
-//   />
-// )
-
-// describe("FollowArtistButton", () => {
-//   const getWrapper = artist => {
-//     return mount(
-//       <Theme>
-//         <FollowArtistButton relay={{ environment: "" }} artist={artist} />
-//       </Theme>
-//     )
-//   }
-
-// window.location.assign = jest.fn()
-
-// let testProps
-// beforeEach(() => {
-//   testProps = {
-//     artist: {
-//       id: "damon-zucconi",
-//       __id: "1234",
-//       is_followed: false,
-//       counts: { follows: 99 },
-//     },
-//     onOpenAuthModal: jest.fn(),
-//     tracking: { trackEvent: jest.fn() },
-//   }
-// })
-
-//   describe("when a user is not following the artist", () => {
-//     it("renders the button text correctly", () => {
-//       // const component = mount(
-//       //   <Theme>
-//       //     <FollowArtistButton artist={FollowArtistButtonArtist} />
-//       //   </Theme>
-//       // )
-//       const component = getWrapper(FollowArtistButtonArtist)
-//       // const component = await render()
-//       const button = component.find(TouchableWithoutFeedback).at(0)
-//       expect(button.text()).toContain("Follow")
-//     })
-
-//     it.only("updates the button text when the follow button is clicked", () => {
-//       // const component = mount(
-//       //   <Theme>
-//       //     <FollowArtistButton artist={FollowArtistButtonArtist} />
-//       //   </Theme>
-//       // )
-//       // const component = await render()
-//       const component = getWrapper(FollowArtistButtonArtist)
-//       const button = component.find(TouchableWithoutFeedback).at(0)
-//       button.props().onPress()
-//       expect(button.text()).toContain("Following")
-//     })
-//   })
-
-//   describe("when a user is following the artist", () => {
-//     it("renders the button text correctly", () => {
-//       // const component = mount(
-//       //   <Theme>
-//       //     <FollowArtistButton artist={FollowArtistButtonArtist} />
-//       //   </Theme>
-//       // )
-//       // const component = await render()
-//       const button = component.find(TouchableWithoutFeedback).at(0)
-//       expect(button.text()).toContain("Following")
-//     })
-
-//     it("updates the button text when the follow button is clicked", () => {
-//       // const component = mount(
-//       //   <Theme>
-//       //     <FollowArtistButton artist={FollowArtistButtonArtist} />
-//       //   </Theme>
-//       // )
-//       // const component = await render()
-//       const button = component.find(TouchableWithoutFeedback).at(0)
-//       button.props().onPress()
-//       expect(button.text()).toContain("Follow")
-//     })
-//   })
-// })
-
-const FollowArtistButtonArtist = {
+const followArtistButtonArtist = {
   __id: "12345",
   id: "andy-warhol",
   _id: "34567",
