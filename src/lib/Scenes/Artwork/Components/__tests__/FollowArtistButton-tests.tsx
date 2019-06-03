@@ -3,30 +3,28 @@ import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "../FollowArtistButton"
 
 jest.unmock("react-relay")
 
 describe("FollowArtistButton", () => {
-  describe("with AR enabled", () => {
-    it("renders buttons correctly", () => {
-      const component = mount(
-        <Theme>
-          <FollowArtistButton relay={{ environment: {} } as RelayProp} artist={followArtistButtonArtist} />
-        </Theme>
-      )
-      expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
+  it("renders button text correctly", () => {
+    const component = mount(
+      <Theme>
+        <FollowArtistButton relay={{ environment: {} } as RelayProp} artist={followArtistButtonArtist} />
+      </Theme>
+    )
+    expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
 
-      expect(
-        component
-          .find(TouchableWithoutFeedback)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Follow"`)
-    })
+    expect(
+      component
+        .find(TouchableWithoutFeedback)
+        .at(0)
+        .render()
+        .text()
+    ).toMatchInlineSnapshot(`"Follow"`)
   })
 
   describe("Following an artist", () => {
@@ -64,9 +62,7 @@ describe("FollowArtistButton", () => {
       })
 
       const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
-      console.log("FOLLOW BUTTON", followButton.text())
       expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
-      // expect(followButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
 
       await followArtistButton
         .find(TouchableWithoutFeedback)
@@ -78,12 +74,10 @@ describe("FollowArtistButton", () => {
       followArtistButton.update()
 
       const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
-      console.log("FOLLOW BUTTONdsafsddsf", updatedFollowButton.text())
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
-      // expect(updatedFollowButton.props().color).toMatchInlineSnapshot(`"#000"`)
     })
 
-    it.only("correctly displays when the work is not saved, and allows saving", async () => {
+    it("correctly displays when the work is not followed, and allows following", async () => {
       const followResponse = { artist: { id: followArtistButtonArtist.id, is_followed: true } }
 
       const followArtistButton = await getWrapper({
@@ -93,7 +87,6 @@ describe("FollowArtistButton", () => {
 
       const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
-      // expect(followButton.props().color).toMatchInlineSnapshot(`"#000"`)
 
       await followArtistButton
         .find(TouchableWithoutFeedback)
@@ -105,8 +98,7 @@ describe("FollowArtistButton", () => {
       followArtistButton.update()
 
       const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Followed"`)
-      // expect(updatedFollowButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Following"`)
     })
 
     // TODO Update once we can use relay's new facilities for testing
@@ -130,7 +122,6 @@ describe("FollowArtistButton", () => {
 
       const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
-      expect(followButton.props().color).toMatchInlineSnapshot(`"#000"`)
 
       await followArtistButton
         .find(TouchableWithoutFeedback)
@@ -143,26 +134,14 @@ describe("FollowArtistButton", () => {
 
       const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
-      // expect(updatedFollowButton.props().color).toMatchInlineSnapshot(`"#000"`)
     })
   })
 })
 
-// const followArtistButtonArtist = {
-//   id: "artwork12345",
-//   internalID: "12345",
-//   is_saved: false,
-//   " $refType": null,
-// }
-
 const followArtistButtonArtist = {
-  __id: "12345",
-  id: "andy-warhol",
-  _id: "34567",
+  id: "12345",
+  gravityID: "andy-warhol",
   is_followed: false,
-  counts: {
-    follows: 6,
-  },
   " $refType": null,
   " $fragmentRefs": null,
 }

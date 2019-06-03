@@ -57,12 +57,6 @@ export class FollowArtistButton extends React.Component<Props, State> {
               },
             },
           },
-          // updater: store => {
-          //   store.get(artist.gravityID).setValue(!artist.is_followed, "is_followed")
-          //   // const artistProxy = store.get(data.followArtist.artist.__id)
-
-          //   // artistProxy.getLinkedRecord("counts").setValue(newFollowCount, "follows")
-          // },
         })
       }
     )
