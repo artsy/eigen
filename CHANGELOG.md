@@ -19,6 +19,7 @@
 - Upgrade palette@4.13.3; styled-components@4.x
 - Switch to use metaphysics v2 schema - justin/alloy
 - Fixes a bug where artist search results in consignments overlap with search bar - yuki24
+- Adds related works section to Artwork page - ashkan18
 
 ### 1.11.4
 

@@ -1,15 +1,16 @@
-import { Flex, Theme } from "@artsy/palette"
+import { Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { View } from "react-native"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
+import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
@@ -21,18 +22,19 @@ export class Artwork extends React.Component<Props> {
     const { artwork } = this.props
     return (
       <Theme>
-        <View>
+        <ScrollView>
           <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
           <Flex alignItems="center" mt={2}>
             <ArtworkActions artwork={artwork} />
             <ArtworkTombstone artwork={artwork} />
           </Flex>
           <Separator />
-          <Flex width="100%">
+          <Join separator={<Spacer my={2} />}>
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
-          </Flex>
-        </View>
+            <OtherWorks artwork={artwork} />
+          </Join>
+        </ScrollView>
       </Theme>
     )
   }
@@ -45,6 +47,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
       ...SellerInfo_artwork
+      ...OtherWorks_artwork
     }
   `,
 })
@@ -54,13 +57,13 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkQuery($artworkID: String!) {
+        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!]) {
           artwork(id: $artworkID) {
             ...Artwork_artwork
           }
         }
       `}
-      variables={{ artworkID }}
+      variables={{ artworkID, excludeArtworkIds: [artworkID] }}
       render={renderWithLoadProgress(ArtworkContainer)}
     />
   )
