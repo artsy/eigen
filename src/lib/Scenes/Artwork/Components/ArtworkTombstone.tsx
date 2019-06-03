@@ -37,7 +37,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       <React.Fragment>
         <Flex flexDirection="row">
           {this.renderArtistName(artist.name, artist.href)}
-          <FollowArtistButton artist={artist as any} />
+          <FollowArtistButton artist={artist} />
         </Flex>
       </React.Fragment>
     )
