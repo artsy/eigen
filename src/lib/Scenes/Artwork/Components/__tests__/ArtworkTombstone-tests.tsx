@@ -208,4 +208,5 @@ const artworkTombstoneArtwork = {
     short_description: "This is an edition of something",
   },
   " $refType": null,
+  " $fragmentRefs": null,
 }
