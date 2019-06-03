@@ -3,6 +3,8 @@ import * as renderer from "react-test-renderer"
 
 import InvoicePreview from "../InvoicePreview"
 
+import { Theme } from "@artsy/palette"
+
 describe("InvoicePreview", () => {
   it("renders correctly", () => {
     const invoice = {
@@ -13,7 +15,9 @@ describe("InvoicePreview", () => {
     }
 
     const tree = renderer.create(
-      <InvoicePreview invoice={invoice as any} conversationId="420" onSelected={() => null} />
+      <Theme>
+        <InvoicePreview invoice={invoice as any} conversationId="420" onSelected={() => null} />
+      </Theme>
     )
     expect(tree).toMatchSnapshot()
   })

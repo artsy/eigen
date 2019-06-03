@@ -229,7 +229,6 @@ exports[`state looks okay by default 1`] = `
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 color="black"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
@@ -242,7 +241,7 @@ exports[`state looks okay by default 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >

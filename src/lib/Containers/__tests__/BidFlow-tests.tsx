@@ -4,6 +4,8 @@ import * as renderer from "react-test-renderer"
 
 import BidFlow from "../BidFlow"
 
+import { Theme } from "@artsy/palette"
+
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 jest.mock("../../Components/Bidding/Context/TimeOffsetProvider.tsx", () => ({
@@ -40,6 +42,12 @@ const SaleArtwork = {
 }
 
 it("renders properly", () => {
-  const bg = renderer.create(<BidFlow me={Me as any} sale_artwork={SaleArtwork as any} />).toJSON()
+  const bg = renderer
+    .create(
+      <Theme>
+        <BidFlow me={Me as any} sale_artwork={SaleArtwork as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(bg).toMatchSnapshot()
 })

@@ -23,7 +23,6 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
   }
 >
   <Text
-    className="sc-bdVaJa bDWFJH"
     color="white"
     fontFamily="Unica77LL-Medium"
     fontSize="14px"
@@ -36,7 +35,7 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
           "fontSize": 14,
           "lineHeight": 24,
         },
-        undefined,
+        Object {},
       ]
     }
   >
@@ -68,7 +67,6 @@ exports[`InvertedButton renders properly 1`] = `
   }
 >
   <Text
-    className="sc-bdVaJa bDWFJH"
     color="white"
     fontFamily="Unica77LL-Medium"
     fontSize="14px"
@@ -81,7 +79,7 @@ exports[`InvertedButton renders properly 1`] = `
           "fontSize": 14,
           "lineHeight": 24,
         },
-        undefined,
+        Object {},
       ]
     }
   >

@@ -5,9 +5,17 @@ import * as renderer from "react-test-renderer"
 
 import Articles from "../Articles"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const articles = [article(1), article(2)]
-  const articlesComponent = renderer.create(<Articles articles={articles} />).toJSON()
+  const articlesComponent = renderer
+    .create(
+      <Theme>
+        <Articles articles={articles} />
+      </Theme>
+    )
+    .toJSON()
   expect(articlesComponent).toMatchSnapshot()
 })
 

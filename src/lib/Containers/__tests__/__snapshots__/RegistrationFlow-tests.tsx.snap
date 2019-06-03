@@ -73,7 +73,6 @@ exports[`renders properly with credit card 1`] = `
               "marginRight": 0,
               "marginTop": 0,
             },
-            undefined,
           ]
         }
       >
@@ -83,12 +82,10 @@ exports[`renders properly with credit card 1`] = `
             style={
               Array [
                 Object {},
-                undefined,
               ]
             }
           >
             <Text
-              className="sc-bwzfXH uTxCW"
               fontFamily="AGaramondPro-Semibold"
               fontSize="22px"
               lineHeight="28px"
@@ -106,7 +103,7 @@ exports[`renders properly with credit card 1`] = `
                     "marginTop": 20,
                     "textAlign": "center",
                   },
-                  undefined,
+                  Object {},
                 ]
               }
               textAlign="center"
@@ -121,12 +118,10 @@ exports[`renders properly with credit card 1`] = `
                     "alignItems": "center",
                     "display": "flex",
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="16px"
                 lineHeight="22px"
@@ -137,14 +132,13 @@ exports[`renders properly with credit card 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 15d  23h  07m  27s
               </Text>
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -155,7 +149,7 @@ exports[`renders properly with credit card 1`] = `
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
@@ -163,7 +157,6 @@ exports[`renders properly with credit card 1`] = `
               </Text>
             </View>
             <Text
-              className="sc-bwzfXH uTxCW"
               fontFamily="AGaramondPro-Semibold"
               fontSize="18px"
               lineHeight="22px"
@@ -181,7 +174,7 @@ exports[`renders properly with credit card 1`] = `
                     "marginTop": 30,
                     "textAlign": "center",
                   },
-                  undefined,
+                  Object {},
                 ]
               }
               textAlign="center"
@@ -221,7 +214,6 @@ exports[`renders properly with credit card 1`] = `
                       "flexShrink": 1,
                       "justifyContent": "center",
                     },
-                    undefined,
                   ]
                 }
               >
@@ -245,7 +237,6 @@ exports[`renders properly with credit card 1`] = `
                         "paddingTop": 20,
                         "width": 300,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -257,7 +248,6 @@ exports[`renders properly with credit card 1`] = `
                     }
                   >
                     <Text
-                      className="sc-bdVaJa bDWFJH"
                       fontFamily="Unica77LL-Medium"
                       fontSize="14px"
                       lineHeight="24px"
@@ -268,7 +258,7 @@ exports[`renders properly with credit card 1`] = `
                             "fontSize": 14,
                             "lineHeight": 24,
                           },
-                          undefined,
+                          Object {},
                         ]
                       }
                     >
@@ -283,7 +273,6 @@ exports[`renders properly with credit card 1`] = `
                     }
                   >
                     <Text
-                      className="sc-bdVaJa bDWFJH"
                       color="#666"
                       fontFamily="Unica77LL-Regular"
                       fontSize="14px"
@@ -296,7 +285,7 @@ exports[`renders properly with credit card 1`] = `
                             "fontSize": 14,
                             "lineHeight": 24,
                           },
-                          undefined,
+                          Object {},
                         ]
                       }
                     >
@@ -325,7 +314,6 @@ exports[`renders properly with credit card 1`] = `
                     }
                   >
                     <Text
-                      className="sc-bdVaJa bDWFJH"
                       color="black"
                       fontFamily="Unica77LL-Medium"
                       fontSize="14px"
@@ -338,7 +326,7 @@ exports[`renders properly with credit card 1`] = `
                             "fontSize": 14,
                             "lineHeight": 24,
                           },
-                          undefined,
+                          Object {},
                         ]
                       }
                     >
@@ -369,7 +357,6 @@ exports[`renders properly with credit card 1`] = `
                 Object {
                   "marginBottom": 20,
                 },
-                undefined,
               ]
             }
           >
@@ -399,12 +386,10 @@ exports[`renders properly with credit card 1`] = `
               style={
                 Array [
                   Object {},
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -419,7 +404,7 @@ exports[`renders properly with credit card 1`] = `
                       "lineHeight": 18,
                       "marginTop": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
@@ -432,7 +417,6 @@ exports[`renders properly with credit card 1`] = `
                       Object {
                         "textDecorationLine": "underline",
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -451,7 +435,6 @@ exports[`renders properly with credit card 1`] = `
                   "marginRight": 20,
                   "marginTop": 20,
                 },
-                undefined,
               ]
             }
           >
@@ -462,7 +445,6 @@ exports[`renders properly with credit card 1`] = `
                   Object {
                     "height": 50,
                   },
-                  undefined,
                 ]
               }
             >
@@ -590,7 +572,6 @@ exports[`renders properly without credit card 1`] = `
               "marginRight": 0,
               "marginTop": 0,
             },
-            undefined,
           ]
         }
       >
@@ -600,12 +581,10 @@ exports[`renders properly without credit card 1`] = `
             style={
               Array [
                 Object {},
-                undefined,
               ]
             }
           >
             <Text
-              className="sc-bwzfXH uTxCW"
               fontFamily="AGaramondPro-Semibold"
               fontSize="22px"
               lineHeight="28px"
@@ -623,7 +602,7 @@ exports[`renders properly without credit card 1`] = `
                     "marginTop": 20,
                     "textAlign": "center",
                   },
-                  undefined,
+                  Object {},
                 ]
               }
               textAlign="center"
@@ -638,12 +617,10 @@ exports[`renders properly without credit card 1`] = `
                     "alignItems": "center",
                     "display": "flex",
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="16px"
                 lineHeight="22px"
@@ -654,14 +631,13 @@ exports[`renders properly without credit card 1`] = `
                       "fontSize": 16,
                       "lineHeight": 22,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 15d  23h  07m  27s
               </Text>
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -672,7 +648,7 @@ exports[`renders properly without credit card 1`] = `
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
@@ -680,7 +656,6 @@ exports[`renders properly without credit card 1`] = `
               </Text>
             </View>
             <Text
-              className="sc-bwzfXH uTxCW"
               fontFamily="AGaramondPro-Semibold"
               fontSize="18px"
               lineHeight="22px"
@@ -698,7 +673,7 @@ exports[`renders properly without credit card 1`] = `
                     "marginTop": 30,
                     "textAlign": "center",
                   },
-                  undefined,
+                  Object {},
                 ]
               }
               textAlign="center"
@@ -719,7 +694,6 @@ exports[`renders properly without credit card 1`] = `
                     "borderWidth": 1,
                     "width": "100%",
                   },
-                  undefined,
                 ]
               }
               width="100%"
@@ -747,7 +721,6 @@ exports[`renders properly without credit card 1`] = `
                     "paddingRight": 20,
                     "paddingTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
@@ -760,12 +733,10 @@ exports[`renders properly without credit card 1`] = `
                       "flexGrow": 1,
                       "flexShrink": 1,
                     },
-                    undefined,
                   ]
                 }
               >
                 <Text
-                  className="sc-bwzfXH uTxCW"
                   fontFamily="AGaramondPro-Semibold"
                   fontSize="16px"
                   lineHeight="24px"
@@ -776,7 +747,7 @@ exports[`renders properly without credit card 1`] = `
                         "fontSize": 16,
                         "lineHeight": 24,
                       },
-                      undefined,
+                      Object {},
                     ]
                   }
                 >
@@ -793,7 +764,6 @@ exports[`renders properly without credit card 1`] = `
                       "flexGrow": 1,
                       "flexShrink": 1,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -806,12 +776,10 @@ exports[`renders properly without credit card 1`] = `
                 style={
                   Array [
                     Object {},
-                    undefined,
                   ]
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
                   color="purple100"
                   fontFamily="Unica77LL-Regular"
                   fontSize="12px"
@@ -828,7 +796,7 @@ exports[`renders properly without credit card 1`] = `
                         "marginBottom": 3,
                         "marginLeft": 10,
                       },
-                      undefined,
+                      Object {},
                     ]
                   }
                 >
@@ -848,7 +816,6 @@ exports[`renders properly without credit card 1`] = `
                     "borderWidth": 1,
                     "width": "100%",
                   },
-                  undefined,
                 ]
               }
               width="100%"
@@ -876,7 +843,6 @@ exports[`renders properly without credit card 1`] = `
                     "paddingRight": 20,
                     "paddingTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
@@ -889,12 +855,10 @@ exports[`renders properly without credit card 1`] = `
                       "flexGrow": 1,
                       "flexShrink": 1,
                     },
-                    undefined,
                   ]
                 }
               >
                 <Text
-                  className="sc-bwzfXH uTxCW"
                   fontFamily="AGaramondPro-Semibold"
                   fontSize="16px"
                   lineHeight="24px"
@@ -905,7 +869,7 @@ exports[`renders properly without credit card 1`] = `
                         "fontSize": 16,
                         "lineHeight": 24,
                       },
-                      undefined,
+                      Object {},
                     ]
                   }
                 >
@@ -922,7 +886,6 @@ exports[`renders properly without credit card 1`] = `
                       "flexGrow": 1,
                       "flexShrink": 1,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -935,12 +898,10 @@ exports[`renders properly without credit card 1`] = `
                 style={
                   Array [
                     Object {},
-                    undefined,
                   ]
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
                   color="purple100"
                   fontFamily="Unica77LL-Regular"
                   fontSize="12px"
@@ -957,7 +918,7 @@ exports[`renders properly without credit card 1`] = `
                         "marginBottom": 3,
                         "marginLeft": 10,
                       },
-                      undefined,
+                      Object {},
                     ]
                   }
                 >
@@ -977,7 +938,6 @@ exports[`renders properly without credit card 1`] = `
                     "borderWidth": 1,
                     "width": "100%",
                   },
-                  undefined,
                 ]
               }
               width="100%"
@@ -1015,7 +975,6 @@ exports[`renders properly without credit card 1`] = `
                       "flexShrink": 1,
                       "justifyContent": "center",
                     },
-                    undefined,
                   ]
                 }
               >
@@ -1039,7 +998,6 @@ exports[`renders properly without credit card 1`] = `
                         "paddingTop": 20,
                         "width": 300,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -1051,7 +1009,6 @@ exports[`renders properly without credit card 1`] = `
                     }
                   >
                     <Text
-                      className="sc-bdVaJa bDWFJH"
                       fontFamily="Unica77LL-Medium"
                       fontSize="14px"
                       lineHeight="24px"
@@ -1062,7 +1019,7 @@ exports[`renders properly without credit card 1`] = `
                             "fontSize": 14,
                             "lineHeight": 24,
                           },
-                          undefined,
+                          Object {},
                         ]
                       }
                     >
@@ -1077,7 +1034,6 @@ exports[`renders properly without credit card 1`] = `
                     }
                   >
                     <Text
-                      className="sc-bdVaJa bDWFJH"
                       color="#666"
                       fontFamily="Unica77LL-Regular"
                       fontSize="14px"
@@ -1090,7 +1046,7 @@ exports[`renders properly without credit card 1`] = `
                             "fontSize": 14,
                             "lineHeight": 24,
                           },
-                          undefined,
+                          Object {},
                         ]
                       }
                     >
@@ -1119,7 +1075,6 @@ exports[`renders properly without credit card 1`] = `
                     }
                   >
                     <Text
-                      className="sc-bdVaJa bDWFJH"
                       color="black"
                       fontFamily="Unica77LL-Medium"
                       fontSize="14px"
@@ -1132,7 +1087,7 @@ exports[`renders properly without credit card 1`] = `
                             "fontSize": 14,
                             "lineHeight": 24,
                           },
-                          undefined,
+                          Object {},
                         ]
                       }
                     >
@@ -1163,7 +1118,6 @@ exports[`renders properly without credit card 1`] = `
                 Object {
                   "marginBottom": 20,
                 },
-                undefined,
               ]
             }
           >
@@ -1193,12 +1147,10 @@ exports[`renders properly without credit card 1`] = `
               style={
                 Array [
                   Object {},
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1213,7 +1165,7 @@ exports[`renders properly without credit card 1`] = `
                       "lineHeight": 18,
                       "marginTop": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
@@ -1226,7 +1178,6 @@ exports[`renders properly without credit card 1`] = `
                       Object {
                         "textDecorationLine": "underline",
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -1245,7 +1196,6 @@ exports[`renders properly without credit card 1`] = `
                   "marginRight": 20,
                   "marginTop": 20,
                 },
-                undefined,
               ]
             }
           >
@@ -1256,7 +1206,6 @@ exports[`renders properly without credit card 1`] = `
                   Object {
                     "height": 50,
                   },
-                  undefined,
                 ]
               }
             >

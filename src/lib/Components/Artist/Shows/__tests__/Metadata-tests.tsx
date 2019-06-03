@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 
 import Metadata from "../Metadata"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const show = {
     kind: "solo",
@@ -19,6 +21,12 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  const metadata = renderer.create(<Metadata show={show as any} />).toJSON()
+  const metadata = renderer
+    .create(
+      <Theme>
+        <Metadata show={show as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(metadata).toMatchSnapshot()
 })

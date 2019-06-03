@@ -92,7 +92,7 @@ it("allows for capturing the ref to the actual text input", () => {
     </BiddingThemeProvider>
   )
 
-  const actualTextInput = component.root.findByType(TextInput).instance
+  const actualTextInput = component.root.findByType(Input).findByType(TextInput).instance
 
-  expect(inputRef.root).toBe(actualTextInput)
+  expect(inputRef).toBe(actualTextInput)
 })

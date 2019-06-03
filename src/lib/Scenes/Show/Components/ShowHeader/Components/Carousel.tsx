@@ -34,7 +34,7 @@ export class Carousel extends React.Component<Props> {
       <Box my={2}>
         <PageList
           {...this.props}
-          innerRef={ref => {
+          ref={ref => {
             this.scrollView = ref
           }}
           horizontal

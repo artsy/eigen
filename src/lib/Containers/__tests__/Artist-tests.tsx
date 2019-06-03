@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 import { Artist_artist } from "__generated__/Artist_artist.graphql"
 import { Artist } from "../Artist"
 
+import { Theme } from "@artsy/palette"
+
 describe("availableTabs", () => {
   it("returns nothing if artist has no metadata, shows, or works", () => {
     const artist = new Artist(artistProps(false))
@@ -52,17 +54,36 @@ describe("after rendering", () => {
 
 describe("layout", () => {
   it("works as expected with no tabs", () => {
-    const artist = renderer.create(<Artist artist={artistProps(false).artist} />)
+    const artist = renderer.create(
+      <Theme>
+        <Artist artist={artistProps(false).artist} />
+      </Theme>
+    )
     expect(artist.toJSON()).toMatchSnapshot()
   })
 
   it("works as expected with one tab", () => {
-    const artist = renderer.create(<Artist artist={artistProps(true).artist} />)
+    const artist = renderer.create(
+      <Theme>
+        <Artist artist={artistProps(true).artist} />
+      </Theme>
+    )
     expect(artist.toJSON()).toMatchSnapshot()
   })
 
   it("works as expected with three tabs", () => {
-    const artist = renderer.create(<Artist artist={artistProps(true, { artworks: 2, partner_shows: 1 }).artist} />)
+    const artist = renderer.create(
+      <Theme>
+        <Artist
+          artist={
+            artistProps(true, {
+              artworks: 2,
+              partner_shows: 1,
+            }).artist
+          }
+        />
+      </Theme>
+    )
     expect(artist.toJSON()).toMatchSnapshot()
   })
 })

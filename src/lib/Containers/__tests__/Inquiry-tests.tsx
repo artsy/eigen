@@ -3,8 +3,16 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import Inquiry from "../Inquiry"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const tree = renderer.create(<Inquiry artwork={inquiryProps as any} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Inquiry artwork={inquiryProps as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 

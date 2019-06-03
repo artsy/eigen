@@ -6,10 +6,9 @@ exports[`Carousel renders properly 1`] = `
   style={
     Array [
       Object {
-        "marginBottom": 8,
-        "marginTop": 8,
+        "marginBottom": 20,
+        "marginTop": 20,
       },
-      undefined,
     ]
   }
 >
@@ -67,7 +66,6 @@ exports[`Carousel renders properly 1`] = `
           "height": 350,
           "paddingLeft": 20,
         },
-        undefined,
       ]
     }
   >
@@ -81,10 +79,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -99,7 +96,6 @@ exports[`Carousel renders properly 1`] = `
                 "marginTop": 150,
                 "width": 650,
               },
-              undefined,
             ]
           }
         />
@@ -113,10 +109,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -130,7 +125,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -144,10 +138,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -161,7 +154,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -175,10 +167,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -192,7 +183,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -206,10 +196,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -223,7 +212,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -237,10 +225,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -254,7 +241,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -268,10 +254,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -285,7 +270,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -299,10 +283,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -316,7 +299,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -330,10 +312,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 10,
               "paddingRight": 0,
             },
-            undefined,
           ]
         }
       >
@@ -347,7 +328,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />
@@ -361,10 +341,9 @@ exports[`Carousel renders properly 1`] = `
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 8,
-              "paddingRight": 8,
+              "marginRight": 20,
+              "paddingRight": 20,
             },
-            undefined,
           ]
         }
       >
@@ -378,7 +357,6 @@ exports[`Carousel renders properly 1`] = `
                 "height": 350,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         />

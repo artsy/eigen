@@ -278,7 +278,6 @@ exports[`looks correct when rendered 1`] = `
                 "paddingRight": 10,
                 "paddingTop": 25,
               },
-              undefined,
             ]
           }
         >
@@ -290,7 +289,6 @@ exports[`looks correct when rendered 1`] = `
                   "fontSize": 30,
                   "textAlign": "left",
                 },
-                undefined,
               ]
             }
           >
@@ -391,7 +389,6 @@ exports[`looks correct when rendered 1`] = `
                       "marginTop": 10,
                       "width": 0,
                     },
-                    undefined,
                   ]
                 }
               >
@@ -406,7 +403,6 @@ exports[`looks correct when rendered 1`] = `
                         "top": 0,
                         "width": "100%",
                       },
-                      undefined,
                     ]
                   }
                 />
@@ -421,7 +417,6 @@ exports[`looks correct when rendered 1`] = `
                         "top": 0,
                         "width": "100%",
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -440,7 +435,6 @@ exports[`looks correct when rendered 1`] = `
                           "paddingTop": 10,
                           "width": "100%",
                         },
-                        undefined,
                       ]
                     }
                   >
@@ -459,7 +453,6 @@ exports[`looks correct when rendered 1`] = `
                               "flexShrink": 1,
                               "fontSize": 15,
                             },
-                            undefined,
                           ],
                           Object {
                             "fontFamily": "AGaramondPro-Regular",
@@ -481,7 +474,6 @@ exports[`looks correct when rendered 1`] = `
                             "paddingRight": 4,
                             "paddingTop": 1,
                           },
-                          undefined,
                         ]
                       }
                     >
@@ -494,7 +486,6 @@ exports[`looks correct when rendered 1`] = `
                               "fontSize": 7,
                               "letterSpacing": 1.5,
                             },
-                            undefined,
                           ]
                         }
                       >
@@ -517,7 +508,6 @@ exports[`looks correct when rendered 1`] = `
                           "paddingTop": 5,
                           "position": "absolute",
                         },
-                        undefined,
                       ]
                     }
                   >
@@ -530,7 +520,6 @@ exports[`looks correct when rendered 1`] = `
                             "fontSize": 10,
                             "letterSpacing": 1.5,
                           },
-                          undefined,
                         ]
                       }
                     >
@@ -557,7 +546,6 @@ exports[`looks correct when rendered 1`] = `
                       "marginTop": 10,
                       "width": 0,
                     },
-                    undefined,
                   ]
                 }
               >
@@ -572,7 +560,6 @@ exports[`looks correct when rendered 1`] = `
                         "top": 0,
                         "width": "100%",
                       },
-                      undefined,
                     ]
                   }
                 />
@@ -587,7 +574,6 @@ exports[`looks correct when rendered 1`] = `
                         "top": 0,
                         "width": "100%",
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -606,7 +592,6 @@ exports[`looks correct when rendered 1`] = `
                           "paddingTop": 10,
                           "width": "100%",
                         },
-                        undefined,
                       ]
                     }
                   >
@@ -625,7 +610,6 @@ exports[`looks correct when rendered 1`] = `
                               "flexShrink": 1,
                               "fontSize": 15,
                             },
-                            undefined,
                           ],
                           Object {
                             "fontFamily": "AGaramondPro-Regular",
@@ -647,7 +631,6 @@ exports[`looks correct when rendered 1`] = `
                             "paddingRight": 4,
                             "paddingTop": 1,
                           },
-                          undefined,
                         ]
                       }
                     >
@@ -660,7 +643,6 @@ exports[`looks correct when rendered 1`] = `
                               "fontSize": 7,
                               "letterSpacing": 1.5,
                             },
-                            undefined,
                           ]
                         }
                       >
@@ -683,7 +665,6 @@ exports[`looks correct when rendered 1`] = `
                           "paddingTop": 5,
                           "position": "absolute",
                         },
-                        undefined,
                       ]
                     }
                   >
@@ -696,7 +677,6 @@ exports[`looks correct when rendered 1`] = `
                             "fontSize": 10,
                             "letterSpacing": 1.5,
                           },
-                          undefined,
                         ]
                       }
                     >

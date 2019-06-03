@@ -8,6 +8,7 @@ import { LinkText } from "../Text/LinkText"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
 const SwitchBoardMock = SwitchBoard as any
 const { anything } = expect
 

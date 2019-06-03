@@ -42,7 +42,6 @@ exports[`does not have an activity when searching  1`] = `
             "fontSize": 20,
             "height": 40,
           },
-          undefined,
         ]
       }
       underlineColorAndroid="transparent"
@@ -108,7 +107,6 @@ exports[`shows an activity indicator when searching  1`] = `
             "fontSize": 20,
             "height": 40,
           },
-          undefined,
         ]
       }
       underlineColorAndroid="transparent"

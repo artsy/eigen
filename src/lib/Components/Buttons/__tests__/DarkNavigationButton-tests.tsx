@@ -10,9 +10,15 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import DarkNavigationButton from "../DarkNavigationButton"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const button = renderer
-    .create(<DarkNavigationButton title={"uI am a navigation button"} href="/some/path" />)
+    .create(
+      <Theme>
+        <DarkNavigationButton title={"uI am a navigation button"} href="/some/path" />
+      </Theme>
+    )
     .toJSON()
   expect(button).toMatchSnapshot()
 })

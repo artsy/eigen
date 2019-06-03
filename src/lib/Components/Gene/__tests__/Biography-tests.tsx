@@ -5,10 +5,18 @@ import * as renderer from "react-test-renderer"
 
 import Biography from "../Biography"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const gene = {
     description: "Watercolor painting is very nice",
   }
-  const biography = renderer.create(<Biography gene={gene as any} />).toJSON()
+  const biography = renderer
+    .create(
+      <Theme>
+        <Biography gene={gene as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(biography).toMatchSnapshot()
 })

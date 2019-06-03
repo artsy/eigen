@@ -30,7 +30,6 @@ exports[`looks correct when rendered 1`] = `
           "marginTop": 15,
           "width": 650,
         },
-        undefined,
       ]
     }
     width={650}
@@ -59,12 +58,10 @@ exports[`looks correct when rendered 1`] = `
             "marginBottom": 20,
             "marginTop": 20,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
         fontFamily="Unica77LL-Medium"
         fontSize="12px"
         lineHeight="16px"
@@ -78,14 +75,13 @@ exports[`looks correct when rendered 1`] = `
               "lineHeight": 16,
               "marginBottom": 5,
             },
-            undefined,
+            Object {},
           ]
         }
       >
         Delicate Power: The Delicacy and Complexity of Egg Tempera
       </Text>
       <Text
-        className="sc-bwzfXH uTxCW"
         color="black60"
         fontFamily="AGaramondPro-Regular"
         fontSize="14px"
@@ -98,14 +94,13 @@ exports[`looks correct when rendered 1`] = `
               "fontSize": 14,
               "lineHeight": 18,
             },
-            undefined,
+            Object {},
           ]
         }
       >
         J. Cacciola Gallery
       </Text>
       <Text
-        className="sc-bwzfXH uTxCW"
         color="black60"
         fontFamily="AGaramondPro-Regular"
         fontSize="14px"
@@ -118,7 +113,7 @@ exports[`looks correct when rendered 1`] = `
               "fontSize": 14,
               "lineHeight": 18,
             },
-            undefined,
+            Object {},
           ]
         }
       />
