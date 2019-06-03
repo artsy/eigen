@@ -20,7 +20,7 @@ export class ArtistArtworkGrid extends React.Component<ArtistArtworkGridProps> {
     }
 
     const artworks = artist.artworks_connection.edges.map(({ node }) => node)
-    if (!artworks || _.isEmpty(artworks)) {
+    if (_.isEmpty(artworks)) {
       return null
     }
 
