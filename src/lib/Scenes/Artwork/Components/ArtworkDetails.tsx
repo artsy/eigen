@@ -1,16 +1,24 @@
 import { Box, Sans } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
-import { ArtistListItem } from "lib/Components/ArtistListItem"
 // import { capitalize } from "lodash"
 import React from "react"
-import { Text } from "react-native"
+import { Button } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork
 }
 
-export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
+interface ArtworkDetailsState {
+  show_all: boolean
+}
+
+export class ArtworkDetails extends React.Component<ArtworkDetailsProps, ArtworkDetailsState> {
+  constructor(props) {
+    super(props)
+    this.state = { show_all: false }
+  }
+
   render() {
     const listItems = [
       { title: "Medium", value: this.props.artwork.medium },
@@ -30,7 +38,11 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
       { title: "Image rights", value: this.props.artwork.image_rights },
     ]
 
-    const displayItems = listItems.filter(i => i.value != null)
+    let displayItems = listItems.filter(i => i.value != null)
+
+    if (!this.state.show_all && displayItems.length > 3) {
+      displayItems = displayItems.slice(0, 3)
+    }
 
     return (
       <Box>
@@ -47,6 +59,14 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
             </Sans>
           </>
         ))}
+        {!this.state.show_all && (
+          <Button
+            onPress={() => {
+              this.setState({ show_all: true })
+            }}
+            title="Show more artwork details"
+          />
+        )}
       </Box>
     )
   }
