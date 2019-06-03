@@ -74,7 +74,7 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "dependencies": {
-    "@artsy/palette": "4.13.4",
+    "@artsy/palette": "^4.14.1",
     "@mapbox/react-native-mapbox-gl": "l2succes/react-native-mapbox-gl#fix-gesture-recognizer",
     "@react-native-community/cameraroll": "1.0.5",
     "lodash": "4.17.11",
@@ -89,7 +89,7 @@
     "react-native-parallax-scroll-view": "orta/react-native-parallax-scroll-view",
     "react-native-scrollable-tab-view": "0.9.0",
     "react-native-sentry": "0.30.3",
-    "react-native-svg": "9.0.4",
+    "react-native-svg": "9.4.0",
     "react-relay": "4.0.0",
     "react-spring": "5.5.4",
     "react-tracking": "5.7.0",
