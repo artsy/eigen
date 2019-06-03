@@ -154,6 +154,7 @@
     "recursive-readdir-sync": "1.0.6",
     "relay-compiler": "4.0.0",
     "relay-compiler-language-typescript": "4.1.0",
+    "relay-config": "/Users/eloy/Code/GraphQL/relay/dist/relay-config/relay-config-4.0.0.tgz",
     "relay-mock-network-layer": "2.0.0",
     "snapshot-diff": "0.2.2",
     "stylelint": "9.8.0",
