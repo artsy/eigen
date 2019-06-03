@@ -33,7 +33,6 @@ exports[`renders correctly 1`] = `
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          undefined,
         ]
       }
     >
@@ -53,7 +52,6 @@ exports[`renders correctly 1`] = `
               "resizeMode": "contain",
               "width": 40,
             },
-            undefined,
           ]
         }
       />
@@ -67,7 +65,6 @@ exports[`renders correctly 1`] = `
               "flexGrow": 1,
               "flexShrink": 1,
             },
-            undefined,
           ]
         }
       >

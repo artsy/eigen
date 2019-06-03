@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 
 import Header from "../Header"
 
+import { Theme } from "@artsy/palette"
+
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { followStatusForArtist: jest.fn() }
 })
@@ -20,6 +22,12 @@ it("renders properly", () => {
       follows: 22,
     },
   }
-  const header = renderer.create(<Header artist={artist as any} />).toJSON()
+  const header = renderer
+    .create(
+      <Theme>
+        <Header artist={artist as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(header).toMatchSnapshot()
 })

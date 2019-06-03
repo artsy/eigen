@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 import { ConsignmentMetadata } from "../../index"
 import Metadata from "../Metadata"
 
+import { Theme } from "@artsy/palette"
+
 const nav = {} as any
 const route = {} as any
 
@@ -24,13 +26,25 @@ const exampleMetadata: ConsignmentMetadata = {
 describe("state", () => {
   it("is set up with empty consignment metadata", () => {
     const consignmentMetadata = {} as ConsignmentMetadata
-    const tree = renderer.create(<Metadata navigator={nav} route={route} metadata={consignmentMetadata} />).toJSON()
+    const tree = renderer
+      .create(
+        <Theme>
+          <Metadata navigator={nav} route={route} metadata={consignmentMetadata} />
+        </Theme>
+      )
+      .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
   it("is set up with filled consignment metadata", () => {
-    const tree = renderer.create(<Metadata navigator={nav} route={route} metadata={exampleMetadata} />).toJSON()
+    const tree = renderer
+      .create(
+        <Theme>
+          <Metadata navigator={nav} route={route} metadata={exampleMetadata} />
+        </Theme>
+      )
+      .toJSON()
 
     expect(tree).toMatchSnapshot()
   })

@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import React from "react"
 import { Route } from "react-native"
 import * as renderer from "react-test-renderer"
@@ -23,13 +24,16 @@ export class FakeNavigator {
     const currentRoute = this.stack[this.stack.length - 1]
 
     return renderer.create(
-      React.createElement(currentRoute.component, {
-        ...currentRoute.passProps,
-        navigator: this,
-        relay: {
-          environment: null,
-        },
-      })
+      <Theme>
+        {React.createElement(currentRoute.component, {
+          ...currentRoute.passProps,
+          nextScreen: true,
+          navigator: this,
+          relay: {
+            environment: null,
+          },
+        })}
+      </Theme>
     )
   }
 }

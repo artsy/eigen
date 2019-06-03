@@ -9,9 +9,15 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { SearchLink } from "../SearchLink"
 
+import { Theme } from "@artsy/palette"
+
 describe("SearchLink", () => {
   it("Renders properly", () => {
-    const comp = renderer.create(<SearchLink id="this-is-a-fair-id" internalID="123456" />)
+    const comp = renderer.create(
+      <Theme>
+        <SearchLink id="this-is-a-fair-id" internalID="123456" />
+      </Theme>
+    )
     expect(comp).toMatchSnapshot()
   })
 

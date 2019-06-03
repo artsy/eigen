@@ -3,6 +3,8 @@ import * as renderer from "react-test-renderer"
 
 import SavedItemRow from "../SavedItemRow"
 
+import { Theme } from "@artsy/palette"
+
 const props = {
   href: "/artist/petra-collins",
   name: "Petra Collins",
@@ -10,6 +12,12 @@ const props = {
 }
 
 it("renders correctly", () => {
-  const tree = renderer.create(<SavedItemRow {...props} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <SavedItemRow {...props} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })

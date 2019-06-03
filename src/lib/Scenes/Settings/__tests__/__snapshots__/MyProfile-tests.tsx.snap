@@ -13,7 +13,6 @@ exports[`looks like expected 1`] = `
             "alignItems": "center",
             "marginTop": 82,
           },
-          undefined,
         ]
       }
     >
@@ -28,7 +27,6 @@ exports[`looks like expected 1`] = `
               "justifyContent": "center",
               "width": 123,
             },
-            undefined,
           ]
         }
       >
@@ -39,7 +37,6 @@ exports[`looks like expected 1`] = `
                 "fontFamily": "AvantGardeGothicITC",
                 "fontSize": 16,
               },
-              undefined,
             ]
           }
         >
@@ -81,7 +78,6 @@ exports[`looks like expected 1`] = `
             "alignItems": "center",
             "marginTop": 82,
           },
-          undefined,
         ]
       }
     >
@@ -124,7 +120,6 @@ exports[`looks like expected 1`] = `
                   "marginBottom": 8,
                   "marginTop": 24,
                 },
-                undefined,
               ]
             }
           >
@@ -143,7 +138,6 @@ exports[`looks like expected 1`] = `
                     "fontSize": 26,
                     "marginBottom": 12,
                   },
-                  undefined,
                 ],
                 Object {
                   "fontFamily": "AGaramondPro-Regular",
@@ -194,7 +188,6 @@ exports[`looks like expected 1`] = `
                   "marginBottom": 8,
                   "marginTop": 24,
                 },
-                undefined,
               ]
             }
           >
@@ -213,7 +206,6 @@ exports[`looks like expected 1`] = `
                     "fontSize": 26,
                     "marginBottom": 12,
                   },
-                  undefined,
                 ],
                 Object {
                   "fontFamily": "AGaramondPro-Regular",

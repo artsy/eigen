@@ -7,21 +7,35 @@ import { Button } from "../../Components/Button"
 import { BillingAddress } from "../BillingAddress"
 
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
 const selectCountry = (component, navigator, country) => {
   // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
   component.root.findAllByType(TouchableWithoutFeedback)[1].instance.props.onPress()
 
-  navigator.nextStep().root.instance.props.onCountrySelected(country)
+  navigator
+    .nextStep()
+    .root.findByProps({ nextScreen: true })
+    .instance.props.onCountrySelected(country)
 }
 
 it("renders properly", () => {
-  const component = renderer.create(<BillingAddress />).toJSON()
+  const component = renderer
+    .create(
+      <BiddingThemeProvider>
+        <BillingAddress />
+      </BiddingThemeProvider>
+    )
+    .toJSON()
   expect(component).toMatchSnapshot()
 })
 
 it("shows an error message for each field", () => {
-  const component = renderer.create(<BillingAddress />)
+  const component = renderer.create(
+    <BiddingThemeProvider>
+      <BillingAddress />
+    </BiddingThemeProvider>
+  )
 
   component.root.findByType(Button).instance.props.onPress()
 
@@ -36,7 +50,11 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   const fakeNavigator = new FakeNavigator()
   const onSubmitMock = jest.fn()
 
-  const component = renderer.create(<BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />)
+  const component = renderer.create(
+    <BiddingThemeProvider>
+      <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
+    </BiddingThemeProvider>
+  )
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
   textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
@@ -55,7 +73,11 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
 it("updates the validation for country when coming back from the select country screen", () => {
   const fakeNavigator = new FakeNavigator()
 
-  const component = renderer.create(<BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />)
+  const component = renderer.create(
+    <BiddingThemeProvider>
+      <BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />
+    </BiddingThemeProvider>
+  )
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
   textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
@@ -76,7 +98,11 @@ it("updates the validation for country when coming back from the select country 
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
-  const component = renderer.create(<BillingAddress billingAddress={billingAddress} />)
+  const component = renderer.create(
+    <BiddingThemeProvider>
+      <BillingAddress billingAddress={billingAddress} />
+    </BiddingThemeProvider>
+  )
 
   expect(textInputComponent(component, "Full name").props.value).toEqual("Yuki Stockmeier")
   expect(textInputComponent(component, "Address line 1").props.value).toEqual("401 Broadway")

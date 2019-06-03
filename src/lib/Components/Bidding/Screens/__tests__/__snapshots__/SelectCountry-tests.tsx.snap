@@ -10,7 +10,6 @@ exports[`Sets up the right view hierarchy 1`] = `
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      undefined,
     ]
   }
 >
@@ -58,12 +57,10 @@ exports[`Sets up the right view hierarchy 1`] = `
           "marginRight": 20,
           "marginTop": 20,
         },
-        undefined,
       ]
     }
   >
     <Text
-      className="sc-bwzfXH uTxCW"
       fontFamily="AGaramondPro-Semibold"
       fontSize="22px"
       lineHeight="28px"
@@ -81,7 +78,7 @@ exports[`Sets up the right view hierarchy 1`] = `
             "marginTop": 0,
             "textAlign": "center",
           },
-          undefined,
+          Object {},
         ]
       }
       textAlign="center"
@@ -120,7 +117,6 @@ exports[`Sets up the right view hierarchy 1`] = `
             "paddingRight": 10,
             "paddingTop": 10,
           },
-          undefined,
         ]
       }
       underlineColorAndroid="transparent"

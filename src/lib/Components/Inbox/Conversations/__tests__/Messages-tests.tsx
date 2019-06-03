@@ -4,8 +4,14 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import Messages from "../Messages"
 
+import { Theme } from "@artsy/palette"
+
 it("looks correct when rendered", () => {
-  const messages = renderer.create(<Messages conversation={props as any} />)
+  const messages = renderer.create(
+    <Theme>
+      <Messages conversation={props as any} />
+    </Theme>
+  )
   expect(messages).toMatchSnapshot()
 })
 

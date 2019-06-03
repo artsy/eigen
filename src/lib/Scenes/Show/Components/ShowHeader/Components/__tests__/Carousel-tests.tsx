@@ -3,9 +3,15 @@ import * as renderer from "react-test-renderer"
 
 import { Carousel } from "../Carousel"
 
+import { Theme } from "@artsy/palette"
+
 describe("Carousel", () => {
   it("renders properly", () => {
-    const carousel = renderer.create(<Carousel sources={images} />)
+    const carousel = renderer.create(
+      <Theme>
+        <Carousel sources={images} />
+      </Theme>
+    )
     expect(carousel).toMatchSnapshot()
   })
 })

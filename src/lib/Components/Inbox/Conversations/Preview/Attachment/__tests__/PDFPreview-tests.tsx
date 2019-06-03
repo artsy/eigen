@@ -4,8 +4,14 @@ import * as renderer from "react-test-renderer"
 
 import PDFPreview from "../PDFPreview"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const tree = renderer.create(<PDFPreview attachment={attachment as any} />)
+  const tree = renderer.create(
+    <Theme>
+      <PDFPreview attachment={attachment as any} />
+    </Theme>
+  )
   expect(tree).toMatchSnapshot()
 })
 

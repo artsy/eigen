@@ -32,7 +32,6 @@ exports[`renders correctly 1`] = `
             "flexShrink": 1,
             "height": 150,
           },
-          undefined,
         ]
       }
     />

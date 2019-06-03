@@ -8,7 +8,6 @@ exports[`looks correct when rendered 1`] = `
         "paddingLeft": 20,
         "paddingRight": 20,
       },
-      undefined,
     ]
   }
 >
@@ -16,16 +15,11 @@ exports[`looks correct when rendered 1`] = `
     style={
       Array [
         Object {
+          "alignSelf": "stretch",
           "flexDirection": "row",
+          "marginBottom": 10,
+          "marginTop": 15,
         },
-        Array [
-          Object {
-            "alignSelf": "stretch",
-            "marginBottom": 10,
-            "marginTop": 15,
-          },
-          undefined,
-        ],
       ]
     }
   >
@@ -38,7 +32,6 @@ exports[`looks correct when rendered 1`] = `
             "height": 30,
             "width": 30,
           },
-          undefined,
         ]
       }
     >
@@ -52,7 +45,6 @@ exports[`looks correct when rendered 1`] = `
               "fontSize": 10,
               "marginTop": 8,
             },
-            undefined,
           ]
         }
         user={true}
@@ -66,14 +58,9 @@ exports[`looks correct when rendered 1`] = `
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
+            "marginLeft": 10,
+            "marginTop": 7,
           },
-          Array [
-            Object {
-              "marginLeft": 10,
-              "marginTop": 7,
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -81,15 +68,10 @@ exports[`looks correct when rendered 1`] = `
         style={
           Array [
             Object {
+              "alignSelf": "stretch",
               "flexDirection": "row",
+              "marginBottom": 10,
             },
-            Array [
-              Object {
-                "alignSelf": "stretch",
-                "marginBottom": 10,
-              },
-              undefined,
-            ],
           ]
         }
       >
@@ -107,7 +89,6 @@ exports[`looks correct when rendered 1`] = `
                   "fontSize": 11.5,
                   "marginRight": 6,
                 },
-                undefined,
               ],
               Object {
                 "fontFamily": "AvantGardeGothicITC",
@@ -130,7 +111,6 @@ exports[`looks correct when rendered 1`] = `
                   "color": "#cccccc",
                   "fontSize": 11.5,
                 },
-                undefined,
               ],
               Object {
                 "fontFamily": "AvantGardeGothicITC",
@@ -148,7 +128,6 @@ exports[`looks correct when rendered 1`] = `
               "marginBottom": 10,
               "width": 295,
             },
-            undefined,
           ]
         }
       >
@@ -161,7 +140,6 @@ exports[`looks correct when rendered 1`] = `
                 "flexDirection": "row",
                 "height": 72,
               },
-              undefined,
             ]
           }
         >
@@ -181,7 +159,6 @@ exports[`looks correct when rendered 1`] = `
                   "resizeMode": "contain",
                   "width": 40,
                 },
-                undefined,
               ]
             }
           />
@@ -195,7 +172,6 @@ exports[`looks correct when rendered 1`] = `
                   "flexGrow": 1,
                   "flexShrink": 1,
                 },
-                undefined,
               ]
             }
           >
@@ -206,7 +182,6 @@ exports[`looks correct when rendered 1`] = `
                     "fontFamily": "AGaramondPro-Regular",
                     "fontSize": 14,
                   },
-                  undefined,
                 ]
               }
             >
@@ -218,13 +193,8 @@ exports[`looks correct when rendered 1`] = `
                   Object {
                     "fontFamily": "AGaramondPro-Regular",
                     "fontSize": 14,
+                    "fontWeight": "bold",
                   },
-                  Array [
-                    Object {
-                      "fontWeight": "bold",
-                    },
-                    undefined,
-                  ],
                 ]
               }
             >
@@ -240,7 +210,6 @@ exports[`looks correct when rendered 1`] = `
                   "marginRight": 15,
                   "width": 78,
                 },
-                undefined,
               ]
             }
           >

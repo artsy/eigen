@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders properly 1`] = `"<text font-family=\\"AGaramondPro-Regular\\" font-size=\\"26px\\" lineheight=\\"32px\\" class=\\"sc-bwzfXH uTxCW\\" mt=\\"2\\" mb=\\"3\\">All works</text>"`;
+exports[`renders properly 1`] = `"<text font-family=\\"AGaramondPro-Regular\\" font-size=\\"26px\\" lineheight=\\"32px\\" mt=\\"2\\" mb=\\"3\\">All works</text>"`;
