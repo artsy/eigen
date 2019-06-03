@@ -1,9 +1,9 @@
 import { camelCase } from "lodash"
 
-import Search, { SearchQueryProps } from "../Components/SearchResults"
+import { SearchQueryProps, SearchResults } from "../Components/SearchResults"
 
 export const name = "Consignments/Search"
-export const component = Search
+export const component = SearchResults
 
 const noQuery: SearchQueryProps = {
   query: null,
@@ -35,7 +35,7 @@ const query1Result: SearchQueryProps = {
   results: [
     {
       name: "Banksy",
-      internalID: "banksy",
+      id: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
@@ -49,7 +49,7 @@ const query1ResultSearching: SearchQueryProps = {
   results: [
     {
       name: "Banksy",
-      internalID: "banksy",
+      id: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
@@ -63,12 +63,12 @@ const query2Results: SearchQueryProps = {
   results: [
     {
       name: "Banksy",
-      internalID: "banksy",
+      id: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
     {
       name: "Banksy's Brother",
-      internalID: "thanksy",
+      id: "thanksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg" },
     },
   ],
@@ -78,7 +78,7 @@ const query2Results: SearchQueryProps = {
 
 const artistGen = (artistName: string) => ({
   name: artistName,
-  internalID: camelCase(artistName),
+  id: camelCase(artistName),
   image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
 })
 
