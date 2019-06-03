@@ -31,9 +31,7 @@ interface SelectCountryState {
 // https://developers.google.com/places/
 // https://developers.google.com/places/web-service/details
 const fetchFromGoogleMaps = async (path: string, queryParams: { [key: string]: string }) => {
-  // The extra key is from a throwaway google account,
-  // it should only get used in Emission dev mode
-  queryParams.key = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
+  queryParams.key = Emission.googleMapsAPIKey
 
   const response = await fetch(`https://maps.googleapis.com${path}?${stringify(queryParams)}`)
   return await response.json()
