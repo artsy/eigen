@@ -38,7 +38,6 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
           "backgroundColor": "#666666",
           "height": 1,
         },
-        undefined,
       ]
     }
   />
@@ -73,7 +72,6 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
             "fontSize": 14,
             "textAlign": "center",
           },
-          undefined,
         ]
       }
     >
@@ -104,7 +102,17 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
       }
     }
   >
-    <View>
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+          "flex": 1,
+          "maxWidth": 540,
+          "paddingTop": 20,
+          "width": "100%",
+        }
+      }
+    >
       <View
         style={
           Array [
@@ -149,7 +157,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
                   "fontSize": 20,
                   "height": 40,
                 },
-                undefined,
               ]
             }
             underlineColorAndroid="transparent"
@@ -184,7 +191,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 17,
                 },
-                undefined,
               ]
             }
           >
@@ -198,7 +204,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
                     "fontFamily": "AGaramondPro-Italic",
                     "fontSize": 17,
                   },
-                  undefined,
                 ]
               }
             >
@@ -216,7 +221,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
           "backgroundColor": "#666666",
           "height": 1,
         },
-        undefined,
       ]
     }
   />
@@ -251,7 +255,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             "fontSize": 14,
             "textAlign": "center",
           },
-          undefined,
         ]
       }
     >

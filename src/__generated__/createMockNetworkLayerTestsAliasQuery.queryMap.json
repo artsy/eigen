@@ -1,3 +1,0 @@
-{
-  "69b64c0c9c3852b75318b796375fd464": "query createMockNetworkLayerTestsAliasQuery {\n  artist(id: \"banksy\") {\n    forSaleArtworks: artworks(filter: IS_FOR_SALE) {\n      __id\n    }\n    notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {\n      __id\n    }\n    __id\n  }\n}\n"
-}

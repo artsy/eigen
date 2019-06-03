@@ -12,7 +12,7 @@ export interface Props {
 
 export class TabFairItemRow extends React.Component<Props> {
   handleTap = (item: Fair) => {
-    SwitchBoard.presentNavigationViewController(this, `${item.id}?entity=fair`)
+    SwitchBoard.presentNavigationViewController(this, `${item.gravityID}?entity=fair`)
   }
 
   render() {

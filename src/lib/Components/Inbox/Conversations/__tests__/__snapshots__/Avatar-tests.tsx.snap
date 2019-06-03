@@ -10,7 +10,6 @@ exports[`looks correct for a user with two initials 1`] = `
         "height": 30,
         "width": 30,
       },
-      undefined,
     ]
   }
 >
@@ -24,7 +23,6 @@ exports[`looks correct for a user with two initials 1`] = `
           "fontSize": 10,
           "marginTop": 8,
         },
-        undefined,
       ]
     }
     user={true}

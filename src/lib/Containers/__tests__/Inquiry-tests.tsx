@@ -3,13 +3,21 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import Inquiry from "../Inquiry"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const tree = renderer.create(<Inquiry artwork={inquiryProps as any} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Inquiry artwork={inquiryProps as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 
 const inquiryProps = {
-  _id: "gravity-id",
+  internalID: "gravity-id",
   id: "bradley-theodore-karl-and-anna-face-off-diptych",
   contact_message:
     "Hi, I'm interested in purchasing this work. Could you please provide me with more information about the piece?",

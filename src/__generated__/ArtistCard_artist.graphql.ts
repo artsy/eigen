@@ -1,24 +1,24 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ArtistCard_artist$ref: unique symbol;
 export type ArtistCard_artist$ref = typeof _ArtistCard_artist$ref;
 export type ArtistCard_artist = {
-    readonly id: string;
-    readonly _id: string;
+    readonly gravityID: string;
+    readonly internalID: string;
     readonly href: string | null;
     readonly name: string | null;
     readonly formatted_artworks_count: string | null;
     readonly formatted_nationality_and_birthday: string | null;
-    readonly image: ({
+    readonly image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": ArtistCard_artist$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtistCard_artist",
   "type": "Artist",
@@ -28,14 +28,14 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -84,22 +84,14 @@ const node: ConcreteFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = '420e85984a492f3845bd86d1795b912c';
+(node as any).hash = '0475e756ebaa1412db1ba0b4ff59a54c';
 export default node;

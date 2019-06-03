@@ -15,7 +15,7 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
     sale: graphql`
       fragment SaleArtworksGrid_sale on Sale
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        __id
+        id
         saleArtworks: sale_artworks_connection(first: $count, after: $cursor)
           @connection(key: "SaleArtworksGrid_saleArtworks") {
           pageInfo {
@@ -26,8 +26,8 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
           edges {
             node {
               artwork {
+                gravityID
                 id
-                __id
                 image {
                   aspect_ratio
                 }
@@ -53,14 +53,14 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
-        __id: props.sale.__id,
+        id: props.sale.id,
         count,
         cursor,
       }
     },
     query: graphql`
-      query SaleArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String) {
-        node(__id: $__id) {
+      query SaleArtworksGridQuery($id: ID!, $count: Int!, $cursor: String) {
+        node(__id: $id) {
           ... on Sale {
             ...SaleArtworksGrid_sale @arguments(count: $count, cursor: $cursor)
           }

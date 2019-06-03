@@ -13,17 +13,17 @@ export type SendConversationMessageMutationVariables = {
     readonly input: SendConversationMessageMutationInput;
 };
 export type SendConversationMessageMutationResponse = {
-    readonly sendConversationMessage: ({
-        readonly messageEdge: ({
-            readonly node: ({
+    readonly sendConversationMessage: {
+        readonly messageEdge: {
+            readonly node: {
                 readonly impulse_id: string;
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
-                readonly __id: string;
+                readonly id: string;
                 readonly " $fragmentRefs": Message_message$ref;
-            }) | null;
-        }) | null;
-    }) | null;
+            } | null;
+        } | null;
+    } | null;
 };
 export type SendConversationMessageMutation = {
     readonly response: SendConversationMessageMutationResponse;
@@ -42,7 +42,7 @@ mutation SendConversationMessageMutation(
         impulse_id
         is_from_user
         body
-        __id
+        id
         ...Message_message
       }
     }
@@ -60,17 +60,16 @@ fragment Message_message on Message {
   invoice {
     payment_url
     ...InvoicePreview_invoice
-    __id
+    id
   }
   attachments {
-    id
+    internalID
     content_type
     download_url
     file_name
     ...ImagePreview_attachment
     ...PDFPreview_attachment
   }
-  __id
 }
 
 fragment InvoicePreview_invoice on Invoice {
@@ -78,7 +77,6 @@ fragment InvoicePreview_invoice on Invoice {
   state
   total
   lewitt_invoice_id
-  __id
 }
 
 fragment ImagePreview_attachment on Attachment {
@@ -92,7 +90,7 @@ fragment PDFPreview_attachment on Attachment {
 }
 
 fragment AttachmentPreview_attachment on Attachment {
-  id
+  internalID
 }
 */
 
@@ -109,8 +107,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "SendConversationMessageMutationInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -137,30 +134,25 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "SendConversationMessageMutation",
-  "id": "fafb72e0ce2a42a7b7eb5db013f1f6a5",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "SendConversationMessageMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sendConversationMessage",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SendConversationMessageMutationPayload",
         "plural": false,
         "selections": [
@@ -182,10 +174,10 @@ return {
                 "concreteType": "Message",
                 "plural": false,
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
-                  v5,
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "FragmentSpread",
                     "name": "Message_message",
@@ -202,14 +194,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "SendConversationMessageMutation",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sendConversationMessage",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SendConversationMessageMutationPayload",
         "plural": false,
         "selections": [
@@ -231,10 +223,10 @@ return {
                 "concreteType": "Message",
                 "plural": false,
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
-                  v5,
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -304,7 +296,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v5
+                      (v5/*: any*/)
                     ]
                   },
                   {
@@ -319,7 +311,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "id",
+                        "name": "internalID",
                         "args": null,
                         "storageKey": null
                       },
@@ -353,8 +345,15 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "SendConversationMessageMutation",
+    "id": "061c540ba7dfcdd30f4dd3d64207077c",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '6e5ff1e232848ad66c3ad72e22ee1054';
+(node as any).hash = '73b32c449f481fc4adcb493b0ad329eb';
 export default node;

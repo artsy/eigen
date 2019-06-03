@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { FollowArtistButton_artist$ref } from "./FollowArtistButton_artist.graphql";
 declare const _ArtworkTombstone_artwork$ref: unique symbol;
 export type ArtworkTombstone_artwork$ref = typeof _ArtworkTombstone_artwork$ref;
@@ -9,33 +9,25 @@ export type ArtworkTombstone_artwork = {
     readonly medium: string | null;
     readonly date: string | null;
     readonly cultural_maker: string | null;
-    readonly artists: ReadonlyArray<({
+    readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
         readonly " $fragmentRefs": FollowArtistButton_artist$ref;
-    }) | null> | null;
-    readonly dimensions: ({
+    } | null> | null;
+    readonly dimensions: {
         readonly in: string | null;
         readonly cm: string | null;
-    }) | null;
+    } | null;
     readonly edition_of: string | null;
-    readonly attribution_class: ({
+    readonly attribution_class: {
         readonly short_description: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": ArtworkTombstone_artwork$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtworkTombstone_artwork",
   "type": "Artwork",
@@ -97,8 +89,7 @@ return {
           "kind": "FragmentSpread",
           "name": "FollowArtistButton_artist",
           "args": null
-        },
-        v0
+        }
       ]
     },
     {
@@ -150,10 +141,8 @@ return {
           "storageKey": null
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = 'c3bac2572caaeabbde7a8a1855295fe5';
 export default node;

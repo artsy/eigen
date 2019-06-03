@@ -68,7 +68,7 @@ class Artists extends React.Component<Props, State> {
     return (
       <FlatList
         data={rows}
-        keyExtractor={({ __id }) => __id}
+        keyExtractor={({ id }) => id}
         renderItem={item => <SavedItemRow {...item.item} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
@@ -96,8 +96,8 @@ export default createPaginationContainer(
           edges {
             node {
               artist {
+                gravityID
                 id
-                __id
                 name
                 href
                 image {

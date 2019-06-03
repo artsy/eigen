@@ -6,9 +6,9 @@ export type MockRelayRendererFixturesArtistQueryVariables = {
     readonly id: string;
 };
 export type MockRelayRendererFixturesArtistQueryResponse = {
-    readonly artist: ({
+    readonly artist: {
         readonly " $fragmentRefs": MockRelayRendererFixtures_artist$ref;
-    }) | null;
+    } | null;
 };
 export type MockRelayRendererFixturesArtistQuery = {
     readonly response: MockRelayRendererFixturesArtistQueryResponse;
@@ -23,13 +23,12 @@ query MockRelayRendererFixturesArtistQuery(
 ) {
   artist(id: $id) {
     ...MockRelayRendererFixtures_artist
-    __id
+    id
   }
 }
 
 fragment MockRelayRendererFixtures_artist on Artist {
   name
-  __id
 }
 */
 
@@ -46,37 +45,24 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id",
-    "type": "String!"
+    "variableName": "id"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "MockRelayRendererFixturesArtistQuery",
-  "id": "1ee30e440ff6548ca9cf3a9e15a76f7c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MockRelayRendererFixturesArtistQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -84,8 +70,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MockRelayRendererFixtures_artist",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -93,14 +78,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "MockRelayRendererFixturesArtistQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -111,10 +96,23 @@ return {
             "args": null,
             "storageKey": null
           },
-          v2
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "MockRelayRendererFixturesArtistQuery",
+    "id": "cbf4686647f004d150e5f1a608cbe861",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

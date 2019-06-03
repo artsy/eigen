@@ -1,38 +1,30 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ActiveBids_me$ref } from "./ActiveBids_me.graphql";
 import { Conversations_me$ref } from "./Conversations_me.graphql";
 declare const _Inbox_me$ref: unique symbol;
 export type Inbox_me$ref = typeof _Inbox_me$ref;
 export type Inbox_me = {
-    readonly lot_standings: ReadonlyArray<({
-        readonly most_recent_bid: ({
-            readonly __id: string;
-        }) | null;
-    }) | null> | null;
-    readonly conversations_existence_check: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly id: string | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+    readonly lot_standings: ReadonlyArray<{
+        readonly most_recent_bid: {
+            readonly id: string;
+        } | null;
+    } | null> | null;
+    readonly conversations_existence_check: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly internalID: string | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": Conversations_me$ref & ActiveBids_me$ref;
     readonly " $refType": Inbox_me$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Inbox_me",
   "type": "Me",
@@ -48,8 +40,7 @@ return {
         {
           "kind": "Literal",
           "name": "live",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "LotStanding",
@@ -64,7 +55,13 @@ return {
           "concreteType": "BidderPosition",
           "plural": false,
           "selections": [
-            v0
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "id",
+              "args": null,
+              "storageKey": null
+            }
           ]
         }
       ]
@@ -78,8 +75,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 1,
-          "type": "Int"
+          "value": 1
         }
       ],
       "concreteType": "ConversationConnection",
@@ -106,11 +102,10 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
+                  "name": "internalID",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
@@ -126,10 +121,8 @@ return {
       "kind": "FragmentSpread",
       "name": "ActiveBids_me",
       "args": null
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = 'c9ffaa700d881c26db63082d921448bf';
+(node as any).hash = '6f84d25799993678ad080bc08b359ca6';
 export default node;

@@ -92,7 +92,7 @@ export class Gene extends React.Component<Props, State> {
   @track((props, state) => ({
     action_name: state.selectedTabIndex ? Schema.ActionNames.GeneWorks : Schema.ActionNames.GeneAbout,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.gene._id,
+    owner_id: props.gene.internalID,
     owner_slug: props.gene.id,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
@@ -172,7 +172,7 @@ export class Gene extends React.Component<Props, State> {
   @track(props => ({
     action_name: Schema.ActionNames.Refine,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.gene._id,
+    owner_id: props.gene.internalID,
     owner_slug: props.gene.id,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
@@ -373,7 +373,7 @@ export default createRefetchContainer(
           aggregations {
             slice
             counts {
-              id
+              gravityID
               name
               count
             }

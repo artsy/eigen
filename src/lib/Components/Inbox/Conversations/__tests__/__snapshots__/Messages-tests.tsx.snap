@@ -3,15 +3,16 @@
 exports[`looks correct when rendered 1`] = `
 <RCTScrollView
   ListFooterComponent={
-    <Styled(ActivityIndicator)
+    <ForwardRef
       animating={false}
+      color="#999999"
       hidesWhenStopped={true}
+      size="small"
     />
   }
   data={
     Array [
       Object {
-        "__id": "unique-id",
         "attachments": Array [],
         "body": "Adoro! Por favor envie-me mais informações",
         "first_message": undefined,
@@ -20,6 +21,7 @@ exports[`looks correct when rendered 1`] = `
           "name": "Percy",
         },
         "from_email_address": "anita@garibaldi.br",
+        "gravityID": "unique-id",
         "id": 222,
         "impulse_id": "impulse:222",
         "is_from_user": true,
@@ -101,7 +103,6 @@ exports[`looks correct when rendered 1`] = `
               "paddingLeft": 20,
               "paddingRight": 20,
             },
-            undefined,
           ]
         }
       >
@@ -109,16 +110,11 @@ exports[`looks correct when rendered 1`] = `
           style={
             Array [
               Object {
+                "alignSelf": "stretch",
                 "flexDirection": "row",
+                "marginBottom": 10,
+                "marginTop": 15,
               },
-              Array [
-                Object {
-                  "alignSelf": "stretch",
-                  "marginBottom": 10,
-                  "marginTop": 15,
-                },
-                undefined,
-              ],
             ]
           }
         >
@@ -131,7 +127,6 @@ exports[`looks correct when rendered 1`] = `
                   "height": 30,
                   "width": 30,
                 },
-                undefined,
               ]
             }
           >
@@ -145,7 +140,6 @@ exports[`looks correct when rendered 1`] = `
                     "fontSize": 10,
                     "marginTop": 8,
                   },
-                  undefined,
                 ]
               }
               user={true}
@@ -161,14 +155,9 @@ exports[`looks correct when rendered 1`] = `
                   "flexDirection": "column",
                   "flexGrow": 1,
                   "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginTop": 7,
                 },
-                Array [
-                  Object {
-                    "marginLeft": 10,
-                    "marginTop": 7,
-                  },
-                  undefined,
-                ],
               ]
             }
           >
@@ -176,15 +165,10 @@ exports[`looks correct when rendered 1`] = `
               style={
                 Array [
                   Object {
+                    "alignSelf": "stretch",
                     "flexDirection": "row",
+                    "marginBottom": 10,
                   },
-                  Array [
-                    Object {
-                      "alignSelf": "stretch",
-                      "marginBottom": 10,
-                    },
-                    undefined,
-                  ],
                 ]
               }
             >
@@ -204,7 +188,6 @@ exports[`looks correct when rendered 1`] = `
                         "fontSize": 11.5,
                         "marginRight": 6,
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AvantGardeGothicITC",
@@ -227,7 +210,6 @@ exports[`looks correct when rendered 1`] = `
                         "color": "#f1af1b",
                         "fontSize": 11.5,
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AvantGardeGothicITC",
@@ -294,7 +276,6 @@ exports[`looks correct when rendered 1`] = `
             Object {
               "marginTop": 40,
             },
-            undefined,
           ]
         }
       />

@@ -271,7 +271,7 @@ export default createFragmentContainer(ArtworkCarousel, {
   rail: graphql`
     fragment ArtworkCarousel_rail on HomePageArtworkModule {
       ...ArtworkCarouselHeader_rail
-      __id
+      id
       key
       params {
         medium

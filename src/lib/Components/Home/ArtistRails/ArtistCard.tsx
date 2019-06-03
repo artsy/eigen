@@ -52,15 +52,15 @@ export class ArtistCard extends React.Component<Props, State> {
   handleFollowChange = () => {
     this.setState({ processingChange: true })
 
-    ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, _following) => {
+    ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist.internalID, (error, _following) => {
       if (error) {
         console.warn(error)
         this.setState({ processingChange: false })
       } else {
         Events.postEvent({
           name: "Follow artist",
-          artist_id: this.props.artist._id,
-          artist_slug: this.props.artist.id,
+          artist_id: this.props.artist.internalID,
+          artist_slug: this.props.artist.gravityID,
           // TODO: At some point, this component might be on other screens.
           source_screen: "home page",
           context_module: "artist rail",
@@ -210,8 +210,8 @@ const styles = StyleSheet.create<Styles>({
 const ArtistCardContainer = createFragmentContainer(ArtistCard, {
   artist: graphql`
     fragment ArtistCard_artist on Artist {
-      id
-      _id
+      gravityID
+      internalID
       href
       name
       formatted_artworks_count
@@ -225,7 +225,7 @@ const ArtistCardContainer = createFragmentContainer(ArtistCard, {
 
 export interface ArtistCardResponse {
   id: string
-  _id: string
+  internalID: string
   href: string
   name: string
   formatted_artworks_count: number
@@ -240,7 +240,7 @@ export interface ArtistCardResponse {
 export const ArtistCardQuery = `
   ... on Artist {
     id
-    _id
+    internalID
     href
     name
     formatted_artworks_count

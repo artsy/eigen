@@ -1,5 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
+import { CitySectionListQueryVariables } from "__generated__/CitySectionListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { Schema, screenTrack } from "lib/utils/track"
@@ -8,7 +9,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { BucketKey } from "../Map/bucketCityResults"
 import { EventList } from "./Components/EventList"
 
-interface Props {
+interface Props extends Pick<CitySectionListQueryVariables, "dayThreshold" | "status"> {
   city: CitySectionList_city
   citySlug: string
   section: BucketKey
@@ -132,9 +133,9 @@ export default createPaginationContainer(
           }
           edges {
             node {
+              gravityID
+              internalID
               id
-              _id
-              __id
               isStubShow
               is_followed
               start_at
@@ -180,7 +181,7 @@ export default createPaginationContainer(
       return {
         citySlug: props.citySlug,
         status: props.status,
-        dayThreshold: props.dayThreshould,
+        dayThreshold: props.dayThreshold,
         ...fragmentVariables,
         count,
         cursor,

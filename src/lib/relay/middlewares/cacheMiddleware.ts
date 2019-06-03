@@ -22,7 +22,7 @@ export const cacheMiddleware = () => {
     // send queryID to metaphysics
     let body: { variables?: object; query?: object; documentID?: string } = {}
     if (__DEV__) {
-      body = { query: require("../../../__generated__/complete.queryMap.json")[queryID], variables }
+      body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
       req.operation.text = body.query
     } else {
       body = { documentID: queryID, variables }

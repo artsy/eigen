@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Registration_me$ref: unique symbol;
 export type Registration_me$ref = typeof _Registration_me$ref;
 export type Registration_me = {
@@ -10,7 +10,7 @@ export type Registration_me = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Registration_me",
   "type": "Me",
@@ -21,13 +21,6 @@ const node: ConcreteFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "has_credit_cards",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
       "args": null,
       "storageKey": null
     }

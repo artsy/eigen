@@ -28,7 +28,16 @@ it("renders properly", () => {
 it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers()
-  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+  const component = renderer.create(
+    <CreditCardForm
+      onSubmit={onSubmitMock}
+      navigator={
+        {
+          pop: () => null,
+        } as any
+      }
+    />
+  )
 
   component.root.instance.setState({ valid: true, params: creditCard })
   component.root.findByType(Button).instance.props.onPress()
@@ -41,7 +50,16 @@ it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is
 it("is disabled while the form is invalid", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers()
-  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+  const component = renderer.create(
+    <CreditCardForm
+      onSubmit={onSubmitMock}
+      navigator={
+        {
+          pop: () => null,
+        } as any
+      }
+    />
+  )
 
   component.root.instance.setState({ valid: false, params: creditCard })
   expect(component.root.findByType(Button).props.disabled).toEqual(true)
@@ -50,7 +68,16 @@ it("is disabled while the form is invalid", () => {
 it("is enabled while the form is valid", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers()
-  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+  const component = renderer.create(
+    <CreditCardForm
+      onSubmit={onSubmitMock}
+      navigator={
+        {
+          pop: () => null,
+        } as any
+      }
+    />
+  )
 
   component.root.instance.setState({ valid: true, params: creditCard })
   expect(component.root.findByType(Button).props.disabled).toEqual(false)
@@ -64,7 +91,16 @@ it("shows an error when stripe's API returns an error", () => {
     throw new Error("Error tokenizing card")
   })
   jest.useFakeTimers()
-  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+  const component = renderer.create(
+    <CreditCardForm
+      onSubmit={onSubmitMock}
+      navigator={
+        {
+          pop: () => null,
+        } as any
+      }
+    />
+  )
 
   component.root.instance.setState({ valid: true, params: creditCard })
   component.root.findByType(Button).instance.props.onPress()

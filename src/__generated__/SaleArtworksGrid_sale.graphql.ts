@@ -1,40 +1,40 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
 declare const _SaleArtworksGrid_sale$ref: unique symbol;
 export type SaleArtworksGrid_sale$ref = typeof _SaleArtworksGrid_sale$ref;
 export type SaleArtworksGrid_sale = {
-    readonly __id: string;
-    readonly saleArtworks: ({
+    readonly id: string;
+    readonly saleArtworks: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly artwork: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artwork: {
+                    readonly gravityID: string;
                     readonly id: string;
-                    readonly __id: string;
-                    readonly image: ({
+                    readonly image: {
                         readonly aspect_ratio: number;
-                    }) | null;
+                    } | null;
                     readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": SaleArtworksGrid_sale$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -69,7 +69,7 @@ return {
     }
   ],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "saleArtworks",
@@ -141,11 +141,11 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "id",
+                      "name": "gravityID",
                       "args": null,
                       "storageKey": null
                     },
-                    v0,
+                    (v0/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -171,7 +171,6 @@ return {
                     }
                   ]
                 },
-                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -195,5 +194,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e4c7ac4ae1b49ecfe147fb750d338019';
+(node as any).hash = '2e58c9b07e0dcd2f7b9452dfd7774288';
 export default node;

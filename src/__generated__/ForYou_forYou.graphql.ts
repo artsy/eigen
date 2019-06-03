@@ -1,33 +1,33 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtistRail_rail$ref } from "./ArtistRail_rail.graphql";
 import { ArtworkCarousel_rail$ref } from "./ArtworkCarousel_rail.graphql";
 import { FairsRail_fairs_module$ref } from "./FairsRail_fairs_module.graphql";
 declare const _ForYou_forYou$ref: unique symbol;
 export type ForYou_forYou$ref = typeof _ForYou_forYou$ref;
 export type ForYou_forYou = {
-    readonly artwork_modules: ReadonlyArray<({
-        readonly __id: string;
+    readonly artwork_modules: ReadonlyArray<{
+        readonly id: string;
         readonly " $fragmentRefs": ArtworkCarousel_rail$ref;
-    }) | null> | null;
-    readonly artist_modules: ReadonlyArray<({
-        readonly __id: string;
+    } | null> | null;
+    readonly artist_modules: ReadonlyArray<{
+        readonly id: string;
         readonly " $fragmentRefs": ArtistRail_rail$ref;
-    }) | null> | null;
-    readonly fairs_module: ({
+    } | null> | null;
+    readonly fairs_module: {
         readonly " $fragmentRefs": FairsRail_fairs_module$ref;
-    }) | null;
+    } | null;
     readonly " $refType": ForYou_forYou$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -49,20 +49,17 @@ return {
           "name": "exclude",
           "value": [
             "FOLLOWED_ARTISTS"
-          ],
-          "type": "[HomePageArtworkModuleTypes]"
+          ]
         },
         {
           "kind": "Literal",
           "name": "max_followed_gene_rails",
-          "value": -1,
-          "type": "Int"
+          "value": -1
         },
         {
           "kind": "Literal",
           "name": "max_rails",
-          "value": -1,
-          "type": "Int"
+          "value": -1
         },
         {
           "kind": "Literal",
@@ -79,14 +76,13 @@ return {
             "CURRENT_FAIRS",
             "FOLLOWED_GENES",
             "GENERIC_GENES"
-          ],
-          "type": "[HomePageArtworkModuleTypes]"
+          ]
         }
       ],
       "concreteType": "HomePageArtworkModule",
       "plural": true,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "FragmentSpread",
           "name": "ArtworkCarousel_rail",
@@ -103,7 +99,7 @@ return {
       "concreteType": "HomePageArtistModule",
       "plural": true,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "FragmentSpread",
           "name": "ArtistRail_rail",
@@ -130,5 +126,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '99fc1da2b9295af0f99d8960f0ca78e6';
+(node as any).hash = '47730faf316efe83b924ff6a730ec53a';
 export default node;

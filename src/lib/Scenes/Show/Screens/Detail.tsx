@@ -29,8 +29,8 @@ const track: Track<Props, State> = _track
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.ShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-  context_screen_owner_slug: props.show.id,
-  context_screen_owner_id: props.show._id,
+  context_screen_owner_slug: props.show.gravityID,
+  context_screen_owner_id: props.show.internalID,
 }))
 export class Detail extends React.Component<Props, State> {
   state: State = {
@@ -123,15 +123,15 @@ export class Detail extends React.Component<Props, State> {
   }
 
   handleViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artists`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artists`)
   }
 
   handleViewAllArtworksPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artworks`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artworks`)
   }
 
   handleViewMoreInfoPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/info`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/info`)
   }
 
   @track(eventProps(Schema.ActionNames.ToggleHours))
@@ -186,7 +186,7 @@ function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTyp
   return props => ({
     action_name: actionName,
     action_type: actionType,
-    owner_id: props.show._id,
+    owner_id: props.show.internalID,
     owner_slug: props.show.id,
     owner_type: Schema.OwnerEntityTypes.Show,
   })
@@ -195,14 +195,14 @@ function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTyp
 export const DetailContainer = createFragmentContainer(Detail, {
   show: graphql`
     fragment Detail_show on Show {
-      _id
-      id
+      internalID
+      gravityID
       name
       description
       city
       is_local_discovery
       images {
-        id
+        gravityID
       }
       ...ShowHeader_show
       ...ShowArtworksPreview_show
@@ -227,7 +227,7 @@ export const DetailContainer = createFragmentContainer(Detail, {
       # and so we need to request them back here to verify if we
       # should show the artists section at all
       artists_without_artworks {
-        id
+        gravityID
       }
 
       counts {

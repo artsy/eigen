@@ -10,7 +10,6 @@ exports[`Sets up the right view hierarchy 1`] = `
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      undefined,
     ]
   }
 >
@@ -23,7 +22,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           "height": "100%",
           "width": "100%",
         },
-        undefined,
       ]
     }
   >
@@ -68,7 +66,17 @@ exports[`Sets up the right view hierarchy 1`] = `
               }
             }
           >
-            <View>
+            <View
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "flex": 1,
+                  "maxWidth": 540,
+                  "paddingTop": 20,
+                  "width": "100%",
+                }
+              }
+            >
               <View
                 style={
                   Array [
@@ -127,7 +135,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "fontSize": 20,
                           "height": 40,
                         },
-                        undefined,
                       ]
                     }
                     underlineColorAndroid="transparent"
@@ -166,7 +173,6 @@ exports[`Sets up the right view hierarchy 1`] = `
               "backgroundColor": "#666666",
               "height": 1,
             },
-            undefined,
           ]
         }
       />
@@ -201,7 +207,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                 "fontSize": 14,
                 "textAlign": "center",
               },
-              undefined,
             ]
           }
         >

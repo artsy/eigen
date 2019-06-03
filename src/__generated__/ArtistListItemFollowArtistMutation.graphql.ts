@@ -10,12 +10,12 @@ export type ArtistListItemFollowArtistMutationVariables = {
     readonly input: FollowArtistInput;
 };
 export type ArtistListItemFollowArtistMutationResponse = {
-    readonly followArtist: ({
-        readonly artist: ({
-            readonly __id: string;
+    readonly followArtist: {
+        readonly artist: {
+            readonly id: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type ArtistListItemFollowArtistMutation = {
     readonly response: ArtistListItemFollowArtistMutationResponse;
@@ -30,7 +30,7 @@ mutation ArtistListItemFollowArtistMutation(
 ) {
   followArtist(input: $input) {
     artist {
-      __id
+      id
       is_followed
     }
   }
@@ -56,8 +56,7 @@ v1 = [
       {
         "kind": "Variable",
         "name": "input",
-        "variableName": "input",
-        "type": "FollowArtistInput!"
+        "variableName": "input"
       }
     ],
     "concreteType": "FollowArtistPayload",
@@ -75,7 +74,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "__id",
+            "name": "id",
             "args": null,
             "storageKey": null
           },
@@ -93,26 +92,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ArtistListItemFollowArtistMutation",
-  "id": "5fe5566b2c4b7ad53ce3fdfba9919f89",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistListItemFollowArtistMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ArtistListItemFollowArtistMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ArtistListItemFollowArtistMutation",
+    "id": "90ce6523ab77e9f20ab6549b54f450ac",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '0a86340c441f9e59f4bdc7acf46e5f4a';
+(node as any).hash = '16b283da27ff2aa22b0ac259bf6ad18a';
 export default node;

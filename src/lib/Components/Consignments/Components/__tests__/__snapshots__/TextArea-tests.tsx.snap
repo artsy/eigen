@@ -38,7 +38,6 @@ exports[`doesn't show placeholder when initial text is present 1`] = `
             "fontSize": 20,
             "height": "100%",
           },
-          undefined,
         ]
       }
       underlineColorAndroid="transparent"
@@ -78,7 +77,6 @@ exports[`shows the placeholder when text is empty 1`] = `
             "width": "100%",
             "zIndex": -1,
           },
-          undefined,
         ]
       }
     >
@@ -104,7 +102,6 @@ exports[`shows the placeholder when text is empty 1`] = `
             "fontSize": 20,
             "height": "100%",
           },
-          undefined,
         ]
       }
       underlineColorAndroid="transparent"

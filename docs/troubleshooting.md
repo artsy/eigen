@@ -58,6 +58,34 @@ bundle exec pod update tipsi-stripe
 
 You need to go to Xcode -> Prreferences -> Locations and select Command Line Tools from the dropdown
 
+- Failed `make artsy` with
+
+```
+[!] CocoaPods could not find compatible versions for pod "glog":
+  In snapshot (Podfile.lock):
+    glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+
+  In Podfile:
+    glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+
+None of your spec sources contain a spec satisfying the dependencies: `glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`), glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)`.
+
+You have either:
+ * out-of-date source repos which you can update with `pod repo update` or with `pod install --repo-update`.
+ * mistyped the name or version.
+ * not added the source repo that hosts the Podspec to your Podfile.
+
+Note: as of CocoaPods 1.0, `pod repo update` does not happen on `pod install` by default.
+```
+
+This happens when your local `Example/Pods/` is out of date. Perhaps you worked on this repo before but have not
+touched it for a while. In this case, it may be a good idea to just remove the entire `Pods/` dir and re-install
+dependencies from scratch:
+
+```
+rm -rf Pods/ && bundle exec pod install
+```
+
 ### Working with local media assets
 
 When writing a component that refers to a local media asset

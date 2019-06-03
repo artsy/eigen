@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { MyProfile_me$ref } from "./MyProfile_me.graphql";
 export type QueryRenderersMyProfileQueryVariables = {};
 export type QueryRenderersMyProfileQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": MyProfile_me$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersMyProfileQuery = {
     readonly response: QueryRenderersMyProfileQueryResponse;
@@ -19,32 +19,18 @@ export type QueryRenderersMyProfileQuery = {
 query QueryRenderersMyProfileQuery {
   me {
     ...MyProfile_me
-    __id
+    id
   }
 }
 
 fragment MyProfile_me on Me {
   name
   initials
-  __id
 }
 */
 
-const node: ConcreteRequest = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ConcreteRequest = {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersMyProfileQuery",
-  "id": "85b61ef601f4dbaf3081af4877d57680",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersMyProfileQuery",
@@ -65,8 +51,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MyProfile_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -99,12 +84,24 @@ return {
             "args": null,
             "storageKey": null
           },
-          v0
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersMyProfileQuery",
+    "id": "82ce08bed0f640d2f4d4c84e4a50e012",
+    "text": null,
+    "metadata": {}
   }
 };
-})();
 (node as any).hash = '748438ac1bef6795f42e7ff471971cde';
 export default node;

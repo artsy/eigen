@@ -1,75 +1,82 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _FairBoothPreview_show$ref: unique symbol;
 export type FairBoothPreview_show$ref = typeof _FairBoothPreview_show$ref;
 export type FairBoothPreview_show = {
-    readonly id: string;
-    readonly _id: string;
+    readonly gravityID: string;
+    readonly internalID: string;
     readonly name: string | null;
     readonly is_fair_booth: boolean | null;
-    readonly counts: ({
+    readonly counts: {
         readonly artworks: number | null;
-    }) | null;
+    } | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly href?: string | null;
+        readonly gravityID?: string;
+        readonly internalID?: string;
         readonly id?: string;
-        readonly _id?: string;
-        readonly __id?: string;
-        readonly profile?: ({
-            readonly _id: string;
+        readonly profile?: {
+            readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
-    readonly fair: ({
+        } | null;
+    } & ({
         readonly name: string | null;
-    }) | null;
-    readonly cover_image: ({
+        readonly href: string | null;
+        readonly gravityID: string;
+        readonly internalID: string;
+        readonly id: string;
+        readonly profile: {
+            readonly internalID: string;
+            readonly is_followed: boolean | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
+    readonly fair: {
+        readonly name: string | null;
+    } | null;
+    readonly cover_image: {
         readonly url: string | null;
-    }) | null;
-    readonly location: ({
+    } | null;
+    readonly location: {
         readonly display: string | null;
-    }) | null;
-    readonly artworks_connection: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+    } | null;
+    readonly artworks_connection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly " $fragmentRefs": GenericGrid_artworks$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": FairBoothPreview_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "_id",
+  "name": "name",
   "args": null,
   "storageKey": null
 };
@@ -80,56 +87,9 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "partner",
-      "storageKey": null,
-      "args": null,
-      "concreteType": null,
-      "plural": false,
-      "selections": [
-        v0,
-        {
-          "kind": "InlineFragment",
-          "type": "Partner",
-          "selections": [
-            v1,
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "href",
-              "args": null,
-              "storageKey": null
-            },
-            v2,
-            v3,
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "profile",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Profile",
-              "plural": false,
-              "selections": [
-                v3,
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "is_followed",
-                  "args": null,
-                  "storageKey": null
-                },
-                v0
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    v2,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
+    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -155,7 +115,59 @@ return {
         }
       ]
     },
-    v3,
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": null,
+      "plural": false,
+      "selections": [
+        {
+          "kind": "InlineFragment",
+          "type": "Partner",
+          "selections": [
+            (v2/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "href",
+              "args": null,
+              "storageKey": null
+            },
+            (v0/*: any*/),
+            (v1/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "id",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "profile",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Profile",
+              "plural": false,
+              "selections": [
+                (v1/*: any*/),
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "is_followed",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -165,8 +177,7 @@ return {
       "concreteType": "Fair",
       "plural": false,
       "selections": [
-        v1,
-        v0
+        (v2/*: any*/)
       ]
     },
     {
@@ -202,8 +213,7 @@ return {
           "name": "display",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
     },
     {
@@ -215,8 +225,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 4,
-          "type": "Int"
+          "value": 4
         }
       ],
       "concreteType": "ArtworkConnection",
@@ -244,17 +253,15 @@ return {
                   "kind": "FragmentSpread",
                   "name": "GenericGrid_artworks",
                   "args": null
-                },
-                v0
+                }
               ]
             }
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
 })();
-(node as any).hash = '193a479b697e385b84cc774a47bc61ba';
+(node as any).hash = '49db3c85768b56bad9c3a1813b5d851c';
 export default node;

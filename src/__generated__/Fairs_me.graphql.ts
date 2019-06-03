@@ -1,44 +1,44 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Fairs_me$ref: unique symbol;
 export type Fairs_me$ref = typeof _Fairs_me$ref;
 export type Fairs_me = {
-    readonly followsAndSaves: ({
-        readonly fairs: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly __id: string;
-                    readonly profile: ({
-                        readonly id: string;
+    readonly followsAndSaves: {
+        readonly fairs: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly id: string;
+                    readonly profile: {
+                        readonly gravityID: string;
                         readonly is_followed: boolean | null;
-                        readonly __id: string;
-                    }) | null;
+                        readonly id: string;
+                    } | null;
                     readonly exhibition_period: string | null;
                     readonly name: string | null;
-                    readonly counts: ({
+                    readonly counts: {
                         readonly partners: any | null;
-                    }) | null;
+                    } | null;
                     readonly href: string | null;
-                    readonly image: ({
+                    readonly image: {
                         readonly url: string | null;
-                    }) | null;
+                    } | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly " $refType": Fairs_me$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -110,7 +110,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v0,
+                    (v0/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -123,7 +123,7 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "id",
+                          "name": "gravityID",
                           "args": null,
                           "storageKey": null
                         },
@@ -134,7 +134,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v0
+                        (v0/*: any*/)
                       ]
                     },
                     {
@@ -254,10 +254,9 @@ return {
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
 })();
-(node as any).hash = '7e39cfc0a8050cbb9a4e4c07381ef654';
+(node as any).hash = '5945c93f34f13346d986298354d5f992';
 export default node;

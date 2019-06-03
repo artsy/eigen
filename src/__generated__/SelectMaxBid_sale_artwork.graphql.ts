@@ -1,22 +1,22 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ConfirmBid_sale_artwork$ref } from "./ConfirmBid_sale_artwork.graphql";
 declare const _SelectMaxBid_sale_artwork$ref: unique symbol;
 export type SelectMaxBid_sale_artwork$ref = typeof _SelectMaxBid_sale_artwork$ref;
 export type SelectMaxBid_sale_artwork = {
-    readonly increments: ReadonlyArray<({
+    readonly increments: ReadonlyArray<{
         readonly display: string | null;
         readonly cents: number | null;
-    }) | null> | null;
-    readonly _id: string;
+    } | null> | null;
+    readonly internalID: string;
     readonly " $fragmentRefs": ConfirmBid_sale_artwork$ref;
     readonly " $refType": SelectMaxBid_sale_artwork$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "SelectMaxBid_sale_artwork",
   "type": "SaleArtwork",
@@ -32,8 +32,7 @@ const node: ConcreteFragment = {
         {
           "kind": "Literal",
           "name": "useMyMaxBid",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "BidIncrementsFormatted",
@@ -58,7 +57,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -66,15 +65,8 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "ConfirmBid_sale_artwork",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'ad3a7a7befb20c45091b0152c206ad80';
+(node as any).hash = 'ecbe558efe4a6120b077dce2b5916798';
 export default node;

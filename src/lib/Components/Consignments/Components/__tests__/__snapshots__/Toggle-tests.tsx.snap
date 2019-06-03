@@ -40,7 +40,6 @@ exports[`has the expected tree 1`] = `
             "marginRight": 8,
             "marginTop": 9,
           },
-          undefined,
         ]
       }
     >

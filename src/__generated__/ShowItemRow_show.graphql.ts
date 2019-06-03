@@ -1,30 +1,41 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ShowItemRow_show$ref: unique symbol;
 export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
 export type ShowItemRow_show = {
+    readonly gravityID: string;
+    readonly internalID: string;
     readonly id: string;
-    readonly _id: string;
-    readonly __id: string;
     readonly is_followed: boolean | null;
     readonly name: string | null;
     readonly isStubShow: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
-        readonly profile?: ({
-            readonly image: ({
+        readonly profile?: {
+            readonly image: {
                 readonly url: string | null;
-            }) | null;
-        }) | null;
-    }) | null;
+            } | null;
+        } | null;
+    } & ({
+        readonly name: string | null;
+        readonly profile: {
+            readonly image: {
+                readonly url: string | null;
+            } | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly href: string | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
-    readonly cover_image: ({
+    readonly cover_image: {
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null;
+    } | null;
     readonly is_fair_booth: boolean | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
@@ -33,15 +44,8 @@ export type ShowItemRow_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -58,7 +62,14 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "href",
+      "name": "gravityID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -69,7 +80,6 @@ return {
       "args": null,
       "storageKey": null
     },
-    v0,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -77,7 +87,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -94,12 +104,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
+            (v0/*: any*/),
             {
               "kind": "LinkedField",
               "alias": null,
@@ -126,15 +135,13 @@ return {
                         {
                           "kind": "Literal",
                           "name": "version",
-                          "value": "square",
-                          "type": "[String]"
+                          "value": "square"
                         }
                       ],
                       "storageKey": "url(version:\"square\")"
                     }
                   ]
-                },
-                v0
+                }
               ]
             }
           ]
@@ -144,7 +151,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "href",
       "args": null,
       "storageKey": null
     },
@@ -211,5 +218,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd7be6d385f44f7723e8345b9f653425f';
+(node as any).hash = '05ae912a7982994a321b69b0f1414043';
 export default node;

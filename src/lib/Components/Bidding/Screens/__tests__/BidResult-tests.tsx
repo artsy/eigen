@@ -15,6 +15,8 @@ import { BidGhostButton, Button } from "../../Components/Button"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
 
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }
 
@@ -52,7 +54,7 @@ const saleArtwork = ({
   sale: {
     live_start_at: "2022-01-01T00:03:00+00:00",
     end_at: "2022-05-01T00:03:00+00:00",
-    id: "sale-id",
+    gravityID: "sale-id",
   },
 } as any) as BidResult_sale_artwork
 
@@ -64,13 +66,15 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders winning screen properly", () => {
       const component = renderer.create(
-        <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.winning}
-          sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
-        />
+        <BiddingThemeProvider>
+          <BidResult
+            refreshBidderInfo={refreshBidderInfoMock}
+            refreshSaleArtwork={refreshSaleArtworkInfoMock}
+            bidderPositionResult={Statuses.winning}
+            sale_artwork={saleArtwork}
+            navigator={jest.fn() as any}
+          />
+        </BiddingThemeProvider>
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -92,13 +96,15 @@ describe("BidResult component", () => {
 
     it("dismisses the controller when the continue button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.winning}
-          sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
-        />
+        <BiddingThemeProvider>
+          <BidResult
+            refreshBidderInfo={refreshBidderInfoMock}
+            refreshSaleArtwork={refreshSaleArtworkInfoMock}
+            bidderPositionResult={Statuses.winning}
+            sale_artwork={saleArtwork}
+            navigator={jest.fn() as any}
+          />
+        </BiddingThemeProvider>
       )
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
@@ -115,13 +121,15 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders properly", () => {
       const component = renderer.create(
-        <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.outbid}
-          sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
-        />
+        <BiddingThemeProvider>
+          <BidResult
+            refreshBidderInfo={refreshBidderInfoMock}
+            refreshSaleArtwork={refreshSaleArtworkInfoMock}
+            bidderPositionResult={Statuses.outbid}
+            sale_artwork={saleArtwork}
+            navigator={jest.fn() as any}
+          />
+        </BiddingThemeProvider>
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -143,13 +151,15 @@ describe("BidResult component", () => {
 
     it("pops to root when bid-again button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.outbid}
-          sale_artwork={saleArtwork}
-          navigator={mockNavigator as any}
-        />
+        <BiddingThemeProvider>
+          <BidResult
+            refreshBidderInfo={refreshBidderInfoMock}
+            refreshSaleArtwork={refreshSaleArtworkInfoMock}
+            bidderPositionResult={Statuses.outbid}
+            sale_artwork={saleArtwork}
+            navigator={mockNavigator as any}
+          />
+        </BiddingThemeProvider>
       )
 
       bidResult.root.findByType(Button).instance.props.onPress()
@@ -164,13 +174,15 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders properly", () => {
       const component = renderer.create(
-        <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.live_bidding_started}
-          sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
-        />
+        <BiddingThemeProvider>
+          <BidResult
+            refreshBidderInfo={refreshBidderInfoMock}
+            refreshSaleArtwork={refreshSaleArtworkInfoMock}
+            bidderPositionResult={Statuses.live_bidding_started}
+            sale_artwork={saleArtwork}
+            navigator={jest.fn() as any}
+          />
+        </BiddingThemeProvider>
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -193,13 +205,15 @@ describe("BidResult component", () => {
     it("dismisses controller and presents live interface when continue button is pressed", () => {
       NativeModules.Emission = { predictionURL: "https://live-staging.artsy.net" }
       const bidResult = renderer.create(
-        <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.live_bidding_started}
-          sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
-        />
+        <BiddingThemeProvider>
+          <BidResult
+            refreshBidderInfo={refreshBidderInfoMock}
+            refreshSaleArtwork={refreshSaleArtworkInfoMock}
+            bidderPositionResult={Statuses.live_bidding_started}
+            sale_artwork={saleArtwork}
+            navigator={jest.fn() as any}
+          />
+        </BiddingThemeProvider>
       )
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())

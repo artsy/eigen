@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 
 import ArtistShow from "../ArtistShow"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const showProps = {
     href: "artsy.net/show",
@@ -36,6 +38,12 @@ it("renders properly", () => {
     },
   }
 
-  const show = renderer.create(<ArtistShow show={showProps as any} styles={showStyles} />).toJSON()
+  const show = renderer
+    .create(
+      <Theme>
+        <ArtistShow show={showProps as any} styles={showStyles} />
+      </Theme>
+    )
+    .toJSON()
   expect(show).toMatchSnapshot()
 })

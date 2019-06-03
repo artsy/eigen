@@ -122,7 +122,7 @@ export class ConversationSnippet extends React.Component<Props> {
   @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationSelected,
-    owner_id: props.conversation.id,
+    owner_id: props.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   conversationSelected() {
@@ -135,7 +135,7 @@ export class ConversationSnippet extends React.Component<Props> {
     // prior to snapshotting them at time of inquiry (generally older conversations),
     // just skip over the entire conversation.
     if (conversation.items.length === 0) {
-      console.warn(`Unable to load items for conversation with ID ${conversation.id}`)
+      console.warn(`Unable to load items for conversation with ID ${conversation.internalID}`)
       return null
     }
 
@@ -177,7 +177,7 @@ export class ConversationSnippet extends React.Component<Props> {
 export default createFragmentContainer(ConversationSnippet, {
   conversation: graphql`
     fragment ConversationSnippet_conversation on Conversation {
-      id
+      internalID
       to {
         name
       }

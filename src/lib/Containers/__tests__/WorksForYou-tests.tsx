@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 import { renderWithLayout } from "../../tests/renderWithLayout"
 import { WorksForYou } from "../WorksForYou"
 
+import { Theme } from "@artsy/palette"
+
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
   WorksForYou.prototype.componentDidUpdate = () => {
@@ -20,7 +22,13 @@ describe("with notifications", () => {
 
   it("updates the notification count", () => {
     const viewer = notificationsResponse().viewer
-    renderer.create(<WorksForYou viewer={viewer as any} relay={null} />).toJSON()
+    renderer
+      .create(
+        <Theme>
+          <WorksForYou viewer={viewer as any} relay={null} />
+        </Theme>
+      )
+      .toJSON()
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
@@ -42,7 +50,7 @@ describe("when it has a special notification", () => {
     const response = selectedArtistResponse()
     const worksForYou = new WorksForYou(response as any)
     const expectedFormattedNotification = {
-      __id: "notification-juliana-huxtable",
+      id: "notification-juliana-huxtable",
       message: "1 Work Added",
       artists: "Juliana Huxtable",
       artworks: selectedArtistResponse().viewer.selectedArtist.artworks,
@@ -169,7 +177,7 @@ const selectedArtistResponse = () => {
   {
     const response = notificationsResponse()
     response.viewer.selectedArtist = {
-      id: "juliana-huxtable",
+      gravityID: "juliana-huxtable",
       name: "Juliana Huxtable",
       href: "artist/juliana-huxtable",
       image: {
@@ -179,7 +187,7 @@ const selectedArtistResponse = () => {
       },
       artworks: [
         {
-          __id: "4594385943",
+          gravityID: "4594385943",
           title: "Untitled (Casual Power)",
         },
       ],

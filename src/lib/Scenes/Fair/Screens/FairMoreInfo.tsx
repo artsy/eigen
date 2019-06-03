@@ -42,8 +42,8 @@ export const shouldGoStraightToWebsite = (data: ShowMoreMetadataForFairs) => {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.AboutTheFairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.id,
-  context_screen_owner_id: props.fair._id,
+  context_screen_owner_slug: props.fair.gravityID,
+  context_screen_owner_id: props.fair.internalID,
 }))
 export class FairMoreInfo extends React.Component<Props, State> {
   state = {
@@ -84,7 +84,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
     return {
       action_name: Schema.ActionNames.FairSite,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: props.fair._id,
+      owner_id: props.fair.internalID,
       owner_slug: props.fair.id,
       owner_type: Schema.OwnerEntityTypes.Fair,
     } as any
@@ -97,7 +97,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
     return {
       action_name: Schema.ActionNames.BuyTickets,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: props.fair._id,
+      owner_id: props.fair.internalID,
       owner_slug: props.fair.id,
       owner_type: Schema.OwnerEntityTypes.Fair,
     } as any
@@ -161,8 +161,8 @@ export const FairMoreInfoRenderer: React.SFC<{ fairID: string }> = ({ fairID }) 
           organizer {
             website
           }
-          id
-          _id
+          gravityID
+          internalID
           about
           ticketsLink
         }

@@ -6,6 +6,8 @@ import * as renderer from "react-test-renderer"
 
 import About from "../About"
 
+import { Theme } from "@artsy/palette"
+
 it("shows trending artists correctly", () => {
   const gene = {
     description: `Deep time refers to the concept of an expansive time that stretches far beyond human history to
@@ -16,7 +18,7 @@ it("shows trending artists correctly", () => {
                   which use long-exposure photography to capture a sense of expanded time.`,
     trending_artists: [
       {
-        __id: "artist-lita-albuquerque",
+        id: "artist-lita-albuquerque",
         href: "/artist/lita-albuquerque",
         name: "Lita Albuquerque",
         counts: {
@@ -28,7 +30,7 @@ it("shows trending artists correctly", () => {
         },
       },
       {
-        __id: "artist-doug-argue",
+        id: "artist-doug-argue",
         href: "/artist/doug-argue",
         name: "Doug Argue",
         counts: {
@@ -42,6 +44,12 @@ it("shows trending artists correctly", () => {
     ],
   }
 
-  const about = renderer.create(<About gene={gene as any} />).toJSON()
+  const about = renderer
+    .create(
+      <Theme>
+        <About gene={gene as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(about).toMatchSnapshot()
 })

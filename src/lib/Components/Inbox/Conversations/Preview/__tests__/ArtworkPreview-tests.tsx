@@ -5,15 +5,25 @@ import * as renderer from "react-test-renderer"
 
 import ArtworkPreview from "../ArtworkPreview"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const tree = renderer.create(<ArtworkPreview artwork={artwork as any} />)
+  const tree = renderer.create(
+    <Theme>
+      <ArtworkPreview artwork={artwork as any} />
+    </Theme>
+  )
   expect(tree).toMatchSnapshot()
 })
 
 it("handles dateless artworks", () => {
   const dateless = artwork
   dateless.date = ""
-  const tree = renderer.create(<ArtworkPreview artwork={dateless as any} />)
+  const tree = renderer.create(
+    <Theme>
+      <ArtworkPreview artwork={dateless as any} />
+    </Theme>
+  )
 
   expect(tree).toMatchSnapshot()
 })
@@ -34,7 +44,7 @@ describe("concerning selection handling", () => {
 
 const artwork = {
   id: "bradley-theodore-karl-and-anna-face-off-diptych",
-  _id: "mongoID",
+  internalID: "mongoID",
   href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
   title: "Karl and Anna Face Off (Diptych)",
   date: "2016",

@@ -6,9 +6,9 @@ export type ArtistHeaderQueryVariables = {
     readonly artistID: string;
 };
 export type ArtistHeaderQueryResponse = {
-    readonly artist: ({
+    readonly artist: {
         readonly " $fragmentRefs": Header_artist$ref;
-    }) | null;
+    } | null;
 };
 export type ArtistHeaderQuery = {
     readonly response: ArtistHeaderQueryResponse;
@@ -23,20 +23,19 @@ query ArtistHeaderQuery(
 ) {
   artist(id: $artistID) {
     ...Header_artist
-    __id
+    id
   }
 }
 
 fragment Header_artist on Artist {
-  _id
-  id
+  internalID
+  gravityID
   name
   nationality
   birthday
   counts {
     follows
   }
-  __id
 }
 */
 
@@ -53,37 +52,24 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "artistID",
-    "type": "String!"
+    "variableName": "artistID"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ArtistHeaderQuery",
-  "id": "20f67d6007cf7611bf0a615112af2fa3",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistHeaderQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -91,8 +77,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Header_artist",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -100,28 +85,28 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ArtistHeaderQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -164,10 +149,23 @@ return {
               }
             ]
           },
-          v2
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ArtistHeaderQuery",
+    "id": "858d6efef918cfb78435929841e9b4f8",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

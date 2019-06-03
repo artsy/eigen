@@ -2,28 +2,28 @@ import React from "react"
 
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
-import ArtistSearch from "../Components/SearchResults"
+import { SearchResults } from "../Components/SearchResults"
 
-import { ConsignmentSetup, SearchResult } from "../index"
+import { ArtistResult, ConsignmentSetup } from "../index"
 
 import { Dimensions, Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import metaphysics from "../../../metaphysics"
 
 interface ArtistSearchResponse {
-  match_artist: SearchResult[]
+  match_artist: ArtistResult[]
 }
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
   route: Route
-  updateWithArtist?: (result: SearchResult) => void
+  updateWithArtist?: (result: ArtistResult) => void
 }
 
 interface State {
   query: string
   searching: boolean
-  results: any | null
+  results: ArtistResult[] | null
 }
 
 export default class Artist extends React.Component<Props, State> {
@@ -40,7 +40,7 @@ export default class Artist extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  artistSelected = (result: SearchResult) => {
+  artistSelected = (result: ArtistResult) => {
     this.props.updateWithArtist(result)
     this.props.navigator.pop()
   }
@@ -54,7 +54,7 @@ export default class Artist extends React.Component<Props, State> {
     const results = await metaphysics<ArtistSearchResponse>(`
       {
         match_artist(term: "${query}") {
-          id: _id
+          internalID
           name
           image {
             url
@@ -80,7 +80,7 @@ export default class Artist extends React.Component<Props, State> {
               marginRight: 20,
             }}
           >
-            <ArtistSearch
+            <SearchResults
               results={this.state.results}
               query={this.state.query}
               placeholder="Artist/Designer Name"

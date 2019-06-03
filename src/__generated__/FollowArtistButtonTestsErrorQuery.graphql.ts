@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { FollowArtistButton_artist$ref } from "./FollowArtistButton_artist.graphql";
 export type FollowArtistButtonTestsErrorQueryVariables = {};
 export type FollowArtistButtonTestsErrorQueryResponse = {
-    readonly artist: ({
+    readonly artist: {
         readonly " $fragmentRefs": FollowArtistButton_artist$ref;
-    }) | null;
+    } | null;
 };
 export type FollowArtistButtonTestsErrorQuery = {
     readonly response: FollowArtistButtonTestsErrorQueryResponse;
@@ -19,18 +19,14 @@ export type FollowArtistButtonTestsErrorQuery = {
 query FollowArtistButtonTestsErrorQuery {
   artist(id: "artistID") {
     ...FollowArtistButton_artist
-    __id
+    id
   }
 }
 
 fragment FollowArtistButton_artist on Artist {
-  __id
+  gravityID
   id
-  _id
   is_followed
-  counts {
-    follows
-  }
 }
 */
 
@@ -39,24 +35,11 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "artistID",
-    "type": "String!"
+    "value": "artistID"
   }
-],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FollowArtistButtonTestsErrorQuery",
-  "id": "bdb87c6a4854d20604243cd2734830e4",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FollowArtistButtonTestsErrorQuery",
@@ -69,7 +52,7 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"artistID\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -77,8 +60,7 @@ return {
             "kind": "FragmentSpread",
             "name": "FollowArtistButton_artist",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -93,11 +75,17 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"artistID\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
-          v1,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "gravityID",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -108,38 +96,20 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
             "name": "is_followed",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ArtistCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "follows",
-                "args": null,
-                "storageKey": null
-              }
-            ]
           }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FollowArtistButtonTestsErrorQuery",
+    "id": "87c1d262cef549c6dee1faca31eae886",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

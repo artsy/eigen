@@ -21,7 +21,7 @@ console.log(chalk.green("=> Cloning a temporary copy of Metaphysics."))
 const mpDir = "tmp/metaphysics"
 sh("git clone https://github.com/artsy/metaphysics.git " + mpDir)
 
-const queryMap = require("../src/__generated__/complete.queryMap.json")
+const queryMap = require("../data/complete.queryMap.json")
 const mpQueryMapFilename = "tmp/metaphysics/src/data/complete.queryMap.json"
 
 if (!fs.existsSync(mpQueryMapFilename)) {

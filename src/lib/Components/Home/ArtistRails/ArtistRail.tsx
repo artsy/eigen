@@ -101,14 +101,14 @@ export class ArtistRail extends Component<Props, State> {
   @trackWithArguments((_props, _state, [followArtist]) => ({
     action_name: Schema.ActionNames.HomeArtistRailFollow,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: followArtist._id,
+    owner_id: followArtist.internalID,
     owner_slug: followArtist.id,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleFollowChange(followArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
     // Get a new suggested artist based on the followed artist.
     return (
-      metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist._id))
+      metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist.internalID))
         // Return the suggested artist or `undefined` if there is no suggestion.
         .then(({ me: { suggested_artists } }) => suggested_artists[0])
         // Return `undefined` if an error occurred.
@@ -130,7 +130,7 @@ export class ArtistRail extends Component<Props, State> {
     if (this.state.artists.length > 0) {
       const cards = this.state.artists.map(artist => {
         // Compose key, because an artist may appear twice on the home view in different modules.
-        const key = this.props.rail.__id + artist.__id
+        const key = this.props.rail.id + artist.id
         const { opacity, translateY } = artist._animatedValues
         const style = { opacity, transform: [{ translateY }] }
         return (
@@ -217,8 +217,8 @@ const styles = StyleSheet.create<Styles>({
 })
 
 interface SuggestedArtist extends ArtistCardResponse {
-  _id: string
-  __id: string
+  internalID: string
+  id: string
   _animatedValues?: {
     opacity: Animated.Value
     translateY: Animated.Value
@@ -239,8 +239,8 @@ function suggestedArtistQuery(artistID: string): string {
                           size: 1,
                           exclude_followed_artists: true,
                           exclude_artists_without_forsale_artworks: true) {
-          _id
-          __id
+          internalID
+          id
           ${ArtistCardQuery}
         }
       }
@@ -251,11 +251,11 @@ function suggestedArtistQuery(artistID: string): string {
 export default createFragmentContainer(ArtistRail, {
   rail: graphql`
     fragment ArtistRail_rail on HomePageArtistModule {
-      __id
+      id
       key
       results {
-        _id
-        __id
+        internalID
+        id
         ...ArtistCard_artist
       }
     }

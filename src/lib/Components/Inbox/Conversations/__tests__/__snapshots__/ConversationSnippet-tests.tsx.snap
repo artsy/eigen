@@ -16,7 +16,6 @@ exports[`renders correctly with a show 1`] = `
         "marginLeft": 20,
         "marginRight": 20,
       },
-      undefined,
     ]
   }
 >
@@ -28,13 +27,8 @@ exports[`renders correctly with a show 1`] = `
           "flexDirection": "row",
           "flexGrow": 1,
           "flexShrink": 1,
+          "maxWidth": 708,
         },
-        Array [
-          Object {
-            "maxWidth": 708,
-          },
-          undefined,
-        ],
       ]
     }
   >
@@ -48,7 +42,6 @@ exports[`renders correctly with a show 1`] = `
             "height": 80,
             "width": 80,
           },
-          undefined,
         ]
       }
     />
@@ -56,19 +49,14 @@ exports[`renders correctly with a show 1`] = `
       style={
         Array [
           Object {
+            "alignSelf": "center",
             "flexBasis": 0,
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
+            "marginLeft": 10,
+            "maxHeight": 70,
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-              "marginLeft": 10,
-              "maxHeight": 70,
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -81,7 +69,6 @@ exports[`renders correctly with a show 1`] = `
               "flexGrow": 1,
               "flexShrink": 1,
             },
-            undefined,
           ]
         }
       >
@@ -111,13 +98,8 @@ exports[`renders correctly with a show 1`] = `
                 "flexDirection": "row",
                 "flexGrow": 1,
                 "flexShrink": 1,
+                "justifyContent": "flex-end",
               },
-              Array [
-                Object {
-                  "justifyContent": "flex-end",
-                },
-                undefined,
-              ],
             ]
           }
         >
@@ -133,7 +115,6 @@ exports[`renders correctly with a show 1`] = `
                   "marginTop": 3,
                   "width": 8,
                 },
-                undefined,
               ]
             }
           />
@@ -148,7 +129,6 @@ exports[`renders correctly with a show 1`] = `
               "flexGrow": 1,
               "flexShrink": 1,
             },
-            undefined,
           ]
         }
       >
@@ -177,7 +157,6 @@ exports[`renders correctly with a show 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                 },
-                undefined,
               ]
             }
           >
@@ -232,7 +211,6 @@ exports[`renders correctly with a show 1`] = `
           "height": 1,
           "width": 708,
         },
-        undefined,
       ]
     }
   />
@@ -255,7 +233,6 @@ exports[`renders correctly with an artwork 1`] = `
         "marginLeft": 20,
         "marginRight": 20,
       },
-      undefined,
     ]
   }
 >
@@ -267,13 +244,8 @@ exports[`renders correctly with an artwork 1`] = `
           "flexDirection": "row",
           "flexGrow": 1,
           "flexShrink": 1,
+          "maxWidth": 708,
         },
-        Array [
-          Object {
-            "maxWidth": 708,
-          },
-          undefined,
-        ],
       ]
     }
   >
@@ -287,7 +259,6 @@ exports[`renders correctly with an artwork 1`] = `
             "height": 80,
             "width": 80,
           },
-          undefined,
         ]
       }
     />
@@ -295,19 +266,14 @@ exports[`renders correctly with an artwork 1`] = `
       style={
         Array [
           Object {
+            "alignSelf": "center",
             "flexBasis": 0,
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
+            "marginLeft": 10,
+            "maxHeight": 70,
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-              "marginLeft": 10,
-              "maxHeight": 70,
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -320,7 +286,6 @@ exports[`renders correctly with an artwork 1`] = `
               "flexGrow": 1,
               "flexShrink": 1,
             },
-            undefined,
           ]
         }
       >
@@ -350,13 +315,8 @@ exports[`renders correctly with an artwork 1`] = `
                 "flexDirection": "row",
                 "flexGrow": 1,
                 "flexShrink": 1,
+                "justifyContent": "flex-end",
               },
-              Array [
-                Object {
-                  "justifyContent": "flex-end",
-                },
-                undefined,
-              ],
             ]
           }
         >
@@ -372,7 +332,6 @@ exports[`renders correctly with an artwork 1`] = `
                   "marginTop": 3,
                   "width": 8,
                 },
-                undefined,
               ]
             }
           />
@@ -387,7 +346,6 @@ exports[`renders correctly with an artwork 1`] = `
               "flexGrow": 1,
               "flexShrink": 1,
             },
-            undefined,
           ]
         }
       >
@@ -416,7 +374,6 @@ exports[`renders correctly with an artwork 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                 },
-                undefined,
               ]
             }
           >
@@ -427,15 +384,9 @@ exports[`renders correctly with an artwork 1`] = `
               Array [
                 Object {
                   "color": "black",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "AGaramondPro-Italic",
                   "fontSize": 16,
                 },
-                Array [
-                  Object {
-                    "fontFamily": "AGaramondPro-Italic",
-                  },
-                  undefined,
-                ],
               ]
             }
           >
@@ -449,7 +400,6 @@ exports[`renders correctly with an artwork 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
                 },
-                undefined,
               ]
             }
           >
@@ -504,7 +454,6 @@ exports[`renders correctly with an artwork 1`] = `
           "height": 1,
           "width": 708,
         },
-        undefined,
       ]
     }
   />

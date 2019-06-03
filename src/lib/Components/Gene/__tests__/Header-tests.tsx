@@ -5,18 +5,26 @@ import * as renderer from "react-test-renderer"
 
 import Header from "../Header"
 
+import { Theme } from "@artsy/palette"
+
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { followStatusForGene: jest.fn() }
 })
 
 it("renders properly", () => {
   const gene = {
-    __id: "gene-deep-time",
-    _id: "gravity-id",
-    id: "deep-time",
+    id: "gene-deep-time",
+    internalID: "gravity-id",
+    gravityID: "deep-time",
     name: "Deep Time",
   }
 
-  const header = renderer.create(<Header gene={gene as any} shortForm={false} />).toJSON()
+  const header = renderer
+    .create(
+      <Theme>
+        <Header gene={gene as any} shortForm={false} />
+      </Theme>
+    )
+    .toJSON()
   expect(header).toMatchSnapshot()
 })

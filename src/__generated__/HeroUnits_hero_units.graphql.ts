@@ -1,10 +1,10 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _HeroUnits_hero_units$ref: unique symbol;
 export type HeroUnits_hero_units$ref = typeof _HeroUnits_hero_units$ref;
 export type HeroUnits_hero_units = ReadonlyArray<{
-    readonly __id: string;
+    readonly id: string;
     readonly href: string | null;
     readonly title: string | null;
     readonly heading: string | null;
@@ -15,7 +15,7 @@ export type HeroUnits_hero_units = ReadonlyArray<{
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "HeroUnits_hero_units",
   "type": "HomePageHeroUnit",
@@ -27,7 +27,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -60,8 +60,7 @@ const node: ConcreteFragment = {
         {
           "kind": "Literal",
           "name": "version",
-          "value": "NARROW",
-          "type": "HomePageHeroUnitImageVersion"
+          "value": "NARROW"
         }
       ],
       "storageKey": "background_image_url(version:\"NARROW\")"
@@ -74,13 +73,12 @@ const node: ConcreteFragment = {
         {
           "kind": "Literal",
           "name": "version",
-          "value": "WIDE",
-          "type": "HomePageHeroUnitImageVersion"
+          "value": "WIDE"
         }
       ],
       "storageKey": "background_image_url(version:\"WIDE\")"
     }
   ]
 };
-(node as any).hash = '3c5a06f04a69b982da948725f333c9ed';
+(node as any).hash = '4ae7914d80f5d917a4d55d6d7a224fab';
 export default node;

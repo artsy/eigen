@@ -17,12 +17,10 @@ exports[`renders properly 1`] = `
         "marginRight": 0,
         "marginTop": 0,
       },
-      undefined,
     ]
   }
 >
   <Text
-    className="sc-bwzfXH uTxCW"
     fontFamily="AGaramondPro-Semibold"
     fontSize="22px"
     lineHeight="28px"
@@ -39,7 +37,7 @@ exports[`renders properly 1`] = `
           "marginTop": 20,
           "textAlign": "center",
         },
-        undefined,
+        Object {},
       ]
     }
     textAlign="center"
@@ -52,7 +50,6 @@ exports[`renders properly 1`] = `
         Object {
           "width": "100%",
         },
-        undefined,
       ]
     }
   >
@@ -110,7 +107,6 @@ exports[`renders properly 1`] = `
           "marginRight": 20,
           "marginTop": 20,
         },
-        undefined,
       ]
     }
   >
@@ -121,7 +117,6 @@ exports[`renders properly 1`] = `
           Object {
             "height": 50,
           },
-          undefined,
         ]
       }
     >

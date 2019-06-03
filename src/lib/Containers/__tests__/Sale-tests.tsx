@@ -8,6 +8,8 @@ import { Sale } from "../Sale"
 
 import artwork from "../../Components/ArtworkGrids/__tests__/__fixtures__/artwork"
 
+import { Theme } from "@artsy/palette"
+
 describe("state", () => {
   it("looks okay by default", () => {
     const sale = {
@@ -17,7 +19,13 @@ describe("state", () => {
         },
       ],
     }
-    const tree = renderer.create(<Sale sale={sale} />).toJSON()
+    const tree = renderer
+      .create(
+        <Theme>
+          <Sale sale={sale} />
+        </Theme>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 })

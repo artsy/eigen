@@ -20,7 +20,7 @@ export const Shows: React.SFC<Props> = ({ show }) => {
         horizontal
         data={edges}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item.node.__id}
+        keyExtractor={item => item.node.id}
         renderItem={({ item }) => {
           return <ShowItem show={item.node as any} />
         }}
@@ -35,7 +35,7 @@ export const ShowsContainer = createFragmentContainer(Shows, {
       nearbyShows(first: 20) {
         edges {
           node {
-            __id
+            id
             ...ShowItem_show
           }
         }

@@ -1,18 +1,18 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { Article_article$ref } from "./Article_article.graphql";
 declare const _Articles_articles$ref: unique symbol;
 export type Articles_articles$ref = typeof _Articles_articles$ref;
 export type Articles_articles = ReadonlyArray<{
-    readonly __id: string;
+    readonly id: string;
     readonly " $fragmentRefs": Article_article$ref;
     readonly " $refType": Articles_articles$ref;
 }>;
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Articles_articles",
   "type": "Article",
@@ -24,7 +24,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -35,5 +35,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'da4adfd005ba319a9b348baea0b82933';
+(node as any).hash = '48bbee277fbab78d7648e775633f67ad';
 export default node;

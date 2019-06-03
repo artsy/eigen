@@ -4,8 +4,16 @@ import * as renderer from "react-test-renderer"
 
 import { ArtistCard } from "../ArtistCard"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const tree = renderer.create(<ArtistCard artist={artistProps(true).artist as any} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <ArtistCard artist={artistProps(true).artist as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 
@@ -22,12 +30,12 @@ it("only shows name and artwork count when bio is omitted", () => {
 const artistProps = (hasBio: boolean) => {
   return {
     artist: {
-      __id: "QXJ0aXN0Omp1YW4tZ3Jpcw==",
+      id: "QXJ0aXN0Omp1YW4tZ3Jpcw==",
       formatted_artworks_count: "14 works, 3 for sale",
       formatted_nationality_and_birthday: hasBio ? "Spanish, 1887–1927" : "",
       href: "/artist/juan-gris",
-      id: "juan-gris",
-      _id: "4d8b934a4eb68a1b2c0012a1",
+      gravityID: "juan-gris",
+      internalID: "4d8b934a4eb68a1b2c0012a1",
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg",
       },

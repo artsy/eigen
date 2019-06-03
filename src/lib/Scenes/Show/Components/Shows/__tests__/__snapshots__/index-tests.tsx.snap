@@ -14,12 +14,10 @@ Array [
           "flexDirection": "row",
           "justifyContent": "space-between",
         },
-        undefined,
       ]
     }
   >
     <Text
-      className="sc-bwzfXH uTxCW"
       fontFamily="AGaramondPro-Regular"
       fontSize="22px"
       lineHeight="32px"
@@ -30,7 +28,7 @@ Array [
             "fontSize": 22,
             "lineHeight": 32,
           },
-          undefined,
+          Object {},
         ]
       }
     >
@@ -690,7 +688,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -719,12 +716,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -738,14 +733,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Delicate Power: The Delicacy and Complexity of Egg Tempera
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -758,14 +752,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -778,7 +771,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -826,7 +819,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -855,12 +847,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -874,14 +864,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Summer Discoveries: Group Exhibition
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -894,14 +883,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -914,7 +902,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -962,7 +950,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -991,12 +978,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1010,14 +995,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Winter Invitational
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1030,14 +1014,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1050,7 +1033,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -1098,7 +1081,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -1127,12 +1109,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1146,14 +1126,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 The Temporal Painter
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1166,14 +1145,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1186,7 +1164,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -1234,7 +1212,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -1263,12 +1240,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1282,14 +1257,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Incidental Edges
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1302,14 +1276,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1322,7 +1295,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -1370,7 +1343,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -1399,12 +1371,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1418,14 +1388,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Reimagine Everything
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1438,14 +1407,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1458,7 +1426,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -1506,7 +1474,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -1535,12 +1502,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1554,14 +1519,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Crossroads
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1574,14 +1538,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1594,7 +1557,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -1642,7 +1605,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -1671,12 +1633,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1690,14 +1650,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Boundless: The Abstract Landscapes of Carole Pierce
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1710,14 +1669,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1730,7 +1688,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -1778,7 +1736,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -1807,12 +1764,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1826,14 +1781,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 Nature is the Fountain's Head
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1846,14 +1800,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1866,7 +1819,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />
@@ -1914,7 +1867,6 @@ Array [
                   "marginTop": 15,
                   "width": 650,
                 },
-                undefined,
               ]
             }
             width={650}
@@ -1943,12 +1895,10 @@ Array [
                     "marginBottom": 20,
                     "marginTop": 20,
                   },
-                  undefined,
                 ]
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1962,14 +1912,13 @@ Array [
                       "lineHeight": 16,
                       "marginBottom": 5,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 2018 Winter Invitational
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -1982,14 +1931,13 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               >
                 J. Cacciola Gallery
               </Text>
               <Text
-                className="sc-bwzfXH uTxCW"
                 color="black60"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
@@ -2002,7 +1950,7 @@ Array [
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
-                    undefined,
+                    Object {},
                   ]
                 }
               />

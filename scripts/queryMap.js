@@ -1,6 +1,6 @@
 const { BREAK, parse, visit } = require("graphql")
 
-const queries = require("../src/__generated__/complete.queryMap.json")
+const queries = require("../data/complete.queryMap.json")
 
 module.exports = function queryMap() {
   const result = {}

@@ -17,12 +17,10 @@ exports[`CaretButton renders properly 1`] = `
         "display": "flex",
         "flexDirection": "row",
       },
-      undefined,
     ]
   }
 >
   <Text
-    className="sc-bdVaJa bDWFJH"
     fontFamily="Unica77LL-Medium"
     fontSize="14px"
     lineHeight="20px"
@@ -33,7 +31,7 @@ exports[`CaretButton renders properly 1`] = `
           "fontSize": 14,
           "lineHeight": 20,
         },
-        undefined,
+        Object {},
       ]
     }
   >
@@ -44,7 +42,7 @@ exports[`CaretButton renders properly 1`] = `
     style={
       Array [
         Object {
-          "marginLeft": 0.5,
+          "marginLeft": 5,
         },
         Object {
           "marginTop": 1.5,

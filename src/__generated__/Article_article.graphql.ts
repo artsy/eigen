@@ -1,31 +1,23 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Article_article$ref: unique symbol;
 export type Article_article$ref = typeof _Article_article$ref;
 export type Article_article = {
     readonly thumbnail_title: string | null;
     readonly href: string | null;
-    readonly author: ({
+    readonly author: {
         readonly name: string | null;
-    }) | null;
-    readonly thumbnail_image: ({
+    } | null;
+    readonly thumbnail_image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": Article_article$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Article_article",
   "type": "Article",
@@ -61,8 +53,7 @@ return {
           "name": "name",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
     },
     {
@@ -82,17 +73,14 @@ return {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '0c88898acb243d600094f137ff15cde0';
 export default node;

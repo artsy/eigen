@@ -11,8 +11,8 @@ const fairData = ({
   counts: {
     partners: 3,
   },
-  __id: "RmFpcjp0ZWZhZi1uZXcteW9yay1zcHJpbmctMjAxOQ==",
-  id: "tefaf-new-york-spring-2019",
+  id: "RmFpcjp0ZWZhZi1uZXcteW9yay1zcHJpbmctMjAxOQ==",
+  gravityID: "tefaf-new-york-spring-2019",
   image: {
     aspect_ratio: 1,
     url: "https://d32dm0rphc51dk.cloudfront.net/uSlVwLet3RIOno8LxJGn2g/wide.jpg",

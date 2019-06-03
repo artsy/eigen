@@ -5,13 +5,12 @@ exports[`renders properly 1`] = `
   mapPropsToArtworksConnection={[Function]}
   sale={
     Object {
-      "__id": "sale-id",
+      "id": "sale-id",
       "salerArtworks": Object {
         "edges": Array [
           Object {
             "artwork": Object {
               "node": Object {
-                "__id": "artwork-talking-politics",
                 "artists": Array [
                   Object {
                     "name": "Jenny Holzer",
@@ -19,6 +18,7 @@ exports[`renders properly 1`] = `
                 ],
                 "date": "2008",
                 "href": "/artwork/jenny-holzer-talking-politics",
+                "id": "artwork-talking-politics",
                 "image": Object {
                   "aspect_ratio": 1.27,
                   "url": "artsy.net/image-url",
@@ -35,7 +35,6 @@ exports[`renders properly 1`] = `
           Object {
             "artwork": Object {
               "node": Object {
-                "__id": "artwork-talking-politics",
                 "artists": Array [
                   Object {
                     "name": "Jenny Holzer",
@@ -43,6 +42,7 @@ exports[`renders properly 1`] = `
                 ],
                 "date": "2008",
                 "href": "/artwork/jenny-holzer-talking-politics",
+                "id": "artwork-talking-politics",
                 "image": Object {
                   "aspect_ratio": 1.27,
                   "url": "artsy.net/image-url",
@@ -59,7 +59,6 @@ exports[`renders properly 1`] = `
           Object {
             "artwork": Object {
               "node": Object {
-                "__id": "artwork-talking-politics",
                 "artists": Array [
                   Object {
                     "name": "Jenny Holzer",
@@ -67,6 +66,7 @@ exports[`renders properly 1`] = `
                 ],
                 "date": "2008",
                 "href": "/artwork/jenny-holzer-talking-politics",
+                "id": "artwork-talking-politics",
                 "image": Object {
                   "aspect_ratio": 1.27,
                   "url": "artsy.net/image-url",

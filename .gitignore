@@ -35,6 +35,7 @@ playground.xcworkspace
 .DS_Store
 node_modules
 npm-debug.log
+Artsy-UIFonts/*
 Example/Pods/*
 !Example/Pods/Pods.xcodeproj
 !Example/Pods/Pods.xcodeproj/project.pbxproj

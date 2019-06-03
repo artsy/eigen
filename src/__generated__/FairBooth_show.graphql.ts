@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
 import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
 import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
@@ -9,15 +9,15 @@ import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
 declare const _FairBooth_show$ref: unique symbol;
 export type FairBooth_show$ref = typeof _FairBooth_show$ref;
 export type FairBooth_show = {
-    readonly id: string;
-    readonly _id: string;
+    readonly gravityID: string;
+    readonly internalID: string;
     readonly " $fragmentRefs": FairBoothHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & ShowArtists_show$ref & ShowArtworks_show$ref;
     readonly " $refType": FairBooth_show$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "FairBooth_show",
   "type": "Show",
@@ -27,14 +27,14 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -62,15 +62,8 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "ShowArtworks_show",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'c3f7eb9fec64671b280a285ead01de76';
+(node as any).hash = '1537a5257d548d7f92ed7bdfacbd282c';
 export default node;

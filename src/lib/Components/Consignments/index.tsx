@@ -18,13 +18,20 @@ export interface ConsignmentMetadata {
   displayString: string | null // This would look something like "1/5", "5/5"
 }
 
-export interface SearchResult {
+export interface LocationResult {
   id: string
+  name: string
+}
+
+export interface ArtistResult {
+  internalID: string
   name: string
   image?: {
     url: string
   }
 }
+
+export type SearchResult = LocationResult | ArtistResult
 
 export interface Photo {
   file: string
@@ -35,7 +42,7 @@ export interface Photo {
 export interface ConsignmentSetup {
   submission_id?: string
   state?: "DRAFT" | "SUBMITTED"
-  artist?: SearchResult
+  artist?: ArtistResult
   photos?: Photo[]
   metadata?: ConsignmentMetadata
   provenance?: string

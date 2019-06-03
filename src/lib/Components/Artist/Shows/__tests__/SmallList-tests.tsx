@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 
 import SmallList from "../SmallList"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const show1 = showProps()
   const show2 = showProps()
@@ -13,7 +15,13 @@ it("renders properly", () => {
 
   const shows = [show1, show2]
 
-  const list = renderer.create(<SmallList shows={shows as any} />).toJSON()
+  const list = renderer
+    .create(
+      <Theme>
+        <SmallList shows={shows as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(list).toMatchSnapshot()
 })
 

@@ -1,3 +1,0 @@
-{
-  "5877ac7a9f471c577180881d0cd3ab4b": "query createMockNetworkLayerTestsQuery {\n  artwork(id: \"untitled\") {\n    __id\n    title\n  }\n}\n"
-}

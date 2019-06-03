@@ -2,13 +2,13 @@
 
 exports[`renders properly 1`] = `
 <ArtworksGrid
+  filtered_artworks={null}
   gene={
     Object {
       "artworks": Object {
         "edges": Array [
           Object {
             "node": Object {
-              "__id": "artwork-talking-politics",
               "artists": Array [
                 Object {
                   "name": "Jenny Holzer",
@@ -16,6 +16,7 @@ exports[`renders properly 1`] = `
               ],
               "date": "2008",
               "href": "/artwork/jenny-holzer-talking-politics",
+              "id": "artwork-talking-politics",
               "image": Object {
                 "aspect_ratio": 1.27,
                 "url": "artsy.net/image-url",
@@ -30,7 +31,6 @@ exports[`renders properly 1`] = `
           },
           Object {
             "node": Object {
-              "__id": "artwork-talking-politics",
               "artists": Array [
                 Object {
                   "name": "Jenny Holzer",
@@ -38,6 +38,7 @@ exports[`renders properly 1`] = `
               ],
               "date": "2008",
               "href": "/artwork/jenny-holzer-talking-politics",
+              "id": "artwork-talking-politics",
               "image": Object {
                 "aspect_ratio": 1.27,
                 "url": "artsy.net/image-url",
@@ -52,7 +53,6 @@ exports[`renders properly 1`] = `
           },
           Object {
             "node": Object {
-              "__id": "artwork-talking-politics",
               "artists": Array [
                 Object {
                   "name": "Jenny Holzer",
@@ -60,6 +60,7 @@ exports[`renders properly 1`] = `
               ],
               "date": "2008",
               "href": "/artwork/jenny-holzer-talking-politics",
+              "id": "artwork-talking-politics",
               "image": Object {
                 "aspect_ratio": 1.27,
                 "url": "artsy.net/image-url",

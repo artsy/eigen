@@ -10,7 +10,6 @@ exports[`InvoicePreview renders correctly 1`] = `
         "flexDirection": "row",
         "height": 72,
       },
-      undefined,
     ]
   }
 >
@@ -30,7 +29,6 @@ exports[`InvoicePreview renders correctly 1`] = `
           "resizeMode": "contain",
           "width": 40,
         },
-        undefined,
       ]
     }
   />
@@ -44,7 +42,6 @@ exports[`InvoicePreview renders correctly 1`] = `
           "flexGrow": 1,
           "flexShrink": 1,
         },
-        undefined,
       ]
     }
   >
@@ -55,7 +52,6 @@ exports[`InvoicePreview renders correctly 1`] = `
             "fontFamily": "AGaramondPro-Regular",
             "fontSize": 14,
           },
-          undefined,
         ]
       }
     >
@@ -67,13 +63,8 @@ exports[`InvoicePreview renders correctly 1`] = `
           Object {
             "fontFamily": "AGaramondPro-Regular",
             "fontSize": 14,
+            "fontWeight": "bold",
           },
-          Array [
-            Object {
-              "fontWeight": "bold",
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -89,7 +80,6 @@ exports[`InvoicePreview renders correctly 1`] = `
           "marginRight": 15,
           "width": 78,
         },
-        undefined,
       ]
     }
   >
@@ -103,7 +93,6 @@ exports[`InvoicePreview renders correctly 1`] = `
             "lineHeight": 25,
             "textAlign": "right",
           },
-          undefined,
         ]
       }
     >

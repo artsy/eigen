@@ -1,8 +1,13 @@
+import { GeneArtworksGrid_filtered_artworks } from "__generated__/GeneArtworksGrid_filtered_artworks.graphql"
+import InfiniteScrollArtworksGrid, {
+  Props as InfiniteScrollGridProps,
+} from "lib/Components/ArtworkGrids/InfiniteScrollGrid"
 import { ConnectionData, createPaginationContainer, graphql } from "react-relay"
-import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 
-const GeneArtworksGrid = createPaginationContainer(
-  InfiniteScrollArtworksGrid,
+const GeneArtworksGrid = createPaginationContainer<
+  { filtered_artworks: GeneArtworksGrid_filtered_artworks } & InfiniteScrollGridProps
+>(
+  InfiniteScrollArtworksGrid as any,
   {
     filtered_artworks: graphql`
       fragment GeneArtworksGrid_filtered_artworks on FilterArtworks
@@ -11,7 +16,7 @@ const GeneArtworksGrid = createPaginationContainer(
           cursor: { type: "String", defaultValue: "" }
           sort: { type: "String" }
         ) {
-        __id
+        id
         artworks: artworks_connection(first: $count, after: $cursor, sort: $sort)
           @connection(key: "GeneArtworksGrid_artworks") {
           pageInfo {
@@ -21,8 +26,8 @@ const GeneArtworksGrid = createPaginationContainer(
           }
           edges {
             node {
+              gravityID
               id
-              __id
               image {
                 aspect_ratio
               }
@@ -47,15 +52,15 @@ const GeneArtworksGrid = createPaginationContainer(
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
-        __id: props.filtered_artworks.__id,
+        id: props.filtered_artworks.id,
         count,
         cursor,
         sort: props.sort,
       }
     },
     query: graphql`
-      query GeneArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String, $sort: String) {
-        node(__id: $__id) {
+      query GeneArtworksGridQuery($id: ID!, $count: Int!, $cursor: String, $sort: String) {
+        node(__id: $id) {
           ... on FilterArtworks {
             ...GeneArtworksGrid_filtered_artworks @arguments(count: $count, cursor: $cursor, sort: $sort)
           }
@@ -66,22 +71,3 @@ const GeneArtworksGrid = createPaginationContainer(
 )
 
 export default GeneArtworksGrid
-
-export interface GeneRelayProps {
-  filtered_artworks?: {
-    artworks: {
-      pageInfo: {
-        hasNextPage: boolean
-      }
-      edges: Array<{
-        node: {
-          __id: string
-          id: string
-          image: {
-            aspect_ratio: number | null
-          } | null
-        } | null
-      }>
-    } | null
-  }
-}

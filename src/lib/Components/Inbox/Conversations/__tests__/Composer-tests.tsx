@@ -8,14 +8,28 @@ jest.unmock("react-tracking")
 
 import Composer from "../Composer"
 
+import { Theme } from "@artsy/palette"
+
 it("looks correct when rendered", () => {
-  const tree = renderer.create(<Composer />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Composer />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 
 describe("regarding the send button", () => {
   it("disables it when there is no text", () => {
-    const tree = renderer.create(<Composer />).toJSON()
+    const tree = renderer
+      .create(
+        <Theme>
+          <Composer />
+        </Theme>
+      )
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 

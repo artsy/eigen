@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 export type ArtistListItemTestsQueryVariables = {};
 export type ArtistListItemTestsQueryResponse = {
-    readonly artist: ({
+    readonly artist: {
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
-    }) | null;
+    } | null;
 };
 export type ArtistListItemTestsQuery = {
     readonly response: ArtistListItemTestsQueryResponse;
@@ -19,14 +19,14 @@ export type ArtistListItemTestsQuery = {
 query ArtistListItemTestsQuery {
   artist(id: "pablo-picasso") {
     ...ArtistListItem_artist
-    __id
+    id
   }
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
-  _id
   id
+  internalID
+  gravityID
   name
   is_followed
   nationality
@@ -43,24 +43,11 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "pablo-picasso",
-    "type": "String!"
+    "value": "pablo-picasso"
   }
-],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ArtistListItemTestsQuery",
-  "id": "3439b99fe49b6fda99a4673c71da7da7",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistListItemTestsQuery",
@@ -73,7 +60,7 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"pablo-picasso\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -81,8 +68,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ArtistListItem_artist",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -97,22 +83,28 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"pablo-picasso\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
-          v1,
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "id",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -172,6 +164,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ArtistListItemTestsQuery",
+    "id": "ad42c869e9d3a391ca1609f30af5956b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

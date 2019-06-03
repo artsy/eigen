@@ -4,11 +4,11 @@ import { ConcreteRequest } from "relay-runtime";
 import { Filters_filteredArtworks$ref } from "./Filters_filteredArtworks.graphql";
 export type FiltersTestsQueryVariables = {};
 export type FiltersTestsQueryResponse = {
-    readonly show: ({
-        readonly filteredArtworks: ({
+    readonly show: {
+        readonly filteredArtworks: {
             readonly " $fragmentRefs": Filters_filteredArtworks$ref;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FiltersTestsQuery = {
     readonly response: FiltersTestsQueryResponse;
@@ -22,9 +22,9 @@ query FiltersTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
       ...Filters_filteredArtworks
-      __id
+      id
     }
-    __id
+    id
   }
 }
 
@@ -32,12 +32,11 @@ fragment Filters_filteredArtworks on FilterArtworks {
   aggregations {
     slice
     counts {
-      id
+      gravityID
       name
-      __id
+      id
     }
   }
-  __id
 }
 */
 
@@ -46,8 +45,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = [
@@ -58,42 +56,33 @@ v1 = [
       "MEDIUM",
       "PRICE_RANGE",
       "TOTAL"
-    ],
-    "type": "[ArtworkAggregation]"
+    ]
   },
   {
     "kind": "Literal",
     "name": "medium",
-    "value": "*",
-    "type": "String"
+    "value": "*"
   },
   {
     "kind": "Literal",
     "name": "price_range",
-    "value": "*-*",
-    "type": "String"
+    "value": "*-*"
   },
   {
     "kind": "Literal",
     "name": "size",
-    "value": 0,
-    "type": "Int"
+    "value": 0
   }
 ],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FiltersTestsQuery",
-  "id": "0f92e879c0ff3f99ab6965d47656db4a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FiltersTestsQuery",
@@ -106,7 +95,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -115,7 +104,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -123,11 +112,9 @@ return {
                 "kind": "FragmentSpread",
                 "name": "Filters_filteredArtworks",
                 "args": null
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
@@ -142,7 +129,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -151,7 +138,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -183,7 +170,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "id",
+                        "name": "gravityID",
                         "args": null,
                         "storageKey": null
                       },
@@ -194,18 +181,25 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v2
+                      (v2/*: any*/)
                     ]
                   }
                 ]
               },
-              v2
+              (v2/*: any*/)
             ]
           },
-          v2
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FiltersTestsQuery",
+    "id": "cf5a6a27aaf3f51645dd602badd07d9b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

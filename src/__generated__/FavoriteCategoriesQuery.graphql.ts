@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Categories_me$ref } from "./Categories_me.graphql";
 export type FavoriteCategoriesQueryVariables = {};
 export type FavoriteCategoriesQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Categories_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteCategoriesQuery = {
     readonly response: FavoriteCategoriesQueryResponse;
@@ -19,7 +19,7 @@ export type FavoriteCategoriesQuery = {
 query FavoriteCategoriesQuery {
   me {
     ...Categories_me
-    __id
+    id
   }
 }
 
@@ -32,39 +32,40 @@ fragment Categories_me on Me {
     edges {
       node {
         gene {
+          gravityID
           id
-          __id
           name
           href
           image {
             url
           }
         }
-        __id
+        id
         __typename
       }
       cursor
     }
   }
-  __id
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10
+  }
+],
+v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FavoriteCategoriesQuery",
-  "id": "814089538a6782827e8d5bc579eea904",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteCategoriesQuery",
@@ -85,8 +86,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Categories_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -110,14 +110,7 @@ return {
             "alias": null,
             "name": "followed_genes",
             "storageKey": "followed_genes(first:10)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v0/*: any*/),
             "concreteType": "FollowGeneConnection",
             "plural": false,
             "selections": [
@@ -176,11 +169,11 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          v0,
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -215,7 +208,7 @@ return {
                           }
                         ]
                       },
-                      v0,
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -240,22 +233,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "followed_genes",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v0/*: any*/),
             "handle": "connection",
             "key": "Categories_followed_genes",
             "filters": null
           },
-          v0
+          (v1/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FavoriteCategoriesQuery",
+    "id": "b01176ed0f4407bdf74b8b03f6541075",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

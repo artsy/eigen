@@ -1,0 +1,10 @@
+patch-package
+--- a/node_modules/@types/relay-runtime/index.d.ts
++++ b/node_modules/@types/relay-runtime/index.d.ts
+@@ -1105,3 +1105,5 @@ export interface GraphQLSubscriptionConfig {
+     updater?(store: RecordSourceSelectorProxy): void;
+ }
+ export function requestRelaySubscription(environment: Environment, config: GraphQLSubscriptionConfig): Disposable;
++
++export function fetchQuery<T = any>(environment: any, query: any, variables: any): Promise<T>;
+\ No newline at end of file

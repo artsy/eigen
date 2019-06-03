@@ -14,13 +14,21 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 
+import { Theme } from "@artsy/palette"
+
 const nav = {} as any
 const route = {} as any
 
 const anything = expect.anything
 
 it("Sets up the right view hierarchy", () => {
-  const tree = renderer.create(<Overview navigator={nav} route={route} setup={{}} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Overview navigator={nav} route={route} setup={{}} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 
@@ -83,8 +91,8 @@ describe("Updating State", () => {
   })
 
   it("updates Artist", () => {
-    overview.updateArtist({ id: "banksy", name: "Banksy" })
-    expect(stateMock).toBeCalledWith({ artist: { id: "banksy", name: "Banksy" } }, update)
+    overview.updateArtist({ internalID: "banksy", name: "Banksy" })
+    expect(stateMock).toBeCalledWith({ artist: { internalID: "banksy", name: "Banksy" } }, update)
   })
 
   it("updates work metadata", () => {

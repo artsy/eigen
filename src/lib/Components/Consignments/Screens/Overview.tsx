@@ -4,7 +4,7 @@ import React from "react"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
+import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import CloseButton from "../Components/CloseButton"
@@ -94,7 +94,7 @@ export default class Overview extends React.Component<Props, State> {
   goToLocationTapped = () =>
     this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
 
-  updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
+  updateArtist = (result: ArtistResult) => this.updateStateAndMetaphysics({ artist: result })
   updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
   updateEdition = (result: ConsignmentSetup) => this.updateStateAndMetaphysics(result)
@@ -117,7 +117,7 @@ export default class Overview extends React.Component<Props, State> {
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
       const submission = await createSubmission(this.state)
-      this.setState({ submission_id: submission.id }, () => {
+      this.setState({ submission_id: submission.internalID }, () => {
         this.submissionDraftCreated()
       })
     }

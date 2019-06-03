@@ -5,9 +5,15 @@ import * as renderer from "react-test-renderer"
 
 import Circle from "../CircleImage"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const button = renderer
-    .create(<Circle source={require("../../../../../../images/consignments/email.png")} />)
+    .create(
+      <Theme>
+        <Circle source={require("../../../../../../images/consignments/email.png")} />
+      </Theme>
+    )
     .toJSON()
   expect(button).toMatchSnapshot()
 })

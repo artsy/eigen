@@ -18,7 +18,6 @@ exports[`Registration result component renders registration complete properly 1`
         "marginRight": 20,
         "marginTop": 40,
       },
-      undefined,
     ]
   }
 >
@@ -28,7 +27,6 @@ exports[`Registration result component renders registration complete properly 1`
       style={
         Array [
           Object {},
-          undefined,
         ]
       }
     >
@@ -45,13 +43,11 @@ exports[`Registration result component renders registration complete properly 1`
               "height": 20,
               "width": 20,
             },
-            undefined,
           ]
         }
         width={20}
       />
       <Text
-        className="sc-bwzfXH uTxCW"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -70,7 +66,7 @@ exports[`Registration result component renders registration complete properly 1`
               "marginTop": 5,
               "textAlign": "center",
             },
-            undefined,
+            Object {},
           ]
         }
         textAlign="center"
@@ -85,12 +81,10 @@ exports[`Registration result component renders registration complete properly 1`
               "display": "flex",
               "marginBottom": 30,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
           color="black60"
           fontFamily="Unica77LL-Regular"
           fontSize="14px"
@@ -104,7 +98,7 @@ exports[`Registration result component renders registration complete properly 1`
                 "lineHeight": 20,
                 "textAlign": "center",
               },
-              undefined,
+              Object {},
             ]
           }
           textAlign="center"
@@ -138,7 +132,6 @@ to bid on works in this sale.
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
       color="black"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
@@ -151,7 +144,7 @@ to bid on works in this sale.
             "fontSize": 14,
             "lineHeight": 24,
           },
-          undefined,
+          Object {},
         ]
       }
     >
@@ -179,7 +172,6 @@ exports[`Registration result component renders registration error properly 1`] =
         "marginRight": 20,
         "marginTop": 40,
       },
-      undefined,
     ]
   }
 >
@@ -189,7 +181,6 @@ exports[`Registration result component renders registration error properly 1`] =
       style={
         Array [
           Object {},
-          undefined,
         ]
       }
     >
@@ -206,13 +197,11 @@ exports[`Registration result component renders registration error properly 1`] =
               "height": 20,
               "width": 20,
             },
-            undefined,
           ]
         }
         width={20}
       />
       <Text
-        className="sc-bwzfXH uTxCW"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -231,7 +220,7 @@ exports[`Registration result component renders registration error properly 1`] =
               "marginTop": 5,
               "textAlign": "center",
             },
-            undefined,
+            Object {},
           ]
         }
         textAlign="center"
@@ -246,12 +235,10 @@ exports[`Registration result component renders registration error properly 1`] =
               "display": "flex",
               "marginBottom": 30,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
           color="black60"
           fontFamily="Unica77LL-Regular"
           fontSize="14px"
@@ -265,7 +252,7 @@ exports[`Registration result component renders registration error properly 1`] =
                 "lineHeight": 20,
                 "textAlign": "center",
               },
-              undefined,
+              Object {},
             ]
           }
           textAlign="center"
@@ -278,7 +265,6 @@ exports[`Registration result component renders registration error properly 1`] =
                 Object {
                   "textDecorationLine": "underline",
                 },
-                undefined,
               ]
             }
           >
@@ -313,7 +299,6 @@ with any questions.
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
       color="black"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
@@ -326,7 +311,7 @@ with any questions.
             "fontSize": 14,
             "lineHeight": 24,
           },
-          undefined,
+          Object {},
         ]
       }
     >
@@ -354,7 +339,6 @@ exports[`Registration result component renders registration pending properly 1`]
         "marginRight": 20,
         "marginTop": 40,
       },
-      undefined,
     ]
   }
 >
@@ -364,7 +348,6 @@ exports[`Registration result component renders registration pending properly 1`]
       style={
         Array [
           Object {},
-          undefined,
         ]
       }
     >
@@ -381,13 +364,11 @@ exports[`Registration result component renders registration pending properly 1`]
               "height": 20,
               "width": 20,
             },
-            undefined,
           ]
         }
         width={20}
       />
       <Text
-        className="sc-bwzfXH uTxCW"
         fontFamily="AGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
@@ -406,7 +387,7 @@ exports[`Registration result component renders registration pending properly 1`]
               "marginTop": 5,
               "textAlign": "center",
             },
-            undefined,
+            Object {},
           ]
         }
         textAlign="center"
@@ -421,12 +402,10 @@ exports[`Registration result component renders registration pending properly 1`]
               "display": "flex",
               "marginBottom": 30,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
           color="black60"
           fontFamily="Unica77LL-Regular"
           fontSize="14px"
@@ -440,7 +419,7 @@ exports[`Registration result component renders registration pending properly 1`]
                 "lineHeight": 20,
                 "textAlign": "center",
               },
-              undefined,
+              Object {},
             ]
           }
           textAlign="center"
@@ -454,7 +433,6 @@ Please contact
                 Object {
                   "textDecorationLine": "underline",
                 },
-                undefined,
               ]
             }
           >
@@ -489,7 +467,6 @@ more information.
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
       color="black"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
@@ -502,7 +479,7 @@ more information.
             "fontSize": 14,
             "lineHeight": 24,
           },
-          undefined,
+          Object {},
         ]
       }
     >

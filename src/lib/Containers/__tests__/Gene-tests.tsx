@@ -12,6 +12,8 @@ jest.mock("../../Components/Gene/Header", () => "Header")
 
 import { Gene } from "../Gene"
 
+import { Theme } from "@artsy/palette"
+
 const exampleProps = {
   medium: "propupines",
   price_range: "1000-80000",
@@ -117,7 +119,7 @@ it("looks like expected", () => {
   const props = {
     gene: {
       id: "An ID",
-      _id: "a UUID",
+      internalID: "a UUID",
       name: "Example Gene",
       description: "Here's some text",
       filtered_artworks: {
@@ -148,6 +150,12 @@ it("looks like expected", () => {
       ],
     },
   }
-  const tree = renderer.create(<Gene medium="painting" price_range="*-100000" gene={props.gene} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Gene medium="painting" price_range="*-100000" gene={props.gene} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })

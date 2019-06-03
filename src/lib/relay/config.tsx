@@ -14,7 +14,8 @@ if (Emission && Emission.gravityURL && Emission.metaphysicsURL) {
 
 export { metaphysicsURL, gravityURL }
 
-if (__DEV__) {
-  // tslint:disable-next-line:no-var-requires
-  require("react-relay/lib/RelayNetworkDebug").init()
-}
+// TODO: Not sure if we still need this at all
+// if (__DEV__) {
+//   // tslint:disable-next-line:no-var-requires
+//   require("react-relay/lib/RelayNetworkDebug").init()
+// }

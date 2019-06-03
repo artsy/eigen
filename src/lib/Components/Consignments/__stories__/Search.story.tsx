@@ -1,9 +1,9 @@
 import { camelCase } from "lodash"
 
-import Search, { SearchQueryProps } from "../Components/SearchResults"
+import { SearchQueryProps, SearchResults } from "../Components/SearchResults"
 
 export const name = "Consignments/Search"
-export const component = Search
+export const component = SearchResults
 
 const noQuery: SearchQueryProps = {
   query: null,

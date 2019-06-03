@@ -1,3 +1,0 @@
-{
-  "62ddb706b284c3b4e9f8bce90941d7a4": "query FairsQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Fairs_me_1G22uz\n    __id\n  }\n}\n\nfragment Fairs_me_1G22uz on Me {\n  followsAndSaves {\n    fairs(first: $count, after: $cursor) {\n      edges {\n        node {\n          __id\n          profile {\n            id\n            is_followed\n            __id\n          }\n          exhibition_period\n          name\n          counts {\n            partners\n          }\n          href\n          image {\n            url\n          }\n          start_at\n          end_at\n          __typename\n        }\n        cursor\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n  __id\n}\n"
-}

@@ -1,24 +1,24 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _RelatedArtist_artist$ref: unique symbol;
 export type RelatedArtist_artist$ref = typeof _RelatedArtist_artist$ref;
 export type RelatedArtist_artist = {
     readonly href: string | null;
     readonly name: string | null;
-    readonly counts: ({
+    readonly counts: {
         readonly for_sale_artworks: any | null;
         readonly artworks: any | null;
-    }) | null;
-    readonly image: ({
+    } | null;
+    readonly image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": RelatedArtist_artist$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "RelatedArtist_artist",
   "type": "Artist",
@@ -81,20 +81,12 @@ const node: ConcreteFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };

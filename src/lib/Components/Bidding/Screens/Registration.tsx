@@ -197,7 +197,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               creditCardOrError {
                 ... on CreditCardMutationSuccess {
                   creditCard {
-                    id
+                    gravityID
                     brand
                     name
                     last_digits
@@ -234,19 +234,19 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
           createBidder(input: $input) {
             bidder {
-              id
+              gravityID
               qualified_for_bidding
             }
           }
         }
       `,
-      variables: { input: { sale_id: this.props.sale.id } },
+      variables: { input: { sale_id: this.props.sale.gravityID } },
     })
   }
 
   presentRegistrationSuccess({ createBidder }) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
-      ARAuctionID: this.props.sale.id,
+      ARAuctionID: this.props.sale.gravityID,
     })
 
     const qualifiedForBidding = createBidder.bidder.qualified_for_bidding
@@ -353,7 +353,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 export const RegistrationScreen = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
-      id
+      gravityID
       end_at
       is_preview
       live_start_at

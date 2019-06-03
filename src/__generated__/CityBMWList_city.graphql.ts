@@ -1,55 +1,67 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _CityBMWList_city$ref: unique symbol;
 export type CityBMWList_city$ref = typeof _CityBMWList_city$ref;
 export type CityBMWList_city = {
     readonly name: string | null;
     readonly slug: string | null;
-    readonly sponsoredContent: ({
-        readonly shows: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+    readonly sponsoredContent: {
+        readonly shows: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly gravityID: string;
+                    readonly internalID: string;
                     readonly id: string;
-                    readonly _id: string;
-                    readonly __id: string;
                     readonly name: string | null;
                     readonly status: string | null;
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
                     readonly isStubShow: boolean | null;
                     readonly exhibition_period: string | null;
-                    readonly cover_image: ({
+                    readonly cover_image: {
                         readonly url: string | null;
-                    }) | null;
-                    readonly location: ({
-                        readonly coordinates: ({
+                    } | null;
+                    readonly location: {
+                        readonly coordinates: {
                             readonly lat: number | null;
                             readonly lng: number | null;
-                        }) | null;
-                    }) | null;
+                        } | null;
+                    } | null;
                     readonly type: string | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: ({
                         readonly name?: string | null;
                         readonly type?: string | null;
-                        readonly profile?: ({
-                            readonly image: ({
+                        readonly profile?: {
+                            readonly image: {
                                 readonly url: string | null;
-                            }) | null;
-                        }) | null;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-    }) | null;
+                            } | null;
+                        } | null;
+                    } & ({
+                        readonly name: string | null;
+                        readonly type: string | null;
+                        readonly profile: {
+                            readonly image: {
+                                readonly url: string | null;
+                            } | null;
+                        } | null;
+                    } | {
+                        /*This will never be '% other', but we need some
+                        value in case none of the concrete values match.*/
+                        readonly __typename: "%other";
+                    })) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly " $refType": CityBMWList_city$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -58,13 +70,6 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
@@ -103,7 +108,7 @@ return {
     }
   ],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -129,14 +134,12 @@ return {
             {
               "kind": "Literal",
               "name": "sort",
-              "value": "PARTNER_ASC",
-              "type": "PartnerShowSorts"
+              "value": "PARTNER_ASC"
             },
             {
               "kind": "Literal",
               "name": "status",
-              "value": "RUNNING",
-              "type": "EventStatus"
+              "value": "RUNNING"
             }
           ],
           "concreteType": "ShowConnection",
@@ -163,7 +166,14 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "exhibition_period",
+                      "name": "gravityID",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "internalID",
                       "args": null,
                       "storageKey": null
                     },
@@ -174,8 +184,7 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    v1,
-                    v0,
+                    (v0/*: any*/),
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -207,7 +216,7 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "_id",
+                      "name": "exhibition_period",
                       "args": null,
                       "storageKey": null
                     },
@@ -262,11 +271,10 @@ return {
                               "storageKey": null
                             }
                           ]
-                        },
-                        v1
+                        }
                       ]
                     },
-                    v2,
+                    (v1/*: any*/),
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -290,13 +298,12 @@ return {
                       "concreteType": null,
                       "plural": false,
                       "selections": [
-                        v1,
                         {
                           "kind": "InlineFragment",
                           "type": "Partner",
                           "selections": [
-                            v0,
-                            v2,
+                            (v0/*: any*/),
+                            (v1/*: any*/),
                             {
                               "kind": "LinkedField",
                               "alias": null,
@@ -323,15 +330,13 @@ return {
                                         {
                                           "kind": "Literal",
                                           "name": "version",
-                                          "value": "square",
-                                          "type": "[String]"
+                                          "value": "square"
                                         }
                                       ],
                                       "storageKey": "url(version:\"square\")"
                                     }
                                   ]
-                                },
-                                v1
+                                }
                               ]
                             }
                           ]
@@ -388,5 +393,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd9ccf42a06f9ac5eebb4328c62f0805b';
+(node as any).hash = 'de715332a242b36b73e995e7f9e7b038';
 export default node;

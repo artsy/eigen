@@ -6,9 +6,9 @@ export type ShowArtistsQueryVariables = {
     readonly showID: string;
 };
 export type ShowArtistsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": ShowArtists_show$ref;
-    }) | null;
+    } | null;
 };
 export type ShowArtistsQuery = {
     readonly response: ShowArtistsQueryResponse;
@@ -23,29 +23,28 @@ query ShowArtistsQuery(
 ) {
   show(id: $showID) {
     ...ShowArtists_show
-    __id
+    id
   }
 }
 
 fragment ShowArtists_show on Show {
-  _id
-  id
+  internalID
+  gravityID
   artists_grouped_by_name {
     letter
     items {
       ...ArtistListItem_artist
       sortable_id
       href
-      __id
+      id
     }
   }
-  __id
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
-  _id
   id
+  internalID
+  gravityID
   name
   is_followed
   nationality
@@ -70,21 +69,20 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "showID",
-    "type": "String!"
+    "variableName": "showID"
   }
 ],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -97,24 +95,19 @@ v4 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowArtistsQuery",
-  "id": "323650445314a3f73847f8372e038cc1",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowArtistsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -122,8 +115,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtists_show",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -131,19 +123,19 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ShowArtistsQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v3,
-          v4,
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -169,15 +161,9 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "nationality",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  v2,
-                  v4,
+                  (v4/*: any*/),
+                  (v2/*: any*/),
+                  (v3/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -192,7 +178,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v3,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "nationality",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -243,10 +235,17 @@ return {
               }
             ]
           },
-          v2
+          (v4/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowArtistsQuery",
+    "id": "6d249093c807d20b7efc268fcb5c7497",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

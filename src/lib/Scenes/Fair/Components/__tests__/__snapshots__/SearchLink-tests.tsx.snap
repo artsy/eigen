@@ -19,13 +19,12 @@ exports[`SearchLink Renders properly 1`] = `
       Object {
         "backgroundColor": "#F8F8F8",
         "height": 46,
-        "marginBottom": 4,
-        "paddingBottom": 4,
-        "paddingLeft": 8,
-        "paddingRight": 8,
-        "paddingTop": 4,
+        "marginBottom": 10,
+        "paddingBottom": 10,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 10,
       },
-      undefined,
     ]
   }
 >
@@ -41,7 +40,6 @@ exports[`SearchLink Renders properly 1`] = `
           "flexDirection": "row",
           "flexWrap": "nowrap",
         },
-        undefined,
       ]
     }
   >
@@ -185,15 +183,13 @@ exports[`SearchLink Renders properly 1`] = `
       style={
         Array [
           Object {
-            "marginLeft": 4,
-            "paddingTop": 0.3,
+            "marginLeft": 10,
+            "paddingTop": 3,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bwzfXH uTxCW"
         color="#666"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
@@ -206,7 +202,7 @@ exports[`SearchLink Renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
-            undefined,
+            Object {},
           ]
         }
       >

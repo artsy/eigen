@@ -1,166 +1,197 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _GlobalMap_viewer$ref: unique symbol;
 export type GlobalMap_viewer$ref = typeof _GlobalMap_viewer$ref;
 export type GlobalMap_viewer = {
-    readonly city: ({
+    readonly city: {
         readonly name: string | null;
         readonly slug: string | null;
-        readonly coordinates: ({
+        readonly coordinates: {
             readonly lat: number | null;
             readonly lng: number | null;
-        }) | null;
-        readonly sponsoredContent: ({
+        } | null;
+        readonly sponsoredContent: {
             readonly introText: string | null;
             readonly artGuideUrl: string | null;
-            readonly featuredShows: ReadonlyArray<({
+            readonly featuredShows: ReadonlyArray<{
+                readonly gravityID: string;
+                readonly internalID: string;
                 readonly id: string;
-                readonly _id: string;
-                readonly __id: string;
                 readonly name: string | null;
                 readonly status: string | null;
                 readonly isStubShow: boolean | null;
                 readonly href: string | null;
                 readonly is_followed: boolean | null;
                 readonly exhibition_period: string | null;
-                readonly cover_image: ({
+                readonly cover_image: {
                     readonly url: string | null;
-                }) | null;
-                readonly location: ({
-                    readonly coordinates: ({
+                } | null;
+                readonly location: {
+                    readonly coordinates: {
                         readonly lat: number | null;
                         readonly lng: number | null;
-                    }) | null;
-                }) | null;
+                    } | null;
+                } | null;
                 readonly type: string | null;
                 readonly start_at: string | null;
                 readonly end_at: string | null;
                 readonly partner: ({
                     readonly name?: string | null;
                     readonly type?: string | null;
-                }) | null;
-            }) | null> | null;
-            readonly shows: ({
+                } & ({
+                    readonly name: string | null;
+                    readonly type: string | null;
+                } | {
+                    /*This will never be '% other', but we need some
+                    value in case none of the concrete values match.*/
+                    readonly __typename: "%other";
+                })) | null;
+            } | null> | null;
+            readonly shows: {
                 readonly totalCount: number | null;
-            }) | null;
-        }) | null;
-        readonly upcomingShows: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+            } | null;
+        } | null;
+        readonly upcomingShows: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly gravityID: string;
+                    readonly internalID: string;
                     readonly id: string;
-                    readonly _id: string;
-                    readonly __id: string;
                     readonly isStubShow: boolean | null;
                     readonly name: string | null;
                     readonly status: string | null;
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
                     readonly exhibition_period: string | null;
-                    readonly cover_image: ({
+                    readonly cover_image: {
                         readonly url: string | null;
-                    }) | null;
-                    readonly location: ({
-                        readonly coordinates: ({
+                    } | null;
+                    readonly location: {
+                        readonly coordinates: {
                             readonly lat: number | null;
                             readonly lng: number | null;
-                        }) | null;
-                    }) | null;
+                        } | null;
+                    } | null;
                     readonly type: string | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: ({
                         readonly name?: string | null;
                         readonly type?: string | null;
-                        readonly profile?: ({
-                            readonly image: ({
+                        readonly profile?: {
+                            readonly image: {
                                 readonly url: string | null;
-                            }) | null;
-                        }) | null;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly shows: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+                            } | null;
+                        } | null;
+                    } & ({
+                        readonly name: string | null;
+                        readonly type: string | null;
+                        readonly profile: {
+                            readonly image: {
+                                readonly url: string | null;
+                            } | null;
+                        } | null;
+                    } | {
+                        /*This will never be '% other', but we need some
+                        value in case none of the concrete values match.*/
+                        readonly __typename: "%other";
+                    })) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+        readonly shows: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly gravityID: string;
+                    readonly internalID: string;
                     readonly id: string;
-                    readonly _id: string;
-                    readonly __id: string;
                     readonly isStubShow: boolean | null;
                     readonly name: string | null;
                     readonly status: string | null;
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
                     readonly exhibition_period: string | null;
-                    readonly cover_image: ({
+                    readonly cover_image: {
                         readonly url: string | null;
-                    }) | null;
-                    readonly location: ({
-                        readonly coordinates: ({
+                    } | null;
+                    readonly location: {
+                        readonly coordinates: {
                             readonly lat: number | null;
                             readonly lng: number | null;
-                        }) | null;
-                    }) | null;
+                        } | null;
+                    } | null;
                     readonly type: string | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: ({
                         readonly name?: string | null;
                         readonly type?: string | null;
-                        readonly profile?: ({
-                            readonly image: ({
+                        readonly profile?: {
+                            readonly image: {
                                 readonly url: string | null;
-                            }) | null;
-                        }) | null;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly fairs: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string;
+                            } | null;
+                        } | null;
+                    } & ({
+                        readonly name: string | null;
+                        readonly type: string | null;
+                        readonly profile: {
+                            readonly image: {
+                                readonly url: string | null;
+                            } | null;
+                        } | null;
+                    } | {
+                        /*This will never be '% other', but we need some
+                        value in case none of the concrete values match.*/
+                        readonly __typename: "%other";
+                    })) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+        readonly fairs: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly gravityID: string;
                     readonly name: string | null;
                     readonly exhibition_period: string | null;
-                    readonly counts: ({
+                    readonly counts: {
                         readonly partners: any | null;
-                    }) | null;
-                    readonly location: ({
-                        readonly coordinates: ({
+                    } | null;
+                    readonly location: {
+                        readonly coordinates: {
                             readonly lat: number | null;
                             readonly lng: number | null;
-                        }) | null;
-                    }) | null;
-                    readonly image: ({
+                        } | null;
+                    } | null;
+                    readonly image: {
                         readonly image_url: string | null;
                         readonly aspect_ratio: number;
                         readonly url: string | null;
-                    }) | null;
-                    readonly profile: ({
-                        readonly icon: ({
-                            readonly id: string | null;
+                    } | null;
+                    readonly profile: {
+                        readonly icon: {
+                            readonly gravityID: string | null;
                             readonly href: string | null;
                             readonly height: number | null;
                             readonly width: number | null;
                             readonly url: string | null;
-                        }) | null;
-                        readonly __id: string;
+                        } | null;
                         readonly id: string;
+                        readonly gravityID: string;
                         readonly name: string | null;
-                    }) | null;
+                    } | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly " $refType": GlobalMap_viewer$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -196,21 +227,21 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -238,7 +269,7 @@ v7 = {
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -265,7 +296,7 @@ v11 = {
   "concreteType": "Image",
   "plural": false,
   "selections": [
-    v10
+    (v10/*: any*/)
   ]
 },
 v12 = {
@@ -277,8 +308,7 @@ v12 = {
   "concreteType": "Location",
   "plural": false,
   "selections": [
-    v1,
-    v4
+    (v1/*: any*/)
   ]
 },
 v13 = {
@@ -305,20 +335,17 @@ v15 = {
 v16 = {
   "kind": "Literal",
   "name": "sort",
-  "value": "START_AT_ASC",
-  "type": "PartnerShowSorts"
+  "value": "START_AT_ASC"
 },
 v17 = {
   "kind": "Variable",
   "name": "first",
-  "variableName": "maxInt",
-  "type": "Int"
+  "variableName": "maxInt"
 },
 v18 = {
   "kind": "Literal",
   "name": "includeStubShows",
-  "value": true,
-  "type": "Boolean"
+  "value": true
 },
 v19 = [
   {
@@ -339,20 +366,20 @@ v19 = [
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v2,
-          v3,
-          v4,
-          v6,
-          v0,
-          v5,
-          v7,
-          v8,
-          v9,
-          v11,
-          v12,
-          v13,
-          v14,
-          v15,
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          (v6/*: any*/),
+          (v0/*: any*/),
+          (v5/*: any*/),
+          (v7/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/),
+          (v11/*: any*/),
+          (v12/*: any*/),
+          (v13/*: any*/),
+          (v14/*: any*/),
+          (v15/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -362,13 +389,12 @@ v19 = [
             "concreteType": null,
             "plural": false,
             "selections": [
-              v4,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v0,
-                  v13,
+                  (v0/*: any*/),
+                  (v13/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -395,15 +421,13 @@ v19 = [
                               {
                                 "kind": "Literal",
                                 "name": "version",
-                                "value": "square",
-                                "type": "[String]"
+                                "value": "square"
                               }
                             ],
                             "storageKey": "url(version:\"square\")"
                           }
                         ]
-                      },
-                      v4
+                      }
                     ]
                   }
                 ]
@@ -444,14 +468,13 @@ return {
         {
           "kind": "Variable",
           "name": "slug",
-          "variableName": "citySlug",
-          "type": "String"
+          "variableName": "citySlug"
         }
       ],
       "concreteType": "City",
       "plural": false,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -459,7 +482,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v1,
+        (v1/*: any*/),
         {
           "kind": "LinkedField",
           "alias": null,
@@ -492,20 +515,20 @@ return {
               "concreteType": "Show",
               "plural": true,
               "selections": [
-                v2,
-                v3,
-                v4,
-                v0,
-                v5,
-                v6,
-                v7,
-                v8,
-                v9,
-                v11,
-                v12,
-                v13,
-                v14,
-                v15,
+                (v2/*: any*/),
+                (v3/*: any*/),
+                (v4/*: any*/),
+                (v0/*: any*/),
+                (v5/*: any*/),
+                (v6/*: any*/),
+                (v7/*: any*/),
+                (v8/*: any*/),
+                (v9/*: any*/),
+                (v11/*: any*/),
+                (v12/*: any*/),
+                (v13/*: any*/),
+                (v14/*: any*/),
+                (v15/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -515,13 +538,12 @@ return {
                   "concreteType": null,
                   "plural": false,
                   "selections": [
-                    v4,
                     {
                       "kind": "InlineFragment",
                       "type": "Partner",
                       "selections": [
-                        v0,
-                        v13
+                        (v0/*: any*/),
+                        (v13/*: any*/)
                       ]
                     }
                   ]
@@ -537,10 +559,9 @@ return {
                 {
                   "kind": "Literal",
                   "name": "first",
-                  "value": 1,
-                  "type": "Int"
+                  "value": 1
                 },
-                v16
+                (v16/*: any*/)
               ],
               "concreteType": "ShowConnection",
               "plural": false,
@@ -565,22 +586,20 @@ return {
             {
               "kind": "Literal",
               "name": "dayThreshold",
-              "value": 14,
-              "type": "Int"
+              "value": 14
             },
-            v17,
-            v18,
-            v16,
+            (v17/*: any*/),
+            (v18/*: any*/),
+            (v16/*: any*/),
             {
               "kind": "Literal",
               "name": "status",
-              "value": "UPCOMING",
-              "type": "EventStatus"
+              "value": "UPCOMING"
             }
           ],
           "concreteType": "ShowConnection",
           "plural": false,
-          "selections": v19
+          "selections": (v19/*: any*/)
         },
         {
           "kind": "LinkedField",
@@ -588,24 +607,22 @@ return {
           "name": "shows",
           "storageKey": null,
           "args": [
-            v17,
-            v18,
+            (v17/*: any*/),
+            (v18/*: any*/),
             {
               "kind": "Literal",
               "name": "sort",
-              "value": "PARTNER_ASC",
-              "type": "PartnerShowSorts"
+              "value": "PARTNER_ASC"
             },
             {
               "kind": "Literal",
               "name": "status",
-              "value": "RUNNING",
-              "type": "EventStatus"
+              "value": "RUNNING"
             }
           ],
           "concreteType": "ShowConnection",
           "plural": false,
-          "selections": v19
+          "selections": (v19/*: any*/)
         },
         {
           "kind": "LinkedField",
@@ -613,18 +630,12 @@ return {
           "name": "fairs",
           "storageKey": null,
           "args": [
-            v17,
-            {
-              "kind": "Literal",
-              "name": "sort",
-              "value": "START_AT_ASC",
-              "type": "FairSorts"
-            },
+            (v17/*: any*/),
+            (v16/*: any*/),
             {
               "kind": "Literal",
               "name": "status",
-              "value": "CURRENT",
-              "type": "EventStatus"
+              "value": "CURRENT"
             }
           ],
           "concreteType": "FairConnection",
@@ -648,9 +659,9 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v3,
-                    v0,
-                    v9,
+                    (v2/*: any*/),
+                    (v0/*: any*/),
+                    (v9/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -669,7 +680,7 @@ return {
                         }
                       ]
                     },
-                    v12,
+                    (v12/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -693,7 +704,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v10
+                        (v10/*: any*/)
                       ]
                     },
                     {
@@ -714,8 +725,8 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            v3,
-                            v7,
+                            (v2/*: any*/),
+                            (v7/*: any*/),
                             {
                               "kind": "ScalarField",
                               "alias": null,
@@ -738,22 +749,20 @@ return {
                                 {
                                   "kind": "Literal",
                                   "name": "version",
-                                  "value": "square140",
-                                  "type": "[String]"
+                                  "value": "square140"
                                 }
                               ],
                               "storageKey": "url(version:\"square140\")"
                             }
                           ]
                         },
-                        v4,
-                        v3,
-                        v0
+                        (v4/*: any*/),
+                        (v2/*: any*/),
+                        (v0/*: any*/)
                       ]
                     },
-                    v14,
-                    v15,
-                    v4
+                    (v14/*: any*/),
+                    (v15/*: any*/)
                   ]
                 }
               ]
@@ -765,5 +774,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'cb42e8d99d438f55990ee5db4cd77d31';
+(node as any).hash = '756780b1d5a561adb5ff1c64a00d3ba8';
 export default node;

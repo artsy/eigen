@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { Articles_articles$ref } from "./Articles_articles.graphql";
 import { Biography_artist$ref } from "./Biography_artist.graphql";
 import { RelatedArtists_artists$ref } from "./RelatedArtists_artists.graphql";
@@ -9,28 +9,20 @@ export type About_artist$ref = typeof _About_artist$ref;
 export type About_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
-    readonly id: string;
-    readonly related_artists: ReadonlyArray<({
+    readonly gravityID: string;
+    readonly related_artists: ReadonlyArray<{
         readonly " $fragmentRefs": RelatedArtists_artists$ref;
-    }) | null> | null;
-    readonly articles: ReadonlyArray<({
+    } | null> | null;
+    readonly articles: ReadonlyArray<{
         readonly " $fragmentRefs": Articles_articles$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $fragmentRefs": Biography_artist$ref;
     readonly " $refType": About_artist$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "About_artist",
   "type": "Artist",
@@ -54,14 +46,9 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "Biography_artist",
-      "args": null
     },
     {
       "kind": "LinkedField",
@@ -72,8 +59,7 @@ return {
         {
           "kind": "Literal",
           "name": "size",
-          "value": 16,
-          "type": "Int"
+          "value": 16
         }
       ],
       "concreteType": "Artist",
@@ -83,8 +69,7 @@ return {
           "kind": "FragmentSpread",
           "name": "RelatedArtists_artists",
           "args": null
-        },
-        v0
+        }
       ]
     },
     {
@@ -100,13 +85,15 @@ return {
           "kind": "FragmentSpread",
           "name": "Articles_articles",
           "args": null
-        },
-        v0
+        }
       ]
     },
-    v0
+    {
+      "kind": "FragmentSpread",
+      "name": "Biography_artist",
+      "args": null
+    }
   ]
 };
-})();
-(node as any).hash = '0d92b625a9f137deef4539f44df5d64c';
+(node as any).hash = 'fd32ce5fe60123b9bf29932fe861bcd4';
 export default node;

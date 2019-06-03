@@ -36,7 +36,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
   isTapped: boolean
 
-  handleTap(_slug, _id) {
+  handleTap(_slug, _gravityID) {
     this.isTapped = true
     const href = hrefForPartialShow(this.props.show)
     SwitchBoard.presentNavigationViewController(this, href)
@@ -47,19 +47,19 @@ export class ShowItemRow extends React.Component<Props, State> {
 
   @track(props => {
     const {
-      show: { id: slug, _id, is_followed },
+      show: { gravityID: slug, internalID, is_followed },
     } = props
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
       action_type: Schema.ActionTypes.Success,
       owner_type: Schema.OwnerEntityTypes.Show,
-      owner_id: _id,
+      owner_id: internalID,
       owner_slug: slug,
     } as any
   })
   handleSave() {
     const {
-      show: { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed },
+      show: { gravityID: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed },
     } = this.props
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
@@ -78,8 +78,8 @@ export class ShowItemRow extends React.Component<Props, State> {
               mutation ShowItemRowMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
-                    id
-                    _id
+                    gravityID
+                    internalID
                     is_followed
                   }
                 }
@@ -94,8 +94,8 @@ export class ShowItemRow extends React.Component<Props, State> {
             optimisticResponse: {
               followShow: {
                 show: {
-                  id: showSlug,
-                  _id: showID,
+                  gravityID: showSlug,
+                  internalID: showID,
                   is_followed: !isShowFollowed,
                 },
               },
@@ -127,7 +127,9 @@ export class ShowItemRow extends React.Component<Props, State> {
     const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
-      <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.id, show._id) : null)}>
+      <TouchableWithoutFeedback
+        onPress={() => (!this.isTapped ? this.handleTap(show.gravityID, show.internalID) : null)}
+      >
         <Flex flexDirection="row">
           {!imageURL ? (
             <DefaultImageContainer p={15}>
@@ -185,9 +187,9 @@ export class ShowItemRow extends React.Component<Props, State> {
 export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
   show: graphql`
     fragment ShowItemRow_show on Show {
+      gravityID
+      internalID
       id
-      _id
-      __id
       is_followed
       name
       isStubShow

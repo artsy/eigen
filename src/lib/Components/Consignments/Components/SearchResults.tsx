@@ -75,7 +75,15 @@ const render = (props: SearchQueryProps) => {
   )
 
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        width: "100%",
+        maxWidth: 540,
+        alignSelf: "center",
+        paddingTop: 20,
+      }}
+    >
       <TextInput
         searching={props.searching}
         preImage={props.preImage}
@@ -99,7 +107,7 @@ const render = (props: SearchQueryProps) => {
   )
 }
 
-export default class SearchResults extends React.Component<SearchQueryProps, null> {
+export class SearchResults extends React.Component<SearchQueryProps, null> {
   render() {
     return render(this.props)
   }

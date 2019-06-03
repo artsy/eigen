@@ -1,6 +1,6 @@
 import { ConsignmentMetadata, ConsignmentSetup } from "../index"
 
-export const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown", id: "gb", image: { url: "" } } }
+export const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown", internalID: "gb", image: { url: "" } } }
 
 export const withOnePhoto: ConsignmentSetup = {
   ...withArtist,

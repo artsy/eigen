@@ -17,8 +17,8 @@ it("renders properly", async () => {
       query={graphql`
         query FairBMWArtActivationTestsQuery {
           fair(id: "art-basel-in-miami-beach-2018") {
-            id
-            _id
+            gravityID
+            internalID
             sponsoredContent {
               activationText
               pressReleaseUrl

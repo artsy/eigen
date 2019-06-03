@@ -7,6 +7,8 @@ import * as renderer from "react-test-renderer"
 
 import Inbox, { Inbox as ActualInbox } from "../Inbox"
 
+import { Theme } from "@artsy/palette"
+
 jest.mock("../../Components/Inbox/Conversations", () => "Conversations")
 
 const emptyMeProps = {
@@ -15,7 +17,13 @@ const emptyMeProps = {
 }
 
 it("renders correctly", () => {
-  const tree = renderer.create(<Inbox me={meProps() as any} isVisible={true} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <Inbox me={meProps() as any} isVisible={true} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 
@@ -119,7 +127,7 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
     ? [
         {
           most_recent_bid: {
-            __id: "594934048b3b8174796e285a",
+            gravityID: "594934048b3b8174796e285a",
             id: "594934048b3b8174796e285a",
             display_max_bid_amount_dollars: "$1,100",
             max_bid: {
@@ -152,7 +160,7 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
         },
         {
           most_recent_bid: {
-            __id: "594933e6275b244305851e9c",
+            gravityID: "594933e6275b244305851e9c",
             id: "594933e6275b244305851e9c",
             display_max_bid_amount_dollars: "$10,000",
             max_bid: {
@@ -185,7 +193,7 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
         },
         {
           most_recent_bid: {
-            __id: "594932d0275b244305851e99",
+            gravityID: "594932d0275b244305851e99",
             id: "594932d0275b244305851e99",
             display_max_bid_amount_dollars: "$5,000",
             max_bid: {

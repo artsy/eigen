@@ -21,7 +21,6 @@ export class FollowArtistButton extends React.Component<Props, State> {
     const { artist, relay } = this.props
 
     console.log("ENV")
-    const newFollowCount = artist.is_followed ? artist.counts.follows - 1 : artist.counts.follows + 1
 
     this.setState(
       {
@@ -38,36 +37,32 @@ export class FollowArtistButton extends React.Component<Props, State> {
             mutation FollowArtistButtonMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
                 artist {
-                  __id
+                  id
                   is_followed
-                  counts {
-                    follows
-                  }
                 }
               }
             }
           `,
           variables: {
             input: {
-              artist_id: artist.id,
+              artist_id: artist.gravityID,
               unfollow: artist.is_followed,
             },
           },
           optimisticResponse: {
             followArtist: {
               artist: {
-                __id: artist.__id,
+                id: artist.id,
                 is_followed: !artist.is_followed,
-                counts: { follows: newFollowCount },
               },
             },
           },
-          updater: store => {
-            store.get(artist.__id).setValue(!artist.is_followed, "is_followed")
-            // const artistProxy = store.get(data.followArtist.artist.__id)
+          // updater: store => {
+          //   store.get(artist.gravityID).setValue(!artist.is_followed, "is_followed")
+          //   // const artistProxy = store.get(data.followArtist.artist.__id)
 
-            // artistProxy.getLinkedRecord("counts").setValue(newFollowCount, "follows")
-          },
+          //   // artistProxy.getLinkedRecord("counts").setValue(newFollowCount, "follows")
+          // },
         })
       }
     )
@@ -95,13 +90,9 @@ export class FollowArtistButton extends React.Component<Props, State> {
 export const FollowArtistButtonFragmentContainer = createFragmentContainer(FollowArtistButton, {
   artist: graphql`
     fragment FollowArtistButton_artist on Artist {
-      __id
+      gravityID
       id
-      _id
       is_followed
-      counts {
-        follows
-      }
     }
   `,
 })

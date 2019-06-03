@@ -1,3 +1,0 @@
-{
-  "f8197d21d8aff23ce19f450cab90df7f": "mutation FairBoothHeaderMutation(\n  $input: FollowProfileInput!\n) {\n  followProfile(input: $input) {\n    profile {\n      id\n      _id\n      is_followed\n      __id\n    }\n  }\n}\n"
-}

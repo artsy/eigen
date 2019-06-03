@@ -1,3 +1,0 @@
-{
-  "0023626ca915fceadd7566c4629371d5": "query MockRelayRendererFixturesBadQuery {\n  something_that_is_not_expected: artwork(id: \"mona-lisa\") {\n    ...MockRelayRendererFixtures_artwork\n    __id\n  }\n}\n\nfragment MockRelayRendererFixtures_artwork on Artwork {\n  image {\n    url\n  }\n  artist {\n    id\n    __id\n  }\n  ...MockRelayRendererFixtures_artworkMetadata\n  __id\n}\n\nfragment MockRelayRendererFixtures_artworkMetadata on Artwork {\n  title\n  __id\n}\n"
-}

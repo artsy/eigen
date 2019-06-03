@@ -1,54 +1,46 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 import { Notification_notification$ref } from "./Notification_notification.graphql";
 declare const _WorksForYou_viewer$ref: unique symbol;
 export type WorksForYou_viewer$ref = typeof _WorksForYou_viewer$ref;
 export type WorksForYou_viewer = {
-    readonly me: ({
-        readonly followsAndSaves: ({
-            readonly notifications: ({
+    readonly me: {
+        readonly followsAndSaves: {
+            readonly notifications: {
                 readonly pageInfo: {
                     readonly hasNextPage: boolean;
                     readonly endCursor: string | null;
                 };
-                readonly edges: ReadonlyArray<({
-                    readonly node: ({
-                        readonly __id: string;
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
+                        readonly id: string;
                         readonly " $fragmentRefs": Notification_notification$ref;
-                    }) | null;
-                }) | null> | null;
-            }) | null;
-        }) | null;
-    }) | null;
-    readonly selectedArtist: ({
-        readonly id: string;
+                    } | null;
+                } | null> | null;
+            } | null;
+        } | null;
+    } | null;
+    readonly selectedArtist: {
+        readonly gravityID: string;
         readonly href: string | null;
         readonly name: string | null;
-        readonly image: ({
-            readonly resized: ({
+        readonly image: {
+            readonly resized: {
                 readonly url: string | null;
-            }) | null;
-        }) | null;
-        readonly artworks: ReadonlyArray<({
+            } | null;
+        } | null;
+        readonly artworks: ReadonlyArray<{
             readonly " $fragmentRefs": GenericGrid_artworks$ref;
-        }) | null> | null;
-    }) | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": WorksForYou_viewer$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "WorksForYou_viewer",
   "type": "Viewer",
@@ -120,8 +112,7 @@ return {
                 {
                   "kind": "Literal",
                   "name": "sort",
-                  "value": "PUBLISHED_AT_DESC",
-                  "type": "ArtworkSorts"
+                  "value": "PUBLISHED_AT_DESC"
                 }
               ],
               "concreteType": "FollowedArtistsArtworksGroupConnection",
@@ -170,11 +161,12 @@ return {
                       "concreteType": "FollowedArtistsArtworksGroup",
                       "plural": false,
                       "selections": [
-                        v0,
                         {
-                          "kind": "FragmentSpread",
-                          "name": "Notification_notification",
-                          "args": null
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "id",
+                          "args": null,
+                          "storageKey": null
                         },
                         {
                           "kind": "ScalarField",
@@ -182,6 +174,11 @@ return {
                           "name": "__typename",
                           "args": null,
                           "storageKey": null
+                        },
+                        {
+                          "kind": "FragmentSpread",
+                          "name": "Notification_notification",
+                          "args": null
                         }
                       ]
                     },
@@ -197,8 +194,7 @@ return {
               ]
             }
           ]
-        },
-        v0
+        }
       ]
     },
     {
@@ -210,8 +206,7 @@ return {
         {
           "kind": "Variable",
           "name": "id",
-          "variableName": "selectedArtist",
-          "type": "String!"
+          "variableName": "selectedArtist"
         }
       ],
       "concreteType": "Artist",
@@ -220,7 +215,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "id",
+          "name": "gravityID",
           "args": null,
           "storageKey": null
         },
@@ -256,14 +251,12 @@ return {
                 {
                   "kind": "Literal",
                   "name": "height",
-                  "value": 80,
-                  "type": "Int"
+                  "value": 80
                 },
                 {
                   "kind": "Literal",
                   "name": "width",
-                  "value": 80,
-                  "type": "Int"
+                  "value": 80
                 }
               ],
               "concreteType": "ResizedImageUrl",
@@ -289,14 +282,12 @@ return {
             {
               "kind": "Literal",
               "name": "size",
-              "value": 6,
-              "type": "Int"
+              "value": 6
             },
             {
               "kind": "Literal",
               "name": "sort",
-              "value": "published_at_desc",
-              "type": "ArtworkSorts"
+              "value": "published_at_desc"
             }
           ],
           "concreteType": "Artwork",
@@ -306,15 +297,12 @@ return {
               "kind": "FragmentSpread",
               "name": "GenericGrid_artworks",
               "args": null
-            },
-            v0
+            }
           ]
-        },
-        v0
+        }
       ]
     }
   ]
 };
-})();
-(node as any).hash = '80174d15b8c622c116f477a87ac96f89';
+(node as any).hash = '902ce5b4b0d82cec0693796c4ae26b32';
 export default node;
