@@ -1,4 +1,4 @@
-import { Sans, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -30,7 +30,11 @@ describe("FollowArtistButton", () => {
   describe("Following an artist", () => {
     const getWrapper = async ({ mockArtistData, mockFollowResults }) => {
       return await renderRelayTree({
-        Component: FollowArtistButtonFragmentContainer,
+        Component: (props: any) => (
+          <Theme>
+            <FollowArtistButtonFragmentContainer {...props} />
+          </Theme>
+        ),
         query: graphql`
           query FollowArtistButtonTestsQuery {
             artist(id: "artistID") {

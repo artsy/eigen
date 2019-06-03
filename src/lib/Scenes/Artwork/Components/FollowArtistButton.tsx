@@ -1,4 +1,4 @@
-import { Sans, Theme } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import { FollowArtistButton_artist } from "__generated__/FollowArtistButton_artist.graphql"
 import { FollowArtistButtonMutation } from "__generated__/FollowArtistButtonMutation.graphql"
 import React from "react"
@@ -19,8 +19,6 @@ export class FollowArtistButton extends React.Component<Props, State> {
 
   handleFollowArtist = () => {
     const { artist, relay } = this.props
-
-    console.log("ENV")
 
     this.setState(
       {
@@ -65,18 +63,16 @@ export class FollowArtistButton extends React.Component<Props, State> {
   render() {
     const followButtonText = this.props.artist.is_followed ? "Following" : "Follow"
     return (
-      <Theme>
-        <>
-          <Sans color="black60" size="6" mx={1}>
-            &middot;
+      <>
+        <Sans color="black60" size="6" mx={1}>
+          &middot;
+        </Sans>
+        <TouchableWithoutFeedback onPress={this.handleFollowArtist.bind(this)}>
+          <Sans color="black60" size="4">
+            {followButtonText}
           </Sans>
-          <TouchableWithoutFeedback onPress={this.handleFollowArtist.bind(this)}>
-            <Sans color="black60" size="4">
-              {followButtonText}
-            </Sans>
-          </TouchableWithoutFeedback>
-        </>
-      </Theme>
+        </TouchableWithoutFeedback>
+      </>
     )
   }
 }
