@@ -1,16 +1,28 @@
 import { color, Flex, space, Spacer } from "@artsy/palette"
+import Spinner from "lib/Components/Spinner"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Animated, Dimensions, FlatList, Image, Modal, ScrollView, TouchableWithoutFeedback, View } from "react-native"
-import { Spring } from "react-spring/dist/native.cjs.js"
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  ImageProps,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native"
 
-interface ImageProps {
+interface CarouselImageProps {
   url: string
   width: number
   height: number
 }
 
-interface CarouselItem extends ImageProps {
-  thumbnail?: ImageProps
+interface CarouselItemProps extends CarouselImageProps {
+  thumbnail?: CarouselImageProps
 }
 
 interface Measurements {
@@ -24,7 +36,7 @@ interface Measurements {
 }
 
 interface CarouselProps {
-  items: ReadonlyArray<CarouselItem>
+  items: ReadonlyArray<CarouselItemProps>
 }
 
 const screenHeight = Dimensions.get("screen").height
@@ -38,7 +50,7 @@ function getMeasurements({
   item,
   boundingBox,
 }: {
-  item: CarouselItem
+  item: CarouselItemProps
   boundingBox: {
     width: number
     height: number
@@ -97,7 +109,7 @@ export function FullScreenCarousel({
   return (
     <Modal transparent>
       <Animated.View style={{ opacity, zIndex: 1 }}>
-        <FlatList<CarouselItem>
+        <FlatList<CarouselItemProps>
           data={items}
           horizontal
           bounces={false}
@@ -137,6 +149,41 @@ export function FullScreenCarousel({
         />
       </Animated.View>
     </Modal>
+  )
+}
+
+function useImageLoadingState(): { isLoading: boolean; error: boolean } & Partial<ImageProps> {
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(false)
+  return {
+    isLoading,
+    error,
+    onLoadStart() {
+      setIsLoading(true)
+    },
+    onLoadEnd() {
+      setIsLoading(false)
+    },
+    onError() {
+      setError(true)
+    },
+  }
+}
+
+const now = Date.now()
+const cacheBust = (url: string) => (__DEV__ ? url + "?time=" + now : url)
+
+const ImageWithLoadingState: React.FC<ImageProps> = ({ ...props }) => {
+  const { isLoading, error, ...loadingProps } = useImageLoadingState()
+
+  return (
+    <ImageBackground
+      {...props}
+      style={{ ...(props.style as any), alignItems: "center", justifyContent: "center" }}
+      {...loadingProps}
+    >
+      {error ? <Text>Failed to load</Text> : isLoading ? <Spinner /> : null}
+    </ImageBackground>
   )
 }
 
@@ -204,7 +251,7 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
   )
   return (
     <View>
-      <FlatList<CarouselItem>
+      <FlatList<CarouselItemProps>
         ref={ref}
         data={items}
         horizontal
@@ -224,8 +271,8 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
           }
           return (
             <TouchableWithoutFeedback onPress={() => setFullScreen(true)}>
-              <Image
-                source={{ uri: item.url }}
+              <ImageWithLoadingState
+                source={{ uri: cacheBust(item.url) }}
                 style={{
                   ...styles,
                 }}
@@ -255,15 +302,18 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
 }
 
 const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diameter, selected }) => {
-  const anim = useMemo(() => new Animated.Value(selected ? 1 : 0), [])
-  const dotColor = anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [color("black10"), "black"],
-  })
+  const animatedValues = useMemo(() => {
+    const toggle = new Animated.Value(selected ? 1 : 0)
+    const dotColor = toggle.interpolate({
+      inputRange: [0, 1],
+      outputRange: [color("black10"), "black"],
+    })
+    return { toggle, dotColor }
+  }, [])
 
   useEffect(
     () => {
-      Animated.spring(anim, {
+      Animated.spring(animatedValues.toggle, {
         toValue: selected ? 1 : 0,
       }).start()
     },
@@ -271,33 +321,14 @@ const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diam
   )
 
   return (
-    <View
+    <Animated.View
       style={{
+        marginHorizontal: diameter * 0.8,
+        borderRadius: diameter / 2,
         width: diameter,
         height: diameter,
-        marginHorizontal: diameter * 0.8,
+        backgroundColor: animatedValues.dotColor,
       }}
-    >
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Animated.View
-          style={{
-            borderRadius: diameter / 2,
-            width: diameter,
-            height: diameter,
-            backgroundColor: dotColor,
-          }}
-        />
-      </View>
-    </View>
+    />
   )
 }
