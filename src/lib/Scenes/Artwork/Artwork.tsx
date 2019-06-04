@@ -10,7 +10,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
-import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel"
+import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {

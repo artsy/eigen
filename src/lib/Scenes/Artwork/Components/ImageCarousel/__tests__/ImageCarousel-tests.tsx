@@ -2,7 +2,8 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
-import { fitInside, getMeasurements, ImageCarouselFragmentContainer } from "../ImageCarousel"
+import { getMeasurements } from "../geometry"
+import { cardBoundingBox, ImageCarouselFragmentContainer } from "../ImageCarousel"
 
 jest.unmock("react-relay")
 
@@ -93,117 +94,77 @@ describe("ImageCarouselFragmentContainer", () => {
       expect(wrapper.find(FlatList)).toHaveLength(1)
       expect(wrapper.find(FlatList).props().data).toHaveLength(5)
     })
+
     it("shows five pagination dots", async () => {
       const wrapper = await getWrapper()
       expect(wrapper.find("PaginationDot")).toHaveLength(5)
     })
+
     it("shows the first pagination dot as being selected and the rest as not selected", async () => {
       const wrapper = await getWrapper()
-      expect(
-        wrapper
-          .find("PaginationDot")
-          .at(0)
-          .props().selected
-      ).toBeTruthy()
+      expect(wrapper.find("PaginationDot").map(dot => dot.props().selected)).toMatchObject([
+        true,
+        false,
+        false,
+        false,
+        false,
+      ])
+    })
 
-      expect(
-        wrapper
-          .find("PaginationDot")
-          .at(1)
-          .props().selected
-      ).toBeFalsy()
-      expect(
-        wrapper
-          .find("PaginationDot")
-          .at(2)
-          .props().selected
-      ).toBeFalsy()
-      expect(
-        wrapper
-          .find("PaginationDot")
-          .at(3)
-          .props().selected
-      ).toBeFalsy()
-      expect(
-        wrapper
-          .find("PaginationDot")
-          .at(4)
-          .props().selected
-      ).toBeFalsy()
+    it("'selects' subsequent pagination dots as a result of scrolling", async () => {
+      const wrapper = await getWrapper()
+      expect(wrapper.find("PaginationDot").map(dot => dot.props().selected)).toMatchObject([
+        true,
+        false,
+        false,
+        false,
+        false,
+      ])
+
+      const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: cardBoundingBox })
+
+      wrapper
+        .find(FlatList)
+        .props()
+        .onScroll({ nativeEvent: { contentOffset: { x: measurements[1].cumulativeScrollOffset } } })
+
+      wrapper.update()
+
+      expect(wrapper.find("PaginationDot").map(dot => dot.props().selected)).toMatchObject([
+        false,
+        true,
+        false,
+        false,
+        false,
+      ])
+
+      wrapper
+        .find(FlatList)
+        .props()
+        .onScroll({ nativeEvent: { contentOffset: { x: measurements[4].cumulativeScrollOffset } } })
+
+      wrapper.update()
+
+      expect(wrapper.find("PaginationDot").map(dot => dot.props().selected)).toMatchObject([
+        false,
+        false,
+        false,
+        false,
+        true,
+      ])
     })
   })
-})
 
-describe(fitInside, () => {
-  it("returns one of the given boxes if they are the same", () => {
-    expect(fitInside({ width: 10, height: 10 }, { width: 10, height: 10 })).toMatchObject({
-      width: 10,
-      height: 10,
-      marginHorizontal: 0,
-      marginVertical: 0,
+  describe("with one image", () => {
+    const artwork = { ...artworkFixture, images: [artworkFixture.images[0]] }
+    it("shows no pagination dots", async () => {
+      const wrapper = await getWrapper(artwork)
+      expect(wrapper.find("PaginationDot")).toHaveLength(0)
     })
-  })
 
-  it("constrains the box by height if it is too tall", () => {
-    expect(fitInside({ width: 10, height: 10 }, { width: 10, height: 20 })).toMatchObject({
-      width: 5,
-      height: 10,
-      marginHorizontal: 2.5,
-      marginVertical: 0,
+    it("disables scrolling", async () => {
+      const wrapper = await getWrapper(artwork)
+      expect(wrapper.find(FlatList).props().scrollEnabled).toBe(false)
     })
-  })
-
-  it("constrains the box by width if it is too wide", () => {
-    expect(fitInside({ width: 10, height: 10 }, { width: 20, height: 10 })).toMatchObject({
-      width: 10,
-      height: 5,
-      marginHorizontal: 0,
-      marginVertical: 2.5,
-    })
-  })
-})
-
-describe(getMeasurements, () => {
-  it("Arranges images on the carousel rail", () => {
-    expect(
-      getMeasurements({
-        images: [
-          {
-            thumbnail: {
-              width: 10,
-              height: 10,
-            },
-          },
-          {
-            thumbnail: {
-              width: 10,
-              height: 10,
-            },
-          },
-        ] as any,
-        boundingBox: { width: 10, height: 10 },
-      })
-    ).toMatchInlineSnapshot(`
-Array [
-  Object {
-    "cumulativeScrollOffset": 0,
-    "height": 10,
-    "marginBottom": 0,
-    "marginLeft": 0,
-    "marginRight": 0,
-    "marginTop": 0,
-    "width": 10,
-  },
-  Object {
-    "cumulativeScrollOffset": 10,
-    "height": 10,
-    "marginBottom": 0,
-    "marginLeft": 0,
-    "marginRight": 0,
-    "marginTop": 0,
-    "width": 10,
-  },
-]
-`)
   })
 })
