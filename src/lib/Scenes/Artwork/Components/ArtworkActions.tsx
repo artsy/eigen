@@ -1,8 +1,6 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
+import { Box, color, EyeOpenedIcon, Flex, HeartFillIcon, HeartIcon, Sans, ShareIcon } from "@artsy/palette"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
-import { Pin } from "lib/Icons/Pin"
-import SearchIcon from "lib/Icons/SearchIcon"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -44,9 +42,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         <Flex flexDirection="row">
           <TouchableWithoutFeedback onPress={() => this.handleArtworkSave()}>
             <UtilButton pr={3} width="110px">
-              <Box mr={0.5}>
-                <Pin pinHeight={20} color={is_saved ? color("purple100") : color("black100")} />
-              </Box>
+              <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
               <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                 {is_saved ? "Saved" : "Save"}
               </Sans>
@@ -55,14 +51,14 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           {Constants.AREnabled && (
             <UtilButton pr={3}>
               <Box mr={0.5}>
-                <SearchIcon />
+                <EyeOpenedIcon />
               </Box>
               <Sans size="3">View in Room</Sans>
             </UtilButton>
           )}
           <UtilButton>
             <Box mr={0.5}>
-              <SearchIcon />
+              <ShareIcon />
             </Box>
             <Sans size="3">Share</Sans>
           </UtilButton>

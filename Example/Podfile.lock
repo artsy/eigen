@@ -33,7 +33,7 @@ PODS:
     - React/RCTLinkingIOS (= 0.59.2)
     - React/RCTNetwork (= 0.59.2)
     - React/RCTText (= 0.59.2)
-    - RNSVG (= 9.0.4)
+    - RNSVG (= 9.4.0)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 7.5.0)
@@ -149,7 +149,7 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNSVG (9.0.4):
+  - RNSVG (9.4.0):
     - React
   - SAMKeychain (1.5.0)
   - SDWebImage (3.8.2):
@@ -275,7 +275,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: a2f46c6dd2d930671c274e8c31fa5ec637d07a4a
+  Emission: c03721c6b10a932019c07d881fcfb9674947111d
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -292,7 +292,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: b1faef9f2ea27b07bdf818b8043909a93f797eca
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
-  RNSVG: 36f6615444ab569023444e09b01a1900d964e967
+  RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
