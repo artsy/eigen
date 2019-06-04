@@ -36,8 +36,8 @@ export class Artwork extends React.Component<Props> {
             <AboutArtist artwork={artwork} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
-            <OtherWorks artwork={artwork} />
             <ArtworkDetails artwork={artwork} />
+            <OtherWorks artwork={artwork} />
           </Join>
         </ScrollView>
       </Theme>
