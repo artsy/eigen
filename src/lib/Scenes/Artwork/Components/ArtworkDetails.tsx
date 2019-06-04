@@ -10,14 +10,11 @@ interface ArtworkDetailsProps {
 }
 
 interface ArtworkDetailsState {
-  show_all: boolean
+  showAll: boolean
 }
 
 export class ArtworkDetails extends React.Component<ArtworkDetailsProps, ArtworkDetailsState> {
-  constructor(props) {
-    super(props)
-    this.state = { show_all: false }
-  }
+  state = { showAll: false }
 
   render() {
     const listItems = [
@@ -40,7 +37,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 
     let displayItems = listItems.filter(i => i.value != null)
 
-    if (!this.state.show_all && displayItems.length > 3) {
+    if (!this.state.showAll && displayItems.length > 3) {
       displayItems = displayItems.slice(0, 3)
     }
 
@@ -59,10 +56,10 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
             </Sans>
           </>
         ))}
-        {!this.state.show_all && (
+        {!this.state.showAll && (
           <Button
             onPress={() => {
-              this.setState({ show_all: true })
+              this.setState({ showAll: true })
             }}
             title="Show more artwork details"
           />
