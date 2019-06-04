@@ -1,30 +1,13 @@
 import { color, Flex, space, Spacer } from "@artsy/palette"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Animated, Dimensions, FlatList, TouchableWithoutFeedback, View } from "react-native"
+import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
+import { devCacheBust } from "lib/utils/devCacheBust"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { Animated, Dimensions, FlatList } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
-interface CarouselImageProps {
-  url: string
-  width: number
-  height: number
-}
-
-interface CarouselItemProps extends CarouselImageProps {
-  thumbnail?: CarouselImageProps
-}
-
-interface Measurements {
-  width: number
-  height: number
-  marginLeft: number
-  marginRight: number
-  marginTop: number
-  marginBottom: number
-  cumulativeScrollOffset: number
-}
-
-interface CarouselProps {
-  items: ReadonlyArray<CarouselItemProps>
+export interface ImageCarouselProps {
+  images: ImageCarousel_images
 }
 
 const windowWidth = Dimensions.get("window").width
@@ -37,7 +20,7 @@ interface Box {
 }
 // places a box (child) in the center of another (container), making the child 'fit' within the container
 // without overflowing or changing the child's aspect ratio
-function constrainBoxSizeAndCenter(
+function fitInside(
   container: Box,
   child: Box
 ): { width: number; height: number; marginHorizontal: number; marginVertical: number } {
@@ -60,15 +43,28 @@ function constrainBoxSizeAndCenter(
   return { width, height, marginHorizontal, marginVertical }
 }
 
+/**
+ * Represents geometric data to position images on the carousel rail
+ */
+interface ImageMeasurements {
+  width: number
+  height: number
+  marginLeft: number
+  marginRight: number
+  marginTop: number
+  marginBottom: number
+  cumulativeScrollOffset: number
+}
+
 // given an input array of image sources, calculates the dimensions and positions of all the images on the carousel
 // rail. boundingBox is the maximum possible size that an image can occupy on the rail
-function getMeasurements({ items, boundingBox }: { items: ReadonlyArray<CarouselItemProps>; boundingBox: Box }) {
-  const result: Measurements[] = []
+function getMeasurements({ images, boundingBox }: { images: ImageCarousel_images; boundingBox: Box }) {
+  const result: ImageMeasurements[] = []
 
-  for (let i = 0; i < items.length; i++) {
-    const { width, height, marginHorizontal, marginVertical } = constrainBoxSizeAndCenter(boundingBox, items[i])
+  for (let i = 0; i < images.length; i++) {
+    const { width, height, marginHorizontal, marginVertical } = fitInside(boundingBox, images[i])
 
-    // constrain left margin to avoid excess white space between images
+    // collapse adjacent margins to avoid excess white space between images
     const marginLeft = i === 0 ? marginHorizontal : Math.max(marginHorizontal - result[i - 1].marginRight, 0)
 
     // calculate cumulative scroll offset taking collapsed margins into account
@@ -89,27 +85,24 @@ function getMeasurements({ items, boundingBox }: { items: ReadonlyArray<Carousel
   return result
 }
 
-const now = Date.now()
-const devCacheBust = (url: string) => (__DEV__ ? url + "?time=" + now : url)
-
-export const Carousel: React.FC<CarouselProps> = ({ items }) => {
-  const measurements = useMemo(
-    () => {
-      return getMeasurements({ items, boundingBox: cardBoundingBox })
-    },
-    [items]
-  )
+export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
+  const measurements = useMemo(() => getMeasurements({ images, boundingBox: cardBoundingBox }), [images])
   const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
+
   const [imageIndex, setImageIndex] = useState(0)
 
   // update the imageIndex on scroll
   const onScroll = useCallback(
     e => {
-      // binary search to find closest element in offsets
+      // This finds the index of the image which is being given the most
+      // screen real estate at any given point in time.
+      // It uses a binary search algorithm to find the closest cumulative scroll
+      // offset to the scrollX offset of the carousel rail
       const x = e.nativeEvent.contentOffset.x
       let lowIndex = 0
       let highIndex = offsets.length - 1
 
+      // do the binary search to find out which indexes the current rail scroll offset is between
       while (highIndex - lowIndex > 1) {
         const midIndex = Math.floor((highIndex + lowIndex) / 2)
         if (x < offsets[midIndex]) {
@@ -119,6 +112,7 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
         }
       }
 
+      // select the index to which it is closest
       if (Math.abs(x - offsets[lowIndex]) < Math.abs(x - offsets[highIndex])) {
         setImageIndex(lowIndex)
       } else {
@@ -130,28 +124,30 @@ export const Carousel: React.FC<CarouselProps> = ({ items }) => {
 
   return (
     <Flex>
-      <FlatList<CarouselItemProps>
-        data={items}
+      <FlatList<ImageCarousel_images[number]>
+        data={images}
         horizontal
         showsHorizontalScrollIndicator={false}
-        scrollEnabled={items.length > 1}
+        scrollEnabled={images.length > 1}
         snapToOffsets={offsets}
         keyExtractor={item => item.url}
         decelerationRate="fast"
         onScroll={onScroll}
         renderItem={({ item, index }) => {
-          item = item.thumbnail || item
+          const { url } = item.thumbnail || item
           const { cumulativeScrollOffset, ...styles } = measurements[index]
-          return <ImageWithLoadingState source={{ uri: devCacheBust(item.url) }} style={styles} />
+          return <ImageWithLoadingState source={{ uri: devCacheBust(url) }} style={styles} />
         }}
       />
-      <Spacer mb={space(2)} />
-      {items.length > 1 && (
-        <Flex flexDirection="row" justifyContent="center">
-          {items.map((_, index) => (
-            <PaginationDot key={index} diameter={5} selected={index === imageIndex} />
-          ))}
-        </Flex>
+      {images.length > 1 && (
+        <>
+          <Spacer mb={space(2)} />
+          <Flex flexDirection="row" justifyContent="center">
+            {images.map((_, index) => (
+              <PaginationDot key={index} diameter={5} selected={index === imageIndex} />
+            ))}
+          </Flex>
+        </>
       )}
     </Flex>
   )
@@ -188,3 +184,18 @@ const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diam
     />
   )
 }
+
+export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
+  images: graphql`
+    fragment ImageCarousel_images on Image @relay(plural: true) {
+      url
+      width
+      height
+      thumbnail: resized(width: $screenWidth) {
+        width
+        height
+        url
+      }
+    }
+  `,
+})

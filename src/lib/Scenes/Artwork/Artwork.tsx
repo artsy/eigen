@@ -10,7 +10,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
-import { Carousel } from "./Components/Carousel"
+import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
@@ -23,7 +23,7 @@ export class Artwork extends React.Component<Props> {
     return (
       <Theme>
         <ScrollView>
-          <Carousel items={artwork.images} />
+          <ImageCarousel images={artwork.images} />
           <Flex alignItems="center" mt={2}>
             <ArtworkActions artwork={artwork} />
             <ArtworkTombstone artwork={artwork} />
@@ -43,14 +43,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
       images {
-        url
-        width
-        height
-        thumbnail: resized(width: $screenWidth) {
-          width
-          height
-          url
-        }
+        ...ImageCarousel_images
       }
       ...ArtworkTombstone_artwork
       ...ArtworkActions_artwork
@@ -71,7 +64,10 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
           }
         }
       `}
-      variables={{ artworkID, screenWidth: Dimensions.get("screen").width }}
+      variables={{
+        artworkID: "peter-halley-untitled-11-dot-21-dot-95-dot-6",
+        screenWidth: Dimensions.get("screen").width,
+      }}
       render={renderWithLoadProgress(ArtworkContainer)}
     />
   )

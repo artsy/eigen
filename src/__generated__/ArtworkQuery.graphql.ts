@@ -31,19 +31,23 @@ query ArtworkQuery(
 
 fragment Artwork_artwork on Artwork {
   images {
-    url
-    width
-    height
-    thumbnail: resized(width: $screenWidth) {
-      width
-      height
-      url
-    }
+    ...ImageCarousel_images
   }
   ...ArtworkTombstone_artwork
   ...ArtworkActions_artwork
   ...ArtworkAvailability_artwork
   ...SellerInfo_artwork
+}
+
+fragment ImageCarousel_images on Image {
+  url
+  width
+  height
+  thumbnail: resized(width: $screenWidth) {
+    width
+    height
+    url
+  }
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
@@ -358,7 +362,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "c2d7d635c997c0eaaf2c3925c1d6aaba",
+    "id": "fd5f54879966029cf0315ac313987f7d",
     "text": null,
     "metadata": {}
   }
