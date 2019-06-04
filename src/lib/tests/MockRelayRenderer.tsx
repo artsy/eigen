@@ -173,7 +173,7 @@ export class MockRelayRenderer<T extends OperationBase = OperationDefaults> exte
     // TODO: When extracting these test utils to their own package, this check
     //       should probably become a custom TSLint rule, as there’s no good way
     //       to test this in a generic way, plus with the rule we get fixes.
-    if (QueryRenderer === require("../../../__mocks__/react-relay").QueryRenderer) {
+    if (process.env.NODE_ENV === "test" && QueryRenderer === require("../../../__mocks__/react-relay").QueryRenderer) {
       throw new Error(
         "The `react-relay` module has been mocked, be sure to unmock it with: " + '`jest.unmock("react-relay")`'
       )

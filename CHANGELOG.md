@@ -22,6 +22,7 @@
 - Fixes a bug where location search in the consignments flow stopped working after MP V2 upgrade - zephraph
 - Adds related works section to Artwork page - ashkan18
 - Allows user to save an artwork from the Artwork view - sweir27
+- Allows user to follow an artist from the Artwork tombstone - lilyfromseattle
 
 ### 1.11.4
 
