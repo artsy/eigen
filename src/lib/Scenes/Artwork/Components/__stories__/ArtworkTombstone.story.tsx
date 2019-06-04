@@ -39,6 +39,6 @@ const artworkTombstoneArtwork = {
   attribution_class: { short_description: "This is an edition of something" },
   " $refType": null,
 }
-storiesOf("Artwork/Components").add("New Component", () => {
+storiesOf("Artwork/Components").add("Tombstone", () => {
   return <MockArtworkTombstone artwork={artworkTombstoneArtwork} />
 })
