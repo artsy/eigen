@@ -10,54 +10,35 @@ interface Props {
   relay: RelayProp
 }
 
-interface State {
-  isFollowedChanging: boolean
-}
-
-export class FollowArtistButton extends React.Component<Props, State> {
-  state = { isFollowedChanging: false }
-
+export class FollowArtistButton extends React.Component<Props> {
   handleFollowArtist = () => {
     const { artist, relay } = this.props
-
-    this.setState(
-      {
-        isFollowedChanging: true,
-      },
-      () => {
-        commitMutation<FollowArtistButtonMutation>(relay.environment, {
-          onCompleted: () => {
-            this.setState({
-              isFollowedChanging: false,
-            })
-          },
-          mutation: graphql`
-            mutation FollowArtistButtonMutation($input: FollowArtistInput!) {
-              followArtist(input: $input) {
-                artist {
-                  id
-                  is_followed
-                }
-              }
+    commitMutation<FollowArtistButtonMutation>(relay.environment, {
+      mutation: graphql`
+        mutation FollowArtistButtonMutation($input: FollowArtistInput!) {
+          followArtist(input: $input) {
+            artist {
+              id
+              is_followed
             }
-          `,
-          variables: {
-            input: {
-              artist_id: artist.gravityID,
-              unfollow: artist.is_followed,
-            },
+          }
+        }
+      `,
+      variables: {
+        input: {
+          artist_id: artist.gravityID,
+          unfollow: artist.is_followed,
+        },
+      },
+      optimisticResponse: {
+        followArtist: {
+          artist: {
+            id: artist.id,
+            is_followed: !artist.is_followed,
           },
-          optimisticResponse: {
-            followArtist: {
-              artist: {
-                id: artist.id,
-                is_followed: !artist.is_followed,
-              },
-            },
-          },
-        })
-      }
-    )
+        },
+      },
+    })
   }
 
   render() {

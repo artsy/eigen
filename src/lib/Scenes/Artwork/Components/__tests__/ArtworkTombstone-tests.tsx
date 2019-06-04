@@ -186,7 +186,6 @@ const artworkTombstoneArtwork = {
       id: "1234",
       gravityID: "andy-warhol",
       is_followed: false,
-      " $refType": null,
       " $fragmentRefs": null,
     },
     {
@@ -195,7 +194,6 @@ const artworkTombstoneArtwork = {
       id: "4354",
       gravityID: "alex-katz",
       is_followed: false,
-      " $refType": null,
       " $fragmentRefs": null,
     },
     {
@@ -204,7 +202,6 @@ const artworkTombstoneArtwork = {
       id: "3433",
       gravityID: "pablo-picasso",
       is_followed: false,
-      " $refType": null,
       " $fragmentRefs": null,
     },
     {
@@ -213,7 +210,6 @@ const artworkTombstoneArtwork = {
       id: "3468",
       gravityID: "banksy",
       is_followed: false,
-      " $refType": null,
       " $fragmentRefs": null,
     },
     {
@@ -222,7 +218,6 @@ const artworkTombstoneArtwork = {
       id: "9874",
       gravityID: "barbara-kruger",
       is_followed: false,
-      " $refType": null,
       " $fragmentRefs": null,
     },
   ],
