@@ -13,9 +13,11 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
     return (
       <Flex alignItems="flex-start" mt={2}>
         <Sans size="4t" weight="medium" mb={2}>
-          About the artist
+          {this.props.artwork.artists.length === 1 ? "About the artist" : "About the artists"}
         </Sans>
-        <ArtistListItem artist={this.props.artwork.artist} />
+        {this.props.artwork.artists.map(artist => (
+          <ArtistListItem artist={artist} />
+        ))}
       </Flex>
     )
   }
@@ -24,7 +26,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
 export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist, {
   artwork: graphql`
     fragment AboutArtist_artwork on Artwork {
-      artist {
+      artists {
         ...ArtistListItem_artist
       }
     }
