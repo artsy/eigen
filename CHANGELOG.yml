@@ -5,7 +5,7 @@ upcoming:
   dev:
     - 
   user_facing:
-    - 
+    - Adds new React Native Artwork view behind lab option - alloy/david
 
 releases:
   - version: 5.0.4

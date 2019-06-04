@@ -6,6 +6,7 @@
 @interface _ARLegacyArtworkViewControllerMock : UIViewController
 @end
 @implementation _ARLegacyArtworkViewControllerMock
+- (void)setHasFinishedScrolling {}
 @end
 
 

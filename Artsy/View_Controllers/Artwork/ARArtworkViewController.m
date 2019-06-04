@@ -75,6 +75,10 @@
         [sself addChildViewController:sself.legacyViewController];
         [sself.view addSubview:sself.legacyViewController.view];
         [sself.legacyViewController.view alignToView:sself.view];
+
+        // This replicates what previously the ARArtworkSetViewController would invoke on the legacy VC,
+        // which in turn ends up invoking -setupUI and render everything below the fold.
+        [sself.legacyViewController setHasFinishedScrolling];
       }
     });
   } failure:^(NSError *error) {
