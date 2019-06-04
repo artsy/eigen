@@ -65,7 +65,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
         }
       `}
       variables={{
-        artworkID: "peter-halley-untitled-11-dot-21-dot-95-dot-6",
+        artworkID,
         screenWidth: Dimensions.get("screen").width,
       }}
       render={renderWithLoadProgress(ArtworkContainer)}

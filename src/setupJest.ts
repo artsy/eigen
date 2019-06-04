@@ -66,6 +66,7 @@ console.error = (message?: any) => {
   ) {
     // NOOP
   } else {
+    console.log(new Error(message).stack)
     originalConsoleError(message)
   }
 }
