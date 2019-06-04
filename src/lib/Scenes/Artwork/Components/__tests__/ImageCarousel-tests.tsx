@@ -2,7 +2,7 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
-import { ImageCarouselFragmentContainer } from "../ImageCarousel"
+import { fitInside, getMeasurements, ImageCarouselFragmentContainer } from "../ImageCarousel"
 
 jest.unmock("react-relay")
 
@@ -88,18 +88,17 @@ describe("ImageCarouselFragmentContainer", () => {
     })
   }
   describe("with five images", () => {
-    let wrapper
-    beforeAll(async () => {
-      wrapper = await getWrapper()
-    })
     it("renders a flat list with eight entries", async () => {
+      const wrapper = await getWrapper()
       expect(wrapper.find(FlatList)).toHaveLength(1)
       expect(wrapper.find(FlatList).props().data).toHaveLength(5)
     })
-    it("shows eight pagination dots", async () => {
+    it("shows five pagination dots", async () => {
+      const wrapper = await getWrapper()
       expect(wrapper.find("PaginationDot")).toHaveLength(5)
     })
     it("shows the first pagination dot as being selected and the rest as not selected", async () => {
+      const wrapper = await getWrapper()
       expect(
         wrapper
           .find("PaginationDot")
@@ -125,6 +124,86 @@ describe("ImageCarouselFragmentContainer", () => {
           .at(3)
           .props().selected
       ).toBeFalsy()
+      expect(
+        wrapper
+          .find("PaginationDot")
+          .at(4)
+          .props().selected
+      ).toBeFalsy()
     })
+  })
+})
+
+describe(fitInside, () => {
+  it("returns one of the given boxes if they are the same", () => {
+    expect(fitInside({ width: 10, height: 10 }, { width: 10, height: 10 })).toMatchObject({
+      width: 10,
+      height: 10,
+      marginHorizontal: 0,
+      marginVertical: 0,
+    })
+  })
+
+  it("constrains the box by height if it is too tall", () => {
+    expect(fitInside({ width: 10, height: 10 }, { width: 10, height: 20 })).toMatchObject({
+      width: 5,
+      height: 10,
+      marginHorizontal: 2.5,
+      marginVertical: 0,
+    })
+  })
+
+  it("constrains the box by width if it is too wide", () => {
+    expect(fitInside({ width: 10, height: 10 }, { width: 20, height: 10 })).toMatchObject({
+      width: 10,
+      height: 5,
+      marginHorizontal: 0,
+      marginVertical: 2.5,
+    })
+  })
+})
+
+describe(getMeasurements, () => {
+  it("Arranges images on the carousel rail", () => {
+    expect(
+      getMeasurements({
+        images: [
+          {
+            thumbnail: {
+              width: 10,
+              height: 10,
+            },
+          },
+          {
+            thumbnail: {
+              width: 10,
+              height: 10,
+            },
+          },
+        ] as any,
+        boundingBox: { width: 10, height: 10 },
+      })
+    ).toMatchInlineSnapshot(`
+Array [
+  Object {
+    "cumulativeScrollOffset": 0,
+    "height": 10,
+    "marginBottom": 0,
+    "marginLeft": 0,
+    "marginRight": 0,
+    "marginTop": 0,
+    "width": 10,
+  },
+  Object {
+    "cumulativeScrollOffset": 10,
+    "height": 10,
+    "marginBottom": 0,
+    "marginLeft": 0,
+    "marginRight": 0,
+    "marginTop": 0,
+    "width": 10,
+  },
+]
+`)
   })
 })
