@@ -77,7 +77,7 @@ export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDe
         label
         details
       }
-      signature(format: PLAIN)
+      signature
       signatureInfo {
         label
         details
@@ -90,9 +90,9 @@ export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDe
         label
         details
       }
-      series(format: PLAIN)
-      publisher(format: PLAIN)
-      manufacturer(format: PLAIN)
+      series
+      publisher
+      manufacturer
       image_rights
     }
   `,

@@ -120,7 +120,7 @@ fragment ArtworkDetails_artwork on Artwork {
     label
     details
   }
-  signature(format: PLAIN)
+  signature
   signatureInfo {
     label
     details
@@ -133,9 +133,9 @@ fragment ArtworkDetails_artwork on Artwork {
     label
     details
   }
-  series(format: PLAIN)
-  publisher(format: PLAIN)
-  manufacturer(format: PLAIN)
+  series
+  publisher
+  manufacturer
   image_rights
 }
 
@@ -627,13 +627,6 @@ v19 = [
     "args": null,
     "storageKey": null
   }
-],
-v20 = [
-  {
-    "kind": "Literal",
-    "name": "format",
-    "value": "PLAIN"
-  }
 ];
 return {
   "kind": "Request",
@@ -971,8 +964,8 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "signature",
-            "args": (v20/*: any*/),
-            "storageKey": "signature(format:\"PLAIN\")"
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "LinkedField",
@@ -1008,22 +1001,22 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "series",
-            "args": (v20/*: any*/),
-            "storageKey": "series(format:\"PLAIN\")"
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "publisher",
-            "args": (v20/*: any*/),
-            "storageKey": "publisher(format:\"PLAIN\")"
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "manufacturer",
-            "args": (v20/*: any*/),
-            "storageKey": "manufacturer(format:\"PLAIN\")"
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "ScalarField",
@@ -1039,7 +1032,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "c8d9356c72123441b67124a2c637ad38",
+    "id": "fd2901c6f8360dd2953c3747c268e797",
     "text": null,
     "metadata": {}
   }

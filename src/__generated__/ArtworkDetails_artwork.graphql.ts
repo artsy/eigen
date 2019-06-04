@@ -47,13 +47,6 @@ var v0 = [
     "args": null,
     "storageKey": null
   }
-],
-v1 = [
-  {
-    "kind": "Literal",
-    "name": "format",
-    "value": "PLAIN"
-  }
 ];
 return {
   "kind": "Fragment",
@@ -83,8 +76,8 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "signature",
-      "args": (v1/*: any*/),
-      "storageKey": "signature(format:\"PLAIN\")"
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "LinkedField",
@@ -120,22 +113,22 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "series",
-      "args": (v1/*: any*/),
-      "storageKey": "series(format:\"PLAIN\")"
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "publisher",
-      "args": (v1/*: any*/),
-      "storageKey": "publisher(format:\"PLAIN\")"
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "manufacturer",
-      "args": (v1/*: any*/),
-      "storageKey": "manufacturer(format:\"PLAIN\")"
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
@@ -147,5 +140,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bbf932ebff436b9859e3f13da521ab11';
+(node as any).hash = 'd206f70ce0e4835c9e169d33e3e4c46b';
 export default node;
