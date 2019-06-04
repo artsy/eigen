@@ -36,7 +36,6 @@ exports[`renders correctly for a fair booth 1`] = `
             "marginTop": 12,
             "width": 80,
           },
-          undefined,
         ]
       }
     />
@@ -44,18 +43,13 @@ exports[`renders correctly for a fair booth 1`] = `
       style={
         Array [
           Object {
+            "alignSelf": "center",
             "flexBasis": 0,
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
+            "marginTop": 25,
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-              "marginTop": 25,
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -73,7 +67,6 @@ exports[`renders correctly for a fair booth 1`] = `
               Object {
                 "fontSize": 14,
               },
-              undefined,
             ],
             Object {
               "fontFamily": "AGaramondPro-Regular",
@@ -94,7 +87,6 @@ exports[`renders correctly for a fair booth 1`] = `
               "fontFamily": "AGaramondPro-Italic",
               "fontSize": 14,
             },
-            undefined,
           ]
         }
       >
@@ -141,7 +133,6 @@ exports[`renders correctly for a regular show 1`] = `
             "marginTop": 12,
             "width": 80,
           },
-          undefined,
         ]
       }
     />
@@ -149,18 +140,13 @@ exports[`renders correctly for a regular show 1`] = `
       style={
         Array [
           Object {
+            "alignSelf": "center",
             "flexBasis": 0,
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
+            "marginTop": 25,
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-              "marginTop": 25,
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -178,7 +164,6 @@ exports[`renders correctly for a regular show 1`] = `
               Object {
                 "fontSize": 14,
               },
-              undefined,
             ],
             Object {
               "fontFamily": "AGaramondPro-Regular",
@@ -199,7 +184,6 @@ exports[`renders correctly for a regular show 1`] = `
               "fontFamily": "AGaramondPro-Italic",
               "fontSize": 14,
             },
-            undefined,
           ]
         }
       >

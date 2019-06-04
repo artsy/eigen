@@ -13,7 +13,6 @@ exports[`looks correct when rendered 1`] = `
           "flexShrink": 1,
           "width": 708,
         },
-        undefined,
       ],
       Object {
         "paddingBottom": 0,
@@ -38,7 +37,6 @@ exports[`looks correct when rendered 1`] = `
           "marginRight": 20,
           "marginTop": 0,
         },
-        undefined,
       ]
     }
   >
@@ -84,7 +82,6 @@ exports[`looks correct when rendered 1`] = `
             "fontSize": 12,
             "marginRight": 10,
           },
-          undefined,
         ]
       }
     >
@@ -109,7 +106,6 @@ exports[`regarding the send button disables it when there is no text 1`] = `
           "flexShrink": 1,
           "width": 708,
         },
-        undefined,
       ],
       Object {
         "paddingBottom": 0,
@@ -134,7 +130,6 @@ exports[`regarding the send button disables it when there is no text 1`] = `
           "marginRight": 20,
           "marginTop": 0,
         },
-        undefined,
       ]
     }
   >
@@ -180,7 +175,6 @@ exports[`regarding the send button disables it when there is no text 1`] = `
             "fontSize": 12,
             "marginRight": 10,
           },
-          undefined,
         ]
       }
     >

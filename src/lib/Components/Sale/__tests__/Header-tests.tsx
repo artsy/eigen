@@ -3,6 +3,8 @@ import * as renderer from "react-test-renderer"
 
 import Header from "../Header"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const sale = {
     name: "The Awesome Sale",
@@ -10,6 +12,12 @@ it("renders properly", () => {
       href: "http://example.com/some/image.jpg",
     },
   }
-  const header = renderer.create(<Header sale={sale as any} showImage={false} />).toJSON()
+  const header = renderer
+    .create(
+      <Theme>
+        <Header sale={sale as any} showImage={false} />
+      </Theme>
+    )
+    .toJSON()
   expect(header).toMatchSnapshot()
 })

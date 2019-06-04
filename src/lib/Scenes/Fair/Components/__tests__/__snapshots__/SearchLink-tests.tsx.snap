@@ -19,13 +19,12 @@ exports[`SearchLink Renders properly 1`] = `
       Object {
         "backgroundColor": "#F8F8F8",
         "height": 46,
-        "marginBottom": 4,
-        "paddingBottom": 4,
-        "paddingLeft": 8,
-        "paddingRight": 8,
-        "paddingTop": 4,
+        "marginBottom": 10,
+        "paddingBottom": 10,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 10,
       },
-      undefined,
     ]
   }
 >
@@ -41,7 +40,6 @@ exports[`SearchLink Renders properly 1`] = `
           "flexDirection": "row",
           "flexWrap": "nowrap",
         },
-        undefined,
       ]
     }
   >
@@ -60,7 +58,7 @@ exports[`SearchLink Renders properly 1`] = `
             "borderWidth": 0,
           },
           undefined,
-          false,
+          null,
           Object {
             "flex": 0,
             "height": 14,
@@ -76,10 +74,7 @@ exports[`SearchLink Renders properly 1`] = `
         fill={
           Array [
             0,
-            0,
-            0,
-            0,
-            1,
+            4278190080,
           ]
         }
         fillOpacity={1}
@@ -89,7 +84,7 @@ exports[`SearchLink Renders properly 1`] = `
           Array [
             1,
             0,
-            -0,
+            0,
             1,
             0,
             0,
@@ -98,21 +93,7 @@ exports[`SearchLink Renders properly 1`] = `
         opacity={1}
         originX={0}
         originY={0}
-        propList={
-          Array [
-            "fill",
-            "fillOpacity",
-            "fillRule",
-            "stroke",
-            "strokeWidth",
-            "strokeOpacity",
-            "strokeDasharray",
-            "strokeDashoffset",
-            "strokeLinecap",
-            "strokeLinejoin",
-            "strokeMiterlimit",
-          ]
-        }
+        propList={Array []}
         rotation={0}
         scaleX={1}
         scaleY={1}
@@ -126,6 +107,7 @@ exports[`SearchLink Renders properly 1`] = `
         strokeMiterlimit={4}
         strokeOpacity={1}
         strokeWidth={1}
+        vectorEffect={0}
         x={0}
         y={0}
       >
@@ -134,10 +116,7 @@ exports[`SearchLink Renders properly 1`] = `
           fill={
             Array [
               0,
-              0.4,
-              0.4,
-              0.4,
-              1,
+              4284900966,
             ]
           }
           fillOpacity={1}
@@ -146,7 +125,7 @@ exports[`SearchLink Renders properly 1`] = `
             Array [
               1,
               0,
-              -0,
+              0,
               1,
               0,
               0,
@@ -174,6 +153,7 @@ exports[`SearchLink Renders properly 1`] = `
           strokeMiterlimit={4}
           strokeOpacity={1}
           strokeWidth={1}
+          vectorEffect={0}
           x={0}
           y={0}
         />
@@ -185,15 +165,13 @@ exports[`SearchLink Renders properly 1`] = `
       style={
         Array [
           Object {
-            "marginLeft": 4,
-            "paddingTop": 0.3,
+            "marginLeft": 10,
+            "paddingTop": 3,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bwzfXH uTxCW"
         color="#666"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
@@ -206,7 +184,7 @@ exports[`SearchLink Renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
-            undefined,
+            Object {},
           ]
         }
       >

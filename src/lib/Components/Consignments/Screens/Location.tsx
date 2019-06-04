@@ -2,9 +2,9 @@ import React from "react"
 
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
-import Search from "../Components/SearchResults"
+import { SearchResults } from "../Components/SearchResults"
 
-import { ConsignmentSetup, SearchResult } from "../index"
+import { ConsignmentSetup, LocationResult } from "../index"
 
 import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -40,17 +40,17 @@ export default class Location extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  locationSelected = async (result: SearchResult) => {
-    // The extra key is from a throwaway google account,
-    // it should only get used in Emission dev mode
-    const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
+  locationSelected = async (result: LocationResult) => {
+    const apiKey = Emission.googleMapsAPIKey
     const queryString = stringify({
       key: apiKey,
-      placeid: result.internalID,
+      placeid: result.id,
     })
 
     const response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)
     const results = await response.json()
+
+    // TODO: Add dedicated error handling to the maps response
 
     const { address_components } = results.result
     const cityPlace = address_components.find(comp => comp.types[0] === "locality")
@@ -73,8 +73,7 @@ export default class Location extends React.Component<Props, State> {
   // https://developers.google.com/places/
   // https://developers.google.com/places/web-service/details
   searchForQuery = async (query: string) => {
-    // The 2nd is a throw-away key on a throw-away account
-    const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
+    const apiKey = Emission.googleMapsAPIKey
     const queryString = stringify({
       key: apiKey,
       language: "en",
@@ -111,7 +110,7 @@ export default class Location extends React.Component<Props, State> {
               marginRight: 20,
             }}
           >
-            <Search
+            <SearchResults
               results={this.state.results}
               query={this.state.query}
               onChangeText={this.textChanged}

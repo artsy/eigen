@@ -10,29 +10,47 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
     const component = renderer
-      .create(<RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />)
+      .create(
+        <BiddingThemeProvider>
+          <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
+        </BiddingThemeProvider>
+      )
       .toJSON()
     expect(component).toMatchSnapshot()
   })
   it("renders registration complete properly", () => {
     const component = renderer
-      .create(<RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />)
+      .create(
+        <BiddingThemeProvider>
+          <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
+        </BiddingThemeProvider>
+      )
       .toJSON()
     expect(component).toMatchSnapshot()
   })
   it("renders registration error properly", () => {
     const component = renderer
-      .create(<RegistrationResult status={RegistrationStatus.RegistrationStatusError} />)
+      .create(
+        <BiddingThemeProvider>
+          <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
+        </BiddingThemeProvider>
+      )
       .toJSON()
     expect(component).toMatchSnapshot()
   })
 
   it("dismisses the controller when the continue button is pressed", () => {
     jest.useFakeTimers()
-    const component = renderer.create(<RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />)
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
+      </BiddingThemeProvider>
+    )
     const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
     mockDismiss.mockReturnValueOnce(Promise.resolve())
 

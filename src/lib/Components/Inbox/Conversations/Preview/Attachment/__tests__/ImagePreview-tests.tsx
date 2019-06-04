@@ -4,8 +4,14 @@ import * as renderer from "react-test-renderer"
 
 import { ImagePreview } from "../ImagePreview"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const tree = renderer.create(<ImagePreview attachment={attachment as any} />)
+  const tree = renderer.create(
+    <Theme>
+      <ImagePreview attachment={attachment as any} />
+    </Theme>
+  )
   expect(tree).toMatchSnapshot()
 })
 

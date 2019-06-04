@@ -5,6 +5,7 @@ import { ArtworkActions_artwork$ref } from "./ArtworkActions_artwork.graphql";
 import { ArtworkAvailability_artwork$ref } from "./ArtworkAvailability_artwork.graphql";
 import { ArtworkTombstone_artwork$ref } from "./ArtworkTombstone_artwork.graphql";
 import { ImageCarousel_images$ref } from "./ImageCarousel_images.graphql";
+import { OtherWorks_artwork$ref } from "./OtherWorks_artwork.graphql";
 import { SellerInfo_artwork$ref } from "./SellerInfo_artwork.graphql";
 declare const _Artwork_artwork$ref: unique symbol;
 export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
@@ -12,7 +13,7 @@ export type Artwork_artwork = {
     readonly images: ReadonlyArray<{
         readonly " $fragmentRefs": ImageCarousel_images$ref;
     } | null> | null;
-    readonly " $fragmentRefs": ArtworkTombstone_artwork$ref & ArtworkActions_artwork$ref & ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref;
+    readonly " $fragmentRefs": ArtworkTombstone_artwork$ref & ArtworkActions_artwork$ref & ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref & OtherWorks_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
 
@@ -60,8 +61,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "SellerInfo_artwork",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "OtherWorks_artwork",
+      "args": null
     }
   ]
 };
-(node as any).hash = '7757fe8a83a4947c60bdf9537fdc3863';
+(node as any).hash = '8fc5f37fde36f7a4c9f075c9e9b3969a';
 export default node;

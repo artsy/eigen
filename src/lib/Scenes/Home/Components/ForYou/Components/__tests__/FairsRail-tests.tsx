@@ -4,6 +4,8 @@ import * as renderer from "react-test-renderer"
 
 import FairsRail from "../FairsRail"
 
+import { Theme } from "@artsy/palette"
+
 const fairsModule = {
   results: [
     {
@@ -22,6 +24,12 @@ const fairsModule = {
 }
 
 it("looks correct when rendered", () => {
-  const tree = renderer.create(<FairsRail fairs_module={fairsModule as any} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <FairsRail fairs_module={fairsModule as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })

@@ -7,6 +7,7 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 
 jest.mock("lib/NativeModules/triggerCamera", () => ({ triggerCamera: jest.fn() }))
+import { Theme } from "@artsy/palette"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 const triggerMock = triggerCamera as jest.Mock<any>
 
@@ -23,7 +24,13 @@ const emptyProps = {
 }
 
 it("Sets up the right view hierarchy", () => {
-  const tree = renderer.create(<SelectFromPhotoLibrary {...emptyProps} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <SelectFromPhotoLibrary {...emptyProps} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 

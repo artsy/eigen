@@ -1,4 +1,4 @@
-import { Flex, Theme } from "@artsy/palette"
+import { Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import Separator from "lib/Components/Separator"
@@ -11,6 +11,7 @@ import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
 import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
+import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
@@ -29,10 +30,11 @@ export class Artwork extends React.Component<Props> {
             <ArtworkTombstone artwork={artwork} />
           </Flex>
           <Separator />
-          <Flex width="100%">
+          <Join separator={<Spacer my={2} />}>
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
-          </Flex>
+            <OtherWorks artwork={artwork} />
+          </Join>
         </ScrollView>
       </Theme>
     )
@@ -49,6 +51,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
       ...SellerInfo_artwork
+      ...OtherWorks_artwork
     }
   `,
 })
@@ -58,7 +61,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkQuery($artworkID: String!, $screenWidth: Int!) {
+        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!], $screenWidth: Int!) {
           artwork(id: $artworkID) {
             ...Artwork_artwork
           }
@@ -67,6 +70,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
       variables={{
         artworkID,
         screenWidth: Dimensions.get("screen").width,
+        excludeArtworkIds: [artworkID],
       }}
       render={renderWithLoadProgress(ArtworkContainer)}
     />

@@ -10,7 +10,6 @@ exports[`looks like expected 1`] = `
         "height": 30,
         "justifyContent": "center",
       },
-      undefined,
     ]
   }
 >
@@ -24,7 +23,6 @@ exports[`looks like expected 1`] = `
           "paddingTop": 5,
           "textAlign": "center",
         },
-        undefined,
       ]
     }
   >

@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 
 import About from "../About"
 
+import { Theme } from "@artsy/palette"
+
 it("renders properly", () => {
   const artist = {
     id: "banksy",
@@ -13,6 +15,12 @@ it("renders properly", () => {
     articles: [],
     related_artists: [],
   }
-  const about = renderer.create(<About artist={artist as any} />).toJSON()
+  const about = renderer
+    .create(
+      <Theme>
+        <About artist={artist as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(about).toMatchSnapshot()
 })

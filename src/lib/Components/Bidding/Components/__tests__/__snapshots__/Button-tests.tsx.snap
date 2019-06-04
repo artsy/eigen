@@ -8,7 +8,6 @@ exports[`renders properly 1`] = `
       Object {
         "height": 50,
       },
-      undefined,
     ]
   }
 >

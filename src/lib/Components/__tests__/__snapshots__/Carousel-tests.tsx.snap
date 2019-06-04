@@ -14,7 +14,6 @@ Array [
         Object {
           "height": 250,
         },
-        undefined,
       ]
     }
   >
@@ -26,7 +25,6 @@ Array [
             Object {
               "height": 250,
             },
-            undefined,
           ]
         }
       />
@@ -45,10 +43,9 @@ Array [
           "display": "flex",
           "flexDirection": "row",
           "justifyContent": "center",
-          "marginBottom": 4,
-          "marginTop": 4,
+          "marginBottom": 10,
+          "marginTop": 10,
         },
-        undefined,
       ]
     }
   >
@@ -71,7 +68,6 @@ Array [
             "marginRight": 0,
             "width": 6,
           },
-          undefined,
         ]
       }
     />

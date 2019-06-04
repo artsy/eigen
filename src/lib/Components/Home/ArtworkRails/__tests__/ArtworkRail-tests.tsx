@@ -4,9 +4,17 @@ import * as renderer from "react-test-renderer"
 
 import { ArtworkRail, minRailHeight } from "../ArtworkRail"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
   const props = railProps(false) as any
-  const tree = renderer.create(<ArtworkRail {...props} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <ArtworkRail {...props} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 

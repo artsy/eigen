@@ -107,7 +107,7 @@ const render = (props: SearchQueryProps) => {
   )
 }
 
-export default class SearchResults extends React.Component<SearchQueryProps, null> {
+export class SearchResults extends React.Component<SearchQueryProps, null> {
   render() {
     return render(this.props)
   }

@@ -4,8 +4,16 @@ import * as renderer from "react-test-renderer"
 
 import { ArtistCard } from "../ArtistCard"
 
+import { Theme } from "@artsy/palette"
+
 it("renders correctly", () => {
-  const tree = renderer.create(<ArtistCard artist={artistProps(true).artist as any} />).toJSON()
+  const tree = renderer
+    .create(
+      <Theme>
+        <ArtistCard artist={artistProps(true).artist as any} />
+      </Theme>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })
 

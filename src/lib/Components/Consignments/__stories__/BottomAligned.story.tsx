@@ -2,7 +2,7 @@ import React from "react"
 import { Text } from "react-native"
 
 import BottomAlignedButton, { BottomAlignedProps } from "../Components/BottomAlignedButton"
-import Search from "../Components/SearchResults"
+import { SearchResults } from "../Components/SearchResults"
 
 export const name = "Consignments/BottomButton"
 export const component = BottomAlignedButton
@@ -31,7 +31,14 @@ const withText = {
 
 const withSearchResults = {
   children: [
-    <Search key="search" placeholder="Example" noResultsMessage="> " searching={false} query="Banko" results={null} />,
+    <SearchResults
+      key="search"
+      placeholder="Example"
+      noResultsMessage="> "
+      searching={false}
+      query="Banko"
+      results={null}
+    />,
   ],
   onPress: () => "",
   bodyStyle: doneButtonStyles,

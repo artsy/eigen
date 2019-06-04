@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 import { mockTimezone } from "lib/tests/mockTimezone"
 import RegistrationFlow from "../RegistrationFlow"
 
+import { Theme } from "@artsy/palette"
+
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 const Sale = {
@@ -27,13 +29,39 @@ beforeEach(() => {
 it("renders properly with credit card", () => {
   console.error = jest.fn() // Silences component logging.
 
-  const bg = renderer.create(<RegistrationFlow me={{ has_credit_cards: true } as any} sale={Sale as any} />).toJSON()
+  const bg = renderer
+    .create(
+      <Theme>
+        <RegistrationFlow
+          me={
+            {
+              has_credit_cards: true,
+            } as any
+          }
+          sale={Sale as any}
+        />
+      </Theme>
+    )
+    .toJSON()
   expect(bg).toMatchSnapshot()
 })
 
 it("renders properly without credit card", () => {
   console.error = jest.fn() // Silences component logging.
 
-  const bg = renderer.create(<RegistrationFlow me={{ has_credit_cards: false } as any} sale={Sale as any} />).toJSON()
+  const bg = renderer
+    .create(
+      <Theme>
+        <RegistrationFlow
+          me={
+            {
+              has_credit_cards: false,
+            } as any
+          }
+          sale={Sale as any}
+        />
+      </Theme>
+    )
+    .toJSON()
   expect(bg).toMatchSnapshot()
 })

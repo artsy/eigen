@@ -20,15 +20,10 @@ exports[`looks correct when rendered 1`] = `
     style={
       Array [
         Object {
+          "borderColor": "#E5E5E5",
+          "borderWidth": 1,
           "display": "flex",
         },
-        Array [
-          Object {
-            "borderColor": "#E5E5E5",
-            "borderWidth": 1,
-          },
-          undefined,
-        ],
       ]
     }
   >
@@ -40,12 +35,10 @@ exports[`looks correct when rendered 1`] = `
             "marginBottom": 20,
             "marginTop": 20,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
         color="black100"
         fontFamily="Unica77LL-Medium"
         fontSize="14px"
@@ -59,7 +52,7 @@ exports[`looks correct when rendered 1`] = `
               "lineHeight": 24,
               "textAlign": "center",
             },
-            undefined,
+            Object {},
           ]
         }
         textAlign="center"
@@ -67,7 +60,6 @@ exports[`looks correct when rendered 1`] = `
         Joseph K. Levene Fine Art, Ltd.
       </Text>
       <Text
-        className="sc-bwzfXH uTxCW"
         color="black60"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
@@ -81,7 +73,7 @@ exports[`looks correct when rendered 1`] = `
               "lineHeight": 20,
               "textAlign": "center",
             },
-            undefined,
+            Object {},
           ]
         }
         textAlign="center"
@@ -89,7 +81,6 @@ exports[`looks correct when rendered 1`] = `
         25 Central Park West
       </Text>
       <Text
-        className="sc-bwzfXH uTxCW"
         color="black60"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
@@ -103,7 +94,7 @@ exports[`looks correct when rendered 1`] = `
               "lineHeight": 20,
               "textAlign": "center",
             },
-            undefined,
+            Object {},
           ]
         }
         textAlign="center"
