@@ -40,6 +40,7 @@ fragment Artwork_artwork on Artwork {
   ...ArtworkAvailability_artwork
   ...SellerInfo_artwork
   ...OtherWorks_artwork
+  ...AboutArtist_artwork
 }
 
 fragment ImageCarousel_images on Image {
@@ -61,6 +62,7 @@ fragment ArtworkTombstone_artwork on Artwork {
   artists {
     name
     href
+    ...FollowArtistButton_artist
     id
   }
   dimensions {
@@ -102,6 +104,27 @@ fragment OtherWorks_artwork on Artwork {
     }
   }
   ...ArtworkContextArtist_artwork
+}
+
+fragment AboutArtist_artwork on Artwork {
+  artists {
+    ...ArtistListItem_artist
+    id
+  }
+}
+
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  gravityID
+  name
+  is_followed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
 }
 
 fragment ArtworkContextArtist_artwork on Artwork {
@@ -208,6 +231,12 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
   href
 }
+
+fragment FollowArtistButton_artist on Artist {
+  gravityID
+  id
+  is_followed
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -290,33 +319,47 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v11 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v12 = {
   "kind": "Variable",
   "name": "exclude",
   "variableName": "excludeArtworkIds"
 },
-v11 = {
+v13 = {
   "kind": "Literal",
   "name": "first",
   "value": 8
 },
-v12 = {
+v14 = {
   "kind": "Literal",
   "name": "sort",
   "value": "PUBLISHED_AT_DESC"
 },
-v13 = {
+v15 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v14 = [
+v16 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -325,11 +368,11 @@ v14 = [
     "storageKey": null
   }
 ],
-v15 = [
+v17 = [
   (v7/*: any*/),
-  (v9/*: any*/)
+  (v10/*: any*/)
 ],
-v16 = [
+v18 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -348,14 +391,8 @@ v16 = [
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
+          (v10/*: any*/),
           (v9/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "gravityID",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -454,7 +491,7 @@ v16 = [
                 "args": null,
                 "storageKey": null
               },
-              (v13/*: any*/),
+              (v15/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -462,7 +499,7 @@ v16 = [
                 "args": null,
                 "storageKey": null
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ]
           },
           {
@@ -482,7 +519,7 @@ v16 = [
                 "args": null,
                 "concreteType": "SaleArtworkOpeningBid",
                 "plural": false,
-                "selections": (v14/*: any*/)
+                "selections": (v16/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -492,7 +529,7 @@ v16 = [
                 "args": null,
                 "concreteType": "SaleArtworkCurrentBid",
                 "plural": false,
-                "selections": (v14/*: any*/)
+                "selections": (v16/*: any*/)
               },
               {
                 "kind": "ScalarField",
@@ -510,11 +547,11 @@ v16 = [
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  (v13/*: any*/),
-                  (v9/*: any*/)
+                  (v15/*: any*/),
+                  (v10/*: any*/)
                 ]
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ]
           },
           {
@@ -531,7 +568,7 @@ v16 = [
             ],
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v15/*: any*/)
+            "selections": (v17/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -541,7 +578,7 @@ v16 = [
             "args": null,
             "concreteType": "Partner",
             "plural": false,
-            "selections": (v15/*: any*/)
+            "selections": (v17/*: any*/)
           },
           (v8/*: any*/)
         ]
@@ -651,7 +688,49 @@ return {
             "selections": [
               (v7/*: any*/),
               (v8/*: any*/),
-              (v9/*: any*/)
+              (v9/*: any*/),
+              (v10/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_followed",
+                "args": null,
+                "storageKey": null
+              },
+              (v11/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "nationality",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "birthday",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "deathday",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/)
+                ]
+              }
             ]
           },
           {
@@ -702,17 +781,11 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ]
           },
-          (v9/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v10/*: any*/),
+          (v11/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -737,25 +810,25 @@ return {
             "plural": false,
             "selections": [
               (v7/*: any*/),
-              (v9/*: any*/),
+              (v10/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "artworksConnection",
                 "storageKey": null,
                 "args": [
-                  (v10/*: any*/),
-                  (v11/*: any*/),
+                  (v12/*: any*/),
+                  (v13/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "for_sale",
                     "value": true
                   },
-                  (v12/*: any*/)
+                  (v14/*: any*/)
                 ],
                 "concreteType": "ArtworkConnection",
                 "plural": false,
-                "selections": (v16/*: any*/)
+                "selections": (v18/*: any*/)
               }
             ]
           },
@@ -775,7 +848,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ]
           },
           {
@@ -794,15 +867,15 @@ return {
                 "name": "artworks_connection",
                 "storageKey": null,
                 "args": [
-                  (v10/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/)
+                  (v12/*: any*/),
+                  (v13/*: any*/),
+                  (v14/*: any*/)
                 ],
                 "concreteType": "ArtworkConnection",
                 "plural": false,
-                "selections": (v16/*: any*/)
+                "selections": (v18/*: any*/)
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ]
           },
           {
@@ -826,13 +899,13 @@ return {
                 "name": "artworksConnection",
                 "storageKey": "artworksConnection(first:8)",
                 "args": [
-                  (v11/*: any*/)
+                  (v13/*: any*/)
                 ],
                 "concreteType": "ArtworkConnection",
                 "plural": false,
-                "selections": (v16/*: any*/)
+                "selections": (v18/*: any*/)
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ]
           }
         ]
@@ -842,7 +915,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "05eceb14aaeb83d63d262941032e4c63",
+    "id": "2bf97a9df6e90141bf9ad8f2201148e0",
     "text": null,
     "metadata": {}
   }
