@@ -15,10 +15,7 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 inhibit_all_warnings!
-platform :ios, '9.0'
-
-# FIXME: Figure out why we are getting hit by this issue.
-install! 'cocoapods', deterministic_uuids: false
+platform :ios, '10.0'
 
 node_modules_path = '../node_modules'
 react_path = File.join(node_modules_path, 'react-native')
@@ -102,6 +99,12 @@ plugin 'cocoapods-keys',
        ]
 
 post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      # CocoaPods setting the deployment target to be less than the actual deployable target is causing many Xcode warnings. This silences them. See: https://github.com/CocoaPods/CocoaPods/issues/7314
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+    end
+  end
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
   emission.build_configurations.each do |config|
     config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
