@@ -5,12 +5,13 @@ import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { ScrollView } from "react-native"
+import { Dimensions, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
+import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
@@ -24,7 +25,7 @@ export class Artwork extends React.Component<Props> {
     return (
       <Theme>
         <ScrollView>
-          <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
+          <ImageCarousel images={artwork.images} />
           <Flex alignItems="center" mt={2}>
             <ArtworkActions artwork={artwork} />
             <ArtworkTombstone artwork={artwork} />
@@ -45,6 +46,9 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
+      images {
+        ...ImageCarousel_images
+      }
       ...ArtworkTombstone_artwork
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
@@ -60,13 +64,17 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!]) {
+        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!], $screenWidth: Int!) {
           artwork(id: $artworkID) {
             ...Artwork_artwork
           }
         }
       `}
-      variables={{ artworkID, excludeArtworkIds: [artworkID] }}
+      variables={{
+        artworkID,
+        screenWidth: Dimensions.get("screen").width,
+        excludeArtworkIds: [artworkID],
+      }}
       render={renderWithLoadProgress(ArtworkContainer)}
     />
   )
