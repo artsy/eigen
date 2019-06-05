@@ -12,6 +12,7 @@ export interface ImageCarouselProps {
 }
 
 const windowWidth = Dimensions.get("window").width
+// The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
 const cardHeight = windowWidth >= 375 ? 340 : 290
 export const cardBoundingBox = { width: windowWidth, height: cardHeight }
 
