@@ -16,6 +16,12 @@ const windowWidth = Dimensions.get("window").width
 const cardHeight = windowWidth >= 375 ? 340 : 290
 export const cardBoundingBox = { width: windowWidth, height: cardHeight }
 
+/**
+ * ImageCarousel
+ * NOTE: This component currently assumes it is being rendered at the full width of the screen.
+ * To use it in places where this is not desirable it would need to take explicit width and height props
+ * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
+ */
 export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const measurements = useMemo(() => getMeasurements({ images, boundingBox: cardBoundingBox }), [images])
   const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
