@@ -99,7 +99,20 @@ plugin 'cocoapods-keys',
        ]
 
 post_install do |installer|
+  # Mark the project as having been checked for Swift 5.
+  SWIFT_MAGIC_STRING = "1020"
+  installer.pods_project.root_object.attributes['LastSwiftUpdateCheck'] = SWIFT_MAGIC_STRING
+  installer.pods_project.root_object.attributes['LastUpgradeCheck'] = SWIFT_MAGIC_STRING
+
   installer.pods_project.targets.each do |target|
+    # Pulley and FBSnapshotTestCase contain pre-5.0 Swift code. Let's mark them as having been migrated.
+    # Note: This is the equivalent of opening Xcode's conversion warning, un-checking 'remind me', and clicking "convert later".
+    #       It does not change the contents of the Pods.
+    if %w(Pulley FBSnapshotTestCase).include? target.name
+      target.project.root_object.attributes['TargetAttributes'] ||= {}
+      target.project.root_object.attributes['TargetAttributes'][target.uuid] = { 'LastSwiftMigration' => SWIFT_MAGIC_STRING }
+    end
+
     target.build_configurations.each do |config|
       # CocoaPods setting the deployment target to be less than the actual deployable target is causing many Xcode warnings. This silences them. See: https://github.com/CocoaPods/CocoaPods/issues/7314
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
