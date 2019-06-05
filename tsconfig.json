@@ -17,6 +17,7 @@
     "resolveJsonModule": true,
     "strict": false,
     "strictBindCallApply": true,
+    "noImplicitThis": true,
     "target": "es6",
     "types": ["jest", "react", "react-native"],
     "noEmit": true
