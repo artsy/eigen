@@ -1,4 +1,3 @@
-import { Sans } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { ArtworkDetails } from "../ArtworkDetails"
