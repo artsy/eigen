@@ -89,7 +89,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
   }
   describe("with five images", () => {
-    it("renders a flat list with eight entries", async () => {
+    it("renders a flat list with five entries", async () => {
       const wrapper = await getWrapper()
       expect(wrapper.find(FlatList)).toHaveLength(1)
       expect(wrapper.find(FlatList).props().data).toHaveLength(5)
