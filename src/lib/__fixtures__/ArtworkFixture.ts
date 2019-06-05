@@ -8,8 +8,35 @@ export const ArtworkFixture = {
   context: {
     __typename: "ArtworkContextPartnerShow",
   },
+  artists: [
+    {
+      " $refType": null,
+      " $fragmentRefs": null,
+      id: "QXJ0aXN0OmFiYmFzLWtpYXJvc3RhbWk=",
+      gravityID: "abbas-kiarostami",
+      name: "Abbas Kiarostami",
+      is_followed: false,
+      nationality: "Iranian",
+      birthday: "1940",
+      deathday: "2016",
+      image: {
+        url: "https://d32dm0rphc51dk.cloudfront.net/JX1xE4T_amcdrv2nFunIHw/tall.jpg",
+      },
+    },
+  ],
   artist: {
+    " $refType": null,
+    " $fragmentRefs": null,
+    id: "QXJ0aXN0OmFiYmFzLWtpYXJvc3RhbWk=",
+    gravityID: "abbas-kiarostami",
     name: "Abbas Kiarostami",
+    is_followed: false,
+    nationality: "Iranian",
+    birthday: "1940",
+    deathday: "2016",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/JX1xE4T_amcdrv2nFunIHw/tall.jpg",
+    },
     artworks_connection: {
       pageInfo: {
         startCursor: "YXJyYXljb25uZWN0aW9uOjA=",

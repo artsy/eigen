@@ -7,6 +7,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
@@ -30,6 +31,7 @@ export class Artwork extends React.Component<Props> {
           </Flex>
           <Separator />
           <Join separator={<Spacer my={2} />}>
+            <AboutArtist artwork={artwork} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
             <OtherWorks artwork={artwork} />
@@ -48,6 +50,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...ArtworkAvailability_artwork
       ...SellerInfo_artwork
       ...OtherWorks_artwork
+      ...AboutArtist_artwork
     }
   `,
 })
