@@ -13,7 +13,7 @@ export interface EntityItemProps {
   item: Item
   isFirst: boolean
   isLast: boolean
-  onPress: (href: string, id: string, internalID: string) => void
+  onPress: (href: string, gravityID: string, internalID: string) => void
 }
 
 export const EntityItem: React.SFC<EntityItemProps> = ({

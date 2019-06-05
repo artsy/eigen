@@ -15,7 +15,8 @@
     "plugins": [{ "name": "typescript-styled-plugin" }],
     "pretty": true,
     "resolveJsonModule": true,
-    "strictNullChecks": false,
+    "strict": false,
+    "strictBindCallApply": true,
     "target": "es6",
     "types": ["jest", "react", "react-native"],
     "noEmit": true

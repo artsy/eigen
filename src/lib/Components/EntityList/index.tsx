@@ -1,14 +1,14 @@
 import { Flex, Sans } from "@artsy/palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { EntityItem, Item } from "./Components/EntityItem"
+import { EntityItem, EntityItemProps, Item } from "./Components/EntityItem"
 
 interface EntityListProps {
   prefix: string
   list: ReadonlyArray<Item>
   displayedItems?: number
   count: number
-  onItemSelected?: (href: string, id: string) => void
+  onItemSelected?: EntityItemProps["onPress"]
   onViewAllPressed?: () => void
 }
 

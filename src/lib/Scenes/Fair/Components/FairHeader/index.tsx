@@ -113,7 +113,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handleArtistPress(href, _slug, _gravityID) {
+  handleArtistPress(href, _gravityID, _internalID) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
