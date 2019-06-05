@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Animated, Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { findClosestIndex, getMeasurements } from "./geometry"
+import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 export interface ImageCarouselProps {
@@ -25,6 +26,7 @@ export const cardBoundingBox = { width: windowWidth, height: cardHeight }
 export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const measurements = useMemo(() => getMeasurements({ images, boundingBox: cardBoundingBox }), [images])
   const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
+  const imageRefs = useMemo(() => [], [])
 
   const [imageIndex, setImageIndex] = useState(0)
 
@@ -37,6 +39,8 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
     },
     [setImageIndex, offsets]
   )
+
+  const [fullScreen, setFullScreen] = useState(false)
 
   return (
     <Flex>
@@ -56,6 +60,10 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               imageURL={devCacheBust(item.url)}
               width={styles.width}
               height={styles.height}
+              onPress={() => setFullScreen(true)}
+              ref={ref => {
+                imageRefs[index] = ref
+              }}
               style={styles}
             />
           )
@@ -70,6 +78,15 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             ))}
           </Flex>
         </>
+      )}
+      {fullScreen && (
+        <ImageCarouselFullScreen
+          imageIndex={imageIndex}
+          setImageIndex={setImageIndex}
+          imageRefs={imageRefs}
+          images={images}
+          onClosed={() => setFullScreen(false)}
+        />
       )}
     </Flex>
   )

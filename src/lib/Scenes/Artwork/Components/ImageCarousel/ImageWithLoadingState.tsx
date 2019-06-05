@@ -2,13 +2,14 @@ import { color } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Spinner from "lib/Components/Spinner"
 import React, { useEffect, useMemo, useState } from "react"
-import { Animated, View, ViewProps } from "react-native"
+import { Animated, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 
 interface ImageWithLoadingStateProps {
   width: number
   height: number
   imageURL: string
   onLoad?: () => void
+  onPress?: () => void
   style?: ViewProps["style"]
 }
 /**
@@ -18,7 +19,7 @@ interface ImageWithLoadingStateProps {
  *
  * @param param0 same as RN's Image props
  */
-export const ImageWithLoadingState: React.FC<ImageWithLoadingStateProps> = ({ ...props }) => {
+export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStateProps>(({ ...props }, ref) => {
   const [isLoading, setIsLoading] = useState(true)
 
   // When the image has loaded we want to fade it in, so we have a white overlay
@@ -46,46 +47,56 @@ export const ImageWithLoadingState: React.FC<ImageWithLoadingStateProps> = ({ ..
       }).start()
     }, 1000)
   }, [])
-  const { width, height, imageURL } = props
+  const { width, height, imageURL, onPress } = props
   return (
-    <View style={[{ width, height }, props.style]}>
-      <View style={{ position: "absolute", width, height }}>
-        <OpaqueImageView
-          onLoad={() => {
-            setIsLoading(false)
-            if (props.onLoad) {
-              props.onLoad()
-            }
-          }}
-          imageURL={imageURL}
-          aspectRatio={width / height}
-          style={{ width, height }}
-        />
-      </View>
-      <Animated.View
-        style={{
-          position: "absolute",
-          width,
-          height,
-          opacity: overlayOpacity,
-          backgroundColor: "white",
-          flex: 1,
-        }}
-      >
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[{ width, height }, props.style]} ref={ref}>
+        <View style={{ position: "absolute", width, height }}>
+          <OpaqueImageView
+            onLoad={() => {
+              setIsLoading(false)
+              if (props.onLoad) {
+                props.onLoad()
+              }
+            }}
+            imageURL={imageURL}
+            aspectRatio={width / height}
+            style={{ width, height }}
+          />
+        </View>
         <Animated.View
           style={{
-            opacity: spinnerOpacity,
-            // give the image a subtle silhouette while the spinner is displaying
-            // to keep the balance of the page and set an appropriate user expectation
-            backgroundColor: color("black5"),
-            alignItems: "center",
-            justifyContent: "center",
+            position: "absolute",
+            width,
+            height,
+            opacity: overlayOpacity,
+            backgroundColor: "white",
             flex: 1,
           }}
         >
-          <Spinner />
+          <Animated.View
+            style={{
+              opacity: overlayOpacity,
+              backgroundColor: "white",
+              flex: 1,
+            }}
+          >
+            <Animated.View
+              style={{
+                opacity: spinnerOpacity,
+                // give the image a subtle silhouette while the spinner is displaying
+                // to keep the balance of the page and set an appropriate user expectation
+                backgroundColor: color("black5"),
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
+              }}
+            >
+              <Spinner />
+            </Animated.View>
+          </Animated.View>
         </Animated.View>
-      </Animated.View>
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   )
-}
+})
