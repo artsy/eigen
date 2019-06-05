@@ -41,9 +41,7 @@ export default class Location extends React.Component<Props, State> {
   }
 
   locationSelected = async (result: LocationResult) => {
-    // The extra key is from a throwaway google account,
-    // it should only get used in Emission dev mode
-    const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
+    const apiKey = Emission.googleMapsAPIKey
     const queryString = stringify({
       key: apiKey,
       placeid: result.id,
@@ -75,8 +73,7 @@ export default class Location extends React.Component<Props, State> {
   // https://developers.google.com/places/
   // https://developers.google.com/places/web-service/details
   searchForQuery = async (query: string) => {
-    // The 2nd is a throw-away key on a throw-away account
-    const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
+    const apiKey = Emission.googleMapsAPIKey
     const queryString = stringify({
       key: apiKey,
       language: "en",

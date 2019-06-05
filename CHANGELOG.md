@@ -23,6 +23,7 @@
 - Adds related works section to Artwork page - ashkan18
 - Allows user to save an artwork from the Artwork view - sweir27
 - Adds about this artist to Artwork page - ashkan18
+- Allows user to follow an artist from the Artwork tombstone - lilyfromseattle
 
 ### 1.11.4
 
