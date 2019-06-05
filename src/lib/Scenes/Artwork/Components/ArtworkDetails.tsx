@@ -3,7 +3,7 @@ import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.gra
 
 // import { capitalize } from "lodash"
 import React from "react"
-import { Button, Text } from "react-native"
+import { Button } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkDetailsProps {
