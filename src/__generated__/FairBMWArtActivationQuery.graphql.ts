@@ -1,17 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { FairBMWArtActivation_fair$ref } from "./FairBMWArtActivation_fair.graphql";
 export type FairBMWArtActivationQueryVariables = {
     readonly fairID: string;
 };
 export type FairBMWArtActivationQueryResponse = {
     readonly fair: {
-        readonly gravityID: string;
-        readonly internalID: string;
-        readonly sponsoredContent: {
-            readonly activationText: string | null;
-            readonly pressReleaseUrl: string | null;
-        } | null;
+        readonly " $fragmentRefs": FairBMWArtActivation_fair$ref;
     } | null;
 };
 export type FairBMWArtActivationQuery = {
@@ -26,13 +22,17 @@ query FairBMWArtActivationQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
-    gravityID
-    internalID
-    sponsoredContent {
-      activationText
-      pressReleaseUrl
-    }
+    ...FairBMWArtActivation_fair
     id
+  }
+}
+
+fragment FairBMWArtActivation_fair on Fair {
+  gravityID
+  internalID
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
   }
 }
 */
@@ -52,46 +52,7 @@ v1 = [
     "name": "id",
     "variableName": "fairID"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "sponsoredContent",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "FairSponsoredContent",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "activationText",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "pressReleaseUrl",
-      "args": null,
-      "storageKey": null
-    }
-  ]
-};
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -110,9 +71,11 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/)
+          {
+            "kind": "FragmentSpread",
+            "name": "FairBMWArtActivation_fair",
+            "args": null
+          }
         ]
       }
     ]
@@ -131,9 +94,45 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "gravityID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "sponsoredContent",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "activationText",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "pressReleaseUrl",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -148,11 +147,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBMWArtActivationQuery",
-    "id": "a9052013f3c158869fa3957387d7a573",
+    "id": "0698ac1e02a90cdabe8833e6b705a9d6",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '89db77148ba86762e83a265a07599b7a';
+(node as any).hash = '4ed1740e79921612fd90343f396d79bf';
 export default node;

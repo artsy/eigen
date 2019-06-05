@@ -5,7 +5,6 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 
-import { SearchResult } from "../"
 import TextInput, { TextInputProps } from "./TextInput"
 
 const Result = styled.TouchableHighlight`
@@ -44,13 +43,13 @@ const UnknownName = styled.Text`
   font-size: 17;
 `
 
-export interface SearchQueryProps extends TextInputProps {
-  results: SearchResult[] | null
+export interface SearchQueryProps<T> extends TextInputProps {
+  results: T[] | null
   query: string
   placeholder: string
   noResultsMessage: string
   onChangeText?: (query: string) => void
-  resultSelected?: (result: SearchResult) => void
+  resultSelected?: (result: T) => void
 }
 
 const noResults = props => {
@@ -64,7 +63,7 @@ const noResults = props => {
   )
 }
 
-const render = (props: SearchQueryProps) => {
+function render<T>(props: SearchQueryProps<T>) {
   const rowForResult = result => (
     <Result key={result.id} onPress={() => props.resultSelected(result)}>
       <ResultContainers>
@@ -107,8 +106,8 @@ const render = (props: SearchQueryProps) => {
   )
 }
 
-export class SearchResults extends React.Component<SearchQueryProps, null> {
+export class SearchResults<T> extends React.Component<SearchQueryProps<T>, null> {
   render() {
-    return render(this.props)
+    return render<T>(this.props)
   }
 }

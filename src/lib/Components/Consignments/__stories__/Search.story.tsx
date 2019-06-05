@@ -1,11 +1,12 @@
 import { camelCase } from "lodash"
 
+import { ArtistResult } from ".."
 import { SearchQueryProps, SearchResults } from "../Components/SearchResults"
 
 export const name = "Consignments/Search"
 export const component = SearchResults
 
-const noQuery: SearchQueryProps = {
+const noQuery: SearchQueryProps<ArtistResult> = {
   query: null,
   searching: false,
   placeholder: "Artist/Designer Name",
@@ -13,7 +14,7 @@ const noQuery: SearchQueryProps = {
   results: [],
 }
 
-const queryNoResults: SearchQueryProps = {
+const queryNoResults: SearchQueryProps<ArtistResult> = {
   query: "ba",
   searching: false,
   results: [],
@@ -21,7 +22,7 @@ const queryNoResults: SearchQueryProps = {
   noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const queryNoResultsSearching: SearchQueryProps = {
+const queryNoResultsSearching: SearchQueryProps<ArtistResult> = {
   query: "ba",
   searching: true,
   results: [],
@@ -29,13 +30,13 @@ const queryNoResultsSearching: SearchQueryProps = {
   noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const query1Result: SearchQueryProps = {
+const query1Result: SearchQueryProps<ArtistResult> = {
   query: "ban",
   searching: false,
   results: [
     {
       name: "Banksy",
-      id: "banksy",
+      internalID: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
@@ -43,13 +44,13 @@ const query1Result: SearchQueryProps = {
   noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const query1ResultSearching: SearchQueryProps = {
+const query1ResultSearching: SearchQueryProps<ArtistResult> = {
   query: "ban",
   searching: true,
   results: [
     {
       name: "Banksy",
-      id: "banksy",
+      internalID: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
@@ -57,18 +58,18 @@ const query1ResultSearching: SearchQueryProps = {
   noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const query2Results: SearchQueryProps = {
+const query2Results: SearchQueryProps<ArtistResult> = {
   query: "bank",
   searching: false,
   results: [
     {
       name: "Banksy",
-      id: "banksy",
+      internalID: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
     {
       name: "Banksy's Brother",
-      id: "thanksy",
+      internalID: "thanksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg" },
     },
   ],
@@ -78,11 +79,11 @@ const query2Results: SearchQueryProps = {
 
 const artistGen = (artistName: string) => ({
   name: artistName,
-  id: camelCase(artistName),
+  internalID: camelCase(artistName),
   image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
 })
 
-const query4Results: SearchQueryProps = {
+const query4Results: SearchQueryProps<ArtistResult> = {
   query: "bank",
   searching: false,
   results: [

@@ -1,6 +1,6 @@
 import { IMocks } from "graphql-tools/dist/Interfaces"
 import React from "react"
-import { QueryRenderer, RelayContainer } from "react-relay"
+import { QueryRenderer } from "react-relay"
 import {
   Environment,
   GraphQLTaggedNode,
@@ -17,7 +17,7 @@ import { createMockNetworkLayer, createMockNetworkLayer2 } from "./createMockNet
 // TODO: Copied from https://github.com/artsy/reaction/blob/master/src/DevTools/createMockNetworkLayer/index.ts
 // extract to another package
 export interface MockRelayRendererProps<T extends OperationBase = OperationDefaults> {
-  Component: RelayContainer<T["response"]>
+  Component: React.ComponentType<any>
   variables?: T["variables"]
   query: GraphQLTaggedNode
   /**
