@@ -515,7 +515,7 @@
 					510DCB0D1CCA69EC0075E8CB = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 23KMWZ572J;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
