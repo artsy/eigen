@@ -23,7 +23,7 @@ const artworkDetailsInfo = {
     signature: null,
     signatureInfo: null,
     certificateOfAuthenticity: null,
-    framed: true,
+    framed: { label: "oh yeah", details: "real nice one" },
     series: null,
     publisher: null,
     manufacturer: null,
