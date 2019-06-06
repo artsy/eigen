@@ -2,16 +2,15 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@4.14.4":
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.4.tgz#1adb6c3303c3835d6265f5e3f47ce3be2e9d630d"
-  integrity sha512-grZuLmTu56oaFjRYtRXKgk4Br0DJumj3jpuNxZ5i2QZejoRwWoxF/QeSLwB90cJuAJDTh2FxFI0/jqTTdu1ahA==
+"@artsy/palette@4.14.5":
+  version "4.14.5"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.5.tgz#1c6d36ab4ed7a7d0a27dbf96e824421b71964b02"
+  integrity sha512-AQUa2hojG1uadINqePpwiT/og8dFoELTIHKCvQXqbGlYy/bS6tm+atKEU8XauVJgMIVWBr3OiA0glpFIEVpvGA==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
-    moment "^2.23.0"
-    moment-timezone "^0.5.25"
+    luxon "^1.15.0"
     rc-slider "^8.6.2"
     react-lazy-load-image-component "^1.3.2"
     react-live "^1.12.0"
@@ -9429,6 +9428,11 @@ lru-cache@^4.0.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+luxon@^1.15.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.16.0.tgz#93c915cfc3dff4bb806656595018fddc47cc96ec"
+  integrity sha512-qaqB+JwpGwtl7UbIXng3A/l4W/ySBr8drQvwtMLZBMiLD2V+0fEnPWMrs+UjnIy9PsktazQaKvwDUCLzoWz0Hw==
+
 macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
@@ -10238,14 +10242,14 @@ mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment-timezone@0.5.25, moment-timezone@^0.5.25:
+moment-timezone@0.5.25:
   version "0.5.25"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.25.tgz#a11bfa2f74e088327f2cd4c08b3e7bdf55957810"
   integrity sha512-DgEaTyN/z0HFaVcVbSyVCUU6HeFdnNC3vE4c9cgu2dgMTvjBUBdBzWfasTBmAW45u5OIMeCJtU8yNjM22DHucw==
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.24.0, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.11.2, moment@^2.23.0:
+moment@2.24.0, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.11.2:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
