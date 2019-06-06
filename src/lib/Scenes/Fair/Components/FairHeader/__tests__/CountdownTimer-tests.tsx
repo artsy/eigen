@@ -1,5 +1,9 @@
 // Mock moment to always give back a formatted time string
-jest.mock("moment", () => () => ({ format: format => (format.length > 3 ? "Mon" : "7pm") }))
+jest.mock("moment", () => {
+  const momentMock: any = jest.fn(() => ({ format: format => (format.length > 3 ? "Mon" : "7pm") }))
+  momentMock.duration = jest.requireActual("moment").duration
+  return momentMock
+})
 
 import { render } from "enzyme"
 import React from "react"
