@@ -10,7 +10,6 @@ import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   show: ShowArtworks_show
-  showID: string
   relay: RelayRefetchProp
 }
 
@@ -29,10 +28,8 @@ interface State {
 }))
 export class ShowArtworks extends React.Component<Props, State> {
   handleRefetch = params => {
-    const { showID } = this.props
     this.props.relay.refetch({
       ...params,
-      showID,
     })
   }
 

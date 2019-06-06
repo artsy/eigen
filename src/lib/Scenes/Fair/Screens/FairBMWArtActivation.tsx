@@ -1,17 +1,18 @@
 import { Box, Flex, Sans, Serif, space, Theme } from "@artsy/palette"
+import { FairBMWArtActivation_fair } from "__generated__/FairBMWArtActivation_fair.graphql"
 import { FairBMWArtActivationQuery } from "__generated__/FairBMWArtActivationQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, Image, ViewProperties } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
-  fair: FairBMWArtActivationQuery["response"]["fair"]
+  fair: FairBMWArtActivation_fair
 }
 
 interface State {
@@ -149,22 +150,30 @@ function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTyp
   })
 }
 
+const FairBMWArtActivationFragmentContainer = createFragmentContainer(FairBMWArtActivation, {
+  fair: graphql`
+    fragment FairBMWArtActivation_fair on Fair {
+      gravityID
+      internalID
+      sponsoredContent {
+        activationText
+        pressReleaseUrl
+      }
+    }
+  `,
+})
+
 export const FairBMWArtActivationRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairBMWArtActivationQuery>
     environment={defaultEnvironment}
     query={graphql`
       query FairBMWArtActivationQuery($fairID: String!) {
         fair(id: $fairID) {
-          gravityID
-          internalID
-          sponsoredContent {
-            activationText
-            pressReleaseUrl
-          }
+          ...FairBMWArtActivation_fair
         }
       }
     `}
     variables={{ fairID }}
-    render={renderWithLoadProgress<Props>(FairBMWArtActivation)}
+    render={renderWithLoadProgress(FairBMWArtActivationFragmentContainer)}
   />
 )

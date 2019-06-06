@@ -25,6 +25,7 @@
 - Add image carousel on artwork screen - ds300
 - Adds about this artist to Artwork page - ashkan18
 - Allows user to follow an artist from the Artwork tombstone - lilyfromseattle
+- Enable `strictBindCallApply`, `noImplicitThis`, and `strictFunctionTypes` compiler settings - alloy
 
 ### 1.11.4
 

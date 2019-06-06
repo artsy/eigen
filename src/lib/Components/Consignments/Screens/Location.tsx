@@ -110,7 +110,7 @@ export default class Location extends React.Component<Props, State> {
               marginRight: 20,
             }}
           >
-            <SearchResults
+            <SearchResults<LocationResult>
               results={this.state.results}
               query={this.state.query}
               onChangeText={this.textChanged}

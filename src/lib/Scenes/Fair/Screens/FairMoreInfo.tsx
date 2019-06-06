@@ -1,11 +1,12 @@
 import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { FairMoreInfo_fair } from "__generated__/FairMoreInfo_fair.graphql"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
@@ -15,7 +16,7 @@ const ListHeaderText = styled(Serif)`
 `
 
 interface Props extends ViewProperties {
-  fair: FairMoreInfoQuery["response"]["fair"]
+  fair: FairMoreInfo_fair
 }
 
 interface State {
@@ -152,23 +153,31 @@ export class FairMoreInfo extends React.Component<Props, State> {
   }
 }
 
+const FairMoreInfoFragmentContainer = createFragmentContainer(FairMoreInfo, {
+  fair: graphql`
+    fragment FairMoreInfo_fair on Fair {
+      organizer {
+        website
+      }
+      gravityID
+      internalID
+      about
+      ticketsLink
+    }
+  `,
+})
+
 export const FairMoreInfoRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairMoreInfoQuery>
     environment={defaultEnvironment}
     query={graphql`
       query FairMoreInfoQuery($fairID: String!) {
         fair(id: $fairID) {
-          organizer {
-            website
-          }
-          gravityID
-          internalID
-          about
-          ticketsLink
+          ...FairMoreInfo_fair
         }
       }
     `}
     variables={{ fairID }}
-    render={renderWithLoadProgress<Props>(FairMoreInfo)}
+    render={renderWithLoadProgress(FairMoreInfoFragmentContainer)}
   />
 )

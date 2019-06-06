@@ -97,7 +97,7 @@ export class Message extends React.Component<Props> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
-    const previewAttachment = function(attachmentID) {
+    const previewAttachment = function(this: React.Component<any, any>, attachmentID) {
       const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
       SwitchBoard.presentMediaPreviewController(
         this,

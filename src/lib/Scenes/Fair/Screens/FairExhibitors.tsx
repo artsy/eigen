@@ -1,15 +1,16 @@
 import { Box, Sans, Separator, Serif, Theme } from "@artsy/palette"
+import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { SectionList, TouchableOpacity, ViewProperties } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
-  fair: FairExhibitorsQuery["response"]["fair"]
+  fair: FairExhibitors_fair
 }
 
 interface State {
@@ -124,27 +125,35 @@ export class FairExhibitors extends React.Component<Props, State> {
   }
 }
 
+const FairExhibitorsFragmentContainer = createFragmentContainer(FairExhibitors, {
+  fair: graphql`
+    fragment FairExhibitors_fair on Fair {
+      gravityID
+      internalID
+      exhibitors_grouped_by_name {
+        letter
+        exhibitors {
+          name
+          gravityID
+          profile_id
+          partner_id
+        }
+      }
+    }
+  `,
+})
+
 export const FairExhibitorsRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairExhibitorsQuery>
     environment={defaultEnvironment}
     query={graphql`
       query FairExhibitorsQuery($fairID: String!) {
         fair(id: $fairID) {
-          gravityID
-          internalID
-          exhibitors_grouped_by_name {
-            letter
-            exhibitors {
-              name
-              gravityID
-              profile_id
-              partner_id
-            }
-          }
+          ...FairExhibitors_fair
         }
       }
     `}
     variables={{ fairID }}
-    render={renderWithLoadProgress<Props>(FairExhibitors)}
+    render={renderWithLoadProgress(FairExhibitorsFragmentContainer)}
   />
 )

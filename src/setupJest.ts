@@ -140,7 +140,8 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   }
 
   beforeEach(done => {
-    ;["error", "warn"].forEach((type: "error" | "warn") => {
+    const types: Array<"error" | "warn"> = ["error", "warn"]
+    types.forEach(type => {
       // Don't spy on loggers that have been modified by the current test.
       if (console[type] === originalLoggers[type]) {
         const handler = (...args) => {

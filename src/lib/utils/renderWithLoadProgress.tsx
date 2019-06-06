@@ -6,10 +6,10 @@ import Spinner from "lib/Components/Spinner"
 
 export const LoadingTestID = "relay-loading"
 
-export default function<P>(
-  Container: RelayContainer<P>,
+export default function<T extends RelayContainer<any>>(
+  Container: T,
   initialProps: object = {}
-): (readyState: ReadyState<P>) => React.ReactElement<RelayContainer<P>> | null {
+): (readyState: ReadyState<any>) => React.ReactElement<T> | null {
   let retrying = false
   return ({ error, props, retry }) => {
     if (error) {
@@ -40,7 +40,7 @@ export default function<P>(
         return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
       }
     } else if (props) {
-      return <Container {...initialProps} {...props as any} />
+      return <Container {...initialProps} {...props} />
     } else {
       return <Spinner testID={LoadingTestID} style={{ flex: 1 }} />
     }
