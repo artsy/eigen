@@ -13,6 +13,7 @@ import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./C
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
 import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
+import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
@@ -33,6 +34,7 @@ export class Artwork extends React.Component<Props> {
           <Separator />
           <Join separator={<Spacer my={2} />}>
             <AboutArtist artwork={artwork} />
+            <PartnerCard partner={artwork.partner} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
             <OtherWorks artwork={artwork} />
@@ -49,6 +51,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       images {
         ...ImageCarousel_images
       }
+      ...PartnerCard_artwork
       ...ArtworkTombstone_artwork
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
