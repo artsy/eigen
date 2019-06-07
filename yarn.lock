@@ -2,15 +2,17 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@4.14.8":
-  version "4.14.8"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.8.tgz#a181fe73a9bdbbc94ba23acde38510aa626dd236"
-  integrity sha512-we4psKxCrTDbFYrYxD0294Y1pvX0MDhdY/VCuZmxwIj+/A8k/c9iGKajTq7Lv8xwSOb8ijLOn3pxXvsn6PnA9g==
+"@artsy/palette@4.14.9":
+  version "4.14.9"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.9.tgz#b7ad118cda8c38421947cc15ff4b638f20d368fa"
+  integrity sha512-BRaG/ilsTEcjPC+taWwctxcnr90rZUm+nRFppTd7t22+a3OSxwJ9VA9oXY1rHsCv00T+o8g9OG3Gd1pLXWr09g==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
     luxon "^1.15.0"
+    moment "^2.23.0"
+    moment-timezone "^0.5.25"
     rc-slider "^8.6.2"
     react-lazy-load-image-component "^1.3.2"
     react-live "^1.12.0"
@@ -10242,14 +10244,14 @@ mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment-timezone@0.5.25:
+moment-timezone@0.5.25, moment-timezone@^0.5.25:
   version "0.5.25"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.25.tgz#a11bfa2f74e088327f2cd4c08b3e7bdf55957810"
   integrity sha512-DgEaTyN/z0HFaVcVbSyVCUU6HeFdnNC3vE4c9cgu2dgMTvjBUBdBzWfasTBmAW45u5OIMeCJtU8yNjM22DHucw==
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.24.0, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.11.2:
+moment@2.24.0, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.11.2, moment@^2.23.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
