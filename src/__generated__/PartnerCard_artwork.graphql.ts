@@ -9,6 +9,7 @@ export type PartnerCard_artwork = {
         readonly isGalleryAuction: boolean | null;
     } | null;
     readonly partner: {
+        readonly is_default_profile_public: boolean | null;
         readonly type: string | null;
         readonly name: string | null;
         readonly gravityID: string;
@@ -89,6 +90,13 @@ return {
       "concreteType": "Partner",
       "plural": false,
       "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_default_profile_public",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -193,5 +201,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2fbaa46d9ad9ea9869fc06de8a0dee69';
+(node as any).hash = '5ce47668bc2a47c65096a27074104d40';
 export default node;

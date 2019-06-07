@@ -1,8 +1,11 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, color, EntityHeader, Flex, Sans, Serif } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardMutation } from "__generated__/PartnerCardMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import { filterLocations } from "lib/utils/filterLocations"
+import { get } from "lib/utils/get"
+import { limitWithCount } from "lib/utils/limitWithCount"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -94,31 +97,31 @@ export class PartnerCard extends React.Component<Props, State> {
     console.log("PROFILE", partner)
 
     const showPartnerLogo = !(artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction))
-    const image = partner.profile.icon.url
+    const imageUrl = partner.profile.icon.url
     // const image = "www.artsy.net"
+    const partnerInitials = partner.initials
+    const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
     const showPartnerFollow = partner.type !== "Auction House" && partner.profile
     return (
       <Flex>
-        {!!image && <RoundedImage imageURL={image} aspectRatio={1} />}
-        {!image && (
-          <RoundedBox>
-            <Flex justifyContent="center" alignItems="center" flexGrow={1} alignContent="center" flexDirection="column">
-              <StyledSerif color="black80" size="3">
-                {partner.initials}
-              </StyledSerif>
-            </Flex>
-          </RoundedBox>
-        )}
-        <Serif size="2">{partner.name}</Serif>
-        <Box width={102} height={34}>
-          <InvertedButton
-            grayBorder={true}
-            text={partner.profile.is_followed ? "Following" : "Follow"}
-            onPress={this.handleFollowPartner}
-            selected={partner.profile.is_followed}
-            inProgress={isFollowedChanging}
-          />
-        </Box>
+        <EntityHeader
+          name={partner.name}
+          href={partner.is_default_profile_public && `${partner.href}`}
+          meta={locationNames}
+          imageUrl={imageUrl}
+          initials={partnerInitials}
+          FollowButton={
+            showPartnerFollow && (
+              <InvertedButton
+                grayBorder={true}
+                text={partner.profile.is_followed ? "Following" : "Follow"}
+                onPress={this.handleFollowPartner.bind(this)}
+                selected={partner.profile.is_followed}
+                inProgress={isFollowedChanging}
+              />
+            )
+          }
+        />
       </Flex>
     )
   }
@@ -132,6 +135,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         isGalleryAuction
       }
       partner {
+        is_default_profile_public
         type
         name
         gravityID

@@ -62,6 +62,7 @@ fragment PartnerCard_artwork on Artwork {
     id
   }
   partner {
+    is_default_profile_public
     type
     name
     gravityID
@@ -737,6 +738,13 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
+                "name": "is_default_profile_public",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
                 "name": "type",
                 "args": null,
                 "storageKey": null
@@ -1048,7 +1056,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "1ca64bbfb00b70756a06ed2b4692a082",
+    "id": "55b4d3a28f0be97b016bf9415c5ba455",
     "text": null,
     "metadata": {}
   }

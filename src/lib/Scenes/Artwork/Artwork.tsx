@@ -34,7 +34,7 @@ export class Artwork extends React.Component<Props> {
           <Separator />
           <Join separator={<Spacer my={2} />}>
             <AboutArtist artwork={artwork} />
-            <PartnerCard partner={artwork.partner} />
+            <PartnerCard artwork={artwork} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
             <OtherWorks artwork={artwork} />
