@@ -1,6 +1,7 @@
 import { Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
+import { ReadMore } from "lib/Components/ReadMore"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -26,6 +27,7 @@ export class Artwork extends React.Component<Props> {
     return (
       <Theme>
         <ScrollView>
+          <ReadMore source={artwork.artist.biography_blurb.text} maxChars={140} />
           <ImageCarousel images={artwork.images} />
           <Flex alignItems="center" mt={2}>
             <ArtworkActions artwork={artwork} />
@@ -48,6 +50,11 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
+      artist {
+        biography_blurb {
+          text
+        }
+      }
       images {
         ...ImageCarousel_images
       }
