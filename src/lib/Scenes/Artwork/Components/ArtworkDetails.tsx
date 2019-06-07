@@ -1,7 +1,5 @@
 import { Box, Sans } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
-
-// import { capitalize } from "lodash"
 import React from "react"
 import { Button } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
