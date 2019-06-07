@@ -2,14 +2,15 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@4.14.4":
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.4.tgz#1adb6c3303c3835d6265f5e3f47ce3be2e9d630d"
-  integrity sha512-grZuLmTu56oaFjRYtRXKgk4Br0DJumj3jpuNxZ5i2QZejoRwWoxF/QeSLwB90cJuAJDTh2FxFI0/jqTTdu1ahA==
+"@artsy/palette@4.14.10":
+  version "4.14.10"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.10.tgz#4b2bf4fb11259736670892b5ae310b67880dece3"
+  integrity sha512-E8ZbwLz0LYmdeBhsA/OJlYSAhgT/woOkzQ/PivNtyOlZvgzyluSWL3ISwiGyoWCzq96xwAqEfYfZyKsJEKSpQw==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
+    luxon "^1.15.0"
     moment "^2.23.0"
     moment-timezone "^0.5.25"
     rc-slider "^8.6.2"
@@ -9428,6 +9429,11 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
+
+luxon@^1.15.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.16.0.tgz#93c915cfc3dff4bb806656595018fddc47cc96ec"
+  integrity sha512-qaqB+JwpGwtl7UbIXng3A/l4W/ySBr8drQvwtMLZBMiLD2V+0fEnPWMrs+UjnIy9PsktazQaKvwDUCLzoWz0Hw==
 
 macaddress@^0.2.8:
   version "0.2.8"
