@@ -27,7 +27,7 @@ export class Artwork extends React.Component<Props> {
     return (
       <Theme>
         <ScrollView>
-          <ReadMore source={artwork.artist.biography_blurb.text} maxChars={140} />
+          <ReadMore content={artwork.artist.biography_blurb.text} maxChars={140} />
           <ImageCarousel images={artwork.images} />
           <Flex alignItems="center" mt={2}>
             <ArtworkActions artwork={artwork} />

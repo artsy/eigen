@@ -6,7 +6,7 @@ import { LinkText } from "../Text/LinkText"
 
 describe("ReadMore", () => {
   it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {
-    const component = shallow(<ReadMore maxChars={20} source="Small text." />)
+    const component = shallow(<ReadMore maxChars={20} content="Small text." />)
 
     expect(component.find(Serif).length).toEqual(1)
     expect(component.find(Serif).text()).toEqual("Small text.")
@@ -15,7 +15,7 @@ describe("ReadMore", () => {
 
   it("Doesn't show the 'Read more' link when the length of the text is equal to the number of characters allowed", () => {
     const textToTruncate = "Small text."
-    const component = shallow(<ReadMore maxChars={textToTruncate.length} source={textToTruncate} />)
+    const component = shallow(<ReadMore maxChars={textToTruncate.length} content={textToTruncate} />)
 
     expect(component.find(Serif).length).toEqual(1)
     expect(component.find(Serif).text()).toEqual(textToTruncate)
@@ -25,7 +25,7 @@ describe("ReadMore", () => {
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
     const component = mount(
       <Theme>
-        <ReadMore maxChars={7} source={"This text is slightly longer than is allowed."} />
+        <ReadMore maxChars={7} content={"This text is slightly longer than is allowed."} />
       </Theme>
     )
 
@@ -50,7 +50,7 @@ describe("ReadMore", () => {
       <Theme>
         <ReadMore
           maxChars={7}
-          source={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
+          content={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
         />
       </Theme>
     )

@@ -6,7 +6,7 @@ import { Text } from "react-native"
 import { LinkText } from "./Text/LinkText"
 
 interface Props {
-  source: string
+  content: string
   maxChars: number
 }
 
@@ -24,12 +24,12 @@ const rules = {
   },
 }
 
-export const ReadMore = React.memo(({ source, maxChars }: Props) => {
+export const ReadMore = React.memo(({ content, maxChars }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const root = renderMarkdown(source, rules)
+  const root = renderMarkdown(content, rules)
 
   const RE = /(<([^>]+)>)/gi // Strip tags to get innerText char count
-  const { length } = source.replace(RE, "") //
+  const { length } = content.replace(RE, "") //
   const isAlreadyExpanded = isExpanded || length <= maxChars
 
   return isAlreadyExpanded ? (
