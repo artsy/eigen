@@ -1,4 +1,4 @@
-import { Box, Sans } from "@artsy/palette"
+import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 import React from "react"
 import { Button } from "react-native"
@@ -42,27 +42,33 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 
     return (
       <Box>
-        <Sans size="4" weight="medium">
-          Artwork Details
-        </Sans>
-        {displayItems.map(i => (
-          <>
-            <Sans size="3" weight="medium">
-              {i.title}
+        <Join separator={<Spacer my={1} />}>
+          <Sans size="3" weight="medium">
+            Artwork Details
+          </Sans>
+          {displayItems.map(i => (
+            <>
+              <Sans size="3" weight="regular">
+                {i.title}
+              </Sans>
+              <Sans size="3" weight="regular" color="gray">
+                {i.value}
+              </Sans>
+            </>
+          ))}
+          {!this.state.showAll && (
+            <Sans
+              size="3"
+              weight="regular"
+              onPress={() => {
+                this.setState({ showAll: true })
+              }}
+              style={{ textDecorationLine: "underline" }}
+            >
+              Show more artwork details
             </Sans>
-            <Sans size="3" weight="regular">
-              {i.value}
-            </Sans>
-          </>
-        ))}
-        {!this.state.showAll && (
-          <Button
-            onPress={() => {
-              this.setState({ showAll: true })
-            }}
-            title="Show more artwork details"
-          />
-        )}
+          )}
+        </Join>
       </Box>
     )
   }
