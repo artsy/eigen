@@ -80,6 +80,7 @@ export class PartnerCard extends React.Component<Props, State> {
     const partnerInitials = showPartnerLogo && partner.initials
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
     const showPartnerFollow = partner.type !== "Auction House" && partner.profile
+
     return (
       <Flex>
         <EntityHeader
