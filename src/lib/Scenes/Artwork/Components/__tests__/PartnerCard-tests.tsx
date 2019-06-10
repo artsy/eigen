@@ -4,7 +4,7 @@ import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { Image } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { PartnerCard, PartnerCardFragmentContainer } from "../PartnerCard"
 
@@ -32,6 +32,38 @@ describe("PartnerCard", () => {
     ).toMatchInlineSnapshot(`"Test Gallery"`)
   })
 
+  it("renders partner image", () => {
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+      </Theme>
+    )
+
+    expect(component.find(Image)).toHaveLength(1)
+  })
+
+  it("renders partner initials when no image is present", () => {
+    const PartnerCardArtworkWithoutImage = {
+      ...PartnerCardArtwork,
+      partner: {
+        ...PartnerCardArtwork.partner,
+        profile: null,
+      },
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkWithoutImage} />
+      </Theme>
+    )
+
+    expect(component.find(Image)).toHaveLength(0)
+    expect(
+      component
+        .find(Serif)
+        .at(0)
+        .text()
+    ).toMatchInlineSnapshot(`"TG"`)
+  })
   it("truncates partner locations correctly", () => {
     const component = mount(
       <Theme>
