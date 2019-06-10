@@ -53,9 +53,19 @@ describe("Artwork Details", () => {
     expect(component.text()).toContain("Certificate of AuthenticityNot Included")
     expect(component.text()).not.toContain("FrameIncluded")
 
-    const button = component.find("Sans").last()
-    expect(button.text()).toEqual("Show more artwork details")
-    button.props().onPress()
+    expect(
+      component
+        .find("Sans")
+        .last()
+        .text()
+    ).toEqual("Show more artwork details")
+
+    component
+      .find("Text")
+      .last()
+      .props()
+      .onPress()
+
     expect(component.text()).toContain("FrameIncluded")
     expect(component.text()).not.toContain("Show more artwork details")
   })

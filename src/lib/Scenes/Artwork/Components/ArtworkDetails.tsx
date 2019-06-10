@@ -2,6 +2,7 @@ import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { LinkText } from "../../../Components/Text/LinkText"
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork
@@ -56,15 +57,14 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
             </>
           ))}
           {!this.state.showAll && (
-            <Sans
-              size="3"
-              weight="regular"
-              onPress={() => {
-                this.setState({ showAll: true })
-              }}
-              style={{ textDecorationLine: "underline" }}
-            >
-              Show more artwork details
+            <Sans size="3" weight="regular" style={{ textDecorationLine: "underline" }}>
+              <LinkText
+                onPress={() => {
+                  this.setState({ showAll: true })
+                }}
+              >
+                Show more artwork details
+              </LinkText>
             </Sans>
           )}
         </Join>
