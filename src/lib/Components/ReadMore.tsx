@@ -1,4 +1,5 @@
 import { Flex, Sans, Serif } from "@artsy/palette"
+import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import _ from "lodash"
 import React, { useState } from "react"
@@ -28,9 +29,8 @@ export const ReadMore = React.memo(({ content, maxChars }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const root = renderMarkdown(content, rules)
 
-  const RE = /(<([^>]+)>)/gi // Strip tags to get innerText char count
-  const { length } = content.replace(RE, "") //
-  const isAlreadyExpanded = isExpanded || length <= maxChars
+  const plainTextVersion = plainTextFromTree(root)
+  const isAlreadyExpanded = isExpanded || plainTextVersion.length <= maxChars
 
   return isAlreadyExpanded ? (
     root
@@ -54,7 +54,7 @@ function truncate({
   root: React.ReactNode
   maxChars: number
   onExpand(): void
-}): [React.ReactNode, number] {
+}): React.ReactNode {
   // keep track of how many characters we have seen
   let offset = 0
   // keep track of how many text nodes deep we are

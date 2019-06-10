@@ -14,11 +14,10 @@ describe("ReadMore", () => {
   })
 
   it("Doesn't show the 'Read more' link when the length of the text is equal to the number of characters allowed", () => {
-    const textToTruncate = "Small text."
-    const component = shallow(<ReadMore maxChars={textToTruncate.length} content={textToTruncate} />)
+    const component = shallow(<ReadMore maxChars={11} content={"Small [text](/artist/andy-warhol)."} />)
 
     expect(component.find(Serif).length).toEqual(1)
-    expect(component.find(Serif).text()).toEqual(textToTruncate)
+    expect(component.find(Serif).text()).toEqual("Small text.")
     expect(component.find(Sans).length).toEqual(0)
   })
 

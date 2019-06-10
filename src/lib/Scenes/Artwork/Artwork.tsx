@@ -27,7 +27,6 @@ export class Artwork extends React.Component<Props> {
     return (
       <Theme>
         <ScrollView>
-          <ReadMore content={artwork.artist.biography_blurb.text} maxChars={140} />
           <ImageCarousel images={artwork.images} />
           <Flex alignItems="center" mt={2}>
             <ArtworkActions artwork={artwork} />
@@ -36,6 +35,7 @@ export class Artwork extends React.Component<Props> {
           <Separator />
           <Join separator={<Spacer my={2} />}>
             <AboutArtist artwork={artwork} />
+            <ReadMore content={artwork.artist.biography_blurb.text} maxChars={140} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
             <ArtworkDetails artwork={artwork} />
