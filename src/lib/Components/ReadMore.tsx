@@ -27,7 +27,12 @@ const rules = {
 export const ReadMore = React.memo(({ source, maxChars }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const root = renderMarkdown(source, rules)
-  return isExpanded ? (
+
+  const RE = /(<([^>]+)>)/gi // Strip tags to get innerText char count
+  const { length } = source.replace(RE, "") //
+  const isAlreadyExpanded = isExpanded || length <= maxChars
+
+  return isAlreadyExpanded ? (
     root
   ) : (
     <Flex>
