@@ -2,10 +2,12 @@ import { EntityHeader, Flex } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardMutation } from "__generated__/PartnerCardMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { filterLocations } from "lib/utils/filterLocations"
 import { get } from "lib/utils/get"
 import { limitWithCount } from "lib/utils/limitWithCount"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
@@ -64,6 +66,10 @@ export class PartnerCard extends React.Component<Props, State> {
     )
   }
 
+  handleTap(href: string) {
+    SwitchBoard.presentNavigationViewController(this, href)
+  }
+
   handleShowSuccessfullyUpdated() {
     this.setState({
       isFollowedChanging: false,
@@ -83,24 +89,26 @@ export class PartnerCard extends React.Component<Props, State> {
 
     return (
       <Flex>
-        <EntityHeader
-          name={partner.name}
-          href={partner.is_default_profile_public && `${partner.href}`}
-          meta={locationNames}
-          imageUrl={imageUrl}
-          initials={partnerInitials}
-          FollowButton={
-            showPartnerFollow && (
-              <InvertedButton
-                grayBorder={true}
-                text={partner.profile.is_followed ? "Following" : "Follow"}
-                onPress={this.handleFollowPartner.bind(this)}
-                selected={partner.profile.is_followed}
-                inProgress={isFollowedChanging}
-              />
-            )
-          }
-        />
+        <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href)}>
+          <EntityHeader
+            name={partner.name}
+            href={partner.is_default_profile_public && `${partner.href}`}
+            meta={locationNames}
+            imageUrl={imageUrl}
+            initials={partnerInitials}
+            FollowButton={
+              showPartnerFollow && (
+                <InvertedButton
+                  grayBorder={true}
+                  text={partner.profile.is_followed ? "Following" : "Follow"}
+                  onPress={this.handleFollowPartner.bind(this)}
+                  selected={partner.profile.is_followed}
+                  inProgress={isFollowedChanging}
+                />
+              )
+            }
+          />
+        </TouchableWithoutFeedback>
       </Flex>
     )
   }
