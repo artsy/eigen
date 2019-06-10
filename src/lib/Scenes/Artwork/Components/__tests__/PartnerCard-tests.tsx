@@ -80,13 +80,14 @@ describe("PartnerCard", () => {
         .text()
     ).toMatchInlineSnapshot(`"Miami, New York, +3 more"`)
   })
+
   it("renders button text correctly", () => {
     const component = mount(
       <Theme>
         <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
       </Theme>
     )
-    expect(component.find(InvertedButton).length).toEqual(1)
+    expect(component.find(InvertedButton)).toHaveLength(1)
 
     expect(
       component
@@ -95,6 +96,22 @@ describe("PartnerCard", () => {
         .render()
         .text()
     ).toMatchInlineSnapshot(`"Follow"`)
+  })
+
+  it("does not render follow button when the partner is an auction house", () => {
+    const PartnerCardArtworkAuctionHouse = {
+      ...PartnerCardArtwork,
+      partner: {
+        ...PartnerCardArtwork.partner,
+        type: "Auction House",
+      },
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuctionHouse} />
+      </Theme>
+    )
+    expect(component.find(InvertedButton)).toHaveLength(0)
   })
 
   describe("Following a partner", () => {
