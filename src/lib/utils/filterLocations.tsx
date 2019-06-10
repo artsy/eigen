@@ -6,7 +6,7 @@ export const filterLocations = (locations: ReadonlyArray<{ city: string }>) => {
   if (!locations || locations.length < 1) {
     return null
   }
-  const locationCities = locations.map((location, index) => {
+  const locationCities = locations.map(location => {
     return location.city
   })
   const filteredForDuplicatesAndBlanks = locationCities.filter((city, pos) => {

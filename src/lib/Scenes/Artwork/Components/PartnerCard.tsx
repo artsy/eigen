@@ -1,13 +1,11 @@
-import { Box, color, EntityHeader, Flex, Sans, Serif } from "@artsy/palette"
+import { EntityHeader, Flex } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardMutation } from "__generated__/PartnerCardMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { filterLocations } from "lib/utils/filterLocations"
 import { get } from "lib/utils/get"
 import { limitWithCount } from "lib/utils/limitWithCount"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
@@ -25,8 +23,6 @@ export class PartnerCard extends React.Component<Props, State> {
     const { artwork, relay } = this.props
     const {
       gravityID: partnerSlug,
-      internalID: partnerID,
-      id: partnerRelayID,
       profile: { is_followed: partnerFollowed, internalID: profileID },
     } = artwork.partner
 
@@ -63,9 +59,6 @@ export class PartnerCard extends React.Component<Props, State> {
               },
             },
           },
-          updater: store => {
-            // store.get(id).setValue(!is_followed, "is_followed")
-          },
         })
       }
     )
@@ -84,7 +77,6 @@ export class PartnerCard extends React.Component<Props, State> {
 
     const showPartnerLogo = !(artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction))
     const imageUrl = showPartnerLogo && partner.profile ? partner.profile.icon.url : null
-    // const image = "www.artsy.net"
     const partnerInitials = showPartnerLogo && partner.initials
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
     const showPartnerFollow = partner.type !== "Auction House" && partner.profile
