@@ -2,16 +2,14 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@4.14.4":
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.4.tgz#1adb6c3303c3835d6265f5e3f47ce3be2e9d630d"
-  integrity sha512-grZuLmTu56oaFjRYtRXKgk4Br0DJumj3jpuNxZ5i2QZejoRwWoxF/QeSLwB90cJuAJDTh2FxFI0/jqTTdu1ahA==
+"@artsy/palette@4.14.13":
+  version "4.14.13"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.13.tgz#f96cc118c48eefcb47ceb84a980cc3d328138db8"
+  integrity sha512-RZ+ThamZdPFFKrhyYSKon2b4S6OR5MPa5d9hMy4wCAZeXgX2CKtQkk4bldC6dqQa/UbQPghSks7uYSg297bsAg==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
-    moment "^2.23.0"
-    moment-timezone "^0.5.25"
     rc-slider "^8.6.2"
     react-lazy-load-image-component "^1.3.2"
     react-live "^1.12.0"
@@ -10238,31 +10236,14 @@ mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment-timezone@0.5.17:
-  version "0.5.17"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.17.tgz#3c8fef32051d84c3af174d91dc52977dcb0ad7e5"
-  integrity sha512-Y/JpVEWIOA9Gho4vO15MTnW1FCmHi3ypprrkUaxsZ1TKg3uqC8q/qMBjTddkHoiwwZN3qvZSr4zJP7x9V3LpXA==
-  dependencies:
-    moment ">= 2.9.0"
-
-moment-timezone@^0.5.25:
+moment-timezone@0.5.25:
   version "0.5.25"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.25.tgz#a11bfa2f74e088327f2cd4c08b3e7bdf55957810"
   integrity sha512-DgEaTyN/z0HFaVcVbSyVCUU6HeFdnNC3vE4c9cgu2dgMTvjBUBdBzWfasTBmAW45u5OIMeCJtU8yNjM22DHucw==
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.19.4, moment@^2.11.2:
-  version "2.19.4"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.4.tgz#17e5e2c6ead8819c8ecfad83a0acccb312e94682"
-  integrity sha512-1xFTAknSLfc47DIxHDUbnJWC+UwgWxATmymaxIPQpmMh7LBm7ZbwVEsuushqwL2GYZU0jie4xO+TK44hJPjNSQ==
-
-"moment@>= 2.9.0", moment@>=2.14.0:
-  version "2.22.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
-  integrity sha512-shJkRTSebXvsVqk56I+lkb2latjBs8I+pc2TzWc545y2iFnSjm7Wg0QMh+ZWcdSLQyGEau5jI8ocnmkyTgr9YQ==
-
-moment@^2.23.0:
+moment@2.24.0, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.11.2:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
