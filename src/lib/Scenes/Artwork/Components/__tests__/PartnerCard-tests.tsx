@@ -114,6 +114,22 @@ describe("PartnerCard", () => {
     expect(component.find(InvertedButton)).toHaveLength(0)
   })
 
+  it("does not render follow button when the partner has no profile info", () => {
+    const PartnerCardArtworkNoProfile = {
+      ...PartnerCardArtwork,
+      partner: {
+        ...PartnerCardArtwork.partner,
+        profile: null,
+      },
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkNoProfile} />
+      </Theme>
+    )
+    expect(component.find(InvertedButton)).toHaveLength(0)
+  })
+
   describe("Following a partner", () => {
     const getWrapper = async ({ mockArtworkData, mockFollowResults }) => {
       return await renderRelayTree({
