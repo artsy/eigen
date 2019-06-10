@@ -1,7 +1,6 @@
 import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 import React from "react"
-import { Button } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkDetailsProps {
