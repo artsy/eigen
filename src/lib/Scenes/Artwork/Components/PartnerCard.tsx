@@ -9,7 +9,6 @@ import { limitWithCount } from "lib/utils/limitWithCount"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import styled from "styled-components/native"
 
 interface Props {
   artwork: PartnerCard_artwork
@@ -19,25 +18,6 @@ interface Props {
 interface State {
   isFollowedChanging: boolean
 }
-
-const RoundedBox = styled(Box)`
-  height: 45;
-  width: 45;
-  border-radius: 25;
-  background-color: ${color("black10")};
-  overflow: hidden;
-`
-
-const RoundedImage = styled(OpaqueImageView)`
-  height: 45;
-  width: 45;
-  border-radius: 25;
-  overflow: hidden;
-`
-const StyledSerif = styled(Serif)`
-  position: relative;
-  top: 3;
-`
 
 export class PartnerCard extends React.Component<Props, State> {
   state = { isFollowedChanging: false }
@@ -56,6 +36,7 @@ export class PartnerCard extends React.Component<Props, State> {
       },
       () => {
         commitMutation<PartnerCardMutation>(relay.environment, {
+          onCompleted: () => this.handleShowSuccessfullyUpdated(),
           mutation: graphql`
             mutation PartnerCardMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
@@ -90,16 +71,21 @@ export class PartnerCard extends React.Component<Props, State> {
     )
   }
 
+  handleShowSuccessfullyUpdated() {
+    this.setState({
+      isFollowedChanging: false,
+    })
+  }
+
   render() {
     const { isFollowedChanging } = this.state
     const { artwork } = this.props
     const partner = this.props.artwork.partner
-    console.log("PROFILE", partner)
 
     const showPartnerLogo = !(artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction))
-    const imageUrl = partner.profile.icon.url
+    const imageUrl = showPartnerLogo && partner.profile ? partner.profile.icon.url : null
     // const image = "www.artsy.net"
-    const partnerInitials = partner.initials
+    const partnerInitials = showPartnerLogo && partner.initials
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
     const showPartnerFollow = partner.type !== "Auction House" && partner.profile
     return (
