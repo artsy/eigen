@@ -114,6 +114,22 @@ describe("PartnerCard", () => {
     expect(component.html()).toBe(null)
   })
 
+  it("does not render when the artwork is in a benefit or gallery auction", () => {
+    const PartnerCardArtworkAuction = {
+      sale: {
+        isBenefit: true,
+        isGalleryAuction: true,
+      },
+      ...PartnerCardArtwork,
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuction} />
+      </Theme>
+    )
+    expect(component.html()).toBe(null)
+  })
+
   it("does not render follow button when the partner has no profile info", () => {
     const PartnerCardArtworkNoProfile = {
       ...PartnerCardArtwork,

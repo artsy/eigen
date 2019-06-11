@@ -79,13 +79,12 @@ export class PartnerCard extends React.Component<Props, State> {
   render() {
     const { artwork } = this.props
     const partner = artwork.partner
-    if (partner.type === "Auction House") {
+    const galleryOrBenefitAuction = artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction)
+    if (partner.type === "Auction House" || galleryOrBenefitAuction) {
       return null
     }
     const { isFollowedChanging } = this.state
-    const showPartnerLogo = !(artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction))
-    const imageUrl = showPartnerLogo && partner.profile ? partner.profile.icon.url : null
-    const partnerInitials = showPartnerLogo && partner.initials
+    const imageUrl = partner.profile ? partner.profile.icon.url : null
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
 
     return (
@@ -96,7 +95,7 @@ export class PartnerCard extends React.Component<Props, State> {
             href={partner.is_default_profile_public && `${partner.href}`}
             meta={locationNames}
             imageUrl={imageUrl}
-            initials={partnerInitials}
+            initials={partner.initials}
             FollowButton={
               partner.profile && (
                 <InvertedButton
