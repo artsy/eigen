@@ -65,6 +65,10 @@ function truncate({
       return null
     }
 
+    if (node === null || typeof node === "boolean" || typeof node === "undefined") {
+      return ""
+    }
+
     if (typeof node === "string") {
       let text = node
       if (node.length > maxChars - offset) {
@@ -115,6 +119,8 @@ function truncate({
 
       return React.cloneElement(node, null, truncatedChildren)
     }
+
+    return node.toString()
   }
 
   return traverse(root)

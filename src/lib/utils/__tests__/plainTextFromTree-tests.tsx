@@ -2,6 +2,7 @@ import { Flex } from "@artsy/palette"
 import React from "react"
 import { Text, View } from "react-native"
 import { plainTextFromTree } from "../plainTextFromTree"
+import { renderMarkdown } from "../renderMarkdown"
 
 describe("plainTextFromTree", () => {
   it("returns the original string if given just a string", () => {
@@ -30,5 +31,21 @@ describe("plainTextFromTree", () => {
     )
 
     expect(plainTextFromTree(component)).toEqual("Hi this is very broken up but that's OK")
+  })
+
+  it("correctly handles the output from renderMarkdown", () => {
+    const markdown = "This is a *link* for an [artist](/artist/andy-warhol) and a [gene](/gene/minimalism)."
+    const component = renderMarkdown(markdown)
+    expect(plainTextFromTree(component)).toEqual("This is a link for an artist and a gene.")
+  })
+
+  it("correctly handles nulls and undefined", () => {
+    expect(plainTextFromTree(null)).toEqual("")
+    expect(plainTextFromTree(undefined)).toEqual("")
+  })
+
+  it("correctly handles booleans", () => {
+    expect(plainTextFromTree(true)).toEqual("")
+    expect(plainTextFromTree(false)).toEqual("")
   })
 })
