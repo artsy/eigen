@@ -98,7 +98,7 @@ describe("PartnerCard", () => {
     ).toMatchInlineSnapshot(`"Follow"`)
   })
 
-  it("does not render follow button when the partner is an auction house", () => {
+  it("does not render when the partner is an auction house", () => {
     const PartnerCardArtworkAuctionHouse = {
       ...PartnerCardArtwork,
       partner: {
@@ -111,7 +111,7 @@ describe("PartnerCard", () => {
         <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuctionHouse} />
       </Theme>
     )
-    expect(component.find(InvertedButton)).toHaveLength(0)
+    expect(component.html()).toBe(null)
   })
 
   it("does not render follow button when the partner has no profile info", () => {
