@@ -61,7 +61,7 @@ describe("Artwork Details", () => {
     ).toEqual("Show more artwork details")
 
     component
-      .find("Text")
+      .findWhere(c => c.props().onPress !== undefined)
       .last()
       .props()
       .onPress()

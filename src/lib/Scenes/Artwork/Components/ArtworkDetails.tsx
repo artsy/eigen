@@ -57,15 +57,15 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
             </>
           ))}
           {!this.state.showAll && (
-            <Sans size="3" weight="regular" style={{ textDecorationLine: "underline" }}>
-              <LinkText
-                onPress={() => {
-                  this.setState({ showAll: true })
-                }}
-              >
+            <LinkText
+              onPress={() => {
+                this.setState({ showAll: true })
+              }}
+            >
+              <Sans size="3" weight="regular">
                 Show more artwork details
-              </LinkText>
-            </Sans>
+              </Sans>
+            </LinkText>
           )}
         </Join>
       </Box>
