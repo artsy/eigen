@@ -42,6 +42,7 @@ fragment Artwork_artwork on Artwork {
   ...SellerInfo_artwork
   ...OtherWorks_artwork
   ...AboutArtist_artwork
+  ...ArtworkDetails_artwork
 }
 
 fragment ImageCarousel_images on Image {
@@ -143,6 +144,31 @@ fragment AboutArtist_artwork on Artwork {
     ...ArtistListItem_artist
     id
   }
+}
+
+fragment ArtworkDetails_artwork on Artwork {
+  medium
+  conditionDescription {
+    label
+    details
+  }
+  signature
+  signatureInfo {
+    label
+    details
+  }
+  certificateOfAuthenticity {
+    label
+    details
+  }
+  framed {
+    label
+    details
+  }
+  series
+  publisher
+  manufacturer
+  image_rights
 }
 
 fragment ArtistListItem_artist on Artist {
@@ -624,6 +650,22 @@ v19 = [
       }
     ]
   }
+],
+v20 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "label",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "details",
+    "args": null,
+    "storageKey": null
+  }
 ];
 return {
   "kind": "Request",
@@ -1048,6 +1090,81 @@ return {
               },
               (v5/*: any*/)
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "conditionDescription",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "plural": false,
+            "selections": (v20/*: any*/)
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "signature",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "signatureInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "plural": false,
+            "selections": (v20/*: any*/)
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "certificateOfAuthenticity",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "plural": false,
+            "selections": (v20/*: any*/)
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "framed",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "plural": false,
+            "selections": (v20/*: any*/)
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "series",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "publisher",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "manufacturer",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "image_rights",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -1056,7 +1173,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "55b4d3a28f0be97b016bf9415c5ba455",
+    "id": "f9c7a3ebf65ce9ee31cb7e96e3550be3",
     "text": null,
     "metadata": {}
   }

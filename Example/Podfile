@@ -15,10 +15,7 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 inhibit_all_warnings!
-platform :ios, '9.0'
-
-# FIXME: Figure out why we are getting hit by this issue.
-install! 'cocoapods', deterministic_uuids: false
+platform :ios, '10.0'
 
 node_modules_path = '../node_modules'
 react_path = File.join(node_modules_path, 'react-native')
@@ -102,6 +99,25 @@ plugin 'cocoapods-keys',
        ]
 
 post_install do |installer|
+  # Mark the project as having been checked for Swift 5.
+  SWIFT_MAGIC_STRING = "1020"
+  installer.pods_project.root_object.attributes['LastSwiftUpdateCheck'] = SWIFT_MAGIC_STRING
+  installer.pods_project.root_object.attributes['LastUpgradeCheck'] = SWIFT_MAGIC_STRING
+
+  installer.pods_project.targets.each do |target|
+    # Pulley and FBSnapshotTestCase contain pre-5.0 Swift code. Let's mark them as having been migrated.
+    # Note: This is the equivalent of opening Xcode's conversion warning, un-checking 'remind me', and clicking "convert later".
+    #       It does not change the contents of the Pods.
+    if %w(Pulley FBSnapshotTestCase).include? target.name
+      target.project.root_object.attributes['TargetAttributes'] ||= {}
+      target.project.root_object.attributes['TargetAttributes'][target.uuid] = { 'LastSwiftMigration' => SWIFT_MAGIC_STRING }
+    end
+
+    target.build_configurations.each do |config|
+      # CocoaPods setting the deployment target to be less than the actual deployable target is causing many Xcode warnings. This silences them. See: https://github.com/CocoaPods/CocoaPods/issues/7314
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+    end
+  end
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
   emission.build_configurations.each do |config|
     config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'

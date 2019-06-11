@@ -4,6 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 import { AboutArtist_artwork$ref } from "./AboutArtist_artwork.graphql";
 import { ArtworkActions_artwork$ref } from "./ArtworkActions_artwork.graphql";
 import { ArtworkAvailability_artwork$ref } from "./ArtworkAvailability_artwork.graphql";
+import { ArtworkDetails_artwork$ref } from "./ArtworkDetails_artwork.graphql";
 import { ArtworkTombstone_artwork$ref } from "./ArtworkTombstone_artwork.graphql";
 import { ImageCarousel_images$ref } from "./ImageCarousel_images.graphql";
 import { OtherWorks_artwork$ref } from "./OtherWorks_artwork.graphql";
@@ -15,7 +16,7 @@ export type Artwork_artwork = {
     readonly images: ReadonlyArray<{
         readonly " $fragmentRefs": ImageCarousel_images$ref;
     } | null> | null;
-    readonly " $fragmentRefs": PartnerCard_artwork$ref & ArtworkTombstone_artwork$ref & ArtworkActions_artwork$ref & ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref;
+    readonly " $fragmentRefs": PartnerCard_artwork$ref & ArtworkTombstone_artwork$ref & ArtworkActions_artwork$ref & ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
 
@@ -78,8 +79,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "AboutArtist_artwork",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ArtworkDetails_artwork",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'a5734585b92140324cf2a675fba1148c';
+(node as any).hash = '22b3c6530dc7837d34c2ee75bb34bf13';
 export default node;
