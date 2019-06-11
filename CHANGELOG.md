@@ -26,6 +26,7 @@
 - Adds about this artist to Artwork page - ashkan18
 - Allows user to follow an artist from the Artwork tombstone - lilyfromseattle
 - Enable `strictBindCallApply`, `noImplicitThis`, and `strictFunctionTypes` compiler settings - alloy
+- Adds partner cards and allows user to follow a partner from the partner card - lilyfromseattle
 
 ### 1.11.4
 
