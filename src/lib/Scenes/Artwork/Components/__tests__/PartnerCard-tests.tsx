@@ -116,11 +116,11 @@ describe("PartnerCard", () => {
 
   it("does not render when the artwork is in a benefit or gallery auction", () => {
     const PartnerCardArtworkAuction = {
+      ...PartnerCardArtwork,
       sale: {
         isBenefit: true,
         isGalleryAuction: true,
       },
-      ...PartnerCardArtwork,
     }
     const component = mount(
       <Theme>
