@@ -10,6 +10,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
+import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
 import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
@@ -35,6 +36,7 @@ export class Artwork extends React.Component<Props> {
             <AboutArtist artwork={artwork} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
+            <ArtworkDetails artwork={artwork} />
             <OtherWorks artwork={artwork} />
           </Join>
         </ScrollView>
@@ -55,6 +57,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...SellerInfo_artwork
       ...OtherWorks_artwork
       ...AboutArtist_artwork
+      ...ArtworkDetails_artwork
     }
   `,
 })
