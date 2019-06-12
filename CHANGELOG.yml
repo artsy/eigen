@@ -1,9 +1,9 @@
 upcoming:
   version: 5.0.5
   date: TBD
-  emission_version: 1.x.y
+  emission_version: 1.11.3-consignments-fix
   dev:
-    - 
+    - Adds analytics tracking for artwork set view controller swipes - ash
   user_facing:
     - 
 

@@ -135,7 +135,45 @@
                                 }
                             ]
                     },
-
+                @{
+                    ARAnalyticsClass: ARArtworkSetViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: @"artwork set swipe started",
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(pageViewController:willTransitionToViewControllers:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkSetViewController *controller, NSArray *args) {
+                                NSString *destinationArtworkID;
+                                ARArtworkViewController *destinationViewController = [args[1] lastObject];
+                                // Let's double-check that it's the right class – don't want to cause a crash.
+                                if ([destinationViewController isKindOfClass:ARArtworkViewController.class]) {
+                                    destinationArtworkID = destinationViewController.artwork.artworkID;
+                                }
+                                return @{
+                                    @"origin artwork id": controller.currentArtworkViewController.artwork.artworkID ?: @"",
+                                    @"destination artwork id": destinationArtworkID ?: @""
+                                };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: @"artwork set swipe finished",
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkSetViewController *controller, NSArray *args) {
+                                NSString *originArtworkID;
+                                ARArtworkViewController *originViewController = [args[2] lastObject];
+                                // Let's double-check that it's the right class – don't want to cause a crash.
+                                if ([originViewController isKindOfClass:ARArtworkViewController.class]) {
+                                    originArtworkID = originViewController.artwork.artworkID;
+                                }
+                                NSNumber *completed = args[3];
+                                return @{
+                                    @"origin artwork id": originArtworkID ?: @"",
+                                    @"destination artwork id": controller.currentArtworkViewController.artwork.artworkID ?: @"",
+                                    @"status": completed.boolValue ? @"completed" : @"cancelled"
+                                };
+                            }
+                        }
+                    ]
+                },
                 @{
                     ARAnalyticsClass: ARProfileViewController.class,
                     ARAnalyticsDetails: @[
