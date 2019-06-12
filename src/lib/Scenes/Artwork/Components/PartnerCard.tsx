@@ -98,7 +98,7 @@ export class PartnerCard extends React.Component<Props, State> {
             initials={partner.initials}
             FollowButton={
               partner.profile && (
-                <Box width={80} height={30}>
+                <Box width={90} height={30}>
                   <InvertedButton
                     grayBorder={true}
                     text={partner.profile.is_followed ? "Following" : "Follow"}
