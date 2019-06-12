@@ -29,7 +29,7 @@ describe("ReadMore", () => {
     )
 
     expect(component.find(Serif).length).toEqual(1)
-    expect(component.find(Serif).text()).toEqual("This te... Read more")
+    expect(component.find(Serif).text()).toMatchInlineSnapshot(`"This te... Read more"`)
     expect(component.find(Sans).length).toEqual(1)
 
     // Clicking "Read more" expands the text
@@ -55,7 +55,7 @@ describe("ReadMore", () => {
     )
 
     expect(component.find(Serif).length).toEqual(1)
-    expect(component.find(Serif).text()).toEqual("This te... Read more")
+    expect(component.find(Serif).text()).toMatchInlineSnapshot(`"This te... Read more"`)
     expect(component.find(Sans).length).toEqual(1)
     expect(component.find(LinkText).length).toEqual(2) // One for the "text" link, one for "Read more"
 
