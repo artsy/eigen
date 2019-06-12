@@ -68,7 +68,7 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer<
         $cursor: String
         $filter: [ArtistArtworksFilters]
       ) {
-        node(__id: $id) {
+        node(id: $id) {
           ... on Artist {
             ...ArtistNotForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
           }

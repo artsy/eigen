@@ -31,7 +31,7 @@ query SaleArtworksGridQuery(
   $count: Int!
   $cursor: String
 ) {
-  node(__id: $id) {
+  node(id: $id) {
     __typename
     ... on Sale {
       ...SaleArtworksGrid_sale_1G22uz
@@ -137,7 +137,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "__id",
+    "name": "id",
     "variableName": "id"
   }
 ],
@@ -574,11 +574,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworksGridQuery",
-    "id": "5740404accb7920cf6bf7510fbd03c4b",
+    "id": "d578607adf67ab13c529b63924b9caab",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8fdbad9e162d68c508e6296c63792f39';
+(node as any).hash = 'adc7147fdf8c6b45db34fee4b5935180';
 export default node;
