@@ -2,7 +2,7 @@ import { Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { Portal } from "lib/Components/Portal"
 import React from "react"
 import { ImageURISource, PickerIOS, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
-import { animated, config, Spring } from "react-spring/renderprops-native"
+import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 
 const AnimatedView = animated(View)
