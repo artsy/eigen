@@ -1,5 +1,6 @@
 import { Serif, Theme } from "@artsy/palette"
 import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   imaprop?: string
@@ -15,12 +16,14 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   }
 }
 
-// export const ArtworkContainer = createFragmentContainer(Artwork, {
-//   artwork: graphql`
-//     fragment Artwork_artwork on Artwork {
-//     }
-//   `,
-// })
+export const ArtworkAttributionClassFAQFragmentContainer = createFragmentContainer(ArtworkAttributionClassFAQ, {
+  artworkAttributionClasses: graphql`
+    fragment ArtworkAttributionClassFAQ_artworkAttributionClasses on ArtworkAttributionClasses {
+      name
+      longDescription
+    }
+  `,
+})
 
 // export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID }) => {
 //   return (
