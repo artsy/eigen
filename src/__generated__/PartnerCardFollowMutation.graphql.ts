@@ -6,10 +6,10 @@ export type FollowProfileInput = {
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
-export type PartnerCardMutationVariables = {
+export type PartnerCardFollowMutationVariables = {
     readonly input: FollowProfileInput;
 };
-export type PartnerCardMutationResponse = {
+export type PartnerCardFollowMutationResponse = {
     readonly followProfile: {
         readonly profile: {
             readonly gravityID: string;
@@ -18,15 +18,15 @@ export type PartnerCardMutationResponse = {
         } | null;
     } | null;
 };
-export type PartnerCardMutation = {
-    readonly response: PartnerCardMutationResponse;
-    readonly variables: PartnerCardMutationVariables;
+export type PartnerCardFollowMutation = {
+    readonly response: PartnerCardFollowMutationResponse;
+    readonly variables: PartnerCardFollowMutationVariables;
 };
 
 
 
 /*
-mutation PartnerCardMutation(
+mutation PartnerCardFollowMutation(
   $input: FollowProfileInput!
 ) {
   followProfile(input: $input) {
@@ -81,7 +81,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "PartnerCardMutation",
+    "name": "PartnerCardFollowMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -115,7 +115,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "PartnerCardMutation",
+    "name": "PartnerCardFollowMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -154,12 +154,12 @@ return {
   },
   "params": {
     "operationKind": "mutation",
-    "name": "PartnerCardMutation",
-    "id": "c2b8a31afb88c60685fb5b3f18e2426c",
+    "name": "PartnerCardFollowMutation",
+    "id": "8f375403369ceb84331b2139a5e48d3b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '73c977e45db0f2b34aa534c035fc2913';
+(node as any).hash = '81b4328bd1d0f02e365d1e2e1d01f74f';
 export default node;

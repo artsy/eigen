@@ -1,6 +1,6 @@
 import { Box, EntityHeader, Flex } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
-import { PartnerCardMutation } from "__generated__/PartnerCardMutation.graphql"
+import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { filterLocations } from "lib/utils/filterLocations"
@@ -33,10 +33,10 @@ export class PartnerCard extends React.Component<Props, State> {
         isFollowedChanging: true,
       },
       () => {
-        commitMutation<PartnerCardMutation>(relay.environment, {
+        commitMutation<PartnerCardFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
           mutation: graphql`
-            mutation PartnerCardMutation($input: FollowProfileInput!) {
+            mutation PartnerCardFollowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
                   gravityID
