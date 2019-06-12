@@ -1,0 +1,1 @@
+export { ArtworkAttributionClassFAQ } from "./ArtworkAttributionClassFAQ"

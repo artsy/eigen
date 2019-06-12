@@ -25,6 +25,7 @@ import {
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import { ArtworkRenderer } from "./Scenes/Artwork"
+import { ArtworkAttributionClassFAQ } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import {
@@ -305,6 +306,7 @@ const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Artwork", () => Artwork)
+AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQ)
 AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
