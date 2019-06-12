@@ -3,7 +3,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  imaprop?: string
+  attributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
 }
 
 export class ArtworkAttributionClassFAQ extends React.Component<Props> {
@@ -18,9 +18,9 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
 
 export const ArtworkAttributionClassFAQFragmentContainer = createFragmentContainer(ArtworkAttributionClassFAQ, {
   artworkAttributionClasses: graphql`
-    fragment ArtworkAttributionClassFAQ_artworkAttributionClasses on ArtworkAttributionClasses {
+    fragment ArtworkAttributionClassFAQ_artworkAttributionClasses on AttributionClass {
       name
-      longDescription
+      long_description
     }
   `,
 })
