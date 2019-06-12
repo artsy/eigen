@@ -3,11 +3,12 @@ import { Text } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { Theme } from "@artsy/palette"
-import { defaultRules, Markdown } from "../Markdown"
+import { Markdown } from "../Markdown"
 import { LinkText } from "../Text/LinkText"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { defaultRules } from "lib/utils/renderMarkdown"
 
 const SwitchBoardMock = SwitchBoard as any
 const { anything } = expect
@@ -91,18 +92,6 @@ describe("Markdown", () => {
     )
 
     expect(markdown.root.findAllByType(Text)[0].props.testID).toBe("foobar")
-  })
-})
-
-describe("defaultRules", () => {
-  Object.keys(defaultRules).forEach(key => {
-    if (key === "Array") {
-      return
-    }
-    it(`has both match and react in rule for ${key}`, () => {
-      // expect(defaultRules[key].match).toBeTruthy()
-      // expect(defaultRules[key].react).toBeTruthy()
-    })
   })
 })
 

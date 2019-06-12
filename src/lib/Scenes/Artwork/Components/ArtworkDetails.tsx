@@ -46,15 +46,15 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
           <Sans size="3" weight="medium">
             Artwork Details
           </Sans>
-          {displayItems.map(i => (
-            <>
+          {displayItems.map(({ title, value }, index) => (
+            <React.Fragment key={index}>
               <Sans size="3" weight="regular">
-                {i.title}
+                {title}
               </Sans>
               <Sans size="3" weight="regular" color="gray">
-                {i.value}
+                {value}
               </Sans>
-            </>
+            </React.Fragment>
           ))}
           {!this.state.showAll && (
             <LinkText

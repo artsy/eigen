@@ -1,7 +1,8 @@
 import { Box, Collapse as _Collapse, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
-import { defaultRules, Markdown } from "lib/Components/Markdown"
+import { Markdown } from "lib/Components/Markdown"
 import ChevronIcon from "lib/Icons/ChevronIcon"
+import { defaultRules } from "lib/utils/renderMarkdown"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 

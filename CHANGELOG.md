@@ -26,6 +26,7 @@
 - Adds about this artist to Artwork page - ashkan18
 - Allows user to follow an artist from the Artwork tombstone - lilyfromseattle
 - Enable `strictBindCallApply`, `noImplicitThis`, and `strictFunctionTypes` compiler settings - alloy
+- Adds ReadMore component to work with markdown - ds300/sweir27
 
 ### 1.11.4
 
