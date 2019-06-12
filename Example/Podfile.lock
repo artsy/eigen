@@ -67,7 +67,7 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - FLKAutoLayout (1.0.0)
+  - FLKAutoLayout (1.0.1)
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
@@ -75,14 +75,14 @@ PODS:
   - glog (0.3.5)
   - ISO8601DateFormatter (0.8)
   - Keys (1.0.1)
-  - KSCrash/Core (1.15.16):
+  - KSCrash/Core (1.15.20):
     - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.16):
-    - KSCrash/Recording/Tools (= 1.15.16)
-  - KSCrash/Recording/Tools (1.15.16)
-  - KSCrash/Reporting/Filters/Base (1.15.16):
+  - KSCrash/Recording (1.15.20):
+    - KSCrash/Recording/Tools (= 1.15.20)
+  - KSCrash/Recording/Tools (1.15.20)
+  - KSCrash/Reporting/Filters/Base (1.15.20):
     - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.16):
+  - KSCrash/Reporting/Filters/Basic (1.15.20):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
   - "NSURL+QueryDictionary (1.2.0)"
@@ -151,10 +151,10 @@ PODS:
     - React/RCTBlob
   - RNSVG (9.4.0):
     - React
-  - SAMKeychain (1.5.0)
-  - SDWebImage (3.8.2):
-    - SDWebImage/Core (= 3.8.2)
-  - SDWebImage/Core (3.8.2)
+  - SAMKeychain (1.5.3)
+  - SDWebImage (3.8.3):
+    - SDWebImage/Core (= 3.8.3)
+  - SDWebImage/Core (3.8.3)
   - Sentry (3.9.1):
     - Sentry/Core (= 3.9.1)
     - Sentry/KSCrash (= 3.9.1)
@@ -279,22 +279,22 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
+  FLKAutoLayout: 37e1e09de6411dbee5526860d9f55d9063323ea8
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
-  KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
+  KSCrash: 4dc18329a90b516342809b9ca92fc4d199d712ea
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
+  Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
   react-native-cameraroll: b1faef9f2ea27b07bdf818b8043909a93f797eca
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
-  SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
-  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
