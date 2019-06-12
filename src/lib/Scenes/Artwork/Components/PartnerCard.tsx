@@ -92,7 +92,7 @@ export class PartnerCard extends React.Component<Props, State> {
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href)}>
           <EntityHeader
             name={partner.name}
-            href={partner.is_default_profile_public && `${partner.href}`}
+            href={partner.is_default_profile_public && partner.href}
             meta={locationNames}
             imageUrl={imageUrl}
             initials={partner.initials}
@@ -137,7 +137,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
           gravityID
           is_followed
           icon {
-            url(version: "square140")
+            url
           }
         }
         locations {
