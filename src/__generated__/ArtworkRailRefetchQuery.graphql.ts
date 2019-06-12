@@ -23,7 +23,7 @@ query ArtworkRailRefetchQuery(
   $id: ID!
   $fetchContent: Boolean!
 ) {
-  node(__id: $id) {
+  node(id: $id) {
     __typename
     ...ArtworkRail_rail_abFTe
     id
@@ -170,7 +170,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "__id",
+    "name": "id",
     "variableName": "id"
   }
 ],
@@ -624,11 +624,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRailRefetchQuery",
-    "id": "d310c4ce54ff39a0f6cefc99492210ed",
+    "id": "729e8ba8ee5d6a60dca05cec5a75f6bd",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a949e8668e5be1593e2a46f702134c96';
+(node as any).hash = 'e755f096d4e10cae598482eab649a4e5';
 export default node;

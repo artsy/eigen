@@ -60,7 +60,7 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
     },
     query: graphql`
       query SaleArtworksGridQuery($id: ID!, $count: Int!, $cursor: String) {
-        node(__id: $id) {
+        node(id: $id) {
           ... on Sale {
             ...SaleArtworksGrid_sale @arguments(count: $count, cursor: $cursor)
           }

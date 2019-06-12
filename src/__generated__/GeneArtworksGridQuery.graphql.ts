@@ -33,7 +33,7 @@ query GeneArtworksGridQuery(
   $cursor: String
   $sort: String
 ) {
-  node(__id: $id) {
+  node(id: $id) {
     __typename
     ... on FilterArtworks {
       ...GeneArtworksGrid_filtered_artworks_1RfMLO
@@ -142,7 +142,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "__id",
+    "name": "id",
     "variableName": "id"
   }
 ],
@@ -576,11 +576,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GeneArtworksGridQuery",
-    "id": "c5cdda4fc9039706da3587ddd8fedbbc",
+    "id": "128b4f0f7bab82f0959217f989899625",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b9f49148fa4f7b165660c09407cb5190';
+(node as any).hash = '47f25c11759b47ff26d05c56d5ab21f7';
 export default node;
