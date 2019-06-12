@@ -90,19 +90,21 @@ function truncate({
 
       if (node.type === Sans || node.type === Serif) {
         if (textDepth === 1 && maxChars === offset) {
-          truncatedChildren.push([
-            "... ",
-            <LinkText onPress={onExpand}>
-              <Sans size="3" weight="medium">
-                Read more
-              </Sans>
-            </LinkText>,
-          ])
+          truncatedChildren.push(
+            <>
+              {"... "}
+              <LinkText onPress={onExpand}>
+                <Sans size="3" weight="medium">
+                  Read&nbsp;more
+                </Sans>
+              </LinkText>
+            </>
+          )
         }
         textDepth -= 1
       }
 
-      return React.cloneElement(node, null, truncatedChildren)
+      return React.cloneElement(node, null, ...truncatedChildren)
     }
 
     if (node === null || typeof node === "boolean" || typeof node === "undefined") {
