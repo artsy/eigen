@@ -65,21 +65,6 @@ function truncate({
       return null
     }
 
-    if (node === null || typeof node === "boolean" || typeof node === "undefined") {
-      return ""
-    }
-
-    if (typeof node === "string") {
-      let text = node
-      if (node.length > maxChars - offset) {
-        text = node.slice(0, maxChars - offset) as string
-      }
-
-      offset += text.length
-
-      return text
-    }
-
     if (Array.isArray(node)) {
       const result = []
       for (const child of node) {
@@ -120,7 +105,18 @@ function truncate({
       return React.cloneElement(node, null, truncatedChildren)
     }
 
-    return node.toString()
+    if (node === null || typeof node === "boolean" || typeof node === "undefined") {
+      return ""
+    }
+
+    let text = node.toString()
+    if (text.length > maxChars - offset) {
+      text = text.slice(0, maxChars - offset) as string
+    }
+
+    offset += text.length
+
+    return text
   }
 
   return traverse(root)

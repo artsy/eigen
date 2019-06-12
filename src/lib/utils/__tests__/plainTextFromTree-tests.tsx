@@ -48,4 +48,8 @@ describe("plainTextFromTree", () => {
     expect(plainTextFromTree(true)).toEqual("")
     expect(plainTextFromTree(false)).toEqual("")
   })
+
+  it("correctly handles numbers", () => {
+    expect(plainTextFromTree(<Text>{0.32}</Text>)).toEqual("0.32")
+  })
 })
