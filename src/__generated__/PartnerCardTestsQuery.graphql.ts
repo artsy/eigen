@@ -43,7 +43,7 @@ fragment PartnerCard_artwork on Artwork {
       gravityID
       is_followed
       icon {
-        url
+        url(version: "square140")
       }
       id
     }
@@ -229,8 +229,14 @@ return {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "url",
-                        "args": null,
-                        "storageKey": null
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "version",
+                            "value": "square140"
+                          }
+                        ],
+                        "storageKey": "url(version:\"square140\")"
                       }
                     ]
                   },
@@ -266,7 +272,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerCardTestsQuery",
-    "id": "e68fc8ddf95a3819cafaa9a3050cc746",
+    "id": "a3c62bf1ef1a2dfbeec40ef2789b27ca",
     "text": null,
     "metadata": {}
   }

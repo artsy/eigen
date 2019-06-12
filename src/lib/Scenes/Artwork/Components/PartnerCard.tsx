@@ -137,7 +137,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
           gravityID
           is_followed
           icon {
-            url
+            url(version: "square140")
           }
         }
         locations {

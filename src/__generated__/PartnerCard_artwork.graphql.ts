@@ -165,8 +165,14 @@ return {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "url",
-                  "args": null,
-                  "storageKey": null
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "version",
+                      "value": "square140"
+                    }
+                  ],
+                  "storageKey": "url(version:\"square140\")"
                 }
               ]
             }
@@ -195,5 +201,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '31316e2f65e31a92dc50e6e04fabd6de';
+(node as any).hash = '5ce47668bc2a47c65096a27074104d40';
 export default node;
