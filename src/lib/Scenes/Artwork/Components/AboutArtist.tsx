@@ -16,7 +16,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           {this.props.artwork.artists.length === 1 ? "About the artist" : "About the artists"}
         </Sans>
         {this.props.artwork.artists.map(artist => (
-          <ArtistListItem artist={artist} />
+          <ArtistListItem key={artist.id} artist={artist} />
         ))}
       </Flex>
     )
@@ -27,6 +27,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
   artwork: graphql`
     fragment AboutArtist_artwork on Artwork {
       artists {
+        id
         ...ArtistListItem_artist
       }
     }

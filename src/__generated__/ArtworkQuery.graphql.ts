@@ -115,8 +115,8 @@ fragment OtherWorks_artwork on Artwork {
 
 fragment AboutArtist_artwork on Artwork {
   artists {
-    ...ArtistListItem_artist
     id
+    ...ArtistListItem_artist
   }
 }
 
@@ -1056,7 +1056,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "284b84f40ece5ad3b3557a2ccc1fe835",
+    "id": "4372cde3ad85a732ac3f52093eef8b26",
     "text": null,
     "metadata": {}
   }
