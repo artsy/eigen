@@ -53,11 +53,11 @@ function publishPodspec(podspec) {
 }
 
 console.log(chalk.green("=> Validating your tools."))
-sh("bundle --version")
-sh("npm --version")
+// sh("bundle --version")
+// sh("npm --version")
 
 console.log(chalk.green("=> Creating release bundle."))
-sh("npm run bundle")
+// sh("npm run bundle")
 sh("cd Example && bundle exec pod install && cd ..")
 sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
