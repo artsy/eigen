@@ -1,7 +1,10 @@
 import { Serif, Theme } from "@artsy/palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
+import { ArtworkAttributionClassFAQRendererQuery } from "__generated__/ArtworkAttributionClassFAQRendererQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface Props {
   attributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
@@ -18,32 +21,28 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   }
 }
 
-export const ArtworkAttributionClassFAQFragmentContainer = createFragmentContainer(ArtworkAttributionClassFAQ, {
+export const ArtworkAttributionClassFAQContainer = createFragmentContainer(ArtworkAttributionClassFAQ, {
   artworkAttributionClasses: graphql`
     fragment ArtworkAttributionClassFAQ_artworkAttributionClasses on AttributionClass {
       name
-      long_description
+      longDescription
     }
   `,
 })
 
-// export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID }) => {
-//   return (
-//     <QueryRenderer<ArtworkQuery>
-//       environment={defaultEnvironment}
-//       query={graphql`
-//         query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!], $screenWidth: Int!) {
-//           artwork(id: $artworkID) {
-//             ...Artwork_artwork
-//           }
-//         }
-//       `}
-//       variables={{
-//         artworkID,
-//         screenWidth: Dimensions.get("screen").width,
-//         excludeArtworkIds: [artworkID],
-//       }}
-//       render={renderWithLoadProgress(ArtworkContainer)}
-//     />
-//   )
-// }
+export const ArtworkAttributionClassFAQRenderer: React.SFC = () => {
+  return (
+    <QueryRenderer<ArtworkAttributionClassFAQRendererQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ArtworkAttributionClassFAQRendererQuery {
+          artworkAttributionClasses {
+            ...ArtworkAttributionClassFAQ_artworkAttributionClasses
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(ArtworkAttributionClassFAQContainer)}
+    />
+  )
+}

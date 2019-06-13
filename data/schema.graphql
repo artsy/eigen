@@ -125,7 +125,9 @@ type AnalyticsPartnerInquiryStats {
   period: AnalyticsQueryPeriodEnum!
 
   # Partner inquiry count time series
-  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
+  timeSeries(
+    cumulative: Boolean = false
+  ): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
 }
 
 # Sales stats of a partner
@@ -136,7 +138,9 @@ type AnalyticsPartnerSalesStats {
   period: AnalyticsQueryPeriodEnum!
 
   # Partner sales time series
-  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerSalesTimeSeriesStats!]
+  timeSeries(
+    cumulative: Boolean = false
+  ): [AnalyticsPartnerSalesTimeSeriesStats!]
   totalCents: Int!
   total(
     decimal: String = "."
@@ -165,7 +169,9 @@ type AnalyticsPartnerSalesTimeSeriesStats {
 # Partner Stats
 type AnalyticsPartnerStats {
   # Time series data on number of artworks published
-  artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
+  artworksPublished(
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsArtworksPublishedStats
 
   # Audience stats
   audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
@@ -422,7 +428,11 @@ type Artist implements Node & Searchable {
     before: String
     last: Int
   ): ArticleConnection
-  articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
+  articles(
+    sort: ArticleSorts
+    limit: Int
+    in_editorial_feed: Boolean
+  ): [Article]
   artists(
     # The number of Artists to return
     size: Int
@@ -476,12 +486,14 @@ type Artist implements Node & Searchable {
     size: Int
     exclude_artists_without_artworks: Boolean = true
   ): [Artist]
-  consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  consignable: Boolean
+    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   counts: ArtistCounts
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
-  display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  display_auction_link: Boolean
+    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
 
   # Custom-sorted list of shows for an artist, in order of significance.
   exhibition_highlights(
@@ -759,7 +771,11 @@ type ArtistItem implements Node & Searchable {
     before: String
     last: Int
   ): ArticleConnection
-  articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
+  articles(
+    sort: ArticleSorts
+    limit: Int
+    in_editorial_feed: Boolean
+  ): [Article]
   artists(
     # The number of Artists to return
     size: Int
@@ -813,12 +829,14 @@ type ArtistItem implements Node & Searchable {
     size: Int
     exclude_artists_without_artworks: Boolean = true
   ): [Artist]
-  consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  consignable: Boolean
+    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   counts: ArtistCounts
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
-  display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  display_auction_link: Boolean
+    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
 
   # Custom-sorted list of shows for an artist, in order of significance.
   exhibition_highlights(
@@ -1062,7 +1080,8 @@ type Artwork implements Node & Searchable & Sellable {
   artist_names: String
   articles(size: Int): [Article]
   availability: String
-  can_share_image: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  can_share_image: Boolean
+    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   category: String
 
   # Attribution class object
@@ -1117,7 +1136,8 @@ type Artwork implements Node & Searchable & Sellable {
   is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
   is_downloadable: Boolean
   is_embeddable_video: Boolean
-  is_ecommerce: Boolean @deprecated(reason: "Should not be used to determine anything UI-level")
+  is_ecommerce: Boolean
+    @deprecated(reason: "Should not be used to determine anything UI-level")
   is_for_sale: Boolean
   is_hangable: Boolean
 
@@ -1133,7 +1153,10 @@ type Artwork implements Node & Searchable & Sellable {
   is_on_hold: String
   is_price_hidden: Boolean
   is_price_range: Boolean
-  is_purchasable: Boolean @deprecated(reason: "Purchase requests are not supported. Replaced by buy now.")
+  is_purchasable: Boolean
+    @deprecated(
+      reason: "Purchase requests are not supported. Replaced by buy now."
+    )
   is_saved: Boolean
   is_shareable: Boolean
   is_sold: Boolean
@@ -1175,8 +1198,18 @@ type Artwork implements Node & Searchable & Sellable {
   sale_artwork(sale_id: String = null): SaleArtwork
   sale_message: String
   series(format: Format): String
-  show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
-  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  show(
+    size: Int
+    active: Boolean
+    at_a_fair: Boolean
+    sort: PartnerShowSorts
+  ): PartnerShow
+  shows(
+    size: Int
+    active: Boolean
+    at_a_fair: Boolean
+    sort: PartnerShowSorts
+  ): [PartnerShow]
   signature(format: Format): String
   title: String
   to_s: String
@@ -1229,7 +1262,11 @@ type ArtworkConnection {
   totalCount: Int
 }
 
-union ArtworkContext = ArtworkContextAuction | ArtworkContextFair | ArtworkContextPartnerShow | ArtworkContextSale
+union ArtworkContext =
+    ArtworkContextAuction
+  | ArtworkContextFair
+  | ArtworkContextPartnerShow
+  | ArtworkContextSale
 
 type ArtworkContextAuction implements Node {
   # A globally unique ID.
@@ -1260,7 +1297,8 @@ type ArtworkContextAuction implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String
+    @deprecated(reason: "Favor `status` for consistency with other models")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -1335,8 +1373,17 @@ type ArtworkContextAuction implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
+  sale_artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+  ): [SaleArtwork]
+  sale_artworks_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -1434,7 +1481,8 @@ type ArtworkContextFair {
     timezone: String
   ): String
   organizer: organizer
-  published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  published: Boolean
+    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
   ticketsLink: String
 
@@ -1534,7 +1582,8 @@ type ArtworkContextPartnerShow implements Node {
     timezone: String
   ): String
   description: String
-  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  displayable: Boolean
+    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -1620,7 +1669,8 @@ type ArtworkContextSale implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String
+    @deprecated(reason: "Favor `status` for consistency with other models")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -1695,8 +1745,17 @@ type ArtworkContextSale implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
+  sale_artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+  ): [SaleArtwork]
+  sale_artworks_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -1906,7 +1965,8 @@ type ArtworkItem implements Node & Searchable & Sellable {
   artist_names: String
   articles(size: Int): [Article]
   availability: String
-  can_share_image: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  can_share_image: Boolean
+    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   category: String
 
   # Attribution class object
@@ -1961,7 +2021,8 @@ type ArtworkItem implements Node & Searchable & Sellable {
   is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
   is_downloadable: Boolean
   is_embeddable_video: Boolean
-  is_ecommerce: Boolean @deprecated(reason: "Should not be used to determine anything UI-level")
+  is_ecommerce: Boolean
+    @deprecated(reason: "Should not be used to determine anything UI-level")
   is_for_sale: Boolean
   is_hangable: Boolean
 
@@ -1977,7 +2038,10 @@ type ArtworkItem implements Node & Searchable & Sellable {
   is_on_hold: String
   is_price_hidden: Boolean
   is_price_range: Boolean
-  is_purchasable: Boolean @deprecated(reason: "Purchase requests are not supported. Replaced by buy now.")
+  is_purchasable: Boolean
+    @deprecated(
+      reason: "Purchase requests are not supported. Replaced by buy now."
+    )
   is_saved: Boolean
   is_shareable: Boolean
   is_sold: Boolean
@@ -2019,8 +2083,18 @@ type ArtworkItem implements Node & Searchable & Sellable {
   sale_artwork(sale_id: String = null): SaleArtwork
   sale_message: String
   series(format: Format): String
-  show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
-  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  show(
+    size: Int
+    active: Boolean
+    at_a_fair: Boolean
+    sort: PartnerShowSorts
+  ): PartnerShow
+  shows(
+    size: Int
+    active: Boolean
+    at_a_fair: Boolean
+    sort: PartnerShowSorts
+  ): [PartnerShow]
   signature(format: Format): String
   title: String
   to_s: String
@@ -2055,7 +2129,12 @@ type ArtworkLayer {
   artworks: [Artwork]
 
   # A connection of artworks from a Layer.
-  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   description: String
   href: String
   name: String
@@ -2286,7 +2365,10 @@ type Author {
   # A type-specific ID.
   gravityID: ID!
   name: String
-  href: String @deprecated(reason: "Profiles have been removed and thus author hrefs don't exist anymore.")
+  href: String
+    @deprecated(
+      reason: "Profiles have been removed and thus author hrefs don't exist anymore."
+    )
   profile_handle: String
 }
 
@@ -2340,7 +2422,8 @@ type BidderPosition {
     timezone: String
   ): String
   display_max_bid_amount_dollars: String @deprecated(reason: "Favor `max_bid`")
-  display_suggested_next_bid_dollars: String @deprecated(reason: "Favor `suggested_next_bid`")
+  display_suggested_next_bid_dollars: String
+    @deprecated(reason: "Favor `suggested_next_bid`")
   highest_bid: HighestBid
   is_active: Boolean
   is_retracted: Boolean
@@ -2350,7 +2433,8 @@ type BidderPosition {
   max_bid_amount_cents: Int @deprecated(reason: "Favor `max_bid`")
   sale_artwork: SaleArtwork
   suggested_next_bid: BidderPositionSuggestedNextBid
-  suggested_next_bid_cents: Int @deprecated(reason: "Favor `suggested_next_bid`")
+  suggested_next_bid_cents: Int
+    @deprecated(reason: "Favor `suggested_next_bid`")
 }
 
 input BidderPositionInput {
@@ -2750,7 +2834,14 @@ type City {
     before: String
     last: Int
   ): ShowConnection
-  fairs(sort: FairSorts, status: EventStatus, after: String, first: Int, before: String, last: Int): FairConnection
+  fairs(
+    sort: FairSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FairConnection
   sponsoredContent: CitySponsoredContent
 }
 
@@ -3722,7 +3813,9 @@ enum CommerceOrderModeEnum {
 }
 
 # Represents either a resolved Order or a potential failure
-union CommerceOrderOrFailureUnion = CommerceOrderWithMutationFailure | CommerceOrderWithMutationSuccess
+union CommerceOrderOrFailureUnion =
+    CommerceOrderWithMutationFailure
+  | CommerceOrderWithMutationSuccess
 
 enum CommerceOrderParticipantEnum {
   # Participant on the buyer side
@@ -4128,7 +4221,10 @@ type Conversation implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-  purchase_request: Boolean @deprecated(reason: "Purchase requests are not supported. Replaced by buy now.")
+  purchase_request: Boolean
+    @deprecated(
+      reason: "Purchase requests are not supported. Replaced by buy now."
+    )
   from_last_viewed_message_id: String
   initial_message: String!
 
@@ -4162,7 +4258,13 @@ type Conversation implements Node {
   items: [ConversationItem]
 
   # A connection for all messages in a single conversation
-  messages(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
+  messages(
+    sort: sort
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): MessageConnection
 
   # True if there is an unread message by the user.
   unread: Boolean
@@ -4450,7 +4552,9 @@ type CreditCardMutationSuccess {
   creditCardEdge: CreditCardEdge
 }
 
-union CreditCardMutationType = CreditCardMutationSuccess | CreditCardMutationFailure
+union CreditCardMutationType =
+    CreditCardMutationSuccess
+  | CreditCardMutationFailure
 
 type CreditCardPayload {
   credit_card: CreditCard @deprecated(reason: "Favor `creditCardOrError`")
@@ -4763,7 +4867,8 @@ type Fair {
     timezone: String
   ): String
   organizer: organizer
-  published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  published: Boolean
+    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
   ticketsLink: String
 
@@ -4933,9 +5038,16 @@ type FilterArtworks implements Node {
 
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
-  artworks_connection(sort: String, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworks_connection(
+    sort: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   counts: FilterArtworksCounts
-  followed_artists_total: Int @deprecated(reason: "Favor `favor counts.followed_artists`")
+  followed_artists_total: Int
+    @deprecated(reason: "Favor `favor counts.followed_artists`")
 
   # Artwork results.
   hits: [Artwork]
@@ -5069,7 +5181,12 @@ type FollowedArtistsArtworksGroup implements Node {
 
   # List of artworks in this group.
   artworks: [Artwork]
-  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   artists: String
   summary: String
   image: Image
@@ -5220,7 +5337,12 @@ type FollowsAndSaves {
   ): FollowedShowConnection
 
   # A list of the current user’s currently followed fair profiles
-  fairs(after: String, first: Int, before: String, last: Int): FollowedFairConnection
+  fairs(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FollowedFairConnection
 }
 
 input FollowShowInput {
@@ -5291,7 +5413,12 @@ type Gene implements Node {
   internalID: ID!
   cached: Int
   artists: [Artist]
-  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
+  artists_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
   artworks_connection(
     acquireable: Boolean
     offerable: Boolean
@@ -5485,7 +5612,12 @@ type GeneItem implements Node {
   internalID: ID!
   cached: Int
   artists: [Artist]
-  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
+  artists_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
   artworks_connection(
     acquireable: Boolean
     offerable: Boolean
@@ -5721,7 +5853,8 @@ type HighlightedShow implements Node {
     timezone: String
   ): String
   description: String
-  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  displayable: Boolean
+    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -5850,7 +5983,10 @@ type HomePageArtworkModule implements Node {
   # A globally unique ID.
   id: ID!
   context: HomePageModuleContext
-  display: String @deprecated(reason: "Favor `is_`-prefixed Booleans (*and* this should be a Boolean)")
+  display: String
+    @deprecated(
+      reason: "Favor `is_`-prefixed Booleans (*and* this should be a Boolean)"
+    )
   is_displayable: Boolean
   key: String
   params: HomePageModulesParams
@@ -6015,7 +6151,8 @@ type HomePageModuleContextFair {
     timezone: String
   ): String
   organizer: organizer
-  published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  published: Boolean
+    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
   ticketsLink: String
 
@@ -6088,7 +6225,12 @@ type HomePageModuleContextGene implements Node {
   internalID: ID!
   cached: Int
   artists: [Artist]
-  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
+  artists_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
   artworks_connection(
     acquireable: Boolean
     offerable: Boolean
@@ -6234,7 +6376,8 @@ type HomePageModuleContextSale implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String
+    @deprecated(reason: "Favor `status` for consistency with other models")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -6309,8 +6452,17 @@ type HomePageModuleContextSale implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
+  sale_artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+  ): [SaleArtwork]
+  sale_artworks_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -6444,7 +6596,8 @@ type Location {
 
   # Alternate Markdown-supporting free text representation of a location's opening hours
   day_schedule_text: String
-  displayDaySchedules: [FormattedDaySchedules] @deprecated(reason: "Use openingHours instead")
+  displayDaySchedules: [FormattedDaySchedules]
+    @deprecated(reason: "Use openingHours instead")
 
   # Union returning opening hours in formatted structure or a string
   openingHours: OpeningHoursUnion
@@ -6606,7 +6759,12 @@ type Me implements Node {
   ): ConsignmentSubmissionConnection
 
   # A list of the current user’s inquiry requests
-  artwork_inquiries_connection(after: String, first: Int, before: String, last: Int): ArtworkInquiryConnection
+  artwork_inquiries_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkInquiryConnection
 
   # A list of the current user’s bidder registrations
   bidders(
@@ -6642,7 +6800,12 @@ type Me implements Node {
   ): Conversation
 
   # Conversations, usually between a user and partner.
-  conversations(after: String, first: Int, before: String, last: Int): ConversationConnection
+  conversations(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ConversationConnection
   created_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -6653,17 +6816,32 @@ type Me implements Node {
   ): String
 
   # A list of the current user’s credit cards
-  creditCards(after: String, first: Int, before: String, last: Int): CreditCardConnection
+  creditCards(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): CreditCardConnection
   email: String
 
   # A list of the current user’s artist follows
   follow_artists(page: Int, size: Int): FollowArtists
 
   # A Connection of followed artists by current user
-  followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+  followed_artists_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FollowArtistConnection
 
   # A list of the current user’s inquiry requests
-  followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
+  followed_genes(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FollowGeneConnection
   followsAndSaves: FollowsAndSaves
   has_credit_cards: Boolean
   has_qualified_credit_cards: Boolean
@@ -6678,7 +6856,11 @@ type Me implements Node {
   ): Invoice
 
   # The current user's status relating to bids on artworks
-  lot_standing(artwork_id: String, sale_id: String, sale_artwork_id: String): LotStanding
+  lot_standing(
+    artwork_id: String
+    sale_id: String
+    sale_artwork_id: String
+  ): LotStanding
 
   # A list of the current user's auction standings for given lots
   lot_standings(
@@ -6699,13 +6881,23 @@ type Me implements Node {
   initials(length: Int = 3): String
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
-  notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
+  notifications_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): NotificationsFeedItemConnection
     @deprecated(reason: "Prefer to use followed_artists_artwork_groups.")
   paddle_number: String
   recentlyViewedArtworkIds: [String]!
 
   # A list of the current user’s recently viewed artworks.
-  recentlyViewedArtworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  recentlyViewedArtworks(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   sale_registrations(
     # Limit by auction.
     is_auction: Boolean = true
@@ -6765,11 +6957,13 @@ type Message implements Node {
 
   # True if message is from the user to the partner.
   is_from_user: Boolean
-  from_email_address: String @deprecated(reason: "Prefer to use the structured `from` field.")
+  from_email_address: String
+    @deprecated(reason: "Prefer to use the structured `from` field.")
   from: MessageInitiator
 
   # Full unsanitized text.
-  raw_text: String! @deprecated(reason: "Prefer to use the parsed/cleaned-up `body`.")
+  raw_text: String!
+    @deprecated(reason: "Prefer to use the parsed/cleaned-up `body`.")
 
   # Unaltered text if possible, otherwise `body`: a parsed/sanitized version from Sendgrid.
   body: String
@@ -6858,16 +7052,22 @@ type Mutation {
   followShow(input: FollowShowInput!): FollowShowPayload
 
   # Updating a collector profile (loyalty applicant status).
-  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+  updateCollectorProfile(
+    input: UpdateCollectorProfileInput!
+  ): UpdateCollectorProfilePayload
 
   # Update the current logged in user.
   updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
 
   # Update a conversation.
-  updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
+  updateConversation(
+    input: UpdateConversationMutationInput!
+  ): UpdateConversationMutationPayload
 
   # Appending a message to a conversation thread
-  sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
+  sendConversationMessage(
+    input: SendConversationMessageMutationInput!
+  ): SendConversationMessageMutationPayload
 
   # Send a feedback message
   sendFeedback(input: SendFeedbackMutationInput!): SendFeedbackMutationPayload
@@ -6884,25 +7084,39 @@ type Mutation {
   ): RequestCredentialsForAssetUploadPayload
 
   # Attach an gemini asset to a consignment submission
-  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
+  createGeminiEntryForAsset(
+    input: CreateGeminiEntryForAssetInput!
+  ): CreateGeminiEntryForAssetPayload
 
   # Create a new consignment submission using Convection
-  createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
+  createConsignmentSubmission(
+    input: CreateSubmissionMutationInput!
+  ): CreateSubmissionMutationPayload
 
   # Update a consignment using Convection
-  updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
+  updateConsignmentSubmission(
+    input: UpdateSubmissionMutationInput!
+  ): UpdateSubmissionMutationPayload
 
   # Attach an gemini asset to a consignment submission
-  addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
+  addAssetToConsignmentSubmission(
+    input: AddAssetToConsignmentSubmissionInput!
+  ): AddAssetToConsignmentSubmissionPayload
 
   # Creates an order with an artwork
-  ecommerceCreateOrderWithArtwork(input: CreateOrderWithArtworkInput!): CreateOrderWithArtworkPayload
+  ecommerceCreateOrderWithArtwork(
+    input: CreateOrderWithArtworkInput!
+  ): CreateOrderWithArtworkPayload
 
   # Creates an order with an artwork
-  ecommerceCreateOfferOrderWithArtwork(input: CreateOfferOrderWithArtworkInput!): CreateOfferOrderWithArtworkPayload
+  ecommerceCreateOfferOrderWithArtwork(
+    input: CreateOfferOrderWithArtworkInput!
+  ): CreateOfferOrderWithArtworkPayload
 
   # Sets shipping information for an order
-  ecommerceSetOrderShipping(input: SetOrderShippingInput!): SetOrderShippingPayload
+  ecommerceSetOrderShipping(
+    input: SetOrderShippingInput!
+  ): SetOrderShippingPayload
 
   # Sets payment information on an order
   ecommerceSetOrderPayment(input: SetOrderPaymentInput!): SetOrderPaymentPayload
@@ -6911,31 +7125,47 @@ type Mutation {
   ecommerceApproveOrder(input: ApproveOrderInput!): ApproveOrderPayload
 
   # Buyer accepts a submitted offer from seller
-  ecommerceBuyerAcceptOffer(input: buyerAcceptOfferInput!): buyerAcceptOfferPayload
+  ecommerceBuyerAcceptOffer(
+    input: buyerAcceptOfferInput!
+  ): buyerAcceptOfferPayload
 
   # Approves an order with payment
-  ecommerceSellerAcceptOffer(input: sellerAcceptOfferInput!): sellerAcceptOfferPayload
+  ecommerceSellerAcceptOffer(
+    input: sellerAcceptOfferInput!
+  ): sellerAcceptOfferPayload
 
   # Buyer counters sellers offer
-  ecommerceBuyerCounterOffer(input: buyerCounterOfferInput!): buyerCounterOfferPayload
+  ecommerceBuyerCounterOffer(
+    input: buyerCounterOfferInput!
+  ): buyerCounterOfferPayload
 
   # Submit pending offer
-  ecommerceSubmitPendingOffer(input: submitPendingOfferInput!): submitPendingOfferPayload
+  ecommerceSubmitPendingOffer(
+    input: submitPendingOfferInput!
+  ): submitPendingOfferPayload
 
   # Seller counters buyers offer
-  ecommerceSellerCounterOffer(input: sellerCounterOfferInput!): sellerCounterOfferPayload
+  ecommerceSellerCounterOffer(
+    input: sellerCounterOfferInput!
+  ): sellerCounterOfferPayload
 
   # Buyer rejects a submitted offer from seller
-  ecommerceBuyerRejectOffer(input: buyerRejectOfferInput!): buyerRejectOfferPayload
+  ecommerceBuyerRejectOffer(
+    input: buyerRejectOfferInput!
+  ): buyerRejectOfferPayload
 
   # Rejects an offer
-  ecommerceSellerRejectOffer(input: sellerRejectOfferInput!): sellerRejectOfferPayload
+  ecommerceSellerRejectOffer(
+    input: sellerRejectOfferInput!
+  ): sellerRejectOfferPayload
 
   # Confirms pickup for an ecommerce order
   ecommerceConfirmPickup(input: ConfirmPickupInput!): ConfirmPickupPayload
 
   # Fulfills an Order with one fulfillment by setting this fulfillment to all line items of this order
-  ecommerceFulfillOrderAtOnce(input: FulfillOrderAtOnceInput!): FulfillOrderAtOncePayload
+  ecommerceFulfillOrderAtOnce(
+    input: FulfillOrderAtOnceInput!
+  ): FulfillOrderAtOncePayload
 
   # Rejects an order
   ecommerceRejectOrder(input: RejectOrderInput!): RejectOrderPayload
@@ -6944,16 +7174,24 @@ type Mutation {
   ecommerceSubmitOrder(input: SubmitOrderInput!): SubmitOrderPayload
 
   # Adds an offer to a pending order
-  ecommerceAddInitialOfferToOrder(input: AddInitialOfferToOrderInput!): AddInitialOfferToOrderPayload
+  ecommerceAddInitialOfferToOrder(
+    input: AddInitialOfferToOrderInput!
+  ): AddInitialOfferToOrderPayload
 
   # Submits an order with an offer
-  ecommerceSubmitOrderWithOffer(input: SubmitOrderWithOfferInput!): SubmitOrderWithOfferPayload
+  ecommerceSubmitOrderWithOffer(
+    input: SubmitOrderWithOfferInput!
+  ): SubmitOrderWithOfferPayload
 
   # Fix the failed payment on an offer order
-  ecommerceFixFailedPayment(input: FixFailedPaymentInput!): FixFailedPaymentPayload
+  ecommerceFixFailedPayment(
+    input: FixFailedPaymentInput!
+  ): FixFailedPaymentPayload
 
   # Creates an order with an artwork
-  createOrderWithArtwork(input: CreateOrderWithArtworkInput!): CreateOrderWithArtworkPayload
+  createOrderWithArtwork(
+    input: CreateOrderWithArtworkInput!
+  ): CreateOrderWithArtworkPayload
 
   # Sets shipping information for an order
   setOrderShipping(input: SetOrderShippingInput!): SetOrderShippingPayload
@@ -6973,29 +7211,63 @@ type Mutation {
   # Submits an order
   submitOrder(input: SubmitOrderInput!): SubmitOrderPayload
   recordArtworkView(input: RecordArtworkViewInput): RecordArtworkViewPayload
-  commerceAddInitialOfferToOrder(input: CommerceAddInitialOfferToOrderInput!): CommerceAddInitialOfferToOrderPayload
-  commerceApproveOrder(input: CommerceApproveOrderInput!): CommerceApproveOrderPayload
-  commerceBuyerAcceptOffer(input: CommerceBuyerAcceptOfferInput!): CommerceBuyerAcceptOfferPayload
-  commerceBuyerCounterOffer(input: CommerceBuyerCounterOfferInput!): CommerceBuyerCounterOfferPayload
-  commerceBuyerRejectOffer(input: CommerceBuyerRejectOfferInput!): CommerceBuyerRejectOfferPayload
-  commerceConfirmPickup(input: CommerceConfirmPickupInput!): CommerceConfirmPickupPayload
+  commerceAddInitialOfferToOrder(
+    input: CommerceAddInitialOfferToOrderInput!
+  ): CommerceAddInitialOfferToOrderPayload
+  commerceApproveOrder(
+    input: CommerceApproveOrderInput!
+  ): CommerceApproveOrderPayload
+  commerceBuyerAcceptOffer(
+    input: CommerceBuyerAcceptOfferInput!
+  ): CommerceBuyerAcceptOfferPayload
+  commerceBuyerCounterOffer(
+    input: CommerceBuyerCounterOfferInput!
+  ): CommerceBuyerCounterOfferPayload
+  commerceBuyerRejectOffer(
+    input: CommerceBuyerRejectOfferInput!
+  ): CommerceBuyerRejectOfferPayload
+  commerceConfirmPickup(
+    input: CommerceConfirmPickupInput!
+  ): CommerceConfirmPickupPayload
   commerceCreateOfferOrderWithArtwork(
     input: CommerceCreateOfferOrderWithArtworkInput!
   ): CommerceCreateOfferOrderWithArtworkPayload
-  commerceCreateOrderWithArtwork(input: CommerceCreateOrderWithArtworkInput!): CommerceCreateOrderWithArtworkPayload
-  commerceFixFailedPayment(input: CommerceFixFailedPaymentInput!): CommerceFixFailedPaymentPayload
+  commerceCreateOrderWithArtwork(
+    input: CommerceCreateOrderWithArtworkInput!
+  ): CommerceCreateOrderWithArtworkPayload
+  commerceFixFailedPayment(
+    input: CommerceFixFailedPaymentInput!
+  ): CommerceFixFailedPaymentPayload
 
   # Fulfill an order with one Fulfillment, it sets this fulfillment to each line item in order
-  commerceFulfillAtOnce(input: CommerceFulfillAtOnceInput!): CommerceFulfillAtOncePayload
-  commerceRejectOrder(input: CommerceRejectOrderInput!): CommerceRejectOrderPayload
-  commerceSellerAcceptOffer(input: CommerceSellerAcceptOfferInput!): CommerceSellerAcceptOfferPayload
-  commerceSellerCounterOffer(input: CommerceSellerCounterOfferInput!): CommerceSellerCounterOfferPayload
-  commerceSellerRejectOffer(input: CommerceSellerRejectOfferInput!): CommerceSellerRejectOfferPayload
+  commerceFulfillAtOnce(
+    input: CommerceFulfillAtOnceInput!
+  ): CommerceFulfillAtOncePayload
+  commerceRejectOrder(
+    input: CommerceRejectOrderInput!
+  ): CommerceRejectOrderPayload
+  commerceSellerAcceptOffer(
+    input: CommerceSellerAcceptOfferInput!
+  ): CommerceSellerAcceptOfferPayload
+  commerceSellerCounterOffer(
+    input: CommerceSellerCounterOfferInput!
+  ): CommerceSellerCounterOfferPayload
+  commerceSellerRejectOffer(
+    input: CommerceSellerRejectOfferInput!
+  ): CommerceSellerRejectOfferPayload
   commerceSetPayment(input: CommerceSetPaymentInput!): CommerceSetPaymentPayload
-  commerceSetShipping(input: CommerceSetShippingInput!): CommerceSetShippingPayload
-  commerceSubmitOrder(input: CommerceSubmitOrderInput!): CommerceSubmitOrderPayload
-  commerceSubmitOrderWithOffer(input: CommerceSubmitOrderWithOfferInput!): CommerceSubmitOrderWithOfferPayload
-  commerceSubmitPendingOffer(input: CommerceSubmitPendingOfferInput!): CommerceSubmitPendingOfferPayload
+  commerceSetShipping(
+    input: CommerceSetShippingInput!
+  ): CommerceSetShippingPayload
+  commerceSubmitOrder(
+    input: CommerceSubmitOrderInput!
+  ): CommerceSubmitOrderPayload
+  commerceSubmitOrderWithOffer(
+    input: CommerceSubmitOrderWithOfferInput!
+  ): CommerceSubmitOrderWithOfferPayload
+  commerceSubmitPendingOffer(
+    input: CommerceSubmitPendingOfferInput!
+  ): CommerceSubmitPendingOfferPayload
 }
 
 input Near {
@@ -7772,7 +8044,9 @@ enum OrderModeEnum {
   OFFER
 }
 
-union OrderOrFailureUnionType = OrderWithMutationSuccess | OrderWithMutationFailure
+union OrderOrFailureUnionType =
+    OrderWithMutationSuccess
+  | OrderWithMutationFailure
 
 enum OrderParticipantEnum {
   # Participant on the buyer side
@@ -7861,7 +8135,12 @@ type Partner implements Node {
   # A type-specific Gravity Mongo Document ID.
   internalID: ID!
   cached: Int
-  artworks(for_sale: Boolean, sort: ArtworkSorts, exclude: [String], size: Int): [Artwork]
+  artworks(
+    for_sale: Boolean
+    sort: ArtworkSorts
+    exclude: [String]
+    size: Int
+  ): [Artwork]
 
   # A connection of artworks from a Partner.
   artworksConnection(
@@ -7875,7 +8154,10 @@ type Partner implements Node {
   ): ArtworkConnection
   categories: [Category]
   collecting_institution: String
-  contact_message: String @deprecated(reason: "Prefer artwork contact_message to handle availability-based prompts.")
+  contact_message: String
+    @deprecated(
+      reason: "Prefer artwork contact_message to handle availability-based prompts."
+    )
   counts: PartnerCounts
   default_profile_id: String
   has_fair_partnership: Boolean
@@ -7883,7 +8165,9 @@ type Partner implements Node {
   initials(length: Int = 3): String
   is_default_profile_public: Boolean
   is_limited_fair_partner: Boolean
-    @deprecated(reason: "This field no longer exists, this is for backwards compatibility")
+    @deprecated(
+      reason: "This field no longer exists, this is for backwards compatibility"
+    )
   is_linkable: Boolean
   is_pre_qualify: Boolean
   locations(size: Int = 25): [Location]
@@ -8143,7 +8427,8 @@ type PartnerShow implements Node {
     timezone: String
   ): String
   description: String
-  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  displayable: Boolean
+    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -8343,7 +8628,12 @@ type Query {
   ): Article
 
   # A list of Articles
-  articles(auction_id: String, published: Boolean = true, show_id: String, sort: ArticleSorts): [Article]
+  articles(
+    auction_id: String
+    published: Boolean = true
+    show_id: String
+    sort: ArticleSorts
+  ): [Article]
 
   # An Artwork
   artwork(
@@ -8533,7 +8823,8 @@ type Query {
     sale_id: ID
     size: Int
     sort: String
-  ): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
+  ): FilterSaleArtworks
+    @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -8554,7 +8845,12 @@ type Query {
   suggested_genes: [Gene]
 
   # A list of Gene Families
-  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
+  gene_families(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content
@@ -9044,7 +9340,8 @@ type Sale implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String
+    @deprecated(reason: "Favor `status` for consistency with other models")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -9119,8 +9416,17 @@ type Sale implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
+  sale_artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+  ): [SaleArtwork]
+  sale_artworks_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -9146,7 +9452,8 @@ type SaleArtwork {
   internalID: ID!
   cached: Int
   artwork: Artwork
-  bidder_positions_count: Int @deprecated(reason: "Favor `counts.bidder_positions`")
+  bidder_positions_count: Int
+    @deprecated(reason: "Favor `counts.bidder_positions`")
   bid_increments: [Float] @deprecated(reason: "Favor `increments.cents`")
   counts: SaleArtworkCounts
 
@@ -9606,7 +9913,9 @@ type SendFeedbackMutationSuccess {
   feedback: Feedback
 }
 
-union SendFeedbackMutationType = SendFeedbackMutationSuccess | SendFeedbackMutationFailure
+union SendFeedbackMutationType =
+    SendFeedbackMutationSuccess
+  | SendFeedbackMutationFailure
 
 type Services {
   convection: Convection!
@@ -9752,7 +10061,8 @@ type Show implements Node {
 
   # A description of the show
   description: String
-  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  displayable: Boolean
+    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -9912,7 +10222,12 @@ type Show implements Node {
   type: String
 
   # A Connection of followed artists by current user for this show
-  followedArtists(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
+  followedArtists(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowFollowArtistConnection
 }
 
 # A connection to a list of items.
@@ -10382,7 +10697,12 @@ type Viewer {
   ): Article
 
   # A list of Articles
-  articles(auction_id: String, published: Boolean = true, show_id: String, sort: ArticleSorts): [Article]
+  articles(
+    auction_id: String
+    published: Boolean = true
+    show_id: String
+    sort: ArticleSorts
+  ): [Article]
 
   # An Artwork
   artwork(
@@ -10572,7 +10892,8 @@ type Viewer {
     sale_id: ID
     size: Int
     sort: String
-  ): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
+  ): FilterSaleArtworks
+    @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -10593,7 +10914,12 @@ type Viewer {
   suggested_genes: [Gene]
 
   # A list of Gene Families
-  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
+  gene_families(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content

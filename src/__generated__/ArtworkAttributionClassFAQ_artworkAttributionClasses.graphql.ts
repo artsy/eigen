@@ -5,7 +5,7 @@ declare const _ArtworkAttributionClassFAQ_artworkAttributionClasses$ref: unique 
 export type ArtworkAttributionClassFAQ_artworkAttributionClasses$ref = typeof _ArtworkAttributionClassFAQ_artworkAttributionClasses$ref;
 export type ArtworkAttributionClassFAQ_artworkAttributionClasses = {
     readonly name: string | null;
-    readonly long_description: string | null;
+    readonly longDescription: string | null;
     readonly " $refType": ArtworkAttributionClassFAQ_artworkAttributionClasses$ref;
 };
 
@@ -28,11 +28,11 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "long_description",
+      "name": "longDescription",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'e0f38d9a2dff0d37a8640e6fb4c9392e';
+(node as any).hash = 'bc6f9718cdf4445204a466640457bb7a';
 export default node;
