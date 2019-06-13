@@ -1,4 +1,5 @@
 import { Serif, Theme } from "@artsy/palette"
+import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -8,6 +9,7 @@ interface Props {
 
 export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   render() {
+    console.log("PROPS!!", this.props.attributionClasses)
     return (
       <Theme>
         <Serif size="2">Hello World!</Serif>
