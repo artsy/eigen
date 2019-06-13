@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.11.4):
+  - Emission (1.12.0):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -94,7 +94,7 @@ PODS:
     - React/RCTLinkingIOS (= 0.59.2)
     - React/RCTNetwork (= 0.59.2)
     - React/RCTText (= 0.59.2)
-    - RNSVG (= 9.0.4)
+    - RNSVG (= 9.4.0)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 7.5.0)
@@ -247,7 +247,7 @@ PODS:
     - React/fishhook
     - React/RCTBlob
   - ReactiveObjC (2.1.2)
-  - RNSVG (9.0.4):
+  - RNSVG (9.4.0):
     - React
   - RSSwizzle (0.1.0)
   - SDWebImage (3.7.3):
@@ -298,7 +298,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.11)
+  - Emission (~> 1.12)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -337,7 +337,7 @@ DEPENDENCIES:
   - React/Core
   - React/DevSupport
   - ReactiveObjC
-  - RNSVG (from `https://github.com/react-native-community/react-native-svg.git`, tag `v9.0.4`)
+  - RNSVG (from `https://github.com/react-native-community/react-native-svg.git`, tag `v9.4.0`)
   - SDWebImage (>= 3.7.2)
   - SentryReactNative (from `https://github.com/getsentry/react-native-sentry.git`, tag `v0.30.3`)
   - Specta
@@ -453,7 +453,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/ashfurrow/react-native-navigator-ios
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
-    :tag: v9.0.4
+    :tag: v9.4.0
   SentryReactNative:
     :git: https://github.com/getsentry/react-native-sentry.git
     :tag: v0.30.3
@@ -506,7 +506,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/ashfurrow/react-native-navigator-ios
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
-    :tag: v9.0.4
+    :tag: v9.4.0
   SentryReactNative:
     :git: https://github.com/getsentry/react-native-sentry.git
     :tag: v0.30.3
@@ -538,7 +538,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 4ad960349cd1cb6b47a12da80c664e007add5e61
+  Emission: 33f6885c8a760734e1ea56357dc31d91bd61ec0c
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -578,7 +578,7 @@ SPEC CHECKSUMS:
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
-  RNSVG: 36f6615444ab569023444e09b01a1900d964e967
+  RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
@@ -596,6 +596,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: c03452c052adadc827dda2ff280a76b98e0a10fc
+PODFILE CHECKSUM: 23ca0886a0a3ae6b1e8abd87c2fb243b24ab9f2b
 
 COCOAPODS: 1.6.0.beta.1

@@ -78,7 +78,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.11'
+  pod 'Emission', '~> 1.12'
   pod 'glog', podspec: './externals/glog/glog.podspec'
 
   # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
@@ -98,7 +98,7 @@ target 'Artsy' do
   pod 'react-native-mapbox-gl', git: 'https://github.com/l2succes/react-native-mapbox-gl', branch: 'fix-gesture-recognizer'
   pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
-  pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.0.4'
+  pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.4.0'
   pod 'react-native-navigator-ios', git: 'https://github.com/ashfurrow/react-native-navigator-ios', branch: 'license_podspec'
   pod 'react-native-cameraroll', git: 'https://github.com/react-native-community/react-native-cameraroll', tag: 'v1.0.5'
 
