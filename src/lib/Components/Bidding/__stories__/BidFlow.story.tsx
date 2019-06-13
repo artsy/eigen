@@ -16,9 +16,9 @@ import { Registration } from "../Screens/Registration"
 import { RegistrationResult, RegistrationStatus } from "../Screens/RegistrationResult"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
-const testSaleArtworkID = "5b48ed80360bca000104d057"
-const testArtworkID = "5b48ed80360bca000104d050"
-const testSaleID = "melanie-mocktion"
+const testSaleArtworkID = "5ce8ddf9b8ca7812a17b221b"
+const testArtworkID = "5ce8ddf899e7e26cd3715136"
+const testSaleID = "capsule-gallery-auction-modern-post-war-and-contemporary-art"
 
 const BidFlowMaxBidStoryRenderer: React.SFC<any> = ({ saleArtworkID }) => (
   <QueryRenderer<BidFlowSelectMaxBidRendererQuery>

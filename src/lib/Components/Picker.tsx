@@ -2,7 +2,7 @@ import { Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { Portal } from "lib/Components/Portal"
 import React from "react"
 import { ImageURISource, PickerIOS, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
-import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
+import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 
 const AnimatedView = animated(View)
@@ -111,14 +111,18 @@ export class Picker extends React.Component<Props, State> {
   renderPicker = () => {
     const { options } = this.props
     const { isOpen, pendingSelected } = this.state
+    console.log("hii")
     return (
       <Portal>
         <Spring
           native
-          from={{ bottom: -260, progress: 0, opacity: 0 }}
-          to={isOpen ? { bottom: 0, progress: 1, opacity: 0.4 } : { bottom: -260, progress: 0, opacity: 0 }}
+          from={{ bottom: -280, progress: 0, opacity: 0 }}
+          to={isOpen ? { bottom: 0, progress: 1, opacity: 0.4 } : { bottom: -280, progress: 0, opacity: 0 }}
           onRest={this.handleSpringRest}
-          config={config.stiff}
+          config={{
+            ...config.stiff,
+            mass: 0.5,
+          }}
           precision={1}
         >
           {({ bottom, progress, opacity }) => {
