@@ -92,7 +92,7 @@
     "react-native-sentry": "0.30.3",
     "react-native-svg": "9.4.0",
     "react-relay": "4.0.0",
-    "react-spring": "^8.0.23",
+    "react-spring": "8.0.23",
     "react-tracking": "5.7.0",
     "relay-runtime": "4.0.0",
     "remove-markdown": "0.1.0",
