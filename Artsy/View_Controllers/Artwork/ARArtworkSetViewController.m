@@ -4,6 +4,8 @@
 #import "ARArtworkViewController.h"
 #import "ARTopMenuViewController.h"
 
+#import <ARAnalytics/ARAnalytics.h>
+
 #import "UIDevice-Hardware.h"
 
 @interface ARArtworkSetViewController () <ARMenuAwareViewController>
@@ -191,13 +193,27 @@
     return [self supportedInterfaceOrientations];
 }
 
-- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
-    // nop, just used for analytics.
+    ARArtworkViewController *destinationViewController = [pendingViewControllers firstObject];
+    NSString *destinationArtworkID = destinationViewController.artwork.artworkID;
+
+    [ARAnalytics event:@"artwork set swipe started" withProperties:@{
+        @"origin artwork id": self.currentArtworkViewController.artwork.artworkID ?: @"",
+        @"destination artwork id": destinationArtworkID ?: @""
+    }];
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed;
 {
+    ARArtworkViewController *originViewController = [previousViewControllers firstObject];
+    NSString *originArtworkID = originViewController.artwork.artworkID;
+
+    [ARAnalytics event:@"artwork set swipe finished" withProperties:@{
+        @"origin artwork id": originArtworkID ?: @"",
+        @"destination artwork id": self.currentArtworkViewController.artwork.artworkID ?: @"",
+        @"status": completed ? @"completed" : @"cancelled"
+    }];
     if (completed) {
         [self.currentArtworkViewController setHasFinishedScrolling];
     }
