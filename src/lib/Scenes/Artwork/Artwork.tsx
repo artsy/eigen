@@ -1,6 +1,7 @@
 import { Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
+import { ReadMore } from "lib/Components/ReadMore"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -36,6 +37,7 @@ export class Artwork extends React.Component<Props> {
           <Join separator={<Spacer my={2} />}>
             <AboutArtist artwork={artwork} />
             <PartnerCard artwork={artwork} />
+            <ReadMore content={artwork.artist.biography_blurb.text} maxChars={140} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
             <ArtworkDetails artwork={artwork} />
@@ -50,6 +52,11 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
+      artist {
+        biography_blurb {
+          text
+        }
+      }
       images {
         ...ImageCarousel_images
       }

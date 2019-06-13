@@ -55,7 +55,7 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<
     },
     query: graphql`
       query ArtworksGridPaginationContainerQuery($id: ID!, $count: Int!, $cursor: String) {
-        node(__id: $id) {
+        node(id: $id) {
           ... on FilterArtworks {
             ...ArtworksGridPaginationContainer_filteredArtworks @arguments(count: $count, cursor: $cursor)
           }

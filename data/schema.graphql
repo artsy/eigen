@@ -103,8 +103,34 @@ type AnalyticsPageviewStats {
   uniqueVisitors: Int
 }
 
+# Audience stats of a partner
+type AnalyticsPartnerAudienceStats {
+  partnerId: String!
+  period: AnalyticsQueryPeriodEnum!
+  uniqueVisitors: Int!
+}
+
+# Inquiry count time series data of a partner
+type AnalyticsPartnerInquiryCountTimeSeriesStats {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
+}
+
+# Inquiry stats of a partner
+type AnalyticsPartnerInquiryStats {
+  inquiryCount: Int!
+  inquiryResponseTime: Int
+  partnerId: String!
+  period: AnalyticsQueryPeriodEnum!
+
+  # Partner inquiry count time series
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
+}
+
 # Sales stats of a partner
 type AnalyticsPartnerSalesStats {
+  orderCount: Int!
   orderResponseTime: Int!
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
@@ -141,6 +167,12 @@ type AnalyticsPartnerStats {
   # Time series data on number of artworks published
   artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
 
+  # Audience stats
+  audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
+
+  # Inquiry stats
+  inquiry(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerInquiryStats
+
   # Different types of partner pageviews
   pageviews(period: AnalyticsQueryPeriodEnum!): AnalyticsPageviewStats
   partnerId: String!
@@ -166,6 +198,7 @@ type AnalyticsPartnerStats {
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
+    @deprecated(reason: "Use audience() { uniqueVisitors } instead")
 }
 
 # Partner Time Series Stats
@@ -2141,10 +2174,16 @@ type AttributionClass {
   info: String
 
   # Longer version of attribution class display
-  short_description: String
+  short_description: String @deprecated(reason: "Prefer shortDescription")
 
   # Long descriptive phrase used as companion for short_description
-  long_description: String
+  long_description: String @deprecated(reason: "Prefer longDescription")
+
+  # Longer version of attribution class display
+  shortDescription: String
+
+  # Long descriptive phrase used as companion for short_description
+  longDescription: String
 }
 
 # In centimeters.
@@ -4525,23 +4564,6 @@ type dimensions {
   cm: String
 }
 
-# Partner
-type DoNotUseThisPartner {
-  # Partners display name
-  display_name: String
-
-  # Partners given name
-  given_name: String
-
-  # Uniq ID for this partner
-  gravityID: ID!
-  relative_size: Int
-
-  # Uniq, friendly identifier for this artist
-  slug: String!
-  subscription_state: String
-}
-
 type EcommerceError {
   # The error message
   type: String!
@@ -6488,6 +6510,7 @@ type MarketingCollection {
 
   # Collection has prioritized connection to artist
   is_featured_artist_content: Boolean!
+  relatedCollections: [MarketingCollection!]!
   artworks(
     acquireable: Boolean
     offerable: Boolean
@@ -8310,6 +8333,9 @@ type ProfileCounts {
 }
 
 type Query {
+  # List of all artwork attribution classes
+  artworkAttributionClasses: [AttributionClass]
+
   # An Article
   article(
     # The ID of the Article
@@ -8568,7 +8594,7 @@ type Query {
   # Fetches an object given its Globally Unique ID
   node(
     # The ID of the object
-    __id: ID!
+    id: ID!
   ): Node
 
   # An OrderedSet
@@ -8835,12 +8861,6 @@ type Query {
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
 
-  # Autocomplete resolvers.
-  _unused_gravity_match_partners(term: String, page: Int = 1, size: Int = 5, match_type: String): [DoNotUseThisPartner]
-
-  # Find partners by ID
-  _unused_gravity_partners(ids: [ID]!): [DoNotUseThisPartner]
-
   # Find list of competing orders
   commerceCompetingOrders(
     # Returns the elements in the list that come after the specified cursor.
@@ -8901,6 +8921,7 @@ type Query {
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
   marketingCollections(
+    category: String
     randomizationSeed: String
     size: Int
     isFeaturedArtistContent: Boolean
@@ -10351,6 +10372,9 @@ type User {
 
 # A wildcard used to support complex root queries in Relay
 type Viewer {
+  # List of all artwork attribution classes
+  artworkAttributionClasses: [AttributionClass]
+
   # An Article
   article(
     # The ID of the Article
@@ -10609,7 +10633,7 @@ type Viewer {
   # Fetches an object given its Globally Unique ID
   node(
     # The ID of the object
-    __id: ID!
+    id: ID!
   ): Node
 
   # An OrderedSet
