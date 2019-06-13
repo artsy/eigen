@@ -288,6 +288,7 @@ const PartnerCardArtwork = {
     href: "",
     initials: "TG",
     profile: {
+      id: "12345",
       internalID: "56789",
       gravityID: "12345",
       is_followed: false,

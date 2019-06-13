@@ -12,6 +12,7 @@ export type PartnerCardFollowMutationVariables = {
 export type PartnerCardFollowMutationResponse = {
     readonly followProfile: {
         readonly profile: {
+            readonly id: string;
             readonly gravityID: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
@@ -31,10 +32,10 @@ mutation PartnerCardFollowMutation(
 ) {
   followProfile(input: $input) {
     profile {
+      id
       gravityID
       internalID
       is_followed
-      id
     }
   }
 }
@@ -51,32 +52,62 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "input"
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "followProfile",
+    "storageKey": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input"
+      }
+    ],
+    "concreteType": "FollowProfilePayload",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "profile",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Profile",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "gravityID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_followed",
+            "args": null,
+            "storageKey": null
+          }
+        ]
+      }
+    ]
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -85,81 +116,22 @@ return {
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "followProfile",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "FollowProfilePayload",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "profile",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/)
-            ]
-          }
-        ]
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "PartnerCardFollowMutation",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "followProfile",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "FollowProfilePayload",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "profile",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
     "name": "PartnerCardFollowMutation",
-    "id": "8f375403369ceb84331b2139a5e48d3b",
+    "id": "078b5566b30b3d939f5484d3fbf3ae9d",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '81b4328bd1d0f02e365d1e2e1d01f74f';
+(node as any).hash = '66c28329f911d6175d68dfcebc3da1ac';
 export default node;

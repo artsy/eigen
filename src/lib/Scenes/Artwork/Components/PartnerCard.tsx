@@ -35,10 +35,12 @@ export class PartnerCard extends React.Component<Props, State> {
       () => {
         commitMutation<PartnerCardFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
+          onError: e => console.log("errors", e),
           mutation: graphql`
             mutation PartnerCardFollowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
+                  id
                   gravityID
                   internalID
                   is_followed
@@ -55,6 +57,7 @@ export class PartnerCard extends React.Component<Props, State> {
           optimisticResponse: {
             followProfile: {
               profile: {
+                id: artwork.partner.profile.id,
                 internalID: profileID,
                 gravityID: partnerSlug,
                 is_followed: !partnerFollowed,
@@ -133,6 +136,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         href
         initials
         profile {
+          id
           internalID
           gravityID
           is_followed

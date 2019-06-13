@@ -18,6 +18,7 @@ export type PartnerCard_artwork = {
         readonly href: string | null;
         readonly initials: string | null;
         readonly profile: {
+            readonly id: string;
             readonly internalID: string;
             readonly gravityID: string;
             readonly is_followed: boolean | null;
@@ -46,6 +47,13 @@ v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -113,13 +121,7 @@ return {
         },
         (v0/*: any*/),
         (v1/*: any*/),
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "id",
-          "args": null,
-          "storageKey": null
-        },
+        (v2/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -143,6 +145,7 @@ return {
           "concreteType": "Profile",
           "plural": false,
           "selections": [
+            (v2/*: any*/),
             (v1/*: any*/),
             (v0/*: any*/),
             {
@@ -201,5 +204,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5ce47668bc2a47c65096a27074104d40';
+(node as any).hash = 'a78639b5970f350e4f9c05a495ddbf3b';
 export default node;
