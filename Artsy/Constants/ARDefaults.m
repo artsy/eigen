@@ -52,7 +52,7 @@ NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSu
         ARUseStagingDefault : @(useStagingDefault),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
         ARStagingWebURLDefault : @"https://staging.artsy.net",
-        ARStagingMetaphysicsURLDefault : @"https://metaphysics-staging.artsy.net",
+        ARStagingMetaphysicsURLDefault : @"https://metaphysics-staging.artsy.net/v2",
         ARStagingLiveAuctionSocketURLDefault : @"wss://causality-staging.artsy.net"
     }];
 }

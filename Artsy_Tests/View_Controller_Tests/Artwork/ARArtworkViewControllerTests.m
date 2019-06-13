@@ -3,8 +3,11 @@
 #import "ARLegacyArtworkViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>
 
+
 @interface _ARLegacyArtworkViewControllerMock : UIViewController
 @end
+
+
 @implementation _ARLegacyArtworkViewControllerMock
 - (void)setHasFinishedScrolling {}
 @end
@@ -12,22 +15,24 @@
 
 @interface _ARArtworkComponentViewControllerMock : UIViewController
 @end
+
+
 @implementation _ARArtworkComponentViewControllerMock
 @end
 
 static void
 StubArtworkWithAvailability(NSString *availability)
 {
-  NSDictionary *response = @{
-                             @"data": @{
-                                 @"artwork": @{
-                                     @"id": @"some-artwork",
-                                     @"title": @"Some Title",
-                                     @"availability": availability
-                                     }
-                                 }
-                             };
-  [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:response];
+    NSDictionary *response = @{
+        @"data" : @{
+            @"artwork" : @{
+                @"id" : @"some-artwork",
+                @"title" : @"Some Title",
+                @"availability" : availability
+            }
+        }
+    };
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net/v2" withResponse:response];
 }
 
 SpecBegin(ARArtworkViewController);

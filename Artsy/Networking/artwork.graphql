@@ -1,11 +1,11 @@
 query OldArtworkQuery($artworkID: String!) {
   artwork(id: $artworkID) {
-    id
-    _id
+    _id: internalID
+    id: gravityID
 
     artist {
-      id
-      _id
+      _id: internalID
+      id: gravityID
       name
       years
       birthday
@@ -19,7 +19,7 @@ query OldArtworkQuery($artworkID: String!) {
 
     partner {
       name
-      id
+      id: gravityID
       default_profile_id
       is_default_profile_public
       type
@@ -27,7 +27,7 @@ query OldArtworkQuery($artworkID: String!) {
     }
 
     images {
-      id
+      id: gravityID
       image_versions
       image_url
       is_default
@@ -51,7 +51,7 @@ query OldArtworkQuery($artworkID: String!) {
     }
 
     edition_sets {
-      id
+      id: gravityID
       sale_message
       is_sold
       is_for_sale

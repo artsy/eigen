@@ -1,16 +1,16 @@
 {
   %@
   me {
-    id
+    id: gravityID
     paddle_number
     bidders(sale_id: "%@") {
-      id
+      id: gravityID
       qualified_for_bidding
     }
   }
   sale(id: "%@") {
-    _id
-    id
+    _id: internalID
+    id: gravityID
     start_at
     bid_increments {
       from
@@ -22,7 +22,7 @@
     is_with_buyers_premium
     description
     sale_artworks(all: true) {
-      _id
+      _id: internalID
       currency
       symbol
       reserve_status

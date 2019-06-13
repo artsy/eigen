@@ -1,17 +1,11 @@
-mutation createOfferOrder(
-  $artworkId: String!
-  $quantity: Int
-) {
+mutation createOfferOrder($artworkId: String!, $quantity: Int) {
   ecommerceCreateOfferOrderWithArtwork(
-    input: {
-      artworkId: $artworkId
-      quantity: $quantity
-    }
+    input: { artworkId: $artworkId, quantity: $quantity }
   ) {
     orderOrError {
       ... on OrderWithMutationSuccess {
         order {
-          id
+          id: internalID
         }
       }
       ... on OrderWithMutationFailure {

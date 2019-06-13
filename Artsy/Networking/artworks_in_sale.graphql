@@ -1,28 +1,28 @@
 {
   sale(id: "%@") {
     sale_artworks {
-      id
+      id: gravityID
       bidder_positions_count
       opening_bid_cents
       symbol
       highest_bid {
-        id
+        id: gravityID
         amount_cents
       }
       auction: sale {
-        id
+        id: gravityID
         auction_state: status
         is_auction
       }
       artwork {
-        id
+        id: gravityID
         title
         artist {
-          id
+          id: gravityID
           name
         }
         images {
-          id
+          id: gravityID
           aspect_ratio
           is_default
           image_versions

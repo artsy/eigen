@@ -1,13 +1,9 @@
-mutation createOrder(
-  $input: CreateOrderWithArtworkInput!
-) {
-  ecommerceCreateOrderWithArtwork(
-    input: $input
-  ) {
+mutation createOrder($input: CreateOrderWithArtworkInput!) {
+  ecommerceCreateOrderWithArtwork(input: $input) {
     orderOrError {
       ... on OrderWithMutationSuccess {
         order {
-          id
+          id: internalID
         }
       }
       ... on OrderWithMutationFailure {
