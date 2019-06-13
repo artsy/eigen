@@ -16,6 +16,10 @@
 
 ### Master
 
+### 1.12.1
+
+### 1.12.0
+
 - Upgrade palette@4.13.3; styled-components@4.x
 - Switch to use metaphysics v2 schema - justin/alloy
 - Fixes a bug where artist search results in consignments overlap with search bar - yuki24
@@ -27,6 +31,7 @@
 - Allows user to follow an artist from the Artwork tombstone - lilyfromseattle
 - Enable `strictBindCallApply`, `noImplicitThis`, and `strictFunctionTypes` compiler settings - alloy
 - Adds ReadMore component to work with markdown - ds300/sweir27
+- Upgrade react-spring@8.0.23 - damassi
 
 ### 1.11.4
 

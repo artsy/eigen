@@ -31,7 +31,7 @@ query ArtworksGridPaginationContainerQuery(
   $count: Int!
   $cursor: String
 ) {
-  node(__id: $id) {
+  node(id: $id) {
     __typename
     ... on FilterArtworks {
       ...ArtworksGridPaginationContainer_filteredArtworks_1G22uz
@@ -134,7 +134,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "__id",
+    "name": "id",
     "variableName": "id"
   }
 ],
@@ -559,11 +559,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksGridPaginationContainerQuery",
-    "id": "7b9c86232fb651c412401f79539b1bc5",
+    "id": "f9579c33c1e651bc21913a048f11604f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '73fab2710699fa1d1c7ea131c969ebbc';
+(node as any).hash = 'f4efff004f372a744aad8331dad52167';
 export default node;

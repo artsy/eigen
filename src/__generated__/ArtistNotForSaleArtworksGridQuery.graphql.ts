@@ -34,7 +34,7 @@ query ArtistNotForSaleArtworksGridQuery(
   $cursor: String
   $filter: [ArtistArtworksFilters]
 ) {
-  node(__id: $id) {
+  node(id: $id) {
     __typename
     ... on Artist {
       ...ArtistNotForSaleArtworksGrid_artist_3KQYpM
@@ -143,7 +143,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "__id",
+    "name": "id",
     "variableName": "id"
   }
 ],
@@ -583,11 +583,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistNotForSaleArtworksGridQuery",
-    "id": "124bf2b58f3d8b81bafbf8803ce0bed7",
+    "id": "ced01002cc18d73d1d59bd015a14cb6a",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '33bd565a337f6952e6be2a95ae791722';
+(node as any).hash = '3bf2318ba97c7964dd733f7c09e7ace8';
 export default node;

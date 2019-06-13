@@ -339,7 +339,7 @@ export default createRefetchContainer(
   },
   graphql`
     query ArtworkRailRefetchQuery($id: ID!, $fetchContent: Boolean!) {
-      node(__id: $id) {
+      node(id: $id) {
         ...ArtworkRail_rail @arguments(fetchContent: $fetchContent)
       }
     }
