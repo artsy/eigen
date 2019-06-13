@@ -100,16 +100,8 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   sale_artwork {
-    opening_bid {
-      display
-    }
     current_bid {
       display
-    }
-    bidder_positions_count
-    sale {
-      is_closed
-      id
     }
     id
   }
@@ -182,17 +174,7 @@ v7 = {
   "name": "display",
   "args": null,
   "storageKey": null
-},
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_closed",
-  "args": null,
-  "storageKey": null
-},
-v9 = [
-  (v7/*: any*/)
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -497,7 +479,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v8/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_closed",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -520,41 +508,13 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "opening_bid",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "SaleArtworkOpeningBid",
-                            "plural": false,
-                            "selections": (v9/*: any*/)
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
                             "name": "current_bid",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "SaleArtworkCurrentBid",
                             "plural": false,
-                            "selections": (v9/*: any*/)
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "bidder_positions_count",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "sale",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Sale",
-                            "plural": false,
                             "selections": [
-                              (v8/*: any*/),
-                              (v4/*: any*/)
+                              (v7/*: any*/)
                             ]
                           },
                           (v4/*: any*/)
@@ -601,7 +561,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairBothPreviewQuery",
-    "id": "0daa66acd9dcc1f8f77c53b22eb7cf03",
+    "id": "d93608dbc371ecaba45bf9e367d754af",
     "text": null,
     "metadata": {}
   }

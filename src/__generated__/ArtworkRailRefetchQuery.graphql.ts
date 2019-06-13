@@ -123,16 +123,8 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   sale_artwork {
-    opening_bid {
-      display
-    }
     current_bid {
       display
-    }
-    bidder_positions_count
-    sale {
-      is_closed
-      id
     }
     id
   }
@@ -221,22 +213,6 @@ v7 = [
 ],
 v8 = [
   (v6/*: any*/)
-],
-v9 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_closed",
-  "args": null,
-  "storageKey": null
-},
-v10 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
 ];
 return {
   "kind": "Request",
@@ -521,7 +497,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v9/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_closed",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -544,41 +526,19 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "opening_bid",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "SaleArtworkOpeningBid",
-                            "plural": false,
-                            "selections": (v10/*: any*/)
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
                             "name": "current_bid",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "SaleArtworkCurrentBid",
                             "plural": false,
-                            "selections": (v10/*: any*/)
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "bidder_positions_count",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "sale",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Sale",
-                            "plural": false,
                             "selections": [
-                              (v9/*: any*/),
-                              (v3/*: any*/)
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "display",
+                                "args": null,
+                                "storageKey": null
+                              }
                             ]
                           },
                           (v3/*: any*/)
@@ -624,7 +584,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRailRefetchQuery",
-    "id": "729e8ba8ee5d6a60dca05cec5a75f6bd",
+    "id": "0438f0cd3b409207264282fcdb9b0197",
     "text": null,
     "metadata": {}
   }

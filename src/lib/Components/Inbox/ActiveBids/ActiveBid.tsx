@@ -119,7 +119,7 @@ class ActiveBid extends React.Component<Props, State> {
   render() {
     const bid = this.props.bid.most_recent_bid
     const imageURL = bid.sale_artwork.artwork.image.url
-    const lotNumber = bid.sale_artwork.lot_number
+    const lotNumber = bid.sale_artwork.lot_label
     const artistName = bid.sale_artwork.artwork.artist_names
 
     const headline = `Lot ${lotNumber} · ${artistName} `
@@ -177,7 +177,7 @@ export default createFragmentContainer(ActiveBid, {
           highest_bid {
             display
           }
-          lot_number
+          lot_label
           reserve_status
         }
       }

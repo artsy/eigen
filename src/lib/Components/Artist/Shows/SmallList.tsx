@@ -71,7 +71,7 @@ const showStyles = StyleSheet.create({
 
 export default createFragmentContainer(SmallList, {
   shows: graphql`
-    fragment SmallList_shows on PartnerShow @relay(plural: true) {
+    fragment SmallList_shows on Show @relay(plural: true) {
       ...ArtistShow_show
     }
   `,

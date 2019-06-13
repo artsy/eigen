@@ -9,9 +9,15 @@ export type Metadata_show = {
     readonly exhibition_period: string | null;
     readonly status_update: string | null;
     readonly status: string | null;
-    readonly partner: {
+    readonly partner: ({
+        readonly name?: string | null;
+    } & ({
         readonly name: string | null;
-    } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly location: {
         readonly city: string | null;
     } | null;
@@ -27,11 +33,14 @@ var v0 = {
   "name": "name",
   "args": null,
   "storageKey": null
-};
+},
+v1 = [
+  (v0/*: any*/)
+];
 return {
   "kind": "Fragment",
   "name": "Metadata_show",
-  "type": "PartnerShow",
+  "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
@@ -70,10 +79,19 @@ return {
       "name": "partner",
       "storageKey": null,
       "args": null,
-      "concreteType": "Partner",
+      "concreteType": null,
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        {
+          "kind": "InlineFragment",
+          "type": "Partner",
+          "selections": (v1/*: any*/)
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "ExternalPartner",
+          "selections": (v1/*: any*/)
+        }
       ]
     },
     {
@@ -97,5 +115,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '10185232d146c1a914944c67e6b71060';
+(node as any).hash = '7a1aff9fd89ca9c7c28187415479d529';
 export default node;

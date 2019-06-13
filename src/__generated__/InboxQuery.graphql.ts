@@ -98,7 +98,7 @@ fragment ActiveBid_bid on LotStanding {
       highest_bid {
         display
       }
-      lot_number
+      lot_label
       reserve_status
       id
     }
@@ -364,7 +364,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "lot_number",
+                        "name": "lot_label",
                         "args": null,
                         "storageKey": null
                       },
@@ -644,7 +644,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxQuery",
-    "id": "9637a53cd34a051dbbd1b9aa0f87c464",
+    "id": "c48b3c3e3c611073bcda3d85bfb73274",
     "text": null,
     "metadata": {}
   }
