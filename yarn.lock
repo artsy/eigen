@@ -2,14 +2,15 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@4.14.14":
-  version "4.14.14"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.14.tgz#0349750f0e38e7d57b29f51b22bc4e6622f16873"
-  integrity sha512-NM8E8jA3ALL5Ux4aaOcNg87kgnRDYnSS3OF7d8pnkMTL5gsjXOw9RyFybTrv7d/5sfRttRvCEx+YIHY/GSG8lw==
+"@artsy/palette@4.14.16":
+  version "4.14.16"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.16.tgz#5b2e510e83bd8ed4733896f72df9ede0cef529c7"
+  integrity sha512-Ynx51XfxshhTEWDt72DKh2RpQ2tLcogtSy0oALEkepcUzgnEzpOFEZVRV488u/57TcuJFj1JcKBfvr7E3N5MTg==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
+    luxon "^1.15"
     rc-slider "^8.6.2"
     react-lazy-load-image-component "^1.3.2"
     react-live "^1.12.0"
@@ -9451,6 +9452,11 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
+
+luxon@^1.15:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.16.0.tgz#93c915cfc3dff4bb806656595018fddc47cc96ec"
+  integrity sha512-qaqB+JwpGwtl7UbIXng3A/l4W/ySBr8drQvwtMLZBMiLD2V+0fEnPWMrs+UjnIy9PsktazQaKvwDUCLzoWz0Hw==
 
 macaddress@^0.2.8:
   version "0.2.8"
