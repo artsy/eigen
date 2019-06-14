@@ -1,7 +1,6 @@
 import { Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
-import { ReadMore } from "lib/Components/ReadMore"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -9,6 +8,7 @@ import React from "react"
 import { Dimensions, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
+import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -34,11 +34,11 @@ export class Artwork extends React.Component<Props> {
           </Flex>
           <Separator />
           <Join separator={<Spacer my={2} />}>
-            <AboutArtist artwork={artwork} />
-            <ReadMore content={artwork.artist.biography_blurb.text} maxChars={140} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
+            <AboutWork artwork={artwork} />
             <ArtworkDetails artwork={artwork} />
+            <AboutArtist artwork={artwork} />
             <OtherWorks artwork={artwork} />
           </Join>
         </ScrollView>
@@ -64,6 +64,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...SellerInfo_artwork
       ...OtherWorks_artwork
       ...AboutArtist_artwork
+      ...AboutWork_artwork
       ...ArtworkDetails_artwork
     }
   `,

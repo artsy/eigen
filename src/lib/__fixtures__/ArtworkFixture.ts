@@ -19,6 +19,9 @@ export const ArtworkFixture = {
       nationality: "Iranian",
       birthday: "1940",
       deathday: "2016",
+      biography_blurb: {
+        text: "This is a biography of the artist",
+      },
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/JX1xE4T_amcdrv2nFunIHw/tall.jpg",
       },
