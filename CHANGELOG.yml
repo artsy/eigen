@@ -6,7 +6,7 @@ upcoming:
     - Adds analytics tracking for artwork set view controller swipes - ash
     - Moved artwork set analytics into artwork set view controller - ash
   user_facing:
-    - 
+    - Fixes a problem where the app's back button would become misaligned - ash
 
 releases:
   - version: 5.0.4

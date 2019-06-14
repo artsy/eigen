@@ -133,7 +133,9 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 {
     [super viewWillAppear:animated];
 
-    [self updateStatusBar:self.topViewController animated:animated];
+    if (self.view.window) {
+        [self updateStatusBar:self.topViewController animated:animated];
+    }
 }
 
 #pragma mark - Rotation
