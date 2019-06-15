@@ -40,7 +40,13 @@ export type WorksForYou_viewer = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "Literal",
+  "name": "sort",
+  "value": "PUBLISHED_AT_DESC"
+};
+return {
   "kind": "Fragment",
   "name": "WorksForYou_viewer",
   "type": "Viewer",
@@ -109,11 +115,7 @@ const node: ReaderFragment = {
               "name": "__WorksForYou_notifications_connection",
               "storageKey": "__WorksForYou_notifications_connection(sort:\"PUBLISHED_AT_DESC\")",
               "args": [
-                {
-                  "kind": "Literal",
-                  "name": "sort",
-                  "value": "PUBLISHED_AT_DESC"
-                }
+                (v0/*: any*/)
               ],
               "concreteType": "FollowedArtistsArtworksGroupConnection",
               "plural": false,
@@ -277,18 +279,14 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "alias": null,
           "name": "artworks",
-          "storageKey": "artworks(size:6,sort:\"published_at_desc\")",
+          "storageKey": "artworks(size:6,sort:\"PUBLISHED_AT_DESC\")",
           "args": [
             {
               "kind": "Literal",
               "name": "size",
               "value": 6
             },
-            {
-              "kind": "Literal",
-              "name": "sort",
-              "value": "published_at_desc"
-            }
+            (v0/*: any*/)
           ],
           "concreteType": "Artwork",
           "plural": true,
@@ -304,5 +302,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '902ce5b4b0d82cec0693796c4ae26b32';
+})();
+(node as any).hash = '6b2733b90625be44995810f73336843c';
 export default node;

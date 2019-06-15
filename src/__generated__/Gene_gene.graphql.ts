@@ -8,8 +8,12 @@ export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS
 declare const _Gene_gene$ref: unique symbol;
 export type Gene_gene$ref = typeof _Gene_gene$ref;
 export type Gene_gene = {
+    readonly id: string;
+    readonly internalID: string;
     readonly filtered_artworks: {
-        readonly total: number | null;
+        readonly counts: {
+            readonly total: any | null;
+        } | null;
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
@@ -59,6 +63,20 @@ return {
   ],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "filtered_artworks",
@@ -99,11 +117,22 @@ return {
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
+          "kind": "LinkedField",
           "alias": null,
-          "name": "total",
+          "name": "counts",
+          "storageKey": null,
           "args": null,
-          "storageKey": null
+          "concreteType": "FilterArtworksCounts",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "total",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         },
         {
           "kind": "LinkedField",
@@ -177,5 +206,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bd6398fbfafab446e0635b8daf93314a';
+(node as any).hash = '4e862e30fdb753e31fc73a9effb8d703';
 export default node;

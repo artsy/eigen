@@ -4,6 +4,7 @@ import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import React from "react"
 import { graphql } from "react-relay"
 import { ArtworkTombstoneFragmentContainer } from "../ArtworkTombstone"
+
 const MockArtworkTombstone = ({ artwork }: { artwork: ArtworkTombstone_artwork }) => {
   return (
     <MockRelayRenderer
@@ -19,6 +20,7 @@ const MockArtworkTombstone = ({ artwork }: { artwork: ArtworkTombstone_artwork }
     />
   )
 }
+
 const artworkTombstoneArtwork = {
   title: "Hello im a title",
   medium: "Painting",
@@ -39,6 +41,7 @@ const artworkTombstoneArtwork = {
   attribution_class: { short_description: "This is an edition of something" },
   " $refType": null,
 }
+
 storiesOf("Artwork/Components").add("Tombstone", () => {
-  return <MockArtworkTombstone artwork={artworkTombstoneArtwork} />
+  return <MockArtworkTombstone artwork={artworkTombstoneArtwork as any} />
 })

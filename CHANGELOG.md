@@ -32,6 +32,7 @@
 - Enable `strictBindCallApply`, `noImplicitThis`, and `strictFunctionTypes` compiler settings - alloy
 - Adds ReadMore component to work with markdown - ds300/sweir27
 - Upgrade react-spring@8.0.23 - damassi
+- Get rid of all deprecated GraphQL usage - alloy
 
 ### 1.11.4
 

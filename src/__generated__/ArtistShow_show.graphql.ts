@@ -20,7 +20,7 @@ export type ArtistShow_show = {
 const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtistShow_show",
-  "type": "PartnerShow",
+  "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
@@ -76,5 +76,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '55462e468567e888bdb42839ff72912e';
+(node as any).hash = '1419f583cf26f035fcee1cf36fbc5584';
 export default node;

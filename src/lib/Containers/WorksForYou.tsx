@@ -222,7 +222,7 @@ const WorksForYouContainer = createPaginationContainer(
               url
             }
           }
-          artworks(sort: published_at_desc, size: 6) {
+          artworks(sort: PUBLISHED_AT_DESC, size: 6) {
             ...GenericGrid_artworks
           }
         }

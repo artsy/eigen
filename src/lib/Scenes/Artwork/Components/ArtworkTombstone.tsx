@@ -115,7 +115,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         )}
         {artwork.attribution_class && (
           <Serif color="black60" size="3t">
-            {artwork.attribution_class.short_description}
+            {artwork.attribution_class.shortDescription}
           </Serif>
         )}
       </Box>
@@ -141,7 +141,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       }
       edition_of
       attribution_class {
-        short_description
+        shortDescription
       }
     }
   `,
