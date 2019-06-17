@@ -39,7 +39,7 @@ describe("state", () => {
   })
 
   it("updates from the switch change the selectedTabIndex", () => {
-    const gene = new Gene(exampleProps)
+    const gene = new Gene(exampleProps as any)
     const switchEvent = {
       nativeEvent: {
         selectedIndex: 23,
@@ -60,7 +60,7 @@ describe("state", () => {
       price_range: "*-*",
       relay: { variables: {}, refetch: jest.fn() } as any,
       gene: { filtered_artworks: { aggregations: [] } },
-    })
+    } as any)
     gene.setState = jest.fn()
 
     // The data we expect back from Eigen when you've hit the refine button,
@@ -95,7 +95,7 @@ describe("handling price ranges", () => {
   let gene: Gene
 
   beforeEach(() => {
-    gene = new Gene(exampleProps)
+    gene = new Gene(exampleProps as any)
   })
 
   it("is empty when *-*", () => {
@@ -153,7 +153,7 @@ it("looks like expected", () => {
   const tree = renderer
     .create(
       <Theme>
-        <Gene medium="painting" price_range="*-100000" gene={props.gene} />
+        <Gene medium="painting" price_range="*-100000" gene={props.gene as any} />
       </Theme>
     )
     .toJSON()

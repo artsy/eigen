@@ -90,7 +90,7 @@ return {
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "partner_updated_at_desc"
+          "value": "PARTNER_UPDATED_AT_DESC"
         }
       ],
       "concreteType": "ArtworkConnection",
@@ -200,5 +200,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a1707969ffa9f4ef8c5f9a13997e2e0a';
+(node as any).hash = 'f3c0dc6db9ce89e2e84d09c4fcadfca9';
 export default node;

@@ -3,5 +3,5 @@ import React from "react"
 import { ArtworkAvailability } from "../ArtworkAvailability"
 
 storiesOf("Artwork/Components").add("Availability", () => {
-  return <ArtworkAvailability artwork={{ __id: "Blah", _id: "HI", availability: "On Loan", " $refType": null }} />
+  return <ArtworkAvailability artwork={{ id: "Blah", _id: "HI", availability: "On Loan", " $refType": null }} />
 })

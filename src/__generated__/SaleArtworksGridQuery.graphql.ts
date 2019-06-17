@@ -31,7 +31,7 @@ query SaleArtworksGridQuery(
   $count: Int!
   $cursor: String
 ) {
-  node(__id: $id) {
+  node(id: $id) {
     __typename
     ... on Sale {
       ...SaleArtworksGrid_sale_1G22uz
@@ -84,16 +84,8 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   sale_artwork {
-    opening_bid {
-      display
-    }
     current_bid {
       display
-    }
-    bidder_positions_count
-    sale {
-      is_closed
-      id
     }
     id
   }
@@ -137,7 +129,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "__id",
+    "name": "id",
     "variableName": "id"
   }
 ],
@@ -167,23 +159,7 @@ v4 = [
     "variableName": "count"
   }
 ],
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_closed",
-  "args": null,
-  "storageKey": null
-},
-v6 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
-],
-v7 = [
+v5 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -443,7 +419,13 @@ return {
                                     "args": null,
                                     "storageKey": null
                                   },
-                                  (v5/*: any*/),
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "is_closed",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
@@ -466,41 +448,19 @@ return {
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
-                                    "name": "opening_bid",
-                                    "storageKey": null,
-                                    "args": null,
-                                    "concreteType": "SaleArtworkOpeningBid",
-                                    "plural": false,
-                                    "selections": (v6/*: any*/)
-                                  },
-                                  {
-                                    "kind": "LinkedField",
-                                    "alias": null,
                                     "name": "current_bid",
                                     "storageKey": null,
                                     "args": null,
                                     "concreteType": "SaleArtworkCurrentBid",
                                     "plural": false,
-                                    "selections": (v6/*: any*/)
-                                  },
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "bidder_positions_count",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "kind": "LinkedField",
-                                    "alias": null,
-                                    "name": "sale",
-                                    "storageKey": null,
-                                    "args": null,
-                                    "concreteType": "Sale",
-                                    "plural": false,
                                     "selections": [
-                                      (v5/*: any*/),
-                                      (v3/*: any*/)
+                                      {
+                                        "kind": "ScalarField",
+                                        "alias": null,
+                                        "name": "display",
+                                        "args": null,
+                                        "storageKey": null
+                                      }
                                     ]
                                   },
                                   (v3/*: any*/)
@@ -520,7 +480,7 @@ return {
                                 ],
                                 "concreteType": "Artist",
                                 "plural": true,
-                                "selections": (v7/*: any*/)
+                                "selections": (v5/*: any*/)
                               },
                               {
                                 "kind": "LinkedField",
@@ -530,7 +490,7 @@ return {
                                 "args": null,
                                 "concreteType": "Partner",
                                 "plural": false,
-                                "selections": (v7/*: any*/)
+                                "selections": (v5/*: any*/)
                               },
                               {
                                 "kind": "ScalarField",
@@ -574,11 +534,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworksGridQuery",
-    "id": "5740404accb7920cf6bf7510fbd03c4b",
+    "id": "3a4bc3430cb75c75df53961b234cd9a5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8fdbad9e162d68c508e6296c63792f39';
+(node as any).hash = 'adc7147fdf8c6b45db34fee4b5935180';
 export default node;

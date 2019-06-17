@@ -60,7 +60,7 @@ const GeneArtworksGrid = createPaginationContainer<
     },
     query: graphql`
       query GeneArtworksGridQuery($id: ID!, $count: Int!, $cursor: String, $sort: String) {
-        node(__id: $id) {
+        node(id: $id) {
           ... on FilterArtworks {
             ...GeneArtworksGrid_filtered_artworks @arguments(count: $count, cursor: $cursor, sort: $sort)
           }

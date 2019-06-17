@@ -200,7 +200,7 @@ export const DetailContainer = createFragmentContainer(Detail, {
       name
       description
       city
-      is_local_discovery
+      isStubShow
       images {
         gravityID
       }

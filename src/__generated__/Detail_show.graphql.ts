@@ -14,7 +14,7 @@ export type Detail_show = {
     readonly name: string | null;
     readonly description: string | null;
     readonly city: string | null;
-    readonly is_local_discovery: boolean | null;
+    readonly isStubShow: boolean | null;
     readonly images: ReadonlyArray<{
         readonly gravityID: string | null;
     } | null> | null;
@@ -115,7 +115,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_local_discovery",
+      "name": "isStubShow",
       "args": null,
       "storageKey": null
     },
@@ -290,5 +290,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b9e9d8ee02a1e95f4179b17f4626e780';
+(node as any).hash = '05f4cbfa82642ea3af332c86c9e27111';
 export default node;

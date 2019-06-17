@@ -8,6 +8,7 @@ import React from "react"
 import { Dimensions, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
+import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -34,11 +35,12 @@ export class Artwork extends React.Component<Props> {
           </Flex>
           <Separator />
           <Join separator={<Spacer my={2} />}>
-            <AboutArtist artwork={artwork} />
-            <PartnerCard artwork={artwork} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
+            <AboutWork artwork={artwork} />
             <ArtworkDetails artwork={artwork} />
+            <AboutArtist artwork={artwork} />
+            <PartnerCard artwork={artwork} />
             <OtherWorks artwork={artwork} />
           </Join>
         </ScrollView>
@@ -50,6 +52,11 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
+      artist {
+        biography_blurb {
+          text
+        }
+      }
       images {
         ...ImageCarousel_images
       }
@@ -60,6 +67,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...SellerInfo_artwork
       ...OtherWorks_artwork
       ...AboutArtist_artwork
+      ...AboutWork_artwork
       ...ArtworkDetails_artwork
     }
   `,

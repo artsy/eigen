@@ -23,7 +23,7 @@ query ArtworkRailRefetchQuery(
   $id: ID!
   $fetchContent: Boolean!
 ) {
-  node(__id: $id) {
+  node(id: $id) {
     __typename
     ...ArtworkRail_rail_abFTe
     id
@@ -123,16 +123,8 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   sale_artwork {
-    opening_bid {
-      display
-    }
     current_bid {
       display
-    }
-    bidder_positions_count
-    sale {
-      is_closed
-      id
     }
     id
   }
@@ -170,7 +162,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "__id",
+    "name": "id",
     "variableName": "id"
   }
 ],
@@ -221,22 +213,6 @@ v7 = [
 ],
 v8 = [
   (v6/*: any*/)
-],
-v9 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_closed",
-  "args": null,
-  "storageKey": null
-},
-v10 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
 ];
 return {
   "kind": "Request",
@@ -521,7 +497,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v9/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_closed",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -544,41 +526,19 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "opening_bid",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "SaleArtworkOpeningBid",
-                            "plural": false,
-                            "selections": (v10/*: any*/)
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
                             "name": "current_bid",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "SaleArtworkCurrentBid",
                             "plural": false,
-                            "selections": (v10/*: any*/)
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "bidder_positions_count",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "sale",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Sale",
-                            "plural": false,
                             "selections": [
-                              (v9/*: any*/),
-                              (v3/*: any*/)
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "display",
+                                "args": null,
+                                "storageKey": null
+                              }
                             ]
                           },
                           (v3/*: any*/)
@@ -624,11 +584,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRailRefetchQuery",
-    "id": "d310c4ce54ff39a0f6cefc99492210ed",
+    "id": "0438f0cd3b409207264282fcdb9b0197",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a949e8668e5be1593e2a46f702134c96';
+(node as any).hash = 'e755f096d4e10cae598482eab649a4e5';
 export default node;

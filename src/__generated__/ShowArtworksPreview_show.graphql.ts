@@ -6,11 +6,15 @@ declare const _ShowArtworksPreview_show$ref: unique symbol;
 export type ShowArtworksPreview_show$ref = typeof _ShowArtworksPreview_show$ref;
 export type ShowArtworksPreview_show = {
     readonly id: string;
-    readonly artworks: ReadonlyArray<{
-        readonly " $fragmentRefs": GenericGrid_artworks$ref;
-    } | null> | null;
     readonly counts: {
         readonly artworks: number | null;
+    } | null;
+    readonly artworks_connection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": GenericGrid_artworks$ref;
+            } | null;
+        } | null> | null;
     } | null;
     readonly " $refType": ShowArtworksPreview_show$ref;
 };
@@ -34,28 +38,6 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "artworks",
-      "storageKey": "artworks(size:6)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 6
-        }
-      ],
-      "concreteType": "Artwork",
-      "plural": true,
-      "selections": [
-        {
-          "kind": "FragmentSpread",
-          "name": "GenericGrid_artworks",
-          "args": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
       "name": "counts",
       "storageKey": null,
       "args": null,
@@ -70,8 +52,52 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artworks_connection",
+      "storageKey": "artworks_connection(first:6)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 6
+        }
+      ],
+      "concreteType": "ArtworkConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArtworkEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artwork",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "FragmentSpread",
+                  "name": "GenericGrid_artworks",
+                  "args": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 };
-(node as any).hash = '75b1c7341aa374b4c62015a0efd6bd6d';
+(node as any).hash = '14bb5522666bedb6a664ca162a1ed1be';
 export default node;

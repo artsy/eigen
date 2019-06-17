@@ -21,7 +21,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer<
           first: $count
           after: $cursor
           filter: $filter
-          sort: partner_updated_at_desc
+          sort: PARTNER_UPDATED_AT_DESC
         ) @connection(key: "ArtistForSaleArtworksGrid_forSaleArtworks") {
           pageInfo {
             hasNextPage
@@ -63,7 +63,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer<
     },
     query: graphql`
       query ArtistForSaleArtworksGridQuery($id: ID!, $count: Int!, $cursor: String, $filter: [ArtistArtworksFilters]) {
-        node(__id: $id) {
+        node(id: $id) {
           ... on Artist {
             ...ArtistForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
           }

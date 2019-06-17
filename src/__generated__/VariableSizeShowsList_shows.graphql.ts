@@ -15,7 +15,7 @@ export type VariableSizeShowsList_shows = ReadonlyArray<{
 const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "VariableSizeShowsList_shows",
-  "type": "PartnerShow",
+  "type": "Show",
   "metadata": {
     "plural": true
   },
@@ -35,5 +35,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ce5a415e13eb0451ea642946be490ed8';
+(node as any).hash = 'eb42c123093e9a3a8eddd7f902a02673';
 export default node;

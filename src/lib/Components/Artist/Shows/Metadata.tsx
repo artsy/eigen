@@ -78,14 +78,19 @@ const styles = StyleSheet.create<Styles>({
 
 export default createFragmentContainer(Metadata, {
   show: graphql`
-    fragment Metadata_show on PartnerShow {
+    fragment Metadata_show on Show {
       kind
       name
       exhibition_period
       status_update
       status
       partner {
-        name
+        ... on Partner {
+          name
+        }
+        ... on ExternalPartner {
+          name
+        }
       }
       location {
         city
