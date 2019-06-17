@@ -21,7 +21,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer<
           first: $count
           after: $cursor
           filter: $filter
-          sort: partner_updated_at_desc
+          sort: PARTNER_UPDATED_AT_DESC
         ) @connection(key: "ArtistForSaleArtworksGrid_forSaleArtworks") {
           pageInfo {
             hasNextPage

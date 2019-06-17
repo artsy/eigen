@@ -14,7 +14,7 @@ export type SmallList_shows = ReadonlyArray<{
 const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "SmallList_shows",
-  "type": "PartnerShow",
+  "type": "Show",
   "metadata": {
     "plural": true
   },
@@ -27,5 +27,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '7b60b30ef5f0eccc1bae5f2c93c817dc';
+(node as any).hash = 'abd963551ffe3b4b5c864508bd74e6ba';
 export default node;

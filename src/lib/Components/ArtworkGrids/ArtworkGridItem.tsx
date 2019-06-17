@@ -45,7 +45,7 @@ export class Artwork extends React.Component<Props, any> {
 
   render() {
     const artwork = this.props.artwork
-    const partnerName = this.props.artwork.partner && this.props.artwork.partner.name
+    const partnerName = artwork.partner && artwork.partner.name
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View>
@@ -211,15 +211,8 @@ export default createFragmentContainer(Artwork, {
         display_timely_at
       }
       sale_artwork {
-        opening_bid {
-          display
-        }
         current_bid {
           display
-        }
-        bidder_positions_count
-        sale {
-          is_closed
         }
       }
       image {

@@ -125,9 +125,7 @@ type AnalyticsPartnerInquiryStats {
   period: AnalyticsQueryPeriodEnum!
 
   # Partner inquiry count time series
-  timeSeries(
-    cumulative: Boolean = false
-  ): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
 }
 
 # Sales stats of a partner
@@ -138,9 +136,7 @@ type AnalyticsPartnerSalesStats {
   period: AnalyticsQueryPeriodEnum!
 
   # Partner sales time series
-  timeSeries(
-    cumulative: Boolean = false
-  ): [AnalyticsPartnerSalesTimeSeriesStats!]
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerSalesTimeSeriesStats!]
   totalCents: Int!
   total(
     decimal: String = "."
@@ -169,9 +165,7 @@ type AnalyticsPartnerSalesTimeSeriesStats {
 # Partner Stats
 type AnalyticsPartnerStats {
   # Time series data on number of artworks published
-  artworksPublished(
-    period: AnalyticsQueryPeriodEnum!
-  ): AnalyticsArtworksPublishedStats
+  artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
 
   # Audience stats
   audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
@@ -428,11 +422,7 @@ type Artist implements Node & Searchable {
     before: String
     last: Int
   ): ArticleConnection
-  articles(
-    sort: ArticleSorts
-    limit: Int
-    in_editorial_feed: Boolean
-  ): [Article]
+  articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
   artists(
     # The number of Artists to return
     size: Int
@@ -486,14 +476,12 @@ type Artist implements Node & Searchable {
     size: Int
     exclude_artists_without_artworks: Boolean = true
   ): [Artist]
-  consignable: Boolean
-    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  consignable: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
   counts: ArtistCounts
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
-  display_auction_link: Boolean
-    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  display_auction_link: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
 
   # Custom-sorted list of shows for an artist, in order of significance.
   exhibition_highlights(
@@ -597,8 +585,8 @@ type Artist implements Node & Searchable {
     top_tier: Boolean
     visible_to_public: Boolean
     sort: PartnerShowSorts
-  ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
-  public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  ): [PartnerShow] @deprecated(reason: "Prefer to use `shows`. [Will be removed in v2]")
+  public: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
   related: ArtistRelatedData
   sales(
     live: Boolean
@@ -771,11 +759,7 @@ type ArtistItem implements Node & Searchable {
     before: String
     last: Int
   ): ArticleConnection
-  articles(
-    sort: ArticleSorts
-    limit: Int
-    in_editorial_feed: Boolean
-  ): [Article]
+  articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
   artists(
     # The number of Artists to return
     size: Int
@@ -829,14 +813,12 @@ type ArtistItem implements Node & Searchable {
     size: Int
     exclude_artists_without_artworks: Boolean = true
   ): [Artist]
-  consignable: Boolean
-    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  consignable: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
   counts: ArtistCounts
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
-  display_auction_link: Boolean
-    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  display_auction_link: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
 
   # Custom-sorted list of shows for an artist, in order of significance.
   exhibition_highlights(
@@ -940,8 +922,8 @@ type ArtistItem implements Node & Searchable {
     top_tier: Boolean
     visible_to_public: Boolean
     sort: PartnerShowSorts
-  ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
-  public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  ): [PartnerShow] @deprecated(reason: "Prefer to use `shows`. [Will be removed in v2]")
+  public: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
   related: ArtistRelatedData
   sales(
     live: Boolean
@@ -1036,9 +1018,9 @@ type ArtistRelatedData {
 }
 
 enum ArtistSorts {
-  sortable_id_asc @deprecated(reason: "use capital enums")
-  sortable_id_desc @deprecated(reason: "use capital enums")
-  trending_desc @deprecated(reason: "use capital enums")
+  sortable_id_asc @deprecated(reason: "Prefer to use `SORTABLE_ID_ASC`. [Will be removed in v2]")
+  sortable_id_desc @deprecated(reason: "Prefer to use `SORTABLE_ID_DESC`. [Will be removed in v2]")
+  trending_desc @deprecated(reason: "Prefer to use `TRENDING_DESC`. [Will be removed in v2]")
   SORTABLE_ID_ASC
   SORTABLE_ID_DESC
   TRENDING_DESC
@@ -1080,8 +1062,7 @@ type Artwork implements Node & Searchable & Sellable {
   artist_names: String
   articles(size: Int): [Article]
   availability: String
-  can_share_image: Boolean
-    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  can_share_image: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
   category: String
 
   # Attribution class object
@@ -1105,7 +1086,7 @@ type Artwork implements Node & Searchable & Sellable {
   edition_sets(sort: EditionSetSorts): [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
-  height: String @deprecated(reason: "Prefer dimensions instead.")
+  height: String @deprecated(reason: "Prefer to use `dimensions`. [Will be removed in v2]")
 
   # Returns the highlighted shows and articles
   highlights: [Highlighted]
@@ -1133,11 +1114,11 @@ type Artwork implements Node & Searchable & Sellable {
   is_comparable_with_auction_results: Boolean
 
   # Are we able to display a contact form on artwork pages?
-  is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
+  is_contactable: Boolean @deprecated(reason: "Prefer to use `is_inquireable`. [Will be removed in v2]")
   is_downloadable: Boolean
   is_embeddable_video: Boolean
   is_ecommerce: Boolean
-    @deprecated(reason: "Should not be used to determine anything UI-level")
+    @deprecated(reason: "Should not be used to determine anything UI-level. [Will be removed in v2]")
   is_for_sale: Boolean
   is_hangable: Boolean
 
@@ -1154,9 +1135,7 @@ type Artwork implements Node & Searchable & Sellable {
   is_price_hidden: Boolean
   is_price_range: Boolean
   is_purchasable: Boolean
-    @deprecated(
-      reason: "Purchase requests are not supported. Replaced by buy now."
-    )
+    @deprecated(reason: "Purchase requests are not supported. Replaced by buy now. [Will be removed in v2]")
   is_saved: Boolean
   is_shareable: Boolean
   is_sold: Boolean
@@ -1167,19 +1146,20 @@ type Artwork implements Node & Searchable & Sellable {
   literature(format: Format): String
   manufacturer(format: Format): String
   medium: String
-  metric: String @deprecated(reason: "Prefer dimensions instead.")
+  metric: String @deprecated(reason: "Prefer to use `dimensions`. [Will be removed in v2]")
   meta: ArtworkMeta
   myLotStanding(live: Boolean = null): [LotStanding!]
 
   # [DO NOT USE] Weekly pageview data (static).
   pageviews: Int
+    @deprecated(reason: "This is for an AB test and will be imminently deprecated. [Will be removed in v2]")
   partner(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): Partner
   pickup_available: Boolean
   price: String
-  priceCents: PriceCents @deprecated(reason: "Prefer `listPrice` instead.")
+  priceCents: PriceCents @deprecated(reason: "Prefer to use `listPrice`. [Will be removed in v2]")
   listPrice: ListPrice
   price_currency: String
 
@@ -1198,18 +1178,8 @@ type Artwork implements Node & Searchable & Sellable {
   sale_artwork(sale_id: String = null): SaleArtwork
   sale_message: String
   series(format: Format): String
-  show(
-    size: Int
-    active: Boolean
-    at_a_fair: Boolean
-    sort: PartnerShowSorts
-  ): PartnerShow
-  shows(
-    size: Int
-    active: Boolean
-    at_a_fair: Boolean
-    sort: PartnerShowSorts
-  ): [PartnerShow]
+  show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
+  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
   signature(format: Format): String
   title: String
   to_s: String
@@ -1219,7 +1189,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
-  width: String @deprecated(reason: "Prefer dimensions instead.")
+  width: String @deprecated(reason: "Prefer to use `dimensions`. [Will be removed in v2]")
   framed: ArtworkInfoRow
   signatureInfo: ArtworkInfoRow
   conditionDescription: ArtworkInfoRow
@@ -1262,11 +1232,7 @@ type ArtworkConnection {
   totalCount: Int
 }
 
-union ArtworkContext =
-    ArtworkContextAuction
-  | ArtworkContextFair
-  | ArtworkContextPartnerShow
-  | ArtworkContextSale
+union ArtworkContext = ArtworkContextAuction | ArtworkContextFair | ArtworkContextPartnerShow | ArtworkContextSale
 
 type ArtworkContextAuction implements Node {
   # A globally unique ID.
@@ -1297,8 +1263,7 @@ type ArtworkContextAuction implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String
-    @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String @deprecated(reason: "Prefer to use `status`. [Will be removed in v2]")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -1337,7 +1302,7 @@ type ArtworkContextAuction implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
   isGalleryAuction: Boolean
   is_auction_promo: Boolean
@@ -1373,17 +1338,8 @@ type ArtworkContextAuction implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(
-    page: Int = 1
-    size: Int = 25
-    all: Boolean = false
-  ): [SaleArtwork]
-  sale_artworks_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): SaleArtworkConnection
+  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -1433,7 +1389,7 @@ type ArtworkContextFair {
   hours: String
   href: String
   image: Image
-  is_active: Boolean @deprecated(reason: "Prefer isActive instead")
+  is_active: Boolean @deprecated(reason: "Prefer to use `isActive`. [Will be removed in v2]")
 
   # Are we currently in the fair's active period?
   isActive: Boolean
@@ -1481,8 +1437,7 @@ type ArtworkContextFair {
     timezone: String
   ): String
   organizer: organizer
-  published: Boolean
-    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  published: Boolean @deprecated(reason: "Prefer to use `is_published`. [Will be removed in v2]")
   tagline: String
   ticketsLink: String
 
@@ -1538,14 +1493,19 @@ type ArtworkContextFair {
 type ArtworkContextPartnerShow implements Node {
   # A globally unique ID.
   id: ID!
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A type-specific ID.
   gravityID: ID!
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A type-specific Gravity Mongo Document ID.
   internalID: ID!
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   cached: Int
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   artists: [Artist]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # The artworks featured in the show
   artworks(
@@ -1559,6 +1519,7 @@ type ArtworkContextPartnerShow implements Node {
     # Number of artworks to return
     size: Int = 25
   ): [Artwork]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A connection of artworks featured in the show
   artworksConnection(
@@ -1571,8 +1532,11 @@ type ArtworkContextPartnerShow implements Node {
     before: String
     last: Int
   ): ArtworkConnection
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   counts: PartnerShowCounts
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   cover_image: Image
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   created_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -1581,9 +1545,11 @@ type ArtworkContextPartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   description: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   displayable: Boolean
-    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -1592,12 +1558,17 @@ type ArtworkContextPartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   events: [PartnerShowEventType]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A formatted description of the start to end dates
   exhibition_period: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   fair: Fair
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   href: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   images(
     # Number of images to return
     size: Int
@@ -1606,22 +1577,33 @@ type ArtworkContextPartnerShow implements Node {
     default: Boolean
     page: Int
   ): [Image]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # Flag showing if show has any location.
   has_location: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   is_displayable: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   is_fair_booth: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   kind: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   location: Location
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   meta_image: Image
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # The exhibition title
   name: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   partner: Partner
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   press_release(format: Format): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   start_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -1630,14 +1612,18 @@ type ArtworkContextPartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   status: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A formatted update on upcoming status changes
   status_update(
     # Before this many days no update will be generated
     max_days: Int
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   type: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 }
 
 type ArtworkContextSale implements Node {
@@ -1669,8 +1655,7 @@ type ArtworkContextSale implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String
-    @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String @deprecated(reason: "Prefer to use `status`. [Will be removed in v2]")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -1709,7 +1694,7 @@ type ArtworkContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
   isGalleryAuction: Boolean
   is_auction_promo: Boolean
@@ -1745,17 +1730,8 @@ type ArtworkContextSale implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(
-    page: Int = 1
-    size: Int = 25
-    all: Boolean = false
-  ): [SaleArtwork]
-  sale_artworks_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): SaleArtworkConnection
+  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -1965,8 +1941,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
   artist_names: String
   articles(size: Int): [Article]
   availability: String
-  can_share_image: Boolean
-    @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  can_share_image: Boolean @deprecated(reason: "Prefer to use `is_*`. [Will be removed in v2]")
   category: String
 
   # Attribution class object
@@ -1990,7 +1965,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
   edition_sets(sort: EditionSetSorts): [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
-  height: String @deprecated(reason: "Prefer dimensions instead.")
+  height: String @deprecated(reason: "Prefer to use `dimensions`. [Will be removed in v2]")
 
   # Returns the highlighted shows and articles
   highlights: [Highlighted]
@@ -2018,11 +1993,11 @@ type ArtworkItem implements Node & Searchable & Sellable {
   is_comparable_with_auction_results: Boolean
 
   # Are we able to display a contact form on artwork pages?
-  is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
+  is_contactable: Boolean @deprecated(reason: "Prefer to use `is_inquireable`. [Will be removed in v2]")
   is_downloadable: Boolean
   is_embeddable_video: Boolean
   is_ecommerce: Boolean
-    @deprecated(reason: "Should not be used to determine anything UI-level")
+    @deprecated(reason: "Should not be used to determine anything UI-level. [Will be removed in v2]")
   is_for_sale: Boolean
   is_hangable: Boolean
 
@@ -2039,9 +2014,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
   is_price_hidden: Boolean
   is_price_range: Boolean
   is_purchasable: Boolean
-    @deprecated(
-      reason: "Purchase requests are not supported. Replaced by buy now."
-    )
+    @deprecated(reason: "Purchase requests are not supported. Replaced by buy now. [Will be removed in v2]")
   is_saved: Boolean
   is_shareable: Boolean
   is_sold: Boolean
@@ -2052,19 +2025,20 @@ type ArtworkItem implements Node & Searchable & Sellable {
   literature(format: Format): String
   manufacturer(format: Format): String
   medium: String
-  metric: String @deprecated(reason: "Prefer dimensions instead.")
+  metric: String @deprecated(reason: "Prefer to use `dimensions`. [Will be removed in v2]")
   meta: ArtworkMeta
   myLotStanding(live: Boolean = null): [LotStanding!]
 
   # [DO NOT USE] Weekly pageview data (static).
   pageviews: Int
+    @deprecated(reason: "This is for an AB test and will be imminently deprecated. [Will be removed in v2]")
   partner(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): Partner
   pickup_available: Boolean
   price: String
-  priceCents: PriceCents @deprecated(reason: "Prefer `listPrice` instead.")
+  priceCents: PriceCents @deprecated(reason: "Prefer to use `listPrice`. [Will be removed in v2]")
   listPrice: ListPrice
   price_currency: String
 
@@ -2083,18 +2057,8 @@ type ArtworkItem implements Node & Searchable & Sellable {
   sale_artwork(sale_id: String = null): SaleArtwork
   sale_message: String
   series(format: Format): String
-  show(
-    size: Int
-    active: Boolean
-    at_a_fair: Boolean
-    sort: PartnerShowSorts
-  ): PartnerShow
-  shows(
-    size: Int
-    active: Boolean
-    at_a_fair: Boolean
-    sort: PartnerShowSorts
-  ): [PartnerShow]
+  show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
+  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
   signature(format: Format): String
   title: String
   to_s: String
@@ -2104,7 +2068,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
-  width: String @deprecated(reason: "Prefer dimensions instead.")
+  width: String @deprecated(reason: "Prefer to use `dimensions`. [Will be removed in v2]")
   framed: ArtworkInfoRow
   signatureInfo: ArtworkInfoRow
   conditionDescription: ArtworkInfoRow
@@ -2129,12 +2093,7 @@ type ArtworkLayer {
   artworks: [Artwork]
 
   # A connection of artworks from a Layer.
-  artworksConnection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
   description: String
   href: String
   name: String
@@ -2155,18 +2114,18 @@ type ArtworksAggregationResults {
 }
 
 enum ArtworkSorts {
-  availability_desc @deprecated(reason: "use capital enums")
-  created_at_asc @deprecated(reason: "use capital enums")
-  created_at_desc @deprecated(reason: "use capital enums")
-  deleted_at_asc @deprecated(reason: "use capital enums")
-  deleted_at_desc @deprecated(reason: "use capital enums")
-  iconicity_desc @deprecated(reason: "use capital enums")
-  merchandisability_desc @deprecated(reason: "use capital enums")
-  published_at_asc @deprecated(reason: "use capital enums")
-  published_at_desc @deprecated(reason: "use capital enums")
-  partner_updated_at_desc @deprecated(reason: "use capital enums")
-  title_asc @deprecated(reason: "use capital enums")
-  title_desc @deprecated(reason: "use capital enums")
+  availability_desc @deprecated(reason: "Prefer to use `AVAILABILITY_DESC`. [Will be removed in v2]")
+  created_at_asc @deprecated(reason: "Prefer to use `CREATED_AT_ASC`. [Will be removed in v2]")
+  created_at_desc @deprecated(reason: "Prefer to use `CREATED_AT_DESC`. [Will be removed in v2]")
+  deleted_at_asc @deprecated(reason: "Prefer to use `DELETED_AT_ASC`. [Will be removed in v2]")
+  deleted_at_desc @deprecated(reason: "Prefer to use `DELETED_AT_DESC`. [Will be removed in v2]")
+  iconicity_desc @deprecated(reason: "Prefer to use `ICONICITY_DESC`. [Will be removed in v2]")
+  merchandisability_desc @deprecated(reason: "Prefer to use `MERCHANDISABILITY_DESC`. [Will be removed in v2]")
+  published_at_asc @deprecated(reason: "Prefer to use `PUBLISHED_AT_ASC`. [Will be removed in v2]")
+  published_at_desc @deprecated(reason: "Prefer to use `PUBLISHED_AT_DESC`. [Will be removed in v2]")
+  partner_updated_at_desc @deprecated(reason: "Prefer to use `PARTNER_UPDATED_AT_DESC`. [Will be removed in v2]")
+  title_asc @deprecated(reason: "Prefer to use `TITLE_ASC`. [Will be removed in v2]")
+  title_desc @deprecated(reason: "Prefer to use `TITLE_DESC`. [Will be removed in v2]")
   AVAILABILITY_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
@@ -2253,10 +2212,10 @@ type AttributionClass {
   info: String
 
   # Longer version of attribution class display
-  short_description: String @deprecated(reason: "Prefer shortDescription")
+  short_description: String @deprecated(reason: "Prefer to use `shortDescription`. [Will be removed in v2]")
 
   # Long descriptive phrase used as companion for short_description
-  long_description: String @deprecated(reason: "Prefer longDescription")
+  long_description: String @deprecated(reason: "Prefer to use `longDescription`. [Will be removed in v2]")
 
   # Longer version of attribution class display
   shortDescription: String
@@ -2366,9 +2325,7 @@ type Author {
   gravityID: ID!
   name: String
   href: String
-    @deprecated(
-      reason: "Profiles have been removed and thus author hrefs don't exist anymore."
-    )
+    @deprecated(reason: "Profiles have been removed and thus author hrefs don't exist anymore. [Will be removed in v2]")
   profile_handle: String
 }
 
@@ -2421,20 +2378,19 @@ type BidderPosition {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-  display_max_bid_amount_dollars: String @deprecated(reason: "Favor `max_bid`")
+  display_max_bid_amount_dollars: String @deprecated(reason: "Prefer to use `max_bid`. [Will be removed in v2]")
   display_suggested_next_bid_dollars: String
-    @deprecated(reason: "Favor `suggested_next_bid`")
+    @deprecated(reason: "Prefer to use `suggested_next_bid`. [Will be removed in v2]")
   highest_bid: HighestBid
   is_active: Boolean
   is_retracted: Boolean
   is_with_bid_max: Boolean
   is_winning: Boolean
   max_bid: BidderPositionMaxBid
-  max_bid_amount_cents: Int @deprecated(reason: "Favor `max_bid`")
+  max_bid_amount_cents: Int @deprecated(reason: "Prefer to use `max_bid`. [Will be removed in v2]")
   sale_artwork: SaleArtwork
   suggested_next_bid: BidderPositionSuggestedNextBid
-  suggested_next_bid_cents: Int
-    @deprecated(reason: "Favor `suggested_next_bid`")
+  suggested_next_bid_cents: Int @deprecated(reason: "Prefer to use `suggested_next_bid`. [Will be removed in v2]")
 }
 
 input BidderPositionInput {
@@ -2834,14 +2790,7 @@ type City {
     before: String
     last: Int
   ): ShowConnection
-  fairs(
-    sort: FairSorts
-    status: EventStatus
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): FairConnection
+  fairs(sort: FairSorts, status: EventStatus, after: String, first: Int, before: String, last: Int): FairConnection
   sponsoredContent: CitySponsoredContent
 }
 
@@ -3813,9 +3762,7 @@ enum CommerceOrderModeEnum {
 }
 
 # Represents either a resolved Order or a potential failure
-union CommerceOrderOrFailureUnion =
-    CommerceOrderWithMutationFailure
-  | CommerceOrderWithMutationSuccess
+union CommerceOrderOrFailureUnion = CommerceOrderWithMutationFailure | CommerceOrderWithMutationSuccess
 
 enum CommerceOrderParticipantEnum {
   # Participant on the buyer side
@@ -4222,9 +4169,7 @@ type Conversation implements Node {
     timezone: String
   ): String
   purchase_request: Boolean
-    @deprecated(
-      reason: "Purchase requests are not supported. Replaced by buy now."
-    )
+    @deprecated(reason: "Purchase requests are not supported. Replaced by buy now. [Will be removed in v2]")
   from_last_viewed_message_id: String
   initial_message: String!
 
@@ -4246,7 +4191,7 @@ type Conversation implements Node {
   is_last_message_to_user: Boolean
 
   # Timestamp if the user opened the last message, null in all other cases
-  last_message_open: String @deprecated(reason: "Prefer to use `unread`")
+  last_message_open: String @deprecated(reason: "Prefer to use `unread`. [Will be removed in v2]")
 
   # Delivery id if the user is a recipient of the last message, null otherwise.
   last_message_delivery_id: String
@@ -4258,13 +4203,7 @@ type Conversation implements Node {
   items: [ConversationItem]
 
   # A connection for all messages in a single conversation
-  messages(
-    sort: sort
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): MessageConnection
+  messages(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
 
   # True if there is an unread message by the user.
   unread: Boolean
@@ -4552,12 +4491,10 @@ type CreditCardMutationSuccess {
   creditCardEdge: CreditCardEdge
 }
 
-union CreditCardMutationType =
-    CreditCardMutationSuccess
-  | CreditCardMutationFailure
+union CreditCardMutationType = CreditCardMutationSuccess | CreditCardMutationFailure
 
 type CreditCardPayload {
-  credit_card: CreditCard @deprecated(reason: "Favor `creditCardOrError`")
+  credit_card: CreditCard @deprecated(reason: "Prefer to use `creditCardOrError`. [Will be removed in v2]")
   creditCardOrError: CreditCardMutationType
   clientMutationId: String
 }
@@ -4717,7 +4654,7 @@ type EditionSet implements Sellable {
   is_offerable: Boolean
   is_for_sale: Boolean
   is_sold: Boolean
-  price: String @deprecated(reason: "Prefer to use `sale_message`.")
+  price: String @deprecated(reason: "Prefer to use `sale_message`. [Will be removed in v2]")
   listPrice: ListPrice
 
   # score assigned to an artwork based on its dimensions
@@ -4746,10 +4683,10 @@ type EndSalePayload {
 }
 
 enum EventStatus {
-  closed @deprecated(reason: "use capital enums")
-  current @deprecated(reason: "use capital enums")
-  running @deprecated(reason: "use capital enums")
-  upcoming @deprecated(reason: "use capital enums")
+  closed @deprecated(reason: "Prefer to use `CLOSED`. [Will be removed in v2]")
+  current @deprecated(reason: "Prefer to use `CURRENT`. [Will be removed in v2]")
+  running @deprecated(reason: "Prefer to use `RUNNING`. [Will be removed in v2]")
+  upcoming @deprecated(reason: "Prefer to use `UPCOMING`. [Will be removed in v2]")
 
   # End date is in the past
   CLOSED
@@ -4819,7 +4756,7 @@ type Fair {
   hours: String
   href: String
   image: Image
-  is_active: Boolean @deprecated(reason: "Prefer isActive instead")
+  is_active: Boolean @deprecated(reason: "Prefer to use `isActive`. [Will be removed in v2]")
 
   # Are we currently in the fair's active period?
   isActive: Boolean
@@ -4867,8 +4804,7 @@ type Fair {
     timezone: String
   ): String
   organizer: organizer
-  published: Boolean
-    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  published: Boolean @deprecated(reason: "Prefer to use `is_published`. [Will be removed in v2]")
   tagline: String
   ticketsLink: String
 
@@ -5038,23 +4974,16 @@ type FilterArtworks implements Node {
 
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
-  artworks_connection(
-    sort: String
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtworkConnection
+  artworks_connection(sort: String, after: String, first: Int, before: String, last: Int): ArtworkConnection
   counts: FilterArtworksCounts
-  followed_artists_total: Int
-    @deprecated(reason: "Favor `favor counts.followed_artists`")
+  followed_artists_total: Int @deprecated(reason: "Prefer to use `counts.followed_artists`. [Will be removed in v2]")
 
   # Artwork results.
   hits: [Artwork]
 
   # Returns a list of merchandisable artists sorted by merch score.
   merchandisable_artists: [Artist]
-  total: Int @deprecated(reason: "Favor `counts.total`")
+  total: Int @deprecated(reason: "Prefer to use `counts.total`. [Will be removed in v2]")
   facet: ArtworkFilterFacet
 }
 
@@ -5181,12 +5110,7 @@ type FollowedArtistsArtworksGroup implements Node {
 
   # List of artworks in this group.
   artworks: [Artwork]
-  artworksConnection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
   artists: String
   summary: String
   image: Image
@@ -5337,12 +5261,7 @@ type FollowsAndSaves {
   ): FollowedShowConnection
 
   # A list of the current user’s currently followed fair profiles
-  fairs(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): FollowedFairConnection
+  fairs(after: String, first: Int, before: String, last: Int): FollowedFairConnection
 }
 
 input FollowShowInput {
@@ -5359,7 +5278,10 @@ type FollowShowPayload {
 enum Format {
   HTML
   PLAIN
-  markdown @deprecated(reason: "deprecated")
+  markdown
+    @deprecated(
+      reason: "Deprecated when we deprecated lower-case enum entries, but no alternative was provided. Add an alternative to MP if this is still needed. [Will be removed in v2]"
+    )
 }
 
 type FormattedDaySchedules {
@@ -5413,12 +5335,7 @@ type Gene implements Node {
   internalID: ID!
   cached: Int
   artists: [Artist]
-  artists_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtistConnection
+  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     acquireable: Boolean
     offerable: Boolean
@@ -5612,12 +5529,7 @@ type GeneItem implements Node {
   internalID: ID!
   cached: Int
   artists: [Artist]
-  artists_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtistConnection
+  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     acquireable: Boolean
     offerable: Boolean
@@ -5765,8 +5677,8 @@ type HighestBid {
   ): String
   cents: Int
   display: String
-  amount_cents: Int @deprecated(reason: "Favor `cents`")
-  display_amount_dollars: String @deprecated(reason: "Favor `display`")
+  amount_cents: Int @deprecated(reason: "Prefer to use `cents`. [Will be removed in v2]")
+  display_amount_dollars: String @deprecated(reason: "Prefer to use `display`. [Will be removed in v2]")
 }
 
 union Highlighted = HighlightedShow | HighlightedArticle
@@ -5816,9 +5728,11 @@ type HighlightedShow implements Node {
   # A type-specific Gravity Mongo Document ID.
   internalID: ID!
   cached: Int
+
+  # The Artists presenting in this show
   artists: [Artist]
 
-  # The artworks featured in the show
+  # The artworks featured in this show
   artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
@@ -5829,10 +5743,10 @@ type HighlightedShow implements Node {
 
     # Number of artworks to return
     size: Int = 25
-  ): [Artwork]
+  ): [Artwork] @deprecated(reason: "Prefer to use `artworks_connection`. [Will be removed in v2]")
 
-  # A connection of artworks featured in the show
-  artworksConnection(
+  # The artworks featured in the show
+  artworks_connection(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
     for_sale: Boolean
@@ -5842,19 +5756,25 @@ type HighlightedShow implements Node {
     before: String
     last: Int
   ): ArtworkConnection
-  counts: PartnerShowCounts
-  cover_image: Image
-  created_at(
-    # This arg is deprecated, use timezone instead
-    convert_to_utc: Boolean
-    format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
+  # Artists inside the show who do not have artworks present
+  artists_without_artworks: [Artist]
+
+  # Artists in the show grouped by last name
+  artists_grouped_by_name: [ArtistGroup]
+
+  # The general city, derived from a fair location, a show location or a potential city
+  city: String
+
+  # The image you should use to represent this show
+  cover_image: Image
+
+  # An object that represents some of the numbers you might want to highlight
+  counts: ShowCounts
+
+  # A description of the show
   description: String
-  displayable: Boolean
-    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  displayable: Boolean @deprecated(reason: "Prefer to use `is_displayable`. [Will be removed in v2]")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -5863,12 +5783,64 @@ type HighlightedShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Events from the partner that runs this show
   events: [PartnerShowEventType]
 
   # A formatted description of the start to end dates
   exhibition_period: String
+
+  # If the show is in a Fair, then that fair
   fair: Fair
+
+  # Artworks Elastic Search results
+  filteredArtworks(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    at_auction: Boolean
+    attribution_class: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    inquireable_only: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keyword_match_exact: Boolean
+  ): FilterArtworks
+
+  # A path to the show on Artsy
   href: String
+
+  # Images that represent the show, you may be interested in meta_image or cover_image for a definitive thumbnail
   images(
     # Number of images to return
     size: Int
@@ -5883,16 +5855,63 @@ type HighlightedShow implements Node {
 
   # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
+
+  # Is this something we can display to the front-end?
   is_displayable: Boolean
+
+  # Does the show exist as a fair booth?
   is_fair_booth: Boolean
+
+  # Is it a show provided for historical reference?
+  is_reference: Boolean
+  is_local_discovery: Boolean @deprecated(reason: "Prefer to use `isStubShow`. [Will be removed in v2]")
+
+  # Is it an outsourced local discovery stub show?
+  isStubShow: Boolean
+
+  # Whether the show is in a fair, group or solo
   kind: String
+
+  # Where the show is located (Could also be a fair location)
   location: Location
+
+  # An image representing the show, or a sharable image from an artwork in the show
   meta_image: Image
+
+  # Is the user following this show
+  is_followed: Boolean
 
   # The exhibition title
   name: String
-  partner: Partner
+
+  # Shows that are near (~75km) from this show
+  nearbyShows(
+    sort: PartnerShowSorts
+
+    # By default show only current shows
+    status: EventStatus = CURRENT
+
+    # Whether to include local discovery stubs as well as displayable shows
+    discoverable: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+
+  # Alternate Markdown-supporting free text representation of the opening reception event’s date/time
+  openingReceptionText: String
+
+  # The partner that represents this show, could be a non-Artsy partner
+  partner: PartnerTypes
+
+  # The press release for this show
   press_release(format: Format): String
+
+  # Link to the press release for this show
+  pressReleaseUrl: String
+
+  # When this show starts
   start_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -5901,6 +5920,8 @@ type HighlightedShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Is this show running, upcoming or closed?
   status: String
 
   # A formatted update on upcoming status changes
@@ -5908,7 +5929,12 @@ type HighlightedShow implements Node {
     # Before this many days no update will be generated
     max_days: Int
   ): String
+
+  # Is it a fair booth or a show?
   type: String
+
+  # A Connection of followed artists by current user for this show
+  followedArtists(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
 }
 
 type HomePage {
@@ -5983,10 +6009,7 @@ type HomePageArtworkModule implements Node {
   # A globally unique ID.
   id: ID!
   context: HomePageModuleContext
-  display: String
-    @deprecated(
-      reason: "Favor `is_`-prefixed Booleans (*and* this should be a Boolean)"
-    )
+  display: String @deprecated(reason: "Prefer to use `is_displayable`. [Will be removed in v2]")
   is_displayable: Boolean
   key: String
   params: HomePageModulesParams
@@ -6103,7 +6126,7 @@ type HomePageModuleContextFair {
   hours: String
   href: String
   image: Image
-  is_active: Boolean @deprecated(reason: "Prefer isActive instead")
+  is_active: Boolean @deprecated(reason: "Prefer to use `isActive`. [Will be removed in v2]")
 
   # Are we currently in the fair's active period?
   isActive: Boolean
@@ -6151,8 +6174,7 @@ type HomePageModuleContextFair {
     timezone: String
   ): String
   organizer: organizer
-  published: Boolean
-    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  published: Boolean @deprecated(reason: "Prefer to use `is_published`. [Will be removed in v2]")
   tagline: String
   ticketsLink: String
 
@@ -6225,12 +6247,7 @@ type HomePageModuleContextGene implements Node {
   internalID: ID!
   cached: Int
   artists: [Artist]
-  artists_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtistConnection
+  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     acquireable: Boolean
     offerable: Boolean
@@ -6376,8 +6393,7 @@ type HomePageModuleContextSale implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String
-    @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String @deprecated(reason: "Prefer to use `status`. [Will be removed in v2]")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -6416,7 +6432,7 @@ type HomePageModuleContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
   isGalleryAuction: Boolean
   is_auction_promo: Boolean
@@ -6452,17 +6468,8 @@ type HomePageModuleContextSale implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(
-    page: Int = 1
-    size: Int = 25
-    all: Boolean = false
-  ): [SaleArtwork]
-  sale_artworks_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): SaleArtworkConnection
+  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -6597,7 +6604,7 @@ type Location {
   # Alternate Markdown-supporting free text representation of a location's opening hours
   day_schedule_text: String
   displayDaySchedules: [FormattedDaySchedules]
-    @deprecated(reason: "Use openingHours instead")
+    @deprecated(reason: "Prefer to use `openingHours`. [Will be removed in v2]")
 
   # Union returning opening hours in formatted structure or a string
   openingHours: OpeningHoursUnion
@@ -6759,12 +6766,7 @@ type Me implements Node {
   ): ConsignmentSubmissionConnection
 
   # A list of the current user’s inquiry requests
-  artwork_inquiries_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtworkInquiryConnection
+  artwork_inquiries_connection(after: String, first: Int, before: String, last: Int): ArtworkInquiryConnection
 
   # A list of the current user’s bidder registrations
   bidders(
@@ -6800,12 +6802,7 @@ type Me implements Node {
   ): Conversation
 
   # Conversations, usually between a user and partner.
-  conversations(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ConversationConnection
+  conversations(after: String, first: Int, before: String, last: Int): ConversationConnection
   created_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -6816,32 +6813,17 @@ type Me implements Node {
   ): String
 
   # A list of the current user’s credit cards
-  creditCards(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): CreditCardConnection
+  creditCards(after: String, first: Int, before: String, last: Int): CreditCardConnection
   email: String
 
   # A list of the current user’s artist follows
   follow_artists(page: Int, size: Int): FollowArtists
 
   # A Connection of followed artists by current user
-  followed_artists_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): FollowArtistConnection
+  followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
 
   # A list of the current user’s inquiry requests
-  followed_genes(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): FollowGeneConnection
+  followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
   followsAndSaves: FollowsAndSaves
   has_credit_cards: Boolean
   has_qualified_credit_cards: Boolean
@@ -6856,11 +6838,7 @@ type Me implements Node {
   ): Invoice
 
   # The current user's status relating to bids on artworks
-  lot_standing(
-    artwork_id: String
-    sale_id: String
-    sale_artwork_id: String
-  ): LotStanding
+  lot_standing(artwork_id: String, sale_id: String, sale_artwork_id: String): LotStanding
 
   # A list of the current user's auction standings for given lots
   lot_standings(
@@ -6881,23 +6859,13 @@ type Me implements Node {
   initials(length: Int = 3): String
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
-  notifications_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): NotificationsFeedItemConnection
-    @deprecated(reason: "Prefer to use followed_artists_artwork_groups.")
+  notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
+    @deprecated(reason: "Prefer to use `followed_artists_artwork_groups`. [Will be removed in v2]")
   paddle_number: String
   recentlyViewedArtworkIds: [String]!
 
   # A list of the current user’s recently viewed artworks.
-  recentlyViewedArtworks(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtworkConnection
+  recentlyViewedArtworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
   sale_registrations(
     # Limit by auction.
     is_auction: Boolean = true
@@ -6957,13 +6925,11 @@ type Message implements Node {
 
   # True if message is from the user to the partner.
   is_from_user: Boolean
-  from_email_address: String
-    @deprecated(reason: "Prefer to use the structured `from` field.")
+  from_email_address: String @deprecated(reason: "Prefer to use `from`. [Will be removed in v2]")
   from: MessageInitiator
 
   # Full unsanitized text.
-  raw_text: String!
-    @deprecated(reason: "Prefer to use the parsed/cleaned-up `body`.")
+  raw_text: String! @deprecated(reason: "Prefer to use `body`. [Will be removed in v2]")
 
   # Unaltered text if possible, otherwise `body`: a parsed/sanitized version from Sendgrid.
   body: String
@@ -7052,22 +7018,16 @@ type Mutation {
   followShow(input: FollowShowInput!): FollowShowPayload
 
   # Updating a collector profile (loyalty applicant status).
-  updateCollectorProfile(
-    input: UpdateCollectorProfileInput!
-  ): UpdateCollectorProfilePayload
+  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
 
   # Update the current logged in user.
   updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
 
   # Update a conversation.
-  updateConversation(
-    input: UpdateConversationMutationInput!
-  ): UpdateConversationMutationPayload
+  updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
 
   # Appending a message to a conversation thread
-  sendConversationMessage(
-    input: SendConversationMessageMutationInput!
-  ): SendConversationMessageMutationPayload
+  sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
 
   # Send a feedback message
   sendFeedback(input: SendFeedbackMutationInput!): SendFeedbackMutationPayload
@@ -7084,39 +7044,25 @@ type Mutation {
   ): RequestCredentialsForAssetUploadPayload
 
   # Attach an gemini asset to a consignment submission
-  createGeminiEntryForAsset(
-    input: CreateGeminiEntryForAssetInput!
-  ): CreateGeminiEntryForAssetPayload
+  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
 
   # Create a new consignment submission using Convection
-  createConsignmentSubmission(
-    input: CreateSubmissionMutationInput!
-  ): CreateSubmissionMutationPayload
+  createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
 
   # Update a consignment using Convection
-  updateConsignmentSubmission(
-    input: UpdateSubmissionMutationInput!
-  ): UpdateSubmissionMutationPayload
+  updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
 
   # Attach an gemini asset to a consignment submission
-  addAssetToConsignmentSubmission(
-    input: AddAssetToConsignmentSubmissionInput!
-  ): AddAssetToConsignmentSubmissionPayload
+  addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
 
   # Creates an order with an artwork
-  ecommerceCreateOrderWithArtwork(
-    input: CreateOrderWithArtworkInput!
-  ): CreateOrderWithArtworkPayload
+  ecommerceCreateOrderWithArtwork(input: CreateOrderWithArtworkInput!): CreateOrderWithArtworkPayload
 
   # Creates an order with an artwork
-  ecommerceCreateOfferOrderWithArtwork(
-    input: CreateOfferOrderWithArtworkInput!
-  ): CreateOfferOrderWithArtworkPayload
+  ecommerceCreateOfferOrderWithArtwork(input: CreateOfferOrderWithArtworkInput!): CreateOfferOrderWithArtworkPayload
 
   # Sets shipping information for an order
-  ecommerceSetOrderShipping(
-    input: SetOrderShippingInput!
-  ): SetOrderShippingPayload
+  ecommerceSetOrderShipping(input: SetOrderShippingInput!): SetOrderShippingPayload
 
   # Sets payment information on an order
   ecommerceSetOrderPayment(input: SetOrderPaymentInput!): SetOrderPaymentPayload
@@ -7125,47 +7071,31 @@ type Mutation {
   ecommerceApproveOrder(input: ApproveOrderInput!): ApproveOrderPayload
 
   # Buyer accepts a submitted offer from seller
-  ecommerceBuyerAcceptOffer(
-    input: buyerAcceptOfferInput!
-  ): buyerAcceptOfferPayload
+  ecommerceBuyerAcceptOffer(input: buyerAcceptOfferInput!): buyerAcceptOfferPayload
 
   # Approves an order with payment
-  ecommerceSellerAcceptOffer(
-    input: sellerAcceptOfferInput!
-  ): sellerAcceptOfferPayload
+  ecommerceSellerAcceptOffer(input: sellerAcceptOfferInput!): sellerAcceptOfferPayload
 
   # Buyer counters sellers offer
-  ecommerceBuyerCounterOffer(
-    input: buyerCounterOfferInput!
-  ): buyerCounterOfferPayload
+  ecommerceBuyerCounterOffer(input: buyerCounterOfferInput!): buyerCounterOfferPayload
 
   # Submit pending offer
-  ecommerceSubmitPendingOffer(
-    input: submitPendingOfferInput!
-  ): submitPendingOfferPayload
+  ecommerceSubmitPendingOffer(input: submitPendingOfferInput!): submitPendingOfferPayload
 
   # Seller counters buyers offer
-  ecommerceSellerCounterOffer(
-    input: sellerCounterOfferInput!
-  ): sellerCounterOfferPayload
+  ecommerceSellerCounterOffer(input: sellerCounterOfferInput!): sellerCounterOfferPayload
 
   # Buyer rejects a submitted offer from seller
-  ecommerceBuyerRejectOffer(
-    input: buyerRejectOfferInput!
-  ): buyerRejectOfferPayload
+  ecommerceBuyerRejectOffer(input: buyerRejectOfferInput!): buyerRejectOfferPayload
 
   # Rejects an offer
-  ecommerceSellerRejectOffer(
-    input: sellerRejectOfferInput!
-  ): sellerRejectOfferPayload
+  ecommerceSellerRejectOffer(input: sellerRejectOfferInput!): sellerRejectOfferPayload
 
   # Confirms pickup for an ecommerce order
   ecommerceConfirmPickup(input: ConfirmPickupInput!): ConfirmPickupPayload
 
   # Fulfills an Order with one fulfillment by setting this fulfillment to all line items of this order
-  ecommerceFulfillOrderAtOnce(
-    input: FulfillOrderAtOnceInput!
-  ): FulfillOrderAtOncePayload
+  ecommerceFulfillOrderAtOnce(input: FulfillOrderAtOnceInput!): FulfillOrderAtOncePayload
 
   # Rejects an order
   ecommerceRejectOrder(input: RejectOrderInput!): RejectOrderPayload
@@ -7174,24 +7104,16 @@ type Mutation {
   ecommerceSubmitOrder(input: SubmitOrderInput!): SubmitOrderPayload
 
   # Adds an offer to a pending order
-  ecommerceAddInitialOfferToOrder(
-    input: AddInitialOfferToOrderInput!
-  ): AddInitialOfferToOrderPayload
+  ecommerceAddInitialOfferToOrder(input: AddInitialOfferToOrderInput!): AddInitialOfferToOrderPayload
 
   # Submits an order with an offer
-  ecommerceSubmitOrderWithOffer(
-    input: SubmitOrderWithOfferInput!
-  ): SubmitOrderWithOfferPayload
+  ecommerceSubmitOrderWithOffer(input: SubmitOrderWithOfferInput!): SubmitOrderWithOfferPayload
 
   # Fix the failed payment on an offer order
-  ecommerceFixFailedPayment(
-    input: FixFailedPaymentInput!
-  ): FixFailedPaymentPayload
+  ecommerceFixFailedPayment(input: FixFailedPaymentInput!): FixFailedPaymentPayload
 
   # Creates an order with an artwork
-  createOrderWithArtwork(
-    input: CreateOrderWithArtworkInput!
-  ): CreateOrderWithArtworkPayload
+  createOrderWithArtwork(input: CreateOrderWithArtworkInput!): CreateOrderWithArtworkPayload
 
   # Sets shipping information for an order
   setOrderShipping(input: SetOrderShippingInput!): SetOrderShippingPayload
@@ -7211,63 +7133,29 @@ type Mutation {
   # Submits an order
   submitOrder(input: SubmitOrderInput!): SubmitOrderPayload
   recordArtworkView(input: RecordArtworkViewInput): RecordArtworkViewPayload
-  commerceAddInitialOfferToOrder(
-    input: CommerceAddInitialOfferToOrderInput!
-  ): CommerceAddInitialOfferToOrderPayload
-  commerceApproveOrder(
-    input: CommerceApproveOrderInput!
-  ): CommerceApproveOrderPayload
-  commerceBuyerAcceptOffer(
-    input: CommerceBuyerAcceptOfferInput!
-  ): CommerceBuyerAcceptOfferPayload
-  commerceBuyerCounterOffer(
-    input: CommerceBuyerCounterOfferInput!
-  ): CommerceBuyerCounterOfferPayload
-  commerceBuyerRejectOffer(
-    input: CommerceBuyerRejectOfferInput!
-  ): CommerceBuyerRejectOfferPayload
-  commerceConfirmPickup(
-    input: CommerceConfirmPickupInput!
-  ): CommerceConfirmPickupPayload
+  commerceAddInitialOfferToOrder(input: CommerceAddInitialOfferToOrderInput!): CommerceAddInitialOfferToOrderPayload
+  commerceApproveOrder(input: CommerceApproveOrderInput!): CommerceApproveOrderPayload
+  commerceBuyerAcceptOffer(input: CommerceBuyerAcceptOfferInput!): CommerceBuyerAcceptOfferPayload
+  commerceBuyerCounterOffer(input: CommerceBuyerCounterOfferInput!): CommerceBuyerCounterOfferPayload
+  commerceBuyerRejectOffer(input: CommerceBuyerRejectOfferInput!): CommerceBuyerRejectOfferPayload
+  commerceConfirmPickup(input: CommerceConfirmPickupInput!): CommerceConfirmPickupPayload
   commerceCreateOfferOrderWithArtwork(
     input: CommerceCreateOfferOrderWithArtworkInput!
   ): CommerceCreateOfferOrderWithArtworkPayload
-  commerceCreateOrderWithArtwork(
-    input: CommerceCreateOrderWithArtworkInput!
-  ): CommerceCreateOrderWithArtworkPayload
-  commerceFixFailedPayment(
-    input: CommerceFixFailedPaymentInput!
-  ): CommerceFixFailedPaymentPayload
+  commerceCreateOrderWithArtwork(input: CommerceCreateOrderWithArtworkInput!): CommerceCreateOrderWithArtworkPayload
+  commerceFixFailedPayment(input: CommerceFixFailedPaymentInput!): CommerceFixFailedPaymentPayload
 
   # Fulfill an order with one Fulfillment, it sets this fulfillment to each line item in order
-  commerceFulfillAtOnce(
-    input: CommerceFulfillAtOnceInput!
-  ): CommerceFulfillAtOncePayload
-  commerceRejectOrder(
-    input: CommerceRejectOrderInput!
-  ): CommerceRejectOrderPayload
-  commerceSellerAcceptOffer(
-    input: CommerceSellerAcceptOfferInput!
-  ): CommerceSellerAcceptOfferPayload
-  commerceSellerCounterOffer(
-    input: CommerceSellerCounterOfferInput!
-  ): CommerceSellerCounterOfferPayload
-  commerceSellerRejectOffer(
-    input: CommerceSellerRejectOfferInput!
-  ): CommerceSellerRejectOfferPayload
+  commerceFulfillAtOnce(input: CommerceFulfillAtOnceInput!): CommerceFulfillAtOncePayload
+  commerceRejectOrder(input: CommerceRejectOrderInput!): CommerceRejectOrderPayload
+  commerceSellerAcceptOffer(input: CommerceSellerAcceptOfferInput!): CommerceSellerAcceptOfferPayload
+  commerceSellerCounterOffer(input: CommerceSellerCounterOfferInput!): CommerceSellerCounterOfferPayload
+  commerceSellerRejectOffer(input: CommerceSellerRejectOfferInput!): CommerceSellerRejectOfferPayload
   commerceSetPayment(input: CommerceSetPaymentInput!): CommerceSetPaymentPayload
-  commerceSetShipping(
-    input: CommerceSetShippingInput!
-  ): CommerceSetShippingPayload
-  commerceSubmitOrder(
-    input: CommerceSubmitOrderInput!
-  ): CommerceSubmitOrderPayload
-  commerceSubmitOrderWithOffer(
-    input: CommerceSubmitOrderWithOfferInput!
-  ): CommerceSubmitOrderWithOfferPayload
-  commerceSubmitPendingOffer(
-    input: CommerceSubmitPendingOfferInput!
-  ): CommerceSubmitPendingOfferPayload
+  commerceSetShipping(input: CommerceSetShippingInput!): CommerceSetShippingPayload
+  commerceSubmitOrder(input: CommerceSubmitOrderInput!): CommerceSubmitOrderPayload
+  commerceSubmitOrderWithOffer(input: CommerceSubmitOrderWithOfferInput!): CommerceSubmitOrderWithOfferPayload
+  commerceSubmitPendingOffer(input: CommerceSubmitPendingOfferInput!): CommerceSubmitPendingOfferPayload
 }
 
 input Near {
@@ -7968,7 +7856,7 @@ type OrderLineItem {
   editionSetId: String
 
   # Unit price in cents
-  priceCents: Int @deprecated(reason: "Switched to `listPriceCents`")
+  priceCents: Int @deprecated(reason: "Prefer to use `listPriceCents`. [Will be removed in v2]")
 
   # A formatted price with various currency formatting options.
   price(
@@ -8044,9 +7932,7 @@ enum OrderModeEnum {
   OFFER
 }
 
-union OrderOrFailureUnionType =
-    OrderWithMutationSuccess
-  | OrderWithMutationFailure
+union OrderOrFailureUnionType = OrderWithMutationSuccess | OrderWithMutationFailure
 
 enum OrderParticipantEnum {
   # Participant on the buyer side
@@ -8135,12 +8021,7 @@ type Partner implements Node {
   # A type-specific Gravity Mongo Document ID.
   internalID: ID!
   cached: Int
-  artworks(
-    for_sale: Boolean
-    sort: ArtworkSorts
-    exclude: [String]
-    size: Int
-  ): [Artwork]
+  artworks(for_sale: Boolean, sort: ArtworkSorts, exclude: [String], size: Int): [Artwork]
 
   # A connection of artworks from a Partner.
   artworksConnection(
@@ -8154,10 +8035,7 @@ type Partner implements Node {
   ): ArtworkConnection
   categories: [Category]
   collecting_institution: String
-  contact_message: String
-    @deprecated(
-      reason: "Prefer artwork contact_message to handle availability-based prompts."
-    )
+  contact_message: String @deprecated(reason: "Prefer to use `Artwork.contact_message`. [Will be removed in v2]")
   counts: PartnerCounts
   default_profile_id: String
   has_fair_partnership: Boolean
@@ -8165,9 +8043,7 @@ type Partner implements Node {
   initials(length: Int = 3): String
   is_default_profile_public: Boolean
   is_limited_fair_partner: Boolean
-    @deprecated(
-      reason: "This field no longer exists, this is for backwards compatibility"
-    )
+    @deprecated(reason: "This field no longer exists, this is for backwards compatibility [Will be removed in v2]")
   is_linkable: Boolean
   is_pre_qualify: Boolean
   locations(size: Int = 25): [Location]
@@ -8383,14 +8259,19 @@ type PartnersAggregationResults {
 type PartnerShow implements Node {
   # A globally unique ID.
   id: ID!
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A type-specific ID.
   gravityID: ID!
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A type-specific Gravity Mongo Document ID.
   internalID: ID!
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   cached: Int
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   artists: [Artist]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # The artworks featured in the show
   artworks(
@@ -8404,6 +8285,7 @@ type PartnerShow implements Node {
     # Number of artworks to return
     size: Int = 25
   ): [Artwork]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A connection of artworks featured in the show
   artworksConnection(
@@ -8416,8 +8298,11 @@ type PartnerShow implements Node {
     before: String
     last: Int
   ): ArtworkConnection
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   counts: PartnerShowCounts
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   cover_image: Image
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   created_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -8426,9 +8311,11 @@ type PartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   description: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   displayable: Boolean
-    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -8437,12 +8324,17 @@ type PartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   events: [PartnerShowEventType]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A formatted description of the start to end dates
   exhibition_period: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   fair: Fair
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   href: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   images(
     # Number of images to return
     size: Int
@@ -8451,22 +8343,33 @@ type PartnerShow implements Node {
     default: Boolean
     page: Int
   ): [Image]
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # Flag showing if show has any location.
   has_location: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   is_displayable: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   is_fair_booth: Boolean
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   kind: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   location: Location
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   meta_image: Image
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # The exhibition title
   name: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   partner: Partner
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   press_release(format: Format): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   start_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -8475,14 +8378,18 @@ type PartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   status: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 
   # A formatted update on upcoming status changes
   status_update(
     # Before this many days no update will be generated
     max_days: Int
   ): String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
   type: String
+    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
 }
 
 type PartnerShowCounts {
@@ -8531,16 +8438,16 @@ enum PartnerShowPartnerType {
 }
 
 enum PartnerShowSorts {
-  created_at_asc @deprecated(reason: "use capital enums")
-  created_at_desc @deprecated(reason: "use capital enums")
-  end_at_asc @deprecated(reason: "use capital enums")
-  end_at_desc @deprecated(reason: "use capital enums")
-  name_asc @deprecated(reason: "use capital enums")
-  name_desc @deprecated(reason: "use capital enums")
-  publish_at_asc @deprecated(reason: "use capital enums")
-  publish_at_desc @deprecated(reason: "use capital enums")
-  start_at_asc @deprecated(reason: "use capital enums")
-  start_at_desc @deprecated(reason: "use capital enums")
+  created_at_asc @deprecated(reason: "Prefer to use `CREATED_AT_ASC`. [Will be removed in v2]")
+  created_at_desc @deprecated(reason: "Prefer to use `CREATED_AT_DESC`. [Will be removed in v2]")
+  end_at_asc @deprecated(reason: "Prefer to use `END_AT_ASC`. [Will be removed in v2]")
+  end_at_desc @deprecated(reason: "Prefer to use `END_AT_DESC`. [Will be removed in v2]")
+  name_asc @deprecated(reason: "Prefer to use `NAME_ASC`. [Will be removed in v2]")
+  name_desc @deprecated(reason: "Prefer to use `NAME_DESC`. [Will be removed in v2]")
+  publish_at_asc @deprecated(reason: "Prefer to use `PUBLISH_AT_ASC`. [Will be removed in v2]")
+  publish_at_desc @deprecated(reason: "Prefer to use `PUBLISH_AT_DESC`. [Will be removed in v2]")
+  start_at_asc @deprecated(reason: "Prefer to use `START_AT_ASC`. [Will be removed in v2]")
+  start_at_desc @deprecated(reason: "Prefer to use `START_AT_DESC`. [Will be removed in v2]")
   CREATED_AT_ASC
   CREATED_AT_DESC
   END_AT_ASC
@@ -8628,12 +8535,7 @@ type Query {
   ): Article
 
   # A list of Articles
-  articles(
-    auction_id: String
-    published: Boolean = true
-    show_id: String
-    sort: ArticleSorts
-  ): [Article]
+  articles(auction_id: String, published: Boolean = true, show_id: String, sort: ArticleSorts): [Article]
 
   # An Artwork
   artwork(
@@ -8823,8 +8725,7 @@ type Query {
     sale_id: ID
     size: Int
     sort: String
-  ): FilterSaleArtworks
-    @deprecated(reason: "This type has been superceded by `sale_artworks`")
+  ): FilterSaleArtworks @deprecated(reason: "Prefer to use `sale_artworks`. [Will be removed in v2]")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -8845,12 +8746,7 @@ type Query {
   suggested_genes: [Gene]
 
   # A list of Gene Families
-  gene_families(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): GeneFamilyConnection
+  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content
@@ -9340,8 +9236,7 @@ type Sale implements Node {
     last: Int
   ): ArtworkConnection
   associated_sale: Sale
-  auction_state: String
-    @deprecated(reason: "Favor `status` for consistency with other models")
+  auction_state: String @deprecated(reason: "Prefer to use `status`. [Will be removed in v2]")
 
   # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
@@ -9380,7 +9275,7 @@ type Sale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
   isGalleryAuction: Boolean
   is_auction_promo: Boolean
@@ -9416,17 +9311,8 @@ type Sale implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   require_bidder_approval: Boolean
-  sale_artworks(
-    page: Int = 1
-    size: Int = 25
-    all: Boolean = false
-  ): [SaleArtwork]
-  sale_artworks_connection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): SaleArtworkConnection
+  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     # This arg is deprecated, use timezone instead
@@ -9452,9 +9338,8 @@ type SaleArtwork {
   internalID: ID!
   cached: Int
   artwork: Artwork
-  bidder_positions_count: Int
-    @deprecated(reason: "Favor `counts.bidder_positions`")
-  bid_increments: [Float] @deprecated(reason: "Favor `increments.cents`")
+  bidder_positions_count: Int @deprecated(reason: "Prefer to use `counts.bidder_positions`. [Will be removed in v2]")
+  bid_increments: [Float] @deprecated(reason: "Prefer to use `increments.cents`. [Will be removed in v2]")
   counts: SaleArtworkCounts
 
   # Currency abbreviation (e.g. "USD")
@@ -9465,7 +9350,7 @@ type SaleArtwork {
   # Singular estimate field, if specified
   estimate_cents: Int
   high_estimate: SaleArtworkHighEstimate
-  high_estimate_cents: Float @deprecated(reason: "Favor `high_estimate")
+  high_estimate_cents: Float @deprecated(reason: "Prefer to use `high_estimate`. [Will be removed in v2]")
   highest_bid: SaleArtworkHighestBid
   increments(
     # Whether or not to start the increments at the user's latest bid
@@ -9477,13 +9362,13 @@ type SaleArtwork {
   is_biddable: Boolean
   is_with_reserve: Boolean
   lot_label: String
-  lot_number: String @deprecated(reason: "Favor `lot_label`")
+  lot_number: String @deprecated(reason: "Prefer to use `lot_label`. [Will be removed in v2]")
   low_estimate: SaleArtworkLowEstimate
-  low_estimate_cents: Float @deprecated(reason: "Favor `low_estimate`")
+  low_estimate_cents: Float @deprecated(reason: "Prefer to use `low_estimate`. [Will be removed in v2]")
   minimum_next_bid: SaleArtworkMinimumNextBid
-  minimum_next_bid_cents: Float @deprecated(reason: "Favor `minimum_next_bid`")
+  minimum_next_bid_cents: Float @deprecated(reason: "Prefer to use `minimum_next_bid`. [Will be removed in v2]")
   opening_bid: SaleArtworkOpeningBid
-  opening_bid_cents: Float @deprecated(reason: "Favor `opening_bid`")
+  opening_bid_cents: Float @deprecated(reason: "Prefer to use `opening_bid`. [Will be removed in v2]")
   position: Float
   reserve: SaleArtworkReserve
   reserve_message: String
@@ -9570,7 +9455,7 @@ type SaleArtworkHighestBid {
   ): String
   cents: Int
   display: String
-  amount_cents: Float @deprecated(reason: "Favor `cents`")
+  amount_cents: Float @deprecated(reason: "Prefer to use `cents`. [Will be removed in v2]")
 }
 
 type SaleArtworkHighEstimate {
@@ -9772,7 +9657,7 @@ type SearchableItem implements Node & Searchable {
   displayLabel: String
   imageUrl: String
   href: String
-  searchableType: String @deprecated(reason: "Switch to use `displayType`")
+  searchableType: String @deprecated(reason: "Prefer to use `displayType`. [Will be removed in v2]")
   displayType: String
 }
 
@@ -9913,9 +9798,7 @@ type SendFeedbackMutationSuccess {
   feedback: Feedback
 }
 
-union SendFeedbackMutationType =
-    SendFeedbackMutationSuccess
-  | SendFeedbackMutationFailure
+union SendFeedbackMutationType = SendFeedbackMutationSuccess | SendFeedbackMutationFailure
 
 type Services {
   convection: Convection!
@@ -10030,7 +9913,7 @@ type Show implements Node {
 
     # Number of artworks to return
     size: Int = 25
-  ): [Artwork] @deprecated(reason: "Use artworks_connection instead")
+  ): [Artwork] @deprecated(reason: "Prefer to use `artworks_connection`. [Will be removed in v2]")
 
   # The artworks featured in the show
   artworks_connection(
@@ -10061,8 +9944,7 @@ type Show implements Node {
 
   # A description of the show
   description: String
-  displayable: Boolean
-    @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+  displayable: Boolean @deprecated(reason: "Prefer to use `is_displayable`. [Will be removed in v2]")
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -10152,7 +10034,7 @@ type Show implements Node {
 
   # Is it a show provided for historical reference?
   is_reference: Boolean
-  is_local_discovery: Boolean @deprecated(reason: "Prefer isStubShow")
+  is_local_discovery: Boolean @deprecated(reason: "Prefer to use `isStubShow`. [Will be removed in v2]")
 
   # Is it an outsourced local discovery stub show?
   isStubShow: Boolean
@@ -10222,12 +10104,7 @@ type Show implements Node {
   type: String
 
   # A Connection of followed artists by current user for this show
-  followedArtists(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ShowFollowArtistConnection
+  followedArtists(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
 }
 
 # A connection to a list of items.
@@ -10697,12 +10574,7 @@ type Viewer {
   ): Article
 
   # A list of Articles
-  articles(
-    auction_id: String
-    published: Boolean = true
-    show_id: String
-    sort: ArticleSorts
-  ): [Article]
+  articles(auction_id: String, published: Boolean = true, show_id: String, sort: ArticleSorts): [Article]
 
   # An Artwork
   artwork(
@@ -10892,8 +10764,7 @@ type Viewer {
     sale_id: ID
     size: Int
     sort: String
-  ): FilterSaleArtworks
-    @deprecated(reason: "This type has been superceded by `sale_artworks`")
+  ): FilterSaleArtworks @deprecated(reason: "Prefer to use `sale_artworks`. [Will be removed in v2]")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -10914,12 +10785,7 @@ type Viewer {
   suggested_genes: [Gene]
 
   # A list of Gene Families
-  gene_families(
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): GeneFamilyConnection
+  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content

@@ -20,7 +20,7 @@ export type ArtworkTombstone_artwork = {
     } | null;
     readonly edition_of: string | null;
     readonly attribution_class: {
-        readonly short_description: string | null;
+        readonly shortDescription: string | null;
     } | null;
     readonly " $refType": ArtworkTombstone_artwork$ref;
 };
@@ -136,7 +136,7 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "short_description",
+          "name": "shortDescription",
           "args": null,
           "storageKey": null
         }
@@ -144,5 +144,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c3bac2572caaeabbde7a8a1855295fe5';
+(node as any).hash = '978421a6b15e6519bafb06dd33dd77e3';
 export default node;

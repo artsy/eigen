@@ -17,7 +17,8 @@ export class ShowArtworksPreview extends React.Component<Props> {
     if (!show) {
       return null
     }
-    const { artworks, counts } = show
+    const { artworks_connection, counts } = show
+    const artworks = artworks_connection.edges.map(({ node }) => node)
     return (
       <>
         {!!title && (
@@ -25,13 +26,12 @@ export class ShowArtworksPreview extends React.Component<Props> {
             {title}
           </Serif>
         )}
-        <GenericGrid artworks={this.props.show.artworks} />
-        {!!counts &&
-          counts.artworks > artworks.length && (
-            <Box mt={1}>
-              <CaretButton text={`View all ${counts.artworks} works`} onPress={() => onViewAllArtworksPressed()} />
-            </Box>
-          )}
+        <GenericGrid artworks={artworks} />
+        {counts.artworks > artworks.length && (
+          <Box mt={1}>
+            <CaretButton text={`View all ${counts.artworks} works`} onPress={() => onViewAllArtworksPressed()} />
+          </Box>
+        )}
       </>
     )
   }
@@ -41,11 +41,15 @@ export const ShowArtworksPreviewContainer = createFragmentContainer(ShowArtworks
   show: graphql`
     fragment ShowArtworksPreview_show on Show {
       id
-      artworks(size: 6) {
-        ...GenericGrid_artworks
-      }
       counts {
         artworks
+      }
+      artworks_connection(first: 6) {
+        edges {
+          node {
+            ...GenericGrid_artworks
+          }
+        }
       }
     }
   `,

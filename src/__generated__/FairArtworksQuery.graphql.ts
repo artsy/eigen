@@ -94,16 +94,8 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   sale_artwork {
-    opening_bid {
-      display
-    }
     current_bid {
       display
-    }
-    bidder_positions_count
-    sale {
-      is_closed
-      id
     }
     id
   }
@@ -167,23 +159,7 @@ v5 = [
     "value": 10
   }
 ],
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_closed",
-  "args": null,
-  "storageKey": null
-},
-v7 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
-],
-v8 = [
+v6 = [
   (v4/*: any*/),
   (v2/*: any*/)
 ];
@@ -475,7 +451,13 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v6/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_closed",
+                                "args": null,
+                                "storageKey": null
+                              },
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -498,41 +480,19 @@ return {
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
-                                "name": "opening_bid",
-                                "storageKey": null,
-                                "args": null,
-                                "concreteType": "SaleArtworkOpeningBid",
-                                "plural": false,
-                                "selections": (v7/*: any*/)
-                              },
-                              {
-                                "kind": "LinkedField",
-                                "alias": null,
                                 "name": "current_bid",
                                 "storageKey": null,
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": (v7/*: any*/)
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "bidder_positions_count",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "LinkedField",
-                                "alias": null,
-                                "name": "sale",
-                                "storageKey": null,
-                                "args": null,
-                                "concreteType": "Sale",
-                                "plural": false,
                                 "selections": [
-                                  (v6/*: any*/),
-                                  (v2/*: any*/)
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "display",
+                                    "args": null,
+                                    "storageKey": null
+                                  }
                                 ]
                               },
                               (v2/*: any*/)
@@ -552,7 +512,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": (v8/*: any*/)
+                            "selections": (v6/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -562,7 +522,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v8/*: any*/)
+                            "selections": (v6/*: any*/)
                           },
                           {
                             "kind": "ScalarField",
@@ -609,7 +569,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtworksQuery",
-    "id": "0b7b66ac32df3d305487b45d6f443313",
+    "id": "13750c45480f1a9c82852c34e90dc7ca",
     "text": null,
     "metadata": {}
   }
