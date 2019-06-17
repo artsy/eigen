@@ -3,11 +3,11 @@
 import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkAttributionClassFAQ_artworkAttributionClasses$ref: unique symbol;
 export type ArtworkAttributionClassFAQ_artworkAttributionClasses$ref = typeof _ArtworkAttributionClassFAQ_artworkAttributionClasses$ref;
-export type ArtworkAttributionClassFAQ_artworkAttributionClasses = {
+export type ArtworkAttributionClassFAQ_artworkAttributionClasses = ReadonlyArray<{
     readonly name: string | null;
     readonly longDescription: string | null;
     readonly " $refType": ArtworkAttributionClassFAQ_artworkAttributionClasses$ref;
-};
+}>;
 
 
 
@@ -15,7 +15,9 @@ const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtworkAttributionClassFAQ_artworkAttributionClasses",
   "type": "AttributionClass",
-  "metadata": null,
+  "metadata": {
+    "plural": true
+  },
   "argumentDefinitions": [],
   "selections": [
     {
@@ -34,5 +36,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'bc6f9718cdf4445204a466640457bb7a';
+(node as any).hash = 'be66fc89c75b13152cafac33cdeadb64';
 export default node;
