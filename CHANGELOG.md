@@ -21,6 +21,7 @@
 ### 1.12.1
 
 - Refactors Artwork view to use FlatList - kieran
+- Adds native share to artwork share button - kieran
 
 ### 1.12.0
 

@@ -188,6 +188,15 @@ describe("ArtworkActions", () => {
 const artworkActionsArtwork = {
   id: "artwork12345",
   internalID: "12345",
+  title: "test title",
+  artists: [
+    {
+      name: "Andreas Rod",
+    },
+    {
+      name: "Arthur Sopin",
+    },
+  ],
   is_saved: false,
   " $refType": null,
 }
