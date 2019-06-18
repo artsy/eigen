@@ -6,7 +6,7 @@ import { SaleList } from "./Components/SaleList"
 import { ZeroState } from "./Components/ZeroState"
 
 interface Props {
-  relay?: RelayRefetchProp
+  relay: RelayRefetchProp
   viewer: {
     sales: Array<{
       href: string | null

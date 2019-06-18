@@ -5,7 +5,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
 import { BucketKey } from "../Map/bucketCityResults"
 import { EventList } from "./Components/EventList"
 
@@ -95,7 +95,7 @@ class CitySectionList extends React.Component<Props, State> {
           header={headerText}
           bucket={shows.edges.map(e => e.node) as any}
           type={section}
-          relay={relay}
+          relay={relay as RelayProp}
           onScroll={isCloseToBottom(this.fetchData)}
           fetchingNextPage={fetchingNextPage}
         />

@@ -1,6 +1,6 @@
 import React from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
@@ -113,7 +113,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && (props.me.followed_artists_connection as ConnectionData)
+      return props.me && props.me.followed_artists_connection
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

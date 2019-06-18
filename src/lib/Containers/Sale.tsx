@@ -1,8 +1,9 @@
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createRefetchContainer, graphql } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
+import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import SaleArtworksGrid from "lib/Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
 import { GhostButton } from "lib/Components/Buttons"
 import Header from "lib/Components/Sale/Header"
@@ -14,7 +15,8 @@ const isPad = Dimensions.get("window").width > 700
 const HeaderHeight = 64
 
 interface Props extends ViewProperties {
-  sale: any
+  sale: Sale_sale
+  relay: RelayRefetchProp
 }
 
 interface State {

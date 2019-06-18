@@ -37,7 +37,7 @@ interface Props extends ViewProperties {
   medium: string
   price_range: string
   gene: Gene_gene
-  relay?: RelayRefetchProp
+  relay: RelayRefetchProp
 }
 
 interface State {

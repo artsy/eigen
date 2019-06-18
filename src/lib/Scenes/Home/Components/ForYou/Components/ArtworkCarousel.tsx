@@ -1,6 +1,6 @@
 import { omit } from "lodash"
 import React, { Component } from "react"
-import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import {
   Dimensions,
@@ -45,7 +45,7 @@ export const minRailHeight = 400
 
 interface Props extends ViewProperties {
   rail: ArtworkCarousel_rail
-  relay: RelayRefetchProp
+  relay: RelayProp
 }
 
 interface State {
