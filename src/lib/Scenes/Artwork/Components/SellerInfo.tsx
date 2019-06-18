@@ -9,11 +9,9 @@ interface SellerInfoProps {
 
 export class SellerInfo extends React.Component<SellerInfoProps> {
   render() {
-    return (
-      <Box>
-        <Sans size="3">{this.props.artwork.partner.name}</Sans>
-      </Box>
-    )
+    const { partner } = this.props.artwork
+    const { name } = partner
+    return <Box>{name && <Sans size="3">{name}</Sans>}</Box>
   }
 }
 

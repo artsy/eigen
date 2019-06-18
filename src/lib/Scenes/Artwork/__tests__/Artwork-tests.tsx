@@ -10,6 +10,10 @@ describe("Artwork", () => {
         artwork={{
           " $fragmentRefs": null,
           images: [],
+          availability: "for sale",
+          partner: { name: "Partner 1" },
+          additional_information: "lorem",
+          description: "ipsum",
           " $refType": null,
           artist: { biography_blurb: { text: "hello" } },
         }}

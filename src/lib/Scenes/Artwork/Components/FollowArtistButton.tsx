@@ -49,7 +49,7 @@ export class FollowArtistButton extends React.Component<Props> {
           &middot;
         </Sans>
         <TouchableWithoutFeedback onPress={this.handleFollowArtist.bind(this)}>
-          <Sans color="black60" size="4">
+          <Sans color="black60" weight="medium" size="3t">
             {followButtonText}
           </Sans>
         </TouchableWithoutFeedback>
