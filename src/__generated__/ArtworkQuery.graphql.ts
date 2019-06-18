@@ -79,13 +79,13 @@ fragment PartnerCard_artwork on Artwork {
     href
     initials
     profile {
+      id
       internalID
       gravityID
       is_followed
       icon {
         url(version: "square140")
       }
-      id
     }
     locations {
       city
@@ -833,6 +833,7 @@ return {
                 "concreteType": "Profile",
                 "plural": false,
                 "selections": [
+                  (v3/*: any*/),
                   (v17/*: any*/),
                   (v8/*: any*/),
                   (v18/*: any*/),
@@ -859,8 +860,7 @@ return {
                         "storageKey": "url(version:\"square140\")"
                       }
                     ]
-                  },
-                  (v3/*: any*/)
+                  }
                 ]
               },
               {
@@ -1182,7 +1182,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "d91b54b4b78f2d8f1fad2040e8e9117f",
+    "id": "5ad32880f7edfbe46a51e27ee41ed59d",
     "text": null,
     "metadata": {}
   }
