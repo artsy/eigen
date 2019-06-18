@@ -16,6 +16,8 @@
 
 ### Master
 
+- Update typings for Relay to v4 and usage thereof - alloy
+
 ### 1.12.1
 
 ### 1.12.0
