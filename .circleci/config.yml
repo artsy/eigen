@@ -26,7 +26,7 @@ jobs:
 
       - run:
           name: Install Bundler 2.0.1
-          command: sudo gem install bundler -v 2.0.1
+          command: gem update --system && gem install bundler -v 2.0.1
 
       - checkout
 
