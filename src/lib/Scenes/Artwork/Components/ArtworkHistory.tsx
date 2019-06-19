@@ -19,7 +19,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps, Artwork
 
   render() {
     const sections = [
-      { title: "Provinance", value: this.props.artwork.provenance },
+      { title: "Provenance", value: this.props.artwork.provenance },
       { title: "Exhibition History", value: this.props.artwork.exhibition_history },
     ]
 
