@@ -9,19 +9,15 @@ import { ArtworkDetails_artwork$ref } from "./ArtworkDetails_artwork.graphql";
 import { ArtworkTombstone_artwork$ref } from "./ArtworkTombstone_artwork.graphql";
 import { ImageCarousel_images$ref } from "./ImageCarousel_images.graphql";
 import { OtherWorks_artwork$ref } from "./OtherWorks_artwork.graphql";
+import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
 import { SellerInfo_artwork$ref } from "./SellerInfo_artwork.graphql";
 declare const _Artwork_artwork$ref: unique symbol;
 export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
 export type Artwork_artwork = {
-    readonly artist: {
-        readonly biography_blurb: {
-            readonly text: string | null;
-        } | null;
-    } | null;
     readonly images: ReadonlyArray<{
         readonly " $fragmentRefs": ImageCarousel_images$ref;
     } | null> | null;
-    readonly " $fragmentRefs": ArtworkTombstone_artwork$ref & ArtworkActions_artwork$ref & ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & AboutWork_artwork$ref & ArtworkDetails_artwork$ref;
+    readonly " $fragmentRefs": PartnerCard_artwork$ref & ArtworkTombstone_artwork$ref & ArtworkActions_artwork$ref & ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & AboutWork_artwork$ref & ArtworkDetails_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
 
@@ -37,35 +33,6 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "artist",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Artist",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "biography_blurb",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "ArtistBlurb",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "text",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
       "name": "images",
       "storageKey": null,
       "args": null,
@@ -78,6 +45,11 @@ const node: ReaderFragment = {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "PartnerCard_artwork",
+      "args": null
     },
     {
       "kind": "FragmentSpread",
@@ -121,5 +93,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '82d0b3235147defc49bc9f8fd5b5ada2';
+(node as any).hash = 'a85255e36236f6c038dd777aa80b1585';
 export default node;

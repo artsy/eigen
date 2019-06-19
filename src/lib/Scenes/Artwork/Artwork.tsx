@@ -15,6 +15,7 @@ import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
 import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
+import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
@@ -39,6 +40,7 @@ export class Artwork extends React.Component<Props> {
             <AboutWork artwork={artwork} />
             <ArtworkDetails artwork={artwork} />
             <AboutArtist artwork={artwork} />
+            <PartnerCard artwork={artwork} />
             <OtherWorks artwork={artwork} />
           </Join>
         </ScrollView>
@@ -50,14 +52,10 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      artist {
-        biography_blurb {
-          text
-        }
-      }
       images {
         ...ImageCarousel_images
       }
+      ...PartnerCard_artwork
       ...ArtworkTombstone_artwork
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
