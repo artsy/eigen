@@ -26,7 +26,7 @@ export class Artwork extends React.Component<Props> {
     const {
       artist: { artworks_connection: ArtistConnection },
       partner: { artworksConnection: PartnerConnection },
-      layer: { artworksConnection: LayerConnection },
+      layer,
     } = artwork
 
     const sections = []
@@ -52,7 +52,7 @@ export class Artwork extends React.Component<Props> {
     if (
       (ArtistConnection && ArtistConnection.edges && ArtistConnection.edges.length) ||
       (PartnerConnection && PartnerConnection.edges && PartnerConnection.edges.length) ||
-      (LayerConnection && LayerConnection.edges && LayerConnection.edges.length)
+      (layer && layer.artworksConnection && layer.artworksConnection.edges && layer.artworksConnection.edges.length)
     ) {
       sections.push("otherWorks")
     }
