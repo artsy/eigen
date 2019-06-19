@@ -49,6 +49,7 @@ fragment Artwork_artwork on Artwork {
   ...AboutArtist_artwork
   ...AboutWork_artwork
   ...ArtworkDetails_artwork
+  ...ArtworkHistory_artwork
 }
 
 fragment ImageCarousel_images on Image {
@@ -152,6 +153,11 @@ fragment ArtworkDetails_artwork on Artwork {
   publisher
   manufacturer
   image_rights
+}
+
+fragment ArtworkHistory_artwork on Artwork {
+  provenance
+  exhibition_history
 }
 
 fragment ArtistListItem_artist on Artist {
@@ -1033,6 +1039,20 @@ return {
             "name": "image_rights",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "provenance",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibition_history",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -1041,7 +1061,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "2ab21d852942795724e0139a0fd6e9ad",
+    "id": "6ad087fcf70350e2ba42fea03b9aa939",
     "text": null,
     "metadata": {}
   }

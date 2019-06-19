@@ -12,6 +12,7 @@ import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
+import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
 import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
@@ -38,6 +39,7 @@ export class Artwork extends React.Component<Props> {
             <SellerInfo artwork={artwork} />
             <AboutWork artwork={artwork} />
             <ArtworkDetails artwork={artwork} />
+            <ArtworkHistory artwork={artwork} />
             <AboutArtist artwork={artwork} />
             <OtherWorks artwork={artwork} />
           </Join>
@@ -66,6 +68,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...AboutArtist_artwork
       ...AboutWork_artwork
       ...ArtworkDetails_artwork
+      ...ArtworkHistory_artwork
     }
   `,
 })
