@@ -12,7 +12,7 @@ unless Dir.exist? '../node_modules'
 end
 
 require "rbconfig"
-expected_ruby_version = File.read(File.expand_path("../.ruby-version", __FILE__)).strip
+expected_ruby_version = File.read(File.expand_path("../../.ruby-version", __FILE__)).strip
 unless RbConfig::CONFIG["RUBY_PROGRAM_VERSION"] == expected_ruby_version
   puts "\nPlease re-run using Ruby version:".red
   puts "  #{expected_ruby_version}\n\n"
