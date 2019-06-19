@@ -189,6 +189,7 @@ const artworkActionsArtwork = {
   id: "artwork12345",
   internalID: "12345",
   title: "test title",
+  href: "/artwork/andreas-rod-prinzknecht",
   artists: [
     {
       name: "Andreas Rod",
