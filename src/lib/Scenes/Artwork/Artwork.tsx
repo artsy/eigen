@@ -1,7 +1,6 @@
 import { Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
-import { ReadMore } from "lib/Components/ReadMore"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
