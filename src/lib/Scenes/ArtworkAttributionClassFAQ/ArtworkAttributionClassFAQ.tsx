@@ -1,14 +1,20 @@
-import { Flex, Serif, Spacer, Theme } from "@artsy/palette"
+import { BorderBox, Box, Button, Flex, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQRendererQuery } from "__generated__/ArtworkAttributionClassFAQRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import styled from "styled-components/native"
 
 interface Props {
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
 }
+
+const OkButton = styled(Button)`
+  width: 100%;
+`
 
 export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   renderAttributionClass(name: string, longDescription: string) {
@@ -33,11 +39,16 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
       )
     })
     return (
-      <Flex>
-        <Serif size="8">Artwork classifications</Serif>
-        <Spacer m={3} />
-        {attributionClasses}
-      </Flex>
+      <Theme>
+        <ScrollView>
+          <Serif size="8">Artwork classifications</Serif>
+          <Spacer m={2} />
+          {attributionClasses}
+          <BorderBox>
+            <OkButton width="100%">Ok</OkButton>
+          </BorderBox>
+        </ScrollView>
+      </Theme>
     )
   }
 }

@@ -2,7 +2,7 @@ import { Box, Flex, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./FollowArtistButton"
 
@@ -24,6 +24,10 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   }
   handleTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
+  }
+
+  showAttributionClassFAQ() {
+    SwitchBoard.presentNavigationViewController(this, "/artwork-classifications")
   }
 
   showMoreArtists = () => {
@@ -114,9 +118,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           </Serif>
         )}
         {artwork.attribution_class && (
-          <Serif color="black60" size="3t">
-            {artwork.attribution_class.shortDescription}
-          </Serif>
+          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleTap("/artwork-classifications")}>
+            <Serif color="black60" size="3t">
+              {artwork.attribution_class.shortDescription}
+            </Serif>
+          </Text>
         )}
       </Box>
     )
