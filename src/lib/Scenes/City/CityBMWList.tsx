@@ -5,7 +5,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
 import { EventList } from "./Components/EventList"
 
 interface Props extends Pick<CityBMWListQueryVariables, "citySlug"> {
@@ -62,7 +62,7 @@ class CityBMWList extends React.Component<Props, State> {
           bucket={shows.edges.map(e => e.node) as any}
           header="BMW Art Guide"
           type="BMW Art Guide"
-          relay={relay}
+          relay={relay as RelayProp}
           onScroll={isCloseToBottom(this.fetchData)}
           fetchingNextPage={fetchingNextPage}
         />

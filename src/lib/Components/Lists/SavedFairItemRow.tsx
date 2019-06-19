@@ -13,7 +13,7 @@ interface State {
 
 interface Props {
   node: Fairs_me["followsAndSaves"]["fairs"]["edges"][0]["node"]
-  relayEnvironment: RelayProp
+  relay: RelayProp
 }
 
 export default class SavedFairItemRow extends React.Component<Props, State> {
@@ -28,7 +28,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
   handleSave(fairProfileID, fairID) {
     this.setState({ isSaved: !this.state.isSaved }, () => {
       if (fairProfileID) {
-        return commitMutation<SavedFairItemRowMutation>(this.props.relayEnvironment.environment, {
+        return commitMutation<SavedFairItemRowMutation>(this.props.relay.environment, {
           mutation: graphql`
             mutation SavedFairItemRowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {

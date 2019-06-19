@@ -41,7 +41,7 @@ stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
 export interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
   me: ConfirmBid_me
-  relay?: RelayRefetchProp
+  relay: RelayRefetchProp
   navigator?: NavigatorIOS
   refreshSaleArtwork?: () => void
   increments: any

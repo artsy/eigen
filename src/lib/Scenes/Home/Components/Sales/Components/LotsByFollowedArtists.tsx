@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
+import { LotsByFollowedArtists_viewer } from "__generated__/LotsByFollowedArtists_viewer.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -10,6 +11,12 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { SectionHeader } from "./SectionHeader"
 
 const DEFAULT_TITLE = "Lots by Artists You Follow"
+
+interface Props {
+  relay: RelayPaginationProp
+  title?: string
+  viewer: LotsByFollowedArtists_viewer
+}
 
 interface State {
   fetchingMoreData: boolean
@@ -85,7 +92,7 @@ export default createPaginationContainer(
     `,
   },
   {
-    getConnectionFromProps: ({ viewer }) => viewer && (viewer.sale_artworks as ConnectionData),
+    getConnectionFromProps: ({ viewer }) => viewer && viewer.sale_artworks,
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (_props, { count, cursor }) => ({ count, cursor }),
     query: graphql`
@@ -101,17 +108,3 @@ export default createPaginationContainer(
 const Container = styled.View`
   padding: 10px;
 `
-
-interface Props {
-  relay?: RelayPaginationProp
-  title?: string
-  viewer?: {
-    sale_artworks: {
-      edges: Array<{
-        node: {
-          artwork: object | null
-        }
-      }> | null
-    } | null
-  }
-}
