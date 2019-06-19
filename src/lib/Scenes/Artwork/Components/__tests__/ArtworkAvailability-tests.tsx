@@ -14,7 +14,7 @@ describe("ArtworkAvailability", () => {
         .at(0)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"On Loan"`)
+    ).toMatchInlineSnapshot(`"On loan"`)
   })
 })
 

@@ -23,6 +23,12 @@ interface Props {
 export class Artwork extends React.Component<Props> {
   sections = () => {
     const { artwork } = this.props
+    const {
+      artist: { artworks_connection: ArtistConnection },
+      partner: { artworksConnection: PartnerConnection },
+      layer: { artworksConnection: LayerConnection },
+    } = artwork
+
     const sections = []
 
     sections.push("header")
@@ -44,11 +50,9 @@ export class Artwork extends React.Component<Props> {
     sections.push("partnerCard")
 
     if (
-      (artwork.artist && artwork.artist.artworks_connection.edges && artwork.artist.artworks_connection.edges.length) ||
-      (artwork.partner &&
-        artwork.partner.artworksConnection.edges &&
-        artwork.partner.artworksConnection.edges.length) ||
-      (artwork.layer && artwork.layer.artworksConnection.edges && artwork.layer.artworksConnection.edges.length)
+      (ArtistConnection && ArtistConnection.edges && ArtistConnection.edges.length) ||
+      (PartnerConnection && PartnerConnection.edges && PartnerConnection.edges.length) ||
+      (LayerConnection && LayerConnection.edges && LayerConnection.edges.length)
     ) {
       sections.push("otherWorks")
     }
@@ -103,11 +107,6 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      artist {
-        biography_blurb {
-          text
-        }
-      }
       availability
       additional_information
       description
@@ -135,6 +134,9 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
 
       artist {
         name
+        biography_blurb {
+          text
+        }
         artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
           edges {
             node {
