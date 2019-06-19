@@ -21,6 +21,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps, Artwork
     const sections = [
       { title: "Provenance", value: this.props.artwork.provenance },
       { title: "Exhibition History", value: this.props.artwork.exhibition_history },
+      { title: "Bibliography", value: this.props.artwork.literature },
     ]
 
     const displaySections = sections.filter(i => i.value != null)
@@ -47,6 +48,7 @@ export const ArtworkHistoryFragmentContainer = createFragmentContainer(ArtworkHi
     fragment ArtworkHistory_artwork on Artwork {
       provenance
       exhibition_history
+      literature
     }
   `,
 })

@@ -158,6 +158,7 @@ fragment ArtworkDetails_artwork on Artwork {
 fragment ArtworkHistory_artwork on Artwork {
   provenance
   exhibition_history
+  literature
 }
 
 fragment ArtistListItem_artist on Artist {
@@ -1053,6 +1054,13 @@ return {
             "name": "exhibition_history",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "literature",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -1061,7 +1069,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "6ad087fcf70350e2ba42fea03b9aa939",
+    "id": "09f817b28c7b7b17c610911518b4644d",
     "text": null,
     "metadata": {}
   }
