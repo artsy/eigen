@@ -32,9 +32,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v2-gems-{{ checksum "Example/Gemfile.lock" }}
+            - v3-gems-{{ checksum "Example/Gemfile.lock" }}
             # Fall back to using the latest cache if no exact match is found.
-            - v2-gems-
+            - v3-gems-
 
       - run:
           name: Bundle install
@@ -44,7 +44,7 @@ jobs:
             BUNDLE_RETRY: 3
 
       - save_cache:
-          key: v2-gems-{{ checksum "Example/Gemfile.lock" }}
+          key: v3-gems-{{ checksum "Example/Gemfile.lock" }}
           paths:
             - Example/vendor/bundle
 
