@@ -1,19 +1,17 @@
-import { Flex, Join, Spacer, Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { Dimensions, ScrollView } from "react-native"
+import { Dimensions, FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
-import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
-import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
-import { ImageCarouselFragmentContainer as ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
+import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
@@ -23,27 +21,84 @@ interface Props {
 }
 
 export class Artwork extends React.Component<Props> {
-  render() {
+  sections = () => {
     const { artwork } = this.props
+    const {
+      artist: { artworks_connection: ArtistConnection },
+      partner: { artworksConnection: PartnerConnection },
+      layer: { artworksConnection: LayerConnection },
+    } = artwork
+
+    const sections = []
+
+    sections.push("header")
+
+    if (artwork.availability) {
+      sections.push("availability")
+    }
+
+    if (artwork.partner && artwork.partner.name) {
+      sections.push("sellerInfo")
+    }
+
+    if (artwork.description || artwork.additional_information) {
+      sections.push("aboutWork")
+    }
+
+    sections.push("details")
+    sections.push("aboutArtist")
+    sections.push("partnerCard")
+
+    if (
+      (ArtistConnection && ArtistConnection.edges && ArtistConnection.edges.length) ||
+      (PartnerConnection && PartnerConnection.edges && PartnerConnection.edges.length) ||
+      (LayerConnection && LayerConnection.edges && LayerConnection.edges.length)
+    ) {
+      sections.push("otherWorks")
+    }
+
+    return sections
+  }
+
+  renderItem = ({ item: section }) => {
+    const { artwork } = this.props
+    switch (section) {
+      case "header":
+        return <ArtworkHeader artwork={artwork} />
+      case "availability":
+        return <ArtworkAvailability artwork={artwork} />
+      case "sellerInfo":
+        return <SellerInfo artwork={artwork} />
+      case "aboutWork":
+        return <AboutWork artwork={artwork} />
+      case "details":
+        return <ArtworkDetails artwork={artwork} />
+      case "aboutArtist":
+        return <AboutArtist artwork={artwork} />
+      case "partnerCard":
+        return <PartnerCard artwork={artwork} />
+      case "otherWorks":
+        return <OtherWorks artwork={artwork} />
+      default:
+        return null
+    }
+  }
+
+  render() {
     return (
       <Theme>
-        <ScrollView>
-          <ImageCarousel images={artwork.images} />
-          <Flex alignItems="center" mt={2}>
-            <ArtworkActions artwork={artwork} />
-            <ArtworkTombstone artwork={artwork} />
-          </Flex>
-          <Separator />
-          <Join separator={<Spacer my={2} />}>
-            <ArtworkAvailability artwork={artwork} />
-            <SellerInfo artwork={artwork} />
-            <AboutWork artwork={artwork} />
-            <ArtworkDetails artwork={artwork} />
-            <AboutArtist artwork={artwork} />
-            <PartnerCard artwork={artwork} />
-            <OtherWorks artwork={artwork} />
-          </Join>
-        </ScrollView>
+        <Box pt={4} pb={2}>
+          <FlatList
+            data={this.sections()}
+            ItemSeparatorComponent={() => (
+              <Box px={2} m={2}>
+                <Separator />
+              </Box>
+            )}
+            keyExtractor={(item, index) => item.type + String(index)}
+            renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          />
+        </Box>
       </Theme>
     )
   }
@@ -52,18 +107,53 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      images {
-        ...ImageCarousel_images
+      availability
+      additional_information
+      description
+
+      layer(id: "main") {
+        artworksConnection(first: 8) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
-      ...PartnerCard_artwork
-      ...ArtworkTombstone_artwork
-      ...ArtworkActions_artwork
+
+      partner {
+        name
+        artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+
+      artist {
+        name
+        biography_blurb {
+          text
+        }
+        artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+
       ...ArtworkAvailability_artwork
+      ...PartnerCard_artwork
       ...SellerInfo_artwork
+      ...AboutWork_artwork
       ...OtherWorks_artwork
       ...AboutArtist_artwork
-      ...AboutWork_artwork
       ...ArtworkDetails_artwork
+      ...ArtworkHeader_artwork
     }
   `,
 })

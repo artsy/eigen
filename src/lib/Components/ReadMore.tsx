@@ -17,7 +17,7 @@ const rules = {
     ...defaultRules.paragraph,
     react: (node, output, state) => {
       return (
-        <Serif size="3t" color="black60" key={state.key}>
+        <Serif size="3t" color="black100" key={state.key}>
           {output(node.content, state)}
         </Serif>
       )
