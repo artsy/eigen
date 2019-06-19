@@ -14,11 +14,6 @@ import { SellerInfo_artwork$ref } from "./SellerInfo_artwork.graphql";
 declare const _Artwork_artwork$ref: unique symbol;
 export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
 export type Artwork_artwork = {
-    readonly artist: {
-        readonly biography_blurb: {
-            readonly text: string | null;
-        } | null;
-    } | null;
     readonly images: ReadonlyArray<{
         readonly " $fragmentRefs": ImageCarousel_images$ref;
     } | null> | null;
@@ -35,35 +30,6 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "artist",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Artist",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "biography_blurb",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "ArtistBlurb",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "text",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        }
-      ]
-    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -127,5 +93,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'eabd2d18c1e6d1b613d1324c8ee1f0ec';
+(node as any).hash = 'a85255e36236f6c038dd777aa80b1585';
 export default node;

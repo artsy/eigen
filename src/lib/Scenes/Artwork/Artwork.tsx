@@ -36,7 +36,6 @@ export class Artwork extends React.Component<Props> {
           </Flex>
           <Separator />
           <Join separator={<Spacer my={2} />}>
-            <ReadMore content={artwork.artist.biography_blurb.text} maxChars={140} />
             <ArtworkAvailability artwork={artwork} />
             <SellerInfo artwork={artwork} />
             <AboutWork artwork={artwork} />
@@ -54,11 +53,6 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      artist {
-        biography_blurb {
-          text
-        }
-      }
       images {
         ...ImageCarousel_images
       }
