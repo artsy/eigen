@@ -44,6 +44,14 @@ type AggregationCount {
   sortable_id: String
 }
 
+type AnalyticsArtist {
+  entityId: String!
+}
+
+type AnalyticsArtwork {
+  entityId: String!
+}
+
 # Publish artwork Series Stats
 type AnalyticsArtworksPublishedStats {
   percentageChanged: Int!
@@ -177,10 +185,27 @@ type AnalyticsPartnerStats {
   pageviews(period: AnalyticsQueryPeriodEnum!): AnalyticsPageviewStats
   partnerId: String!
 
+  # Artworks, shows, or artists ranked by views. Capped at 10 by the underlying sql query.
+  rankedStats(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    objectType: AnalyticsRankedStatsObjectTypeEnum!
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsRankedStatsConnection
+
   # Sales stats
   sales(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerSalesStats
 
-  # Artworks ranked by views
+  # Top artworks ranked by views
   topArtworks(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -193,8 +218,7 @@ type AnalyticsPartnerStats {
 
     # Returns the last _n_ elements from the list.
     last: Int
-    period: AnalyticsQueryPeriodEnum!
-  ): AnalyticsTopArtworksConnection
+  ): AnalyticsRankedStatsConnection @deprecated(reason: "Use rankedStats(objectType: ) instead")
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
@@ -302,33 +326,53 @@ enum AnalyticsQueryPeriodEnum {
   SIXTEEN_WEEKS
 }
 
-# Top artworks from a partner
-type AnalyticsTopArtworks {
-  artworkId: String!
+union AnalyticsRankedEntityUnion = Artwork | Show | Artist
+
+# Top artworks, shows, or artists from a partner
+type AnalyticsRankedStats {
   period: AnalyticsQueryPeriodEnum!
+  rankedEntity: AnalyticsRankedStatsUnion!
   value: Int!
-  artwork: Artwork
+  entity: AnalyticsRankedEntityUnion
 }
 
-# The connection type for TopArtworks.
-type AnalyticsTopArtworksConnection {
+# The connection type for RankedStats.
+type AnalyticsRankedStatsConnection {
   # A list of edges.
-  edges: [AnalyticsTopArtworksEdge]
+  edges: [AnalyticsRankedStatsEdge]
 
   # A list of nodes.
-  nodes: [AnalyticsTopArtworks]
+  nodes: [AnalyticsRankedStats]
 
   # Information to aid in pagination.
   pageInfo: AnalyticsPageInfo!
 }
 
 # An edge in a connection.
-type AnalyticsTopArtworksEdge {
+type AnalyticsRankedStatsEdge {
   # A cursor for use in pagination.
   cursor: String!
 
   # The item at the end of the edge.
-  node: AnalyticsTopArtworks
+  node: AnalyticsRankedStats
+}
+
+enum AnalyticsRankedStatsObjectTypeEnum {
+  # Artist
+  ARTIST
+
+  # Artwork
+  ARTWORK
+
+  # Show
+  SHOW
+}
+
+# An artwork, artist, or show
+union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | AnalyticsShow
+
+type AnalyticsShow {
+  entityId: String!
 }
 
 input ApproveOrderInput {

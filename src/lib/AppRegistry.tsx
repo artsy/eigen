@@ -1,6 +1,6 @@
 import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
-import { RelayContainer } from "react-relay"
+import { Container as RelayContainer } from "react-relay"
 
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/"

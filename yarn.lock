@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@4.14.18":
-  version "4.14.18"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.18.tgz#9a663a38727a14773f80b7553f42b1388c80dfa6"
-  integrity sha512-cKrJUo2Nw9/apGL+aYBjHoB6n1ZmNg3TtrolRcqJhgNgfvReeUvKXqZq8NBgE+6qseSWfXnqdE94hz685qLICg==
+"@artsy/palette@4.14.20":
+  version "4.14.20"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.20.tgz#11e8bb7cc81640ad9b970014e2c5ffcbb29304ea"
+  integrity sha512-BAUcTjkAHO7oPbsJ699jZBa85CI3CnXHEilPswEE0pb0XDXAeBMc9b57Zl68764X31ZhbDfBXC0pVT0Zp8TFag==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
@@ -1567,10 +1567,10 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
-"@types/react-relay@1.3.9":
-  version "1.3.9"
-  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-1.3.9.tgz#8875e11c763f75488b8be4876ca2fb7e181f2f98"
-  integrity sha512-DFhFrEiDUYxR6VWpkf14CnzS7vtpWaVku0EmnxT2X4U45rOUP75nnOEnRCixZyyxIgr7ULpg5Zc1G9VJpQF7GQ==
+"@types/react-relay@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-4.0.0.tgz#5375a13b76db3efd7136180be652dded63a6728d"
+  integrity sha512-9wd32huCR0zMm/uG62xi0rEOsmIVwBk1O6AoGRg9STfan4pkPScJJMGbpXgi+aDCFdwDXAPJx18GWxc3QqX6Nw==
   dependencies:
     "@types/react" "*"
     "@types/relay-runtime" "*"
@@ -1597,15 +1597,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/relay-runtime@*":
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-1.3.6.tgz#839610054c1747217e814c8993fa642e902d0de0"
-  integrity sha512-NobpY0XFh0O9FTRkFJsN5ZNd+M+4eac8ZgM5LP3C0tLd1JkfrwuGkyBUMTuDDGYf+T5zl6vTO6EGgXKD+0QpGA==
-
-"@types/relay-runtime@1.3.12":
-  version "1.3.12"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-1.3.12.tgz#602b98eb333b47d98213816d7e40273edaac3e90"
-  integrity sha512-MXM7ElUpLzPfaIlG6263qDd7+zdNpqy43K90yyQzB0ax1hKMJ+R3WfaVLFxn/X49YR8fa6kwA3ikjh2A/JNFJg==
+"@types/relay-runtime@*", "@types/relay-runtime@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-4.0.0.tgz#3814960695f4f3ce059e400acbb10c1d038e30b8"
+  integrity sha512-9QmMGrC6mKLQ75HRhaKh9NP1BEAIoCgDkMz9BGNsxHSOODCSVIaroX9h0wmK1/TlrD4F1omHl5aPYw5ugiKLig==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"

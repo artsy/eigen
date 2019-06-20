@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { RefreshControl, ScrollView } from "react-native"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import ZeroState from "lib/Components/States/ZeroState"
@@ -114,7 +114,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && (props.me.saved_artworks.artworks_connection as ConnectionData)
+      return props.me && props.me.saved_artworks.artworks_connection
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

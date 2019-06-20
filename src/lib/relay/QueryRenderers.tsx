@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql, QueryRenderer, QueryRendererProps } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
 
 // tslint:disable:no-unused-expression
 import Artist from "../Containers/Artist"
@@ -52,7 +52,7 @@ import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWork
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import { defaultEnvironment as environment } from "./createEnvironment"
 
-export type RenderCallback = QueryRendererProps["render"]
+export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"]
 
 interface RendererProps {
   render: RenderCallback
@@ -104,22 +104,7 @@ export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ r
       variables={{
         saleID,
       }}
-      render={({ props, error }) => {
-        if (error) {
-          console.error(error)
-        } else if (!props) {
-          return render({ props, error }) // So that we show the spinner
-        } else if (props) {
-          return render({
-            props: {
-              sale: props.sale,
-              me: props.me,
-            },
-            error,
-          })
-        }
-        return null
-      }}
+      render={render}
     />
   )
 }
@@ -146,12 +131,8 @@ export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, ar
         artworkID,
         saleID,
       }}
-      render={({ props, error }) => {
-        if (error) {
-          console.error(error)
-        } else if (!props) {
-          return render({ props, error }) // So that we show the spinner
-        } else if (props) {
+      render={({ props, error, retry }) => {
+        if (props) {
           // Note that we need to flatten the query above before passing into the BidFlow component.
           // i.e.: the `sale_artwork` is nested within `artwork`, but we want the sale_artwork itself as a prop.
           return render({
@@ -160,7 +141,10 @@ export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, ar
               me: props.me,
             },
             error,
+            retry,
           })
+        } else {
+          render({ props, error, retry })
         }
       }}
     />

@@ -4,7 +4,7 @@ import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { Box, Separator, Theme } from "@artsy/palette"
 import { Shows_me } from "__generated__/Shows_me.graphql"
@@ -116,7 +116,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && (props.me.followsAndSaves.shows as ConnectionData)
+      return props.me && props.me.followsAndSaves.shows
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

@@ -27,6 +27,7 @@ describe("state", () => {
       gene: null,
       medium: "glitch",
       price_range: "*-*",
+      relay: null,
     })
 
     expect(gene.state).toEqual({
@@ -153,7 +154,7 @@ it("looks like expected", () => {
   const tree = renderer
     .create(
       <Theme>
-        <Gene medium="painting" price_range="*-100000" gene={props.gene as any} />
+        <Gene medium="painting" price_range="*-100000" gene={props.gene as any} relay={null} />
       </Theme>
     )
     .toJSON()

@@ -54,6 +54,7 @@ storiesOf("Bidding")
         me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] } as any}
         increments={[{ display: "$45,000", cents: 4500000 }]}
         selectedBidIndex={0}
+        relay={null}
       />
     )
   })
@@ -72,6 +73,7 @@ storiesOf("Bidding")
         me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] } as any}
         increments={[{ display: "$45,000", cents: 4500000 }]}
         selectedBidIndex={0}
+        relay={null}
       />
     )
   })

@@ -70,7 +70,7 @@ export function sendConversationMessage(
         connectionName: "messages",
         edgeName: "messageEdge",
         rangeBehaviors: {
-          "": "APPEND",
+          "": "append",
         },
         connectionInfo: [
           {

@@ -1,7 +1,7 @@
 import { GraphQLFieldResolver, GraphQLResolveInfo, isAbstractType, isLeafType, responsePathAsArray } from "graphql"
 import { IMocks } from "graphql-tools/dist/Interfaces"
 import getNetworkLayer from "relay-mock-network-layer"
-import { Network, RelayNetwork } from "relay-runtime"
+import { INetwork as RelayNetwork, Network } from "relay-runtime"
 import uuid from "uuid"
 
 import schema from "../../../../data/schema.graphql"
