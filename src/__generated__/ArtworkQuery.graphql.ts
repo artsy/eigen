@@ -186,7 +186,13 @@ fragment ArtworkHeader_artwork on Artwork {
 fragment ArtworkActions_artwork on Artwork {
   id
   internalID
+  title
+  href
   is_saved
+  artists {
+    name
+    id
+  }
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
@@ -1110,6 +1116,8 @@ return {
           },
           (v3/*: any*/),
           (v13/*: any*/),
+          (v5/*: any*/),
+          (v9/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1117,7 +1125,6 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v5/*: any*/),
           (v6/*: any*/),
           {
             "kind": "ScalarField",
@@ -1218,7 +1225,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "ffa663c5b265da9fc8698658ef4a010c",
+    "id": "fd76f11a636d571ca6fd7ce3f83d89d9",
     "text": null,
     "metadata": {}
   }

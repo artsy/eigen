@@ -6,6 +6,7 @@ export const ArtworkFixture = {
   _id: "5b2b745e9c18db204fc32e11",
   __id: "QXJ0d29yazphYmJhcy1raWFyb3N0YW1pLXVudGl0bGVkLTc=",
   title: "Untitled",
+  href: "/artwork/andreas-rod-prinzknecht",
   availability: "for sale",
   is_saved: false,
   additional_information: "This artwork is unique.",
