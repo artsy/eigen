@@ -1,6 +1,7 @@
 import { BorderBox, Box, Button, Flex, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQRendererQuery } from "__generated__/ArtworkAttributionClassFAQRendererQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
@@ -45,7 +46,9 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
           <Spacer m={2} />
           {attributionClasses}
           <BorderBox>
-            <OkButton width="100%">Ok</OkButton>
+            <OkButton onPress={() => SwitchBoard.dismissNavigationViewController(this)} width="100%">
+              Ok
+            </OkButton>
           </BorderBox>
         </ScrollView>
       </Theme>

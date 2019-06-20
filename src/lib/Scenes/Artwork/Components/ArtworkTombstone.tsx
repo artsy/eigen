@@ -26,9 +26,9 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
-  showAttributionClassFAQ() {
-    SwitchBoard.presentNavigationViewController(this, "/artwork-classifications")
-  }
+  // showAttributionClassFAQ() {
+  //   SwitchBoard.presentNavigationViewController(this, "/artwork-classifications")
+  // }
 
   showMoreArtists = () => {
     this.setState({
