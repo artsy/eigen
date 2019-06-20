@@ -298,7 +298,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.12)
+  - Emission (from `../emission`)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -359,7 +359,6 @@ SPEC REPOS:
     - "Artsy+UILabels"
     - Artsy-UIButtons
     - DoubleConversion
-    - Emission
     - Extraction
     - Folly
     - React
@@ -425,6 +424,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Emission:
+    :path: "../emission"
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
@@ -596,6 +597,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: 23ca0886a0a3ae6b1e8abd87c2fb243b24ab9f2b
+PODFILE CHECKSUM: 3f4abdbdf07a44e780086b5f39a28ab3930bf05e
 
 COCOAPODS: 1.6.0.beta.1
