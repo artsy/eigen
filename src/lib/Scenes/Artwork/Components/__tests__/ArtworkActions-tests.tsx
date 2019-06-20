@@ -5,11 +5,38 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { graphql } from "react-relay"
-import { ArtworkActions, ArtworkActionsFragmentContainer } from "../ArtworkActions"
+import { ArtworkActions, ArtworkActionsFragmentContainer, shareMessage } from "../ArtworkActions"
 
 jest.unmock("react-relay")
 
 describe("ArtworkActions", () => {
+  describe("share button message", () => {
+    it("displays only 3 artists when there are more than 3 artist", async () => {
+      const message = shareMessage("Title 1", "/artwork/title-1", [
+        { name: "Artist 1" },
+        { name: "Artist 2" },
+        { name: "Artist 3" },
+        { name: "Artist 4" },
+      ])
+      expect(message).toEqual("Title 1 by Artist 1, Artist 2, Artist 3 on Artsy https://artsy.net/artwork/title-1")
+    })
+
+    it("displays 1 artists", async () => {
+      const message = shareMessage("Title 1", "/artwork/title-1", [{ name: "Artist 1" }])
+      expect(message).toEqual("Title 1 by Artist 1 on Artsy https://artsy.net/artwork/title-1")
+    })
+
+    it("displays only the title if there's no artists", async () => {
+      const message = shareMessage("Title 1", "/artwork/title-1", null)
+      expect(message).toEqual("Title 1 on Artsy https://artsy.net/artwork/title-1")
+    })
+
+    it("displays only the URL if no artists or title", async () => {
+      const message = shareMessage(null, "/artwork/title-1", null)
+      expect(message).toEqual("https://artsy.net/artwork/title-1")
+    })
+  })
+
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)

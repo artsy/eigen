@@ -13,6 +13,24 @@ interface ArtworkActionsProps {
   relay?: RelayProp
 }
 
+export const shareMessage = (title, href, artists) => {
+  let message
+  if (artists && artists.length) {
+    const names = []
+    artists.forEach((artist, i) => {
+      if (i < 3) {
+        names.push(artist.name)
+      }
+    })
+    message = `${title} by ${names.join(", ")} on Artsy https://artsy.net${href}`
+  } else if (title) {
+    message = `${title} on Artsy https://artsy.net${href}`
+  } else {
+    message = `https://artsy.net${href}`
+  }
+  return message
+}
+
 export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   handleArtworkSave = () => {
     const { artwork, relay } = this.props
@@ -34,23 +52,9 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   handleArtworkShare = async () => {
     const { title, href, artists } = this.props.artwork
-    let message
-    if (artists && artists.length) {
-      const names = []
-      artists.forEach((artist, i) => {
-        if (i < 3) {
-          names.push(artist.name)
-        }
-      })
-      message = `${title} by ${names.join(", ")} on Artsy https://artsy.net${href}`
-    } else if (title) {
-      message = `${title} on Artsy https://artsy.net${href}`
-    } else {
-      message = `https://artsy.net${href}`
-    }
     try {
       await Share.share({
-        message,
+        message: shareMessage(title, href, artists),
       })
     } catch (error) {
       console.error("ArtworkActions.tsx", error)
