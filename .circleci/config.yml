@@ -5,6 +5,8 @@ jobs:
     macos:
       xcode: "10.1.0"
 
+    shell: /bin/bash --login -eo pipefail
+
     environment:
       # WARNING: These env vars are passed to PRs on forks.
       # WARNING: DO NOT PUT SENSITIVE INFORMATION HERE.
@@ -22,17 +24,17 @@ jobs:
           name: List Simulators
           command: xcrun simctl list
 
+      - checkout
+
       - run:
           name: Install Bundler 2.0.1
-          command: sudo gem install bundler -v 2.0.1
-
-      - checkout
+          command: gem update --system && gem install bundler -v 2.0.1
 
       - restore_cache:
           keys:
-            - v2-gems-{{ checksum "Example/Gemfile.lock" }}
+            - v3-gems-{{ checksum "Example/Gemfile.lock" }}
             # Fall back to using the latest cache if no exact match is found.
-            - v2-gems-
+            - v3-gems-
 
       - run:
           name: Bundle install
@@ -42,7 +44,7 @@ jobs:
             BUNDLE_RETRY: 3
 
       - save_cache:
-          key: v2-gems-{{ checksum "Example/Gemfile.lock" }}
+          key: v3-gems-{{ checksum "Example/Gemfile.lock" }}
           paths:
             - Example/vendor/bundle
 
