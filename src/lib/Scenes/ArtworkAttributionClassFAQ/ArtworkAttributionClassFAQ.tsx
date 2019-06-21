@@ -13,9 +13,7 @@ interface Props {
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
 }
 
-const OkButton = styled(Button)`
-  width: 100%;
-`
+const OkButton = styled(Button)``
 
 export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   renderAttributionClass(name: string, longDescription: string) {
@@ -46,7 +44,7 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
           <Spacer m={2} />
           {attributionClasses}
           <BorderBox>
-            <OkButton onPress={() => SwitchBoard.dismissNavigationViewController(this)} width="100%">
+            <OkButton onPress={() => SwitchBoard.dismissNavigationViewController(this)} block>
               Ok
             </OkButton>
           </BorderBox>

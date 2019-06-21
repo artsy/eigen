@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@4.14.20":
+"@artsy/palette@^4.14.20":
   version "4.14.20"
   resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.20.tgz#11e8bb7cc81640ad9b970014e2c5ffcbb29304ea"
   integrity sha512-BAUcTjkAHO7oPbsJ699jZBa85CI3CnXHEilPswEE0pb0XDXAeBMc9b57Zl68764X31ZhbDfBXC0pVT0Zp8TFag==
