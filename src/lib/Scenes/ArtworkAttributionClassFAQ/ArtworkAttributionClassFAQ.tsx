@@ -1,4 +1,4 @@
-import { BorderBox, Box, Button, Flex, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQRendererQuery } from "__generated__/ArtworkAttributionClassFAQRendererQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -7,13 +7,10 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import styled from "styled-components/native"
 
 interface Props {
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
 }
-
-const OkButton = styled(Button)``
 
 export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   renderAttributionClass(name: string, longDescription: string) {
@@ -29,7 +26,6 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   }
   render() {
     const { artworkAttributionClasses } = this.props
-    console.log("PROPS!!", this.props.artworkAttributionClasses)
     const attributionClasses = artworkAttributionClasses.map((attributionClass, index) => {
       return (
         <React.Fragment key={index}>
@@ -43,11 +39,11 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
           <Serif size="8">Artwork classifications</Serif>
           <Spacer m={2} />
           {attributionClasses}
-          <BorderBox>
-            <OkButton onPress={() => SwitchBoard.dismissNavigationViewController(this)} block>
+          <Box>
+            <Button onPress={() => SwitchBoard.dismissNavigationViewController(this)} block>
               Ok
-            </OkButton>
-          </BorderBox>
+            </Button>
+          </Box>
         </ScrollView>
       </Theme>
     )
