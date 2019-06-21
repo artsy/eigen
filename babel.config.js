@@ -20,8 +20,8 @@ module.exports = function(api) {
       ["@babel/plugin-transform-runtime"],
       ["@babel/plugin-proposal-decorators", { legacy: true }],
       ["@babel/plugin-proposal-class-properties", { loose: true }],
-      ["relay", { artifactDirectory: "./src/__generated__" }],
-      ["import-graphql"]
+      "relay",
+      ["import-graphql"],
     ],
     presets: ["module:metro-react-native-babel-preset", "@babel/preset-typescript"],
   }
