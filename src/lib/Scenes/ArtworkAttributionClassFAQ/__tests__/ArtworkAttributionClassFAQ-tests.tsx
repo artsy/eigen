@@ -3,6 +3,12 @@ import { mount } from "enzyme"
 import React from "react"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"
 
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  dismissNavigationViewController: jest.fn(),
+}))
+
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
 describe("ArtworkAttributionClassFAQ", () => {
   it("renders FAQ header", () => {
     const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
@@ -39,6 +45,13 @@ describe("ArtworkAttributionClassFAQ", () => {
         .text()
     ).toEqual("One of a kind piece, created by the artist.")
     expect(component.find(Serif)).toHaveLength(15)
+  })
+
+  it("returns to previous page when ok button is clicked", () => {
+    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
+    const okButton = component.find(Button).at(0)
+    okButton.props().onPress()
+    expect(SwitchBoard.dismissNavigationViewController).toHaveBeenCalled()
   })
 })
 

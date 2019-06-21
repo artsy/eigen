@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -33,6 +33,21 @@ describe("ArtworkTombstone", () => {
     expect(artistName.text()).toContain("Andy Warhol")
     artistName.props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+  })
+
+  it("redirects to attribution class faq page when attribution class is clicked", () => {
+    const component = mount(
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+      </Theme>
+    )
+    const attributionClass = component.find(Text).at(8)
+    expect(attributionClass.text()).toContain("This is an edition of something")
+    attributionClass.props().onPress()
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
+      expect.anything(),
+      "/artwork-classifications"
+    )
   })
 
   describe("for a user not in the US", () => {
