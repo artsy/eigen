@@ -1,4 +1,4 @@
-import { Button, Serif } from "@artsy/palette"
+import { Button, Serif, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"
@@ -11,7 +11,11 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 describe("ArtworkAttributionClassFAQ", () => {
   it("renders FAQ header", () => {
-    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
+    const component = mount(
+      <Theme>
+        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
+      </Theme>
+    )
     expect(
       component
         .find(Serif)
@@ -21,7 +25,11 @@ describe("ArtworkAttributionClassFAQ", () => {
   })
 
   it("renders Ok button", () => {
-    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
+    const component = mount(
+      <Theme>
+        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
+      </Theme>
+    )
     expect(
       component
         .find(Button)
@@ -31,7 +39,11 @@ describe("ArtworkAttributionClassFAQ", () => {
   })
 
   it("renders attribution classes", () => {
-    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
+    const component = mount(
+      <Theme>
+        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
+      </Theme>
+    )
     expect(
       component
         .find(Serif)
@@ -48,7 +60,11 @@ describe("ArtworkAttributionClassFAQ", () => {
   })
 
   it("returns to previous page when ok button is clicked", () => {
-    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
+    const component = mount(
+      <Theme>
+        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
+      </Theme>
+    )
     const okButton = component.find(Button).at(0)
     okButton.props().onPress()
     expect(SwitchBoard.dismissNavigationViewController).toHaveBeenCalled()
