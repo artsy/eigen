@@ -17,7 +17,7 @@ jobs:
 
       # For caching gems, relative to current directory
       BUNDLE_PATH: vendor/bundle
-      BUNDLER_VERSION: 2.0.1
+      BUNDLER_VERSION: 2.0.2
 
     steps:
       - run:
@@ -27,8 +27,10 @@ jobs:
       - checkout
 
       - run:
-          name: Install Bundler 2.0.1
-          command: gem update --system && gem install bundler -v 2.0.1
+          name: Install Bundler 2.0.2
+          command: gem update --system && gem install bundler -v 2.0.2
+
+      - checkout
 
       - restore_cache:
           keys:
