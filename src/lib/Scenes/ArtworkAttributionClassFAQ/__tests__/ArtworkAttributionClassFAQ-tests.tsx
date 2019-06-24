@@ -11,11 +11,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 describe("ArtworkAttributionClassFAQ", () => {
   it("renders FAQ header", () => {
-    const component = mount(
-      <Theme>
-        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
-      </Theme>
-    )
+    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
     expect(
       component
         .find(Serif)
@@ -25,11 +21,7 @@ describe("ArtworkAttributionClassFAQ", () => {
   })
 
   it("renders Ok button", () => {
-    const component = mount(
-      <Theme>
-        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
-      </Theme>
-    )
+    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
     expect(
       component
         .find(Button)
@@ -39,11 +31,7 @@ describe("ArtworkAttributionClassFAQ", () => {
   })
 
   it("renders attribution classes", () => {
-    const component = mount(
-      <Theme>
-        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
-      </Theme>
-    )
+    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
     expect(
       component
         .find(Serif)
@@ -60,11 +48,7 @@ describe("ArtworkAttributionClassFAQ", () => {
   })
 
   it("returns to previous page when ok button is clicked", () => {
-    const component = mount(
-      <Theme>
-        <ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />
-      </Theme>
-    )
+    const component = mount(<ArtworkAttributionClassFAQ artworkAttributionClasses={attributionClasses} />)
     const okButton = component.find(Button).at(0)
     okButton.props().onPress()
     expect(SwitchBoard.dismissNavigationViewController).toHaveBeenCalled()
