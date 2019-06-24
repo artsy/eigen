@@ -234,6 +234,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
     }];
 
+    [self.routes addRoute:@"/consign/info" handler:JLRouteParams {
+        return [[ARShowConsignmentsFlowViewController alloc] init];
+    }];
+    
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
         // We want to fall back to the default routing unless this query parameter is specified, from Emission.
         // This prevents someone from opening a /conditions-of-sale link somewhere not within the Emission Bid Flow (eg
