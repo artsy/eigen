@@ -7,7 +7,19 @@ storiesOf("Artwork/Components").add("All Actions", () => {
   return (
     <ArtworkActions
       relay={{ environment: {} } as RelayProp}
-      artwork={{ id: "Blah", internalID: "HI", is_saved: false, " $refType": null }}
+      artwork={{
+        id: "Blah",
+        title: "Untitled",
+        internalID: "HI",
+        href: "/artwork/andreas-rod-prinzknecht",
+        is_saved: false,
+        artists: [
+          {
+            name: "Abbas Kiarostami",
+          },
+        ],
+        " $refType": null,
+      }}
     />
   )
 })

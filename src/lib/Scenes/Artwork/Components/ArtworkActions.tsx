@@ -2,7 +2,7 @@ import { Box, color, EyeOpenedIcon, Flex, HeartFillIcon, HeartIcon, Sans, ShareI
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback, View } from "react-native"
+import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -11,6 +11,24 @@ const Constants = NativeModules.ARCocoaConstantsModule
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
   relay?: RelayProp
+}
+
+export const shareMessage = (title, href, artists) => {
+  let message
+  if (artists && artists.length) {
+    const names = []
+    artists.forEach((artist, i) => {
+      if (i < 3) {
+        names.push(artist.name)
+      }
+    })
+    message = `${title} by ${names.join(", ")} on Artsy https://artsy.net${href}`
+  } else if (title) {
+    message = `${title} on Artsy https://artsy.net${href}`
+  } else {
+    message = `https://artsy.net${href}`
+  }
+  return message
 }
 
 export class ArtworkActions extends React.Component<ArtworkActionsProps> {
@@ -32,11 +50,21 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     })
   }
 
+  handleArtworkShare = async () => {
+    const { title, href, artists } = this.props.artwork
+    try {
+      await Share.share({
+        message: shareMessage(title, href, artists),
+      })
+    } catch (error) {
+      console.error("ArtworkActions.tsx", error)
+    }
+  }
+
   render() {
     const {
       artwork: { is_saved },
     } = this.props
-
     return (
       <View>
         <Flex flexDirection="row">
@@ -56,12 +84,14 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               <Sans size="3">View in Room</Sans>
             </UtilButton>
           )}
-          <UtilButton>
-            <Box mr={0.5}>
-              <ShareIcon />
-            </Box>
-            <Sans size="3">Share</Sans>
-          </UtilButton>
+          <TouchableWithoutFeedback onPress={() => this.handleArtworkShare()}>
+            <UtilButton>
+              <Box mr={0.5}>
+                <ShareIcon />
+              </Box>
+              <Sans size="3">Share</Sans>
+            </UtilButton>
+          </TouchableWithoutFeedback>
         </Flex>
       </View>
     )
@@ -79,7 +109,12 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
     fragment ArtworkActions_artwork on Artwork {
       id
       internalID
+      title
+      href
       is_saved
+      artists {
+        name
+      }
     }
   `,
 })
