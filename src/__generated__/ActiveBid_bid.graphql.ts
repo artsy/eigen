@@ -28,7 +28,7 @@ export type ActiveBid_bid = {
             readonly highest_bid: {
                 readonly display: string | null;
             } | null;
-            readonly lot_number: string | null;
+            readonly lot_label: string | null;
             readonly reserve_status: string | null;
         } | null;
     } | null;
@@ -190,7 +190,7 @@ return {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "lot_number",
+              "name": "lot_label",
               "args": null,
               "storageKey": null
             },
@@ -208,5 +208,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7b64167349d432c1747ad635cbfaa110';
+(node as any).hash = 'ef14ffe0c2598795284b97c2c821d406';
 export default node;

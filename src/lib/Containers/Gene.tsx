@@ -19,6 +19,7 @@ import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneAr
 
 import SwitchView, { SwitchEvent } from "../Components/SwitchView"
 
+import { Gene_gene } from "__generated__/Gene_gene.graphql"
 import colors from "lib/data/colors"
 import Refine from "../NativeModules/triggerRefine"
 
@@ -35,8 +36,8 @@ const HeaderHeight = 64
 interface Props extends ViewProperties {
   medium: string
   price_range: string
-  gene: any
-  relay?: RelayRefetchProp
+  gene: Gene_gene
+  relay: RelayRefetchProp
 }
 
 interface State {
@@ -281,7 +282,7 @@ export class Gene extends React.Component<Props, State> {
   /** The summary string of the current refine settings */
   artworkQuerySummaryString = () => {
     const items: string[] = []
-    const works = this.props.gene.filtered_artworks.total.toLocaleString()
+    const works = this.props.gene.filtered_artworks.counts.total.toLocaleString()
     items.push(`${works} works`)
 
     if (this.state.selectedMedium !== "*") {
@@ -358,6 +359,9 @@ export default createRefetchContainer(
           medium: { type: "String", defaultValue: "*" }
           price_range: { type: "String", defaultValue: "*-*" }
         ) {
+        id
+        internalID
+
         ...Header_gene
         ...About_gene
 
@@ -369,7 +373,9 @@ export default createRefetchContainer(
           aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
           for_sale: true
         ) {
-          total
+          counts {
+            total
+          }
           aggregations {
             slice
             counts {

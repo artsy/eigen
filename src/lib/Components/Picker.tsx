@@ -111,7 +111,6 @@ export class Picker extends React.Component<Props, State> {
   renderPicker = () => {
     const { options } = this.props
     const { isOpen, pendingSelected } = this.state
-    console.log("hii")
     return (
       <Portal>
         <Spring

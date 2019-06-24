@@ -59,8 +59,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": "current_shows",
-      "name": "partner_shows",
-      "storageKey": "partner_shows(status:\"running\")",
+      "name": "shows",
+      "storageKey": "shows(status:\"running\")",
       "args": [
         {
           "kind": "Literal",
@@ -68,15 +68,15 @@ return {
           "value": "running"
         }
       ],
-      "concreteType": "PartnerShow",
+      "concreteType": "Show",
       "plural": true,
       "selections": (v0/*: any*/)
     },
     {
       "kind": "LinkedField",
       "alias": "upcoming_shows",
-      "name": "partner_shows",
-      "storageKey": "partner_shows(status:\"upcoming\")",
+      "name": "shows",
+      "storageKey": "shows(status:\"upcoming\")",
       "args": [
         {
           "kind": "Literal",
@@ -84,7 +84,7 @@ return {
           "value": "upcoming"
         }
       ],
-      "concreteType": "PartnerShow",
+      "concreteType": "Show",
       "plural": true,
       "selections": (v0/*: any*/)
     },
@@ -96,10 +96,10 @@ return {
         {
           "kind": "LinkedField",
           "alias": "past_small_shows",
-          "name": "partner_shows",
-          "storageKey": "partner_shows(size:20,status:\"closed\")",
+          "name": "shows",
+          "storageKey": "shows(size:20,status:\"closed\")",
           "args": (v1/*: any*/),
-          "concreteType": "PartnerShow",
+          "concreteType": "Show",
           "plural": true,
           "selections": [
             {
@@ -119,10 +119,10 @@ return {
         {
           "kind": "LinkedField",
           "alias": "past_large_shows",
-          "name": "partner_shows",
-          "storageKey": "partner_shows(size:20,status:\"closed\")",
+          "name": "shows",
+          "storageKey": "shows(size:20,status:\"closed\")",
           "args": (v1/*: any*/),
-          "concreteType": "PartnerShow",
+          "concreteType": "Show",
           "plural": true,
           "selections": (v0/*: any*/)
         }
@@ -131,5 +131,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '588c371cc29143140554481da8e4570a';
+(node as any).hash = '6c7706fbdfb4655eeadb86dc3ab2b413';
 export default node;

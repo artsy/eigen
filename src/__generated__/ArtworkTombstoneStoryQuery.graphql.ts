@@ -40,7 +40,7 @@ fragment ArtworkTombstone_artwork on Artwork {
   }
   edition_of
   attribution_class {
-    short_description
+    shortDescription
     id
   }
 }
@@ -220,7 +220,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "short_description",
+                "name": "shortDescription",
                 "args": null,
                 "storageKey": null
               },
@@ -235,7 +235,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTombstoneStoryQuery",
-    "id": "dc28e3077bde459644be71da863d85c1",
+    "id": "e7793127a8564fa0fa8763281193c568",
     "text": null,
     "metadata": {}
   }

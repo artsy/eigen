@@ -4,7 +4,7 @@ import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
 
 import { Fairs_me } from "__generated__/Fairs_me.graphql"
 
@@ -68,7 +68,7 @@ export class SavedFairs extends Component<Props, State> {
       <FlatList
         data={fairs}
         keyExtractor={({ node }) => node.id}
-        renderItem={item => <SavedFairItemRow {...item.item} relayEnvironment={this.props.relay} />}
+        renderItem={item => <SavedFairItemRow {...item.item} relay={this.props.relay as RelayProp} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
@@ -117,7 +117,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && (props.me.followsAndSaves.fairs as ConnectionData)
+      return props.me && props.me.followsAndSaves.fairs
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

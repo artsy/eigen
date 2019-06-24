@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Emission (1.12.0):
+  - Emission (1.12.1):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -275,7 +275,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: d4cebb762f93add1d7d048cfc3f162e909e4cf62
+  Emission: f0bffc952d6f5c2934ae6646522f13f5b99cc487
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -287,7 +287,7 @@ SPEC CHECKSUMS:
   KSCrash: 4dc18329a90b516342809b9ca92fc4d199d712ea
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
+  Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
   react-native-cameraroll: b1faef9f2ea27b07bdf818b8043909a93f797eca
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
@@ -303,6 +303,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
-PODFILE CHECKSUM: 5eea81a66bc144e3c58ce72db22f2d92225367f7
+PODFILE CHECKSUM: 0ce96e232d89881894ba811816ba1395ac98cd11
 
 COCOAPODS: 1.7.1

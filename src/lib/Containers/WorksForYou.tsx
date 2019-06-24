@@ -1,5 +1,5 @@
 import React from "react"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import {
   ListView,
@@ -222,7 +222,7 @@ const WorksForYouContainer = createPaginationContainer(
               url
             }
           }
-          artworks(sort: published_at_desc, size: 6) {
+          artworks(sort: PUBLISHED_AT_DESC, size: 6) {
             ...GenericGrid_artworks
           }
         }
@@ -232,7 +232,7 @@ const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.viewer.me.followsAndSaves.notifications as ConnectionData
+      return props.viewer.me.followsAndSaves.notifications
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

@@ -3,7 +3,7 @@ import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import stripe from "tipsi-stripe"
 
 import { Schema, screenTrack } from "../../../utils/track"
@@ -38,7 +38,7 @@ stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
 export interface RegistrationProps extends ViewProperties {
   sale: Registration_sale
   me: Registration_me
-  relay?: RelayPaginationProp
+  relay: RelayProp
   navigator?: NavigatorIOS
 }
 

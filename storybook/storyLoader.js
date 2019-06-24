@@ -40,6 +40,7 @@ function loadStories() {
   require('../src/lib/Containers/__stories__/Gene.story');
   require('../src/lib/Containers/__stories__/Inquiry.story');
   require('../src/lib/Containers/__stories__/Sale.story');
+  require('../src/lib/Scenes/Artwork/Components/__stories__/AboutWork.story');
   require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkActions.story');
   require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkAvailability.story');
   require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkDetails.story');
@@ -91,6 +92,7 @@ const stories = [
   '../src/lib/Containers/__stories__/Gene.story',
   '../src/lib/Containers/__stories__/Inquiry.story',
   '../src/lib/Containers/__stories__/Sale.story',
+  '../src/lib/Scenes/Artwork/Components/__stories__/AboutWork.story',
   '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkActions.story',
   '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkAvailability.story',
   '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkDetails.story',

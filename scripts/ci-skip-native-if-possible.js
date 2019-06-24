@@ -1,7 +1,7 @@
 // @ts-check
 
 /*
-Welcome to the weirdest script. It is used CI runs to skip builds that have no native code changes.
+Welcome to the weirdest script. It is used in CI runs to skip builds that have no native code changes.
 The script will *fail* if there are changes, and *pass* in all other cases (including script failures).
 
 Use it with bash short-circuiting:

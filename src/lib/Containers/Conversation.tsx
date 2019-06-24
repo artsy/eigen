@@ -1,5 +1,5 @@
 import React from "react"
-import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, Track, track as _track } from "../utils/track"
 
@@ -42,7 +42,7 @@ const HeaderTextContainer = styled.View`
 
 interface Props {
   me: Conversation_me
-  relay: RelayPaginationProp
+  relay: RelayProp
   onMessageSent?: (text: string) => void
 }
 

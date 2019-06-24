@@ -1,6 +1,6 @@
 import React from "react"
 import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { PAGE_SIZE } from "lib/data/constants"
@@ -239,7 +239,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.conversation && (props.conversation.messages as ConnectionData)
+      return props.conversation && props.conversation.messages
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
