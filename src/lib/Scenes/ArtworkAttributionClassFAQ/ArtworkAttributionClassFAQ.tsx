@@ -35,22 +35,24 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
     })
     return (
       <Theme>
-        <ScrollView>
-          <Spacer m={4} />
-          <Serif mb={2} size="8">
-            Artwork classifications
-          </Serif>
-          {attributionClasses}
-          <Sans color="black60" size="3t" mb={3}>
-            Our partners are responsible for providing accurate classification information for all works.
-          </Sans>
-          <Box height={30}>
-            <Button onPress={() => SwitchBoard.dismissNavigationViewController(this)} block>
-              OK
-            </Button>
-          </Box>
-          <Spacer m={2} />
-        </ScrollView>
+        <Box px={2}>
+          <ScrollView>
+            <Spacer m={4} />
+            <Serif mb={2} size="8">
+              Artwork classifications
+            </Serif>
+            {attributionClasses}
+            <Sans color="black60" size="3t" mb={3}>
+              Our partners are responsible for providing accurate classification information for all works.
+            </Sans>
+            <Box height={30}>
+              <Button onPress={() => SwitchBoard.dismissNavigationViewController(this)} block>
+                OK
+              </Button>
+            </Box>
+            <Spacer m={2} />
+          </ScrollView>
+        </Box>
       </Theme>
     )
   }
