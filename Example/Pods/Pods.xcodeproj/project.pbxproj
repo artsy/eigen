@@ -855,14 +855,14 @@
 		80DEB54A6297674D2D53320527FFC939 /* UIColor+ArtsyColors.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F204027423F4007D0C7B3C3CE3823B1 /* UIColor+ArtsyColors.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		80E25383B29BC93C808162C5A6ECFE5E /* CameraUpdateQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 21300F868EE9316F4734C38C2E9DF43D /* CameraUpdateQueue.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		811A1192B65B26A208377F70BCD084FD /* RNSVGLineManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03430EDC44822748DD4B9641F7C49A1F /* RNSVGLineManager.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		81D86B24039A93B794B2589E69F33CA4 /* UIFont+ArtsyFonts.h in Headers */ = {isa = PBXBuildFile; fileRef = 326E915FB4A843A8EE2E902E67F50B00 /* UIFont+ArtsyFonts.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		81D86B24039A93B794B2589E69F33CA4 /* UIFont+ArtsyFonts.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F03CD0D63659C234709635253429416 /* UIFont+ArtsyFonts.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		81DC4FD9707F4DB88B9FDE5E90A82D86 /* RCTMaskedViewManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B0C216162143C5EBBD60676867BD432 /* RCTMaskedViewManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		81F813F645F1907FB82CA9E58B4DED8E /* Keys-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E5BBA49898B7DF7224B32873916E0399 /* Keys-dummy.m */; };
 		8212812C83D325A18FE751C1A982315C /* ARMyProfileViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D8096DC7293AF22FF8C5F4E6A1F5B132 /* ARMyProfileViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		821A29A4E376A96ACDD1E37A5B0AE3FD /* UIImage+MultiFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = F31BDDC13D1EE3728803AB21998E6B96 /* UIImage+MultiFormat.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		821D630E8C639479347A2790BDE81B4F /* ARSwitchViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE788D6503F848ECA18AB658E1F67BD9 /* ARSwitchViewManager.m */; };
 		828B8696ABEB94667D484BD11792523A /* KSMachineContext_Apple.h in Headers */ = {isa = PBXBuildFile; fileRef = EE0830A1B3FAD691F1CBF466ED9831D3 /* KSMachineContext_Apple.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		82A0AD6ABEF42A544A70B38B461A8113 /* Artsy+UIFonts-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C29C5DD15F7725D80759400919DB4596 /* Artsy+UIFonts-dummy.m */; };
+		82A0AD6ABEF42A544A70B38B461A8113 /* Artsy+UIFonts-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 57F39A782632EC44043518846F3E6372 /* Artsy+UIFonts-dummy.m */; };
 		82B744EAC78977BDA85F7BDB8AB29AA5 /* RCTSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 73C6BA76904DC0302B1FFDA7F21AD2CB /* RCTSlider.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		82BA709916986137BF299D3425C627D5 /* ARCityFairListComponentViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 01726AF448241B2C1F9F552D58EB3B78 /* ARCityFairListComponentViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		82CADCC6D6E5BCCFF171EBD3FCF1C0CE /* EmissionKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 401753F8C6817697AF804A5DA3439AD0 /* EmissionKeys.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1620,7 +1620,7 @@
 		ED1C8C8C4EC04409D802BCA58A4F1980 /* UIColor+DebugColours.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F67BE41034E02FC298B003F945A577F /* UIColor+DebugColours.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EDBCA9FEA0F945DF655E1D422CD51F41 /* RCTTextViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F645B6167794B2354FA2D512B1FDA /* RCTTextViewManager.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EDD6B3634156D28C41285E8A8E3EE81E /* RCTKeyCommands.h in Headers */ = {isa = PBXBuildFile; fileRef = 7394DBED2CC2335B44E4413F4BA4E37B /* RCTKeyCommands.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		EDF2E13DC35BEEC055AD6E0578A1565F /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = EDB0A40E5350D80002F3D00425353CAD /* UIFont+ArtsyFonts.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		EDF2E13DC35BEEC055AD6E0578A1565F /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFE1797A3289ECC50E617DCD876534D /* UIFont+ArtsyFonts.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EE288DC53B4ACB7C94DFFC82F977BA72 /* ARFairArtworksComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CA4D1C6D81D2D0421906C6723B66DDC /* ARFairArtworksComponentViewController.m */; };
 		EE3B8EFA8AF955853EDA9D2B40138F39 /* NSCharacterSet+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = 9802D76CD6A5609346795282FC1BEE52 /* NSCharacterSet+Stripe.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EE9F550C6273D5009CEC41A14F8BF135 /* EXPMatcherHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9962A009CE3AEC6E390DFE19FEF121A5 /* EXPMatcherHelpers.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -2396,6 +2396,7 @@
 		09A46C6B26B5EAFD0C375F28BD01E558 /* RNSVGPattern.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RNSVGPattern.h; path = ios/RNSVGPattern.h; sourceTree = "<group>"; };
 		09B73003B10B1AC50DFAC94A0FB4C49C /* RCTRootContentView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTRootContentView.m; sourceTree = "<group>"; };
 		09CAE14BACB5DEA97C061D43E22336C0 /* RCTImageEditingManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTImageEditingManager.m; path = Libraries/Image/RCTImageEditingManager.m; sourceTree = "<group>"; };
+		09DB6FC3F1C862CF388D06768302B434 /* ReactNativeAGaramondPro-Regular.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "ReactNativeAGaramondPro-Regular.otf"; path = "Pod/Assets/ReactNativeAGaramondPro-Regular.otf"; sourceTree = "<group>"; };
 		09FD607544902B781E0B520609E8174D /* KSCrashMonitor_User.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSCrashMonitor_User.c; path = Source/KSCrash/Recording/Monitors/KSCrashMonitor_User.c; sourceTree = "<group>"; };
 		0A051A3E4B35CFBCA98DCE8091ABCDC3 /* ARGraphQLQueryPreloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ARGraphQLQueryPreloader.m; sourceTree = "<group>"; };
 		0A271459321C4FB03F3C2EC737147B7A /* RCTNavItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTNavItem.h; path = ios/RCTNavItem.h; sourceTree = "<group>"; };
@@ -2464,7 +2465,6 @@
 		1053B0E8EC9C164A84F24561C00B7AD1 /* NSData+ImageContentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSData+ImageContentType.m"; path = "SDWebImage/NSData+ImageContentType.m"; sourceTree = "<group>"; };
 		105DF0894C7F8967F89427C50C711195 /* RCTParserUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTParserUtils.m; sourceTree = "<group>"; };
 		1098D674D22F3C1FD83F035D16C6C356 /* RCTAlertManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTAlertManager.m; sourceTree = "<group>"; };
-		10AE9E99FAE69B76D92500A8C02BB493 /* AGaramondPro-Italic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Italic.otf"; path = "Pod/Assets/AGaramondPro-Italic.otf"; sourceTree = "<group>"; };
 		10C247DCF1C70A7045F0D971A01DA482 /* RNSVGTextProperties.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RNSVGTextProperties.m; sourceTree = "<group>"; };
 		1118AFC12CA5B87195B6A4F35F47459C /* STPPostalCodeValidator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPPostalCodeValidator.m; path = Stripe/STPPostalCodeValidator.m; sourceTree = "<group>"; };
 		112C0BCF3F4789E2C870EB3DE7D0EBA8 /* RCTView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTView.h; sourceTree = "<group>"; };
@@ -2529,6 +2529,7 @@
 		194C12120C77AC1746F4D2C788D01982 /* AROpaqueImageViewManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageViewManager.m; sourceTree = "<group>"; };
 		1970FAF8C55D2DBBEBA45E7BC5A48DDB /* RCTRootContentView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTRootContentView.h; sourceTree = "<group>"; };
 		199D4C14A7D3DFB69BE0FC93881D3CA8 /* STPPaymentContext.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPPaymentContext.m; path = Stripe/STPPaymentContext.m; sourceTree = "<group>"; };
+		19CCBEBB0F785992D365A3B38B144ECB /* AGaramondPro-Bold.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Bold.otf"; path = "Pod/Assets/AGaramondPro-Bold.otf"; sourceTree = "<group>"; };
 		19FD279713C5BE255117ADE3F04CC366 /* react-native-navigator-ios.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "react-native-navigator-ios.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		1A0B46FDAA60A501C10F5D7C40141F33 /* ARGenericTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ARGenericTableViewController.h; path = Classes/ARGenericTableViewController.h; sourceTree = "<group>"; };
 		1A519266F80705CDCBA65B5148E03ABD /* RNSVGPattern.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RNSVGPattern.m; sourceTree = "<group>"; };
@@ -2629,12 +2630,12 @@
 		25B8F4BBCDA77BA866449BF34630E53B /* ARHomeComponentViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ARHomeComponentViewController.h; sourceTree = "<group>"; };
 		25C7A2022CABD11EF09941D0AD5D0171 /* RCTPerformanceLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTPerformanceLogger.h; sourceTree = "<group>"; };
 		25DA447956A931046241BF0EB8FCD479 /* RCTUIUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTUIUtils.m; sourceTree = "<group>"; };
-		261262F41D7B663E195890D941C80868 /* AVG65lig.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = AVG65lig.otf; path = Pod/Assets/AVG65lig.otf; sourceTree = "<group>"; };
 		267C946C83256992F9DC64E99CFE7FB4 /* KSStackCursor_MachineContext.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KSStackCursor_MachineContext.h; path = Source/KSCrash/Recording/Tools/KSStackCursor_MachineContext.h; sourceTree = "<group>"; };
 		267E1C4BD82370BAFC6B2098D674B519 /* react-native-cameraroll-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "react-native-cameraroll-dummy.m"; sourceTree = "<group>"; };
 		26C2B0300D4578FED18E3E8229DA5D64 /* KSSymbolicator.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSSymbolicator.c; path = Source/KSCrash/Recording/Tools/KSSymbolicator.c; sourceTree = "<group>"; };
 		26DFD4DF683D134FC5B73D9CA7A4E7CF /* RNSVGRenderable.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RNSVGRenderable.m; path = ios/RNSVGRenderable.m; sourceTree = "<group>"; };
 		26FAEF265BD5256202867EEEEDCABCD1 /* RNSVGFontData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGFontData.h; sourceTree = "<group>"; };
+		27451F6B5E96BCC685541FF7B752F631 /* Artsy+UIFonts-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Artsy+UIFonts-prefix.pch"; sourceTree = "<group>"; };
 		282C0501E5BE69A45F4F5EB85F32C08B /* RCTSwitchManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTSwitchManager.m; sourceTree = "<group>"; };
 		2853EA78FA79F177BE2628AE422A6E98 /* UIView+ARSpinner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+ARSpinner.m"; path = "Extraction/Classes/UIView+ARSpinner.m"; sourceTree = "<group>"; };
 		286C2442A742072EA1CF3923D75AF33E /* STPValidatedTextField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPValidatedTextField.h; path = Stripe/STPValidatedTextField.h; sourceTree = "<group>"; };
@@ -2646,7 +2647,6 @@
 		29AC9E95B1997F11F8E3078D4E439E94 /* SentryReactNative.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SentryReactNative.xcconfig; sourceTree = "<group>"; };
 		29C5A852101101AB81B0FB82C84C3040 /* SDWebImagePrefetcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImagePrefetcher.h; path = SDWebImage/SDWebImagePrefetcher.h; sourceTree = "<group>"; };
 		29E79CF867415F398C0357BE6A00679E /* RCTMGLFillLayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTMGLFillLayer.h; path = ios/RCTMGL/RCTMGLFillLayer.h; sourceTree = "<group>"; };
-		2A0A12DA9B8018020ACE7895DFD52985 /* Artsy+UIFonts.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Artsy+UIFonts.xcconfig"; sourceTree = "<group>"; };
 		2A141B953C70E9835F9B2AE6E64FA90A /* JSCExecutorFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JSCExecutorFactory.h; sourceTree = "<group>"; };
 		2A3B9A30A86A7D587BCD2D1A03C0999A /* None.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = None.h; path = Source/KSCrash/llvm/ADT/None.h; sourceTree = "<group>"; };
 		2A7CADE6AB24CD994CA25C872A81D279 /* EXPMatchers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPMatchers.h; path = Expecta/Matchers/EXPMatchers.h; sourceTree = "<group>"; };
@@ -2667,7 +2667,6 @@
 		2C1401AF4A6D4A6EB817529247759385 /* RCTJSStackFrame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTJSStackFrame.h; sourceTree = "<group>"; };
 		2C142B0B6E2B1B9B71E77FE10BF27D0A /* RCTKeyCommands.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTKeyCommands.m; sourceTree = "<group>"; };
 		2C29CF937C03BDC17A0E8ECB9D4FEA8A /* RCTViewManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTViewManager.m; sourceTree = "<group>"; };
-		2C2DCB2E3A213376855884AA8961E238 /* AGaramondPro-BoldItalic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-BoldItalic.otf"; path = "Pod/Assets/AGaramondPro-BoldItalic.otf"; sourceTree = "<group>"; };
 		2C39A88005F5CDC6C3B6318E2DAFDE6B /* RCTNavigatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTNavigatorManager.m; path = ios/RCTNavigatorManager.m; sourceTree = "<group>"; };
 		2C3FC0C1093A6C9226000F7BAE5C0852 /* RNSVGSymbol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGSymbol.h; sourceTree = "<group>"; };
 		2C7C3F253EB890AAA65F79B972F3D541 /* RCTMGLEvent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTMGLEvent.h; path = ios/RCTMGL/RCTMGLEvent.h; sourceTree = "<group>"; };
@@ -2708,7 +2707,6 @@
 		324AEA9A500C1D1A489695173A84BAA6 /* RCTUIManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTUIManager.h; sourceTree = "<group>"; };
 		32562BAA3531D9356B6CE63C2C825275 /* UIView+BooleanAnimations-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIView+BooleanAnimations-dummy.m"; sourceTree = "<group>"; };
 		3263935E2139FC45837AE486F45BFBFE /* STPPaymentActivityIndicatorView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPPaymentActivityIndicatorView.h; path = Stripe/PublicHeaders/STPPaymentActivityIndicatorView.h; sourceTree = "<group>"; };
-		326E915FB4A843A8EE2E902E67F50B00 /* UIFont+ArtsyFonts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIFont+ArtsyFonts.h"; path = "Pod/Classes/UIFont+ArtsyFonts.h"; sourceTree = "<group>"; };
 		3298C57E1E31AD8BB36B2F3838801F36 /* RNSVGPathManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGPathManager.h; sourceTree = "<group>"; };
 		32BAC4F09E7F8E967404E3E7D1BCB626 /* RCTBaseTextInputShadowView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTBaseTextInputShadowView.h; sourceTree = "<group>"; };
 		32D6E65FC64DB2023AD73F879E50EDD0 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
@@ -2730,7 +2728,6 @@
 		353D1B516545034AFEB5CBF04BD0F2F4 /* SentrySwizzle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentrySwizzle.m; path = Sources/Sentry/SentrySwizzle.m; sourceTree = "<group>"; };
 		357DF9C95D19B21CAC6DE18D66E67A7B /* cached-powers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "cached-powers.h"; path = "double-conversion/cached-powers.h"; sourceTree = "<group>"; };
 		35A95015406F06461480A6FC301F92C5 /* vlog_is_on.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = vlog_is_on.h; path = src/glog/vlog_is_on.h; sourceTree = "<group>"; };
-		35E4F150BF0589768AAD29A09F409FE4 /* Artsy+UIFonts-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Artsy+UIFonts-prefix.pch"; sourceTree = "<group>"; };
 		35F53C2A623270EF39D171DAD7F65710 /* STPSourceReceiver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPSourceReceiver.h; path = Stripe/PublicHeaders/STPSourceReceiver.h; sourceTree = "<group>"; };
 		36204EA49F4686EB27C6708E02D85737 /* ARShowMoreInfoComponentViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ARShowMoreInfoComponentViewController.m; sourceTree = "<group>"; };
 		3623A07A8667FA89120F40F30927E3FF /* RCTLocalAssetImageLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTLocalAssetImageLoader.h; path = Libraries/Image/RCTLocalAssetImageLoader.h; sourceTree = "<group>"; };
@@ -2820,6 +2817,7 @@
 		416DDB8AB51B65F8CF71C5539EEA3DD9 /* STPAspects.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPAspects.h; path = Stripe/STPAspects.h; sourceTree = "<group>"; };
 		41709E4612EC86EEE1484D16A19F50B2 /* ARGeneComponentViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ARGeneComponentViewController.h; sourceTree = "<group>"; };
 		4175A68B3B8A406948A37B4AB9398F89 /* KSJSONCodec.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KSJSONCodec.h; path = Source/KSCrash/Recording/Tools/KSJSONCodec.h; sourceTree = "<group>"; };
+		4187CFF77779EF7C9B6BA757EA93A459 /* AVG65lig.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = AVG65lig.otf; path = Pod/Assets/AVG65lig.otf; sourceTree = "<group>"; };
 		41A3E20D2747DF4CDCF7871D7EBD66B7 /* RCTMaskedView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTMaskedView.h; sourceTree = "<group>"; };
 		41D2A0F20D2A397602B76F36CF58A976 /* RCTRawTextShadowView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTRawTextShadowView.h; sourceTree = "<group>"; };
 		41EDF4529EB7F89DF6A278DF46F9C0A7 /* STPLegalEntityParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPLegalEntityParams.m; path = Stripe/STPLegalEntityParams.m; sourceTree = "<group>"; };
@@ -2922,6 +2920,7 @@
 		4E70893D71F0604F6AA8C16184EECE7B /* ARAnimationContinuation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ARAnimationContinuation.h; path = Extraction/Classes/ARAnimationContinuation.h; sourceTree = "<group>"; };
 		4E783655190F505842A7E4FB2578061F /* Emission-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Emission-dummy.m"; sourceTree = "<group>"; };
 		4E90073F60ED698727575C22BCA1F129 /* fishhook.c */ = {isa = PBXFileReference; includeInIndex = 1; name = fishhook.c; path = Libraries/fishhook/fishhook.c; sourceTree = "<group>"; };
+		4EC9B6878266732DC8BDA6BE75D4D767 /* AGaramondPro-Regular.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Regular.otf"; path = "Pod/Assets/AGaramondPro-Regular.otf"; sourceTree = "<group>"; };
 		4EFF072AA61618DA58CFBA7741D206EE /* stp_shipping_form@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "stp_shipping_form@3x.png"; path = "Stripe/Resources/Images/stp_shipping_form@3x.png"; sourceTree = "<group>"; };
 		4EFF406A5CA631847BACD1247BA68AA0 /* libreact-native-navigator-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libreact-native-navigator-ios.a"; path = "libreact-native-navigator-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F11B69F42BE5EC352A9E46FD61AFE13 /* RCTSinglelineTextInputView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTSinglelineTextInputView.m; sourceTree = "<group>"; };
@@ -2976,6 +2975,7 @@
 		5796305ADB4A72F84563F633DAB7EDAF /* ARFavoritesComponentViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ARFavoritesComponentViewController.h; sourceTree = "<group>"; };
 		57A9878EE2D7636160B20ECA8E08B5EA /* FLKAutoLayout-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FLKAutoLayout-prefix.pch"; sourceTree = "<group>"; };
 		57BB71C45A61D135144A4247CF3B66E9 /* RNSVGMask.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RNSVGMask.m; sourceTree = "<group>"; };
+		57F39A782632EC44043518846F3E6372 /* Artsy+UIFonts-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Artsy+UIFonts-dummy.m"; sourceTree = "<group>"; };
 		5801EA816933A728A810C3740FDA3723 /* Pods-EmissionTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-EmissionTests-dummy.m"; sourceTree = "<group>"; };
 		58145AA9663DB7785429571C4D6A73BC /* RCTMGLImageSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTMGLImageSource.m; path = ios/RCTMGL/RCTMGLImageSource.m; sourceTree = "<group>"; };
 		585792B567A2F39324EEFB95939154D8 /* STPBankAccountParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPBankAccountParams.m; path = Stripe/STPBankAccountParams.m; sourceTree = "<group>"; };
@@ -3086,7 +3086,6 @@
 		66722B927E1C8928B5FDA89F5227214A /* STPEphemeralKey.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPEphemeralKey.m; path = Stripe/STPEphemeralKey.m; sourceTree = "<group>"; };
 		66AE5EE840F3AC34961C1DAAD4AE9642 /* ARHomeComponentViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ARHomeComponentViewController.m; sourceTree = "<group>"; };
 		670BDBC2CE3FBA72689F24ACE8984160 /* ARFairArtistsComponentViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ARFairArtistsComponentViewController.h; sourceTree = "<group>"; };
-		670C5F1E25B8F890D99970446D174F1E /* AGaramondPro-Regular.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Regular.otf"; path = "Pod/Assets/AGaramondPro-Regular.otf"; sourceTree = "<group>"; };
 		674B191A0C917CF0832B739D31C87696 /* stp_card_mastercard_template.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = stp_card_mastercard_template.png; path = Stripe/Resources/Images/stp_card_mastercard_template.png; sourceTree = "<group>"; };
 		6762BC2247472735B30F4050BF323A34 /* RCTSRWebSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTSRWebSocket.h; path = Libraries/WebSocket/RCTSRWebSocket.h; sourceTree = "<group>"; };
 		677E76FD68EE74C35307BD330E8E48A7 /* KSCrashMonitor_System.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KSCrashMonitor_System.m; path = Source/KSCrash/Recording/Monitors/KSCrashMonitor_System.m; sourceTree = "<group>"; };
@@ -3149,6 +3148,7 @@
 		6E93E0AECC333D8198B2971DE1D8BE40 /* ARLoadFailureView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ARLoadFailureView.h; path = Extraction/Classes/ARLoadFailureView.h; sourceTree = "<group>"; };
 		6EF2E69790E068CEBEDA40504A43B23C /* ARTableViewData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ARTableViewData.h; path = Classes/ARTableViewData.h; sourceTree = "<group>"; };
 		6EF470302347171F7F019DA80B401CC7 /* RCTErrorCustomizer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTErrorCustomizer.h; sourceTree = "<group>"; };
+		6F03CD0D63659C234709635253429416 /* UIFont+ArtsyFonts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIFont+ArtsyFonts.h"; path = "Pod/Classes/UIFont+ArtsyFonts.h"; sourceTree = "<group>"; };
 		6F3AD7B18DA2B97075CD2939152DDBBF /* STPPaymentCardTextField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPPaymentCardTextField.h; path = Stripe/PublicHeaders/STPPaymentCardTextField.h; sourceTree = "<group>"; };
 		6F4F73406A829B586B7ACE94BFA22B72 /* RCTWebSocketModule.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTWebSocketModule.m; path = Libraries/WebSocket/RCTWebSocketModule.m; sourceTree = "<group>"; };
 		6F8A11C77FC83A2FD7099DC77AFF3BA0 /* ShapeSource.md */ = {isa = PBXFileReference; includeInIndex = 1; name = ShapeSource.md; path = docs/ShapeSource.md; sourceTree = "<group>"; };
@@ -3157,7 +3157,6 @@
 		6FF7ED9A919AF450EA7B0312D70C370D /* RCTMGLLineLayerManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTMGLLineLayerManager.h; path = ios/RCTMGL/RCTMGLLineLayerManager.h; sourceTree = "<group>"; };
 		6FFAEE46BE577C7372105778D8FC5B2C /* RCTLinkingManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTLinkingManager.h; path = Libraries/LinkingIOS/RCTLinkingManager.h; sourceTree = "<group>"; };
 		6FFB7B2992BB53405E6B771A5BA1E97D /* libDoubleConversion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libDoubleConversion.a; path = libDoubleConversion.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FFBEC0E8A05647EC3128EE84C5F0359 /* AGaramondPro-Semibold.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Semibold.otf"; path = "Pod/Assets/AGaramondPro-Semibold.otf"; sourceTree = "<group>"; };
 		7008418B780B293AB3E705447231457E /* KSCPU.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSCPU.c; path = Source/KSCrash/Recording/Tools/KSCPU.c; sourceTree = "<group>"; };
 		7034C2F5E5C517D9693717651DE6E974 /* STPShippingMethodsViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPShippingMethodsViewController.m; path = Stripe/STPShippingMethodsViewController.m; sourceTree = "<group>"; };
 		70381619D0D0232E8EF67A8765F480C7 /* Pods-Emission.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Emission.deploy.xcconfig"; sourceTree = "<group>"; };
@@ -3193,6 +3192,7 @@
 		733E4CD2F589CA5FCB9B36ECB1B23FC6 /* RCTSurfaceStage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTSurfaceStage.h; sourceTree = "<group>"; };
 		7356D9A13EB0DE9B7A95341E18DF468E /* RCTNetworking.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = RCTNetworking.mm; path = Libraries/Network/RCTNetworking.mm; sourceTree = "<group>"; };
 		7357889590C044BE9ADD1533CC57F752 /* RCTNativeAnimatedModule.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTNativeAnimatedModule.h; path = Libraries/NativeAnimation/RCTNativeAnimatedModule.h; sourceTree = "<group>"; };
+		7371D6D711932790C6D79EE0A60C47B3 /* AGaramondPro-Italic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Italic.otf"; path = "Pod/Assets/AGaramondPro-Italic.otf"; sourceTree = "<group>"; };
 		7390F0888C3A778FEF1A8BD4B0124A69 /* ARSwitchBoardModule.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ARSwitchBoardModule.m; sourceTree = "<group>"; };
 		7394DBED2CC2335B44E4413F4BA4E37B /* RCTKeyCommands.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTKeyCommands.h; sourceTree = "<group>"; };
 		73B04F7FBBCC6CD379433A774E0FD456 /* KSCrashMonitor_Signal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KSCrashMonitor_Signal.h; path = Source/KSCrash/Recording/Monitors/KSCrashMonitor_Signal.h; sourceTree = "<group>"; };
@@ -3267,7 +3267,6 @@
 		7CA5E1608DCB6A39F9BB714F27D554CE /* Expecta-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Expecta-prefix.pch"; sourceTree = "<group>"; };
 		7CCEDC318559F41F5153B9B6EF211465 /* STPFile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPFile.h; path = Stripe/PublicHeaders/STPFile.h; sourceTree = "<group>"; };
 		7CCF2959778CEC6BADE352557424F2DC /* STPCategoryLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPCategoryLoader.h; path = Stripe/STPCategoryLoader.h; sourceTree = "<group>"; };
-		7CF007343A8A9FFDDB0AD4E0ED5722EF /* AGaramondPro-Bold.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Bold.otf"; path = "Pod/Assets/AGaramondPro-Bold.otf"; sourceTree = "<group>"; };
 		7D11EB376F4F5C534A866F1658362B50 /* STPCardBrand.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPCardBrand.h; path = Stripe/PublicHeaders/STPCardBrand.h; sourceTree = "<group>"; };
 		7D17494F7EA82147BF9AF7187F5BADD2 /* STPTelemetryClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPTelemetryClient.h; path = Stripe/STPTelemetryClient.h; sourceTree = "<group>"; };
 		7D1F1DA9525E6FCAABD9FC225FB7947A /* RNSVGBrushType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGBrushType.h; sourceTree = "<group>"; };
@@ -3308,6 +3307,7 @@
 		83349A368A3ED6D7B6FC5632A790B1A2 /* ArtsyAuthentication+Private.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "ArtsyAuthentication+Private.m"; path = "Pod/Classes/ArtsyAuthentication+Private.m"; sourceTree = "<group>"; };
 		83BC8EBA542BE615E42ED0E00D3FA46A /* KSDynamicLinker.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSDynamicLinker.c; path = Source/KSCrash/Recording/Tools/KSDynamicLinker.c; sourceTree = "<group>"; };
 		83D728F8D4B4CD6A7496DB165DDDB32D /* STPShippingMethodTableViewCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPShippingMethodTableViewCell.h; path = Stripe/STPShippingMethodTableViewCell.h; sourceTree = "<group>"; };
+		843C785E8923640DD2F32BC45A4E5A53 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-Medium.otf"; path = "Pod/Assets/Unica77LL-Medium.otf"; sourceTree = "<group>"; };
 		8461272EEE9F4C23F0949AC46A4607EF /* stp_icon_checkmark@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "stp_icon_checkmark@2x.png"; path = "Stripe/Resources/Images/stp_icon_checkmark@2x.png"; sourceTree = "<group>"; };
 		8467629C777F2D5E0C293974D8B9DE5E /* FBSnapshotTestCase.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FBSnapshotTestCase.modulemap; sourceTree = "<group>"; };
 		848E0CD409F22F0B86F1248BB52E5CED /* EXPMatchers+beTruthy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beTruthy.h"; path = "Expecta/Matchers/EXPMatchers+beTruthy.h"; sourceTree = "<group>"; };
@@ -3322,7 +3322,6 @@
 		85C803CFE04A5AF7CCA58F2DDFE134AB /* ScopeGuard.cpp */ = {isa = PBXFileReference; includeInIndex = 1; name = ScopeGuard.cpp; path = folly/ScopeGuard.cpp; sourceTree = "<group>"; };
 		85DCF253F6E4EFD88E90DF2C540CF51B /* Utils.cpp */ = {isa = PBXFileReference; includeInIndex = 1; name = Utils.cpp; path = yoga/Utils.cpp; sourceTree = "<group>"; };
 		85F5F0A568CBDF919A59A347C2BD96CE /* UIView+FLKAutoLayoutDebug.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+FLKAutoLayoutDebug.h"; path = "FLKAutoLayout/UIView+FLKAutoLayoutDebug.h"; sourceTree = "<group>"; };
-		863360587F9117402E984FCE1D8898A7 /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-Italic.otf"; path = "Pod/Assets/Unica77LL-Italic.otf"; sourceTree = "<group>"; };
 		86516A2FB3B7246841ECC01B1C95425A /* RCTShadowView+Layout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RCTShadowView+Layout.h"; sourceTree = "<group>"; };
 		8672ACF869F67D4C8F2E0A92D1E53C67 /* KSStackCursor_Backtrace.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSStackCursor_Backtrace.c; path = Source/KSCrash/Recording/Tools/KSStackCursor_Backtrace.c; sourceTree = "<group>"; };
 		86AE3A7AE12DFA6C397449A8F228519A /* SpectaUtility.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SpectaUtility.h; path = Specta/Specta/SpectaUtility.h; sourceTree = "<group>"; };
@@ -3364,7 +3363,6 @@
 		8AF57D4A885AE5D70C244399B4F4850C /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8AFBB1850F51E28DCB06053423B6CF11 /* UIImage+Stripe.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Stripe.m"; path = "Stripe/UIImage+Stripe.m"; sourceTree = "<group>"; };
 		8B0B245717A26B2A4379B25BE71B5430 /* RCTTextView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTTextView.m; sourceTree = "<group>"; };
-		8B3A8EEB88A293043368F3F5F3FC35F4 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-Medium.otf"; path = "Pod/Assets/Unica77LL-Medium.otf"; sourceTree = "<group>"; };
 		8B4FEBA6D9D75336ADF6F046BC355727 /* RNCCameraRollManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RNCCameraRollManager.m; path = ios/RNCCameraRollManager.m; sourceTree = "<group>"; };
 		8B8300DE9A10B4796F033F544B8C9ADB /* RCTMGLSymbolLayerManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTMGLSymbolLayerManager.m; path = ios/RCTMGL/RCTMGLSymbolLayerManager.m; sourceTree = "<group>"; };
 		8B8D52F7D854A5A37A2AB544ABC67BC5 /* CameraMode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CameraMode.h; path = ios/RCTMGL/CameraMode.h; sourceTree = "<group>"; };
@@ -3418,7 +3416,6 @@
 		913CDA6F5B91D926B059428519975037 /* STPSectionHeaderView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPSectionHeaderView.m; path = Stripe/STPSectionHeaderView.m; sourceTree = "<group>"; };
 		917890C197CEEB5A97A8EA73ED3380FE /* UIView+ARSpinner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+ARSpinner.h"; path = "Extraction/Classes/UIView+ARSpinner.h"; sourceTree = "<group>"; };
 		918315BD306B038B71E41F61F0A10BC4 /* RNSVGDefs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGDefs.h; sourceTree = "<group>"; };
-		9195E3B13937A3AEE789746FDDD72F78 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-MediumItalic.otf"; path = "Pod/Assets/Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
 		91BD4A662C83143FCB380481BC5CC0BE /* RCTAsyncLocalStorage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTAsyncLocalStorage.h; sourceTree = "<group>"; };
 		91C7E42636927AA3F9988D4C2B466EE1 /* RCTImageUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTImageUtils.h; path = Libraries/Image/RCTImageUtils.h; sourceTree = "<group>"; };
 		91F1604D438261AC17A79B0D3E84E03A /* Artsy+UIColors-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Artsy+UIColors-prefix.pch"; sourceTree = "<group>"; };
@@ -3616,6 +3613,7 @@
 		A65952FB5FD64591A2EF77D1ED4807C3 /* STPAPIClient+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "STPAPIClient+Private.h"; path = "Stripe/STPAPIClient+Private.h"; sourceTree = "<group>"; };
 		A66A49D6CE2073B863CDA361100033FB /* RCTWebViewManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewManager.m; sourceTree = "<group>"; };
 		A6AB6569DFC25041B687AC771DDE15F3 /* ARLoadFailureViewManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ARLoadFailureViewManager.m; sourceTree = "<group>"; };
+		A6B31D49715CF7F8CD1AB72750DDBD30 /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-Regular.otf"; path = "Pod/Assets/Unica77LL-Regular.otf"; sourceTree = "<group>"; };
 		A6CD872EF6B08210E1C0616F01A7991F /* KSCPU_x86_32.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSCPU_x86_32.c; path = Source/KSCrash/Recording/Tools/KSCPU_x86_32.c; sourceTree = "<group>"; };
 		A6DDBAEF37C6585CEE87ADEFE5417F2C /* RCTScrollView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTScrollView.h; sourceTree = "<group>"; };
 		A7035AF545C951B028B76D0BCC4E90D0 /* RCTTextDecorationLineType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTTextDecorationLineType.h; sourceTree = "<group>"; };
@@ -3661,6 +3659,7 @@
 		ABA2C79FE11FFC50B46B401EE592745F /* RCTProfile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTProfile.h; sourceTree = "<group>"; };
 		ABEF0079036B23F6CF15F5032AA6BA3B /* ArtsyAuthentication+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "ArtsyAuthentication+Private.h"; path = "Pod/Classes/ArtsyAuthentication+Private.h"; sourceTree = "<group>"; };
 		ABFBA7B571952A105FB9C5A82C4FF659 /* RCTImageSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTImageSource.m; sourceTree = "<group>"; };
+		ABFE1797A3289ECC50E617DCD876534D /* UIFont+ArtsyFonts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIFont+ArtsyFonts.m"; path = "Pod/Classes/UIFont+ArtsyFonts.m"; sourceTree = "<group>"; };
 		AC191E48F84E873376E347BF5BC0BCA6 /* NSURL+QueryDictionary.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSURL+QueryDictionary.h"; path = "NSURL+QueryDictionary/NSURL+QueryDictionary.h"; sourceTree = "<group>"; };
 		AC1EDD044442CAA679148C288B093718 /* RCTSurfaceStage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTSurfaceStage.m; sourceTree = "<group>"; };
 		AC3B95542C246B079F7FA8579689A167 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3675,6 +3674,7 @@
 		AD658C8554F7C672D4043E751147FC75 /* KSCPU.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KSCPU.h; path = Source/KSCrash/Recording/Tools/KSCPU.h; sourceTree = "<group>"; };
 		AD9D9D07BD862B54C3A790A0052710CC /* RNSVGLinearGradient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RNSVGLinearGradient.m; sourceTree = "<group>"; };
 		ADAF831E2BBCBBDDDA0C5D62CCF32BE6 /* KSCrashReport.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSCrashReport.c; path = Source/KSCrash/Recording/KSCrashReport.c; sourceTree = "<group>"; };
+		ADD98F7DEF5BBAC3F812B1F66F244E5F /* ReactNativeAGaramondPro-Semibold.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "ReactNativeAGaramondPro-Semibold.otf"; path = "Pod/Assets/ReactNativeAGaramondPro-Semibold.otf"; sourceTree = "<group>"; };
 		AE1703313EF31A3F32095C3AF6BF7157 /* RCTMGLShapeSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTMGLShapeSource.m; path = ios/RCTMGL/RCTMGLShapeSource.m; sourceTree = "<group>"; };
 		AE7735E6FB92E6034D27DED3DB868FBD /* STPCardValidationState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPCardValidationState.h; path = Stripe/PublicHeaders/STPCardValidationState.h; sourceTree = "<group>"; };
 		AE7BDEA058855CE79788BAEEF5016E25 /* CxxNativeModule.cpp */ = {isa = PBXFileReference; includeInIndex = 1; name = CxxNativeModule.cpp; path = ReactCommon/cxxreact/CxxNativeModule.cpp; sourceTree = "<group>"; };
@@ -3723,6 +3723,7 @@
 		B3CFA17D0B3F2F52C6905A65B8BE5CF3 /* SPTGlobalBeforeAfterEach.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SPTGlobalBeforeAfterEach.h; path = Specta/Specta/SPTGlobalBeforeAfterEach.h; sourceTree = "<group>"; };
 		B3E9BA5CD4AB3E986F9D57F8D922CF94 /* RNSVGViewBox.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RNSVGViewBox.m; sourceTree = "<group>"; };
 		B401CDFE13FFCC66FF512DAC02891226 /* RCTManagedPointer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTManagedPointer.h; sourceTree = "<group>"; };
+		B4AC884600662362DA626B7017B1AEF0 /* AGaramondPro-Semibold.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-Semibold.otf"; path = "Pod/Assets/AGaramondPro-Semibold.otf"; sourceTree = "<group>"; };
 		B51964CD7CD506D40361FA51C7066514 /* RCTResizeMode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RCTResizeMode.h; path = Libraries/Image/RCTResizeMode.h; sourceTree = "<group>"; };
 		B5BCFDAAFF507E51C0252116477B70BF /* UIImage+Compare.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+Compare.h"; path = "FBSnapshotTestCase/Categories/UIImage+Compare.h"; sourceTree = "<group>"; };
 		B5CE71C30F2A77F247ACB21F272C3EA9 /* RCTFileReaderModule.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTFileReaderModule.m; path = Libraries/Blob/RCTFileReaderModule.m; sourceTree = "<group>"; };
@@ -3745,6 +3746,7 @@
 		B827B0B3AD1E0E1042046EED76081860 /* RNSVGGroupManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGGroupManager.h; sourceTree = "<group>"; };
 		B8442854DBA96057AD2D170D6A889C16 /* FBSnapshotTestCase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSnapshotTestCase.m; path = FBSnapshotTestCase/FBSnapshotTestCase.m; sourceTree = "<group>"; };
 		B8623A5CB94B115CABD43769B6E50279 /* RCTUITextView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTUITextView.h; sourceTree = "<group>"; };
+		B867FA5E970126139789C7ACF599373F /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-Italic.otf"; path = "Pod/Assets/Unica77LL-Italic.otf"; sourceTree = "<group>"; };
 		B86DA0579C2B929D19821DAE81E57816 /* RCTBaseTextInputViewManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTBaseTextInputViewManager.h; sourceTree = "<group>"; };
 		B8EAF79B2DEB2131B4CC2E5D576C3A27 /* NSDataBigString.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = NSDataBigString.h; sourceTree = "<group>"; };
 		B8F72A75D2285B5B7B1E5BB90E681F1E /* react-native-mapbox-gl.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "react-native-mapbox-gl.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -3827,11 +3829,11 @@
 		C25ACA0BBF83366C7F5096B8AA0439B0 /* EXPMatchers+beCloseTo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseTo.h"; path = "Expecta/Matchers/EXPMatchers+beCloseTo.h"; sourceTree = "<group>"; };
 		C26BC1D0770016C2EF9B0A9F77E5BACB /* FABKitProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FABKitProtocol.h; path = Stripe/FABKitProtocol.h; sourceTree = "<group>"; };
 		C273AAD3EC9C15B993D1DB7E378E308F /* RCTWKWebViewManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTWKWebViewManager.h; sourceTree = "<group>"; };
-		C29C5DD15F7725D80759400919DB4596 /* Artsy+UIFonts-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Artsy+UIFonts-dummy.m"; sourceTree = "<group>"; };
 		C2AB4598A184887DBABF9D7E53432C0E /* RCTAnimationType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTAnimationType.h; sourceTree = "<group>"; };
 		C2CAF1F11FAD4ABAAFF95968CA664A44 /* STPCoreViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPCoreViewController.h; path = Stripe/PublicHeaders/STPCoreViewController.h; sourceTree = "<group>"; };
 		C2E7BF259B690821FCD7D376FB8B0826 /* KSJSONCodecObjC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KSJSONCodecObjC.h; path = Source/KSCrash/Recording/Tools/KSJSONCodecObjC.h; sourceTree = "<group>"; };
 		C2EF74E3A07FC57021330F81B37AC4AF /* RNSVGMask.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGMask.h; sourceTree = "<group>"; };
+		C2F1BE342D17647D79A3CD6CF3B8F540 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-MediumItalic.otf"; path = "Pod/Assets/Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
 		C2FABEF382E76B81D9A9C48628D16766 /* SentryContext.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryContext.m; path = Sources/Sentry/SentryContext.m; sourceTree = "<group>"; };
 		C304958773BE80414E6105E5639FFDF2 /* RNSVGLinearGradient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGLinearGradient.h; sourceTree = "<group>"; };
 		C35BB357DD8ABF6B1860275274A6CB09 /* ARFairArtistsComponentViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ARFairArtistsComponentViewController.m; sourceTree = "<group>"; };
@@ -4044,7 +4046,6 @@
 		E049B75F70BD4BEAD23D10B7960222AB /* RNSVGSymbolManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGSymbolManager.h; sourceTree = "<group>"; };
 		E071EA2E0169F097F955624AB35002D2 /* NSLayoutConstraint+FLKAutoLayoutDebug.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSLayoutConstraint+FLKAutoLayoutDebug.m"; path = "FLKAutoLayout/Private/NSLayoutConstraint+FLKAutoLayoutDebug.m"; sourceTree = "<group>"; };
 		E072747BE2EE2C061782AF6D6D7BDB6E /* stp_card_discover@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "stp_card_discover@2x.png"; path = "Stripe/Resources/Images/stp_card_discover@2x.png"; sourceTree = "<group>"; };
-		E082A1F759DFD21A3A33AB16C42BE61A /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "Unica77LL-Regular.otf"; path = "Pod/Assets/Unica77LL-Regular.otf"; sourceTree = "<group>"; };
 		E08C6E35B64BE1D085CCC10240F204CE /* RCTMultiplicationAnimatedNode.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTMultiplicationAnimatedNode.m; sourceTree = "<group>"; };
 		E0C3068358F93628F5B3ACC03BAD6768 /* RCTCxxConvert.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTCxxConvert.m; sourceTree = "<group>"; };
 		E0DCD5429494A931295F7E9D4C43E7E9 /* llvm-config.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "llvm-config.h"; path = "Source/KSCrash/llvm/Config/llvm-config.h"; sourceTree = "<group>"; };
@@ -4094,6 +4095,7 @@
 		E850A627D30ECFCF68D55823209467C1 /* STPLegalEntityParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPLegalEntityParams.h; path = Stripe/PublicHeaders/STPLegalEntityParams.h; sourceTree = "<group>"; };
 		E86C9E12FE465FD0F10C4924AAD9B7A0 /* Punycode.cpp */ = {isa = PBXFileReference; includeInIndex = 1; name = Punycode.cpp; path = Source/KSCrash/swift/Basic/Punycode.cpp; sourceTree = "<group>"; };
 		E88EC4279E3056B875AE63DC97B76805 /* STPToken.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPToken.m; path = Stripe/STPToken.m; sourceTree = "<group>"; };
+		E8BB31DE08BFB415FC9DF890E6EF42DE /* AGaramondPro-BoldItalic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "AGaramondPro-BoldItalic.otf"; path = "Pod/Assets/AGaramondPro-BoldItalic.otf"; sourceTree = "<group>"; };
 		E8BE6FBEAD0D087C262AB1796A64E9B7 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E8C96C893467CD35CF3D4798A87A53D7 /* UIView+BooleanAnimations.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIView+BooleanAnimations.m"; sourceTree = "<group>"; };
 		E8CACB8744373C1818777FFB8F84C67E /* libKeys.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libKeys.a; path = libKeys.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4126,9 +4128,9 @@
 		ECE5C123EF1EE99AFDBBAB2BE941D635 /* RNSVGTextProperties.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGTextProperties.h; sourceTree = "<group>"; };
 		ECF4B8BAC97634E1F3C2E46D700C3A7B /* ARCity+GeospatialAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ARCity+GeospatialAdditions.m"; sourceTree = "<group>"; };
 		ED5DFE3529863CF6FACE17FDFB0F17A5 /* RNSVGSvgViewManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGSvgViewManager.h; sourceTree = "<group>"; };
-		EDB0A40E5350D80002F3D00425353CAD /* UIFont+ArtsyFonts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIFont+ArtsyFonts.m"; path = "Pod/Classes/UIFont+ArtsyFonts.m"; sourceTree = "<group>"; };
 		EE0830A1B3FAD691F1CBF466ED9831D3 /* KSMachineContext_Apple.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KSMachineContext_Apple.h; path = Source/KSCrash/Recording/Tools/KSMachineContext_Apple.h; sourceTree = "<group>"; };
 		EE294C1B6DB44079640C61904EEF1732 /* RCTInspectorPackagerConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTInspectorPackagerConnection.h; sourceTree = "<group>"; };
+		EE6A91A3519F3CE026F6933A06FB7A32 /* ReactNativeAGaramondPro-Italic.otf */ = {isa = PBXFileReference; includeInIndex = 1; name = "ReactNativeAGaramondPro-Italic.otf"; path = "Pod/Assets/ReactNativeAGaramondPro-Italic.otf"; sourceTree = "<group>"; };
 		EE78BAE2CB17C2FC8C4275A27FA0F3B9 /* RCTMGLCircleLayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RCTMGLCircleLayer.m; path = ios/RCTMGL/RCTMGLCircleLayer.m; sourceTree = "<group>"; };
 		EE79FC4F8DA86D648DAFCBAA37DC4790 /* EXPMatchers+beSubclassOf.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beSubclassOf.m"; path = "Expecta/Matchers/EXPMatchers+beSubclassOf.m"; sourceTree = "<group>"; };
 		EEB69213CA6D3B78E196142223176AD9 /* RCTTextShadowView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTTextShadowView.m; sourceTree = "<group>"; };
@@ -4156,6 +4158,7 @@
 		F223700F98C865D0EFE8F3D0F177AF3F /* demangle.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = demangle.cc; path = src/demangle.cc; sourceTree = "<group>"; };
 		F234CC66702247D7F6FDDCE3A8524D71 /* DoubleConversion-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DoubleConversion-dummy.m"; sourceTree = "<group>"; };
 		F23E6AFA704AC2095028859EEF870F79 /* stp_card_discover_template@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "stp_card_discover_template@2x.png"; path = "Stripe/Resources/Images/stp_card_discover_template@2x.png"; sourceTree = "<group>"; };
+		F24F717DABDB7781F6514389400D5C74 /* Artsy+UIFonts.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Artsy+UIFonts.xcconfig"; sourceTree = "<group>"; };
 		F26C6E3C5A7F629F38088C32E62CFF23 /* KSCrashCachedData.c */ = {isa = PBXFileReference; includeInIndex = 1; name = KSCrashCachedData.c; path = Source/KSCrash/Recording/KSCrashCachedData.c; sourceTree = "<group>"; };
 		F28023B24A28313ABA8DE19182134ED4 /* RCTModalHostView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTModalHostView.h; sourceTree = "<group>"; };
 		F281D17F5426B842739C8DF0B4306BC0 /* EXPMatchers+beInTheRangeOf.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beInTheRangeOf.m"; path = "Expecta/Matchers/EXPMatchers+beInTheRangeOf.m"; sourceTree = "<group>"; };
@@ -4821,6 +4824,18 @@
 			path = "../Target Support Files/glog";
 			sourceTree = "<group>";
 		};
+		0B40C3C55CA20578B81991F30540EFAD /* Artsy+UIFonts */ = {
+			isa = PBXGroup;
+			children = (
+				6F03CD0D63659C234709635253429416 /* UIFont+ArtsyFonts.h */,
+				ABFE1797A3289ECC50E617DCD876534D /* UIFont+ArtsyFonts.m */,
+				41AE2F02CD590FFB95C5ABD3A051A907 /* Resources */,
+				D7CB9C88EB0958DF26297CDFB9E110D5 /* Support Files */,
+			);
+			name = "Artsy+UIFonts";
+			path = "Artsy+UIFonts";
+			sourceTree = "<group>";
+		};
 		0BA286F8FD12618C492D47151B629B25 /* Folly */ = {
 			isa = PBXGroup;
 			children = (
@@ -5384,6 +5399,26 @@
 			name = RCTGeolocation;
 			sourceTree = "<group>";
 		};
+		41AE2F02CD590FFB95C5ABD3A051A907 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				19CCBEBB0F785992D365A3B38B144ECB /* AGaramondPro-Bold.otf */,
+				E8BB31DE08BFB415FC9DF890E6EF42DE /* AGaramondPro-BoldItalic.otf */,
+				7371D6D711932790C6D79EE0A60C47B3 /* AGaramondPro-Italic.otf */,
+				4EC9B6878266732DC8BDA6BE75D4D767 /* AGaramondPro-Regular.otf */,
+				B4AC884600662362DA626B7017B1AEF0 /* AGaramondPro-Semibold.otf */,
+				4187CFF77779EF7C9B6BA757EA93A459 /* AVG65lig.otf */,
+				EE6A91A3519F3CE026F6933A06FB7A32 /* ReactNativeAGaramondPro-Italic.otf */,
+				09DB6FC3F1C862CF388D06768302B434 /* ReactNativeAGaramondPro-Regular.otf */,
+				ADD98F7DEF5BBAC3F812B1F66F244E5F /* ReactNativeAGaramondPro-Semibold.otf */,
+				B867FA5E970126139789C7ACF599373F /* Unica77LL-Italic.otf */,
+				843C785E8923640DD2F32BC45A4E5A53 /* Unica77LL-Medium.otf */,
+				C2F1BE342D17647D79A3CD6CF3B8F540 /* Unica77LL-MediumItalic.otf */,
+				A6B31D49715CF7F8CD1AB72750DDBD30 /* Unica77LL-Regular.otf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		437ADCCBA3EA36DDFA6B6400F1F4B073 /* Extraction */ = {
 			isa = PBXGroup;
 			children = (
@@ -5433,7 +5468,7 @@
 				D4DC32D5CD2A537768BB7D9ADB3F0493 /* ARGenericTableViewController */,
 				39DA62EB569E9360FB853D6E05F00BB2 /* Artsy+Authentication */,
 				5D99A71F6C0730367EE00F014034B558 /* Artsy+UIColors */,
-				ACB97BC4A7DBC108276E98C018EFCE27 /* Artsy+UIFonts */,
+				0B40C3C55CA20578B81991F30540EFAD /* Artsy+UIFonts */,
 				D93F9CFDEB81F07D90A81279468CE3BB /* Artsy-UIButtons */,
 				11320D46A1AC8AD7FC9D97941896AEEC /* boost-for-react-native */,
 				8C1C2CF8F0C96B37352679D14B1A3FD4 /* DoubleConversion */,
@@ -5585,17 +5620,6 @@
 				5CEB404134888CC5E71A5BEA65E32F7F /* ARSwitchView.m */,
 			);
 			name = ARSwitchView;
-			sourceTree = "<group>";
-		};
-		4DE8A011AC2C75B7A8F665CB85E8E421 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				2A0A12DA9B8018020ACE7895DFD52985 /* Artsy+UIFonts.xcconfig */,
-				C29C5DD15F7725D80759400919DB4596 /* Artsy+UIFonts-dummy.m */,
-				35E4F150BF0589768AAD29A09F409FE4 /* Artsy+UIFonts-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Artsy+UIFonts";
 			sourceTree = "<group>";
 		};
 		4E5374987CB1C2C901C98FFB8A94A384 /* Reporting */ = {
@@ -5914,23 +5938,6 @@
 				92ADD6C1A0961B00192E321BB50DFDDA /* Nodes */,
 			);
 			name = RCTAnimation;
-			sourceTree = "<group>";
-		};
-		6A6E05BB03C0E3D4589FBB309BC62EF7 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				7CF007343A8A9FFDDB0AD4E0ED5722EF /* AGaramondPro-Bold.otf */,
-				2C2DCB2E3A213376855884AA8961E238 /* AGaramondPro-BoldItalic.otf */,
-				10AE9E99FAE69B76D92500A8C02BB493 /* AGaramondPro-Italic.otf */,
-				670C5F1E25B8F890D99970446D174F1E /* AGaramondPro-Regular.otf */,
-				6FFBEC0E8A05647EC3128EE84C5F0359 /* AGaramondPro-Semibold.otf */,
-				261262F41D7B663E195890D941C80868 /* AVG65lig.otf */,
-				863360587F9117402E984FCE1D8898A7 /* Unica77LL-Italic.otf */,
-				8B3A8EEB88A293043368F3F5F3FC35F4 /* Unica77LL-Medium.otf */,
-				9195E3B13937A3AEE789746FDDD72F78 /* Unica77LL-MediumItalic.otf */,
-				E082A1F759DFD21A3A33AB16C42BE61A /* Unica77LL-Regular.otf */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		6B069DE15B87076DE939D51DE156CF9C /* Keys */ = {
@@ -6625,18 +6632,6 @@
 			);
 			name = "UIView+BooleanAnimations";
 			path = "UIView+BooleanAnimations";
-			sourceTree = "<group>";
-		};
-		ACB97BC4A7DBC108276E98C018EFCE27 /* Artsy+UIFonts */ = {
-			isa = PBXGroup;
-			children = (
-				326E915FB4A843A8EE2E902E67F50B00 /* UIFont+ArtsyFonts.h */,
-				EDB0A40E5350D80002F3D00425353CAD /* UIFont+ArtsyFonts.m */,
-				6A6E05BB03C0E3D4589FBB309BC62EF7 /* Resources */,
-				4DE8A011AC2C75B7A8F665CB85E8E421 /* Support Files */,
-			);
-			name = "Artsy+UIFonts";
-			path = "Artsy+UIFonts";
 			sourceTree = "<group>";
 		};
 		AD182E64EF3EAA63C29E2384EF9D5AE7 /* RCTWebSocket */ = {
@@ -7349,6 +7344,17 @@
 				98099057911A004613AFDD282E3269CE /* VirtualText */,
 			);
 			name = RCTText;
+			sourceTree = "<group>";
+		};
+		D7CB9C88EB0958DF26297CDFB9E110D5 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F24F717DABDB7781F6514389400D5C74 /* Artsy+UIFonts.xcconfig */,
+				57F39A782632EC44043518846F3E6372 /* Artsy+UIFonts-dummy.m */,
+				27451F6B5E96BCC685541FF7B752F631 /* Artsy+UIFonts-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Artsy+UIFonts";
 			sourceTree = "<group>";
 		};
 		D89477F20FB1DE18A04690586D7808C4 /* Frameworks */ = {
@@ -13461,7 +13467,7 @@
 		};
 		AB9F5DB8D8DFAAC4C06608F87564A4CA /* Deploy */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A0A12DA9B8018020ACE7895DFD52985 /* Artsy+UIFonts.xcconfig */;
+			baseConfigurationReference = F24F717DABDB7781F6514389400D5C74 /* Artsy+UIFonts.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -13486,7 +13492,7 @@
 		};
 		ABE3C5BA9F17BE511870AFED0D37C46C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A0A12DA9B8018020ACE7895DFD52985 /* Artsy+UIFonts.xcconfig */;
+			baseConfigurationReference = F24F717DABDB7781F6514389400D5C74 /* Artsy+UIFonts.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -13714,7 +13720,7 @@
 		};
 		BDE0A65AB5BA553ABAB4327544509231 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A0A12DA9B8018020ACE7895DFD52985 /* Artsy+UIFonts.xcconfig */;
+			baseConfigurationReference = F24F717DABDB7781F6514389400D5C74 /* Artsy+UIFonts.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
