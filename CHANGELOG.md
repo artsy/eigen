@@ -19,6 +19,7 @@
 - Update typings for Relay to v4 and usage thereof - alloy
 - Use gravity ID when opening artwork from artwork grid instead of global object ID - alloy
 - Adds artwork classifications page and links to it from artwork page - lilyfromseattle
+
 ### 1.12.1
 
 - Refactors Artwork view to use FlatList - kieran

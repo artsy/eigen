@@ -16,10 +16,10 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
   renderAttributionClass(name: string, longDescription: string) {
     return (
       <>
-        <Serif size="4t" weight="semibold">
+        <Serif size="3" weight="semibold">
           {name}
         </Serif>
-        <Serif size="4t">{longDescription}</Serif>
+        <Serif size="3">{longDescription}</Serif>
         <Spacer m={1} />
       </>
     )
@@ -42,7 +42,7 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
               Artwork classifications
             </Serif>
             {attributionClasses}
-            <Sans color="black60" size="3t" mb={3}>
+            <Sans color="black60" size="3" mb={3}>
               Our partners are responsible for providing accurate classification information for all works.
             </Sans>
             <Box height={30}>
