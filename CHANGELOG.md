@@ -16,6 +16,22 @@
 
 ### Master
 
+- Fixes crash with empty country selection - ash
+
+### 1.12.x develop
+
+- Update typings for Relay to v4 and usage thereof - alloy
+- Use gravity ID when opening artwork from artwork grid instead of global object ID - alloy
+
+### 1.12.1
+
+- Refactors Artwork view to use FlatList - kieran
+- Adds native share to artwork share button - kieran
+
+### 1.12.0
+
+- Upgrade palette@4.13.3; styled-components@4.x
+- Switch to use metaphysics v2 schema - justin/alloy
 - Fixes a bug where artist search results in consignments overlap with search bar - yuki24
 
 ### 1.11.4
