@@ -1,4 +1,4 @@
-import { Box, Button, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQRendererQuery } from "__generated__/ArtworkAttributionClassFAQRendererQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -36,12 +36,17 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
     return (
       <Theme>
         <ScrollView>
-          <Serif size="8">Artwork classifications</Serif>
-          <Spacer m={2} />
+          <Spacer m={4} />
+          <Serif mb={2} size="8">
+            Artwork classifications
+          </Serif>
           {attributionClasses}
+          <Sans color="black60" size="3t" mb={3}>
+            Our partners are responsible for providing accurate classification information for all works
+          </Sans>
           <Box>
             <Button onPress={() => SwitchBoard.dismissNavigationViewController(this)} block>
-              Ok
+              OK
             </Button>
           </Box>
         </ScrollView>
