@@ -42,13 +42,14 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
           </Serif>
           {attributionClasses}
           <Sans color="black60" size="3t" mb={3}>
-            Our partners are responsible for providing accurate classification information for all works
+            Our partners are responsible for providing accurate classification information for all works.
           </Sans>
-          <Box>
+          <Box height={30}>
             <Button onPress={() => SwitchBoard.dismissNavigationViewController(this)} block>
               OK
             </Button>
           </Box>
+          <Spacer m={2} />
         </ScrollView>
       </Theme>
     )
