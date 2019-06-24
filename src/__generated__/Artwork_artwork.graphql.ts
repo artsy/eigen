@@ -7,6 +7,7 @@ import { ArtworkDetails_artwork$ref } from "./ArtworkDetails_artwork.graphql";
 import { ArtworkHeader_artwork$ref } from "./ArtworkHeader_artwork.graphql";
 import { ArtworkHistory_artwork$ref } from "./ArtworkHistory_artwork.graphql";
 import { CommercialInformation_artwork$ref } from "./CommercialInformation_artwork.graphql";
+import { ContextCard_artwork$ref } from "./ContextCard_artwork.graphql";
 import { OtherWorks_artwork$ref } from "./OtherWorks_artwork.graphql";
 import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
 declare const _Artwork_artwork$ref: unique symbol;
@@ -28,6 +29,7 @@ export type Artwork_artwork = {
     } | null;
     readonly partner: {
         readonly type: string | null;
+        readonly id: string;
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -71,7 +73,13 @@ export type Artwork_artwork = {
     readonly publisher: string | null;
     readonly manufacturer: string | null;
     readonly image_rights: string | null;
-    readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref & ArtworkHistory_artwork$ref;
+    readonly context: {
+        readonly __typename: string;
+    } | null;
+    readonly shows: ReadonlyArray<{
+        readonly id: string;
+    } | null> | null;
+    readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ContextCard_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref & ArtworkHistory_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
 
@@ -83,7 +91,17 @@ var v0 = {
   "name": "first",
   "value": 6
 },
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = [
+  (v1/*: any*/)
+],
+v3 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -101,30 +119,22 @@ v1 = [
         "args": null,
         "concreteType": "Artwork",
         "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          }
-        ]
+        "selections": (v2/*: any*/)
       }
     ]
   }
 ],
-v2 = {
+v4 = {
   "kind": "Variable",
   "name": "exclude",
   "variableName": "excludeArtworkIds"
 },
-v3 = {
+v5 = {
   "kind": "Literal",
   "name": "sort",
   "value": "PUBLISHED_AT_DESC"
 },
-v4 = [
+v6 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -206,7 +216,7 @@ return {
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
-          "selections": (v1/*: any*/)
+          "selections": (v3/*: any*/)
         }
       ]
     },
@@ -226,24 +236,25 @@ return {
           "args": null,
           "storageKey": null
         },
+        (v1/*: any*/),
         {
           "kind": "LinkedField",
           "alias": null,
           "name": "artworksConnection",
           "storageKey": null,
           "args": [
-            (v2/*: any*/),
+            (v4/*: any*/),
             (v0/*: any*/),
             {
               "kind": "Literal",
               "name": "for_sale",
               "value": true
             },
-            (v3/*: any*/)
+            (v5/*: any*/)
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
-          "selections": (v1/*: any*/)
+          "selections": (v3/*: any*/)
         }
       ]
     },
@@ -287,13 +298,13 @@ return {
           "name": "artworks_connection",
           "storageKey": null,
           "args": [
-            (v2/*: any*/),
+            (v4/*: any*/),
             (v0/*: any*/),
-            (v3/*: any*/)
+            (v5/*: any*/)
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
-          "selections": (v1/*: any*/)
+          "selections": (v3/*: any*/)
         }
       ]
     },
@@ -337,7 +348,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v4/*: any*/)
+      "selections": (v6/*: any*/)
     },
     {
       "kind": "ScalarField",
@@ -354,7 +365,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v4/*: any*/)
+      "selections": (v6/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -364,7 +375,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v4/*: any*/)
+      "selections": (v6/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -374,7 +385,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v4/*: any*/)
+      "selections": (v6/*: any*/)
     },
     {
       "kind": "ScalarField",
@@ -405,6 +416,40 @@ return {
       "storageKey": null
     },
     {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "context",
+      "storageKey": null,
+      "args": null,
+      "concreteType": null,
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "__typename",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "shows",
+      "storageKey": "shows(size:1)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 1
+        }
+      ],
+      "concreteType": "Show",
+      "plural": true,
+      "selections": (v2/*: any*/)
+    },
+    {
       "kind": "FragmentSpread",
       "name": "PartnerCard_artwork",
       "args": null
@@ -431,6 +476,11 @@ return {
     },
     {
       "kind": "FragmentSpread",
+      "name": "ContextCard_artwork",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
       "name": "ArtworkHeader_artwork",
       "args": null
     },
@@ -447,5 +497,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'df86b508bd3c0361733d2bd2ec707c66';
+(node as any).hash = 'f2b11724c5aabc6662ad31ec2d330c80';
 export default node;

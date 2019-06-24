@@ -137,6 +137,7 @@ export class ArtistListItem extends React.Component<Props, State> {
                 onPress={this.handleFollowArtist.bind(this)}
                 size="small"
                 loading={isFollowedChanging}
+                longestText="Following"
               >
                 {is_followed ? "Following" : "Follow"}
               </Button>

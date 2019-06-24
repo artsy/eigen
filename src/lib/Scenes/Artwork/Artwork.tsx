@@ -14,6 +14,7 @@ import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
+import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
@@ -86,6 +87,8 @@ export class Artwork extends React.Component<Props> {
     const { artwork } = this.props
     const {
       artist: { biography_blurb },
+      context,
+      shows,
     } = artwork
 
     const sections = []
@@ -113,6 +116,10 @@ export class Artwork extends React.Component<Props> {
       sections.push("partnerCard")
     }
 
+    if (context || (shows && shows.length)) {
+      sections.push("contextCard")
+    }
+
     if (this.shouldRenderOtherWorks()) {
       sections.push("otherWorks")
     }
@@ -137,6 +144,8 @@ export class Artwork extends React.Component<Props> {
         return <AboutArtist artwork={artwork} />
       case "partnerCard":
         return <PartnerCard artwork={artwork} />
+      case "contextCard":
+        return <ContextCard artwork={artwork} />
       case "otherWorks":
         return <OtherWorks artwork={artwork} />
       default:
@@ -187,6 +196,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
 
       partner {
         type
+        id
         artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
           edges {
             node {
@@ -236,11 +246,20 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       manufacturer
       image_rights
 
+      # For ContextCard
+      context {
+        __typename
+      }
+      shows(size: 1) {
+        id
+      }
+
       ...PartnerCard_artwork
       ...AboutWork_artwork
       ...OtherWorks_artwork
       ...AboutArtist_artwork
       ...ArtworkDetails_artwork
+      ...ContextCard_artwork
       ...ArtworkHeader_artwork
       ...CommercialInformation_artwork
       ...ArtworkHistory_artwork
