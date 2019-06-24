@@ -27,7 +27,7 @@ describe("ArtworkAttributionClassFAQ", () => {
         .find(Button)
         .at(0)
         .text()
-    ).toEqual("Ok")
+    ).toEqual("OK")
   })
 
   it("renders attribution classes", () => {
