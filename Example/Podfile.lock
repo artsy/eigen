@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Emission (1.11.3-consignments-fix):
+  - Emission (1.11.6):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -152,9 +152,9 @@ PODS:
   - RNSVG (9.0.4):
     - React
   - SAMKeychain (1.5.0)
-  - SDWebImage (3.8.2):
-    - SDWebImage/Core (= 3.8.2)
-  - SDWebImage/Core (3.8.2)
+  - SDWebImage (3.8.3):
+    - SDWebImage/Core (= 3.8.3)
+  - SDWebImage/Core (3.8.3)
   - Sentry (3.9.1):
     - Sentry/Core (= 3.9.1)
     - Sentry/KSCrash (= 3.9.1)
@@ -275,7 +275,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: b01f26aedd7c7fc3c29107058180fc478ba49f9b
+  Emission: 669a24e9f39101f69f19980fc96e8a6ce34c79d2
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -294,7 +294,7 @@ SPEC CHECKSUMS:
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
-  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
