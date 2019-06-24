@@ -1,4 +1,4 @@
-import { Button, Serif, Theme } from "@artsy/palette"
+import { Button, Serif } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"
