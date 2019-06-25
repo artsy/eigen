@@ -15,36 +15,33 @@ storiesOf("App Style/Typography")
     return <Serif>This is a blank serif</Serif>
   })
   .add("Typefaces", () => {
-    const fonts = {
-      "AGaramondPro Bold": Fonts.GaramondBold,
-      "AGaramondPro BoldItalic": Fonts.GaramondBoldItalic,
-      "AGaramondPro Italic": Fonts.GaramondItalic,
-      "AGaramondPro Regular": Fonts.GaramondRegular,
-      "AGaramondPro Semibold": Fonts.GaramondSemibold,
-      "Avant Garde Gothic ITC": Fonts.AvantGardeRegular,
-      "Unica77LL Italic": Fonts.Unica77LLItalic,
-      "Unica77LL Medium": Fonts.Unica77LLMedium,
-      "Unica77LL MediumItalic": Fonts.Unica77LLMediumItalic,
-      "Unica77LL Regular": Fonts.Unica77LLRegular,
-    }
+    const fonts = [
+      { name: "AGaramondPro Bold", family: Fonts.GaramondBold },
+      { name: "AGaramondPro BoldItalic", family: Fonts.GaramondBoldItalic },
+      { name: "AGaramondPro Italic", family: Fonts.GaramondItalic },
+      { name: "AGaramondPro Regular", family: Fonts.GaramondRegular },
+      { name: "AGaramondPro Semibold", family: Fonts.GaramondSemibold },
+      { name: "Avant Garde Gothic ITC", family: Fonts.AvantGardeRegular },
+      { name: "Unica77LL Italic", family: Fonts.Unica77LLItalic },
+      { name: "Unica77LL Medium", family: Fonts.Unica77LLMedium },
+      { name: "Unica77LL MediumItalic", family: Fonts.Unica77LLMediumItalic },
+      { name: "Unica77LL Regular", family: Fonts.Unica77LLRegular },
+    ]
+    const fontComponents = fonts.map(({ name, family }) => {
+      const Component = styled.Text`
+        font-family: "${family}";
+        font-size: 30px;
+        margin-bottom: 10px;
+      `
+      return <Component key={name}>{name}</Component>
+    })
+    const separatedComponents = fontComponents.reduce(
+      (memo, component, index) => [memo, <Separator key={index} />, component] as any // TypeScript doesn't know that JSX Elements can be arrays.
+    )
     return (
       <Container>
         <Separator />
-        {Object.entries(fonts).map(value => {
-          const [name, font] = value
-          const Component = styled.Text`
-            font-family: "${font}";
-            font-size: 30px;
-            margin-bottom: 10px;
-          `
-
-          return (
-            <React.Fragment key={name}>
-              <Component>{name}</Component>
-              <Separator />
-            </React.Fragment>
-          )
-        })}
+        {separatedComponents}
       </Container>
     )
   })
