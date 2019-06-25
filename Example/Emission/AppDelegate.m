@@ -20,6 +20,7 @@
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARArtworkComponentViewController.h>
+#import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
@@ -381,6 +382,8 @@ randomBOOL(void)
     NSString *citySlug = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARCityBMWListComponentViewController alloc] initWithCitySlug:citySlug];
 
+  } else if ([route isEqualToString:@"/artwork-classifications"]) {
+    viewController = [[ARArtworkAttributionClassFAQViewController alloc] init];
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }
