@@ -6,6 +6,7 @@
 #import <React/UIView+React.h>
 #import <React/RCTRootView.h>
 
+
 // Invoked on the main thread.
 typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController * _Nonnull fromViewController, UIView * _Nonnull originatingView);
 
@@ -32,6 +33,14 @@ RCT_EXPORT_METHOD(presentArtworksSet:(nonnull NSNumber *)reactTag artworkIDs:(no
 RCT_EXPORT_METHOD(presentNavigationViewController:(nonnull NSNumber *)reactTag route:(nonnull NSString *)route)
 {
   [self invokeCallback:self.presentNavigationViewController reactTag:reactTag route:route];
+}
+
+RCT_EXPORT_METHOD(dismissNavigationViewController:(nonnull NSNumber *)reactTag resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [self invokeCallback:^(UIViewController *fromViewController, id _) {
+        [fromViewController.navigationController popViewControllerAnimated:YES];
+        resolve(nil);
+    } reactTag:reactTag];
 }
 
 RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:(nonnull NSString *)route)
