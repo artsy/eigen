@@ -107,7 +107,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                             "textAlign": "left",
                           },
                           Object {
-                            "fontFamily": "AGaramondPro-Regular",
+                            "fontFamily": "ReactNativeAGaramondPro-Regular",
                           },
                         ]
                       }
@@ -261,7 +261,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                             "textAlign": "left",
                           },
                           Object {
-                            "fontFamily": "AGaramondPro-Regular",
+                            "fontFamily": "ReactNativeAGaramondPro-Regular",
                           },
                         ]
                       }
@@ -415,7 +415,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                             "textAlign": "left",
                           },
                           Object {
-                            "fontFamily": "AGaramondPro-Regular",
+                            "fontFamily": "ReactNativeAGaramondPro-Regular",
                           },
                         ]
                       }
@@ -704,7 +704,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             "textAlign": "left",
                           },
                           Object {
-                            "fontFamily": "AGaramondPro-Regular",
+                            "fontFamily": "ReactNativeAGaramondPro-Regular",
                           },
                         ]
                       }
@@ -882,7 +882,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                                 "flexBasis": 0,
                                 "flexGrow": 1,
                                 "flexShrink": 1,
-                                "fontFamily": "AGaramondPro-Regular",
+                                "fontFamily": "ReactNativeAGaramondPro-Regular",
                                 "fontSize": 20,
                                 "height": 40,
                               },
@@ -941,7 +941,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                                 "flexBasis": 0,
                                 "flexGrow": 1,
                                 "flexShrink": 1,
-                                "fontFamily": "AGaramondPro-Regular",
+                                "fontFamily": "ReactNativeAGaramondPro-Regular",
                                 "fontSize": 20,
                                 "height": 40,
                               },
@@ -990,7 +990,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             "textAlign": "left",
                           },
                           Object {
-                            "fontFamily": "AGaramondPro-Regular",
+                            "fontFamily": "ReactNativeAGaramondPro-Regular",
                           },
                         ]
                       }
@@ -1144,7 +1144,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             "textAlign": "left",
                           },
                           Object {
-                            "fontFamily": "AGaramondPro-Regular",
+                            "fontFamily": "ReactNativeAGaramondPro-Regular",
                           },
                         ]
                       }

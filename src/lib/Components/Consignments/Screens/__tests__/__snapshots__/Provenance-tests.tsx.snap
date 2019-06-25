@@ -88,7 +88,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     Array [
                       Object {
                         "color": "#666666",
-                        "fontFamily": "AGaramondPro-Regular",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
                         "fontSize": 20,
                         "marginTop": 5,
                         "position": "absolute",
@@ -117,7 +117,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexBasis": 0,
                         "flexGrow": 1,
                         "flexShrink": 1,
-                        "fontFamily": "AGaramondPro-Regular",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
                         "fontSize": 20,
                         "height": "100%",
                       },
@@ -282,7 +282,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
                         "flexBasis": 0,
                         "flexGrow": 1,
                         "flexShrink": 1,
-                        "fontFamily": "AGaramondPro-Regular",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
                         "fontSize": 20,
                         "height": "100%",
                       },

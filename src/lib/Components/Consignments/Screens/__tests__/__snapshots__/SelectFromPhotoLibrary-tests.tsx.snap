@@ -77,7 +77,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     },
                     Object {},
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }

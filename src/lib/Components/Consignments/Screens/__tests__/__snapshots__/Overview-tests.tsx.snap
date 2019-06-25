@@ -61,7 +61,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   "textAlign": "center",
                 },
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                 },
               ]
             }
@@ -83,7 +83,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   "textAlign": "center",
                 },
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                 },
               ]
             }

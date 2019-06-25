@@ -36,7 +36,7 @@ exports[`renders properly 1`] = `
         Array [
           Object {
             "color": "white",
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 15,
           },
         ]

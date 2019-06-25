@@ -242,7 +242,7 @@ exports[`looks correct when rendered 1`] = `
                     },
                     Object {},
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }

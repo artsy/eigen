@@ -571,7 +571,7 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 30,
                   "marginLeft": 10,
                   "marginRight": 10,
@@ -587,7 +587,7 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 18,
                   "marginTop": 10,
                   "textAlign": "center",
@@ -659,7 +659,7 @@ exports[`without notifications lays out correctly on small screens 1`] = `
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 30,
                   "marginLeft": 10,
                   "marginRight": 10,
@@ -675,7 +675,7 @@ exports[`without notifications lays out correctly on small screens 1`] = `
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 18,
                   "marginTop": 10,
                   "textAlign": "center",
