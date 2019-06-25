@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import styled from "styled-components/native"
 
+import Separator from "lib/Components/Separator"
 import { Fonts } from "lib/data/fonts"
 import Headline from "../Headline"
 import Serif from "../Serif"
@@ -16,16 +17,27 @@ storiesOf("App Style/Typography")
   .add("Typefaces", () => {
     return (
       <Container>
+        <Separator />
         <GaramondBold>AGaramondPro Bold</GaramondBold>
+        <Separator />
         <GaramondBoldItalic>AGaramondPro BoldItalic</GaramondBoldItalic>
+        <Separator />
         <GaramondItalic>AGaramondPro Italic</GaramondItalic>
+        <Separator />
         <GaramondRegular>AGaramondPro Regular</GaramondRegular>
+        <Separator />
         <GaramondSemibold>AGaramondPro Semibold</GaramondSemibold>
+        <Separator />
         <AvantGardeRegular>Avant Garde Gothic ITC</AvantGardeRegular>
+        <Separator />
         <Unita77LLItalic>Unica77LL Italic</Unita77LLItalic>
+        <Separator />
         <Unita77LLMedium>Unica77LL Medium</Unita77LLMedium>
+        <Separator />
         <Unita77LLMediumItalic>Unica77LL MediumItalic</Unita77LLMediumItalic>
+        <Separator />
         <Unita77LLRegular>Unica77LL Regular</Unita77LLRegular>
+        <Separator />
       </Container>
     )
   })
