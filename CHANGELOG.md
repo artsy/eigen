@@ -19,6 +19,7 @@
 - Update typings for Relay to v4 and usage thereof - alloy
 - Use gravity ID when opening artwork from artwork grid instead of global object ID - alloy
 - Adds link to the consignments flow to the new artwork page, refactors some of the artwork page to match specs - lilyfromseattle
+
 ### 1.12.1
 
 - Refactors Artwork view to use FlatList - kieran
