@@ -32,7 +32,6 @@ query ArtworkQuery(
 }
 
 fragment Artwork_artwork on Artwork {
-  availability
   additional_information
   description
   layer(id: "main") {
@@ -46,7 +45,6 @@ fragment Artwork_artwork on Artwork {
     id
   }
   partner {
-    name
     artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
@@ -70,18 +68,13 @@ fragment Artwork_artwork on Artwork {
     }
     id
   }
-  ...ArtworkAvailability_artwork
   ...PartnerCard_artwork
-  ...SellerInfo_artwork
   ...AboutWork_artwork
   ...OtherWorks_artwork
   ...AboutArtist_artwork
   ...ArtworkDetails_artwork
   ...ArtworkHeader_artwork
-}
-
-fragment ArtworkAvailability_artwork on Artwork {
-  availability
+  ...ArtworkInformation_artwork
 }
 
 fragment PartnerCard_artwork on Artwork {
@@ -112,13 +105,6 @@ fragment PartnerCard_artwork on Artwork {
       city
       id
     }
-  }
-}
-
-fragment SellerInfo_artwork on Artwork {
-  partner {
-    name
-    id
   }
 }
 
@@ -180,6 +166,35 @@ fragment ArtworkHeader_artwork on Artwork {
   ...ArtworkTombstone_artwork
   images {
     ...ImageCarousel_images
+  }
+}
+
+fragment ArtworkInformation_artwork on Artwork {
+  availability
+  partner {
+    name
+    id
+  }
+  ...ArtworkAvailability_artwork
+  ...SellerInfo_artwork
+  ...ArtworkExtraLinks_artwork
+}
+
+fragment ArtworkAvailability_artwork on Artwork {
+  availability
+}
+
+fragment SellerInfo_artwork on Artwork {
+  partner {
+    name
+    id
+  }
+}
+
+fragment ArtworkExtraLinks_artwork on Artwork {
+  artists {
+    is_consignable
+    id
   }
 }
 
@@ -746,13 +761,6 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "availability",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
             "name": "additional_information",
             "args": null,
             "storageKey": null
@@ -803,7 +811,6 @@ return {
             "concreteType": "Partner",
             "plural": false,
             "selections": [
-              (v7/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -838,6 +845,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              (v7/*: any*/),
               (v4/*: any*/),
               (v13/*: any*/),
               (v9/*: any*/),
@@ -1029,7 +1037,14 @@ return {
                   (v16/*: any*/)
                 ]
               },
-              (v9/*: any*/)
+              (v9/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_consignable",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           {
@@ -1217,6 +1232,13 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "availability",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -1225,7 +1247,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "fd76f11a636d571ca6fd7ce3f83d89d9",
+    "id": "a86ec6538a0bdaea639f197bab334b70",
     "text": null,
     "metadata": {}
   }

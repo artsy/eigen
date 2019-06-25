@@ -1,8 +1,8 @@
-import { Box, Flex, Serif, Spacer } from "@artsy/palette"
+import { Box, Flex, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./FollowArtistButton"
 
@@ -26,6 +26,10 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
+  showAttributionClassFAQ() {
+    SwitchBoard.presentNavigationViewController(this, "/artwork-classifications")
+  }
+
   showMoreArtists = () => {
     this.setState({
       showingMoreArtists: !this.state.showingMoreArtists,
@@ -35,8 +39,8 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   renderSingleArtist(artist: Artist) {
     return (
       <React.Fragment>
-        <Flex flexDirection="row" alignItems="center">
-          <Box mt={3.8}>{this.renderArtistName(artist.name, artist.href)}</Box>
+        <Flex flexDirection="row">
+          {this.renderArtistName(artist.name, artist.href)}
           <FollowArtistButton artist={artist} />
         </Flex>
       </React.Fragment>
@@ -47,14 +51,14 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     return href ? (
       <>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, href)}>
-          <Serif size="4t" weight="semibold">
+          <Serif size="5t" weight="semibold">
             {artistName}
           </Serif>
         </TouchableWithoutFeedback>
       </>
     ) : (
       <>
-        <Serif size="4t" weight="semibold">
+        <Serif size="5t" weight="semibold">
           {artistName}
         </Serif>
       </>
@@ -99,7 +103,6 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             artwork.cultural_maker &&
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
-        <Spacer mb={1} />
         <Serif color="black60" size="3t" m="0" p="0">
           {artwork.title}, {artwork.date}
         </Serif>
@@ -115,9 +118,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           </Serif>
         )}
         {artwork.attribution_class && (
-          <Serif color="black60" size="3t">
-            {artwork.attribution_class.shortDescription}
-          </Serif>
+          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleTap("/artwork-classifications")}>
+            <Serif color="black60" size="3t">
+              {artwork.attribution_class.shortDescription}
+            </Serif>
+          </Text>
         )}
       </Box>
     )
