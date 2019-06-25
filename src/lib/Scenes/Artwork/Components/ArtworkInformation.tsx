@@ -1,4 +1,4 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { ArtworkInformation_artwork } from "__generated__/ArtworkInformation_artwork.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -13,7 +13,6 @@ interface ArtworkInformationProps {
 export class ArtworkInformation extends React.Component<ArtworkInformationProps> {
   render() {
     const { artwork } = this.props
-    console.log("ARTWORK", artwork)
     return (
       <Box>
         {artwork.availability && (
