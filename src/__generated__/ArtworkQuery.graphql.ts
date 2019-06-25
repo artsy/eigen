@@ -35,6 +35,9 @@ fragment Artwork_artwork on Artwork {
   availability
   additional_information
   description
+  provenance
+  exhibition_history
+  literature
   layer(id: "main") {
     artworksConnection(first: 8) {
       edges {
@@ -772,6 +775,27 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "provenance",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibition_history",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "literature",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "layer",
@@ -1224,27 +1248,6 @@ return {
                 ]
               }
             ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "provenance",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "exhibition_history",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "literature",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -1253,7 +1256,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "da1588320105cfa7edf1f20a1764f52a",
+    "id": "7b91613c25122ec6ba59a32b5e0218d6",
     "text": null,
     "metadata": {}
   }

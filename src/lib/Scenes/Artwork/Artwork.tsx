@@ -47,7 +47,11 @@ export class Artwork extends React.Component<Props> {
     }
 
     sections.push("details")
-    sections.push("history")
+
+    if (artwork.provenance || artwork.exhibition_history || artwork.literature) {
+      sections.push("history")
+    }
+
     sections.push("aboutArtist")
     sections.push("partnerCard")
 
@@ -114,6 +118,9 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       availability
       additional_information
       description
+      provenance
+      exhibition_history
+      literature
 
       layer(id: "main") {
         artworksConnection(first: 8) {

@@ -16,6 +16,9 @@ export type Artwork_artwork = {
     readonly availability: string | null;
     readonly additional_information: string | null;
     readonly description: string | null;
+    readonly provenance: string | null;
+    readonly exhibition_history: string | null;
+    readonly literature: string | null;
     readonly layer: {
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
@@ -139,6 +142,27 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "description",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "provenance",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_history",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "literature",
       "args": null,
       "storageKey": null
     },
@@ -294,5 +318,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '233be037ff5ca85709128dfade9fc98e';
+(node as any).hash = '38aa50c794e853557cd263c80aed2864';
 export default node;
