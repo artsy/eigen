@@ -1,5 +1,3 @@
-// provenance, exhibition history, and bibliography
-
 import { Box, Sans } from "@artsy/palette"
 import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
