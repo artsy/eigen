@@ -16,22 +16,28 @@ storiesOf("App Style/Typography")
   })
   .add("Typefaces", () => {
     const fonts = {
-      "AGaramondPro Bold": GaramondBold,
-      "AGaramondPro BoldItalic": GaramondBoldItalic,
-      "AGaramondPro Italic": GaramondItalic,
-      "AGaramondPro Regular": GaramondRegular,
-      "AGaramondPro Semibold": GaramondSemibold,
-      "Avant Garde Gothic ITC": AvantGardeRegular,
-      "Unica77LL Italic": Unita77LLItalic,
-      "Unica77LL Medium": Unita77LLMedium,
-      "Unica77LL MediumItalic": Unita77LLMediumItalic,
-      "Unica77LL Regular": Unita77LLRegular,
+      "AGaramondPro Bold": Fonts.GaramondBold,
+      "AGaramondPro BoldItalic": Fonts.GaramondBoldItalic,
+      "AGaramondPro Italic": Fonts.GaramondItalic,
+      "AGaramondPro Regular": Fonts.GaramondRegular,
+      "AGaramondPro Semibold": Fonts.GaramondSemibold,
+      "Avant Garde Gothic ITC": Fonts.AvantGardeRegular,
+      "Unica77LL Italic": Fonts.Unica77LLItalic,
+      "Unica77LL Medium": Fonts.Unica77LLMedium,
+      "Unica77LL MediumItalic": Fonts.Unica77LLMediumItalic,
+      "Unica77LL Regular": Fonts.Unica77LLRegular,
     }
     return (
       <Container>
         <Separator />
         {Object.entries(fonts).map(value => {
-          const [name, Component] = value
+          const [name, font] = value
+          const Component = styled.Text`
+            font-family: "${font}";
+            font-size: 30px;
+            margin-bottom: 10px;
+          `
+
           return (
             <React.Fragment key={name}>
               <Component>{name}</Component>
@@ -45,64 +51,4 @@ storiesOf("App Style/Typography")
 
 const Container = styled.View`
   margin: 70px 10px 10px;
-`
-
-const GaramondBold = styled.Text`
-  font-family: "${Fonts.GaramondBold}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondBoldItalic = styled.Text`
-  font-family: "${Fonts.GaramondBoldItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondItalic = styled.Text`
-  font-family: "${Fonts.GaramondItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondRegular = styled.Text`
-  font-family: "${Fonts.GaramondRegular}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondSemibold = styled.Text`
-  font-family: "${Fonts.GaramondSemibold}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const AvantGardeRegular = styled.Text`
-  font-family: "${Fonts.AvantGardeRegular}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLItalic = styled.Text`
-  font-family: "${Fonts.Unica77LLItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLMedium = styled.Text`
-  font-family: "${Fonts.Unica77LLMedium}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLMediumItalic = styled.Text`
-  font-family: "${Fonts.Unica77LLMediumItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLRegular = styled.Text`
-  font-family: "${Fonts.Unica77LLRegular}";
-  font-size: 30px;
-  margin-bottom: 10px;
 `
