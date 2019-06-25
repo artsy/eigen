@@ -4,10 +4,9 @@ import { QueryRenderer } from "react-relay"
 import {
   Environment,
   GraphQLTaggedNode,
-  OperationBase,
-  OperationDefaults,
+  INetwork as RelayNetwork,
+  OperationType,
   RecordSource,
-  RelayNetwork,
   Store,
 } from "relay-runtime"
 import { ContextConsumer, ContextProvider } from "../utils/Context"
@@ -16,7 +15,7 @@ import { createMockNetworkLayer, createMockNetworkLayer2 } from "./createMockNet
 
 // TODO: Copied from https://github.com/artsy/reaction/blob/master/src/DevTools/createMockNetworkLayer/index.ts
 // extract to another package
-export interface MockRelayRendererProps<T extends OperationBase = OperationDefaults> {
+export interface MockRelayRendererProps<T extends OperationType> {
   Component: React.ComponentType<any>
   variables?: T["variables"]
   query: GraphQLTaggedNode
@@ -128,7 +127,7 @@ export interface MockRelayRendererState {
  * @param params.mockMutationResults
  * @param params.mockData
  */
-export class MockRelayRenderer<T extends OperationBase = OperationDefaults> extends React.Component<
+export class MockRelayRenderer<T extends OperationType> extends React.Component<
   MockRelayRendererProps<T>,
   MockRelayRendererState
 > {

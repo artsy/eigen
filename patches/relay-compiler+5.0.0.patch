@@ -1,7 +1,7 @@
 patch-package
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
-@@ -5267,7 +5267,7 @@ function highlightSourceAtLocation(source, location) {
+@@ -5444,7 +5444,7 @@ function highlightSourceAtLocation(source, location) {
    var columnOffset = location.line === 1 ? firstLineColumnOffset : 0;
    var columnNum = location.column + columnOffset;
    var lines = body.split(/\r\n|[\n\r]/g);
@@ -10,7 +10,7 @@ patch-package
    ["".concat(lineNum - 1, ": "), lines[lineIndex - 1]], ["".concat(lineNum, ": "), lines[lineIndex]], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1, ": "), lines[lineIndex + 1]]]);
  }
  
-@@ -16440,10 +16440,10 @@ module.exports = function (tagFinder) {
+@@ -17041,10 +17041,10 @@ module.exports = function (tagFinder) {
      !(text.indexOf('graphql') >= 0) ?  true ? invariant(false, 'RelaySourceModuleParser: Files should be filtered before passed to the ' + 'parser, got unfiltered file `%s`.', file.relPath) : undefined : void 0;
      var astDefinitions = [];
      var sources = [];
@@ -24,7 +24,7 @@ patch-package
        sources.push(source.body);
        astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
      });
-@@ -16517,9 +16517,10 @@ function find(tagFinder, text, absPath) {
+@@ -17118,9 +17118,10 @@ function find(tagFinder, text, absPath) {
    tags.forEach(function (tag) {
      return validateTemplate(tag, moduleName, absPath);
    });

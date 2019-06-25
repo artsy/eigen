@@ -2,12 +2,23 @@ export const ArtworkFixture = {
   " $refType": null,
   " $fragmentRefs": null,
   id: "abbas-kiarostami-untitled-7",
+  internalID: "5b2b745e9c18db204fc32e11",
   _id: "5b2b745e9c18db204fc32e11",
   __id: "QXJ0d29yazphYmJhcy1raWFyb3N0YW1pLXVudGl0bGVkLTc=",
   title: "Untitled",
+  href: "/artwork/andreas-rod-prinzknecht",
+  availability: "for sale",
+  is_saved: false,
+  additional_information: "This artwork is unique.",
+  description: null,
   context: {
     __typename: "ArtworkContextPartnerShow",
   },
+  dimensions: {
+    in: "23 1/5 × 33 1/10 in",
+    cm: "59 × 84 cm",
+  },
+  images: [],
   artists: [
     {
       " $refType": null,
@@ -37,6 +48,9 @@ export const ArtworkFixture = {
     nationality: "Iranian",
     birthday: "1940",
     deathday: "2016",
+    biography_blurb: {
+      text: "This is a biography of the artist",
+    },
     image: {
       url: "https://d32dm0rphc51dk.cloudfront.net/JX1xE4T_amcdrv2nFunIHw/tall.jpg",
     },

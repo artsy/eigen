@@ -22,7 +22,7 @@ describe("state", () => {
     const tree = renderer
       .create(
         <Theme>
-          <Sale sale={sale} />
+          <Sale sale={sale as any} relay={null} />
         </Theme>
       )
       .toJSON()

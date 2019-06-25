@@ -1,4 +1,4 @@
-import { Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans } from "@artsy/palette"
 import { AboutArtist_artwork } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -14,8 +14,8 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
     const hasSingleArtist = this.props.artwork.artists.length === 1
 
     return (
-      <Join separator={<Spacer my={2} />}>
-        <Flex alignItems="flex-start" mt={2}>
+      <>
+        <Flex alignItems="flex-start">
           <Sans size="3t" weight="medium" mb={2}>
             {hasSingleArtist ? "About the artist" : "About the artists"}
           </Sans>
@@ -23,8 +23,12 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
             <ArtistListItem key={artist.id} artist={artist} />
           ))}
         </Flex>
-        {hasSingleArtist && <ReadMore content={this.props.artwork.artists[0].biography_blurb.text} maxChars={140} />}
-      </Join>
+        {hasSingleArtist && (
+          <Box mt={2}>
+            <ReadMore content={this.props.artwork.artists[0].biography_blurb.text} maxChars={140} />
+          </Box>
+        )}
+      </>
     )
   }
 }

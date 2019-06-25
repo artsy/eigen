@@ -2,7 +2,7 @@ import { GeneArtworksGrid_filtered_artworks } from "__generated__/GeneArtworksGr
 import InfiniteScrollArtworksGrid, {
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollGrid"
-import { ConnectionData, createPaginationContainer, graphql } from "react-relay"
+import { createPaginationContainer, graphql } from "react-relay"
 
 const GeneArtworksGrid = createPaginationContainer<
   { filtered_artworks: GeneArtworksGrid_filtered_artworks } & InfiniteScrollGridProps
@@ -41,7 +41,7 @@ const GeneArtworksGrid = createPaginationContainer<
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.filtered_artworks && (props.filtered_artworks.artworks as ConnectionData)
+      return props.filtered_artworks && props.filtered_artworks.artworks
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

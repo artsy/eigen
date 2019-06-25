@@ -26,7 +26,13 @@ query ArtworkActionsTestsErrorQuery {
 fragment ArtworkActions_artwork on Artwork {
   id
   internalID
+  title
+  href
   is_saved
+  artists {
+    name
+    id
+  }
 }
 */
 
@@ -37,7 +43,14 @@ var v0 = [
     "name": "id",
     "value": "artworkID"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -79,13 +92,7 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          },
+          (v1/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -96,9 +103,42 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "title",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "href",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "is_saved",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              (v1/*: any*/)
+            ]
           }
         ]
       }
@@ -107,7 +147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkActionsTestsErrorQuery",
-    "id": "de1aea67d26bead4907899c4ffa5c5bc",
+    "id": "70104fb33b2cb3f5d9b1989a800d21eb",
     "text": null,
     "metadata": {}
   }

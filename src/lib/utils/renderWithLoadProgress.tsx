@@ -1,15 +1,17 @@
 import React from "react"
-import { ReadyState, RelayContainer } from "react-relay"
+import { Container as RelayContainer, QueryRenderer } from "react-relay"
 
 import LoadFailureView from "lib/Components/LoadFailureView"
 import Spinner from "lib/Components/Spinner"
+
+type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
 
 export const LoadingTestID = "relay-loading"
 
 export default function<T extends RelayContainer<any>>(
   Container: T,
   initialProps: object = {}
-): (readyState: ReadyState<any>) => React.ReactElement<T> | null {
+): (readyState: ReadyState) => React.ReactElement<T> | null {
   let retrying = false
   return ({ error, props, retry }) => {
     if (error) {
@@ -40,7 +42,7 @@ export default function<T extends RelayContainer<any>>(
         return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
       }
     } else if (props) {
-      return <Container {...initialProps} {...props} />
+      return <Container {...initialProps} {...props as any} />
     } else {
       return <Spinner testID={LoadingTestID} style={{ flex: 1 }} />
     }
