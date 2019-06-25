@@ -15,29 +15,30 @@ storiesOf("App Style/Typography")
     return <Serif>This is a blank serif</Serif>
   })
   .add("Typefaces", () => {
+    const fonts = {
+      "AGaramondPro Bold": GaramondBold,
+      "AGaramondPro BoldItalic": GaramondBoldItalic,
+      "AGaramondPro Italic": GaramondItalic,
+      "AGaramondPro Regular": GaramondRegular,
+      "AGaramondPro Semibold": GaramondSemibold,
+      "Avant Garde Gothic ITC": AvantGardeRegular,
+      "Unica77LL Italic": Unita77LLItalic,
+      "Unica77LL Medium": Unita77LLMedium,
+      "Unica77LL MediumItalic": Unita77LLMediumItalic,
+      "Unica77LL Regular": Unita77LLRegular,
+    }
     return (
       <Container>
         <Separator />
-        <GaramondBold>AGaramondPro Bold</GaramondBold>
-        <Separator />
-        <GaramondBoldItalic>AGaramondPro BoldItalic</GaramondBoldItalic>
-        <Separator />
-        <GaramondItalic>AGaramondPro Italic</GaramondItalic>
-        <Separator />
-        <GaramondRegular>AGaramondPro Regular</GaramondRegular>
-        <Separator />
-        <GaramondSemibold>AGaramondPro Semibold</GaramondSemibold>
-        <Separator />
-        <AvantGardeRegular>Avant Garde Gothic ITC</AvantGardeRegular>
-        <Separator />
-        <Unita77LLItalic>Unica77LL Italic</Unita77LLItalic>
-        <Separator />
-        <Unita77LLMedium>Unica77LL Medium</Unita77LLMedium>
-        <Separator />
-        <Unita77LLMediumItalic>Unica77LL MediumItalic</Unita77LLMediumItalic>
-        <Separator />
-        <Unita77LLRegular>Unica77LL Regular</Unita77LLRegular>
-        <Separator />
+        {Object.entries(fonts).map(value => {
+          const [name, Component] = value
+          return (
+            <React.Fragment key={name}>
+              <Component>{name}</Component>
+              <Separator />
+            </React.Fragment>
+          )
+        })}
       </Container>
     )
   })
