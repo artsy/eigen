@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
@@ -16,11 +15,7 @@ describe("ArtistListItem", () => {
         return wrapper.find(InvertedButton).length > 0
       },
       <MockRelayRenderer
-        Component={({ artist }) => (
-          <Theme>
-            <ArtistListItem artist={artist} />
-          </Theme>
-        )}
+        Component={({ artist }) => <ArtistListItem artist={artist} />}
         query={graphql`
           query ArtistListItemTestsQuery {
             artist(id: "pablo-picasso") {

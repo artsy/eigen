@@ -127,6 +127,15 @@ export class ArtistListItem extends React.Component<Props, State> {
     }
   }
 
+  @track((props: Props) => {
+    return {
+      action_name: Schema.ActionNames.ListArtist,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: props.artist.internalID,
+      owner_slug: props.artist.gravityID,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    } as any
+  })
   handleTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
@@ -148,7 +157,7 @@ export class ArtistListItem extends React.Component<Props, State> {
 
     return (
       <Theme>
-        <TouchableWithoutFeedback onPress={this.handleTap.bind(this, href)}>
+        <TouchableWithoutFeedback onPress={() => this.handleTap(href)}>
           <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
             <Avatar size="xs" src={url} initials={initials} />
             <Spacer m={1} />

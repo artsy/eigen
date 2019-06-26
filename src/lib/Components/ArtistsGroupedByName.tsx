@@ -2,7 +2,7 @@ import { Box, Sans, Separator, Serif } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import React from "react"
-import { SectionList, TouchableOpacity } from "react-native"
+import { SectionList } from "react-native"
 
 interface Props {
   Component?: any
@@ -12,18 +12,15 @@ interface Props {
     index: number
   }>
   onEndReached?: () => void
-  viewArtist: (context: any, artist: string, id?: string, internalID?: string) => void
 }
 
-export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached, Component, viewArtist }) => (
+export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) => (
   <SectionList
     onEndReached={onEndReached}
     renderItem={({ item }) => (
-      <TouchableOpacity onPress={() => viewArtist(Component, item.href, item.id, item.internalID)}>
-        <Box px={2} mb={2}>
-          <ArtistListItem artist={item} />
-        </Box>
-      </TouchableOpacity>
+      <Box px={2} mb={2}>
+        <ArtistListItem artist={item} />
+      </Box>
     )}
     ListHeaderComponent={() => {
       return (
