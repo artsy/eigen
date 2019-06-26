@@ -45,19 +45,15 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
 
   renderArtistName(artistName: string, href: string) {
     return href ? (
-      <>
-        <TouchableWithoutFeedback onPress={this.handleTap.bind(this, href)}>
-          <Serif size="4t" weight="semibold">
-            {artistName}
-          </Serif>
-        </TouchableWithoutFeedback>
-      </>
-    ) : (
-      <>
+      <TouchableWithoutFeedback onPress={this.handleTap.bind(this, href)}>
         <Serif size="4t" weight="semibold">
           {artistName}
         </Serif>
-      </>
+      </TouchableWithoutFeedback>
+    ) : (
+      <Serif size="4t" weight="semibold">
+        {artistName}
+      </Serif>
     )
   }
 
@@ -76,15 +72,17 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
 
     return (
       <Flex flexDirection="row" flexWrap="wrap">
-        {artistNames}
-        {!this.state.showingMoreArtists &&
-          artists.length > 3 && (
-            <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-              <Serif size="5t" weight="semibold">
-                {artists.length - 3} more
-              </Serif>
-            </TouchableWithoutFeedback>
-          )}
+        <Serif size="4t">
+          {artistNames}
+          {!this.state.showingMoreArtists &&
+            artists.length > 3 && (
+              <TouchableWithoutFeedback onPress={this.showMoreArtists}>
+                <Serif size="4t" weight="semibold">
+                  {artists.length - 3} more
+                </Serif>
+              </TouchableWithoutFeedback>
+            )}
+        </Serif>
       </Flex>
     )
   }
