@@ -54,6 +54,18 @@ function dismissModalViewController(component: React.Component<any, any>) {
   ARSwitchBoardModule.dismissModalViewController(reactTag)
 }
 
+function dismissNavigationViewController(component: React.Component<any, any>) {
+  let reactTag
+  try {
+    reactTag = findNodeHandle(component)
+  } catch (err) {
+    console.error(`Unable to find tag in dismissNavigationViewController: ${err.message}`)
+    return
+  }
+
+  ARSwitchBoardModule.dismissNavigationViewController(reactTag)
+}
+
 function presentArtworkSet(component: React.Component<any, any>, artworkIDs: string[], index: number) {
   let reactTag
   try {
@@ -71,5 +83,6 @@ export default {
   presentMediaPreviewController,
   presentModalViewController,
   dismissModalViewController,
+  dismissNavigationViewController,
   presentArtworkSet,
 }

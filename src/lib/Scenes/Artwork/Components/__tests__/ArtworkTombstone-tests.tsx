@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -14,7 +14,7 @@ describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
     const component = mount(
       <Theme>
-        <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       </Theme>
     )
     expect(component.text()).toContain("Hello im a title, 1992")
@@ -26,13 +26,28 @@ describe("ArtworkTombstone", () => {
   it("redirects to artist page when artist name is clicked", () => {
     const component = mount(
       <Theme>
-        <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       </Theme>
     )
     const artistName = component.find(TouchableWithoutFeedback).at(0)
     expect(artistName.text()).toContain("Andy Warhol")
     artistName.props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+  })
+
+  it("redirects to attribution class faq page when attribution class is clicked", () => {
+    const component = mount(
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+      </Theme>
+    )
+    const attributionClass = component.find(Text).at(8)
+    expect(attributionClass.text()).toContain("This is an edition of something")
+    attributionClass.props().onPress()
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
+      expect.anything(),
+      "/artwork-classifications"
+    )
   })
 
   describe("for a user not in the US", () => {
@@ -43,7 +58,7 @@ describe("ArtworkTombstone", () => {
     it("renders dimensions in centimeters", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).toContain("38.1 × 50.8 cm")
@@ -58,7 +73,7 @@ describe("ArtworkTombstone", () => {
     it("renders dimensions in inches", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).toContain("15 × 20 in")
@@ -69,7 +84,7 @@ describe("ArtworkTombstone", () => {
     it("truncates artist names", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).toContain("Andy Warhol")
@@ -83,7 +98,7 @@ describe("ArtworkTombstone", () => {
     it("doesn't show follow button", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).not.toContain("Follow")
@@ -92,7 +107,7 @@ describe("ArtworkTombstone", () => {
     it("shows truncated artist names when 'x more' is clicked", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       const showMore = component.find(TouchableWithoutFeedback).at(3)
@@ -112,7 +127,7 @@ describe("ArtworkTombstone", () => {
     it("doesn't show follow button", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).not.toContain("Follow")
@@ -121,7 +136,7 @@ describe("ArtworkTombstone", () => {
     it("doesn't truncate artist names", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).toContain("Andy Warhol")
@@ -141,7 +156,7 @@ describe("ArtworkTombstone", () => {
     it("renders artist name", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).toContain("Andy Warhol")
@@ -150,7 +165,7 @@ describe("ArtworkTombstone", () => {
     it("shows follow button", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).toContain("Follow")
@@ -166,7 +181,7 @@ describe("ArtworkTombstone", () => {
     it("renders artist name", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).toContain("18th century American")
@@ -175,7 +190,7 @@ describe("ArtworkTombstone", () => {
     it("shows follow button", () => {
       const component = mount(
         <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
         </Theme>
       )
       expect(component.text()).not.toContain("Follow")

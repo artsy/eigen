@@ -18,7 +18,7 @@ exports[`looks like expected 1`] = `
       Array [
         Object {
           "color": "#f1af1b",
-          "fontFamily": "AGaramondPro-Regular",
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
           "fontSize": 16,
           "paddingTop": 5,
           "textAlign": "center",

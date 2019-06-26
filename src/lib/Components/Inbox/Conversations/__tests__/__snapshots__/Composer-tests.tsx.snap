@@ -54,7 +54,7 @@ exports[`looks correct when rendered 1`] = `
       style={
         Object {
           "flex": 1,
-          "fontFamily": "AGaramondPro-Regular",
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
           "fontSize": 13,
           "paddingBottom": 10,
           "paddingLeft": 10,
@@ -147,7 +147,7 @@ exports[`regarding the send button disables it when there is no text 1`] = `
       style={
         Object {
           "flex": 1,
-          "fontFamily": "AGaramondPro-Regular",
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
           "fontSize": 13,
           "paddingBottom": 10,
           "paddingLeft": 10,
