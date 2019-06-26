@@ -32,7 +32,7 @@ describe("Artwork History", () => {
   it("renders only set keys", () => {
     const artworkHistoryInfo = {
       artwork: {
-        $refType: null,
+        " $refType": null,
         provenance: "vegas",
         exhibition_history: null,
         literature: "bibliography",
@@ -54,7 +54,7 @@ describe("Artwork History", () => {
   it("doesn't render without data", () => {
     const artworkHistoryInfo = {
       artwork: {
-        $refType: null,
+        " $refType": null,
         provenance: null,
         exhibition_history: null,
         literature: null,
