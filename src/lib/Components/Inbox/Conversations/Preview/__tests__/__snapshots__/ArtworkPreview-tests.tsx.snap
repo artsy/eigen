@@ -68,7 +68,7 @@ exports[`handles dateless artworks 1`] = `
               },
             ],
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -98,7 +98,7 @@ exports[`handles dateless artworks 1`] = `
               },
               Object {},
               Object {
-                "fontFamily": "AGaramondPro-Italic",
+                "fontFamily": "ReactNativeAGaramondPro-Italic",
               },
             ]
           }
@@ -108,7 +108,7 @@ exports[`handles dateless artworks 1`] = `
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                 },
               ]
             }
@@ -190,7 +190,7 @@ exports[`renders correctly 1`] = `
               },
             ],
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -220,7 +220,7 @@ exports[`renders correctly 1`] = `
               },
               Object {},
               Object {
-                "fontFamily": "AGaramondPro-Italic",
+                "fontFamily": "ReactNativeAGaramondPro-Italic",
               },
             ]
           }
@@ -230,7 +230,7 @@ exports[`renders correctly 1`] = `
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                 },
               ]
             }

@@ -52,7 +52,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 20,
               "height": 40,
             },
@@ -132,7 +132,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -194,7 +194,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -256,7 +256,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -318,7 +318,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -387,7 +387,7 @@ exports[`Search states:  Looks right when Found no results 1`] = `
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 20,
               "height": 40,
             },
@@ -422,7 +422,7 @@ exports[`Search states:  Looks right when Found no results 1`] = `
           Array [
             Object {
               "color": "#cccccc",
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 17,
             },
           ]
@@ -435,7 +435,7 @@ exports[`Search states:  Looks right when Found no results 1`] = `
             Array [
               Object {
                 "color": "#cccccc",
-                "fontFamily": "AGaramondPro-Italic",
+                "fontFamily": "ReactNativeAGaramondPro-Italic",
                 "fontSize": 17,
               },
             ]
@@ -501,7 +501,7 @@ exports[`Search states:  Looks right when Found one result 1`] = `
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 20,
               "height": 40,
             },
@@ -581,7 +581,7 @@ exports[`Search states:  Looks right when Found one result 1`] = `
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -650,7 +650,7 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 20,
               "height": 40,
             },
@@ -736,7 +736,7 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -805,7 +805,7 @@ exports[`Search states:  Looks right when Found two results 1`] = `
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 20,
               "height": 40,
             },
@@ -885,7 +885,7 @@ exports[`Search states:  Looks right when Found two results 1`] = `
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -947,7 +947,7 @@ exports[`Search states:  Looks right when Found two results 1`] = `
               Array [
                 Object {
                   "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "marginLeft": 13,
                   "paddingTop": 8,
@@ -1016,7 +1016,7 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 20,
               "height": 40,
             },
@@ -1108,7 +1108,7 @@ exports[`Search states:  Looks right when No query 1`] = `
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 20,
               "height": 40,
             },

@@ -4,7 +4,7 @@ PODS:
     - ISO8601DateFormatter
     - "NSURL+QueryDictionary"
   - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.2.2)"
+  - "Artsy+UIFonts (3.3.3)"
   - Artsy-UIButtons (2.3.3):
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
@@ -271,7 +271,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   "Artsy+Authentication": 3bf11ceca61c52e9e31490535bf5798f625406fa
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": 5c1e4916b21ea155de7b92b2be79f8b56bf1d48e
+  "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd

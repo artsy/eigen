@@ -49,7 +49,7 @@ exports[`InvoicePreview renders correctly 1`] = `
       style={
         Array [
           Object {
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 14,
           },
         ]
@@ -61,7 +61,7 @@ exports[`InvoicePreview renders correctly 1`] = `
       style={
         Array [
           Object {
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 14,
             "fontWeight": "bold",
           },

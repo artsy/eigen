@@ -69,7 +69,7 @@ exports[`renders correctly for a fair booth 1`] = `
               },
             ],
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -84,7 +84,7 @@ exports[`renders correctly for a fair booth 1`] = `
               "flexBasis": 0,
               "flexGrow": 3,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Italic",
+              "fontFamily": "ReactNativeAGaramondPro-Italic",
               "fontSize": 14,
             },
           ]
@@ -166,7 +166,7 @@ exports[`renders correctly for a regular show 1`] = `
               },
             ],
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -181,7 +181,7 @@ exports[`renders correctly for a regular show 1`] = `
               "flexBasis": 0,
               "flexGrow": 3,
               "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Italic",
+              "fontFamily": "ReactNativeAGaramondPro-Italic",
               "fontSize": 14,
             },
           ]

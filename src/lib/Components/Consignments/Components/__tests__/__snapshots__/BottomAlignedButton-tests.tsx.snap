@@ -153,7 +153,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
                   "flexBasis": 0,
                   "flexGrow": 1,
                   "flexShrink": 1,
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 20,
                   "height": 40,
                 },
@@ -188,7 +188,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
               Array [
                 Object {
                   "color": "#cccccc",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 17,
                 },
               ]
@@ -201,7 +201,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
                 Array [
                   Object {
                     "color": "#cccccc",
-                    "fontFamily": "AGaramondPro-Italic",
+                    "fontFamily": "ReactNativeAGaramondPro-Italic",
                     "fontSize": 17,
                   },
                 ]
