@@ -4,7 +4,6 @@ import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import React from "react"
 import { graphql } from "react-relay"
 import { ArtworkTombstoneFragmentContainer } from "../ArtworkTombstone"
-
 const MockArtworkTombstone = ({ artwork }: { artwork: ArtworkTombstone_artwork }) => {
   return (
     <MockRelayRenderer
@@ -20,7 +19,6 @@ const MockArtworkTombstone = ({ artwork }: { artwork: ArtworkTombstone_artwork }
     />
   )
 }
-
 const artworkTombstoneArtwork = {
   title: "Hello im a title",
   medium: "Painting",
@@ -29,8 +27,40 @@ const artworkTombstoneArtwork = {
     {
       name: "Andy Warhol",
       href: "/artist/andy-warhol",
-      id: "1234",
+      id: "12345",
       gravityID: "andy-warhol",
+      is_followed: false,
+      " $fragmentRefs": null,
+    },
+    {
+      name: "Pablo Picasso",
+      href: "/artist/pablo-picasso",
+      id: "12347",
+      gravityID: "pablo-picasso",
+      is_followed: false,
+      " $fragmentRefs": null,
+    },
+    {
+      name: "Some Person Witha Really Extremely SuperVeryVery Longname",
+      href: "/artist/very-long-name",
+      id: "12348",
+      gravityID: "very-long-name",
+      is_followed: false,
+      " $fragmentRefs": null,
+    },
+    {
+      name: "Alex Katz",
+      href: "/artist/alex-katz",
+      id: "12346",
+      gravityID: "alex-katz",
+      is_followed: false,
+      " $fragmentRefs": null,
+    },
+    {
+      name: "Barbara Kruger",
+      href: "/artist/barbara-kruger",
+      id: "12349",
+      gravityID: "barbara-kruger",
       is_followed: false,
       " $fragmentRefs": null,
     },
@@ -38,10 +68,9 @@ const artworkTombstoneArtwork = {
   cultural_maker: null,
   dimensions: { in: "15 × 20 in", cm: "38.1 × 50.8 cm" },
   edition_of: "Edition 100/200",
-  attribution_class: { short_description: "This is an edition of something" },
+  attribution_class: { shortDescription: "This is an edition of something" },
   " $refType": null,
 }
-
 storiesOf("Artwork/Components").add("Tombstone", () => {
-  return <MockArtworkTombstone artwork={artworkTombstoneArtwork as any} />
+  return <MockArtworkTombstone artwork={artworkTombstoneArtwork} />
 })
