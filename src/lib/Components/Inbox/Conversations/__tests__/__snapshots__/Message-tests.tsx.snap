@@ -179,7 +179,7 @@ exports[`looks correct when rendered 1`] = `
               style={
                 Array [
                   Object {
-                    "fontFamily": "AGaramondPro-Regular",
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
                     "fontSize": 14,
                   },
                 ]
@@ -191,7 +191,7 @@ exports[`looks correct when rendered 1`] = `
               style={
                 Array [
                   Object {
-                    "fontFamily": "AGaramondPro-Regular",
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
                     "fontSize": 14,
                     "fontWeight": "bold",
                   },
@@ -278,7 +278,7 @@ exports[`looks correct when rendered 1`] = `
               false,
               Object {},
               Object {
-                "fontFamily": "AGaramondPro-Regular",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
               },
             ]
           }

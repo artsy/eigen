@@ -19,6 +19,7 @@
 
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARArtworkComponentViewController.h>
+#import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
@@ -114,6 +115,7 @@
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
   [sectionData addCellData:self.jumpToArtwork];
+  [sectionData addCellData:self.jumpToArtworkAttributionClassFAQ];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -236,6 +238,14 @@
 {
   return [self tappableCellDataWithTitle:@"Artwork" selection:^{
     id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"banksy-choose-your-weapon-grey-22"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToArtworkAttributionClassFAQ
+{
+  return [self tappableCellDataWithTitle:@"Artwork Attribution Class FAQ" selection:^{
+    id viewController = [[ARArtworkAttributionClassFAQViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

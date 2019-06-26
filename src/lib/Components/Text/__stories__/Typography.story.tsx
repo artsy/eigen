@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import styled from "styled-components/native"
 
+import Separator from "lib/Components/Separator"
 import { Fonts } from "lib/data/fonts"
 import Headline from "../Headline"
 import Serif from "../Serif"
@@ -14,82 +15,37 @@ storiesOf("App Style/Typography")
     return <Serif>This is a blank serif</Serif>
   })
   .add("Typefaces", () => {
+    const fonts = [
+      { name: "AGaramondPro Bold", family: Fonts.GaramondBold },
+      { name: "AGaramondPro BoldItalic", family: Fonts.GaramondBoldItalic },
+      { name: "AGaramondPro Italic", family: Fonts.GaramondItalic },
+      { name: "AGaramondPro Regular", family: Fonts.GaramondRegular },
+      { name: "AGaramondPro Semibold", family: Fonts.GaramondSemibold },
+      { name: "Avant Garde Gothic ITC", family: Fonts.AvantGardeRegular },
+      { name: "Unica77LL Italic", family: Fonts.Unica77LLItalic },
+      { name: "Unica77LL Medium", family: Fonts.Unica77LLMedium },
+      { name: "Unica77LL MediumItalic", family: Fonts.Unica77LLMediumItalic },
+      { name: "Unica77LL Regular", family: Fonts.Unica77LLRegular },
+    ]
+    const fontComponents = fonts.map(({ name, family }) => {
+      const Component = styled.Text`
+        font-family: "${family}";
+        font-size: 30px;
+        margin-bottom: 10px;
+      `
+      return <Component key={name}>{name}</Component>
+    })
+    const separatedComponents = fontComponents.reduce(
+      (memo, component, index) => [memo, <Separator key={index} />, component] as any // TypeScript doesn't know that JSX Elements can be arrays.
+    )
     return (
       <Container>
-        <GaramondBold>AGaramondPro Bold</GaramondBold>
-        <GaramondBoldItalic>AGaramondPro BoldItalic</GaramondBoldItalic>
-        <GaramondItalic>AGaramondPro Italic</GaramondItalic>
-        <GaramondRegular>AGaramondPro Regular</GaramondRegular>
-        <GaramondSemibold>AGaramondPro Semibold</GaramondSemibold>
-        <AvantGardeRegular>Avant Garde Gothic ITC</AvantGardeRegular>
-        <Unita77LLItalic>Unica77LL Italic</Unita77LLItalic>
-        <Unita77LLMedium>Unica77LL Medium</Unita77LLMedium>
-        <Unita77LLMediumItalic>Unica77LL MediumItalic</Unita77LLMediumItalic>
-        <Unita77LLRegular>Unica77LL Regular</Unita77LLRegular>
+        <Separator />
+        {separatedComponents}
       </Container>
     )
   })
 
 const Container = styled.View`
   margin: 70px 10px 10px;
-`
-
-const GaramondBold = styled.Text`
-  font-family: "${Fonts.GaramondBold}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondBoldItalic = styled.Text`
-  font-family: "${Fonts.GaramondBoldItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondItalic = styled.Text`
-  font-family: "${Fonts.GaramondItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondRegular = styled.Text`
-  font-family: "${Fonts.GaramondRegular}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const GaramondSemibold = styled.Text`
-  font-family: "${Fonts.GaramondSemibold}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const AvantGardeRegular = styled.Text`
-  font-family: "${Fonts.AvantGardeRegular}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLItalic = styled.Text`
-  font-family: "${Fonts.Unica77LLItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLMedium = styled.Text`
-  font-family: "${Fonts.Unica77LLMedium}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLMediumItalic = styled.Text`
-  font-family: "${Fonts.Unica77LLMediumItalic}";
-  font-size: 30px;
-  margin-bottom: 10px;
-`
-
-const Unita77LLRegular = styled.Text`
-  font-family: "${Fonts.Unica77LLRegular}";
-  font-size: 30px;
-  margin-bottom: 10px;
 `

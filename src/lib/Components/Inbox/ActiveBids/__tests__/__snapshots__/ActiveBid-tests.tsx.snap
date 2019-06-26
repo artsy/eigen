@@ -96,7 +96,7 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
             undefined,
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -114,7 +114,7 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
             undefined,
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -233,7 +233,7 @@ exports[`looks right for bids in live open auctions 1`] = `
             undefined,
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -251,7 +251,7 @@ exports[`looks right for bids in live open auctions 1`] = `
             undefined,
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -370,7 +370,7 @@ exports[`renders correctly 1`] = `
             undefined,
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -388,7 +388,7 @@ exports[`renders correctly 1`] = `
             undefined,
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }

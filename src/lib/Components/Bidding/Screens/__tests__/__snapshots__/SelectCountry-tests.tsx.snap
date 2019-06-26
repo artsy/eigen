@@ -108,7 +108,7 @@ exports[`Sets up the right view hierarchy 1`] = `
             "borderColor": "#E5E5E5",
             "borderStyle": "solid",
             "borderWidth": 1,
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 16,
             "height": 40,
             "marginBottom": 10,
