@@ -18,9 +18,12 @@ describe("Artwork History", () => {
 
     const component = mount(
       <Theme>
-        <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+        <div>
+          <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+        </div>
       </Theme>
     )
+
     expect(component.text()).toContain("Provenance")
     expect(component.text()).toContain("Exhibition History")
     expect(component.text()).toContain("Bibliography")
@@ -38,7 +41,9 @@ describe("Artwork History", () => {
 
     const component = mount(
       <Theme>
-        <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+        <div>
+          <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+        </div>
       </Theme>
     )
     expect(component.text()).toContain("Provenance")
@@ -58,7 +63,9 @@ describe("Artwork History", () => {
 
     const component = mount(
       <Theme>
-        <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+        <div>
+          <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+        </div>
       </Theme>
     )
     expect(component.text()).not.toContain("Provenance")
