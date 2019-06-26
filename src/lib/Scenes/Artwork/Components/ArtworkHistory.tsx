@@ -13,13 +13,12 @@ interface ArtworkHistoryState {
 }
 
 export class ArtworkHistory extends React.Component<ArtworkHistoryProps, ArtworkHistoryState> {
-  state = { expand: false }
-
   render() {
+    const { provenance, exhibition_history, literature } = this.props.artwork
     const sections = [
-      { title: "Provenance", value: this.props.artwork.provenance },
-      { title: "Exhibition History", value: this.props.artwork.exhibition_history },
-      { title: "Bibliography", value: this.props.artwork.literature },
+      { title: "Provenance", value: provenance },
+      { title: "Exhibition History", value: exhibition_history },
+      { title: "Bibliography", value: literature },
     ]
 
     const displaySections = sections.filter(i => i.value != null)
