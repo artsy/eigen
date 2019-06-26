@@ -35,6 +35,9 @@ fragment Artwork_artwork on Artwork {
   availability
   additional_information
   description
+  provenance
+  exhibition_history
+  literature
   layer(id: "main") {
     artworksConnection(first: 8) {
       edges {
@@ -78,6 +81,7 @@ fragment Artwork_artwork on Artwork {
   ...AboutArtist_artwork
   ...ArtworkDetails_artwork
   ...ArtworkHeader_artwork
+  ...ArtworkHistory_artwork
 }
 
 fragment ArtworkAvailability_artwork on Artwork {
@@ -181,6 +185,12 @@ fragment ArtworkHeader_artwork on Artwork {
   images {
     ...ImageCarousel_images
   }
+}
+
+fragment ArtworkHistory_artwork on Artwork {
+  provenance
+  exhibition_history
+  literature
 }
 
 fragment ArtworkActions_artwork on Artwork {
@@ -765,6 +775,27 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "provenance",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibition_history",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "literature",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "layer",
@@ -1225,7 +1256,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "fd76f11a636d571ca6fd7ce3f83d89d9",
+    "id": "7b91613c25122ec6ba59a32b5e0218d6",
     "text": null,
     "metadata": {}
   }

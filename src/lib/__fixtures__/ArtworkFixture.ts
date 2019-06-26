@@ -11,6 +11,9 @@ export const ArtworkFixture = {
   is_saved: false,
   additional_information: "This artwork is unique.",
   description: null,
+  exhibition_history: null,
+  literature: null,
+  provenance: null,
   context: {
     __typename: "ArtworkContextPartnerShow",
   },
