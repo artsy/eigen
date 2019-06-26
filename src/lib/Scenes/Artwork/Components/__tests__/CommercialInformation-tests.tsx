@@ -1,17 +1,17 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
-import { ArtworkInformation } from "../ArtworkInformation"
+import { CommercialInformation } from "../CommercialInformation"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
 
-describe("ArtworkInformation", () => {
+describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
     const component = mount(
       <Theme>
-        <ArtworkInformation artwork={ArtworkInformationArtwork} />
+        <CommercialInformation artwork={CommercialInformationArtwork} />
       </Theme>
     )
     expect(component.text()).toContain("Sold")
@@ -20,7 +20,7 @@ describe("ArtworkInformation", () => {
   })
 
   it("doesn't render information when the data is not present", () => {
-    const ArtworkInformationArtworkNoData = {
+    const CommercialInformationArtworkNoData = {
       availability: null,
       partner: {
         name: null,
@@ -37,7 +37,7 @@ describe("ArtworkInformation", () => {
     }
     const component = mount(
       <Theme>
-        <ArtworkInformation artwork={ArtworkInformationArtworkNoData} />
+        <CommercialInformation artwork={CommercialInformationArtworkNoData} />
       </Theme>
     )
     expect(component.text()).not.toContain("Sold")
@@ -46,7 +46,7 @@ describe("ArtworkInformation", () => {
   })
 })
 
-const ArtworkInformationArtwork = {
+const CommercialInformationArtwork = {
   availability: "Sold",
   partner: {
     name: "I'm a Gallery",

@@ -14,7 +14,7 @@ describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
     const component = mount(
       <Theme>
-        <ArtworkExtraLinks artwork={ArtworkWithFollowableArtists} />
+        <ArtworkExtraLinks artwork={ArtworkWithConsignableArtists} />
       </Theme>
     )
     const consignmentsLink = component.find(Text).at(1)
@@ -23,19 +23,19 @@ describe("ArtworkExtraLinks", () => {
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/consign/info")
   })
 
-  describe("for an artwork with more than 1 followable artist", () => {
+  describe("for an artwork with more than 1 consignable artist", () => {
     it("shows plural link text", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={ArtworkWithFollowableArtists} />
+          <ArtworkExtraLinks artwork={ArtworkWithConsignableArtists} />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by these artists?")
     })
-    it("shows consign link if at least 1 artist is consignamble", () => {
+    it("shows consign link if at least 1 artist is consignable", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={ArtworkWithFollowableArtists} />
+          <ArtworkExtraLinks artwork={ArtworkWithConsignableArtists} />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -43,7 +43,7 @@ describe("ArtworkExtraLinks", () => {
     it("doesn't show consign link if no artists are consignable", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={ArtworkWithoutFollowableArtists} />
+          <ArtworkExtraLinks artwork={ArtworkWithoutConsignableArtists} />
         </Theme>
       )
       expect(component.text()).not.toContain("Consign with Artsy.")
@@ -52,12 +52,12 @@ describe("ArtworkExtraLinks", () => {
 
   describe("for an artwork with one artist", () => {
     beforeEach(() => {
-      ArtworkWithFollowableArtists.artists = ArtworkWithFollowableArtists.artists.slice(0, 1)
+      ArtworkWithConsignableArtists.artists = ArtworkWithConsignableArtists.artists.slice(0, 1)
     })
     it("shows singular link text", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={ArtworkWithFollowableArtists} />
+          <ArtworkExtraLinks artwork={ArtworkWithConsignableArtists} />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by this artist?")
@@ -66,7 +66,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={ArtworkWithFollowableArtists} />
+          <ArtworkExtraLinks artwork={ArtworkWithConsignableArtists} />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -74,7 +74,7 @@ describe("ArtworkExtraLinks", () => {
   })
 })
 
-const ArtworkWithoutFollowableArtists = {
+const ArtworkWithoutConsignableArtists = {
   artists: [
     {
       is_consignable: false,
@@ -88,7 +88,7 @@ const ArtworkWithoutFollowableArtists = {
   " $refType": null,
 }
 
-const ArtworkWithFollowableArtists = {
+const ArtworkWithConsignableArtists = {
   artists: [
     {
       is_consignable: true,

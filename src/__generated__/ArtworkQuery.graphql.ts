@@ -74,7 +74,7 @@ fragment Artwork_artwork on Artwork {
   ...AboutArtist_artwork
   ...ArtworkDetails_artwork
   ...ArtworkHeader_artwork
-  ...ArtworkInformation_artwork
+  ...CommercialInformation_artwork
 }
 
 fragment PartnerCard_artwork on Artwork {
@@ -169,7 +169,7 @@ fragment ArtworkHeader_artwork on Artwork {
   }
 }
 
-fragment ArtworkInformation_artwork on Artwork {
+fragment CommercialInformation_artwork on Artwork {
   availability
   partner {
     name
@@ -1247,7 +1247,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "a86ec6538a0bdaea639f197bab334b70",
+    "id": "3ea4d65e7047dd54f67e294647c9aad6",
     "text": null,
     "metadata": {}
   }

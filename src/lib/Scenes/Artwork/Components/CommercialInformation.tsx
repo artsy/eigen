@@ -1,16 +1,16 @@
 import { Box } from "@artsy/palette"
-import { ArtworkInformation_artwork } from "__generated__/ArtworkInformation_artwork.graphql"
+import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./ArtworkAvailability"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { SellerInfoFragmentContainer as SellerInfo } from "./SellerInfo"
 
-interface ArtworkInformationProps {
-  artwork: ArtworkInformation_artwork
+interface CommercialInformationProps {
+  artwork: CommercialInformation_artwork
 }
 
-export class ArtworkInformation extends React.Component<ArtworkInformationProps> {
+export class CommercialInformation extends React.Component<CommercialInformationProps> {
   render() {
     const { artwork } = this.props
     return (
@@ -27,9 +27,9 @@ export class ArtworkInformation extends React.Component<ArtworkInformationProps>
   }
 }
 
-export const ArtworkInformationFragmentContainer = createFragmentContainer(ArtworkInformation, {
+export const CommercialInformationFragmentContainer = createFragmentContainer(CommercialInformation, {
   artwork: graphql`
-    fragment ArtworkInformation_artwork on Artwork {
+    fragment CommercialInformation_artwork on Artwork {
       availability
       partner {
         name

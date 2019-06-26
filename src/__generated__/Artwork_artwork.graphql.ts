@@ -5,7 +5,7 @@ import { AboutArtist_artwork$ref } from "./AboutArtist_artwork.graphql";
 import { AboutWork_artwork$ref } from "./AboutWork_artwork.graphql";
 import { ArtworkDetails_artwork$ref } from "./ArtworkDetails_artwork.graphql";
 import { ArtworkHeader_artwork$ref } from "./ArtworkHeader_artwork.graphql";
-import { ArtworkInformation_artwork$ref } from "./ArtworkInformation_artwork.graphql";
+import { CommercialInformation_artwork$ref } from "./CommercialInformation_artwork.graphql";
 import { OtherWorks_artwork$ref } from "./OtherWorks_artwork.graphql";
 import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
 declare const _Artwork_artwork$ref: unique symbol;
@@ -44,7 +44,7 @@ export type Artwork_artwork = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ArtworkHeader_artwork$ref & ArtworkInformation_artwork$ref;
+    readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
 
@@ -265,11 +265,11 @@ return {
     },
     {
       "kind": "FragmentSpread",
-      "name": "ArtworkInformation_artwork",
+      "name": "CommercialInformation_artwork",
       "args": null
     }
   ]
 };
 })();
-(node as any).hash = 'ef2f3f09b38b31e916e9547a471dd53f';
+(node as any).hash = 'a759d1970a4793217ff76557d9669430';
 export default node;

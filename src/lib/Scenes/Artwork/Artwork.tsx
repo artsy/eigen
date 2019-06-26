@@ -11,7 +11,7 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
-import { ArtworkInformationFragmentContainer as ArtworkInformation } from "./Components/ArtworkInformation"
+import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
@@ -31,7 +31,7 @@ export class Artwork extends React.Component<Props> {
     const sections = []
 
     sections.push("header")
-    sections.push("information")
+    sections.push("commercialInformation")
     sections.push("aboutArtist")
 
     if (artwork.description || artwork.additional_information) {
@@ -58,8 +58,8 @@ export class Artwork extends React.Component<Props> {
     switch (section) {
       case "header":
         return <ArtworkHeader artwork={artwork} />
-      case "information":
-        return <ArtworkInformation artwork={artwork} />
+      case "commercialInformation":
+        return <CommercialInformation artwork={artwork} />
       case "aboutWork":
         return <AboutWork artwork={artwork} />
       case "details":
@@ -141,7 +141,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...AboutArtist_artwork
       ...ArtworkDetails_artwork
       ...ArtworkHeader_artwork
-      ...ArtworkInformation_artwork
+      ...CommercialInformation_artwork
     }
   `,
 })
