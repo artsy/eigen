@@ -8,11 +8,7 @@ interface ArtworkHistoryProps {
   artwork: ArtworkHistory_artwork
 }
 
-interface ArtworkHistoryState {
-  expand: boolean
-}
-
-export class ArtworkHistory extends React.Component<ArtworkHistoryProps, ArtworkHistoryState> {
+export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
   render() {
     const { provenance, exhibition_history, literature } = this.props.artwork
     const sections = [
