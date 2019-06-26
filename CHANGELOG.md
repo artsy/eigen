@@ -18,7 +18,6 @@
 
 - Update typings for Relay to v4 and usage thereof - alloy
 - Use gravity ID when opening artwork from artwork grid instead of global object ID - alloy
-- Add artwork history sections - steve
 - Fixes a React Native font-rendering issue - david & ash
 - Adds artwork classifications page and links to it from artwork page - lilyfromseattle
 - Add artwork history sections - steve
