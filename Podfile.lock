@@ -46,7 +46,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.2.2)"
+  - "Artsy+UIFonts (3.3.3)"
   - "Artsy+UILabels (2.2.0)":
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
@@ -529,7 +529,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": 5c1e4916b21ea155de7b92b2be79f8b56bf1d48e
+  "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
