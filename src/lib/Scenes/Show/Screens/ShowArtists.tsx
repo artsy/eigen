@@ -3,7 +3,6 @@ import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graph
 import { ShowArtists_show } from "__generated__/ShowArtists_show.graphql"
 import { ShowArtistsQuery } from "__generated__/ShowArtistsQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
@@ -37,18 +36,13 @@ export class ShowArtists extends React.Component<Props, State> {
   componentDidMount() {
     const { show } = this.props
     const artistsGroupedByName = get(show, "artists_grouped_by_name", []) as any
-
     this.setState({ data: artistsGroupedByName.map(({ letter, items }, index) => ({ letter, data: items, index })) })
-  }
-
-  handleViewArtist = (context, artist) => {
-    SwitchBoard.presentNavigationViewController(context, artist)
   }
 
   render() {
     return (
       <Theme>
-        <ArtistsGroupedByName data={this.state.data} Component={this} viewArtist={this.handleViewArtist.bind(this)} />
+        <ArtistsGroupedByName data={this.state.data} Component={this} />
       </Theme>
     )
   }

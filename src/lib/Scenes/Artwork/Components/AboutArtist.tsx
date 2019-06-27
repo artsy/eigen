@@ -11,7 +11,14 @@ interface AboutArtistProps {
 
 export class AboutArtist extends React.Component<AboutArtistProps> {
   render() {
-    const hasSingleArtist = this.props.artwork.artists.length === 1
+    const {
+      artwork: { artists },
+    } = this.props
+    const hasSingleArtist = artists && artists.length === 1
+    const text =
+      hasSingleArtist && artists[0].biography_blurb && artists[0].biography_blurb.text
+        ? artists[0].biography_blurb.text
+        : null
 
     return (
       <>
@@ -19,15 +26,16 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           <Sans size="3t" weight="medium" mb={2}>
             {hasSingleArtist ? "About the artist" : "About the artists"}
           </Sans>
-          {this.props.artwork.artists.map(artist => (
+          {artists.map(artist => (
             <ArtistListItem key={artist.id} artist={artist} />
           ))}
         </Flex>
-        {hasSingleArtist && (
-          <Box mt={2}>
-            <ReadMore content={this.props.artwork.artists[0].biography_blurb.text} maxChars={140} />
-          </Box>
-        )}
+        {hasSingleArtist &&
+          text && (
+            <Box mt={2}>
+              <ReadMore content={text} maxChars={140} />
+            </Box>
+          )}
       </>
     )
   }

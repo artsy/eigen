@@ -1,7 +1,6 @@
-import { Box, EntityHeader, Flex } from "@artsy/palette"
+import { Button, EntityHeader, Flex } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { filterLocations } from "lib/utils/filterLocations"
 import { get } from "lib/utils/get"
@@ -101,15 +100,14 @@ export class PartnerCard extends React.Component<Props, State> {
             initials={partner.initials}
             FollowButton={
               partner.profile && (
-                <Box width={90} height={30}>
-                  <InvertedButton
-                    grayBorder={true}
-                    text={partner.profile.is_followed ? "Following" : "Follow"}
-                    onPress={this.handleFollowPartner.bind(this)}
-                    selected={partner.profile.is_followed}
-                    inProgress={isFollowedChanging}
-                  />
-                </Box>
+                <Button
+                  variant={partner.profile.is_followed ? "secondaryOutline" : "primaryBlack"}
+                  onPress={this.handleFollowPartner.bind(this)}
+                  size="small"
+                  loading={isFollowedChanging}
+                >
+                  {partner.profile.is_followed ? "Following" : "Follow"}
+                </Button>
               )
             }
           />

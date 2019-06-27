@@ -26,7 +26,7 @@ describe("ArtistsGroupedByName", () => {
           }))
           return (
             <Theme>
-              <ArtistsGroupedByName viewArtist={jest.fn()} data={data} Component={FairArtists} />
+              <ArtistsGroupedByName data={data} Component={FairArtists} />
             </Theme>
           )
         }}

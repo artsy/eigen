@@ -233,6 +233,8 @@ fragment ArtistListItem_artist on Artist {
   internalID
   gravityID
   name
+  initials
+  href
   is_followed
   nationality
   birthday
@@ -385,25 +387,32 @@ v12 = {
 v13 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "nationality",
+  "name": "initials",
   "args": null,
   "storageKey": null
 },
 v14 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "birthday",
+  "name": "nationality",
   "args": null,
   "storageKey": null
 },
 v15 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "deathday",
+  "name": "birthday",
   "args": null,
   "storageKey": null
 },
 v16 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "deathday",
+  "args": null,
+  "storageKey": null
+},
+v17 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -415,7 +424,7 @@ v16 = {
     (v5/*: any*/)
   ]
 },
-v17 = [
+v18 = [
   (v3/*: any*/),
   (v7/*: any*/)
 ];
@@ -608,11 +617,12 @@ return {
               (v2/*: any*/),
               (v1/*: any*/),
               (v7/*: any*/),
-              (v8/*: any*/),
               (v13/*: any*/),
+              (v8/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
-              (v16/*: any*/)
+              (v16/*: any*/),
+              (v17/*: any*/)
             ]
           },
           {
@@ -840,7 +850,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v17/*: any*/)
+                        "selections": (v18/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -850,7 +860,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v17/*: any*/)
+                        "selections": (v18/*: any*/)
                       },
                       (v12/*: any*/)
                     ]
@@ -873,11 +883,12 @@ return {
               (v12/*: any*/),
               (v7/*: any*/),
               (v3/*: any*/),
-              (v8/*: any*/),
               (v13/*: any*/),
+              (v8/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
-              (v16/*: any*/)
+              (v16/*: any*/),
+              (v17/*: any*/)
             ]
           },
           {
@@ -1120,7 +1131,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "DetailTestsQuery",
-    "id": "b252c61b8f78eaa23cbba9561b178cec",
+    "id": "2a7880448fed7f28ad77e4e7eade0541",
     "text": null,
     "metadata": {}
   }
