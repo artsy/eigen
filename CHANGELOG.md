@@ -16,6 +16,8 @@
 
 ### Master
 
+- The 1.12.2 version release failed, so this is a small bump to make sure the latest changes are included.
+
 ### 1.12.2
 
 - Update typings for Relay to v4 and usage thereof - alloy
