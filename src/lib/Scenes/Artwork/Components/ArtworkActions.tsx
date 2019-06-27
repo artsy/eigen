@@ -7,6 +7,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import styled from "styled-components/native"
 
 const Constants = NativeModules.ARCocoaConstantsModule
+const ApiModule = NativeModules.ARTemporaryAPIModule
 
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
@@ -76,13 +77,15 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               </Sans>
             </UtilButton>
           </TouchableWithoutFeedback>
-          {Constants.AREnabled && (
-            <UtilButton pr={3}>
-              <Box mr={0.5}>
-                <EyeOpenedIcon />
-              </Box>
-              <Sans size="3">View in Room</Sans>
-            </UtilButton>
+          {!Constants.AREnabled && (
+            <TouchableWithoutFeedback onPress={() => ApiModule.presentAugmentedRealityVIR("url", 1, 2, "slug", "id")}>
+              <UtilButton pr={3}>
+                <Box mr={0.5}>
+                  <EyeOpenedIcon />
+                </Box>
+                <Sans size="3">View in Room</Sans>
+              </UtilButton>
+            </TouchableWithoutFeedback>
           )}
           <TouchableWithoutFeedback onPress={() => this.handleArtworkShare()}>
             <UtilButton>

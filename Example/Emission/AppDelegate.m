@@ -1,4 +1,5 @@
 #import <KSCrash/KSCrash.h>
+#import <Foundation/Foundation.h>
 
 #import "AppDelegate.h"
 #import "ARDefaults.h"
@@ -63,7 +64,7 @@ randomBOOL(void)
 }
 
 @interface AppDelegate ()
-@property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) EigenLikeNavigationController *navigationController;
 @property (nonatomic, strong) LoadingSpinner *spinner;
 @end
 
@@ -210,6 +211,15 @@ randomBOOL(void)
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       block(@[[NSNull null]]);
     });
+  };
+
+  emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat width, CGFloat height, NSString *artworkSlug, NSString *artworkId) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"VR!" message:@"YOU CALLED VR" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:defaultAction];
+    id controller = self.navigationController;
+    [controller presentViewController:alert animated:YES completion:nil];
+
   };
 
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
