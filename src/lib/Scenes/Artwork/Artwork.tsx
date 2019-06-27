@@ -11,6 +11,7 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
+import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
@@ -39,6 +40,11 @@ export class Artwork extends React.Component<Props> {
     }
 
     sections.push("details")
+
+    if (artwork.provenance || artwork.exhibition_history || artwork.literature) {
+      sections.push("history")
+    }
+
     sections.push("aboutArtist")
     sections.push("partnerCard")
 
@@ -64,6 +70,8 @@ export class Artwork extends React.Component<Props> {
         return <AboutWork artwork={artwork} />
       case "details":
         return <ArtworkDetails artwork={artwork} />
+      case "history":
+        return <ArtworkHistory artwork={artwork} />
       case "aboutArtist":
         return <AboutArtist artwork={artwork} />
       case "partnerCard":
@@ -100,6 +108,9 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
     fragment Artwork_artwork on Artwork {
       additional_information
       description
+      provenance
+      exhibition_history
+      literature
 
       layer(id: "main") {
         artworksConnection(first: 8) {
@@ -142,6 +153,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...ArtworkDetails_artwork
       ...ArtworkHeader_artwork
       ...CommercialInformation_artwork
+      ...ArtworkHistory_artwork
     }
   `,
 })

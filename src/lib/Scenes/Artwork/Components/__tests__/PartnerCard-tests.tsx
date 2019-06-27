@@ -1,6 +1,5 @@
-import { Sans, Serif, Theme } from "@artsy/palette"
+import { Button, Sans, Serif, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
@@ -21,7 +20,7 @@ describe("PartnerCard", () => {
         <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
       </Theme>
     )
-    expect(component.find(InvertedButton).length).toEqual(1)
+    expect(component.find(Button).length).toEqual(1)
 
     expect(
       component
@@ -70,7 +69,7 @@ describe("PartnerCard", () => {
         <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
       </Theme>
     )
-    expect(component.find(InvertedButton).length).toEqual(1)
+    expect(component.find(Button).length).toEqual(1)
 
     expect(
       component
@@ -87,11 +86,11 @@ describe("PartnerCard", () => {
         <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
       </Theme>
     )
-    expect(component.find(InvertedButton)).toHaveLength(1)
+    expect(component.find(Button)).toHaveLength(1)
 
     expect(
       component
-        .find(InvertedButton)
+        .find(Button)
         .at(0)
         .render()
         .text()
@@ -143,7 +142,7 @@ describe("PartnerCard", () => {
         <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkNoProfile} />
       </Theme>
     )
-    expect(component.find(InvertedButton)).toHaveLength(0)
+    expect(component.find(Button)).toHaveLength(0)
   })
 
   describe("Following a partner", () => {
@@ -191,11 +190,11 @@ describe("PartnerCard", () => {
         mockFollowResults: unfollowResponse,
       })
 
-      const followButton = partnerCard.find(InvertedButton).at(0)
+      const followButton = partnerCard.find(Button).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
 
       await partnerCard
-        .find(InvertedButton)
+        .find(Button)
         .at(0)
         .props()
         .onPress()
@@ -203,7 +202,7 @@ describe("PartnerCard", () => {
       await flushPromiseQueue()
       partnerCard.update()
 
-      const updatedFollowButton = partnerCard.find(InvertedButton).at(0)
+      const updatedFollowButton = partnerCard.find(Button).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
     })
 
@@ -220,11 +219,11 @@ describe("PartnerCard", () => {
         mockFollowResults: followResponse,
       })
 
-      const followButton = partnerCard.find(InvertedButton).at(0)
+      const followButton = partnerCard.find(Button).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
       await partnerCard
-        .find(InvertedButton)
+        .find(Button)
         .at(0)
         .props()
         .onPress()
@@ -232,7 +231,7 @@ describe("PartnerCard", () => {
       await flushPromiseQueue()
       partnerCard.update()
 
-      const updatedFollowButton = partnerCard.find(InvertedButton).at(0)
+      const updatedFollowButton = partnerCard.find(Button).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Following"`)
     })
 
@@ -255,11 +254,11 @@ describe("PartnerCard", () => {
         },
       })
 
-      const followButton = partnerCard.find(InvertedButton).at(0)
+      const followButton = partnerCard.find(Button).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
       await partnerCard
-        .find(InvertedButton)
+        .find(Button)
         .at(0)
         .props()
         .onPress()
@@ -267,7 +266,7 @@ describe("PartnerCard", () => {
       await flushPromiseQueue()
       partnerCard.update()
 
-      const updatedFollowButton = partnerCard.find(InvertedButton).at(0)
+      const updatedFollowButton = partnerCard.find(Button).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
     })
   })

@@ -144,7 +144,7 @@ exports[`renders correctly with a show 1`] = `
               },
               Object {},
               Object {
-                "fontFamily": "AGaramondPro-Regular",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
               },
             ]
           }
@@ -154,7 +154,7 @@ exports[`renders correctly with a show 1`] = `
               Array [
                 Object {
                   "color": "black",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
                 },
               ]
@@ -176,7 +176,7 @@ exports[`renders correctly with a show 1`] = `
             },
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }
@@ -361,7 +361,7 @@ exports[`renders correctly with an artwork 1`] = `
               },
               Object {},
               Object {
-                "fontFamily": "AGaramondPro-Regular",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
               },
             ]
           }
@@ -371,7 +371,7 @@ exports[`renders correctly with an artwork 1`] = `
               Array [
                 Object {
                   "color": "black",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
                 },
               ]
@@ -384,7 +384,7 @@ exports[`renders correctly with an artwork 1`] = `
               Array [
                 Object {
                   "color": "black",
-                  "fontFamily": "AGaramondPro-Italic",
+                  "fontFamily": "ReactNativeAGaramondPro-Italic",
                   "fontSize": 16,
                 },
               ]
@@ -397,7 +397,7 @@ exports[`renders correctly with an artwork 1`] = `
               Array [
                 Object {
                   "color": "black",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
                 },
               ]
@@ -419,7 +419,7 @@ exports[`renders correctly with an artwork 1`] = `
             },
             Object {},
             Object {
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
             },
           ]
         }

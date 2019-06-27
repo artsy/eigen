@@ -20,7 +20,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
             },
           ],
           Object {
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
           },
         ]
       }
@@ -248,7 +248,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       },
                       Object {},
                       Object {
-                        "fontFamily": "AGaramondPro-Regular",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
                       },
                     ]
                   }
@@ -258,7 +258,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       Array [
                         Object {
                           "color": "black",
-                          "fontFamily": "AGaramondPro-Regular",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
                           "fontSize": 16,
                         },
                       ]
@@ -271,7 +271,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       Array [
                         Object {
                           "color": "black",
-                          "fontFamily": "AGaramondPro-Italic",
+                          "fontFamily": "ReactNativeAGaramondPro-Italic",
                           "fontSize": 16,
                         },
                       ]
@@ -284,7 +284,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       Array [
                         Object {
                           "color": "black",
-                          "fontFamily": "AGaramondPro-Regular",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
                           "fontSize": 16,
                         },
                       ]
@@ -306,7 +306,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     },
                     Object {},
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -477,7 +477,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       },
                       Object {},
                       Object {
-                        "fontFamily": "AGaramondPro-Regular",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
                       },
                     ]
                   }
@@ -487,7 +487,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       Array [
                         Object {
                           "color": "black",
-                          "fontFamily": "AGaramondPro-Regular",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
                           "fontSize": 16,
                         },
                       ]
@@ -500,7 +500,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       Array [
                         Object {
                           "color": "black",
-                          "fontFamily": "AGaramondPro-Italic",
+                          "fontFamily": "ReactNativeAGaramondPro-Italic",
                           "fontSize": 16,
                         },
                       ]
@@ -513,7 +513,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       Array [
                         Object {
                           "color": "black",
-                          "fontFamily": "AGaramondPro-Regular",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
                           "fontSize": 16,
                         },
                       ]
@@ -535,7 +535,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     },
                     Object {},
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }

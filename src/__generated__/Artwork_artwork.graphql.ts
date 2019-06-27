@@ -5,6 +5,7 @@ import { AboutArtist_artwork$ref } from "./AboutArtist_artwork.graphql";
 import { AboutWork_artwork$ref } from "./AboutWork_artwork.graphql";
 import { ArtworkDetails_artwork$ref } from "./ArtworkDetails_artwork.graphql";
 import { ArtworkHeader_artwork$ref } from "./ArtworkHeader_artwork.graphql";
+import { ArtworkHistory_artwork$ref } from "./ArtworkHistory_artwork.graphql";
 import { CommercialInformation_artwork$ref } from "./CommercialInformation_artwork.graphql";
 import { OtherWorks_artwork$ref } from "./OtherWorks_artwork.graphql";
 import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
@@ -13,6 +14,9 @@ export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
 export type Artwork_artwork = {
     readonly additional_information: string | null;
     readonly description: string | null;
+    readonly provenance: string | null;
+    readonly exhibition_history: string | null;
+    readonly literature: string | null;
     readonly layer: {
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
@@ -44,7 +48,7 @@ export type Artwork_artwork = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref;
+    readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref & ArtworkHistory_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
 
@@ -121,6 +125,27 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "description",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "provenance",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_history",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "literature",
       "args": null,
       "storageKey": null
     },
@@ -267,9 +292,14 @@ return {
       "kind": "FragmentSpread",
       "name": "CommercialInformation_artwork",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ArtworkHistory_artwork",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = 'a759d1970a4793217ff76557d9669430';
+(node as any).hash = '34a60cf78fa7ca2fbb3591edcbd2fc83';
 export default node;

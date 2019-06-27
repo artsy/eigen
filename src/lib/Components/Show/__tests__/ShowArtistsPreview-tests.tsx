@@ -1,13 +1,12 @@
 import React from "react"
 import { graphql } from "react-relay"
 
-import { Theme } from "@artsy/palette"
+import { Button, Theme } from "@artsy/palette"
 import { ShowFixture } from "lib/__fixtures__/ShowFixture"
 import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 
 import { ArtistListItem } from "lib/Components/ArtistListItem"
-import ListItemButton from "lib/Components/Buttons/InvertedButton"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "../ShowArtistsPreview"
 
 jest.unmock("react-relay")
@@ -57,7 +56,7 @@ describe("ArtistsContainer", () => {
     const tree = await renderTree()
 
     tree
-      .find(ListItemButton)
+      .find(Button)
       .first()
       .props()
       .onPress()

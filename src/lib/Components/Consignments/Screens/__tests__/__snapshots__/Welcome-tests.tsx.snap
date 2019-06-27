@@ -146,7 +146,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -214,7 +214,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -282,7 +282,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -350,7 +350,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -619,7 +619,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -687,7 +687,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -755,7 +755,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -823,7 +823,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1092,7 +1092,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1160,7 +1160,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1228,7 +1228,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1296,7 +1296,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1565,7 +1565,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1633,7 +1633,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1701,7 +1701,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -1769,7 +1769,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -2038,7 +2038,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -2106,7 +2106,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -2174,7 +2174,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
@@ -2242,7 +2242,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       },
                     ],
                     Object {
-                      "fontFamily": "AGaramondPro-Regular",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }

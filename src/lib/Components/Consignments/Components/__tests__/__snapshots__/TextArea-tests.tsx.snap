@@ -34,7 +34,7 @@ exports[`doesn't show placeholder when initial text is present 1`] = `
             "flexBasis": 0,
             "flexGrow": 1,
             "flexShrink": 1,
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 20,
             "height": "100%",
           },
@@ -70,7 +70,7 @@ exports[`shows the placeholder when text is empty 1`] = `
         Array [
           Object {
             "color": "#666666",
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 20,
             "marginTop": 5,
             "position": "absolute",
@@ -98,7 +98,7 @@ exports[`shows the placeholder when text is empty 1`] = `
             "flexBasis": 0,
             "flexGrow": 1,
             "flexShrink": 1,
-            "fontFamily": "AGaramondPro-Regular",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 20,
             "height": "100%",
           },
