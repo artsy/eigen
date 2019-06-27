@@ -11,7 +11,15 @@ export class SellerInfo extends React.Component<SellerInfoProps> {
   render() {
     const { partner } = this.props.artwork
     const { name } = partner
-    return <Box>{name && <Sans size="3">{name}</Sans>}</Box>
+    return (
+      <Box>
+        {name && (
+          <Sans size="3t" color="black60">
+            {name}
+          </Sans>
+        )}
+      </Box>
+    )
   }
 }
 
