@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.12.2
+
 - Update typings for Relay to v4 and usage thereof - alloy
 - Use gravity ID when opening artwork from artwork grid instead of global object ID - alloy
 - Fixes a React Native font-rendering issue - david & ash
