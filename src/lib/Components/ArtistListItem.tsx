@@ -1,27 +1,12 @@
-import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Avatar, Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-
-const RoundedImage = styled(OpaqueImageView)`
-  height: 45;
-  width: 45;
-  border-radius: 25;
-  overflow: hidden;
-`
-
-const RoundedBox = styled(Box)`
-  height: 45;
-  width: 45;
-  border-radius: 25;
-  background-color: ${color("black10")};
-  overflow: hidden;
-`
 
 const TightendSerif = styled(Serif)`
   position: relative;
@@ -31,11 +16,6 @@ const TightendSerif = styled(Serif)`
 const TightendSans = styled(Sans)`
   position: relative;
   top: -2;
-`
-
-const StyledSerif = styled(Serif)`
-  position: relative;
-  top: 3;
 `
 
 const TextContainer = styled(Flex)`
@@ -147,6 +127,19 @@ export class ArtistListItem extends React.Component<Props, State> {
     }
   }
 
+  @track((props: Props) => {
+    return {
+      action_name: Schema.ActionNames.ListArtist,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: props.artist.internalID,
+      owner_slug: props.artist.gravityID,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    } as any
+  })
+  handleTap(href: string) {
+    SwitchBoard.presentNavigationViewController(this, href)
+  }
+
   getInitials = string => {
     const names = string.split(" ")
     let initials = names[0].substring(0, 1)
@@ -159,36 +152,30 @@ export class ArtistListItem extends React.Component<Props, State> {
   render() {
     const { isFollowedChanging } = this.state
     const { artist } = this.props
-    const { image, name } = artist
-    const { is_followed } = artist
+    const { is_followed, initials, image, href } = artist
+    const { url } = image
 
     return (
-      <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-        {!!image && <RoundedImage imageURL={image.url} aspectRatio={1} />}
-        {!image && (
-          <RoundedBox>
-            <Flex justifyContent="center" alignItems="center" flexGrow={1} alignContent="center" flexDirection="column">
-              <StyledSerif color="black80" size="3">
-                {this.getInitials(name)}
-              </StyledSerif>
-            </Flex>
-          </RoundedBox>
-        )}
-        <Spacer m={1} />
-        <TextContainer flexDirection="column" alignItems="flex-start">
-          {this.renderText()}
-        </TextContainer>
-        <Spacer m={1} />
-        <Box width={102} height={34}>
-          <InvertedButton
-            grayBorder={true}
-            text={is_followed ? "Following" : "Follow"}
-            onPress={this.handleFollowArtist}
-            selected={is_followed}
-            inProgress={isFollowedChanging}
-          />
-        </Box>
-      </Flex>
+      <Theme>
+        <TouchableWithoutFeedback onPress={() => this.handleTap(href)}>
+          <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
+            <Avatar size="xs" src={url} initials={initials} />
+            <Spacer m={1} />
+            <TextContainer flexDirection="column" alignItems="flex-start">
+              {this.renderText()}
+            </TextContainer>
+            <Spacer m={1} />
+            <Button
+              variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+              onPress={this.handleFollowArtist}
+              size="small"
+              loading={isFollowedChanging}
+            >
+              {is_followed ? "Following" : "Follow"}
+            </Button>
+          </Flex>
+        </TouchableWithoutFeedback>
+      </Theme>
     )
   }
 }
@@ -200,6 +187,8 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       internalID
       gravityID
       name
+      initials
+      href
       is_followed
       nationality
       birthday

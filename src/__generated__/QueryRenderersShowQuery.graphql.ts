@@ -241,6 +241,8 @@ fragment ArtistListItem_artist on Artist {
   internalID
   gravityID
   name
+  initials
+  href
   is_followed
   nationality
   birthday
@@ -401,25 +403,32 @@ v13 = {
 v14 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "nationality",
+  "name": "initials",
   "args": null,
   "storageKey": null
 },
 v15 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "birthday",
+  "name": "nationality",
   "args": null,
   "storageKey": null
 },
 v16 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "deathday",
+  "name": "birthday",
   "args": null,
   "storageKey": null
 },
 v17 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "deathday",
+  "args": null,
+  "storageKey": null
+},
+v18 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -431,7 +440,7 @@ v17 = {
     (v6/*: any*/)
   ]
 },
-v18 = [
+v19 = [
   (v4/*: any*/),
   (v8/*: any*/)
 ];
@@ -624,11 +633,12 @@ return {
               (v3/*: any*/),
               (v2/*: any*/),
               (v8/*: any*/),
-              (v9/*: any*/),
               (v14/*: any*/),
+              (v9/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
-              (v17/*: any*/)
+              (v17/*: any*/),
+              (v18/*: any*/)
             ]
           },
           {
@@ -856,7 +866,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v18/*: any*/)
+                        "selections": (v19/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -866,7 +876,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v18/*: any*/)
+                        "selections": (v19/*: any*/)
                       },
                       (v13/*: any*/)
                     ]
@@ -889,11 +899,12 @@ return {
               (v13/*: any*/),
               (v8/*: any*/),
               (v4/*: any*/),
-              (v9/*: any*/),
               (v14/*: any*/),
+              (v9/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
-              (v17/*: any*/)
+              (v17/*: any*/),
+              (v18/*: any*/)
             ]
           },
           {
@@ -1136,7 +1147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersShowQuery",
-    "id": "24f9e27300cfe5e9adfddb25564343a7",
+    "id": "5f0da959fda67b2deeedd19521b6f064",
     "text": null,
     "metadata": {}
   }

@@ -6,7 +6,6 @@ import Switchboard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { get, take } from "lodash"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -44,12 +43,10 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          const { href, gravityID, internalID } = artist
+          const { gravityID } = artist
           return (
             <React.Fragment key={gravityID}>
-              <TouchableOpacity onPress={() => this.handlePress(href, gravityID, internalID)}>
-                <ArtistListItem artist={artist} Component={Component} />
-              </TouchableOpacity>
+              <ArtistListItem artist={artist} Component={Component} />
               {idx < arr.length - 1 && <Spacer m={1} />}
             </React.Fragment>
           )

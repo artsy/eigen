@@ -214,6 +214,8 @@ fragment ArtistListItem_artist on Artist {
   internalID
   gravityID
   name
+  initials
+  href
   is_followed
   nationality
   birthday
@@ -489,25 +491,32 @@ v22 = {
 v23 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "nationality",
+  "name": "initials",
   "args": null,
   "storageKey": null
 },
 v24 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "birthday",
+  "name": "nationality",
   "args": null,
   "storageKey": null
 },
 v25 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "deathday",
+  "name": "birthday",
   "args": null,
   "storageKey": null
 },
 v26 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "deathday",
+  "args": null,
+  "storageKey": null
+},
+v27 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -525,19 +534,20 @@ v26 = {
     }
   ]
 },
-v27 = [
+v28 = [
   (v3/*: any*/),
   (v2/*: any*/),
   (v8/*: any*/),
   (v5/*: any*/),
   (v4/*: any*/),
-  (v9/*: any*/),
   (v23/*: any*/),
+  (v9/*: any*/),
   (v24/*: any*/),
   (v25/*: any*/),
-  (v26/*: any*/)
+  (v26/*: any*/),
+  (v27/*: any*/)
 ],
-v28 = [
+v29 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -736,7 +746,7 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v27/*: any*/)
+            "selections": (v28/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -746,7 +756,7 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v27/*: any*/)
+            "selections": (v28/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -777,19 +787,20 @@ return {
                   (v3/*: any*/),
                   (v2/*: any*/),
                   (v4/*: any*/),
-                  (v9/*: any*/),
                   (v23/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
                   (v24/*: any*/),
                   (v25/*: any*/),
                   (v26/*: any*/),
+                  (v27/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "sortable_id",
                     "args": null,
                     "storageKey": null
-                  },
-                  (v8/*: any*/)
+                  }
                 ]
               }
             ]
@@ -866,7 +877,7 @@ return {
                 "alias": "artworks",
                 "name": "artworks_connection",
                 "storageKey": "artworks_connection(first:10)",
-                "args": (v28/*: any*/),
+                "args": (v29/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -953,7 +964,7 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "artworks_connection",
-                "args": (v28/*: any*/),
+                "args": (v29/*: any*/),
                 "handle": "connection",
                 "key": "ArtworksGridPaginationContainer_artworks",
                 "filters": null
@@ -967,7 +978,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothQuery",
-    "id": "24a0ffd99ae8f809aae4984da7be4566",
+    "id": "3975287ce9160a16b569b91748170590",
     "text": null,
     "metadata": {}
   }
