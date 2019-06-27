@@ -9,13 +9,12 @@ import { Dimensions, FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
-import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
+import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
-import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
   artwork: Artwork_artwork
@@ -33,14 +32,8 @@ export class Artwork extends React.Component<Props> {
     const sections = []
 
     sections.push("header")
-
-    if (artwork.availability) {
-      sections.push("availability")
-    }
-
-    if (artwork.partner && artwork.partner.name) {
-      sections.push("sellerInfo")
-    }
+    sections.push("commercialInformation")
+    sections.push("aboutArtist")
 
     if (artwork.description || artwork.additional_information) {
       sections.push("aboutWork")
@@ -71,10 +64,8 @@ export class Artwork extends React.Component<Props> {
     switch (section) {
       case "header":
         return <ArtworkHeader artwork={artwork} />
-      case "availability":
-        return <ArtworkAvailability artwork={artwork} />
-      case "sellerInfo":
-        return <SellerInfo artwork={artwork} />
+      case "commercialInformation":
+        return <CommercialInformation artwork={artwork} />
       case "aboutWork":
         return <AboutWork artwork={artwork} />
       case "details":
@@ -115,7 +106,6 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      availability
       additional_information
       description
       provenance
@@ -133,7 +123,6 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       }
 
       partner {
-        name
         artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
           edges {
             node {
@@ -157,14 +146,13 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         }
       }
 
-      ...ArtworkAvailability_artwork
       ...PartnerCard_artwork
-      ...SellerInfo_artwork
       ...AboutWork_artwork
       ...OtherWorks_artwork
       ...AboutArtist_artwork
       ...ArtworkDetails_artwork
       ...ArtworkHeader_artwork
+      ...CommercialInformation_artwork
       ...ArtworkHistory_artwork
     }
   `,

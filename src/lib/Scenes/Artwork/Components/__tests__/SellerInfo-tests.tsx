@@ -1,5 +1,5 @@
-import { Sans } from "@artsy/palette"
-import { shallow } from "enzyme"
+import { Sans, Theme } from "@artsy/palette"
+import { mount } from "enzyme"
 import React from "react"
 import { SellerInfo } from "../SellerInfo"
 
@@ -7,7 +7,11 @@ jest.unmock("react-relay")
 
 describe("SellerInfo", () => {
   it("renders seller info correctly", () => {
-    const component = shallow(<SellerInfo artwork={artworkSellerInfo} />)
+    const component = mount(
+      <Theme>
+        <SellerInfo artwork={artworkSellerInfo} />
+      </Theme>
+    )
     expect(component.find(Sans).length).toEqual(1)
 
     expect(

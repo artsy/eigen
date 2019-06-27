@@ -1,4 +1,4 @@
-import { Box, Flex, Serif, Spacer } from "@artsy/palette"
+import { Box, Flex, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -26,6 +26,10 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
+  showAttributionClassFAQ() {
+    SwitchBoard.presentNavigationViewController(this, "/artwork-classifications")
+  }
+
   showMoreArtists = () => {
     this.setState({
       showingMoreArtists: !this.state.showingMoreArtists,
@@ -35,8 +39,8 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   renderSingleArtist(artist: Artist) {
     return (
       <React.Fragment>
-        <Flex flexDirection="row" alignItems="center">
-          <Box mt={3.8}>{this.renderArtistName(artist.name, artist.href)}</Box>
+        <Flex flexDirection="row">
+          {this.renderArtistName(artist.name, artist.href)}
           <FollowArtistButton artist={artist} />
         </Flex>
       </React.Fragment>
@@ -97,7 +101,6 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             artwork.cultural_maker &&
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
-        <Spacer mb={1} />
         <Serif color="black60" size="3t" m="0" p="0">
           {artwork.title}, {artwork.date}
         </Serif>
