@@ -1,12 +1,10 @@
-import { Box, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
 import { FairBoothHeader_show } from "__generated__/FairBoothHeader_show.graphql"
 import { FairBoothHeaderMutation } from "__generated__/FairBoothHeaderMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import styled from "styled-components/native"
 
 interface Props {
   show: FairBoothHeader_show
@@ -23,11 +21,6 @@ const formatCounts = ({ artists, artworks }) => {
   const worksLabel = artworks === 1 ? "work" : "works"
   return `${artworks} ${worksLabel} by ${artists} ${artistLabel}`
 }
-
-const ButtonWrapper = styled(Box)`
-  width: 100%;
-  height: 85;
-`
 
 const track: Track<Props, State> = _track
 
@@ -150,17 +143,17 @@ export class FairBoothHeader extends React.Component<Props, State> {
           {formatCounts(counts)}
         </Sans>
         <Spacer m={3} />
-        <ButtonWrapper>
-          <Spacer m={1} mt={1} />
-          <InvertedButton
-            inProgress={isFollowedChanging}
-            text={partnerFollowed ? "Following gallery" : "Follow gallery"}
-            selected={partnerFollowed}
-            onPress={this.handleFollowPartner}
-            grayBorder={true}
-          />
-          <Spacer m={1} />
-        </ButtonWrapper>
+        <Spacer m={1} mt={1} />
+        <Button
+          loading={isFollowedChanging}
+          onPress={this.handleFollowPartner}
+          width="100%"
+          block
+          variant={partnerFollowed ? "secondaryOutline" : "primaryBlack"}
+        >
+          {partnerFollowed ? "Following gallery" : "Follow gallery"}
+        </Button>
+        <Spacer m={1} />
       </Box>
     )
   }

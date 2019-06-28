@@ -1,7 +1,8 @@
 import React from "react"
 
+import { Box, Button } from "@artsy/palette"
 import { ScrollView, View, ViewProperties } from "react-native"
-import { ButtonProps, InvertedBorderedButton, InvertedButton, WhiteButton } from "../../Buttons"
+import { ButtonProps } from "../../Buttons"
 import { BodyText, LargeHeadline } from "../Typography/index"
 
 /** A re-usable full-screen form with a scrollview */
@@ -26,14 +27,10 @@ export const Label = (props: any) => (
   <BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>{props.children}</BodyText>
 )
 
-export const Button: React.SFC<ButtonProps> = props => (
-  <WhiteButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />
-)
-
-export const BlackButton: React.SFC<ButtonProps> = props => (
-  <InvertedButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />
-)
-
-export const BorderedBlackButton: React.SFC<ButtonProps> = props => (
-  <InvertedBorderedButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />
+export const FormButton: React.SFC<ButtonProps> = props => (
+  <Box style={Object.assign({ width: 174, marginTop: 20 }, props.style)}>
+    <Button block width="100%" variant="primaryWhite" onPress={props.onPress}>
+      {props.text}
+    </Button>
+  </Box>
 )

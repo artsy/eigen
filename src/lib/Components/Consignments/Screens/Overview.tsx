@@ -9,7 +9,7 @@ import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import CloseButton from "../Components/CloseButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
-import { Button, Row } from "../Components/FormElements"
+import { FormButton, Row } from "../Components/FormElements"
 import createSubmission from "../Submission/create"
 import updateSubmission from "../Submission/update"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
@@ -244,7 +244,7 @@ export default class Overview extends React.Component<Props, State> {
             </View>
             <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : -30 }}>
               {this.state.hasLoaded && (
-                <Button text="SUBMIT" onPress={canSubmit ? this.submitFinalSubmission : undefined} />
+                <FormButton text="SUBMIT" onPress={canSubmit ? this.submitFinalSubmission : undefined} />
               )}
             </Row>
             <Row style={{ justifyContent: "center" }}>

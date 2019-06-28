@@ -9,7 +9,7 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { Schema, screenTrack } from "lib/utils/track"
 import CloseButton from "../Components/CloseButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
-import { Button } from "../Components/FormElements"
+import { FormButton } from "../Components/FormElements"
 import * as Typography from "../Typography"
 import Overview from "./Overview"
 
@@ -119,7 +119,7 @@ const Contents: React.SFC<{ deviceProps: DeviceProps; onPress: () => void }> = (
             </SmallHeadline>
           </HorizontalLayout>
           <ButtonsView {...deviceProps}>
-            <Button text="GET STARTED" onPress={onPress} style={{ marginTop: 0 }} />
+            <FormButton text="GET STARTED" onPress={onPress} style={{ marginTop: 0 }} />
             <CloseButton />
           </ButtonsView>
         </List>

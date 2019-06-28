@@ -239,9 +239,8 @@ function suggestedArtistQuery(artistID: string): string {
                           size: 1,
                           exclude_followed_artists: true,
                           exclude_artists_without_forsale_artworks: true) {
-          internalID
-          id
           ${ArtistCardQuery}
+          ...ArtistCard_artist
         }
       }
     }

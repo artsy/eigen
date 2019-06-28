@@ -1,10 +1,10 @@
+import { Button } from "@artsy/palette"
 import React from "react"
 import { EmitterSubscription, Image } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import { RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import { NotificationsManager, PaymentRequestPaidNotification } from "lib/NativeModules/NotificationsManager"
@@ -103,7 +103,9 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, 
     case "UNPAID":
       return (
         <PayButtonContainer>
-          <InvertedButton text="PAY" onPress={onSelected} />
+          <Button block width="100%" size="small" onPress={onSelected}>
+            PAY
+          </Button>
         </PayButtonContainer>
       )
   }

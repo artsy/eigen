@@ -1,6 +1,5 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, Button, color, Flex, Sans, Serif } from "@artsy/palette"
 import { EventMutation } from "__generated__/EventMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
@@ -156,15 +155,13 @@ export class Event extends React.Component<Props, State> {
                 </Sans>
               )}
             </TextContainer>
-            <Flex maxWidth={102} height={34} flexBasis="29%" flexDirection="row" flexGrow={1}>
-              <InvertedButton
-                grayBorder={true}
-                text={is_followed ? "Saved" : "Save"}
-                onPress={() => this.handleSaveChange()}
-                selected={is_followed}
-                inProgress={isFollowedSaving}
-              />
-            </Flex>
+            <Button
+              variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+              loading={isFollowedSaving}
+              onPress={() => this.handleSaveChange()}
+            >
+              {is_followed ? "Saved" : "Save"}
+            </Button>
           </Flex>
         </Box>
       </TouchableWithoutFeedback>

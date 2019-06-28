@@ -14,12 +14,11 @@ import {
 
 const { ARTemporaryAPIModule } = NativeModules
 
-import { Schema, Track, track as _track } from "lib/utils/track"
-
-import Button from "lib/Components/Buttons/InvertedButton"
+import { Button } from "@artsy/palette"
 import SerifText from "lib/Components/Text/Serif"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import SectionTitle from "../../SectionTitle"
 
 import { ArtworkCarouselHeader_rail } from "__generated__/ArtworkCarouselHeader_rail.graphql"
@@ -89,10 +88,12 @@ class ArtworkCarouselHeader extends Component<Props, State> {
       return (
         <View style={styles.followButton}>
           <Button
-            text={this.state.following ? "Following" : "Follow"}
-            selected={this.state.following}
+            variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
             onPress={this.handleFollowChange.bind(this)}
-          />
+            size="small"
+          >
+            {this.state.following ? "Following" : "Follow"}
+          </Button>
         </View>
       )
     }
@@ -151,8 +152,6 @@ const styles = StyleSheet.create<Styles>({
   followButton: {
     marginTop: 5,
     marginBottom: 0,
-    height: 30,
-    width: 90,
   },
   followAnnotation: {
     fontSize: 20,

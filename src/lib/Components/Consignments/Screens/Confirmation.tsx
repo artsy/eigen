@@ -4,7 +4,7 @@ import { Image, NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import { Schema, screenTrack } from "lib/utils/track"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import ConsignmentBG from "../Components/ConsignmentBG"
-import { BorderedBlackButton, Button } from "../Components/FormElements"
+import { FormButton } from "../Components/FormElements"
 import { LargeHeadline } from "../Typography/index"
 import Welcome from "./Welcome"
 
@@ -115,7 +115,7 @@ export default class Confirmation extends React.Component<Props, State> {
           <Subtitle>You will receive a confirmation email shortly.</Subtitle>
         </View>
         <ButtonView>
-          <Button text="DONE" onPress={this.exitModal} />
+          <FormButton text="DONE" onPress={this.exitModal} />
         </ButtonView>
       </TextContainer>
     </View>
@@ -131,8 +131,8 @@ export default class Confirmation extends React.Component<Props, State> {
           <Subtitle>Please try again.</Subtitle>
         </View>
         <ButtonView>
-          <BorderedBlackButton text="TRY AGAIN" onPress={this.restart} />
-          <Button text="QUIT" onPress={this.exitModal} />
+          <FormButton text="TRY AGAIN" onPress={this.restart} />
+          <FormButton text="QUIT" onPress={this.exitModal} />
         </ButtonView>
       </TextContainer>
     </View>
