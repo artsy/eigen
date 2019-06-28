@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.x.y
   dev:
-    - 
+    - Cleans up unused lab options - ash
   user_facing:
     - Adds new React Native Artwork view behind lab option - alloy/david
 

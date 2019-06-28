@@ -288,7 +288,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     [options addEntriesFromDictionary:echoFeatures];
 
     // Handle the fact that it's "AREnableBuyNowFlow" in iOS world - and echo, then "enableBuyNowMakeOffer" in Emission world
-    options[AROptionsBuyNow] = echoFeatures[@"AREnableBuyNowFlow"];
+    options[@"enableBuyNowMakeOffer"] = echoFeatures[@"AREnableBuyNowFlow"];
 
     // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
     [options addEntriesFromDictionary:labOptions];

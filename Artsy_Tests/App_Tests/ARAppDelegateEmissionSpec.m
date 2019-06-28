@@ -14,7 +14,6 @@ it(@"makes sure that settings are merged correctly", ^{
     NSDictionary *labOptionsConfig = @{
        AROptionsDisableNativeLiveAuctions: @(YES),
        AROptionsDebugARVIR: @(YES),
-       AROptionsBuyNow: @(YES)
     };
 
     ARAppDelegate *delegate = [ARAppDelegate new];

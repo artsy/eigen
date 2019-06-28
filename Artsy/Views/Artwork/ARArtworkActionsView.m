@@ -387,7 +387,7 @@ return [navigationButtons copy];
 {
     // We don't have a UI to select from multiple edition sets yet, so don't show the Make Offer UI at all for those works.
     return (self.artwork.isOfferable.boolValue &&
-            (self.echo.isMakeOfferAccessible || [AROptions boolForOption:AROptionsMakeOffer]) &&
+            self.echo.isMakeOfferAccessible &&
             !self.artwork.hasMultipleEditions);
 }
 
