@@ -77,7 +77,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               </Sans>
             </UtilButton>
           </TouchableWithoutFeedback>
-          {!Constants.AREnabled && (
+          {Constants.AREnabled && (
             <TouchableWithoutFeedback onPress={() => ApiModule.presentAugmentedRealityVIR("url", 1, 2, "slug", "id")}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>
