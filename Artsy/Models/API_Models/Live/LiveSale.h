@@ -11,6 +11,7 @@
 @property (nonatomic, copy, readonly) NSString *liveSaleID;
 @property (nonatomic, copy, readonly) NSString *causalitySaleID;
 @property (nonatomic, copy, readonly) NSString *saleDescription;
+@property (nonatomic, copy, readonly) NSString *medium;
 
 @property (nonatomic, copy, readonly) NSArray<LiveAuctionLot *> *saleArtworks;
 @property (nonatomic, copy, readonly) NSArray<BidIncrementStrategy *> *bidIncrementStrategy;

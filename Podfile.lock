@@ -46,7 +46,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.2.2)"
+  - "Artsy+UIFonts (3.3.3)"
   - "Artsy+UILabels (2.2.0)":
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
@@ -298,7 +298,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.12)
+  - Emission (from `../emission`)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -359,7 +359,6 @@ SPEC REPOS:
     - "Artsy+UILabels"
     - Artsy-UIButtons
     - DoubleConversion
-    - Emission
     - Extraction
     - Folly
     - React
@@ -425,6 +424,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Emission:
+    :path: "../emission"
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
@@ -529,7 +530,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": 5c1e4916b21ea155de7b92b2be79f8b56bf1d48e
+  "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -538,7 +539,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 838865c7f396c602ddd6529dc1f4b73023669275
+  Emission: cf6b058ed94d704a97300d27871cac587265fde8
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -596,6 +597,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: 23ca0886a0a3ae6b1e8abd87c2fb243b24ab9f2b
+PODFILE CHECKSUM: 3f4abdbdf07a44e780086b5f39a28ab3930bf05e
 
 COCOAPODS: 1.6.0.beta.1
