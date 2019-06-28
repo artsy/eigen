@@ -16,6 +16,8 @@
 
 ### Master
 
+- Add shim for calling view in room view.
+
 ### 1.12.3
 
 - The 1.12.2 version release failed, so this is a small bump to make sure the latest changes are included.
