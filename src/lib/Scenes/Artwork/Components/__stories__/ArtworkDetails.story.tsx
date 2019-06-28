@@ -7,7 +7,7 @@ storiesOf("Artwork/Components").add("Details", () => {
     <ArtworkDetails
       artwork={{
         " $refType": null,
-        medium: "Oil on canvas",
+        category: "Oil on canvas",
         conditionDescription: null,
         signature: null,
         signatureInfo: null,

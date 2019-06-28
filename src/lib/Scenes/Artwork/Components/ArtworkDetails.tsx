@@ -17,7 +17,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 
   render() {
     const listItems = [
-      { title: "Medium", value: this.props.artwork.medium },
+      { title: "Medium", value: this.props.artwork.category },
       {
         title: "Condition",
         value: this.props.artwork.conditionDescription ? this.props.artwork.conditionDescription.label : null,
@@ -76,7 +76,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDetails, {
   artwork: graphql`
     fragment ArtworkDetails_artwork on Artwork {
-      medium
+      category
       conditionDescription {
         label
         details

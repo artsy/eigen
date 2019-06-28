@@ -9,7 +9,7 @@ describe("Artwork Details", () => {
     const artworkDetailsInfo = {
       artwork: {
         " $refType": null,
-        medium: "Oil on canvas",
+        category: "Oil on canvas",
         conditionDescription: null,
         signature: null,
         signatureInfo: null,
@@ -33,7 +33,7 @@ describe("Artwork Details", () => {
     const artworkDetailsInfo = {
       artwork: {
         " $refType": null,
-        medium: "Oil on canvas",
+        category: "Oil on canvas",
         conditionDescription: { label: "nice", details: "real nice one" },
         signature: null,
         signatureInfo: null,

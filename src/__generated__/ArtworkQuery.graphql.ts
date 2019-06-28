@@ -139,7 +139,7 @@ fragment AboutArtist_artwork on Artwork {
 }
 
 fragment ArtworkDetails_artwork on Artwork {
-  medium
+  category
   conditionDescription {
     label
     details
@@ -1065,7 +1065,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "medium",
+            "name": "category",
             "args": null,
             "storageKey": null
           },
@@ -1171,6 +1171,13 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "medium",
+            "args": null,
+            "storageKey": null
+          },
           (v6/*: any*/),
           {
             "kind": "ScalarField",
@@ -1270,7 +1277,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "1ddf3515e11e4edd29ce3e0e2114b73a",
+    "id": "9342e29371454a450d2ac7828e112321",
     "text": null,
     "metadata": {}
   }
