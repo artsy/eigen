@@ -11,6 +11,7 @@ storiesOf("Artwork/Components").add("All Actions", () => {
         id: "Blah",
         title: "Untitled",
         internalID: "HI",
+        gravityID: "andread-rod-prinzknecht",
         href: "/artwork/andreas-rod-prinzknecht",
         is_saved: false,
         artists: [
@@ -18,6 +19,11 @@ storiesOf("Artwork/Components").add("All Actions", () => {
             name: "Abbas Kiarostami",
           },
         ],
+        image: {
+          height: 10,
+          width: 10,
+          url: "image.com/image",
+        },
         " $refType": null,
       }}
     />

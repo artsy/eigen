@@ -113,6 +113,7 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
       id
+      internalID
       gravityID
       title
       href

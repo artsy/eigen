@@ -210,6 +210,7 @@ fragment ArtworkExtraLinks_artwork on Artwork {
 
 fragment ArtworkActions_artwork on Artwork {
   id
+  internalID
   gravityID
   title
   href
@@ -1170,6 +1171,7 @@ return {
             "storageKey": null
           },
           (v3/*: any*/),
+          (v13/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
           (v9/*: any*/),
@@ -1301,7 +1303,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "4ecc42bd442b29612d7ce2193ff10f8e",
+    "id": "5d8ec8a329e29d13ea956f6efbc0504b",
     "text": null,
     "metadata": {}
   }

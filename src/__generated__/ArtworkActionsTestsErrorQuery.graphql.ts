@@ -25,6 +25,7 @@ query ArtworkActionsTestsErrorQuery {
 
 fragment ArtworkActions_artwork on Artwork {
   id
+  internalID
   gravityID
   title
   href
@@ -98,6 +99,13 @@ return {
         "plural": false,
         "selections": [
           (v1/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -184,7 +192,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkActionsTestsErrorQuery",
-    "id": "845517a9b1e5c26c0efa3b8c02ea7229",
+    "id": "14c887fda62659ce0631cf25c3fc3d15",
     "text": null,
     "metadata": {}
   }

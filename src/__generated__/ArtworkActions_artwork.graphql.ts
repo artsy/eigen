@@ -5,6 +5,7 @@ declare const _ArtworkActions_artwork$ref: unique symbol;
 export type ArtworkActions_artwork$ref = typeof _ArtworkActions_artwork$ref;
 export type ArtworkActions_artwork = {
     readonly id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly title: string | null;
     readonly href: string | null;
@@ -33,6 +34,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -116,5 +124,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'db9c9ce8848d1b7bb4ed8341748684c7';
+(node as any).hash = '1444c7cd332bf10d801b69d931e02795';
 export default node;
