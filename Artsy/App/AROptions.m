@@ -20,13 +20,6 @@ NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 // Dev
 NSString *const AROptionsUseVCR = @"Use offline recording";
 
-// These variables may need to replicate the options in Emission
-// See: https://github.com/artsy/emission/blob/master/Example/Emission/ARLabOptions.m
-NSString *const AROptionsForceBuyNow = @"Enable Buy Now Flow via Force";
-NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
-
-NSString *const AROptionsMakeOffer = @"Enable Make Offer";
-
 NSString *const AROptionsRNArtwork = @"Enable React Native Artwork view";
 
 @implementation AROptions
@@ -40,12 +33,9 @@ NSString *const AROptionsRNArtwork = @"Enable React Native Artwork view";
         options = @{
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
-         
-         AROptionsBuyNow: @"Enable Eigen/Emission Buy Now integration",
-         AROptionsForceBuyNow: @"Enable Buy Now purchase flow via Force",
-         AROptionsMakeOffer: @"Enable Make Offer via Force",
+
          AROptionsRNArtwork: AROptionsRNArtwork,
-         
+
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
     });
@@ -78,7 +68,6 @@ NSString *const AROptionsRNArtwork = @"Enable React Native Artwork view";
 {
     return @[
         AROptionsDisableNativeLiveAuctions,
-        AROptionsForceBuyNow,   
     ];
 }
 
