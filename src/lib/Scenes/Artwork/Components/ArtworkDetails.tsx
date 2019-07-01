@@ -34,7 +34,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
       { title: "Image rights", value: this.props.artwork.image_rights },
     ]
 
-    const displayItems = listItems.filter(i => i.value != null || i.value !== "")
+    const displayItems = listItems.filter(i => i.value != null && i.value !== "")
 
     let truncatedDisplayItems = displayItems
 
