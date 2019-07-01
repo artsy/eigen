@@ -156,7 +156,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var lotArtworkDimensions: String? {
         if self.usersLocale.usesMetricSystem {
-            // TODO: Test this!
             return model.artwork.dimensionsCM
         } else {
             return model.artwork.dimensionsInches
