@@ -13,8 +13,8 @@ describe("Artwork Details", () => {
         conditionDescription: null,
         signature: null,
         signatureInfo: null,
-        certificateOfAuthenticity: null,
-        framed: { label: "oh yeah", details: "real nice one" },
+        certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Not included" },
+        framed: { label: "Framed", details: "Included" },
         series: null,
         publisher: null,
         manufacturer: null,
@@ -25,7 +25,7 @@ describe("Artwork Details", () => {
     const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
     expect(component.text()).toContain("Artwork Details")
     expect(component.text()).toContain("MediumOil")
-    expect(component.text()).toContain("Certificate of AuthenticityNot Included")
+    expect(component.text()).toContain("Certificate of AuthenticityNot included")
     expect(component.text()).toContain("FrameIncluded")
   })
 
@@ -34,11 +34,11 @@ describe("Artwork Details", () => {
       artwork: {
         " $refType": null,
         category: "Oil on canvas",
-        conditionDescription: { label: "nice", details: "real nice one" },
+        conditionDescription: { label: "nice", details: "Included" },
         signature: null,
         signatureInfo: null,
-        certificateOfAuthenticity: null,
-        framed: { label: "oh yeah", details: "real nice one" },
+        certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Not included" },
+        framed: { label: "Framed", details: "Included" },
         series: null,
         publisher: "steve",
         manufacturer: null,
@@ -50,7 +50,7 @@ describe("Artwork Details", () => {
     expect(component.text()).toContain("Artwork Details")
     expect(component.text()).toContain("MediumOil")
     expect(component.text()).toContain("Conditionnice")
-    expect(component.text()).toContain("Certificate of AuthenticityNot Included")
+    expect(component.text()).toContain("Certificate of AuthenticityNot included")
     expect(component.text()).not.toContain("FrameIncluded")
 
     expect(
@@ -68,5 +68,49 @@ describe("Artwork Details", () => {
 
     expect(component.text()).toContain("FrameIncluded")
     expect(component.text()).not.toContain("Show more artwork details")
+  })
+
+  it("hides certificate of authenticity and framed fields if null", () => {
+    const artworkDetailsInfo = {
+      artwork: {
+        " $refType": null,
+        category: "Oil on canvas",
+        conditionDescription: null,
+        signature: null,
+        signatureInfo: null,
+        certificateOfAuthenticity: null,
+        framed: null,
+        series: null,
+        publisher: null,
+        manufacturer: null,
+        image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
+      },
+    }
+
+    const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
+    expect(component.text()).not.toContain("Certificate of Authenticity")
+    expect(component.text()).not.toContain("Frame")
+  })
+
+  it("shows certificate of authenticity and framed fields if data is present", () => {
+    const artworkDetailsInfo = {
+      artwork: {
+        " $refType": null,
+        category: "Oil on canvas",
+        conditionDescription: null,
+        signature: null,
+        signatureInfo: null,
+        certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Included" },
+        framed: { label: "Framed", details: "Not included" },
+        series: null,
+        publisher: null,
+        manufacturer: null,
+        image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
+      },
+    }
+
+    const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
+    expect(component.text()).toContain("Certificate of AuthenticityIncluded")
+    expect(component.text()).toContain("FrameNot included")
   })
 })

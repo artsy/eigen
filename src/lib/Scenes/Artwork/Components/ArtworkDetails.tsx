@@ -25,9 +25,11 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
       { title: "Signature", value: this.props.artwork.signature },
       {
         title: "Certificate of Authenticity",
-        value: this.props.artwork.certificateOfAuthenticity ? "Included" : "Not Included",
+        value: this.props.artwork.certificateOfAuthenticity
+          ? this.props.artwork.certificateOfAuthenticity.details
+          : null,
       },
-      { title: "Frame", value: this.props.artwork.framed ? "Included" : "Not Included" },
+      { title: "Frame", value: this.props.artwork.framed ? this.props.artwork.framed.details : null },
       { title: "Series", value: this.props.artwork.series },
       { title: "Publisher", value: this.props.artwork.publisher },
       { title: "Manufacturer", value: this.props.artwork.manufacturer },
