@@ -214,12 +214,11 @@ randomBOOL(void)
   };
 
   emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat width, CGFloat height, NSString *artworkSlug, NSString *artworkId) {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"VR!" message:@"YOU CALLED VR" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"VR!" message:[NSString stringWithFormat:@"slug: %@, width: %f, height: %f", artworkSlug, width, height] preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:defaultAction];
     id controller = self.navigationController;
     [controller presentViewController:alert animated:YES completion:nil];
-
   };
 
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,

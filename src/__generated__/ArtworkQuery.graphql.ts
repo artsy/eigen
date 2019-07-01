@@ -210,13 +210,18 @@ fragment ArtworkExtraLinks_artwork on Artwork {
 
 fragment ArtworkActions_artwork on Artwork {
   id
-  internalID
+  gravityID
   title
   href
   is_saved
   artists {
     name
     id
+  }
+  image {
+    height
+    width
+    url
   }
 }
 
@@ -725,14 +730,14 @@ v18 = [
 v19 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "width",
+  "name": "height",
   "args": null,
   "storageKey": null
 },
 v20 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "height",
+  "name": "width",
   "args": null,
   "storageKey": null
 };
@@ -1165,7 +1170,7 @@ return {
             "storageKey": null
           },
           (v3/*: any*/),
-          (v13/*: any*/),
+          (v4/*: any*/),
           (v5/*: any*/),
           (v9/*: any*/),
           {
@@ -1174,6 +1179,20 @@ return {
             "name": "is_saved",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "image",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": [
+              (v19/*: any*/),
+              (v20/*: any*/),
+              (v17/*: any*/)
+            ]
           },
           (v6/*: any*/),
           {
@@ -1244,8 +1263,8 @@ return {
             "plural": true,
             "selections": [
               (v17/*: any*/),
-              (v19/*: any*/),
               (v20/*: any*/),
+              (v19/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "thumbnail",
@@ -1261,8 +1280,8 @@ return {
                 "concreteType": "ResizedImageUrl",
                 "plural": false,
                 "selections": [
-                  (v19/*: any*/),
                   (v20/*: any*/),
+                  (v19/*: any*/),
                   (v17/*: any*/)
                 ]
               }
@@ -1282,7 +1301,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "320a88620b7a26b205d890f04d842d7a",
+    "id": "4ecc42bd442b29612d7ce2193ff10f8e",
     "text": null,
     "metadata": {}
   }

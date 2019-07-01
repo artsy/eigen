@@ -64,7 +64,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   render() {
     const {
-      artwork: { is_saved },
+      artwork: { is_saved, image, id, gravityID },
     } = this.props
     return (
       <View>
@@ -78,7 +78,9 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </UtilButton>
           </TouchableWithoutFeedback>
           {Constants.AREnabled && (
-            <TouchableWithoutFeedback onPress={() => ApiModule.presentAugmentedRealityVIR("url", 1, 2, "slug", "id")}>
+            <TouchableWithoutFeedback
+              onPress={() => ApiModule.presentAugmentedRealityVIR(image.url, image.height, image.width, gravityID, id)}
+            >
               <UtilButton pr={3}>
                 <Box mr={0.5}>
                   <EyeOpenedIcon />
@@ -111,12 +113,17 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
       id
-      internalID
+      gravityID
       title
       href
       is_saved
       artists {
         name
+      }
+      image {
+        height
+        width
+        url
       }
     }
   `,

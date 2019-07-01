@@ -25,13 +25,18 @@ query ArtworkActionsTestsErrorQuery {
 
 fragment ArtworkActions_artwork on Artwork {
   id
-  internalID
+  gravityID
   title
   href
   is_saved
   artists {
     name
     id
+  }
+  image {
+    height
+    width
+    url
   }
 }
 */
@@ -96,7 +101,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "internalID",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -139,6 +144,38 @@ return {
               },
               (v1/*: any*/)
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "image",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "height",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "width",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           }
         ]
       }
@@ -147,7 +184,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkActionsTestsErrorQuery",
-    "id": "70104fb33b2cb3f5d9b1989a800d21eb",
+    "id": "845517a9b1e5c26c0efa3b8c02ea7229",
     "text": null,
     "metadata": {}
   }
