@@ -144,6 +144,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotArtworkDimensions: String? = "140 x 420 cm"
     var estimateString: String? = "$Estimate"
     var lotName = "Lot Name"
+    var lotEditionInfo: String? = nil
     var lotID = "lot-id"
     var lotPremium = "Lot Premium"
     var lotArtworkCreationDate: String? = "1985"

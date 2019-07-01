@@ -59,6 +59,10 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
             stack.addBodyText(dimensions, sideMargin: sideMargin)
         }
 
+        if let editionInfo = viewModel.lotEditionInfo {
+            stack.addBodyText(editionInfo, sideMargin: sideMargin)
+        }
+
         let separatorMargin = String(Int(sideMargin) ?? 0 + 40)
 
         if let artworkdescription = viewModel.lotArtworkDescription, artworkdescription.isEmpty == false {
