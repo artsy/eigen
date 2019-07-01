@@ -38,7 +38,7 @@
 #import <Emission/ARBidFlowViewController.h>
 #import "ARFullWidthCalloutLabelView.h"
 
-@implementation ARArtworkViewController (ButtonActions)
+@implementation ARLegacyArtworkViewController (ButtonActions)
 
 #pragma mark - ARArtworkPreviewImageViewDelegate
 

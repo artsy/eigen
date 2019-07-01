@@ -14,6 +14,7 @@ extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsForceBuyNow;
 extern NSString *const AROptionsBuyNow;
 extern NSString *const AROptionsMakeOffer;
+extern NSString *const AROptionsRNArtwork;
 
 @interface AROptions : NSObject
 

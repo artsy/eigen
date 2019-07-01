@@ -30,7 +30,7 @@
 static const CGFloat ARArtworkImageHeightAdjustmentForPad = -100;
 static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
-- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair echo:(ArtsyEcho *)echo andParentViewController:(ARArtworkViewController *)parentViewController;
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair echo:(ArtsyEcho *)echo andParentViewController:(ARLegacyArtworkViewController *)parentViewController;
 {
     self = [super initWithStackViewClass:[ORTagBasedAutoStackView class]];
 

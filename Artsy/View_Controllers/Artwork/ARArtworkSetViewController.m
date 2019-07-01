@@ -11,7 +11,7 @@
 @interface ARArtworkSetViewController () <ARMenuAwareViewController>
 
 @property (nonatomic, strong) Fair *fair;
-@property (nonatomic, strong) NSArray *artworks;
+@property (nonatomic, strong) NSArray<Artwork *> *artworks;
 @property (nonatomic, assign) NSInteger index;
 
 @end
@@ -40,22 +40,22 @@
     return [self initWithArtworkSet:@[ artwork ] fair:fair];
 }
 
-- (instancetype)initWithArtworkSet:(NSArray *)artworkSet
+- (instancetype)initWithArtworkSet:(NSArray<Artwork *> *)artworkSet
 {
     return [self initWithArtworkSet:artworkSet fair:nil atIndex:0];
 }
 
-- (instancetype)initWithArtworkSet:(NSArray *)artworkSet fair:(Fair *)fair
+- (instancetype)initWithArtworkSet:(NSArray<Artwork *> *)artworkSet fair:(Fair *)fair
 {
     return [self initWithArtworkSet:artworkSet fair:fair atIndex:0];
 }
 
-- (instancetype)initWithArtworkSet:(NSArray *)artworkSet atIndex:(NSInteger)index
+- (instancetype)initWithArtworkSet:(NSArray<Artwork *> *)artworkSet atIndex:(NSInteger)index
 {
     return [self initWithArtworkSet:artworkSet fair:nil atIndex:index];
 }
 
-- (instancetype)initWithArtworkSet:(NSArray *)artworkSet fair:(Fair *)fair atIndex:(NSInteger)index
+- (instancetype)initWithArtworkSet:(NSArray<Artwork *> *)artworkSet fair:(Fair *)fair atIndex:(NSInteger)index
 {
     self = [super initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
 

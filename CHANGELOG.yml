@@ -17,6 +17,9 @@ releases:
     user_facing:
       - Fixes a problem where the app's back button would become misaligned - ash
 
+    - Adds new React Native Artwork view behind lab option - alloy/david
+
+releases:
   - version: 5.0.4
     date: May 24, 2019
     emission_version: 1.11.3

@@ -108,8 +108,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     }
 
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
-    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
-    
+    NSString *metaphysics = [[ARRouter baseMetaphysicsApiURLString] stringByAppendingString:@"/v2"];
+
     NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
 
     // Grab echo features and make that the base of all options
@@ -137,10 +137,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                                   options:options];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
-    
+
     // Disable default React Native dev menu shake motion handler
     RCTSwapInstanceMethods([UIWindow class], @selector(RCT_motionEnded:withEvent:), @selector(motionEnded:withEvent:));
-    
+
     [AREmission setSharedInstance:emission];
 
 #pragma mark - Native Module: Follow status
@@ -259,7 +259,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
 
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
 //            // TODO: Nav Notifications
 //            if ([info[@"name"] isEqual:@"Follow artist"] && [fromViewController isKindOfClass:[ARArtistComponentViewController class]]) {
