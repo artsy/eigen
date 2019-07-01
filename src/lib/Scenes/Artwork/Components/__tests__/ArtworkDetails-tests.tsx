@@ -18,7 +18,7 @@ describe("Artwork Details", () => {
         series: null,
         publisher: null,
         manufacturer: null,
-        image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
+        image_rights: null,
       },
     }
 
@@ -27,6 +27,33 @@ describe("Artwork Details", () => {
     expect(component.text()).toContain("MediumOil")
     expect(component.text()).toContain("Certificate of AuthenticityNot included")
     expect(component.text()).toContain("FrameIncluded")
+  })
+
+  it("truncated fields when there are more than 3", () => {
+    const artworkDetailsInfo = {
+      artwork: {
+        " $refType": null,
+        category: "Oil on canvas",
+        conditionDescription: { label: "nice", details: "Included" },
+        signature: null,
+        signatureInfo: null,
+        certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Not included" },
+        framed: { label: "Framed", details: "Included" },
+        series: null,
+        publisher: null,
+        manufacturer: null,
+        image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
+      },
+    }
+
+    const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
+    expect(component.text()).toContain("Artwork Details")
+    expect(component.text()).toContain("MediumOil")
+    expect(component.text()).toContain("Conditionnice")
+    expect(component.text()).toContain("Certificate of AuthenticityNot included")
+    expect(component.text()).not.toContain("FrameIncluded")
+    expect(component.text()).not.toContain("Image Rights")
+    expect(component.text()).toContain("Show more artwork details")
   })
 
   it("shows top 3 fields if >3 and show more button to reveal the rest", () => {

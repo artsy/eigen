@@ -38,16 +38,11 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 
     const displayItems = listItems.filter(i => i.value != null)
 
-    console.log("DISP ITEMS", displayItems)
-
     let truncatedDisplayItems = displayItems
 
     if (!this.state.showAll && displayItems.length > 3) {
-      console.log("WOOOOOO", this.state.showAll)
       truncatedDisplayItems = displayItems.slice(0, 3)
     }
-
-    console.log("DISP ITEMS", displayItems)
 
     return (
       <Box>
