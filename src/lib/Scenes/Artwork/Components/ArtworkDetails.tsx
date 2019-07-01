@@ -36,11 +36,18 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
       { title: "Image rights", value: this.props.artwork.image_rights },
     ]
 
-    let displayItems = listItems.filter(i => i.value != null)
+    const displayItems = listItems.filter(i => i.value != null)
+
+    console.log("DISP ITEMS", displayItems)
+
+    let truncatedDisplayItems = displayItems
 
     if (!this.state.showAll && displayItems.length > 3) {
-      displayItems = displayItems.slice(0, 3)
+      console.log("WOOOOOO", this.state.showAll)
+      truncatedDisplayItems = displayItems.slice(0, 3)
     }
+
+    console.log("DISP ITEMS", displayItems)
 
     return (
       <Box>
@@ -48,7 +55,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
           <Sans size="3" weight="medium">
             Artwork Details
           </Sans>
-          {displayItems.map(({ title, value }, index) => (
+          {truncatedDisplayItems.map(({ title, value }, index) => (
             <React.Fragment key={index}>
               <Sans size="3" weight="regular">
                 {title}
@@ -58,17 +65,18 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
               </Sans>
             </React.Fragment>
           ))}
-          {!this.state.showAll && (
-            <LinkText
-              onPress={() => {
-                this.setState({ showAll: true })
-              }}
-            >
-              <Sans size="3" weight="regular">
-                Show more artwork details
-              </Sans>
-            </LinkText>
-          )}
+          {!this.state.showAll &&
+            (displayItems.length > 3 && (
+              <LinkText
+                onPress={() => {
+                  this.setState({ showAll: true })
+                }}
+              >
+                <Sans size="3" weight="regular">
+                  Show more artwork details
+                </Sans>
+              </LinkText>
+            ))}
         </Join>
       </Box>
     )
