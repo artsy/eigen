@@ -36,6 +36,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotName: String { get }
     var lotID: String { get }
     var lotLabel: String? { get }
+    var lotEditionInfo: String? { get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: URL? { get }
     var urlForProfile: URL? { get }
@@ -122,6 +123,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     /// The value of the highest bid the user has placed on this lot
     var userTopBidCents: UInt64? = nil
 
+    /// Used to format dimensions as inches or centimeters. Do no modify this except under unit tests
+    var usersLocale = NSLocale.autoupdatingCurrent
+
     init(lot: LiveAuctionLot, bidderCredentials: BiddingCredentials) {
         self.model = lot
         self.bidderCredentials = bidderCredentials
@@ -151,11 +155,20 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var lotArtworkDimensions: String? {
-        return model.artwork.dimensionsCM
+        if self.usersLocale.usesMetricSystem {
+            // TODO: Test this!
+            return model.artwork.dimensionsCM
+        } else {
+            return model.artwork.dimensionsInches
+        }
     }
 
     var lotLabel: String? {
         return model.lotLabel as String?
+    }
+
+    var lotEditionInfo: String? {
+        return model.artwork.editionOf
     }
 
     var winningBidPrice: UInt64? {

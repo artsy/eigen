@@ -94,5 +94,31 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
                 expect(subject.highEstimateOrEstimateCents) == 50000
             }
         }
+
+        describe("uses the User's locale to return formatted dimensions") {
+            let creds = BiddingCredentials(bidders: [], paddleNumber: "", userID: "")
+
+            beforeEach {
+                let lot = LiveAuctionLot(json: [
+                    "artwork":
+                        ["id": "the-artwork-id", "dimensions": [
+                            "cm": "5x5cm",
+                            "in": "2x2in"
+                        ]]
+                    ]
+                )
+                subject = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
+            }
+
+            it("works for inches") {
+                subject.usersLocale = Locale(identifier: "en-US")
+                expect(subject.lotArtworkDimensions) == "2x2in"
+            }
+
+            it("works for centimeters") {
+                subject.usersLocale = Locale(identifier: "en-CA")
+                expect(subject.lotArtworkDimensions) == "5x5cm"
+            }
+        }
     }
 }
