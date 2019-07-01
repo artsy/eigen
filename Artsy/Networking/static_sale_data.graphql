@@ -19,14 +19,8 @@
     end_at
     registration_ends_at
     name
-    medium
     is_with_buyers_premium
     description
-    dimensions {
-      in
-      cm
-    }
-    edition_of
     sale_artworks(all: true) {
       _id
       currency
@@ -45,6 +39,7 @@
           in
           cm
         }
+        edition_of
         artist_names
         artist {
           blurb
