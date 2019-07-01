@@ -31,6 +31,15 @@
 - Adds artwork classifications page and links to it from artwork page - lilyfromseattle
 - Add artwork history sections - steve
 
+### 1.11.6
+
+- Fixes crash with empty country selection - ash
+
+### 1.12.x develop
+
+- Update typings for Relay to v4 and usage thereof - alloy
+- Use gravity ID when opening artwork from artwork grid instead of global object ID - alloy
+
 ### 1.12.1
 
 - Refactors Artwork view to use FlatList - kieran
