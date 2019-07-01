@@ -135,7 +135,6 @@
                                 }
                             ]
                     },
-
                 @{
                     ARAnalyticsClass: ARProfileViewController.class,
                     ARAnalyticsDetails: @[

@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.11.3):
+  - Emission (1.11.6):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -298,7 +298,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.0)
+  - Emission (= 1.11.6)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -345,7 +345,7 @@ DEPENDENCIES:
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`, tag `7.5.0`)
+  - tipsi-stripe (from `https://github.com/ashfurrow/tipsi-stripe.git`, branch `fix-infinite-loop`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
@@ -461,8 +461,8 @@ EXTERNAL SOURCES:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.5.0
+    :branch: fix-infinite-loop
+    :git: https://github.com/ashfurrow/tipsi-stripe.git
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -514,8 +514,8 @@ CHECKOUT OPTIONS:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.5.0
+    :commit: bfebb733fb44d3e1d0522a38a317993f9c686422
+    :git: https://github.com/ashfurrow/tipsi-stripe.git
 
 SPEC CHECKSUMS:
   Adjust: b1f2b0e0b426fa991d69ed7fc9de806cf6dff5a6
@@ -538,7 +538,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: c6c5f5cd50820f43fa0f225f29e9797561299470
+  Emission: c656859a94f1a7d8c0eff997549c246f8de7ad17
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -596,6 +596,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: 5805fc0d5fff729311b6d94f6f8ba491404980a5
+PODFILE CHECKSUM: 315f429c7fd5f3ca3e91bfc18d0949ed92655f2e
 
 COCOAPODS: 1.6.0.beta.1
