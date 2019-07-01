@@ -1,13 +1,22 @@
 upcoming:
   version: 5.0.6
   date: TBD
-  emission_version: 1.x.y
+  emission_version: 1.12.x
   dev:
     - 
   user_facing:
     - Adds new React Native Artwork view behind lab option - alloy/david
 
 releases:
+  - version: 5.0.5
+    date: TBD
+    emission_version: 1.11.6
+    dev:
+      - Adds analytics tracking for artwork set view controller swipes - ash
+      - Moved artwork set analytics into artwork set view controller - ash
+    user_facing:
+      - Fixes a problem where the app's back button would become misaligned - ash
+
   - version: 5.0.4
     date: May 24, 2019
     emission_version: 1.11.3
