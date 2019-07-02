@@ -17,6 +17,9 @@
 ### Master
 
 - Add shim for calling view in room view.
+- Fix carousel alignment - ds300
+- Fix styled-components warning - ds300
+- Use OpaqueImageView in ImageCarousel -ds300
 
 ### 1.12.3
 
