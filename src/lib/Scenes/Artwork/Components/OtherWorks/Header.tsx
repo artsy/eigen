@@ -11,7 +11,7 @@ export const Header: React.SFC<HeaderProps> = props => {
 
   return (
     <Flex flexDirection="column" alignItems="center">
-      <Serif size={["5t", "8"]} mb={2} textAlign="center">
+      <Serif size="5t" mb={2} textAlign="center">
         {title}
       </Serif>
       {children}
