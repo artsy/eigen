@@ -95,7 +95,6 @@
     [sharingController presentActivityViewControllerFromView:sender];
 }
 
-
 - (void)tappedArtworkViewInRoom
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
