@@ -35,16 +35,12 @@ describe(getMeasurements, () => {
       getMeasurements({
         images: [
           {
-            thumbnail: {
-              width: 10,
-              height: 10,
-            },
+            width: 10,
+            height: 10,
           },
           {
-            thumbnail: {
-              width: 10,
-              height: 10,
-            },
+            width: 10,
+            height: 10,
           },
         ],
         boundingBox: { width: 10, height: 10 },
@@ -76,16 +72,12 @@ describe(getMeasurements, () => {
       getMeasurements({
         images: [
           {
-            thumbnail: {
-              width: 5,
-              height: 10,
-            },
+            width: 5,
+            height: 10,
           },
           {
-            thumbnail: {
-              width: 5,
-              height: 10,
-            },
+            width: 5,
+            height: 10,
           },
         ],
         boundingBox: { width: 10, height: 10 },

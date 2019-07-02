@@ -1,8 +1,16 @@
 import { color } from "@artsy/palette"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Spinner from "lib/Components/Spinner"
 import React, { useEffect, useMemo, useState } from "react"
-import { Animated, ImageBackground, ImageProps } from "react-native"
+import { Animated, View, ViewProps } from "react-native"
 
+interface ImageWithLoadingStateProps {
+  width: number
+  height: number
+  imageURL: string
+  onLoad?: () => void
+  style?: ViewProps["style"]
+}
 /**
  * Renders an image with a 'fade in' transition when it has loaded.
  * If the image takes more than a second to load, it shows a
@@ -10,7 +18,7 @@ import { Animated, ImageBackground, ImageProps } from "react-native"
  *
  * @param param0 same as RN's Image props
  */
-export const ImageWithLoadingState: React.FC<ImageProps> = ({ ...props }) => {
+export const ImageWithLoadingState: React.FC<ImageWithLoadingStateProps> = ({ ...props }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   // When the image has loaded we want to fade it in, so we have a white overlay
@@ -38,11 +46,27 @@ export const ImageWithLoadingState: React.FC<ImageProps> = ({ ...props }) => {
       }).start()
     }, 1000)
   }, [])
-
+  const { width, height, imageURL } = props
   return (
-    <ImageBackground {...props} onLoad={() => setIsLoading(false)}>
+    <View style={[{ width, height }, props.style]}>
+      <View style={{ position: "absolute", width, height }}>
+        <OpaqueImageView
+          onLoad={() => {
+            setIsLoading(false)
+            if (props.onLoad) {
+              props.onLoad()
+            }
+          }}
+          imageURL={imageURL}
+          aspectRatio={width / height}
+          style={{ width, height }}
+        />
+      </View>
       <Animated.View
         style={{
+          position: "absolute",
+          width,
+          height,
           opacity: overlayOpacity,
           backgroundColor: "white",
           flex: 1,
@@ -62,6 +86,6 @@ export const ImageWithLoadingState: React.FC<ImageProps> = ({ ...props }) => {
           <Spinner />
         </Animated.View>
       </Animated.View>
-    </ImageBackground>
+    </View>
   )
 }

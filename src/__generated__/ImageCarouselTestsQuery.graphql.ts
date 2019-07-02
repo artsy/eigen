@@ -2,9 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { ImageCarousel_images$ref } from "./ImageCarousel_images.graphql";
-export type ImageCarouselTestsQueryVariables = {
-    readonly screenWidth: number;
-};
+export type ImageCarouselTestsQueryVariables = {};
 export type ImageCarouselTestsQueryResponse = {
     readonly artwork: {
         readonly images: ReadonlyArray<{
@@ -20,9 +18,7 @@ export type ImageCarouselTestsQuery = {
 
 
 /*
-query ImageCarouselTestsQuery(
-  $screenWidth: Int!
-) {
+query ImageCarouselTestsQuery {
   artwork(id: "unused") {
     images {
       ...ImageCarousel_images
@@ -35,51 +31,17 @@ fragment ImageCarousel_images on Image {
   url
   width
   height
-  thumbnail: resized(width: $screenWidth) {
-    width
-    height
-    url
-  }
 }
 */
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LocalArgument",
-    "name": "screenWidth",
-    "type": "Int!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
     "kind": "Literal",
     "name": "id",
     "value": "unused"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "url",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "width",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "height",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -87,14 +49,14 @@ return {
     "name": "ImageCarouselTestsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": "artwork(id:\"unused\")",
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -121,14 +83,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ImageCarouselTestsQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": "artwork(id:\"unused\")",
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -141,28 +103,26 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/),
               {
-                "kind": "LinkedField",
-                "alias": "thumbnail",
-                "name": "resized",
-                "storageKey": null,
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "width",
-                    "variableName": "screenWidth"
-                  }
-                ],
-                "concreteType": "ResizedImageUrl",
-                "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  (v2/*: any*/)
-                ]
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "width",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "height",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -180,11 +140,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ImageCarouselTestsQuery",
-    "id": "35cce10251babf176c3aa1313217b639",
+    "id": "f2ba9edeb91d96024fedc8203737bb0c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3dd459f39afc1a032988f479681dcae9';
+(node as any).hash = '727b10351e1078ca0fd5594c5aa6d228';
 export default node;

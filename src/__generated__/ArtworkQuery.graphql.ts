@@ -5,7 +5,6 @@ import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 export type ArtworkQueryVariables = {
     readonly artworkID: string;
     readonly excludeArtworkIds?: ReadonlyArray<string> | null;
-    readonly screenWidth: number;
 };
 export type ArtworkQueryResponse = {
     readonly artwork: {
@@ -23,7 +22,6 @@ export type ArtworkQuery = {
 query ArtworkQuery(
   $artworkID: String!
   $excludeArtworkIds: [String!]
-  $screenWidth: Int!
 ) {
   artwork(id: $artworkID) {
     ...Artwork_artwork
@@ -252,11 +250,6 @@ fragment ImageCarousel_images on Image {
   url
   width
   height
-  thumbnail: resized(width: $screenWidth) {
-    width
-    height
-    url
-  }
 }
 
 fragment FollowArtistButton_artist on Artist {
@@ -391,12 +384,6 @@ var v0 = [
     "kind": "LocalArgument",
     "name": "excludeArtworkIds",
     "type": "[String!]",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "screenWidth",
-    "type": "Int!",
     "defaultValue": null
   }
 ],
@@ -739,21 +726,7 @@ v19 = [
     "args": null,
     "storageKey": null
   }
-],
-v20 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "width",
-  "args": null,
-  "storageKey": null
-},
-v21 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "height",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -1267,27 +1240,19 @@ return {
             "plural": true,
             "selections": [
               (v17/*: any*/),
-              (v20/*: any*/),
-              (v21/*: any*/),
               {
-                "kind": "LinkedField",
-                "alias": "thumbnail",
-                "name": "resized",
-                "storageKey": null,
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "width",
-                    "variableName": "screenWidth"
-                  }
-                ],
-                "concreteType": "ResizedImageUrl",
-                "plural": false,
-                "selections": [
-                  (v20/*: any*/),
-                  (v21/*: any*/),
-                  (v17/*: any*/)
-                ]
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "width",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "height",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -1305,11 +1270,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "21eb32549e8f4723e819642bbc409461",
+    "id": "1ddf3515e11e4edd29ce3e0e2114b73a",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2be034181818db394d253f760b167d76';
+(node as any).hash = '8c594e52f5c996aecbaac4b08d7da014';
 export default node;

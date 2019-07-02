@@ -20,7 +20,9 @@ export class ArtworkHeader extends React.Component<ArtworkHeaderProps> {
           <ArtworkActions artwork={artwork} />
         </Flex>
         <Spacer mb={2} />
-        <ArtworkTombstone artwork={artwork} />
+        <Box px={2}>
+          <ArtworkTombstone artwork={artwork} />
+        </Box>
       </Box>
     )
   }
