@@ -72,7 +72,7 @@ describe("ImageCarouselFragmentContainer", () => {
     return await renderRelayTree({
       Component: ({ artwork: { images } }) => <ImageCarouselFragmentContainer images={images} />,
       query: graphql`
-        query ImageCarouselTestsQuery($screenWidth: Int!) {
+        query ImageCarouselTestsQuery {
           artwork(id: "unused") {
             images {
               ...ImageCarousel_images
@@ -80,9 +80,6 @@ describe("ImageCarouselFragmentContainer", () => {
           }
         }
       `,
-      variables: {
-        screenWidth: 234,
-      },
       mockData: {
         artwork,
       },

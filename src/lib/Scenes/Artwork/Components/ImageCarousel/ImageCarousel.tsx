@@ -50,9 +50,15 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
         decelerationRate="fast"
         onScroll={onScroll}
         renderItem={({ item, index }) => {
-          const { url } = item.thumbnail || item
           const { cumulativeScrollOffset, ...styles } = measurements[index]
-          return <ImageWithLoadingState source={{ uri: devCacheBust(url) }} style={styles} />
+          return (
+            <ImageWithLoadingState
+              imageURL={devCacheBust(item.url)}
+              width={styles.width}
+              height={styles.height}
+              style={styles}
+            />
+          )
         }}
       />
       {images.length > 1 && (
@@ -107,11 +113,6 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
       url
       width
       height
-      thumbnail: resized(width: $screenWidth) {
-        width
-        height
-        url
-      }
     }
   `,
 })

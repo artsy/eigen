@@ -5,7 +5,7 @@ import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { Dimensions, FlatList } from "react-native"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
@@ -165,7 +165,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!], $screenWidth: Int!) {
+        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!]) {
           artwork(id: $artworkID) {
             ...Artwork_artwork
           }
@@ -173,7 +173,6 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
       `}
       variables={{
         artworkID,
-        screenWidth: Dimensions.get("screen").width,
         excludeArtworkIds: [artworkID],
       }}
       render={renderWithLoadProgress(ArtworkContainer)}

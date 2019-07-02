@@ -42,17 +42,11 @@ interface ImageMeasurements {
 
 // given an input array of image sources, calculates the dimensions and positions of all the images on the carousel
 // rail. boundingBox is the maximum possible size that an image can occupy on the rail
-export function getMeasurements({
-  images,
-  boundingBox,
-}: {
-  images: ReadonlyArray<{ thumbnail: Box }>
-  boundingBox: Box
-}) {
+export function getMeasurements({ images, boundingBox }: { images: ReadonlyArray<Box>; boundingBox: Box }) {
   const result: ImageMeasurements[] = []
 
   for (let i = 0; i < images.length; i++) {
-    const { width, height, marginHorizontal, marginVertical } = fitInside(boundingBox, images[i].thumbnail)
+    const { width, height, marginHorizontal, marginVertical } = fitInside(boundingBox, images[i])
 
     // collapse adjacent margins to avoid excess white space between images
     const marginLeft = i === 0 ? marginHorizontal : Math.max(marginHorizontal - result[i - 1].marginRight, 0)
