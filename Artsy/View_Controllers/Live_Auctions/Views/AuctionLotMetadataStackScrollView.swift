@@ -56,11 +56,11 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         }
 
         if let dimensions = viewModel.lotArtworkDimensions {
-            stack.addBodyText(dimensions, sideMargin: sideMargin)
+            stack.addBodyText(dimensions, topMargin: "4", sideMargin: sideMargin)
         }
 
         if let editionInfo = viewModel.lotEditionInfo {
-            stack.addBodyText(editionInfo, sideMargin: sideMargin)
+            stack.addBodyText(editionInfo, topMargin: "4", sideMargin: sideMargin)
         }
 
         let separatorMargin = String(Int(sideMargin) ?? 0 + 40)
