@@ -19,9 +19,9 @@ storiesOf("Artwork/Components").add("All Actions", () => {
             name: "Abbas Kiarostami",
           },
         ],
+        heightCm: 10,
+        widthCm: 10,
         image: {
-          height: 10,
-          width: 10,
           url: "image.com/image",
         },
         " $refType": null,
