@@ -64,8 +64,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   render() {
     const {
-      artwork: { is_saved, image, id, gravityID },
+      artwork: { is_saved, image, id, gravityID, heightCm, widthCm },
     } = this.props
+
+    const heightIn = heightCm / 2.54
+    const widthIn = widthCm / 2.54
+
     return (
       <View>
         <Flex flexDirection="row">
@@ -79,7 +83,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           </TouchableWithoutFeedback>
           {Constants.AREnabled && (
             <TouchableWithoutFeedback
-              onPress={() => ApiModule.presentAugmentedRealityVIR(image.url, image.height, image.width, gravityID, id)}
+              onPress={() => ApiModule.presentAugmentedRealityVIR(image.url, heightIn, widthIn, gravityID, id)}
             >
               <UtilButton pr={3}>
                 <Box mr={0.5}>
@@ -122,10 +126,10 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
         name
       }
       image {
-        height
-        width
         url
       }
+      widthCm
+      heightCm
     }
   `,
 })
