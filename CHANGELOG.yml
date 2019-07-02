@@ -6,6 +6,7 @@ upcoming:
     - Cleans up unused lab options - ash
   user_facing:
     - Adds new React Native Artwork view behind lab option - alloy/david
+    - Integrates View-in-Room support from React Native Artwork view - ash/steve
 
 releases:
   - version: 5.0.5

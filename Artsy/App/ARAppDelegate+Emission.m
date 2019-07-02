@@ -198,73 +198,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         }];
     };
 
-    // This is largely copied from ARArtworkViewController+ButtonActions.m. Normally we would
-    // want to put this in its own file, but the implementations differ slightly _and_ that
-    // whole file will be removed once the React Native Artwork view rollout is complete.
-    // So copying the code is worth the compromise in this case.
     emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat width, CGFloat height, NSString *artworkSlug, NSString *artworkId) {
-        BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
-        if (supportsARVIR) {
-            [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool allowedAccess) {
-                CGSize size = CGSizeMake(width, height);
-                NSURL *url = [NSURL URLWithString:imgUrl];
-
-                // The image can come from either the SDWebImage cache or from the internet.
-                // In either case, this block gets called with that image.
-                void (^gotImageBlock)(UIImage *image) = ^void(UIImage *image) {
-                    ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:image size:size];
-                    config.artworkID = artworkId;
-                    config.artworkSlug = artworkSlug;
-                    config.floorBasedVIR = YES;
-                    config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
-
-                    // @available check is to silence compiler warning; it is guaranteed by +canOpenARView.
-                    if (@available(iOS 11.3, *)) {
-                        if (allowedAccess) {
-                            id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
-                            [[ARTopMenuViewController sharedController] pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-                        } else {
-                            // Currently an empty string, which is interpreted as nil
-                            // When a video is set, go to:
-                            // https://echo-web-production.herokuapp.com/accounts/1/messages
-                            // (Creds in 1pass) and update the ARVIRVideo message with the full URL
-                            //
-                            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
-                            [echo setup];
-
-                            Message *setupURL = echo.messages[@"ARVIRVideo"];
-
-                            NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
-                            ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
-                            [[ARTopMenuViewController sharedController] pushViewController:setupVC animated:ARPerformWorkAsynchronously];
-                        }
-                    }
-                };
-
-                SDWebImageManager *manager = [SDWebImageManager sharedManager];
-                if ([manager cachedImageExistsForURL:url]) {
-                    NSString *key = [manager cacheKeyForURL:url];
-                    UIImage *image = [manager.imageCache imageFromDiskCacheForKey:key];
-                    gotImageBlock(image);
-                } else {
-                    [manager downloadImageWithURL:url options:(SDWebImageHighPriority) progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                        if (finished && !error) {
-                            gotImageBlock(image);
-                        } else {
-                            // Errors are unlikely to happen, but we should handle them just in case.
-                            // This represents both an image cache-miss _and_ a failure to
-                            // download the image on its own. Very unlikely.
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Failed to Load Image" message:@"We could not download the image to present in View-in-Room." preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                            [alert addAction:defaultAction];
-                            [[ARTopMenuViewController sharedController] presentViewController:alert animated:YES completion:nil];
-                        }
-                    }];
-                }
-            }];
-        } else {
-            // nop: we don't expect Emission to call this on non-AR devices.
-        }
+        CGSize size = CGSizeMake(width, height);
+        NSURL *url = [NSURL URLWithString:imgUrl];
+        [self showARVIRWithImageURL:url size:size artworkSlug:artworkSlug artworkID:artworkId];
     };
 
 #pragma mark - Native Module: Refine filter
@@ -366,6 +303,79 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
     [options addEntriesFromDictionary:labOptions];
     return options;
+}
+
+#pragma mark - AR View-in-Room Experience
+
+// This is largely copied from ARArtworkViewController+ButtonActions.m. Normally we would
+// want to put this in its own file, but the implementations differ slightly _and_ that
+// whole file will be removed once the React Native Artwork view rollout is complete.
+// So copying the code is worth the compromise in this case.
+- (void)showARVIRWithImageURL:(NSURL *)url size:(CGSize)size artworkSlug:(NSString *)artworkSlug artworkID:(NSString *)artworkId
+{
+    BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
+    if (supportsARVIR) {
+        [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool allowedAccess) {
+            // The image can come from either the SDWebImage cache or from the internet.
+            // In either case, this block gets called with that image.
+            void (^gotImageBlock)(UIImage *image) = ^void(UIImage *image) {
+                ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:image size:size];
+                config.artworkID = artworkId;
+                config.artworkSlug = artworkSlug;
+                config.floorBasedVIR = YES;
+                config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
+
+                // @available check is to silence compiler warning; it is guaranteed by +canOpenARView.
+                if (@available(iOS 11.3, *)) {
+                    if (allowedAccess) {
+                        id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
+                        [[ARTopMenuViewController sharedController] pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+                    } else {
+                        // Currently an empty string, which is interpreted as nil
+                        // When a video is set, go to:
+                        // https://echo-web-production.herokuapp.com/accounts/1/messages
+                        // (Creds in 1pass) and update the ARVIRVideo message with the full URL
+                        //
+                        ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+                        [echo setup];
+
+                        Message *setupURL = echo.messages[@"ARVIRVideo"];
+
+                        NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
+                        ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
+                        [[ARTopMenuViewController sharedController] pushViewController:setupVC animated:ARPerformWorkAsynchronously];
+                    }
+                }
+            };
+
+            // Try to get a cached image from SDWebImage. This will succeed under normal runtime conditions.
+            // In the rare occurence that a cache lookup fails, download the image into the cache first.
+            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            if ([manager cachedImageExistsForURL:url]) {
+                NSString *key = [manager cacheKeyForURL:url];
+                UIImage *image = [manager.imageCache imageFromDiskCacheForKey:key];
+                // TODO: Verify that this _does_ actually get a cache hit most often.
+                gotImageBlock(image);
+            } else {
+                [manager downloadImageWithURL:url options:(SDWebImageHighPriority) progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                    if (finished && !error) {
+                        gotImageBlock(image);
+                    } else {
+                        // Errors are unlikely to happen, but we should handle them just in case.
+                        // This represents both an image cache-miss _and_ a failure to
+                        // download the image on its own. Very unlikely.
+                        NSLog(@"[ARAppDelegate+Emission] Couldn't download image for AR VIR (%@, %@): %@", artworkSlug, imageURL, error);
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Failed to Load Image" message:@"We could not download the image to present in View-in-Room." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                        [alert addAction:defaultAction];
+                        [[ARTopMenuViewController sharedController] presentViewController:alert animated:YES completion:nil];
+                    }
+                }];
+            }
+        }];
+    } else {
+        // nop: we don't expect Emission to call this on non-AR devices.
+    }
 }
 
 @end
