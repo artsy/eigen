@@ -86,7 +86,7 @@ export class Artwork extends React.Component<Props> {
   render() {
     return (
       <Theme>
-        <Box pt={4} pb={2}>
+        <Box pb={2}>
           <FlatList
             data={this.sections()}
             ItemSeparatorComponent={() => (
@@ -95,7 +95,9 @@ export class Artwork extends React.Component<Props> {
               </Box>
             )}
             keyExtractor={(item, index) => item.type + String(index)}
-            renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+            renderItem={item =>
+              item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
+            }
           />
         </Box>
       </Theme>
