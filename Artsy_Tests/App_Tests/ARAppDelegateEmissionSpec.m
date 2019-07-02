@@ -17,7 +17,7 @@ it(@"makes sure that settings are merged correctly", ^{
     };
 
     ARAppDelegate *delegate = [ARAppDelegate new];
-    NSDictionary *resolvedConfig =[delegate getOptionsForEmission:echoConfig labOptions:labOptionsConfig];
+    NSDictionary *resolvedConfig = [delegate getOptionsForEmission:echoConfig labOptions:labOptionsConfig];
     expect(resolvedConfig).to.equal(@{
       @"ARDisableReactNativeBidFlow": @(NO),
       @"ipad_vir": @(NO),

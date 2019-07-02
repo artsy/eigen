@@ -201,7 +201,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat width, CGFloat height, NSString *artworkSlug, NSString *artworkId) {
         CGSize size = CGSizeMake(width, height);
         NSURL *url = [NSURL URLWithString:imgUrl];
-        [self showARVIRWithImageURL:url size:size artworkSlug:artworkSlug artworkID:artworkId];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showARVIRWithImageURL:url size:size artworkSlug:artworkSlug artworkID:artworkId defaults:[NSUserDefaults standardUserDefaults]];
+        });
     };
 
 #pragma mark - Native Module: Refine filter
@@ -311,11 +313,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 // want to put this in its own file, but the implementations differ slightly _and_ that
 // whole file will be removed once the React Native Artwork view rollout is complete.
 // So copying the code is worth the compromise in this case.
-- (void)showARVIRWithImageURL:(NSURL *)url size:(CGSize)size artworkSlug:(NSString *)artworkSlug artworkID:(NSString *)artworkId
+- (void)showARVIRWithImageURL:(NSURL *)url size:(CGSize)size artworkSlug:(NSString *)artworkSlug artworkID:(NSString *)artworkId defaults:(NSUserDefaults *)userDefauls
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
     if (supportsARVIR) {
-        [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool allowedAccess) {
+        [ARAugmentedVIRSetupViewController canSkipARSetup:userDefauls callback:^(bool allowedAccess) {
             // The image can come from either the SDWebImage cache or from the internet.
             // In either case, this block gets called with that image.
             void (^gotImageBlock)(UIImage *image) = ^void(UIImage *image) {
@@ -331,11 +333,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                         id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
                         [[ARTopMenuViewController sharedController] pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
                     } else {
-                        // Currently an empty string, which is interpreted as nil
-                        // When a video is set, go to:
-                        // https://echo-web-production.herokuapp.com/accounts/1/messages
-                        // (Creds in 1pass) and update the ARVIRVideo message with the full URL
-                        //
                         ArtsyEcho *echo = [[ArtsyEcho alloc] init];
                         [echo setup];
 
@@ -349,6 +346,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             };
 
             // Try to get a cached image from SDWebImage. This will succeed under normal runtime conditions.
+            // But in case there is severe RAM or disk pressure, the image might already be evicted from the cache.
             // In the rare occurence that a cache lookup fails, download the image into the cache first.
             SDWebImageManager *manager = [SDWebImageManager sharedManager];
             if ([manager cachedImageExistsForURL:url]) {
