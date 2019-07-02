@@ -17,6 +17,7 @@
 ### Master
 
 - Add shim for calling view in room view.
+- Pass inches to view in room.
 
 ### 1.12.3
 
