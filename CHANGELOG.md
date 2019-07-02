@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.12.4
+
 - Add shim for calling view in room view.
 
 ### 1.12.3
