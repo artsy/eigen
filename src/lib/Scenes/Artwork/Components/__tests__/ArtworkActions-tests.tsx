@@ -216,6 +216,7 @@ const artworkActionsArtwork = {
   id: "artwork12345",
   internalID: "12345",
   title: "test title",
+  gravityID: "andreas-rod-prinzknecht",
   href: "/artwork/andreas-rod-prinzknecht",
   artists: [
     {
@@ -225,6 +226,11 @@ const artworkActionsArtwork = {
       name: "Arthur Sopin",
     },
   ],
+  image: {
+    height: 10,
+    width: 10,
+    url: "image.com/image",
+  },
   is_saved: false,
   " $refType": null,
 }

@@ -7,6 +7,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import styled from "styled-components/native"
 
 const Constants = NativeModules.ARCocoaConstantsModule
+const ApiModule = NativeModules.ARTemporaryAPIModule
 
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
@@ -63,7 +64,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   render() {
     const {
-      artwork: { is_saved },
+      artwork: { is_saved, image, id, gravityID },
     } = this.props
     return (
       <View>
@@ -77,12 +78,16 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </UtilButton>
           </TouchableWithoutFeedback>
           {Constants.AREnabled && (
-            <UtilButton pr={3}>
-              <Box mr={0.5}>
-                <EyeOpenedIcon />
-              </Box>
-              <Sans size="3">View in Room</Sans>
-            </UtilButton>
+            <TouchableWithoutFeedback
+              onPress={() => ApiModule.presentAugmentedRealityVIR(image.url, image.height, image.width, gravityID, id)}
+            >
+              <UtilButton pr={3}>
+                <Box mr={0.5}>
+                  <EyeOpenedIcon />
+                </Box>
+                <Sans size="3">View in Room</Sans>
+              </UtilButton>
+            </TouchableWithoutFeedback>
           )}
           <TouchableWithoutFeedback onPress={() => this.handleArtworkShare()}>
             <UtilButton>
@@ -109,11 +114,17 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
     fragment ArtworkActions_artwork on Artwork {
       id
       internalID
+      gravityID
       title
       href
       is_saved
       artists {
         name
+      }
+      image {
+        height
+        width
+        url
       }
     }
   `,

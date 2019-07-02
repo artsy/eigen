@@ -6,12 +6,18 @@ export type ArtworkActions_artwork$ref = typeof _ArtworkActions_artwork$ref;
 export type ArtworkActions_artwork = {
     readonly id: string;
     readonly internalID: string;
+    readonly gravityID: string;
     readonly title: string | null;
     readonly href: string | null;
     readonly is_saved: boolean | null;
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
     } | null> | null;
+    readonly image: {
+        readonly height: number | null;
+        readonly width: number | null;
+        readonly url: string | null;
+    } | null;
     readonly " $refType": ArtworkActions_artwork$ref;
 };
 
@@ -35,6 +41,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -76,8 +89,40 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "image",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Image",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "height",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "width",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "url",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     }
   ]
 };
-(node as any).hash = '99e00f45ca742a05d10e57f4573c8b1d';
+(node as any).hash = '1444c7cd332bf10d801b69d931e02795';
 export default node;
