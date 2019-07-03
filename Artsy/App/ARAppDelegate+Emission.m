@@ -198,8 +198,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         }];
     };
 
-    emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat width, CGFloat height, NSString *artworkSlug, NSString *artworkId) {
-        CGSize size = CGSizeMake(width, height);
+    emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId) {
+        // A bit weird, eh? Normally CGSize stores width+height in terms of pixels, but this one is stored in inches instead.
+        CGSize size = CGSizeMake(widthIn, heightIn);
         NSURL *url = [NSURL URLWithString:imgUrl];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showARVIRWithImageURL:url size:size artworkSlug:artworkSlug artworkID:artworkId defaults:[NSUserDefaults standardUserDefaults]];
