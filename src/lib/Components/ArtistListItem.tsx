@@ -1,4 +1,4 @@
-import { Box, Button, EntityHeader, Theme } from "@artsy/palette"
+import { Button, EntityHeader, Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -125,26 +125,24 @@ export class ArtistListItem extends React.Component<Props, State> {
 
     return (
       <Theme>
-        <Box width="100%" py={1}>
-          <TouchableWithoutFeedback onPress={() => this.handleTap(href)}>
-            <EntityHeader
-              name={name}
-              meta={formatTombstoneText(nationality, birthday, deathday)}
-              imageUrl={url}
-              initials={initials}
-              FollowButton={
-                <Button
-                  variant={is_followed ? "secondaryOutline" : "primaryBlack"}
-                  onPress={this.handleFollowArtist.bind(this)}
-                  size="small"
-                  loading={isFollowedChanging}
-                >
-                  {is_followed ? "Following" : "Follow"}
-                </Button>
-              }
-            />
-          </TouchableWithoutFeedback>
-        </Box>
+        <TouchableWithoutFeedback onPress={() => this.handleTap(href)}>
+          <EntityHeader
+            name={name}
+            meta={formatTombstoneText(nationality, birthday, deathday)}
+            imageUrl={url}
+            initials={initials}
+            FollowButton={
+              <Button
+                variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+                onPress={this.handleFollowArtist.bind(this)}
+                size="small"
+                loading={isFollowedChanging}
+              >
+                {is_followed ? "Following" : "Follow"}
+              </Button>
+            }
+          />
+        </TouchableWithoutFeedback>
       </Theme>
     )
   }

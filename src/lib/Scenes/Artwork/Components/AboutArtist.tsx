@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "@artsy/palette"
+import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { AboutArtist_artwork } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -26,9 +26,11 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           <Sans size="3t" weight="medium" mb={2}>
             {hasSingleArtist ? "About the artist" : "About the artists"}
           </Sans>
-          {artists.map(artist => (
-            <ArtistListItem key={artist.id} artist={artist} />
-          ))}
+          <Join separator={<Spacer my={1} />}>
+            {artists.map(artist => (
+              <ArtistListItem key={artist.id} artist={artist} />
+            ))}
+          </Join>
         </Flex>
         {hasSingleArtist &&
           text && (
