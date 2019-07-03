@@ -33,7 +33,6 @@ export class Artwork extends React.Component<Props> {
 
     sections.push("header")
     sections.push("commercialInformation")
-    sections.push("aboutArtist")
 
     if (artwork.description || artwork.additional_information) {
       sections.push("aboutWork")
