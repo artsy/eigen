@@ -6,6 +6,7 @@ upcoming:
     - Cleans up unused lab options - ash
   user_facing:
     - Adds new React Native Artwork view behind lab option - alloy/david
+    - Adds edition information to LAI lot info view - ash/lily
 
 releases:
   - version: 5.0.5

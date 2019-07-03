@@ -39,6 +39,7 @@
           in
           cm
         }
+        edition_of
         artist_names
         artist {
           blurb

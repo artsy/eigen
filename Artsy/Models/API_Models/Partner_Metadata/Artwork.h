@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 // we're just gonna leave these as dictionaries for now
 // I think?
 @property (nonatomic, copy) NSArray *editionSets;
-@property (nonatomic, copy, readonly) NSString *editionOf;
+@property (nonatomic, copy, readonly) NSString *_Nullable editionOf;
 
 @property (nonatomic, assign) enum ARArtworkAvailability availability;
 
