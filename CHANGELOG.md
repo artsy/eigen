@@ -19,6 +19,7 @@
 ### 1.12.4
 
 - Add shim for calling view in room view.
+- Pass inches to view in room.
 - Fix carousel alignment - ds300
 - Fix styled-components warning - ds300
 - Use OpaqueImageView in ImageCarousel -ds300
