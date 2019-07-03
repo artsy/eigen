@@ -5,6 +5,7 @@ import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
+import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
@@ -21,7 +22,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
+import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -525,6 +526,9 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onRegionIsChanging = async () => {
+    if (!this.map) {
+      return
+    }
     const zoom = Math.floor(await this.map.getZoom())
 
     if (!this.currentZoom) {

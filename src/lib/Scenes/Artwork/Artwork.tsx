@@ -3,6 +3,7 @@ import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList } from "react-native"
@@ -18,6 +19,7 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 
 interface Props {
   artwork: Artwork_artwork
+  safeAreaInsets: SafeAreaInsets
 }
 
 export class Artwork extends React.Component<Props> {
@@ -86,7 +88,7 @@ export class Artwork extends React.Component<Props> {
   render() {
     return (
       <Theme>
-        <Box pb={2}>
+        <Box pb={2} pt={this.props.safeAreaInsets.top}>
           <FlatList
             data={this.sections()}
             ItemSeparatorComponent={() => (
@@ -160,7 +162,10 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
   `,
 })
 
-export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID }) => {
+export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: SafeAreaInsets }> = ({
+  artworkID,
+  ...others
+}) => {
   return (
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
@@ -175,7 +180,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string }> = ({ artworkID })
         artworkID,
         excludeArtworkIds: [artworkID],
       }}
-      render={renderWithLoadProgress(ArtworkContainer)}
+      render={renderWithLoadProgress(ArtworkContainer, others)}
     />
   )
 }

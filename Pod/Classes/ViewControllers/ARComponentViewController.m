@@ -7,6 +7,7 @@
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
 @property (nonatomic, strong) NSDictionary *initialProperties;
+@property (nonatomic, assign) BOOL safeAreaInsetsAreSet;
 @end
 
 @implementation ARComponentViewController
@@ -32,6 +33,10 @@
 {
   [super viewDidLoad];
   self.automaticallyAdjustsScrollViewInsets = NO;
+
+  if (self.shouldInjectSafeAreaInsets) {
+    [self updateSafeAreaInsets];
+  }
 
   self.rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
                                                    moduleName:self.moduleName
@@ -122,6 +127,40 @@
         NSMutableDictionary *appProperties = [self.initialProperties mutableCopy];
         appProperties[key] = value;
         self.initialProperties = appProperties;
+    }
+}
+
+- (void)updateSafeAreaInsets
+{
+    if (self.safeAreaInsetsAreSet) {
+        return;
+    }
+
+    UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        safeAreaInsets = self.view.safeAreaInsets;
+
+        // Once we receive the correct top inset value it gets resetted to 0 after the VC gets hidden
+        // So let's not reset it afterwards
+        if (self.view.safeAreaInsets.top > 0) {
+            self.safeAreaInsetsAreSet = YES;
+        }
+    } else {
+        self.safeAreaInsetsAreSet = YES;
+    }
+
+    [self setProperty:@{ @"top": @(safeAreaInsets.top),
+                         @"bottom": @(safeAreaInsets.bottom),
+                         @"left": @(safeAreaInsets.left),
+                         @"right": @(safeAreaInsets.right) }
+               forKey:@"safeAreaInsets"];
+}
+
+-(void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    if (self.shouldInjectSafeAreaInsets) {
+      [self updateSafeAreaInsets];
     }
 }
 

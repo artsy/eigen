@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ARComponentFullBleedViewSizing <NSObject>
 
 @property (nonatomic, readonly) BOOL fullBleed;
+@property (nonatomic, readonly) BOOL shouldInjectSafeAreaInsets;
 
 @end
 
@@ -22,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 // If set to true, the view controller will start under th status bar (iPhone X, iPad Pro, etc...)
 @property (nonatomic, assign) BOOL fullBleed;
+
+// If set to true, the root RN component will have props injected for the safe area insets
+@property (nonatomic, assign) BOOL shouldInjectSafeAreaInsets;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

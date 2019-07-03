@@ -1,7 +1,7 @@
+import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { Component } from "react"
 import { View } from "react-native"
 import { MapRenderer } from "./MapRenderer"
-import { SafeAreaInsets } from "./types"
 
 interface Props {
   citySlug?: string
