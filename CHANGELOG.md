@@ -36,6 +36,7 @@
 - Fixes a React Native font-rendering issue - david & ash
 - Adds artwork classifications page and links to it from artwork page - lilyfromseattle
 - Add artwork history sections - steve
+- Changes method parameter names to make it obvious that units for width+height are in inches - ash
 
 ### 1.11.6
 

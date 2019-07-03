@@ -213,8 +213,8 @@ randomBOOL(void)
     });
   };
 
-  emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat width, CGFloat height, NSString *artworkSlug, NSString *artworkId) {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"VR!" message:[NSString stringWithFormat:@"slug: %@, width: %f, height: %f", artworkSlug, width, height] preferredStyle:UIAlertControllerStyleAlert];
+  emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"VR!" message:[NSString stringWithFormat:@"slug: %@, width: %f, height: %f", artworkSlug, widthIn, heightIn] preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:defaultAction];
     id controller = self.navigationController;
