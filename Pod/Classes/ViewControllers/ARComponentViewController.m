@@ -7,7 +7,7 @@
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
 @property (nonatomic, strong) NSDictionary *initialProperties;
-@property (nonatomic, assign) BOOL safeAreaInsetsAreSet;
+@property (nonatomic) bool safeAreaInsetsWereUpdated;
 @end
 
 @implementation ARComponentViewController
@@ -23,6 +23,16 @@
     NSMutableDictionary *properties = [NSMutableDictionary new];
     [properties addEntriesFromDictionary:initialProperties];
     [properties addEntriesFromDictionary:@{@"isVisible": @YES}];
+
+    if (self.shouldInjectSafeAreaInsets) {
+        // set default value for pre-iphone-X values
+        [properties setValue:@{ @"top": @(self.fullBleed ? 20 : 0),
+                                @"bottom": @(0),
+                                @"left": @(0),
+                                @"right": @(0) }
+                      forKey:@"safeAreaInsets"];
+    }
+
     _initialProperties = properties;
     _rootView = nil;
   }
@@ -34,13 +44,9 @@
   [super viewDidLoad];
   self.automaticallyAdjustsScrollViewInsets = NO;
 
-  if (self.shouldInjectSafeAreaInsets) {
-    [self updateSafeAreaInsets];
-  }
-
   self.rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
-                                                   moduleName:self.moduleName
-                                            initialProperties:self.initialProperties];
+                                           moduleName:self.moduleName
+                                    initialProperties:self.initialProperties];
   [self.view addSubview:self.rootView];
   self.rootView.reactViewController = self;
 
@@ -130,37 +136,19 @@
     }
 }
 
-- (void)updateSafeAreaInsets
-{
-    if (self.safeAreaInsetsAreSet) {
-        return;
-    }
-
-    UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
-    if (@available(iOS 11.0, *)) {
-        safeAreaInsets = self.view.safeAreaInsets;
-
-        // Once we receive the correct top inset value it gets resetted to 0 after the VC gets hidden
-        // So let's not reset it afterwards
-        if (self.view.safeAreaInsets.top > 0) {
-            self.safeAreaInsetsAreSet = YES;
-        }
-    } else {
-        self.safeAreaInsetsAreSet = YES;
-    }
-
-    [self setProperty:@{ @"top": @(safeAreaInsets.top),
-                         @"bottom": @(safeAreaInsets.bottom),
-                         @"left": @(safeAreaInsets.left),
-                         @"right": @(safeAreaInsets.right) }
-               forKey:@"safeAreaInsets"];
-}
 
 -(void)viewSafeAreaInsetsDidChange
 {
     [super viewSafeAreaInsetsDidChange];
-    if (self.shouldInjectSafeAreaInsets) {
-      [self updateSafeAreaInsets];
+    if (self.shouldInjectSafeAreaInsets && !self.safeAreaInsetsWereUpdated) {
+        if (@available(iOS 11.0, *)) {
+            [self setProperty:@{ @"top": @(self.view.safeAreaInsets.top),
+                                 @"bottom": @(self.view.safeAreaInsets.bottom),
+                                 @"left": @(self.view.safeAreaInsets.left),
+                                 @"right": @(self.view.safeAreaInsets.right) }
+                       forKey:@"safeAreaInsets"];
+        }
+        self.safeAreaInsetsWereUpdated = true;
     }
 }
 
