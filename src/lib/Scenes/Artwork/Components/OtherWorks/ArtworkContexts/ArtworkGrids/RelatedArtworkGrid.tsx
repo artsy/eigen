@@ -37,7 +37,7 @@ export const RelatedArtworkGridFragmentContainer = createFragmentContainer(Relat
   artwork: graphql`
     fragment RelatedArtworkGrid_artwork on Artwork {
       layer(id: "main") {
-        artworksConnection(first: 8) {
+        artworksConnection(first: 6) {
           edges {
             node {
               ...GenericGrid_artworks

@@ -58,7 +58,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "Literal",
   "name": "first",
-  "value": 8
+  "value": 6
 },
 v1 = [
   {
@@ -168,7 +168,7 @@ return {
           "kind": "LinkedField",
           "alias": null,
           "name": "artworksConnection",
-          "storageKey": "artworksConnection(first:8)",
+          "storageKey": "artworksConnection(first:6)",
           "args": [
             (v0/*: any*/)
           ],
@@ -301,5 +301,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '34a60cf78fa7ca2fbb3591edcbd2fc83';
+(node as any).hash = '5c8615d39dca34108bcd57b1b8798e1f';
 export default node;
