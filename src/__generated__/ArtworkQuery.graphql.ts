@@ -36,7 +36,7 @@ fragment Artwork_artwork on Artwork {
   exhibition_history
   literature
   layer(id: "main") {
-    artworksConnection(first: 8) {
+    artworksConnection(first: 6) {
       edges {
         node {
           id
@@ -46,7 +46,7 @@ fragment Artwork_artwork on Artwork {
     id
   }
   partner {
-    artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           id
@@ -60,7 +60,7 @@ fragment Artwork_artwork on Artwork {
     biography_blurb {
       text
     }
-    artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           id
@@ -283,7 +283,7 @@ fragment ArtworkContextArtist_artwork on Artwork {
 fragment ArtistArtworkGrid_artwork on Artwork {
   artist {
     name
-    artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -298,7 +298,7 @@ fragment ArtistArtworkGrid_artwork on Artwork {
 fragment PartnerArtworkGrid_artwork on Artwork {
   partner {
     name
-    artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -312,7 +312,7 @@ fragment PartnerArtworkGrid_artwork on Artwork {
 
 fragment RelatedArtworkGrid_artwork on Artwork {
   layer(id: "main") {
-    artworksConnection(first: 8) {
+    artworksConnection(first: 6) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -397,7 +397,7 @@ v1 = [
 v2 = {
   "kind": "Literal",
   "name": "first",
-  "value": 8
+  "value": 6
 },
 v3 = {
   "kind": "ScalarField",
@@ -822,7 +822,7 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "artworksConnection",
-                "storageKey": "artworksConnection(first:8)",
+                "storageKey": "artworksConnection(first:6)",
                 "args": [
                   (v2/*: any*/)
                 ],
@@ -1277,7 +1277,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "9342e29371454a450d2ac7828e112321",
+    "id": "ca7c6512cf19b6d8603293971df2696f",
     "text": null,
     "metadata": {}
   }

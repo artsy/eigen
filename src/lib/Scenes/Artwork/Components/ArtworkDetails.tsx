@@ -45,15 +45,15 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
     return (
       <Box>
         <Join separator={<Spacer my={1} />}>
-          <Sans size="3" weight="medium">
+          <Sans size="3t" weight="medium">
             Artwork Details
           </Sans>
           {truncatedDisplayItems.map(({ title, value }, index) => (
             <React.Fragment key={index}>
-              <Sans size="3" weight="regular">
+              <Sans size="3t" weight="regular">
                 {title}
               </Sans>
-              <Sans size="3" weight="regular" color="gray">
+              <Sans size="3t" weight="regular" color="gray">
                 {value}
               </Sans>
             </React.Fragment>
@@ -65,7 +65,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
                   this.setState({ showAll: true })
                 }}
               >
-                <Sans size="3" weight="regular">
+                <Sans size="3t" weight="regular">
                   Show more artwork details
                 </Sans>
               </LinkText>

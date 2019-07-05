@@ -1,4 +1,4 @@
-import { Box, Sans } from "@artsy/palette"
+import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import React from "react"
@@ -20,18 +20,16 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
     const displaySections = sections.filter(i => i.value != null)
 
     return (
-      <>
+      <Join separator={<Spacer pb={3} />}>
         {displaySections.map(({ title, value }, index) => (
-          <React.Fragment key={index}>
-            <Box>
-              <Sans size="3" weight="medium">
-                {title}
-              </Sans>
-              <ReadMore content={value} maxChars={140} />
-            </Box>
-          </React.Fragment>
+          <Box key={index}>
+            <Sans size="3" weight="medium" pb={2}>
+              {title}
+            </Sans>
+            <ReadMore content={value} maxChars={140} />
+          </Box>
         ))}
-      </>
+      </Join>
     )
   }
 }

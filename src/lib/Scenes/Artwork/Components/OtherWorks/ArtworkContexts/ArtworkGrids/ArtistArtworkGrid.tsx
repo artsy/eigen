@@ -38,7 +38,7 @@ export const ArtistArtworkGridFragmentContainer = createFragmentContainer(Artist
     fragment ArtistArtworkGrid_artwork on Artwork {
       artist {
         name
-        artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+        artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
           edges {
             node {
               ...GenericGrid_artworks
