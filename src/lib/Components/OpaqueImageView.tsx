@@ -37,6 +37,11 @@ interface Props {
 
   /** A callback that is called once the image is loaded. */
   onLoad?: () => void
+
+  /**
+   * Turn off the fade-in animation
+   */
+  noAnimation?: boolean
 }
 
 interface State {

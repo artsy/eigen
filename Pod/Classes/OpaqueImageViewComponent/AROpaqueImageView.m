@@ -62,12 +62,16 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
 {
   // This will cancel an in-flight download operation, if one exists.
   self.imageURL = nil;
-
-  [UIView transitionWithView:self
-                    duration:0.25
-                     options:UIViewAnimationOptionTransitionCrossDissolve
-                  animations:^{ [super setImage:image]; }
-                  completion:nil];
+  
+  if (self.noAnimation) {
+    [super setImage:image];
+  } else {
+    [UIView transitionWithView:self
+                      duration:0.25
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{ [super setImage:image]; }
+                    completion:nil];
+  }
 }
 
 - (void)setImageURL:(NSURL *)imageURL;
