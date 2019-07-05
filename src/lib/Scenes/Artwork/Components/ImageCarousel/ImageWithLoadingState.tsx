@@ -53,6 +53,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
       <View style={[{ width, height }, props.style]} ref={ref}>
         <View style={{ position: "absolute", width, height }}>
           <OpaqueImageView
+            noAnimation
             onLoad={() => {
               setIsLoading(false)
               if (props.onLoad) {

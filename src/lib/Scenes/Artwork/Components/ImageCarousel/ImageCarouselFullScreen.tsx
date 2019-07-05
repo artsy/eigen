@@ -1,6 +1,6 @@
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, Dimensions, Image, Modal, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { fitInside } from "./geometry"
 
@@ -43,26 +43,28 @@ export const ImageCarouselFullScreen: React.FC<{
   const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset | null>(null)
   const image = images[imageIndex]
 
-  const entryToggle = useMemo(() => new Animated.Value(0), [])
+  const imageOpacity = useMemo(() => new Animated.Value(1), [])
+
+  const transition = useMemo(() => new Animated.Value(0), [])
   const transform = useMemo(
     () =>
       imageTransitionOffset
         ? [
             {
-              translateX: entryToggle.interpolate({
-                inputRange: [0.01, 0.99],
+              translateX: transition.interpolate({
+                inputRange: [0, 1],
                 outputRange: [imageTransitionOffset.translateX, 0],
               }),
             },
             {
-              translateY: entryToggle.interpolate({
-                inputRange: [0.01, 0.99],
+              translateY: transition.interpolate({
+                inputRange: [0, 1],
                 outputRange: [imageTransitionOffset.translateY, 0],
               }),
             },
             {
-              scale: entryToggle.interpolate({
-                inputRange: [0.01, 0.99],
+              scale: transition.interpolate({
+                inputRange: [0, 1],
                 outputRange: [imageTransitionOffset.scale, 1],
               }),
             },
@@ -70,17 +72,14 @@ export const ImageCarouselFullScreen: React.FC<{
         : [],
     [imageTransitionOffset]
   )
-  const animateEntryTransition = useMemo(
-    () => () => {
-      return
-      Animated.spring(entryToggle, {
-        bounciness: 0,
-        toValue: 1,
-        useNativeDriver: true,
-      }).start()
-    },
-    []
-  )
+
+  const animateTransition = useCallback(() => {
+    Animated.spring(transition, {
+      bounciness: 0,
+      toValue: 1,
+      useNativeDriver: true,
+    }).start()
+  }, [])
 
   useEffect(() => {
     // animate image transition on mount
@@ -90,13 +89,27 @@ export const ImageCarouselFullScreen: React.FC<{
       toRef: zoomImageRef.current.getNode(),
     })
       .then(setImageTransitionOffset)
-      .then(() => {
-        requestAnimationFrame(animateEntryTransition)
-      })
+      .then(() => requestAnimationFrame(animateTransition))
   }, [])
+
   const { width, height } = fitInside(screenBoundingBox, image)
+
+  const [exiting, setExiting] = useState(false)
+
   return (
-    <Modal transparent>
+    <Modal transparent animated={exiting} animationType="fade">
+      {/* Underlay. this fades in while the image is opaque instantly */}
+      <Animated.View
+        style={{
+          backgroundColor: "white",
+          opacity: transition,
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}
+      />
       <ScrollView
         bounces={false}
         overScrollMode="never"
@@ -105,13 +118,16 @@ export const ImageCarouselFullScreen: React.FC<{
         centerContent
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        style={{ height: screenBoundingBox.height }}
+        style={{
+          height: screenBoundingBox.height,
+          // prevent entry flicker
+          opacity: imageTransitionOffset ? 1 : 0,
+        }}
       >
         <TouchableWithoutFeedback
-          onPress={async () => {
-            // @ts-ignore
-            console.log(await measure(zoomImageRef.current.getNode()))
-            onClosed()
+          onPress={() => {
+            setExiting(true)
+            setTimeout(onClosed, 10)
           }}
         >
           <Animated.View
@@ -119,11 +135,12 @@ export const ImageCarouselFullScreen: React.FC<{
             style={{
               width,
               height,
-              opacity: imageTransitionOffset ? 1 : 0,
               transform,
+              opacity: imageOpacity,
             }}
           >
             <OpaqueImageView
+              noAnimation
               imageURL={image.url}
               style={{
                 width,
