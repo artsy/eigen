@@ -3,8 +3,11 @@
 #import "ARLegacyArtworkViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>
 
+
 @interface _ARLegacyArtworkViewControllerMock : UIViewController
 @end
+
+
 @implementation _ARLegacyArtworkViewControllerMock
 - (void)setHasFinishedScrolling {}
 @end
@@ -12,29 +15,47 @@
 
 @interface _ARArtworkComponentViewControllerMock : UIViewController
 @end
+
+
 @implementation _ARArtworkComponentViewControllerMock
 @end
 
 static void
 StubArtworkWithAvailability(NSString *availability)
 {
-  NSDictionary *response = @{
-                             @"data": @{
-                                 @"artwork": @{
-                                     @"id": @"some-artwork",
-                                     @"title": @"Some Title",
-                                     @"availability": availability
-                                     }
-                                 }
-                             };
-  [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:response];
+    NSDictionary *response = @{
+        @"data" : @{
+            @"artwork" : @{
+                @"id" : @"some-artwork",
+                @"title" : @"Some Title",
+                @"availability" : availability
+            }
+        }
+    };
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:response];
+}
+
+static void
+StubArtworkWithAvailabilityAndInquireability(NSString *availability, NSString *inquireability)
+{
+    NSDictionary *response = @{
+        @"data" : @{
+            @"artwork" : @{
+                @"id" : @"some-artwork",
+                @"title" : @"Some Title",
+                @"availability" : availability,
+                @"is_inquireable" : inquireability
+            }
+        }
+    };
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:response];
 }
 
 SpecBegin(ARArtworkViewController);
 
 describe(@"ARArtworkViewController", ^{
-  NSArray *legacyAvailabilityStates = @[@"for sale", @"on hold"];
-  NSArray *componentAvailabilityStates = @[@"not for sale", @"on loan", @"permanent collection", @"sold"];
+  NSArray *legacyAvailabilityStates = @[@"for sale"];
+  NSArray *componentAvailabilityStates = @[@"not for sale", @"on loan", @"permanent collection", @"sold", @"on hold"];
 
   __block Artwork *artwork = nil;
   __block ARArtworkViewController *vc = nil;
@@ -75,14 +96,14 @@ describe(@"ARArtworkViewController", ^{
       });
     }
 
-    describe(@"when in the context of a fair", ^{
+    describe(@"when inquireable", ^{
       beforeEach(^{
-        vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:(id)[NSObject new]];
+        vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
       });
 
       for (NSString *availability in componentAvailabilityStates) {
         it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
-          StubArtworkWithAvailability(availability);
+          StubArtworkWithAvailabilityAndInquireability(availability, @"true");
           (void)vc.view;
           expect(vc.childViewControllers[0]).to.equal(mockLegacyVC);
         });
