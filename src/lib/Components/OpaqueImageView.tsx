@@ -12,12 +12,31 @@ import {
 
 import colors from "lib/data/colors"
 
-const GeminiHost = "d7hftxdivxxvm.cloudfront.net"
-const ImageQuality = 80
+export function createGeminiUrl({
+  imageURL,
+  width,
+  height,
+  geminiHost = "d7hftxdivxxvm.cloudfront.net",
+  imageQuality = 80,
+  resizeMode = "fit",
+}: {
+  imageURL: string
+  width: number
+  height: number
+  geminiHost?: string
+  imageQuality?: number
+  resizeMode?: "fit" | "fill"
+}) {
+  return `https://${geminiHost}/?resize_to=${resizeMode}&width=${width}&height=${height}&quality=${imageQuality}&src=${encodeURIComponent(
+    imageURL
+  )}`
+}
 
 interface Props {
   /** The URL from where to fetch the image. */
   imageURL?: string
+
+  disableGemini?: boolean
 
   /** The background colour for the image view */
   placeholderBackgroundColor?: string | number
@@ -46,8 +65,8 @@ interface Props {
 
 interface State {
   aspectRatio: number
-  width?: number | string
-  height?: number | string
+  width?: number
+  height?: number
 }
 
 export default class OpaqueImageView extends React.Component<Props, State> {
@@ -84,19 +103,22 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   }
 
   imageURL() {
-    const imageURL = this.props.imageURL
+    const { imageURL, disableGemini } = this.props
+
     if (imageURL) {
-      // Either scale or crop, based on if an aspect ratio is available.
-      const type = this.state.aspectRatio ? "fit" : "fill"
-      const width = String(this.state.width)
-      const height = String(this.state.height)
-      // tslint:disable-next-line:max-line-length
-      return `https://${GeminiHost}/?resize_to=${type}&width=${width}&height=${height}&quality=${ImageQuality}&src=${encodeURIComponent(
-        imageURL
-      )}`
-    } else {
-      return null
+      if (disableGemini) {
+        return imageURL
+      }
+      return createGeminiUrl({
+        imageURL,
+        width: this.state.width,
+        height: this.state.height,
+        // Either scale or crop, based on if an aspect ratio is available.
+        resizeMode: this.state.aspectRatio ? "fit" : "fill",
+      })
     }
+
+    return null
   }
 
   onLayout = (event: LayoutChangeEvent) => {
