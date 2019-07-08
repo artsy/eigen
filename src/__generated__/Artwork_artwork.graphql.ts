@@ -27,6 +27,7 @@ export type Artwork_artwork = {
         } | null;
     } | null;
     readonly partner: {
+        readonly type: string | null;
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -48,6 +49,28 @@ export type Artwork_artwork = {
             } | null> | null;
         } | null;
     } | null;
+    readonly sale: {
+        readonly isBenefit: boolean | null;
+        readonly isGalleryAuction: boolean | null;
+    } | null;
+    readonly category: string | null;
+    readonly conditionDescription: {
+        readonly details: string | null;
+    } | null;
+    readonly signature: string | null;
+    readonly signatureInfo: {
+        readonly details: string | null;
+    } | null;
+    readonly certificateOfAuthenticity: {
+        readonly details: string | null;
+    } | null;
+    readonly framed: {
+        readonly details: string | null;
+    } | null;
+    readonly series: string | null;
+    readonly publisher: string | null;
+    readonly manufacturer: string | null;
+    readonly image_rights: string | null;
     readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref & ArtworkHistory_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
@@ -100,7 +123,16 @@ v3 = {
   "kind": "Literal",
   "name": "sort",
   "value": "PUBLISHED_AT_DESC"
-};
+},
+v4 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "details",
+    "args": null,
+    "storageKey": null
+  }
+];
 return {
   "kind": "Fragment",
   "name": "Artwork_artwork",
@@ -188,6 +220,13 @@ return {
       "plural": false,
       "selections": [
         {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "type",
+          "args": null,
+          "storageKey": null
+        },
+        {
           "kind": "LinkedField",
           "alias": null,
           "name": "artworksConnection",
@@ -259,6 +298,113 @@ return {
       ]
     },
     {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "sale",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isBenefit",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isGalleryAuction",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "category",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "conditionDescription",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ArtworkInfoRow",
+      "plural": false,
+      "selections": (v4/*: any*/)
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "signature",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "signatureInfo",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ArtworkInfoRow",
+      "plural": false,
+      "selections": (v4/*: any*/)
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "certificateOfAuthenticity",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ArtworkInfoRow",
+      "plural": false,
+      "selections": (v4/*: any*/)
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "framed",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ArtworkInfoRow",
+      "plural": false,
+      "selections": (v4/*: any*/)
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "series",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "publisher",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "manufacturer",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "image_rights",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "FragmentSpread",
       "name": "PartnerCard_artwork",
       "args": null
@@ -301,5 +447,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5c8615d39dca34108bcd57b1b8798e1f';
+(node as any).hash = 'df86b508bd3c0361733d2bd2ec707c66';
 export default node;

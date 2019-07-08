@@ -73,14 +73,14 @@ exports[`renders properly 1`] = `
         >
           <View>
             <Text
-              fontFamily="AGaramondPro-Semibold"
+              fontFamily="ReactNativeAGaramondPro-Semibold"
               fontSize="22px"
               lineHeight="28px"
               m={4}
               style={
                 Array [
                   Object {
-                    "fontFamily": "AGaramondPro-Semibold",
+                    "fontFamily": "ReactNativeAGaramondPro-Semibold",
                     "fontSize": 22,
                     "lineHeight": 28,
                     "marginBottom": 20,
