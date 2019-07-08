@@ -20,7 +20,7 @@
 
 - (BOOL)shouldShowNewVersion;
 {
-    return [AROptions boolForOption:AROptionsRNArtwork] && !(self.artwork.availability == ARArtworkAvailabilityForSale) && !(self.artwork.isInquireable);
+    return [AROptions boolForOption:AROptionsRNArtwork] && self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable;
 }
 
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair;
