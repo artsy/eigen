@@ -142,6 +142,7 @@ export const ImageCarouselFullScreen: React.FC<{
             <OpaqueImageView
               noAnimation
               imageURL={image.url}
+              disableGemini
               style={{
                 width,
                 height,

@@ -54,6 +54,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
         <View style={{ position: "absolute", width, height }}>
           <OpaqueImageView
             noAnimation
+            disableGemini
             onLoad={() => {
               setIsLoading(false)
               if (props.onLoad) {

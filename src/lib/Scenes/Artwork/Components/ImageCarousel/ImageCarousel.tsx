@@ -1,6 +1,6 @@
 import { color, Flex, space, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
-import { devCacheBust } from "lib/utils/devCacheBust"
+import { createGeminiUrl } from "lib/Components/OpaqueImageView"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Animated, Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -23,7 +23,19 @@ export const cardBoundingBox = { width: windowWidth, height: cardHeight }
  * To use it in places where this is not desirable it would need to take explicit width and height props
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
-export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
+export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
+  const images = useMemo(
+    () =>
+      props.images.map(image => ({
+        ...image,
+        url: createGeminiUrl({
+          imageURL: image.url,
+          width: image.width,
+          height: image.height,
+        }),
+      })),
+    [props.images]
+  )
   const measurements = useMemo(() => getMeasurements({ images, boundingBox: cardBoundingBox }), [images])
   const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
   const imageRefs = useMemo(() => [], [])
@@ -57,7 +69,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
           const { cumulativeScrollOffset, ...styles } = measurements[index]
           return (
             <ImageWithLoadingState
-              imageURL={devCacheBust(item.url)}
+              imageURL={item.url}
               width={styles.width}
               height={styles.height}
               onPress={() => setFullScreen(true)}
