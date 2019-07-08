@@ -36,7 +36,7 @@ StubArtworkWithAvailability(NSString *availability)
 }
 
 static void
-StubArtworkWithAvailabilityAndInquireability(NSString *availability, NSString *inquireability)
+StubArtworkWithAvailabilityAndInquireability(NSString *availability, NSNumber *inquireability)
 {
     NSDictionary *response = @{
         @"data" : @{
@@ -103,7 +103,7 @@ describe(@"ARArtworkViewController", ^{
 
       for (NSString *availability in componentAvailabilityStates) {
         it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
-          StubArtworkWithAvailabilityAndInquireability(availability, @"true");
+          StubArtworkWithAvailabilityAndInquireability(availability, @(YES));
           (void)vc.view;
           expect(vc.childViewControllers[0]).to.equal(mockLegacyVC);
         });
