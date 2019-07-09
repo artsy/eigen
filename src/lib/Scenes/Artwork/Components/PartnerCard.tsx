@@ -90,7 +90,7 @@ export class PartnerCard extends React.Component<Props, State> {
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
 
     const showPartnerType =
-      partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional seller"
+      partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"
     return (
       <Flex>
         {showPartnerType && (
