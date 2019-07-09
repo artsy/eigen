@@ -41,6 +41,21 @@ describe("PartnerCard", () => {
     expect(component.find(Image)).toHaveLength(1)
   })
 
+  it("renders partner type", () => {
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+      </Theme>
+    )
+
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).toMatchInlineSnapshot(`"At gallery"`)
+  })
+
   it("renders partner initials when no image is present", () => {
     const PartnerCardArtworkWithoutImage = {
       ...PartnerCardArtwork,
@@ -74,7 +89,7 @@ describe("PartnerCard", () => {
     expect(
       component
         .find(Sans)
-        .at(0)
+        .at(1)
         .render()
         .text()
     ).toMatchInlineSnapshot(`"Miami, New York, +3 more"`)

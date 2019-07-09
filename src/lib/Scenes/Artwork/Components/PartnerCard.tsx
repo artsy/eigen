@@ -1,4 +1,4 @@
-import { Button, EntityHeader, Flex } from "@artsy/palette"
+import { Button, EntityHeader, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -91,6 +91,10 @@ export class PartnerCard extends React.Component<Props, State> {
 
     return (
       <Flex>
+        <Sans size="3t" weight="medium">
+          At {partner.type.toLowerCase()}
+        </Sans>
+        <Spacer my={1} />
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href)}>
           <EntityHeader
             name={partner.name}
