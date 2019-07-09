@@ -2,14 +2,14 @@
 
 exports[`renders properly 1`] = `
 <Text
-  fontFamily="ReactNativeAGaramondPro-Semibold"
+  fontFamily="AGaramondPro-Semibold"
   fontSize="22px"
   lineHeight="28px"
   m={4}
   style={
     Array [
       Object {
-        "fontFamily": "ReactNativeAGaramondPro-Semibold",
+        "fontFamily": "AGaramondPro-Semibold",
         "fontSize": 22,
         "lineHeight": 28,
         "marginBottom": 20,

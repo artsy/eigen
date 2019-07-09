@@ -173,14 +173,14 @@ exports[`SearchLink Renders properly 1`] = `
     >
       <Text
         color="#666"
-        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontFamily="AGaramondPro-Regular"
         fontSize="16px"
         lineHeight="24px"
         style={
           Array [
             Object {
               "color": "#666",
-              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
               "lineHeight": 24,
             },

@@ -18,13 +18,13 @@ Array [
     }
   >
     <Text
-      fontFamily="ReactNativeAGaramondPro-Regular"
+      fontFamily="AGaramondPro-Regular"
       fontSize="22px"
       lineHeight="32px"
       style={
         Array [
           Object {
-            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontFamily": "AGaramondPro-Regular",
             "fontSize": 22,
             "lineHeight": 32,
           },
@@ -741,14 +741,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -760,14 +760,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -872,14 +872,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -891,14 +891,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1003,14 +1003,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1022,14 +1022,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1134,14 +1134,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1153,14 +1153,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1265,14 +1265,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1284,14 +1284,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1396,14 +1396,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1415,14 +1415,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1527,14 +1527,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1546,14 +1546,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1658,14 +1658,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1677,14 +1677,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1789,14 +1789,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1808,14 +1808,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1920,14 +1920,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },
@@ -1939,14 +1939,14 @@ Array [
               </Text>
               <Text
                 color="black60"
-                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
                 style={
                   Array [
                     Object {
                       "color": "#666",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                       "lineHeight": 18,
                     },

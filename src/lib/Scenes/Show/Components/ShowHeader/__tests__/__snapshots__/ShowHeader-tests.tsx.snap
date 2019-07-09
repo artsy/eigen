@@ -57,13 +57,13 @@ Array [
       Two Palms
     </Text>
     <Text
-      fontFamily="ReactNativeAGaramondPro-Regular"
+      fontFamily="AGaramondPro-Regular"
       fontSize="32px"
       lineHeight={34}
       style={
         Array [
           Object {
-            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontFamily": "AGaramondPro-Regular",
             "fontSize": 32,
             "lineHeight": 34,
           },

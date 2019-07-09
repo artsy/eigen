@@ -12,7 +12,7 @@ export class ArtworkAvailability extends React.Component<ArtworkAvailabilityProp
   render() {
     return (
       <Box>
-        <Sans size="3t" weight="medium">
+        <Sans size="4t" weight="medium">
           {capitalize(this.props.artwork.availability)}
         </Sans>
       </Box>

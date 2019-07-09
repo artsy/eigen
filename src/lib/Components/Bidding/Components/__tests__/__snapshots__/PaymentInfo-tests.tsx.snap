@@ -57,13 +57,13 @@ exports[`renders properly 1`] = `
       }
     >
       <Text
-        fontFamily="ReactNativeAGaramondPro-Semibold"
+        fontFamily="AGaramondPro-Semibold"
         fontSize="16px"
         lineHeight="24px"
         style={
           Array [
             Object {
-              "fontFamily": "ReactNativeAGaramondPro-Semibold",
+              "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 16,
               "lineHeight": 24,
             },
@@ -88,14 +88,14 @@ exports[`renders properly 1`] = `
       }
     >
       <Text
-        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontFamily="AGaramondPro-Regular"
         fontSize="16px"
         lineHeight="24px"
         numberOfLines={1}
         style={
           Array [
             Object {
-              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
               "lineHeight": 24,
             },
@@ -198,13 +198,13 @@ exports[`renders properly 1`] = `
       }
     >
       <Text
-        fontFamily="ReactNativeAGaramondPro-Semibold"
+        fontFamily="AGaramondPro-Semibold"
         fontSize="16px"
         lineHeight="24px"
         style={
           Array [
             Object {
-              "fontFamily": "ReactNativeAGaramondPro-Semibold",
+              "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 16,
               "lineHeight": 24,
             },
@@ -229,14 +229,14 @@ exports[`renders properly 1`] = `
       }
     >
       <Text
-        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontFamily="AGaramondPro-Regular"
         fontSize="16px"
         lineHeight="24px"
         numberOfLines={1}
         style={
           Array [
             Object {
-              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
               "lineHeight": 24,
             },
