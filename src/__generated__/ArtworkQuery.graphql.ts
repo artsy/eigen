@@ -193,6 +193,7 @@ fragment ArtworkAvailability_artwork on Artwork {
 }
 
 fragment SellerInfo_artwork on Artwork {
+  availability
   partner {
     name
     id
@@ -1277,7 +1278,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "ca7c6512cf19b6d8603293971df2696f",
+    "id": "a53ea1c0e00054d43bcde83e9b7cfddf",
     "text": null,
     "metadata": {}
   }
