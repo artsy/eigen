@@ -88,15 +88,15 @@ export class PartnerCard extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     const imageUrl = partner.profile ? partner.profile.icon.url : null
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
-
     const showPartnerType =
       partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"
+    const partnerDisplayType = partner.type === "Gallery" ? "gallery" : "institution"
     return (
       <Flex>
         {showPartnerType && (
           <>
             <Sans size="3t" weight="medium">
-              At {partner.type.toLowerCase()}
+              At {partnerDisplayType}
             </Sans>
             <Spacer my={1} />
           </>
