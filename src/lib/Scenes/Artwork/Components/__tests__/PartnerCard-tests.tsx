@@ -97,13 +97,13 @@ describe("PartnerCard", () => {
         .find(Sans)
         .at(0)
         .text()
-    ).not.toMatchInlineSnapshot(`"At institution"`)
+    ).not.toEqual("At institution")
     expect(
       component
         .find(Sans)
         .at(0)
         .text()
-    ).not.toMatchInlineSnapshot(`"At gallery"`)
+    ).not.toEqual("At gallery")
   })
 
   it("renders partner initials when no image is present", () => {
