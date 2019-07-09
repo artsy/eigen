@@ -61,14 +61,14 @@ exports[`looks correct when rendered 1`] = `
       </Text>
       <Text
         color="black60"
-        fontFamily="AGaramondPro-Regular"
+        fontFamily="ReactNativeAGaramondPro-Regular"
         fontSize="16px"
         lineHeight="20px"
         style={
           Array [
             Object {
               "color": "#666",
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 16,
               "lineHeight": 20,
               "textAlign": "center",
@@ -82,14 +82,14 @@ exports[`looks correct when rendered 1`] = `
       </Text>
       <Text
         color="black60"
-        fontFamily="AGaramondPro-Regular"
+        fontFamily="ReactNativeAGaramondPro-Regular"
         fontSize="16px"
         lineHeight="20px"
         style={
           Array [
             Object {
               "color": "#666",
-              "fontFamily": "AGaramondPro-Regular",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
               "fontSize": 16,
               "lineHeight": 20,
               "textAlign": "center",

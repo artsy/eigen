@@ -61,7 +61,7 @@ exports[`Sets up the right view hierarchy 1`] = `
     }
   >
     <Text
-      fontFamily="AGaramondPro-Semibold"
+      fontFamily="ReactNativeAGaramondPro-Semibold"
       fontSize="22px"
       lineHeight="28px"
       m={4}
@@ -69,7 +69,7 @@ exports[`Sets up the right view hierarchy 1`] = `
       style={
         Array [
           Object {
-            "fontFamily": "AGaramondPro-Semibold",
+            "fontFamily": "ReactNativeAGaramondPro-Semibold",
             "fontSize": 22,
             "lineHeight": 28,
             "marginBottom": 20,
