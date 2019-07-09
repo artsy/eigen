@@ -115,7 +115,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpCallbacks
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     void (^completion)(void) = ^{
         __strong typeof (wself) sself = wself;
@@ -136,7 +136,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
         __strong typeof (wself) sself = wself;
         if (!sself || !fair) return;
 
-        
+
         [sself.metadataView updateWithFair:fair];
         [sself.stackView layoutIfNeeded];
     } failure:nil];
@@ -161,9 +161,9 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 - (void)artworkBidUpdated:(NSNotification *)notification;
 {
     if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
-        __weak typeof (self) wself = self;
+        __weak typeof(self) wself = self;
         [self.metadataView showActionsViewSpinner];
-        [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) {
+        [self.artwork onSaleArtworkUpdate:^(SaleArtwork *_Nonnull saleArtwork) {
             __strong typeof (wself) sself = wself;
             if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
                 [ARAnalytics setUserProperty:@"has_placed_bid" toValue:@"true"];
@@ -175,8 +175,8 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
                 [sself.metadataView updateUIForSaleArtwork:saleArtwork];
             }
         }
-      failure:nil
-        allowCached:NO];
+                                  failure:nil
+                              allowCached:NO];
         [self.artwork updateSaleArtwork];
     }
 }

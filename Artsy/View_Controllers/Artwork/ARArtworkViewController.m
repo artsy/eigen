@@ -9,49 +9,48 @@
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+
 @interface ARArtworkViewController ()
 @property (strong, nonatomic) ARLegacyArtworkViewController *legacyViewController;
 @property (strong, nonatomic) ARSpinner *spinner;
 @end
 
+
 @implementation ARArtworkViewController
 
-// TODO What do we do in the case of loading an artwork in the context of a Fair?
 - (BOOL)shouldShowNewVersion;
 {
-  return [AROptions boolForOption:AROptionsRNArtwork]
-    && self.fair == nil
-    && (self.artwork.availability == ARArtworkAvailabilityNotForSale
-      || self.artwork.availability == ARArtworkAvailabilitySold);
+    return [AROptions boolForOption:AROptionsRNArtwork] && self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable;
 }
 
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair;
 {
-  if ((self = [super init])) {
-    _artwork = artwork;
-    _fair = fair;
-  }
-  return self;
+    if ((self = [super init])) {
+        _artwork = artwork;
+        _fair = fair;
+    }
+    return self;
 }
 
 - (void)loadView;
 {
-  self.view = [UIView new];
+    self.view = [UIView new];
 
-  ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-  [spinner fadeInAnimated:ARPerformWorkAsynchronously];
-  [spinner constrainHeight:@"100"];
-  [self.view addSubview:spinner];
-  [spinner alignCenterWithView:self.view];
-  self.spinner = spinner;
+    ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [spinner fadeInAnimated:ARPerformWorkAsynchronously];
+    [spinner constrainHeight:@"100"];
+    [self.view addSubview:spinner];
+    [spinner alignCenterWithView:self.view];
+    self.spinner = spinner;
 }
 
-- (void)viewDidLoad {
-  [super viewDidLoad];
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
-  __weak typeof(self) wself = self;
+    __weak typeof(self) wself = self;
 
-  [self.artwork onArtworkUpdate:^{
+    [self.artwork onArtworkUpdate:^{
     ar_dispatch_main_queue(^{
       NSAssert(wself, @"Did not expect the VC to have been released.");
       if (!wself) {
@@ -81,37 +80,37 @@
         [sself.legacyViewController setHasFinishedScrolling];
       }
     });
-  } failure:^(NSError *error) {
+    } failure:^(NSError *error) {
     // TODO
     NSLog(@"FAILED TO UPDATE: %@", error);
-  }];
+    }];
 
-  [self.artwork updateArtwork];
+    [self.artwork updateArtwork];
 }
 
 - (NSInteger)index;
 {
-  return self.legacyViewController.index;
+    return self.legacyViewController.index;
 }
 
 - (void)setIndex:(NSInteger)index;
 {
-  self.legacyViewController.index = index;
+    self.legacyViewController.index = index;
 }
 
 - (UIImageView *)imageView;
 {
-  return self.legacyViewController.imageView;
+    return self.legacyViewController.imageView;
 }
 
 - (void)setHasFinishedScrolling;
 {
-  [self.legacyViewController setHasFinishedScrolling];
+    [self.legacyViewController setHasFinishedScrolling];
 }
 
 - (CGPoint)imageViewOffset;
 {
-  return self.legacyViewController.imageViewOffset;
+    return self.legacyViewController.imageViewOffset;
 }
 
 @end
