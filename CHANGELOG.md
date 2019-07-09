@@ -15,6 +15,7 @@
 -->
 
 ### Master
+- Added partner type to partner card - lilyfromseattle
 
 ### 1.12.5
 
