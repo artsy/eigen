@@ -89,12 +89,18 @@ export class PartnerCard extends React.Component<Props, State> {
     const imageUrl = partner.profile ? partner.profile.icon.url : null
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
 
+    const showPartnerType =
+      partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional seller"
     return (
       <Flex>
-        <Sans size="3t" weight="medium">
-          At {partner.type.toLowerCase()}
-        </Sans>
-        <Spacer my={1} />
+        {showPartnerType && (
+          <>
+            <Sans size="3t" weight="medium">
+              At {partner.type.toLowerCase()}
+            </Sans>
+            <Spacer my={1} />
+          </>
+        )}
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href)}>
           <EntityHeader
             name={partner.name}
