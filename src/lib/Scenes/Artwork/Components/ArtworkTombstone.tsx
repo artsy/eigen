@@ -39,10 +39,13 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   renderSingleArtist(artist: Artist) {
     return (
       <React.Fragment>
-        <Flex flexDirection="row">
+        <Text>
           {this.renderArtistName(artist.name, artist.href)}
+          <Serif size="4t" weight="semibold">
+            {"  "}·{"  "}
+          </Serif>
           <FollowArtistButton artist={artist} />
-        </Flex>
+        </Text>
       </React.Fragment>
     )
   }

@@ -29,7 +29,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     const { artwork } = this.props
     const consignableArtistsCount = artwork.artists.filter(artist => artist.is_consignable).length
 
-    return <Box mt={1}>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}</Box>
+    return <Box>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}</Box>
   }
 }
 

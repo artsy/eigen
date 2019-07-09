@@ -8,6 +8,19 @@ export const ArtworkFixture = {
   title: "Untitled",
   href: "/artwork/andreas-rod-prinzknecht",
   availability: "for sale",
+  sale: null,
+  category: "Photography",
+  conditionDescription: null,
+  signature: "Signed by artist on Back",
+  signatureInfo: {
+    details: "Signed by artist on Back",
+  },
+  certificateOfAuthenticity: null,
+  framed: null,
+  series: null,
+  publisher: null,
+  manufacturer: null,
+  image_rights: "All rights reserved by CAMA Gallery",
   is_saved: false,
   additional_information: "This artwork is unique.",
   description: null,
@@ -302,6 +315,7 @@ export const ArtworkFixture = {
   },
   partner: {
     id: "cama-gallery-1",
+    type: "gallery",
     _id: "59ad77c6b202a34d6e059676",
     name: "CAMA Gallery",
     artworksConnection: {

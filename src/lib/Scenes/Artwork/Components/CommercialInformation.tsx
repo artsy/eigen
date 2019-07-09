@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box, Spacer } from "@artsy/palette"
 import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,11 +15,8 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { artwork } = this.props
     return (
       <Box>
-        {artwork.availability && (
-          <Box mb={1}>
-            <ArtworkAvailability artwork={artwork} />
-          </Box>
-        )}
+        {artwork.availability && <ArtworkAvailability artwork={artwork} />}
+        {artwork.availability && artwork.partner && artwork.partner.name && <Spacer mb={1} />}
         {artwork.partner && artwork.partner.name && <SellerInfo artwork={artwork} />}
         <ArtworkExtraLinks artwork={artwork} />
       </Box>

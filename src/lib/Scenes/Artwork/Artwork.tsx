@@ -21,12 +21,69 @@ interface Props {
 }
 
 export class Artwork extends React.Component<Props> {
+  shouldRenderDetails = () => {
+    const {
+      category,
+      conditionDescription,
+      signature,
+      signatureInfo,
+      certificateOfAuthenticity,
+      framed,
+      series,
+      publisher,
+      manufacturer,
+      image_rights,
+    } = this.props.artwork
+    if (
+      category ||
+      conditionDescription ||
+      signature ||
+      signatureInfo ||
+      certificateOfAuthenticity ||
+      framed ||
+      series ||
+      publisher ||
+      manufacturer ||
+      image_rights
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  shouldRenderPartner = () => {
+    const { partner, sale } = this.props.artwork
+    if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
+      return false
+    } else if (partner && partner.type && partner.type !== "Auction House") {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  shouldRenderOtherWorks = () => {
+    const {
+      artist: { artworks_connection },
+      partner: { artworksConnection },
+      layer,
+    } = this.props.artwork
+    if (
+      (artworks_connection && artworks_connection.edges && artworks_connection.edges.length) ||
+      (artworksConnection && artworksConnection.edges && artworksConnection.edges.length) ||
+      (layer && layer.artworksConnection && layer.artworksConnection.edges && layer.artworksConnection.edges.length)
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   sections = () => {
     const { artwork } = this.props
     const {
-      artist: { artworks_connection: ArtistConnection },
-      partner: { artworksConnection: PartnerConnection },
-      layer,
+      artist: { biography_blurb },
     } = artwork
 
     const sections = []
@@ -38,20 +95,23 @@ export class Artwork extends React.Component<Props> {
       sections.push("aboutWork")
     }
 
-    sections.push("details")
+    if (this.shouldRenderDetails()) {
+      sections.push("details")
+    }
 
     if (artwork.provenance || artwork.exhibition_history || artwork.literature) {
       sections.push("history")
     }
 
-    sections.push("aboutArtist")
-    sections.push("partnerCard")
+    if (biography_blurb) {
+      sections.push("aboutArtist")
+    }
 
-    if (
-      (ArtistConnection && ArtistConnection.edges && ArtistConnection.edges.length) ||
-      (PartnerConnection && PartnerConnection.edges && PartnerConnection.edges.length) ||
-      (layer && layer.artworksConnection && layer.artworksConnection.edges && layer.artworksConnection.edges.length)
-    ) {
+    if (this.shouldRenderPartner()) {
+      sections.push("partnerCard")
+    }
+
+    if (this.shouldRenderOtherWorks()) {
       sections.push("otherWorks")
     }
 
@@ -124,6 +184,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       }
 
       partner {
+        type
         artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
           edges {
             node {
@@ -146,6 +207,32 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
           }
         }
       }
+
+      # Partner Card
+      sale {
+        isBenefit
+        isGalleryAuction
+      }
+
+      # Details
+      category
+      conditionDescription {
+        details
+      }
+      signature
+      signatureInfo {
+        details
+      }
+      certificateOfAuthenticity {
+        details
+      }
+      framed {
+        details
+      }
+      series
+      publisher
+      manufacturer
+      image_rights
 
       ...PartnerCard_artwork
       ...AboutWork_artwork

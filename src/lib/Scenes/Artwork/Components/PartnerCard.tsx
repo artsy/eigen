@@ -80,7 +80,7 @@ export class PartnerCard extends React.Component<Props, State> {
 
   render() {
     const { artwork } = this.props
-    const partner = artwork.partner
+    const { partner } = artwork
     const galleryOrBenefitAuction = artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction)
     if (partner.type === "Auction House" || galleryOrBenefitAuction) {
       return null
@@ -88,7 +88,6 @@ export class PartnerCard extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     const imageUrl = partner.profile ? partner.profile.icon.url : null
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
-
     return (
       <Flex>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href)}>
