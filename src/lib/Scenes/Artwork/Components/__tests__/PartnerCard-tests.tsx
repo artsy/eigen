@@ -56,6 +56,56 @@ describe("PartnerCard", () => {
     ).toMatchInlineSnapshot(`"At gallery"`)
   })
 
+  it("renders partner type correctly for institutional sellers", () => {
+    const PartnerCardArtworkInstitutionalSeller = {
+      ...PartnerCardArtwork,
+      partner: {
+        ...PartnerCardArtwork.partner,
+        type: "Institutional Seller",
+      },
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkInstitutionalSeller} />
+      </Theme>
+    )
+
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).toMatchInlineSnapshot(`"At institution"`)
+  })
+
+  it("doesn't render partner type for partners that aren't institutions or galleries", () => {
+    const PartnerCardArtworkOtherType = {
+      ...PartnerCardArtwork,
+      partner: {
+        ...PartnerCardArtwork.partner,
+        type: "Some Other Partner Type",
+      },
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkOtherType} />
+      </Theme>
+    )
+
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).not.toMatchInlineSnapshot(`"At institution"`)
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).not.toMatchInlineSnapshot(`"At gallery"`)
+  })
+
   it("renders partner initials when no image is present", () => {
     const PartnerCardArtworkWithoutImage = {
       ...PartnerCardArtwork,
