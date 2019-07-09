@@ -9,7 +9,7 @@ typedef void(^ARGeneFollowStatusAssigner)(NSString *geneID, BOOL following, RCTR
 
 typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 
-typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat width, CGFloat height, NSString *artworkSlug, NSString *artworkId);
+typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId);
 
 /// While metaphysics is read-only, we need to rely on Eigen's
 /// v1 API access to get/set these bits of information.

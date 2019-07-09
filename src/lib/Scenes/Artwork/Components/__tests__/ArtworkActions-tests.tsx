@@ -227,10 +227,10 @@ const artworkActionsArtwork = {
     },
   ],
   image: {
-    height: 10,
-    width: 10,
     url: "image.com/image",
   },
   is_saved: false,
+  heightCm: 10,
+  widthCm: 10,
   " $refType": null,
 }

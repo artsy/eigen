@@ -16,9 +16,12 @@
 
 ### Master
 
+### 1.12.5
+
 ### 1.12.4
 
 - Add shim for calling view in room view.
+- Pass inches to view in room.
 - Fix carousel alignment - ds300
 - Fix styled-components warning - ds300
 - Use OpaqueImageView in ImageCarousel - ds300
@@ -36,6 +39,7 @@
 - Fixes a React Native font-rendering issue - david & ash
 - Adds artwork classifications page and links to it from artwork page - lilyfromseattle
 - Add artwork history sections - steve
+- Changes method parameter names to make it obvious that units for width+height are in inches - ash
 
 ### 1.11.6
 

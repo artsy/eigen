@@ -41,7 +41,7 @@ describe("ArtworkTombstone", () => {
         <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       </Theme>
     )
-    const attributionClass = component.find(Text).at(9)
+    const attributionClass = component.find(Text).at(10)
     expect(attributionClass.text()).toContain("This is an edition of something")
     attributionClass.props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(

@@ -36,7 +36,7 @@ fragment Artwork_artwork on Artwork {
   exhibition_history
   literature
   layer(id: "main") {
-    artworksConnection(first: 8) {
+    artworksConnection(first: 6) {
       edges {
         node {
           id
@@ -46,7 +46,7 @@ fragment Artwork_artwork on Artwork {
     id
   }
   partner {
-    artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           id
@@ -60,7 +60,7 @@ fragment Artwork_artwork on Artwork {
     biography_blurb {
       text
     }
-    artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           id
@@ -139,7 +139,7 @@ fragment AboutArtist_artwork on Artwork {
 }
 
 fragment ArtworkDetails_artwork on Artwork {
-  medium
+  category
   conditionDescription {
     label
     details
@@ -218,10 +218,10 @@ fragment ArtworkActions_artwork on Artwork {
     id
   }
   image {
-    height
-    width
     url
   }
+  widthCm
+  heightCm
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
@@ -283,7 +283,7 @@ fragment ArtworkContextArtist_artwork on Artwork {
 fragment ArtistArtworkGrid_artwork on Artwork {
   artist {
     name
-    artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -298,7 +298,7 @@ fragment ArtistArtworkGrid_artwork on Artwork {
 fragment PartnerArtworkGrid_artwork on Artwork {
   partner {
     name
-    artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+    artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -312,7 +312,7 @@ fragment PartnerArtworkGrid_artwork on Artwork {
 
 fragment RelatedArtworkGrid_artwork on Artwork {
   layer(id: "main") {
-    artworksConnection(first: 8) {
+    artworksConnection(first: 6) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -397,7 +397,7 @@ v1 = [
 v2 = {
   "kind": "Literal",
   "name": "first",
-  "value": 8
+  "value": 6
 },
 v3 = {
   "kind": "ScalarField",
@@ -699,7 +699,19 @@ v17 = {
   "args": null,
   "storageKey": null
 },
-v18 = [
+v18 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "image",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Image",
+  "plural": false,
+  "selections": [
+    (v17/*: any*/)
+  ]
+},
+v19 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -714,21 +726,7 @@ v18 = [
     "args": null,
     "storageKey": null
   }
-],
-v19 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "height",
-  "args": null,
-  "storageKey": null
-},
-v20 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "width",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -824,7 +822,7 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "artworksConnection",
-                "storageKey": "artworksConnection(first:8)",
+                "storageKey": "artworksConnection(first:6)",
                 "args": [
                   (v2/*: any*/)
                 ],
@@ -1054,18 +1052,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "image",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": [
-                  (v17/*: any*/)
-                ]
-              },
+              (v18/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1078,7 +1065,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "medium",
+            "name": "category",
             "args": null,
             "storageKey": null
           },
@@ -1090,7 +1077,7 @@ return {
             "args": null,
             "concreteType": "ArtworkInfoRow",
             "plural": false,
-            "selections": (v18/*: any*/)
+            "selections": (v19/*: any*/)
           },
           {
             "kind": "ScalarField",
@@ -1107,7 +1094,7 @@ return {
             "args": null,
             "concreteType": "ArtworkInfoRow",
             "plural": false,
-            "selections": (v18/*: any*/)
+            "selections": (v19/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -1117,7 +1104,7 @@ return {
             "args": null,
             "concreteType": "ArtworkInfoRow",
             "plural": false,
-            "selections": (v18/*: any*/)
+            "selections": (v19/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -1127,7 +1114,7 @@ return {
             "args": null,
             "concreteType": "ArtworkInfoRow",
             "plural": false,
-            "selections": (v18/*: any*/)
+            "selections": (v19/*: any*/)
           },
           {
             "kind": "ScalarField",
@@ -1169,19 +1156,27 @@ return {
             "args": null,
             "storageKey": null
           },
+          (v18/*: any*/),
           {
-            "kind": "LinkedField",
+            "kind": "ScalarField",
             "alias": null,
-            "name": "image",
-            "storageKey": null,
+            "name": "widthCm",
             "args": null,
-            "concreteType": "Image",
-            "plural": false,
-            "selections": [
-              (v19/*: any*/),
-              (v20/*: any*/),
-              (v17/*: any*/)
-            ]
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "heightCm",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "medium",
+            "args": null,
+            "storageKey": null
           },
           (v6/*: any*/),
           {
@@ -1252,8 +1247,20 @@ return {
             "plural": true,
             "selections": [
               (v17/*: any*/),
-              (v20/*: any*/),
-              (v19/*: any*/)
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "width",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "height",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           {
@@ -1270,7 +1277,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "8fbc686975462a508feb86e43f7f709a",
+    "id": "ca7c6512cf19b6d8603293971df2696f",
     "text": null,
     "metadata": {}
   }

@@ -10,8 +10,8 @@ export const Header: React.SFC<HeaderProps> = props => {
   const { children, title } = props
 
   return (
-    <Flex flexDirection="column" alignItems="center">
-      <Serif size="5t" mb={2} textAlign="center">
+    <Flex flexDirection="column">
+      <Serif size="5t" mb={2} textAlign="left">
         {title}
       </Serif>
       {children}

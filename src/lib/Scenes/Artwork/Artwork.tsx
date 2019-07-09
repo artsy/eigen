@@ -35,7 +35,6 @@ export class Artwork extends React.Component<Props> {
 
     sections.push("header")
     sections.push("commercialInformation")
-    sections.push("aboutArtist")
 
     if (artwork.description || artwork.additional_information) {
       sections.push("aboutWork")
@@ -88,11 +87,11 @@ export class Artwork extends React.Component<Props> {
   render() {
     return (
       <Theme>
-        <Box pb={2} pt={this.props.safeAreaInsets.top}>
+        <Box pt={this.props.safeAreaInsets.top}>
           <FlatList
             data={this.sections()}
             ItemSeparatorComponent={() => (
-              <Box px={2} m={2}>
+              <Box px={2} mx={2} my={3}>
                 <Separator />
               </Box>
             )}
@@ -117,7 +116,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       literature
 
       layer(id: "main") {
-        artworksConnection(first: 8) {
+        artworksConnection(first: 6) {
           edges {
             node {
               id
@@ -127,7 +126,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       }
 
       partner {
-        artworksConnection(first: 8, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+        artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
           edges {
             node {
               id
@@ -141,7 +140,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         biography_blurb {
           text
         }
-        artworks_connection(first: 8, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
+        artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
           edges {
             node {
               id

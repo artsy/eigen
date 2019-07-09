@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Button, EntityHeader, Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -6,21 +6,6 @@ import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import styled from "styled-components/native"
-
-const TightendSerif = styled(Serif)`
-  position: relative;
-  top: 2;
-`
-
-const TightendSans = styled(Sans)`
-  position: relative;
-  top: -2;
-`
-
-const TextContainer = styled(Flex)`
-  flex: 1;
-`
 
 interface Props {
   artist: ArtistListItem_artist
@@ -32,7 +17,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
-export const formatTombstoneText = (nationality, birthday, deathday) => {
+export const formatTombstoneText = (nationality: string, birthday: string, deathday: string) => {
   if (nationality && birthday && deathday) {
     return nationality + ", " + birthday + "-" + deathday
   } else if (nationality && birthday) {
@@ -43,6 +28,8 @@ export const formatTombstoneText = (nationality, birthday, deathday) => {
     return birthday + "-" + deathday
   } else if (birthday) {
     return "b. " + birthday
+  } else {
+    return null
   }
 }
 
@@ -108,25 +95,6 @@ export class ArtistListItem extends React.Component<Props, State> {
     })
   }
 
-  renderText() {
-    const {
-      artist: { nationality, birthday, deathday, name },
-    } = this.props
-    if (nationality || birthday) {
-      return (
-        <>
-          <TightendSerif size="3t">{name}</TightendSerif>
-          <TightendSans size="3t" color="black60">
-            {formatTombstoneText(nationality, birthday, deathday)}
-          </TightendSans>
-        </>
-      )
-    }
-    if (!nationality) {
-      return <Serif size="3t">{name}</Serif>
-    }
-  }
-
   @track((props: Props) => {
     return {
       action_name: Schema.ActionNames.ListArtist,
@@ -152,28 +120,28 @@ export class ArtistListItem extends React.Component<Props, State> {
   render() {
     const { isFollowedChanging } = this.state
     const { artist } = this.props
-    const { is_followed, initials, image, href } = artist
+    const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const { url } = image
 
     return (
       <Theme>
         <TouchableWithoutFeedback onPress={() => this.handleTap(href)}>
-          <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-            <Avatar size="xs" src={url} initials={initials} />
-            <Spacer m={1} />
-            <TextContainer flexDirection="column" alignItems="flex-start">
-              {this.renderText()}
-            </TextContainer>
-            <Spacer m={1} />
-            <Button
-              variant={is_followed ? "secondaryOutline" : "primaryBlack"}
-              onPress={this.handleFollowArtist}
-              size="small"
-              loading={isFollowedChanging}
-            >
-              {is_followed ? "Following" : "Follow"}
-            </Button>
-          </Flex>
+          <EntityHeader
+            name={name}
+            meta={formatTombstoneText(nationality, birthday, deathday)}
+            imageUrl={url}
+            initials={initials}
+            FollowButton={
+              <Button
+                variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+                onPress={this.handleFollowArtist.bind(this)}
+                size="small"
+                loading={isFollowedChanging}
+              >
+                {is_followed ? "Following" : "Follow"}
+              </Button>
+            }
+          />
         </TouchableWithoutFeedback>
       </Theme>
     )

@@ -30,9 +30,9 @@ RCT_EXPORT_METHOD(markNotificationsRead:(RCTResponseSenderBlock)block)
     self.notificationReadStatusAssigner(block);
 }
 
-RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)width height:(CGFloat)height artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
+RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
-    self.augmentedRealityVIRPresenter(imgUrl, width, height, artworkSlug, artworkId);
+    self.augmentedRealityVIRPresenter(imgUrl, widthIn, heightIn, artworkSlug, artworkId);
 }
 
 @end

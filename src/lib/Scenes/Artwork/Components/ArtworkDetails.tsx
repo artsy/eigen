@@ -17,7 +17,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 
   render() {
     const listItems = [
-      { title: "Medium", value: this.props.artwork.medium },
+      { title: "Medium", value: this.props.artwork.category },
       {
         title: "Condition",
         value: this.props.artwork.conditionDescription ? this.props.artwork.conditionDescription.label : null,
@@ -25,48 +25,51 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
       { title: "Signature", value: this.props.artwork.signature },
       {
         title: "Certificate of Authenticity",
-        value: this.props.artwork.certificateOfAuthenticity ? "Included" : "Not Included",
+        value: this.props.artwork.certificateOfAuthenticity && this.props.artwork.certificateOfAuthenticity.details,
       },
-      { title: "Frame", value: this.props.artwork.framed ? "Included" : "Not Included" },
+      { title: "Frame", value: this.props.artwork.framed && this.props.artwork.framed.details },
       { title: "Series", value: this.props.artwork.series },
       { title: "Publisher", value: this.props.artwork.publisher },
       { title: "Manufacturer", value: this.props.artwork.manufacturer },
       { title: "Image rights", value: this.props.artwork.image_rights },
     ]
 
-    let displayItems = listItems.filter(i => i.value != null)
+    const displayItems = listItems.filter(i => i.value != null && i.value !== "")
+
+    let truncatedDisplayItems = displayItems
 
     if (!this.state.showAll && displayItems.length > 3) {
-      displayItems = displayItems.slice(0, 3)
+      truncatedDisplayItems = displayItems.slice(0, 3)
     }
 
     return (
       <Box>
         <Join separator={<Spacer my={1} />}>
-          <Sans size="3" weight="medium">
+          <Sans size="3t" weight="medium">
             Artwork Details
           </Sans>
-          {displayItems.map(({ title, value }, index) => (
+          {truncatedDisplayItems.map(({ title, value }, index) => (
             <React.Fragment key={index}>
-              <Sans size="3" weight="regular">
+              <Sans size="3t" weight="regular">
                 {title}
               </Sans>
-              <Sans size="3" weight="regular" color="gray">
+              <Sans size="3t" weight="regular" color="gray">
                 {value}
               </Sans>
             </React.Fragment>
           ))}
-          {!this.state.showAll && (
-            <LinkText
-              onPress={() => {
-                this.setState({ showAll: true })
-              }}
-            >
-              <Sans size="3" weight="regular">
-                Show more artwork details
-              </Sans>
-            </LinkText>
-          )}
+          {!this.state.showAll &&
+            (displayItems.length > 3 && (
+              <LinkText
+                onPress={() => {
+                  this.setState({ showAll: true })
+                }}
+              >
+                <Sans size="3t" weight="regular">
+                  Show more artwork details
+                </Sans>
+              </LinkText>
+            ))}
         </Join>
       </Box>
     )
@@ -76,7 +79,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDetails, {
   artwork: graphql`
     fragment ArtworkDetails_artwork on Artwork {
-      medium
+      category
       conditionDescription {
         label
         details

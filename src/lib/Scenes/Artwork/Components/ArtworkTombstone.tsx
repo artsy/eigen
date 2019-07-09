@@ -101,16 +101,21 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             artwork.cultural_maker &&
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
-        <Serif color="black60" size="3t" m="0" p="0">
-          {artwork.title}, {artwork.date}
-        </Serif>
+        <Flex flexDirection="row">
+          <Serif italic color="black60" size="3t" m="0" p="0">
+            {artwork.title},{" "}
+          </Serif>
+          <Serif color="black60" size="3t" m="0" p="0">
+            {artwork.date}
+          </Serif>
+        </Flex>
         <Serif color="black60" size="3t">
           {artwork.medium}
         </Serif>
         <Serif color="black60" size="3t">
           {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
         </Serif>
-        {artwork.edition_of && (
+        {!!artwork.edition_of && (
           <Serif color="black60" size="3t">
             {artwork.edition_of}
           </Serif>
