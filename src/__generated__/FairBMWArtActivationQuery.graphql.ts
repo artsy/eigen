@@ -28,7 +28,7 @@ query FairBMWArtActivationQuery(
 }
 
 fragment FairBMWArtActivation_fair on Fair {
-  slug
+  gravityID
   internalID
   sponsoredContent {
     activationText
@@ -97,7 +97,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -147,7 +147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBMWArtActivationQuery",
-    "id": "68cc3854a45b4d6ed04997d8c7e1dc2f",
+    "id": "0698ac1e02a90cdabe8833e6b705a9d6",
     "text": null,
     "metadata": {}
   }

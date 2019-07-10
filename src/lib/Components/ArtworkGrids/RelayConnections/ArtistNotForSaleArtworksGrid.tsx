@@ -30,7 +30,7 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer<
           }
           edges {
             node {
-              slug
+              gravityID
               id
               image {
                 aspect_ratio

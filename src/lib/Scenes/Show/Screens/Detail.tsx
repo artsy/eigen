@@ -29,7 +29,7 @@ const track: Track<Props, State> = _track
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.ShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-  context_screen_owner_slug: props.show.slug,
+  context_screen_owner_slug: props.show.gravityID,
   context_screen_owner_id: props.show.internalID,
 }))
 export class Detail extends React.Component<Props, State> {
@@ -123,15 +123,15 @@ export class Detail extends React.Component<Props, State> {
   }
 
   handleViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artists`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artists`)
   }
 
   handleViewAllArtworksPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artworks`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artworks`)
   }
 
   handleViewMoreInfoPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/info`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/info`)
   }
 
   @track(eventProps(Schema.ActionNames.ToggleHours))
@@ -196,13 +196,13 @@ export const DetailContainer = createFragmentContainer(Detail, {
   show: graphql`
     fragment Detail_show on Show {
       internalID
-      slug
+      gravityID
       name
       description
       city
       isStubShow
       images {
-        internalID
+        gravityID
       }
       ...ShowHeader_show
       ...ShowArtworksPreview_show
@@ -227,7 +227,7 @@ export const DetailContainer = createFragmentContainer(Detail, {
       # and so we need to request them back here to verify if we
       # should show the artists section at all
       artists_without_artworks {
-        slug
+        gravityID
       }
 
       counts {

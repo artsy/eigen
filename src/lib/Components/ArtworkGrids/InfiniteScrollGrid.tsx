@@ -31,7 +31,7 @@ import { Box, space } from "@artsy/palette"
 
 interface Artwork {
   id: string
-  slug: string
+  gravityID: string
   image: {
     aspect_ratio: number | null
   } | null
@@ -175,7 +175,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 
   tappedOnArtwork = (artworkID: string) => {
     const artworks = this.artworksConnection() ? this.artworksConnection().edges : []
-    const allArtworkIDs = artworks.map(a => a.node.slug)
+    const allArtworkIDs = artworks.map(a => a.node.gravityID)
     const index = allArtworkIDs.indexOf(artworkID)
     SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
   }

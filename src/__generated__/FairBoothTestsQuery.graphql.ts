@@ -24,7 +24,7 @@ query FairBoothTestsQuery {
 }
 
 fragment FairBooth_show on Show {
-  slug
+  gravityID
   internalID
   ...FairBoothHeader_show
   ...ShowArtworksPreview_show
@@ -42,13 +42,13 @@ fragment FairBoothHeader_show on Show {
     __typename
     ... on Partner {
       name
-      slug
+      gravityID
       internalID
       id
       href
       profile {
         internalID
-        slug
+        gravityID
         is_followed
         id
       }
@@ -87,17 +87,17 @@ fragment ShowArtworksPreview_show on Show {
 
 fragment ShowArtistsPreview_show on Show {
   internalID
-  slug
+  gravityID
   artists {
     internalID
-    slug
+    gravityID
     href
     ...ArtistListItem_artist
     id
   }
   artists_without_artworks {
     internalID
-    slug
+    gravityID
     href
     ...ArtistListItem_artist
     id
@@ -106,7 +106,7 @@ fragment ShowArtistsPreview_show on Show {
 
 fragment ShowArtists_show on Show {
   internalID
-  slug
+  gravityID
   artists_grouped_by_name {
     letter
     items {
@@ -120,7 +120,7 @@ fragment ShowArtists_show on Show {
 
 fragment ShowArtworks_show on Show {
   id
-  slug
+  gravityID
   internalID
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
@@ -137,7 +137,7 @@ fragment Filters_filteredArtworks on FilterArtworks {
   aggregations {
     slice
     counts {
-      internalID
+      gravityID
       name
       id
     }
@@ -154,7 +154,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
     }
     edges {
       node {
-        slug
+        gravityID
         id
         image {
           aspect_ratio
@@ -175,7 +175,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -208,7 +208,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment ArtistListItem_artist on Artist {
   id
   internalID
-  slug
+  gravityID
   name
   initials
   href
@@ -223,7 +223,7 @@ fragment ArtistListItem_artist on Artist {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
+  gravityID
   image {
     aspect_ratio
   }
@@ -242,7 +242,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -852,7 +852,7 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
+                      (v1/*: any*/),
                       (v3/*: any*/),
                       (v4/*: any*/)
                     ]
@@ -966,7 +966,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothTestsQuery",
-    "id": "c6e422c66d643972fd68f3c965e441ff",
+    "id": "4001e027b082cfcd3927294e2872c4c9",
     "text": null,
     "metadata": {}
   }

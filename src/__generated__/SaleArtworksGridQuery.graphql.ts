@@ -51,8 +51,8 @@ fragment SaleArtworksGrid_sale_1G22uz on Sale {
     edges {
       node {
         artwork {
+          gravityID
           id
-          slug
           image {
             aspect_ratio
           }
@@ -74,7 +74,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -301,14 +301,14 @@ return {
                             "concreteType": "Artwork",
                             "plural": false,
                             "selections": [
-                              (v3/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "slug",
+                                "name": "gravityID",
                                 "args": null,
                                 "storageKey": null
                               },
+                              (v3/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -534,7 +534,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworksGridQuery",
-    "id": "2ab3f3a07870362701b1888e3a65a45d",
+    "id": "3a4bc3430cb75c75df53961b234cd9a5",
     "text": null,
     "metadata": {}
   }

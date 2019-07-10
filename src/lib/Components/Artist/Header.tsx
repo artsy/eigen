@@ -119,7 +119,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.artist.internalID,
-    owner_slug: props.artist.slug,
+    owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleFollowChange() {
@@ -144,7 +144,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist.internalID,
-    owner_slug: props.artist.slug,
+    owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   successfulFollowChange() {
@@ -155,7 +155,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.artist.internalID,
-    owner_slug: props.artist.slug,
+    owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   failedFollowChange() {
@@ -194,7 +194,7 @@ export default createFragmentContainer(Header, {
   artist: graphql`
     fragment Header_artist on Artist {
       internalID
-      slug
+      gravityID
       name
       nationality
       birthday

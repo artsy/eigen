@@ -33,7 +33,7 @@ query ShowArtworksRefetchQuery(
 
 fragment ShowArtworks_show_2UkO81 on Show {
   id
-  slug
+  gravityID
   internalID
   filteredArtworks(size: 0, medium: $medium, price_range: $price_range, aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
@@ -50,7 +50,7 @@ fragment Filters_filteredArtworks on FilterArtworks {
   aggregations {
     slice
     counts {
-      internalID
+      gravityID
       name
       id
     }
@@ -67,7 +67,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
     }
     edges {
       node {
-        slug
+        gravityID
         id
         image {
           aspect_ratio
@@ -88,7 +88,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -167,33 +167,26 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v8 = [
+v7 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 10
   }
 ],
-v9 = [
-  (v7/*: any*/),
+v8 = [
+  (v6/*: any*/),
   (v4/*: any*/)
 ];
 return {
@@ -242,7 +235,13 @@ return {
         "selections": [
           (v4/*: any*/),
           (v5/*: any*/),
-          (v6/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -294,8 +293,8 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
+                      (v5/*: any*/),
                       (v6/*: any*/),
-                      (v7/*: any*/),
                       (v4/*: any*/)
                     ]
                   }
@@ -307,7 +306,7 @@ return {
                 "alias": "artworks",
                 "name": "artworks_connection",
                 "storageKey": "artworks_connection(first:10)",
-                "args": (v8/*: any*/),
+                "args": (v7/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -534,7 +533,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": (v9/*: any*/)
+                            "selections": (v8/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -544,7 +543,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v9/*: any*/)
+                            "selections": (v8/*: any*/)
                           },
                           {
                             "kind": "ScalarField",
@@ -577,7 +576,7 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "artworks_connection",
-                "args": (v8/*: any*/),
+                "args": (v7/*: any*/),
                 "handle": "connection",
                 "key": "ArtworksGridPaginationContainer_artworks",
                 "filters": null
@@ -591,7 +590,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksRefetchQuery",
-    "id": "cfe05958f0111fbd09fc57e85e64c51a",
+    "id": "d7bc1aeaae5db0385ad2aec536bf4c55",
     "text": null,
     "metadata": {}
   }

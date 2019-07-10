@@ -12,9 +12,9 @@ export type CitySectionList_city = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly id: string;
-                readonly slug: string;
+                readonly gravityID: string;
                 readonly internalID: string;
+                readonly id: string;
                 readonly isStubShow: boolean | null;
                 readonly is_followed: boolean | null;
                 readonly start_at: string | null;
@@ -208,14 +208,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "slug",
+                  "name": "gravityID",
                   "args": null,
                   "storageKey": null
                 },
@@ -223,6 +216,13 @@ return {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "internalID",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "id",
                   "args": null,
                   "storageKey": null
                 },
@@ -372,5 +372,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '39122443b6fd2e335109b598976ff0b2';
+(node as any).hash = '030f3667193c78d8ae02fc1f37677737';
 export default node;

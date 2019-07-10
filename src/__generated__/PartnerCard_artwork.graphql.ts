@@ -12,7 +12,7 @@ export type PartnerCard_artwork = {
         readonly is_default_profile_public: boolean | null;
         readonly type: string | null;
         readonly name: string | null;
-        readonly slug: string;
+        readonly gravityID: string;
         readonly internalID: string;
         readonly id: string;
         readonly href: string | null;
@@ -20,7 +20,7 @@ export type PartnerCard_artwork = {
         readonly profile: {
             readonly id: string;
             readonly internalID: string;
-            readonly slug: string;
+            readonly gravityID: string;
             readonly is_followed: boolean | null;
             readonly icon: {
                 readonly url: string | null;
@@ -39,7 +39,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -204,5 +204,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '35d281c80ad0006c6889a20fa7ba8efa';
+(node as any).hash = 'a78639b5970f350e4f9c05a495ddbf3b';
 export default node;

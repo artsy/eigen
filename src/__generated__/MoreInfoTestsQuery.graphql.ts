@@ -25,7 +25,7 @@ query MoreInfoTestsQuery {
 
 fragment MoreInfo_show on Show {
   internalID
-  slug
+  gravityID
   exhibition_period
   pressReleaseUrl
   openingReceptionText
@@ -122,7 +122,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -240,7 +240,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MoreInfoTestsQuery",
-    "id": "72ed86a2d144128cb3959cc944a4bb7a",
+    "id": "8529d7f23d0a5f69a6eb985b98a260f7",
     "text": null,
     "metadata": {}
   }

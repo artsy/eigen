@@ -62,8 +62,8 @@ export class BidResult extends React.Component<BidResultProps> {
   exitBidFlow = async () => {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
       const Emission = NativeModules.Emission || {}
-      const saleSlug = this.props.sale_artwork.sale.slug
-      const url = `${Emission.predictionURL}/${saleSlug}`
+      const saleID = this.props.sale_artwork.sale.gravityID
+      const url = `${Emission.predictionURL}/${saleID}`
       SwitchBoard.presentModalViewController(this, url)
     } else {
       SwitchBoard.dismissModalViewController(this)
@@ -125,7 +125,7 @@ export const BidResultScreen = createFragmentContainer(BidResult, {
       sale {
         live_start_at
         end_at
-        slug
+        gravityID
       }
     }
   `,

@@ -26,8 +26,7 @@ export class FollowArtistButton extends React.Component<Props> {
       `,
       variables: {
         input: {
-          // FIXME: Should this be slug or internalID?
-          artist_id: artist.slug,
+          artist_id: artist.gravityID,
           unfollow: artist.is_followed,
         },
       },
@@ -57,8 +56,8 @@ export class FollowArtistButton extends React.Component<Props> {
 export const FollowArtistButtonFragmentContainer = createFragmentContainer(FollowArtistButton, {
   artist: graphql`
     fragment FollowArtistButton_artist on Artist {
+      gravityID
       id
-      slug
       is_followed
     }
   `,

@@ -28,15 +28,16 @@ query FairExhibitorsQuery(
 }
 
 fragment FairExhibitors_fair on Fair {
-  slug
+  gravityID
   internalID
   exhibitors_grouped_by_name {
     letter
     exhibitors {
       name
-      slug
+      gravityID
       profile_id
       partner_id
+      id
     }
   }
 }
@@ -61,7 +62,14 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -160,18 +168,13 @@ return {
                     "name": "partner_id",
                     "args": null,
                     "storageKey": null
-                  }
+                  },
+                  (v3/*: any*/)
                 ]
               }
             ]
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          }
+          (v3/*: any*/)
         ]
       }
     ]
@@ -179,7 +182,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairExhibitorsQuery",
-    "id": "244410ee810923f6fe93fcf8b15a4a98",
+    "id": "7eed76f4f01e78d057bbc1800a11372a",
     "text": null,
     "metadata": {}
   }

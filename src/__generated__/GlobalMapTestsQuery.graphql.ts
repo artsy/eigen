@@ -40,7 +40,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
       introText
       artGuideUrl
       featuredShows {
-        slug
+        gravityID
         internalID
         id
         name
@@ -83,7 +83,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
     upcomingShows: shows(includeStubShows: true, status: UPCOMING, dayThreshold: 14, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
-          slug
+          gravityID
           internalID
           id
           isStubShow
@@ -130,7 +130,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
     shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
       edges {
         node {
-          slug
+          gravityID
           internalID
           id
           isStubShow
@@ -177,7 +177,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
     fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
       edges {
         node {
-          slug
+          gravityID
           name
           exhibition_period
           counts {
@@ -197,14 +197,14 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           }
           profile {
             icon {
-              internalID
+              gravityID
               href
               height
               width
               url(version: "square140")
             }
             id
-            slug
+            gravityID
             name
           }
           start_at
@@ -240,13 +240,6 @@ v1 = {
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "coordinates",
@@ -270,6 +263,13 @@ v3 = {
       "storageKey": null
     }
   ]
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
@@ -348,7 +348,7 @@ v13 = {
   "concreteType": "Location",
   "plural": false,
   "selections": [
-    (v3/*: any*/),
+    (v2/*: any*/),
     (v5/*: any*/)
   ]
 },
@@ -414,7 +414,7 @@ v21 = [
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
+          (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
           (v7/*: any*/),
@@ -558,8 +558,14 @@ return {
             "plural": false,
             "selections": [
               (v1/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "slug",
+                "args": null,
+                "storageKey": null
+              },
               (v2/*: any*/),
-              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -592,7 +598,7 @@ return {
                     "concreteType": "Show",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v1/*: any*/),
@@ -738,7 +744,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          (v3/*: any*/),
                           (v1/*: any*/),
                           (v10/*: any*/),
                           {
@@ -804,7 +810,7 @@ return {
                                 "concreteType": "Image",
                                 "plural": false,
                                 "selections": [
-                                  (v4/*: any*/),
+                                  (v3/*: any*/),
                                   (v8/*: any*/),
                                   {
                                     "kind": "ScalarField",
@@ -836,7 +842,7 @@ return {
                                 ]
                               },
                               (v5/*: any*/),
-                              (v2/*: any*/),
+                              (v3/*: any*/),
                               (v1/*: any*/)
                             ]
                           },
@@ -858,7 +864,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GlobalMapTestsQuery",
-    "id": "418747dce4aaa1337ce575cc060a14a1",
+    "id": "f36a7369f36c61b2c62ff16c680b1988",
     "text": null,
     "metadata": {}
   }

@@ -21,7 +21,7 @@ it("renders properly", async () => {
               letter
               exhibitors {
                 name
-                slug
+                gravityID
                 profile_id
               }
             }

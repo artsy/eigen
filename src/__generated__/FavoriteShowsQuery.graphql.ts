@@ -45,9 +45,9 @@ fragment Shows_me on Me {
 }
 
 fragment ShowItemRow_show on Show {
-  id
-  slug
+  gravityID
   internalID
+  id
   is_followed
   name
   isStubShow
@@ -231,7 +231,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -413,7 +413,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteShowsQuery",
-    "id": "ed0dad46745e0fd4be8d924be0c46696",
+    "id": "a4e47aa958bc45bd3f152bee82f1984e",
     "text": null,
     "metadata": {}
   }

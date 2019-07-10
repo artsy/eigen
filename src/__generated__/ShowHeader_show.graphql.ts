@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _ShowHeader_show$ref: unique symbol;
 export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
-    readonly slug: string;
+    readonly gravityID: string;
     readonly internalID: string;
     readonly id: string;
     readonly name: string | null;
@@ -16,11 +16,11 @@ export type ShowHeader_show = {
     readonly isStubShow: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
-        readonly slug?: string;
+        readonly gravityID?: string;
         readonly href?: string | null;
     } & ({
         readonly name: string | null;
-        readonly slug: string;
+        readonly gravityID: string;
         readonly href: string | null;
     } | {
         /*This will never be '% other', but we need some
@@ -37,7 +37,7 @@ export type ShowHeader_show = {
                 readonly artist: {
                     readonly name: string | null;
                     readonly href: string | null;
-                    readonly slug: string;
+                    readonly gravityID: string;
                     readonly internalID: string;
                 } | null;
             } | null;
@@ -46,7 +46,7 @@ export type ShowHeader_show = {
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
-        readonly slug: string;
+        readonly gravityID: string;
         readonly internalID: string;
     } | null> | null;
     readonly " $refType": ShowHeader_show$ref;
@@ -58,7 +58,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -255,5 +255,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b26be9b0641676f77f6fd1ea417b8bc7';
+(node as any).hash = 'f6f4d5d3eb75d0d185564a6ad0900eaa';
 export default node;

@@ -24,7 +24,7 @@ interface Props {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairBoothPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.show.slug,
+  context_screen_owner_slug: props.show.gravityID,
   context_screen_owner_id: props.show.internalID,
 }))
 export class FairBooth extends React.Component<Props, State> {
@@ -33,11 +33,11 @@ export class FairBooth extends React.Component<Props, State> {
   }
 
   onViewFairBoothArtworksPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artworks`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artworks`)
   }
 
   onViewFairBoothArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artists`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artists`)
   }
 
   componentDidMount() {
@@ -107,7 +107,7 @@ export class FairBooth extends React.Component<Props, State> {
 export const FairBoothContainer = createFragmentContainer(FairBooth, {
   show: graphql`
     fragment FairBooth_show on Show {
-      slug
+      gravityID
       internalID
       ...FairBoothHeader_show
       ...ShowArtworksPreview_show
