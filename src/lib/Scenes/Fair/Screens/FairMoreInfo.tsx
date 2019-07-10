@@ -43,7 +43,7 @@ export const shouldGoStraightToWebsite = (data: ShowMoreMetadataForFairs) => {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.AboutTheFairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.gravityID,
+  context_screen_owner_slug: props.fair.slug,
   context_screen_owner_id: props.fair.internalID,
 }))
 export class FairMoreInfo extends React.Component<Props, State> {
@@ -159,7 +159,7 @@ const FairMoreInfoFragmentContainer = createFragmentContainer(FairMoreInfo, {
       organizer {
         website
       }
-      gravityID
+      slug
       internalID
       about
       ticketsLink

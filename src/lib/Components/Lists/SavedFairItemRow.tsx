@@ -25,7 +25,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
     Switchboard.presentNavigationViewController(this, this.props.node.href)
   }
 
-  handleSave(fairProfileID, fairID) {
+  handleSave(fairProfileID, fairSlug) {
     this.setState({ isSaved: !this.state.isSaved }, () => {
       if (fairProfileID) {
         return commitMutation<SavedFairItemRowMutation>(this.props.relay.environment, {
@@ -33,7 +33,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
             mutation SavedFairItemRowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
-                  gravityID
+                  slug
                   is_followed
                   id
                 }
@@ -51,7 +51,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
               profile: {
                 id: fairProfileID,
                 is_followed: !this.state.isSaved,
-                gravityID: fairID,
+                slug: fairSlug,
               },
             },
           },
@@ -90,7 +90,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
                 </Sans>
               )}
             </Flex>
-            <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.id, item.profile.gravityID)}>
+            <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.id, item.profile.slug)}>
               <Flex flexGrow="1">
                 <Sans weight="medium" mb="30" size="3" color={color("black60")} textAlign="right">
                   {this.state.isSaved ? "Saved" : "Save"}

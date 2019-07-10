@@ -13,7 +13,7 @@ export type PartnerCardFollowMutationResponse = {
     readonly followProfile: {
         readonly profile: {
             readonly id: string;
-            readonly gravityID: string;
+            readonly slug: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
         } | null;
@@ -33,7 +33,7 @@ mutation PartnerCardFollowMutation(
   followProfile(input: $input) {
     profile {
       id
-      gravityID
+      slug
       internalID
       is_followed
     }
@@ -85,7 +85,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "gravityID",
+            "name": "slug",
             "args": null,
             "storageKey": null
           },
@@ -127,11 +127,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "PartnerCardFollowMutation",
-    "id": "078b5566b30b3d939f5484d3fbf3ae9d",
+    "id": "c14aa2e02010de91f543807b8d6b13aa",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '66c28329f911d6175d68dfcebc3da1ac';
+(node as any).hash = '832572f473b08c002a279c7000bbff16';
 export default node;

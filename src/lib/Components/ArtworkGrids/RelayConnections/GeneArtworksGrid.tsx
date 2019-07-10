@@ -26,7 +26,7 @@ const GeneArtworksGrid = createPaginationContainer<
           }
           edges {
             node {
-              gravityID
+              slug
               id
               image {
                 aspect_ratio
