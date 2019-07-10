@@ -46,9 +46,9 @@ fragment CitySectionList_city_2xWq6T on City {
     }
     edges {
       node {
-        gravityID
-        internalID
         id
+        slug
+        internalID
         isStubShow
         is_followed
         start_at
@@ -296,10 +296,11 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
+                      (v8/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "gravityID",
+                        "name": "slug",
                         "args": null,
                         "storageKey": null
                       },
@@ -310,7 +311,6 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v8/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -473,7 +473,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCitySectionListQuery",
-    "id": "8a3f049ef1b1d4c21e4484519010e540",
+    "id": "5f109d7b7c32b7aa6708811b88ed2e63",
     "text": null,
     "metadata": {}
   }

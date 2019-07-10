@@ -10,7 +10,7 @@ export type Fairs_me = {
                 readonly node: {
                     readonly id: string;
                     readonly profile: {
-                        readonly gravityID: string;
+                        readonly slug: string;
                         readonly is_followed: boolean | null;
                         readonly id: string;
                     } | null;
@@ -123,7 +123,7 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "gravityID",
+                          "name": "slug",
                           "args": null,
                           "storageKey": null
                         },
@@ -258,5 +258,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5945c93f34f13346d986298354d5f992';
+(node as any).hash = '4ba3cf5b7e76f26f3cb1095d97ff229d';
 export default node;

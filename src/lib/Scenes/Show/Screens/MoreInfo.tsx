@@ -30,7 +30,7 @@ interface State {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.AboutTheShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-  context_screen_owner_slug: props.show.gravityID,
+  context_screen_owner_slug: props.show.slug,
   context_screen_owner_id: props.show.internalID,
 }))
 export class MoreInfo extends React.Component<Props, State> {
@@ -158,7 +158,7 @@ export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
   show: graphql`
     fragment MoreInfo_show on Show {
       internalID
-      gravityID
+      slug
       exhibition_period
       pressReleaseUrl
       openingReceptionText

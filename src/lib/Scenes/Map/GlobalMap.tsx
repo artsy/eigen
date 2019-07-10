@@ -5,6 +5,7 @@ import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
+import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
@@ -21,7 +22,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
+import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -369,7 +370,8 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        this.shows[node.gravityID] = node
+        // FIXME: Should this be slug?
+        this.shows[node.slug] = node
       })
 
       city.fairs.edges.forEach(({ node }) => {
@@ -377,7 +379,8 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        this.fairs[node.gravityID] = {
+        // FIXME: Should this be slug?
+        this.fairs[node.slug] = {
           ...node,
           type: "Fair",
         }
@@ -427,7 +430,8 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const lat = item.location.coordinates.lat
     const lng = item.location.coordinates.lng
-    const id = item.gravityID
+    // FIXME: Should this be slug? Looks like maybe it's internalID or id
+    const id = item.slug
 
     if (type === "Fair") {
       return (
@@ -525,6 +529,9 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onRegionIsChanging = async () => {
+    if (!this.map) {
+      return
+    }
     const zoom = Math.floor(await this.map.getZoom())
 
     if (!this.currentZoom) {
@@ -791,7 +798,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
           introText
           artGuideUrl
           featuredShows {
-            gravityID
+            slug
             internalID
             id
             name
@@ -832,7 +839,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         ) {
           edges {
             node {
-              gravityID
+              slug
               internalID
               id
               isStubShow
@@ -872,7 +879,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
           edges {
             node {
-              gravityID
+              slug
               internalID
               id
               isStubShow
@@ -912,7 +919,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
-              gravityID
+              slug
               name
               exhibition_period
               counts {
@@ -934,14 +941,14 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
 
               profile {
                 icon {
-                  gravityID
+                  internalID
                   href
                   height
                   width
                   url(version: "square140")
                 }
                 id
-                gravityID
+                slug
                 name
               }
 

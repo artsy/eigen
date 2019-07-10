@@ -28,8 +28,8 @@ query QueryRenderersInquiryQuery(
 }
 
 fragment Inquiry_artwork on Artwork {
+  slug
   internalID
-  gravityID
   contact_message
   partner {
     name
@@ -39,7 +39,7 @@ fragment Inquiry_artwork on Artwork {
 }
 
 fragment ArtworkPreview_artwork on Artwork {
-  gravityID
+  slug
   internalID
   title
   artist_names
@@ -117,14 +117,14 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "internalID",
+            "name": "slug",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "gravityID",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },
@@ -201,7 +201,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersInquiryQuery",
-    "id": "feda2b6ae0e12b004ff209a951c37502",
+    "id": "eba213bc228f513291ce20df01dc5945",
     "text": null,
     "metadata": {}
   }

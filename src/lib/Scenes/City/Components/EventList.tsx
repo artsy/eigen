@@ -97,7 +97,7 @@ export class EventList extends React.Component<Props> {
         data={renderedInTab ? bucket.slice(0, MaxRowCount) : bucket}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={this.renderFooter()}
-        keyExtractor={item => item.gravityID}
+        keyExtractor={item => item.internalID}
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
         windowSize={50}

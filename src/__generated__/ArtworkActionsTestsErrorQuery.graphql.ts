@@ -26,7 +26,7 @@ query ArtworkActionsTestsErrorQuery {
 fragment ArtworkActions_artwork on Artwork {
   id
   internalID
-  gravityID
+  slug
   title
   href
   is_saved
@@ -109,7 +109,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "gravityID",
+            "name": "slug",
             "args": null,
             "storageKey": null
           },
@@ -192,7 +192,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkActionsTestsErrorQuery",
-    "id": "1f63ee8ed12da3902a33d50eb658bf3d",
+    "id": "0d2baa473b672f6bf95005e5dc426f43",
     "text": null,
     "metadata": {}
   }

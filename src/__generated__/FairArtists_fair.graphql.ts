@@ -5,7 +5,7 @@ import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _FairArtists_fair$ref: unique symbol;
 export type FairArtists_fair$ref = typeof _FairArtists_fair$ref;
 export type FairArtists_fair = {
-    readonly gravityID: string;
+    readonly slug: string;
     readonly internalID: string;
     readonly artists: {
         readonly pageInfo: {
@@ -19,7 +19,7 @@ export type FairArtists_fair = {
                 readonly sortable_id: string | null;
                 readonly href: string | null;
                 readonly internalID: string;
-                readonly gravityID: string;
+                readonly slug: string;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
             } | null;
         } | null> | null;
@@ -33,7 +33,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -180,5 +180,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '798d5797ef0f9930ae89f7f2bb06219f';
+(node as any).hash = '784420be30377cb94b741d91a13a42a2';
 export default node;

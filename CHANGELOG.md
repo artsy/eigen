@@ -16,6 +16,8 @@
 
 ### Master
 
+- Metaphysics v2 update that removes gravityID - zephraph
+
 ### 1.12.5
 
 ### 1.12.4
@@ -24,7 +26,8 @@
 - Pass inches to view in room.
 - Fix carousel alignment - ds300
 - Fix styled-components warning - ds300
-- Use OpaqueImageView in ImageCarousel -ds300
+- Use OpaqueImageView in ImageCarousel - ds300
+- Make artwork screen full-screen - ds300
 
 ### 1.12.3
 

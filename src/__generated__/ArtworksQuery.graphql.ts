@@ -53,7 +53,7 @@ fragment Artworks_me_1G22uz on Me {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  gravityID
+  slug
   image {
     aspect_ratio
   }
@@ -68,7 +68,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -279,7 +279,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "slug",
                             "args": null,
                             "storageKey": null
                           },
@@ -515,7 +515,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksQuery",
-    "id": "f9ed27d800948ee545887fbe24292ac0",
+    "id": "27276606738defa251e67f70d6be684d",
     "text": null,
     "metadata": {}
   }

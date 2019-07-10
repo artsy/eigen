@@ -15,8 +15,8 @@ export type SaleArtworksGrid_sale = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly artwork: {
-                    readonly gravityID: string;
                     readonly id: string;
+                    readonly slug: string;
                     readonly image: {
                         readonly aspect_ratio: number;
                     } | null;
@@ -138,14 +138,14 @@ return {
                   "concreteType": "Artwork",
                   "plural": false,
                   "selections": [
+                    (v0/*: any*/),
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "gravityID",
+                      "name": "slug",
                       "args": null,
                       "storageKey": null
                     },
-                    (v0/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -194,5 +194,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2e58c9b07e0dcd2f7b9452dfd7774288';
+(node as any).hash = '10ca594d924eecac27e26e5b2b423cf6';
 export default node;

@@ -39,13 +39,13 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 fragment ConfirmBid_sale_artwork on SaleArtwork {
   internalID
   sale {
-    gravityID
+    slug
     live_start_at
     end_at
     id
   }
   artwork {
-    gravityID
+    slug
     title
     date
     artist_names
@@ -64,7 +64,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
-    gravityID
+    slug
     id
   }
 }
@@ -103,7 +103,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -277,7 +277,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SelectMaxBidRefetchQuery",
-    "id": "4d52dcd1baccb5d70cbad979c571a698",
+    "id": "7411f4c27efe23350e9d331e26473045",
     "text": null,
     "metadata": {}
   }
