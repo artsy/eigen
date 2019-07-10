@@ -1,15 +1,6 @@
 # Deploy to App Store
 
-## Pre-deploy Checklist
-
-1. Check out Eigen Artsy master.
-1. Ensure all required/expected analytics events are in `CHANGELOG.yml`.
-1. Run `make appstore`. This runs `pod install` and prompts for a release version number.
-1. Update `CHANGELOG.yml` with the release number and date.
-1. Add and commit the changed files, typically with `-m "Preparing for the next release, version X.Y.Z."`. PR the change.
-1. Once merged, pull from master and run `make deploy`.
-
-It takes about 45 minutes for [Circle CI](https://circleci.com/gh/artsy/eigen) to build and submit a binary (and for AppStoreConnect to process it). You'll be notified via email (and push notification, if you have the [iTunesConnect iOS app](https://itunes.apple.com/us/app/itunes-connect/id376771144?mt=8) installed.
+AppStore builds have to go through the beta process first. [Check out the beta docs](./deploy_to_beta.md) for more info.
 
 ## Test the Beta
 
@@ -17,8 +8,8 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
 
 ## Preparing to Ship a Final Version
 
-1. You'll need to update the release notes in `/fastlane/metadata/common/release_notes.txt`.
-1. Then, run `make promote_beta_to_submission`.
+1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/master/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version. Commit the changes.
+1. Run `make promote_beta_to_submission`. This will submit the **most recent beta** for App Store review
 
 ### What about IDFA?
 
@@ -31,12 +22,15 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 1. Go to [AppStoreConnect](https://appstoreconnect.apple.com).
 1. Navigate to Eigen.
 1. Select the version.
-1. Hit "Release this Version" button.
+1. Hit "Release this Version" button. It will take several hours for the new version to propagate through the AppStore to users.
 1. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #front-end channel on Slack for any errors (all production errors are sent to Slack when they first occur).
 
 ## Prepare for the Next Release
 
-1. Run `make next`. This runs `pod install` and prompts for the next version number.
 1. Create a new version of the app in AppStoreConnect (if you don't do this, beta deployments will fail).
-1. Move the release from `upcoming` to `releases` in `CHANGELOG.yml` and add a new, empty entry under `upcoming`.
-1. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`. PR the changes.
+  - Go to "My Apps", click Eigen ("Artsy: Buy & Sell Original Art"), click "+ version or platform", click "iOS", and enter version number.
+1. Run `make next`. This prompts for the next version number. **Use the same version** as the previous step.
+1. Move the release from `upcoming` to `releases` in `CHANGELOG.yml` and add a new, empty entry under `upcoming`. Make sure the `date` and `emission_version` entries are accurate. [Here is a previous commit](https://github.com/artsy/eigen/commit/580db98fa1165e01f81070e9bbc77598a47bcfc9#diff-96801928eca93eea4a5b44f359b868b5).
+1. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
+1. Run `make deploy` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
+1. PR your changes back into the `master` branch.
