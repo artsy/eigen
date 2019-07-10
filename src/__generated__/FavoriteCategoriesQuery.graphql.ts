@@ -32,7 +32,7 @@ fragment Categories_me on Me {
     edges {
       node {
         gene {
-          slug
+          gravityID
           id
           name
           href
@@ -169,7 +169,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -246,7 +246,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteCategoriesQuery",
-    "id": "ccfd869bb0364bd05a52ebda601de51f",
+    "id": "b01176ed0f4407bdf74b8b03f6541075",
     "text": null,
     "metadata": {}
   }

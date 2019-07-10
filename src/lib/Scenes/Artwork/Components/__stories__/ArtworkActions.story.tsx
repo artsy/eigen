@@ -11,7 +11,7 @@ storiesOf("Artwork/Components").add("All Actions", () => {
         id: "Blah",
         title: "Untitled",
         internalID: "HI",
-        slug: "andread-rod-prinzknecht",
+        gravityID: "andread-rod-prinzknecht",
         href: "/artwork/andreas-rod-prinzknecht",
         is_saved: false,
         artists: [

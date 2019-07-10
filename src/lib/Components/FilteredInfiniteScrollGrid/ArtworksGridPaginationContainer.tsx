@@ -22,7 +22,7 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<
           }
           edges {
             node {
-              slug
+              gravityID
               id
               image {
                 aspect_ratio

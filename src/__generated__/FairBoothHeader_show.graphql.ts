@@ -9,24 +9,24 @@ export type FairBoothHeader_show = {
     } | null;
     readonly partner: ({
         readonly name?: string | null;
-        readonly slug?: string;
+        readonly gravityID?: string;
         readonly internalID?: string;
         readonly id?: string;
         readonly href?: string | null;
         readonly profile?: {
             readonly internalID: string;
-            readonly slug: string;
+            readonly gravityID: string;
             readonly is_followed: boolean | null;
         } | null;
     } & ({
         readonly name: string | null;
-        readonly slug: string;
+        readonly gravityID: string;
         readonly internalID: string;
         readonly id: string;
         readonly href: string | null;
         readonly profile: {
             readonly internalID: string;
-            readonly slug: string;
+            readonly gravityID: string;
             readonly is_followed: boolean | null;
         } | null;
     } | {
@@ -57,7 +57,7 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -187,5 +187,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7a94e2d3fdf87285d19a2d5e4004611d';
+(node as any).hash = '2850f4093230d8302d5bbb0d667de960';
 export default node;

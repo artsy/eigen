@@ -113,7 +113,7 @@ fragment PartnerCard_artwork on Artwork {
     is_default_profile_public
     type
     name
-    slug
+    gravityID
     internalID
     id
     href
@@ -121,7 +121,7 @@ fragment PartnerCard_artwork on Artwork {
     profile {
       id
       internalID
-      slug
+      gravityID
       is_followed
       icon {
         url(version: "square140")
@@ -233,7 +233,7 @@ fragment ArtworkExtraLinks_artwork on Artwork {
 fragment ArtworkActions_artwork on Artwork {
   id
   internalID
-  slug
+  gravityID
   title
   href
   is_saved
@@ -277,15 +277,15 @@ fragment ImageCarousel_images on Image {
 }
 
 fragment FollowArtistButton_artist on Artist {
+  gravityID
   id
-  slug
   is_followed
 }
 
 fragment ArtistListItem_artist on Artist {
   id
   internalID
-  slug
+  gravityID
   name
   initials
   href
@@ -350,7 +350,7 @@ fragment RelatedArtworkGrid_artwork on Artwork {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
+  gravityID
   image {
     aspect_ratio
   }
@@ -365,7 +365,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -433,7 +433,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -1301,7 +1301,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "fbe202b1e66864f0a2ea216f39e258d6",
+    "id": "c25115db24e251baab8afb82fc438035",
     "text": null,
     "metadata": {}
   }

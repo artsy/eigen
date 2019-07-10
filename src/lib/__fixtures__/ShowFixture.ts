@@ -1,5 +1,5 @@
 export const ShowFixture = {
-  slug: "anderson-fine-art-gallery-flickinger-collection",
+  gravityID: "anderson-fine-art-gallery-flickinger-collection",
   internalID: "5b368a02275b245afc034d6f",
   openingReceptionText: "",
   city: "Sea Island ",
@@ -11,8 +11,8 @@ export const ShowFixture = {
   start_at: "2018-07-01T12:00:00+00:00",
   pressReleaseUrl: "https://example.com",
   location: {
-    id: "TG9jYXRpb246NWIzNjQ2NjRjYjRjMjcxNzQzNDkwMTkx",
-    internalID: "5b364664cb4c271743490191",
+    gravityID: "TG9jYXRpb246NWIzNjQ2NjRjYjRjMjcxNzQzNDkwMTkx",
+    id: "5b364664cb4c271743490191",
     city: "Sea Island ",
     address: "Online Exclusive",
     address_2: "",
@@ -45,7 +45,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
       internalID: "4d8b92854eb68a1b2c0001b8",
-      slug: "sam-francis",
+      gravityID: "sam-francis",
       name: "Sam Francis",
       initials: "SF",
       is_followed: false,
@@ -66,7 +66,7 @@ export const ShowFixture = {
           artist: {
             id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
             internalID: "4d8b92614eb68a1b2c000064",
-            slug: "hans-hofmann",
+            gravityID: "hans-hofmann",
             name: "Hans Hofmann",
             initials: "HH",
             is_followed: false,
@@ -86,7 +86,7 @@ export const ShowFixture = {
           artist: {
             id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
             internalID: "4d8b92854eb68a1b2c0001b8",
-            slug: "sam-francis",
+            gravityID: "sam-francis",
             name: "Sam Francis",
             is_followed: false,
             href: "/artist/sam-francis",
@@ -105,7 +105,7 @@ export const ShowFixture = {
           artist: {
             id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
             internalID: "4d8b928b4eb68a1b2c0001f2",
-            slug: "pablo-picasso",
+            gravityID: "pablo-picasso",
             name: "Pablo Picasso",
             is_followed: false,
             href: "/artist/pablo-picasso",
@@ -125,7 +125,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
       internalID: "4d8b92614eb68a1b2c000064",
-      slug: "hans-hofmann",
+      gravityID: "hans-hofmann",
       name: "Hans Hofmann",
       is_followed: false,
       initials: "HH",
@@ -141,7 +141,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmRhdmlkLWhvY2tuZXk=",
       internalID: "4d8b92854eb68a1b2c0001b6",
-      slug: "david-hockney",
+      gravityID: "david-hockney",
       name: "David Hockney",
       is_followed: false,
       initials: "DH",
@@ -157,7 +157,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
       internalID: "4d8b92854eb68a1b2c0001b8",
-      slug: "sam-francis",
+      gravityID: "sam-francis",
       name: "Sam Francis",
       is_followed: false,
       initials: "SF",
@@ -173,7 +173,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
       internalID: "4d8b928b4eb68a1b2c0001f2",
-      slug: "pablo-picasso",
+      gravityID: "pablo-picasso",
       name: "Pablo Picasso",
       is_followed: false,
       initials: "PP",
@@ -189,7 +189,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OndvbGYta2Fobg==",
       internalID: "4d8b928b4eb68a1b2c0001fa",
-      slug: "wolf-kahn",
+      gravityID: "wolf-kahn",
       name: "Wolf Kahn",
       is_followed: false,
       initials: "WK",
@@ -205,7 +205,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OnJvYmVydC1tb3RoZXJ3ZWxs",
       internalID: "4d8b92a24eb68a1b2c000318",
-      slug: "robert-motherwell",
+      gravityID: "robert-motherwell",
       name: "Robert Motherwell",
       is_followed: false,
       initials: "SF",
@@ -221,7 +221,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmppbS1kaW5l",
       internalID: "4d8d1266876c697ae1000050",
-      slug: "jim-dine",
+      gravityID: "jim-dine",
       name: "Jim Dine",
       is_followed: false,
       initials: "SF",
@@ -237,7 +237,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmVsbHN3b3J0aC1rZWxseQ==",
       internalID: "4dbe1873a671b202fd0001b3",
-      slug: "ellsworth-kelly",
+      gravityID: "ellsworth-kelly",
       name: "Ellsworth Kelly",
       initials: "SF",
       is_followed: false,
@@ -253,7 +253,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmJyaWRnZXQtcmlsZXk=",
       internalID: "4ddbb26110c9af00010018a7",
-      slug: "bridget-riley",
+      gravityID: "bridget-riley",
       name: "Bridget Riley",
       is_followed: false,
       initials: "SF",
@@ -269,7 +269,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OnJpY2hhcmQtZGllYmVua29ybg==",
       internalID: "4df4438f81d91d0001002d9c",
-      slug: "richard-diebenkorn",
+      gravityID: "richard-diebenkorn",
       name: "Richard Diebenkorn",
       is_followed: false,
       initials: "SF",
@@ -285,7 +285,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmthcmVsLWFwcGVs",
       internalID: "4df612a628eaa10001004397",
-      slug: "karel-appel",
+      gravityID: "karel-appel",
       name: "Karel Appel",
       is_followed: false,
       href: "/artist/karel-appel",
@@ -301,7 +301,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmRhbGUtY2hpaHVseQ==",
       internalID: "4e97356d4e77d300010008fa",
-      slug: "dale-chihuly",
+      gravityID: "dale-chihuly",
       name: "Dale Chihuly",
       is_followed: false,
       initials: "SF",
@@ -317,7 +317,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OnBvbGx5LWFwZmVsYmF1bQ==",
       internalID: "4f5f64c13b555230ac00003a",
-      slug: "polly-apfelbaum",
+      gravityID: "polly-apfelbaum",
       name: "Polly Apfelbaum",
       is_followed: false,
       initials: "SF",
@@ -333,7 +333,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmNhcm9seW4tYnJhZHk=",
       internalID: "506b3335446617000200054c",
-      slug: "carolyn-brady",
+      gravityID: "carolyn-brady",
       name: "Carolyn Brady",
       is_followed: false,
       initials: "SF",
@@ -349,7 +349,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0Om5lbGwtYmxhaW5l",
       internalID: "50c84c1e623327ed6c000c24",
-      slug: "nell-blaine",
+      gravityID: "nell-blaine",
       name: "Nell Blaine",
       is_followed: false,
       href: "/artist/nell-blaine",
@@ -365,7 +365,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OmJydWNlLWJlYXNsZXk=",
       internalID: "55fc7e16726169225600007c",
-      slug: "bruce-beasley",
+      gravityID: "bruce-beasley",
       name: "Bruce Beasley",
       is_followed: false,
       href: "/artist/bruce-beasley",
@@ -381,7 +381,7 @@ export const ShowFixture = {
     {
       id: "QXJ0aXN0OnJvYmVydC1oYXJtcw==",
       internalID: "568453ce66fd1c650b000057",
-      slug: "robert-harms",
+      gravityID: "robert-harms",
       name: "Robert Harms",
       is_followed: false,
       href: "/artist/robert-harms",
@@ -399,8 +399,8 @@ export const ShowFixture = {
     edges: [
       {
         node: {
-          id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U=",
-          slug: "carolyn-brady-stourhead-across-the-lake",
+          gravityID: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U=",
+          id: "carolyn-brady-stourhead-across-the-lake",
           title: "Stourhead Across the Lake",
           partner: {
             __typename: "Partner",
@@ -443,8 +443,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpyb2JlcnQtaGFybXMtYmx1ZmYtcm9hZA==",
-          slug: "robert-harms-bluff-road",
+          gravityID: "QXJ0d29yazpyb2JlcnQtaGFybXMtYmx1ZmYtcm9hZA==",
+          id: "robert-harms-bluff-road",
           title: "Bluff Road",
           partner: {
             __typename: "Partner",
@@ -487,8 +487,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpqaW0tZGluZS1hbi1pbmZvcm1hbC10aWU=",
-          slug: "jim-dine-an-informal-tie",
+          gravityID: "QXJ0d29yazpqaW0tZGluZS1hbi1pbmZvcm1hbC10aWU=",
+          id: "jim-dine-an-informal-tie",
           title: "An Informal Tie",
           partner: {
             __typename: "Partner",
@@ -531,8 +531,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpyaWNoYXJkLWRpZWJlbmtvcm4tYmx1ZS13aXRoLXJlZC0xNQ==",
-          slug: "richard-diebenkorn-blue-with-red-15",
+          gravityID: "QXJ0d29yazpyaWNoYXJkLWRpZWJlbmtvcm4tYmx1ZS13aXRoLXJlZC0xNQ==",
+          id: "richard-diebenkorn-blue-with-red-15",
           title: "Blue with Red",
           partner: {
             __typename: "Partner",
@@ -575,8 +575,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazprYXJlbC1hcHBlbC1oYXBweS1naG9zdA==",
-          slug: "karel-appel-happy-ghost",
+          gravityID: "QXJ0d29yazprYXJlbC1hcHBlbC1oYXBweS1naG9zdA==",
+          id: "karel-appel-happy-ghost",
           title: "Happy Ghost",
           partner: {
             __typename: "Partner",
@@ -619,8 +619,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpuZWxsLWJsYWluZS1hdWd1c3QtbGlnaHQ=",
-          slug: "nell-blaine-august-light",
+          gravityID: "QXJ0d29yazpuZWxsLWJsYWluZS1hdWd1c3QtbGlnaHQ=",
+          id: "nell-blaine-august-light",
           title: "August Light",
           partner: {
             __typename: "Partner",
@@ -663,8 +663,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpicnVjZS1iZWFzbGV5LXZveWFnZXI=",
-          slug: "bruce-beasley-voyager",
+          gravityID: "QXJ0d29yazpicnVjZS1iZWFzbGV5LXZveWFnZXI=",
+          id: "bruce-beasley-voyager",
           title: "Voyager",
           partner: {
             __typename: "Partner",
@@ -707,8 +707,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpzYW0tZnJhbmNpcy11bmRlci1ibHVlLTM=",
-          slug: "sam-francis-under-blue-3",
+          gravityID: "QXJ0d29yazpzYW0tZnJhbmNpcy11bmRlci1ibHVlLTM=",
+          id: "sam-francis-under-blue-3",
           title: "Under Blue",
           partner: {
             __typename: "Partner",
@@ -751,8 +751,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXRhbWFyaW5k",
-          slug: "carolyn-brady-tamarind",
+          gravityID: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXRhbWFyaW5k",
+          id: "carolyn-brady-tamarind",
           title: "Tamarind",
           partner: {
             __typename: "Partner",
@@ -795,8 +795,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpyb2JlcnQtbW90aGVyd2VsbC1udW1iZXItOA==",
-          slug: "robert-motherwell-number-8",
+          gravityID: "QXJ0d29yazpyb2JlcnQtbW90aGVyd2VsbC1udW1iZXItOA==",
+          id: "robert-motherwell-number-8",
           title: "Number 8",
           partner: {
             __typename: "Partner",
@@ -839,8 +839,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazplbGxzd29ydGgta2VsbHktZ3JlZW4tY3VydmUtMTQ=",
-          slug: "ellsworth-kelly-green-curve-14",
+          gravityID: "QXJ0d29yazplbGxzd29ydGgta2VsbHktZ3JlZW4tY3VydmUtMTQ=",
+          id: "ellsworth-kelly-green-curve-14",
           title: "Green Curve",
           partner: {
             __typename: "Partner",
@@ -883,8 +883,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazp3b2xmLWthaG4taW4taXBzd2ljaC1tYXNz",
-          slug: "wolf-kahn-in-ipswich-mass",
+          gravityID: "QXJ0d29yazp3b2xmLWthaG4taW4taXBzd2ljaC1tYXNz",
+          id: "wolf-kahn-in-ipswich-mass",
           title: "In Ipswich, Mass",
           partner: {
             __typename: "Partner",
@@ -927,8 +927,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpkYXZpZC1ob2NrbmV5LW15LXBvb2wtYW5kLXRlcnJhY2UtNA==",
-          slug: "david-hockney-my-pool-and-terrace-4",
+          gravityID: "QXJ0d29yazpkYXZpZC1ob2NrbmV5LW15LXBvb2wtYW5kLXRlcnJhY2UtNA==",
+          id: "david-hockney-my-pool-and-terrace-4",
           title: "My Pool & Terrace",
           partner: {
             __typename: "Partner",
@@ -971,8 +971,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazp3b2xmLWthaG4tb3JjaGFyZC1hdC1kdXNr",
-          slug: "wolf-kahn-orchard-at-dusk",
+          gravityID: "QXJ0d29yazp3b2xmLWthaG4tb3JjaGFyZC1hdC1kdXNr",
+          id: "wolf-kahn-orchard-at-dusk",
           title: "Orchard at Dusk",
           partner: {
             __typename: "Partner",
@@ -1015,8 +1015,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpoYW5zLWhvZm1hbm4tdW50aXRsZWQtMjIx",
-          slug: "hans-hofmann-untitled-221",
+          gravityID: "QXJ0d29yazpoYW5zLWhvZm1hbm4tdW50aXRsZWQtMjIx",
+          id: "hans-hofmann-untitled-221",
           title: "Untitled",
           partner: {
             __typename: "Partner",
@@ -1059,8 +1059,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpwb2xseS1hcGZlbGJhdW0tbG92ZS1tZS10ZW5kZXItaWk=",
-          slug: "polly-apfelbaum-love-me-tender-ii",
+          gravityID: "QXJ0d29yazpwb2xseS1hcGZlbGJhdW0tbG92ZS1tZS10ZW5kZXItaWk=",
+          id: "polly-apfelbaum-love-me-tender-ii",
           title: "Love Me Tender II",
           partner: {
             __typename: "Partner",
@@ -1103,8 +1103,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpicmlkZ2V0LXJpbGV5LWJsdWUtZG9taW5hbmNl",
-          slug: "bridget-riley-blue-dominance",
+          gravityID: "QXJ0d29yazpicmlkZ2V0LXJpbGV5LWJsdWUtZG9taW5hbmNl",
+          id: "bridget-riley-blue-dominance",
           title: "Blue Dominance",
           partner: {
             __typename: "Partner",
@@ -1149,7 +1149,7 @@ export const ShowFixture = {
         node: {
           id:
             "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
-          slug: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
+          gravityID: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
           title: "Model Contemplating a Group of Sculptures (Modele Contemplant Un Groupe Sculpte)",
           partner: {
             __typename: "Partner",
@@ -1192,8 +1192,8 @@ export const ShowFixture = {
       },
       {
         node: {
-          id: "QXJ0d29yazpkYWxlLWNoaWh1bHktY2VsdGljLWVtZXJhbGQtcGVyc2lhbi1wYWly",
-          slug: "dale-chihuly-celtic-emerald-persian-pair",
+          gravityID: "QXJ0d29yazpkYWxlLWNoaWh1bHktY2VsdGljLWVtZXJhbGQtcGVyc2lhbi1wYWly",
+          id: "dale-chihuly-celtic-emerald-persian-pair",
           title: "Celtic Emerald Persian Pair",
           partner: {
             __typename: "Partner",
@@ -1473,7 +1473,7 @@ export const ShowFixture = {
       letter: "A",
       items: [
         {
-          slug: "polly-apfelbaum",
+          gravityID: "polly-apfelbaum",
           id: "QXJ0aXN0OnBvbGx5LWFwZmVsYmF1bQ==",
           name: "Polly Apfelbaum",
           is_followed: false,
@@ -1485,7 +1485,7 @@ export const ShowFixture = {
           },
         },
         {
-          slug: "karel-appel",
+          gravityID: "karel-appel",
           id: "QXJ0aXN0OmthcmVsLWFwcGVs",
           name: "Karel Appel",
           is_followed: false,
@@ -1502,7 +1502,7 @@ export const ShowFixture = {
       letter: "B",
       items: [
         {
-          slug: "bruce-beasley",
+          gravityID: "bruce-beasley",
           id: "QXJ0aXN0OmJydWNlLWJlYXNsZXk=",
           name: "Bruce Beasley",
           is_followed: false,
@@ -1514,7 +1514,7 @@ export const ShowFixture = {
           },
         },
         {
-          slug: "nell-blaine",
+          gravityID: "nell-blaine",
           id: "QXJ0aXN0Om5lbGwtYmxhaW5l",
           name: "Nell Blaine",
           is_followed: false,
@@ -1526,7 +1526,7 @@ export const ShowFixture = {
           },
         },
         {
-          slug: "carolyn-brady",
+          gravityID: "carolyn-brady",
           id: "QXJ0aXN0OmNhcm9seW4tYnJhZHk=",
           name: "Carolyn Brady",
           is_followed: false,
@@ -1543,7 +1543,7 @@ export const ShowFixture = {
       letter: "C",
       items: [
         {
-          slug: "dale-chihuly",
+          gravityID: "dale-chihuly",
           id: "QXJ0aXN0OmRhbGUtY2hpaHVseQ==",
           name: "Dale Chihuly",
           is_followed: false,
@@ -1560,7 +1560,7 @@ export const ShowFixture = {
       letter: "D",
       items: [
         {
-          slug: "richard-diebenkorn",
+          gravityID: "richard-diebenkorn",
           id: "QXJ0aXN0OnJpY2hhcmQtZGllYmVua29ybg==",
           name: "Richard Diebenkorn",
           is_followed: false,
@@ -1572,7 +1572,7 @@ export const ShowFixture = {
           },
         },
         {
-          slug: "jim-dine",
+          gravityID: "jim-dine",
           id: "QXJ0aXN0OmppbS1kaW5l",
           name: "Jim Dine",
           is_followed: false,
@@ -1589,7 +1589,7 @@ export const ShowFixture = {
       letter: "F",
       items: [
         {
-          slug: "sam-francis",
+          gravityID: "sam-francis",
           id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
           name: "Sam Francis",
           is_followed: false,
@@ -1606,7 +1606,7 @@ export const ShowFixture = {
       letter: "H",
       items: [
         {
-          slug: "robert-harms",
+          gravityID: "robert-harms",
           id: "QXJ0aXN0OnJvYmVydC1oYXJtcw==",
           name: "Robert Harms",
           is_followed: false,
@@ -1618,7 +1618,7 @@ export const ShowFixture = {
           },
         },
         {
-          slug: "david-hockney",
+          gravityID: "david-hockney",
           id: "QXJ0aXN0OmRhdmlkLWhvY2tuZXk=",
           name: "David Hockney",
           is_followed: false,
@@ -1630,7 +1630,7 @@ export const ShowFixture = {
           },
         },
         {
-          slug: "hans-hofmann",
+          gravityID: "hans-hofmann",
           id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
           name: "Hans Hofmann",
           is_followed: false,
@@ -1647,7 +1647,7 @@ export const ShowFixture = {
       letter: "K",
       items: [
         {
-          slug: "wolf-kahn",
+          gravityID: "wolf-kahn",
           id: "QXJ0aXN0OndvbGYta2Fobg==",
           name: "Wolf Kahn",
           is_followed: false,
@@ -1659,7 +1659,7 @@ export const ShowFixture = {
           },
         },
         {
-          slug: "ellsworth-kelly",
+          gravityID: "ellsworth-kelly",
           id: "QXJ0aXN0OmVsbHN3b3J0aC1rZWxseQ==",
           name: "Ellsworth Kelly",
           is_followed: false,
@@ -1676,7 +1676,7 @@ export const ShowFixture = {
       letter: "M",
       items: [
         {
-          slug: "robert-motherwell",
+          gravityID: "robert-motherwell",
           id: "QXJ0aXN0OnJvYmVydC1tb3RoZXJ3ZWxs",
           name: "Robert Motherwell",
           is_followed: false,
@@ -1693,7 +1693,7 @@ export const ShowFixture = {
       letter: "P",
       items: [
         {
-          slug: "pablo-picasso",
+          gravityID: "pablo-picasso",
           id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
           name: "Pablo Picasso",
           is_followed: false,
@@ -1710,7 +1710,7 @@ export const ShowFixture = {
       letter: "R",
       items: [
         {
-          slug: "bridget-riley",
+          gravityID: "bridget-riley",
           id: "QXJ0aXN0OmJyaWRnZXQtcmlsZXk=",
           name: "Bridget Riley",
           is_followed: false,

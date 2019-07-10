@@ -180,7 +180,7 @@ describe("PartnerCard", () => {
       const unfollowResponse = {
         profile: {
           is_followed: false,
-          slug: PartnerCardArtwork.partner.slug,
+          gravityID: PartnerCardArtwork.partner.gravityID,
           internalID: PartnerCardArtwork.partner.internalID,
         },
       }
@@ -210,7 +210,7 @@ describe("PartnerCard", () => {
       const followResponse = {
         profile: {
           is_followed: true,
-          slug: PartnerCardArtwork.partner.slug,
+          gravityID: PartnerCardArtwork.partner.gravityID,
           internalID: PartnerCardArtwork.partner.internalID,
         },
       }
@@ -281,7 +281,7 @@ const PartnerCardArtwork = {
     is_default_profile_public: true,
     type: "Gallery",
     name: "Test Gallery",
-    slug: "12345",
+    gravityID: "12345",
     internalID: "56789",
     id: "12345",
     href: "",
@@ -289,7 +289,7 @@ const PartnerCardArtwork = {
     profile: {
       id: "12345",
       internalID: "56789",
-      slug: "12345",
+      gravityID: "12345",
       is_followed: false,
       icon: {
         url: "https://d32dm0rphc51dk.cloudfront.net/YciR5levjrhp2JnFYlPxpw/square140.png",

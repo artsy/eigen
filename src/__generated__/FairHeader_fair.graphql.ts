@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _FairHeader_fair$ref: unique symbol;
 export type FairHeader_fair$ref = typeof _FairHeader_fair$ref;
 export type FairHeader_fair = {
-    readonly slug: string;
+    readonly gravityID: string;
     readonly internalID: string;
     readonly name: string | null;
     readonly formattedOpeningHours: string | null;
@@ -16,7 +16,7 @@ export type FairHeader_fair = {
         readonly artists: ReadonlyArray<{
             readonly name: string | null;
             readonly href: string | null;
-            readonly slug: string;
+            readonly gravityID: string;
             readonly internalID: string;
         } | null> | null;
         readonly galleries: ReadonlyArray<{
@@ -27,17 +27,17 @@ export type FairHeader_fair = {
     readonly partner_names: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly slug: string;
+                readonly gravityID: string;
                 readonly partner: ({
                     readonly profile?: {
                         readonly name: string | null;
-                        readonly slug: string;
+                        readonly gravityID: string;
                         readonly internalID: string;
                     } | null;
                 } & ({
                     readonly profile: {
                         readonly name: string | null;
-                        readonly slug: string;
+                        readonly gravityID: string;
                         readonly internalID: string;
                     } | null;
                 } | {
@@ -53,7 +53,7 @@ export type FairHeader_fair = {
             readonly node: {
                 readonly name: string | null;
                 readonly href: string | null;
-                readonly slug: string;
+                readonly gravityID: string;
                 readonly internalID: string;
             } | null;
         } | null> | null;
@@ -65,14 +65,14 @@ export type FairHeader_fair = {
     } | null;
     readonly profile: {
         readonly icon: {
-            readonly internalID: string | null;
+            readonly gravityID: string | null;
             readonly href: string | null;
             readonly height: number | null;
             readonly width: number | null;
             readonly url: string | null;
         } | null;
         readonly id: string;
-        readonly slug: string;
+        readonly gravityID: string;
         readonly name: string | null;
         readonly is_followed: boolean | null;
     } | null;
@@ -88,7 +88,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -354,7 +354,7 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            (v1/*: any*/),
+            (v0/*: any*/),
             (v3/*: any*/),
             {
               "kind": "ScalarField",
@@ -427,5 +427,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7a2031253ae46bbe0f1631820af278e5';
+(node as any).hash = '3910c3c8c2ceaf3607cb25e04e106bf2';
 export default node;

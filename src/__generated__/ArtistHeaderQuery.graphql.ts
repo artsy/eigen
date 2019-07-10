@@ -29,7 +29,7 @@ query ArtistHeaderQuery(
 
 fragment Header_artist on Artist {
   internalID
-  slug
+  gravityID
   name
   nationality
   birthday
@@ -106,7 +106,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -163,7 +163,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistHeaderQuery",
-    "id": "859b57244a0242fae10d039fedf47822",
+    "id": "858d6efef918cfb78435929841e9b4f8",
     "text": null,
     "metadata": {}
   }

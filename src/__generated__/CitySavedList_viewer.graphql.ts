@@ -12,7 +12,7 @@ export type CitySavedList_viewer = {
             readonly shows: {
                 readonly edges: ReadonlyArray<{
                     readonly node: {
-                        readonly slug: string;
+                        readonly gravityID: string;
                         readonly internalID: string;
                         readonly id: string;
                         readonly name: string | null;
@@ -194,7 +194,7 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "slug",
+                          "name": "gravityID",
                           "args": null,
                           "storageKey": null
                         },
@@ -423,5 +423,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4c7ed904a47bdc40b031b778290f60b1';
+(node as any).hash = '173d211e4d5a1080883a2cf33f9f2b6b';
 export default node;

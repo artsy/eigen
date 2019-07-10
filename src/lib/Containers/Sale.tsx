@@ -163,7 +163,7 @@ export default createRefetchContainer(
   {
     sale: graphql`
       fragment Sale_sale on Sale {
-        slug
+        gravityID
         name
         ...Header_sale
         ...SaleArtworksGrid_sale

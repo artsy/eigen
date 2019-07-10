@@ -33,13 +33,13 @@ fragment Show_show on Show {
 
 fragment Detail_show on Show {
   internalID
-  slug
+  gravityID
   name
   description
   city
   isStubShow
   images {
-    internalID
+    gravityID
   }
   ...ShowHeader_show
   ...ShowArtworksPreview_show
@@ -62,7 +62,7 @@ fragment Detail_show on Show {
     id
   }
   artists_without_artworks {
-    slug
+    gravityID
     id
   }
   counts {
@@ -86,7 +86,7 @@ fragment Detail_show on Show {
 }
 
 fragment ShowHeader_show on Show {
-  slug
+  gravityID
   internalID
   id
   name
@@ -100,7 +100,7 @@ fragment ShowHeader_show on Show {
     __typename
     ... on Partner {
       name
-      slug
+      gravityID
       href
     }
     ... on Node {
@@ -120,7 +120,7 @@ fragment ShowHeader_show on Show {
         artist {
           name
           href
-          slug
+          gravityID
           internalID
           id
         }
@@ -130,7 +130,7 @@ fragment ShowHeader_show on Show {
   artists {
     name
     href
-    slug
+    gravityID
     internalID
     id
   }
@@ -153,17 +153,17 @@ fragment ShowArtworksPreview_show on Show {
 
 fragment ShowArtistsPreview_show on Show {
   internalID
-  slug
+  gravityID
   artists {
     internalID
-    slug
+    gravityID
     href
     ...ArtistListItem_artist
     id
   }
   artists_without_artworks {
     internalID
-    slug
+    gravityID
     href
     ...ArtistListItem_artist
     id
@@ -183,7 +183,7 @@ fragment Shows_show on Show {
 
 fragment LocationMap_location on Location {
   id
-  internalID
+  gravityID
   city
   address
   address_2
@@ -214,7 +214,7 @@ fragment LocationMap_location on Location {
 
 fragment ShowItem_show on Show {
   internalID
-  slug
+  gravityID
   name
   exhibition_period
   end_at
@@ -239,7 +239,7 @@ fragment ShowItem_show on Show {
 fragment ArtistListItem_artist on Artist {
   id
   internalID
-  slug
+  gravityID
   name
   initials
   href
@@ -254,7 +254,7 @@ fragment ArtistListItem_artist on Artist {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
+  gravityID
   image {
     aspect_ratio
   }
@@ -269,7 +269,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -326,7 +326,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -512,7 +512,7 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
+              (v3/*: any*/),
               (v6/*: any*/),
               (v7/*: any*/)
             ]
@@ -995,7 +995,7 @@ return {
             "plural": false,
             "selections": [
               (v8/*: any*/),
-              (v2/*: any*/),
+              (v3/*: any*/),
               (v5/*: any*/),
               {
                 "kind": "ScalarField",
@@ -1147,7 +1147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersShowQuery",
-    "id": "4792ed6456ea67f648008ba6ce626f6a",
+    "id": "5f0da959fda67b2deeedd19521b6f064",
     "text": null,
     "metadata": {}
   }

@@ -12,7 +12,7 @@ export type BidResult_sale_artwork = {
     readonly sale: {
         readonly live_start_at: string | null;
         readonly end_at: string | null;
-        readonly slug: string;
+        readonly gravityID: string;
     } | null;
     readonly " $refType": BidResult_sale_artwork$ref;
 };
@@ -84,7 +84,7 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "slug",
+          "name": "gravityID",
           "args": null,
           "storageKey": null
         }
@@ -92,5 +92,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '9fdf32ca52ce9d45e2f6f425f27f5d87';
+(node as any).hash = '7e7efbc1fdee3686cd3b2330b2dd2ae9';
 export default node;

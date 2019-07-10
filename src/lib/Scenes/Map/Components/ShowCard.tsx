@@ -53,9 +53,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
   }
 
   componentDidUpdate(prevProps: ShowCardProps) {
-    // FIXME: Should this be slug?
-    const previousIds = prevProps.shows.map(show => show.slug)
-    const currentIds = this.props.shows.map(show => show.slug)
+    const previousIds = prevProps.shows.map(show => show.gravityID)
+    const currentIds = this.props.shows.map(show => show.gravityID)
     const equal = isEqual(previousIds, currentIds)
 
     if (!this.state.isSaving && !equal && this.list) {

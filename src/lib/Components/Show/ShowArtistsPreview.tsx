@@ -28,7 +28,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handlePress(url: string, _slug: string, _internalID: string) {
+  handlePress(url: string, _slug: string, _gravityID: string) {
     Switchboard.presentNavigationViewController(this.props.Component || this, url)
   }
 
@@ -43,9 +43,9 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          const { slug } = artist
+          const { gravityID } = artist
           return (
-            <React.Fragment key={slug}>
+            <React.Fragment key={gravityID}>
               <ArtistListItem artist={artist} Component={Component} />
               {idx < arr.length - 1 && <Spacer m={1} />}
             </React.Fragment>
@@ -66,12 +66,12 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPr
   show: graphql`
     fragment ShowArtistsPreview_show on Show {
       internalID
-      slug
+      gravityID
 
       # Comes from CMS
       artists {
         internalID
-        slug
+        gravityID
         href
         ...ArtistListItem_artist
       }
@@ -79,7 +79,7 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPr
       # Comes from stubbed data
       artists_without_artworks {
         internalID
-        slug
+        gravityID
         href
         ...ArtistListItem_artist
       }

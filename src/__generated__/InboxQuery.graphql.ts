@@ -109,7 +109,6 @@ fragment ConversationSnippet_conversation on Conversation {
   internalID
   to {
     name
-    id
   }
   last_message
   last_message_at
@@ -227,11 +226,7 @@ v9 = {
   "args": null,
   "storageKey": null
 },
-v10 = [
-  (v9/*: any*/),
-  (v1/*: any*/)
-],
-v11 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -523,7 +518,9 @@ return {
                         "args": null,
                         "concreteType": "ConversationResponder",
                         "plural": false,
-                        "selections": (v10/*: any*/)
+                        "selections": [
+                          (v9/*: any*/)
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -557,7 +554,7 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v11/*: any*/),
+                              (v10/*: any*/),
                               (v1/*: any*/),
                               {
                                 "kind": "InlineFragment",
@@ -593,7 +590,10 @@ return {
                                     "args": null,
                                     "concreteType": "Fair",
                                     "plural": false,
-                                    "selections": (v10/*: any*/)
+                                    "selections": [
+                                      (v9/*: any*/),
+                                      (v1/*: any*/)
+                                    ]
                                   },
                                   (v9/*: any*/),
                                   {
@@ -613,7 +613,7 @@ return {
                         ]
                       },
                       (v1/*: any*/),
-                      (v11/*: any*/)
+                      (v10/*: any*/)
                     ]
                   },
                   {
@@ -644,7 +644,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxQuery",
-    "id": "42a0391a536e15ef9c8b580831ca2ba4",
+    "id": "c48b3c3e3c611073bcda3d85bfb73274",
     "text": null,
     "metadata": {}
   }

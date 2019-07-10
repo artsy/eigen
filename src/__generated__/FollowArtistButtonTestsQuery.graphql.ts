@@ -24,8 +24,8 @@ query FollowArtistButtonTestsQuery {
 }
 
 fragment FollowArtistButton_artist on Artist {
+  gravityID
   id
-  slug
   is_followed
 }
 */
@@ -82,14 +82,14 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "id",
             "args": null,
             "storageKey": null
           },
@@ -107,7 +107,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FollowArtistButtonTestsQuery",
-    "id": "67526adead0e6583785dbdb1db7b2723",
+    "id": "829e41bcd582ae3f80e7e6d8ea7a2d44",
     "text": null,
     "metadata": {}
   }

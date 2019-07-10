@@ -52,7 +52,6 @@ fragment ConversationSnippet_conversation on Conversation {
   internalID
   to {
     name
-    id
   }
   last_message
   last_message_at
@@ -123,22 +122,18 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v4 = [
-  (v2/*: any*/),
-  (v3/*: any*/)
-],
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v6 = [
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v5 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -273,7 +268,9 @@ return {
                         "args": null,
                         "concreteType": "ConversationResponder",
                         "plural": false,
-                        "selections": (v4/*: any*/)
+                        "selections": [
+                          (v2/*: any*/)
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -307,8 +304,8 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v5/*: any*/),
                               (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Artwork",
@@ -342,7 +339,7 @@ return {
                                     "args": null,
                                     "concreteType": "Image",
                                     "plural": false,
-                                    "selections": (v6/*: any*/)
+                                    "selections": (v5/*: any*/)
                                   }
                                 ]
                               },
@@ -358,7 +355,10 @@ return {
                                     "args": null,
                                     "concreteType": "Fair",
                                     "plural": false,
-                                    "selections": (v4/*: any*/)
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v4/*: any*/)
+                                    ]
                                   },
                                   (v2/*: any*/),
                                   {
@@ -369,7 +369,7 @@ return {
                                     "args": null,
                                     "concreteType": "Image",
                                     "plural": false,
-                                    "selections": (v6/*: any*/)
+                                    "selections": (v5/*: any*/)
                                   }
                                 ]
                               }
@@ -377,8 +377,8 @@ return {
                           }
                         ]
                       },
-                      (v3/*: any*/),
-                      (v5/*: any*/)
+                      (v4/*: any*/),
+                      (v3/*: any*/)
                     ]
                   },
                   {
@@ -401,7 +401,7 @@ return {
             "key": "Conversations_conversations",
             "filters": null
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ]
       }
     ]
@@ -409,7 +409,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationsQuery",
-    "id": "06dca04568aa221eb693f50b9a962628",
+    "id": "4a460788273284f622d84acf7ae957e8",
     "text": null,
     "metadata": {}
   }

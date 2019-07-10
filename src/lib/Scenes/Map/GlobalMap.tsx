@@ -370,8 +370,7 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        // FIXME: Should this be slug?
-        this.shows[node.slug] = node
+        this.shows[node.gravityID] = node
       })
 
       city.fairs.edges.forEach(({ node }) => {
@@ -379,8 +378,7 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        // FIXME: Should this be slug?
-        this.fairs[node.slug] = {
+        this.fairs[node.gravityID] = {
           ...node,
           type: "Fair",
         }
@@ -430,8 +428,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const lat = item.location.coordinates.lat
     const lng = item.location.coordinates.lng
-    // FIXME: Should this be slug? Looks like maybe it's internalID or id
-    const id = item.slug
+    const id = item.gravityID
 
     if (type === "Fair") {
       return (
@@ -798,7 +795,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
           introText
           artGuideUrl
           featuredShows {
-            slug
+            gravityID
             internalID
             id
             name
@@ -839,7 +836,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         ) {
           edges {
             node {
-              slug
+              gravityID
               internalID
               id
               isStubShow
@@ -879,7 +876,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
           edges {
             node {
-              slug
+              gravityID
               internalID
               id
               isStubShow
@@ -919,7 +916,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
-              slug
+              gravityID
               name
               exhibition_period
               counts {
@@ -941,14 +938,14 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
 
               profile {
                 icon {
-                  internalID
+                  gravityID
                   href
                   height
                   width
                   url(version: "square140")
                 }
                 id
-                slug
+                gravityID
                 name
               }
 

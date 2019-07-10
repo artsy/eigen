@@ -39,7 +39,7 @@ fragment CitySavedList_viewer_1G22uz on Viewer {
       shows(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor) {
         edges {
           node {
-            slug
+            gravityID
             internalID
             id
             name
@@ -284,7 +284,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "slug",
+                                "name": "gravityID",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -522,7 +522,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySavedListQuery",
-    "id": "ad0a2c0fe2b16e5d6732676badf30e3a",
+    "id": "4970e95662a530b17224c91c55f5ba09",
     "text": null,
     "metadata": {}
   }

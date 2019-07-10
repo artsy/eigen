@@ -23,8 +23,8 @@ export class Fair extends React.Component<Props> {
 export const FairContainer = createFragmentContainer(Fair, {
   fair: graphql`
     fragment Fair_fair on Fair {
+      gravityID
       id
-      slug
       ...FairDetail_fair
 
       organizer {

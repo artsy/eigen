@@ -32,13 +32,13 @@ fragment FairBoothHeader_show on Show {
     __typename
     ... on Partner {
       name
-      slug
+      gravityID
       internalID
       id
       href
       profile {
         internalID
-        slug
+        gravityID
         is_followed
         id
       }
@@ -86,7 +86,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -259,7 +259,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothHeaderTestsQuery",
-    "id": "aba29590be075b5970172d972281d04b",
+    "id": "075eef9b05a517134134c1782389911b",
     "text": null,
     "metadata": {}
   }

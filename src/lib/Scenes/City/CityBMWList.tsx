@@ -84,7 +84,7 @@ export default createPaginationContainer(
             @connection(key: "CityBMWList_shows") {
             edges {
               node {
-                slug
+                gravityID
                 internalID
                 id
                 name

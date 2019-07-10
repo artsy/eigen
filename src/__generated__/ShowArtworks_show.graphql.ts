@@ -6,7 +6,7 @@ declare const _ShowArtworks_show$ref: unique symbol;
 export type ShowArtworks_show$ref = typeof _ShowArtworks_show$ref;
 export type ShowArtworks_show = {
     readonly id: string;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly internalID: string;
     readonly filteredArtworks: {
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
@@ -46,7 +46,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -100,5 +100,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6b5c7e25f445a823b7d56a75a287f2cd';
+(node as any).hash = 'd058455f31e38b7b75642f5407605908';
 export default node;

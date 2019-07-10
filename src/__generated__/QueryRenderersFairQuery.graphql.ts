@@ -28,12 +28,11 @@ query QueryRenderersFairQuery(
 }
 
 fragment Fair_fair on Fair {
+  gravityID
   id
-  slug
   ...FairDetail_fair
   organizer {
     website
-    id
   }
   about
   ticketsLink
@@ -41,7 +40,7 @@ fragment Fair_fair on Fair {
 
 fragment FairDetail_fair on Fair {
   ...FairHeader_fair
-  slug
+  gravityID
   internalID
   name
   hours
@@ -56,7 +55,6 @@ fragment FairDetail_fair on Fair {
   }
   organizer {
     website
-    id
   }
   about
   ticketsLink
@@ -77,12 +75,12 @@ fragment FairDetail_fair on Fair {
     edges {
       cursor
       node {
-        slug
+        gravityID
         internalID
         artworks_connection(first: 4) {
           edges {
             node {
-              slug
+              gravityID
               id
             }
           }
@@ -96,7 +94,7 @@ fragment FairDetail_fair on Fair {
 }
 
 fragment FairHeader_fair on Fair {
-  slug
+  gravityID
   internalID
   name
   formattedOpeningHours
@@ -108,7 +106,7 @@ fragment FairHeader_fair on Fair {
     artists {
       name
       href
-      slug
+      gravityID
       internalID
       id
     }
@@ -121,13 +119,13 @@ fragment FairHeader_fair on Fair {
   partner_names: shows_connection(first: 2) {
     edges {
       node {
-        slug
+        gravityID
         partner {
           __typename
           ... on Partner {
             profile {
               name
-              slug
+              gravityID
               internalID
               id
             }
@@ -148,7 +146,7 @@ fragment FairHeader_fair on Fair {
       node {
         name
         href
-        slug
+        gravityID
         internalID
         id
       }
@@ -161,14 +159,14 @@ fragment FairHeader_fair on Fair {
   }
   profile {
     icon {
-      internalID
+      gravityID
       href
       height
       width
       url(version: "square140")
     }
     id
-    slug
+    gravityID
     name
     is_followed
   }
@@ -179,7 +177,7 @@ fragment FairHeader_fair on Fair {
 
 fragment LocationMap_location on Location {
   id
-  internalID
+  gravityID
   city
   address
   address_2
@@ -209,7 +207,7 @@ fragment LocationMap_location on Location {
 }
 
 fragment FairBoothPreview_show on Show {
-  slug
+  gravityID
   internalID
   name
   is_fair_booth
@@ -221,7 +219,7 @@ fragment FairBoothPreview_show on Show {
     ... on Partner {
       name
       href
-      slug
+      gravityID
       internalID
       id
       profile {
@@ -260,7 +258,7 @@ fragment FairBoothPreview_show on Show {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
+  gravityID
   image {
     aspect_ratio
   }
@@ -275,7 +273,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -325,14 +323,14 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -360,9 +358,9 @@ v6 = {
 v7 = [
   (v5/*: any*/),
   (v6/*: any*/),
-  (v3/*: any*/),
+  (v2/*: any*/),
   (v4/*: any*/),
-  (v2/*: any*/)
+  (v3/*: any*/)
 ],
 v8 = {
   "kind": "ScalarField",
@@ -415,7 +413,7 @@ v14 = {
 },
 v15 = [
   (v5/*: any*/),
-  (v2/*: any*/)
+  (v3/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -524,7 +522,7 @@ return {
                 "selections": [
                   (v4/*: any*/),
                   (v5/*: any*/),
-                  (v2/*: any*/)
+                  (v3/*: any*/)
                 ]
               }
             ]
@@ -562,7 +560,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -573,7 +571,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v8/*: any*/),
-                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
@@ -588,16 +586,16 @@ return {
                                 "plural": false,
                                 "selections": [
                                   (v5/*: any*/),
-                                  (v3/*: any*/),
+                                  (v2/*: any*/),
                                   (v4/*: any*/),
-                                  (v2/*: any*/)
+                                  (v3/*: any*/)
                                 ]
                               }
                             ]
                           }
                         ]
                       },
-                      (v2/*: any*/)
+                      (v3/*: any*/)
                     ]
                   }
                 ]
@@ -680,7 +678,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
+                  (v2/*: any*/),
                   (v6/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -711,8 +709,8 @@ return {
                   }
                 ]
               },
-              (v2/*: any*/),
               (v3/*: any*/),
+              (v2/*: any*/),
               (v5/*: any*/),
               (v11/*: any*/)
             ]
@@ -755,8 +753,8 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
+              (v3/*: any*/),
               (v2/*: any*/),
-              (v4/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -916,8 +914,7 @@ return {
                 "name": "website",
                 "args": null,
                 "storageKey": null
-              },
-              (v2/*: any*/)
+              }
             ]
           },
           {
@@ -1025,7 +1022,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v2/*: any*/),
                       (v4/*: any*/),
                       {
                         "kind": "LinkedField",
@@ -1060,8 +1057,8 @@ return {
                                 "concreteType": "Artwork",
                                 "plural": false,
                                 "selections": [
-                                  (v3/*: any*/),
                                   (v2/*: any*/),
+                                  (v3/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -1180,7 +1177,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
                                   {
@@ -1204,7 +1201,7 @@ return {
                                           (v14/*: any*/)
                                         ]
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
                                   {
@@ -1276,14 +1273,14 @@ return {
                         "plural": false,
                         "selections": [
                           (v8/*: any*/),
-                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
                               (v5/*: any*/),
                               (v6/*: any*/),
-                              (v3/*: any*/),
+                              (v2/*: any*/),
                               (v4/*: any*/),
                               {
                                 "kind": "LinkedField",
@@ -1296,7 +1293,7 @@ return {
                                 "selections": [
                                   (v4/*: any*/),
                                   (v11/*: any*/),
-                                  (v2/*: any*/)
+                                  (v3/*: any*/)
                                 ]
                               }
                             ]
@@ -1335,10 +1332,10 @@ return {
                         "plural": false,
                         "selections": [
                           (v14/*: any*/),
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
-                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v8/*: any*/)
                     ]
                   }
@@ -1362,7 +1359,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersFairQuery",
-    "id": "3f1b7a3c31d43e2183b7101ce87e3e0b",
+    "id": "2dff9098396365bf23e7c11d17e669fd",
     "text": null,
     "metadata": {}
   }
