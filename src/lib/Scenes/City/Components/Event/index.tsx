@@ -40,7 +40,7 @@ export class Event extends React.Component<Props, State> {
   }
 
   @track(props => {
-    const { gravityID, internalID, is_followed } = props.event
+    const { slug, internalID, is_followed } = props.event
     const { section } = props
     let actionName
     if (!!section && section === "bmw") {
@@ -53,12 +53,12 @@ export class Event extends React.Component<Props, State> {
       action_type: Schema.ActionTypes.Success,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: internalID,
-      owner_slug: gravityID,
+      owner_slug: slug,
     } as any
   })
   handleSaveChange() {
     const node = this.props.event
-    const { gravityID: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed } = node
+    const { slug: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed } = node
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
       this.setState(
@@ -72,7 +72,7 @@ export class Event extends React.Component<Props, State> {
               mutation EventMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
-                    gravityID
+                    slug
                     internalID
                     is_followed
                   }
@@ -88,7 +88,7 @@ export class Event extends React.Component<Props, State> {
             optimisticResponse: {
               followShow: {
                 show: {
-                  gravityID: showSlug,
+                  slug: showSlug,
                   internalID: showID,
                   is_followed: !isShowFollowed,
                 },
@@ -115,17 +115,17 @@ export class Event extends React.Component<Props, State> {
       owner_slug: slug,
     } as any
   })
-  trackShowTap(_actionName, _slug, _gravityID) {
+  trackShowTap(_actionName, _slug, _internalID) {
     return null
   }
 
   handleTap = () => {
     const { section } = this.props
-    const { gravityID, internalID } = this.props.event
+    const { slug, internalID } = this.props.event
     if (section === "bmw") {
-      this.trackShowTap(Schema.ActionNames.OpenBMWShow, gravityID, internalID)
+      this.trackShowTap(Schema.ActionNames.OpenBMWShow, slug, internalID)
     }
-    SwitchBoard.presentNavigationViewController(this, `/show/${gravityID}`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${slug}`)
   }
 
   render() {

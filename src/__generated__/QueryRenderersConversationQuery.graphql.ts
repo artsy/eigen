@@ -34,9 +34,11 @@ fragment Conversation_me on Me {
     to {
       name
       initials
+      id
     }
     from {
       email
+      id
     }
     last_message_id
     ...Messages_conversation
@@ -52,10 +54,12 @@ fragment Messages_conversation on Conversation {
     name
     email
     initials
+    id
   }
   to {
     name
     initials
+    id
   }
   initial_message
   messages(first: 10, sort: DESC) {
@@ -74,6 +78,7 @@ fragment Messages_conversation on Conversation {
         body
         attachments {
           internalID
+          id
         }
         ...Message_message
         __typename
@@ -124,11 +129,12 @@ fragment Message_message on Message {
     file_name
     ...ImagePreview_attachment
     ...PDFPreview_attachment
+    id
   }
 }
 
 fragment ArtworkPreview_artwork on Artwork {
-  gravityID
+  slug
   internalID
   title
   artist_names
@@ -139,7 +145,7 @@ fragment ArtworkPreview_artwork on Artwork {
 }
 
 fragment ShowPreview_show on Show {
-  gravityID
+  slug
   internalID
   name
   cover_image {
@@ -258,7 +264,7 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -339,7 +345,8 @@ return {
                 "plural": false,
                 "selections": [
                   (v3/*: any*/),
-                  (v4/*: any*/)
+                  (v4/*: any*/),
+                  (v2/*: any*/)
                 ]
               },
               {
@@ -352,6 +359,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v5/*: any*/),
+                  (v2/*: any*/),
                   (v3/*: any*/),
                   (v4/*: any*/)
                 ]
@@ -475,6 +483,7 @@ return {
                             "plural": true,
                             "selections": [
                               (v1/*: any*/),
+                              (v2/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -721,7 +730,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersConversationQuery",
-    "id": "d0ad215a9308c31ca5ab3adac2b048c6",
+    "id": "51e2b70ceb88ca77bfe689f10f491e17",
     "text": null,
     "metadata": {}
   }

@@ -28,7 +28,7 @@ query SaleRefetchQuery(
 }
 
 fragment Sale_sale on Sale {
-  gravityID
+  slug
   name
   ...Header_sale
   ...SaleArtworksGrid_sale
@@ -52,8 +52,8 @@ fragment SaleArtworksGrid_sale on Sale {
     edges {
       node {
         artwork {
-          gravityID
           id
+          slug
           image {
             aspect_ratio
           }
@@ -75,7 +75,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -125,7 +125,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -285,8 +285,8 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
                           (v5/*: any*/),
+                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -510,7 +510,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleRefetchQuery",
-    "id": "b2d8f29acfee4e18956b2f1e655fe885",
+    "id": "74bde4817bbc6f37835dce06cfd58c7b",
     "text": null,
     "metadata": {}
   }

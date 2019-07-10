@@ -50,7 +50,7 @@ fragment LotsByFollowedArtists_viewer_1G22uz on Viewer {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  gravityID
+  slug
   image {
     aspect_ratio
   }
@@ -65,7 +65,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -279,7 +279,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "slug",
                             "args": null,
                             "storageKey": null
                           },
@@ -509,7 +509,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "LotsByFollowedArtistsQuery",
-    "id": "2d9e4cab2eb7d00fb212bc21af3afe31",
+    "id": "3a53970275e9413710720b6f84bfa49f",
     "text": null,
     "metadata": {}
   }

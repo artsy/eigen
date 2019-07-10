@@ -45,7 +45,7 @@ class Show extends React.Component<Props> {
 export default createFragmentContainer(Show, {
   show: graphql`
     fragment ArtistShow_show on Show {
-      gravityID
+      slug
       href
       is_fair_booth
       cover_image {

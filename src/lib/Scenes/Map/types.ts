@@ -74,13 +74,6 @@ export interface OSCoordsUpdate {
   }
 }
 
-export interface SafeAreaInsets {
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
 export interface FilterData {
   filter: string
   featureCollection: MapGeoFeatureCollection

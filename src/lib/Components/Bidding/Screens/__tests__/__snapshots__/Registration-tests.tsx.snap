@@ -30,7 +30,7 @@ exports[`renders properly for a user with a credit card 1`] = `
       }
     >
       <Text
-        fontFamily="AGaramondPro-Semibold"
+        fontFamily="ReactNativeAGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
         m={4}
@@ -38,7 +38,7 @@ exports[`renders properly for a user with a credit card 1`] = `
         style={
           Array [
             Object {
-              "fontFamily": "AGaramondPro-Semibold",
+              "fontFamily": "ReactNativeAGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
               "marginBottom": 10,
@@ -101,7 +101,7 @@ exports[`renders properly for a user with a credit card 1`] = `
         </Text>
       </View>
       <Text
-        fontFamily="AGaramondPro-Semibold"
+        fontFamily="ReactNativeAGaramondPro-Semibold"
         fontSize="18px"
         lineHeight="22px"
         mx={6}
@@ -109,7 +109,7 @@ exports[`renders properly for a user with a credit card 1`] = `
         style={
           Array [
             Object {
-              "fontFamily": "AGaramondPro-Semibold",
+              "fontFamily": "ReactNativeAGaramondPro-Semibold",
               "fontSize": 18,
               "lineHeight": 22,
               "marginBottom": 30,
@@ -335,7 +335,7 @@ exports[`renders properly for a user with a credit card 1`] = `
       >
         <Text
           color="black60"
-          fontFamily="AGaramondPro-Regular"
+          fontFamily="ReactNativeAGaramondPro-Regular"
           fontSize="14px"
           lineHeight="18px"
           mt={2}
@@ -343,7 +343,7 @@ exports[`renders properly for a user with a credit card 1`] = `
             Array [
               Object {
                 "color": "#666",
-                "fontFamily": "AGaramondPro-Regular",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
                 "fontSize": 14,
                 "lineHeight": 18,
                 "marginTop": 5,
@@ -470,7 +470,7 @@ exports[`renders properly for a user without a credit card 1`] = `
       }
     >
       <Text
-        fontFamily="AGaramondPro-Semibold"
+        fontFamily="ReactNativeAGaramondPro-Semibold"
         fontSize="22px"
         lineHeight="28px"
         m={4}
@@ -478,7 +478,7 @@ exports[`renders properly for a user without a credit card 1`] = `
         style={
           Array [
             Object {
-              "fontFamily": "AGaramondPro-Semibold",
+              "fontFamily": "ReactNativeAGaramondPro-Semibold",
               "fontSize": 22,
               "lineHeight": 28,
               "marginBottom": 10,
@@ -541,7 +541,7 @@ exports[`renders properly for a user without a credit card 1`] = `
         </Text>
       </View>
       <Text
-        fontFamily="AGaramondPro-Semibold"
+        fontFamily="ReactNativeAGaramondPro-Semibold"
         fontSize="18px"
         lineHeight="22px"
         mx={6}
@@ -549,7 +549,7 @@ exports[`renders properly for a user without a credit card 1`] = `
         style={
           Array [
             Object {
-              "fontFamily": "AGaramondPro-Semibold",
+              "fontFamily": "ReactNativeAGaramondPro-Semibold",
               "fontSize": 18,
               "lineHeight": 22,
               "marginBottom": 30,
@@ -622,13 +622,13 @@ exports[`renders properly for a user without a credit card 1`] = `
           }
         >
           <Text
-            fontFamily="AGaramondPro-Semibold"
+            fontFamily="ReactNativeAGaramondPro-Semibold"
             fontSize="16px"
             lineHeight="24px"
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Semibold",
+                  "fontFamily": "ReactNativeAGaramondPro-Semibold",
                   "fontSize": 16,
                   "lineHeight": 24,
                 },
@@ -744,13 +744,13 @@ exports[`renders properly for a user without a credit card 1`] = `
           }
         >
           <Text
-            fontFamily="AGaramondPro-Semibold"
+            fontFamily="ReactNativeAGaramondPro-Semibold"
             fontSize="16px"
             lineHeight="24px"
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Semibold",
+                  "fontFamily": "ReactNativeAGaramondPro-Semibold",
                   "fontSize": 16,
                   "lineHeight": 24,
                 },
@@ -1037,7 +1037,7 @@ exports[`renders properly for a user without a credit card 1`] = `
       >
         <Text
           color="black60"
-          fontFamily="AGaramondPro-Regular"
+          fontFamily="ReactNativeAGaramondPro-Regular"
           fontSize="14px"
           lineHeight="18px"
           mt={2}
@@ -1045,7 +1045,7 @@ exports[`renders properly for a user without a credit card 1`] = `
             Array [
               Object {
                 "color": "#666",
-                "fontFamily": "AGaramondPro-Regular",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
                 "fontSize": 14,
                 "lineHeight": 18,
                 "marginTop": 5,

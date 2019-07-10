@@ -30,7 +30,7 @@ fragment Fairs_me on Me {
         node {
           id
           profile {
-            gravityID
+            slug
             is_followed
             id
           }
@@ -168,7 +168,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "gravityID",
+                                "name": "slug",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -317,7 +317,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteFairsQuery",
-    "id": "2a4e673fc614cc0d63c9f41857d22ab7",
+    "id": "e68a46d9c9ae3b088bed5db8b261d16d",
     "text": null,
     "metadata": {}
   }

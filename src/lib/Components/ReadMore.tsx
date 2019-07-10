@@ -28,6 +28,12 @@ const rules = {
 export const ReadMore = React.memo(({ content, maxChars }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const root = renderMarkdown(content, rules)
+  // Removes the last empty space in the markdown array
+  if (Array.isArray(root)) {
+    while (root.length && root[root.length - 1] && root[root.length - 1].type === Text) {
+      root.pop()
+    }
+  }
 
   const plainTextVersion = plainTextFromTree(root)
   const isAlreadyExpanded = isExpanded || plainTextVersion.length <= maxChars

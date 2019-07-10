@@ -25,7 +25,7 @@ query FairDetailTestsQuery {
 
 fragment FairDetail_fair on Fair {
   ...FairHeader_fair
-  gravityID
+  slug
   internalID
   name
   hours
@@ -40,6 +40,7 @@ fragment FairDetail_fair on Fair {
   }
   organizer {
     website
+    id
   }
   about
   ticketsLink
@@ -60,12 +61,12 @@ fragment FairDetail_fair on Fair {
     edges {
       cursor
       node {
-        gravityID
+        slug
         internalID
         artworks_connection(first: 4) {
           edges {
             node {
-              gravityID
+              slug
               id
             }
           }
@@ -79,7 +80,7 @@ fragment FairDetail_fair on Fair {
 }
 
 fragment FairHeader_fair on Fair {
-  gravityID
+  slug
   internalID
   name
   formattedOpeningHours
@@ -91,7 +92,7 @@ fragment FairHeader_fair on Fair {
     artists {
       name
       href
-      gravityID
+      slug
       internalID
       id
     }
@@ -104,13 +105,13 @@ fragment FairHeader_fair on Fair {
   partner_names: shows_connection(first: 2) {
     edges {
       node {
-        gravityID
+        slug
         partner {
           __typename
           ... on Partner {
             profile {
               name
-              gravityID
+              slug
               internalID
               id
             }
@@ -131,7 +132,7 @@ fragment FairHeader_fair on Fair {
       node {
         name
         href
-        gravityID
+        slug
         internalID
         id
       }
@@ -144,14 +145,14 @@ fragment FairHeader_fair on Fair {
   }
   profile {
     icon {
-      gravityID
+      internalID
       href
       height
       width
       url(version: "square140")
     }
     id
-    gravityID
+    slug
     name
     is_followed
   }
@@ -162,7 +163,7 @@ fragment FairHeader_fair on Fair {
 
 fragment LocationMap_location on Location {
   id
-  gravityID
+  internalID
   city
   address
   address_2
@@ -192,7 +193,7 @@ fragment LocationMap_location on Location {
 }
 
 fragment FairBoothPreview_show on Show {
-  gravityID
+  slug
   internalID
   name
   is_fair_booth
@@ -204,7 +205,7 @@ fragment FairBoothPreview_show on Show {
     ... on Partner {
       name
       href
-      gravityID
+      slug
       internalID
       id
       profile {
@@ -243,7 +244,7 @@ fragment FairBoothPreview_show on Show {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  gravityID
+  slug
   image {
     aspect_ratio
   }
@@ -258,7 +259,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -300,7 +301,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -654,7 +655,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  (v1/*: any*/),
+                  (v2/*: any*/),
                   (v4/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -730,7 +731,7 @@ return {
             "plural": false,
             "selections": [
               (v5/*: any*/),
-              (v1/*: any*/),
+              (v2/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -890,7 +891,8 @@ return {
                 "name": "website",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ]
           },
           {
@@ -1336,7 +1338,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairDetailTestsQuery",
-    "id": "6d3da7845841dff2f8c12a097b8ac7d0",
+    "id": "b8b23c415870e94865084facc1de738f",
     "text": null,
     "metadata": {}
   }

@@ -26,7 +26,8 @@ export class FollowArtistButton extends React.Component<Props> {
       `,
       variables: {
         input: {
-          artist_id: artist.gravityID,
+          // FIXME: Should this be slug or internalID?
+          artist_id: artist.slug,
           unfollow: artist.is_followed,
         },
       },
@@ -44,16 +45,11 @@ export class FollowArtistButton extends React.Component<Props> {
   render() {
     const followButtonText = this.props.artist.is_followed ? "Following" : "Follow"
     return (
-      <>
-        <Sans color="black60" size="6" mx={1}>
-          &middot;
+      <TouchableWithoutFeedback onPress={this.handleFollowArtist.bind(this)}>
+        <Sans color="black60" weight="medium" size="3t">
+          {followButtonText}
         </Sans>
-        <TouchableWithoutFeedback onPress={this.handleFollowArtist.bind(this)}>
-          <Sans color="black60" weight="medium" size="3t">
-            {followButtonText}
-          </Sans>
-        </TouchableWithoutFeedback>
-      </>
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -61,8 +57,8 @@ export class FollowArtistButton extends React.Component<Props> {
 export const FollowArtistButtonFragmentContainer = createFragmentContainer(FollowArtistButton, {
   artist: graphql`
     fragment FollowArtistButton_artist on Artist {
-      gravityID
       id
+      slug
       is_followed
     }
   `,

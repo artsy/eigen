@@ -53,7 +53,7 @@ fragment ArtistNotForSaleArtworksGrid_artist_3KQYpM on Artist {
     }
     edges {
       node {
-        gravityID
+        slug
         id
         image {
           aspect_ratio
@@ -74,7 +74,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -313,7 +313,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "slug",
                             "args": null,
                             "storageKey": null
                           },
@@ -543,7 +543,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistNotForSaleArtworksGridQuery",
-    "id": "b017d220ab7170c49115a4ad6e245882",
+    "id": "1a94dd5cea371c171a140b8d3ba072d9",
     "text": null,
     "metadata": {}
   }

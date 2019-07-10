@@ -74,13 +74,13 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 fragment ConfirmBid_sale_artwork on SaleArtwork {
   internalID
   sale {
-    gravityID
+    slug
     live_start_at
     end_at
     id
   }
   artwork {
-    gravityID
+    slug
     title
     date
     artist_names
@@ -99,7 +99,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
-    gravityID
+    slug
     id
   }
 }
@@ -151,7 +151,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -402,7 +402,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersBidFlowQuery",
-    "id": "37d88a0ab0f2bbbbc16d14c592df08ac",
+    "id": "adb4180b29b50202816e7a75aefe898b",
     "text": null,
     "metadata": {}
   }

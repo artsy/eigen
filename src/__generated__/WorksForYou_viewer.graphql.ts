@@ -23,7 +23,7 @@ export type WorksForYou_viewer = {
         } | null;
     } | null;
     readonly selectedArtist: {
-        readonly gravityID: string;
+        readonly slug: string;
         readonly href: string | null;
         readonly name: string | null;
         readonly image: {
@@ -217,7 +217,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "gravityID",
+          "name": "slug",
           "args": null,
           "storageKey": null
         },
@@ -303,5 +303,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6b2733b90625be44995810f73336843c';
+(node as any).hash = 'fe8148e075e2f9b960f68fa513fc1103';
 export default node;

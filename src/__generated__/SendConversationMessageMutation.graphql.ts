@@ -69,6 +69,7 @@ fragment Message_message on Message {
     file_name
     ...ImagePreview_attachment
     ...PDFPreview_attachment
+    id
   }
 }
 
@@ -335,7 +336,8 @@ return {
                         "name": "file_name",
                         "args": null,
                         "storageKey": null
-                      }
+                      },
+                      (v5/*: any*/)
                     ]
                   }
                 ]
@@ -349,7 +351,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "061c540ba7dfcdd30f4dd3d64207077c",
+    "id": "ab9b24ccfe96fe819d228819b948b34f",
     "text": null,
     "metadata": {}
   }
