@@ -7,7 +7,7 @@
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
 @property (nonatomic, strong) NSDictionary *initialProperties;
-@property (nonatomic) bool safeAreaInsetsWereUpdated;
+@property (nonatomic) BOOL safeAreaInsetsWereUpdated;
 @end
 
 @implementation ARComponentViewController
