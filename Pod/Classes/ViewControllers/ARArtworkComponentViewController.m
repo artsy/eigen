@@ -18,4 +18,14 @@
                  initialProperties:@{ @"artworkID": artworkID }];
 }
 
+- (BOOL)fullBleed
+{
+    return YES;
+}
+
+- (BOOL)shouldInjectSafeAreaInsets
+{
+    return YES;
+}
+
 @end
