@@ -50,7 +50,7 @@ fragment Registration_me on Me {
 }
 
 fragment Registration_sale on Sale {
-  slug
+  gravityID
   end_at
   is_preview
   live_start_at
@@ -151,7 +151,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -210,7 +210,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersRegistrationFlowQuery",
-    "id": "fdfb305426103845aca7fa528f290969",
+    "id": "2a2ddea02c40bf82d4346ad6dc91d9c0",
     "text": null,
     "metadata": {}
   }

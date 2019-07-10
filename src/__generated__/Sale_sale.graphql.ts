@@ -6,7 +6,7 @@ import { SaleArtworksGrid_sale$ref } from "./SaleArtworksGrid_sale.graphql";
 declare const _Sale_sale$ref: unique symbol;
 export type Sale_sale$ref = typeof _Sale_sale$ref;
 export type Sale_sale = {
-    readonly slug: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly " $fragmentRefs": Header_sale$ref & SaleArtworksGrid_sale$ref;
     readonly " $refType": Sale_sale$ref;
@@ -24,7 +24,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -47,5 +47,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b065552f398b43ba5b04aa9c61013602';
+(node as any).hash = '1f5993da527b3becc0a974f2e84bcf07';
 export default node;

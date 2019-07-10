@@ -14,7 +14,7 @@ export enum Router {
 
 export interface PartialShowForRouting {
   is_fair_booth: boolean
-  slug: string
+  gravityID: string
   href: string
 }
 
@@ -22,8 +22,8 @@ export interface PartialShowForRouting {
 export const hrefForPartialShow = (show: PartialShowForRouting) => {
   const { is_fair_booth } = show
   if (is_fair_booth) {
-    return `${show.slug}?entity=fair-booth`
+    return `${show.gravityID}?entity=fair-booth`
   } else {
-    return show.href || `show/${show.slug}`
+    return show.href || `show/${show.gravityID}`
   }
 }

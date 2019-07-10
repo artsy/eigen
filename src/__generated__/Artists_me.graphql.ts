@@ -12,7 +12,7 @@ export type Artists_me = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly artist: {
-                    readonly slug: string;
+                    readonly gravityID: string;
                     readonly id: string;
                     readonly name: string | null;
                     readonly href: string | null;
@@ -123,7 +123,7 @@ const node: ReaderFragment = {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "slug",
+                      "name": "gravityID",
                       "args": null,
                       "storageKey": null
                     },
@@ -190,5 +190,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ee80ffb83d63ae3cce2b49a24af9dbf5';
+(node as any).hash = '07144b0ce87f52dfd91058762e6e0474';
 export default node;

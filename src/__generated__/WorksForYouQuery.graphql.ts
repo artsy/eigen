@@ -49,7 +49,7 @@ fragment WorksForYou_viewer_1G22uz on Viewer {
     id
   }
   selectedArtist: artist(id: "") {
-    slug
+    gravityID
     href
     name
     image {
@@ -85,7 +85,7 @@ fragment Notification_notification on FollowedArtistsArtworksGroup {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
+  gravityID
   image {
     aspect_ratio
   }
@@ -100,7 +100,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -195,7 +195,7 @@ v6 = {
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -694,7 +694,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouQuery",
-    "id": "67ec5613f91d61c274ed2c5432536330",
+    "id": "f4bd98d0fb588b6a2f14d98d0a91bf52",
     "text": null,
     "metadata": {}
   }

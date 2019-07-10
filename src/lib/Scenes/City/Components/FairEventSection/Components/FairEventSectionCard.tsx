@@ -12,7 +12,7 @@ interface Props {
 
 export class FairEventSectionCard extends Component<Props> {
   handleTap() {
-    const path = `${this.props.fair.slug}?entity=fair`
+    const path = `${this.props.fair.gravityID}?entity=fair`
     SwitchBoard.presentNavigationViewController(this, path)
   }
 

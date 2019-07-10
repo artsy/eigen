@@ -37,8 +37,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   width = 0
 
   tappedOnArtwork = (artworkID: string) => {
-    // FIXME: Should this be internalID?
-    const allArtworkIDs = this.props.artworks.map(a => a.slug)
+    const allArtworkIDs = this.props.artworks.map(a => a.gravityID)
     const index = allArtworkIDs.indexOf(artworkID)
     SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
   }
@@ -177,7 +176,7 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id
-      slug
+      gravityID
       image {
         aspect_ratio
       }

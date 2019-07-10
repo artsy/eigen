@@ -9,7 +9,7 @@ export type About_artist$ref = typeof _About_artist$ref;
 export type About_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly related_artists: ReadonlyArray<{
         readonly " $fragmentRefs": RelatedArtists_artists$ref;
     } | null> | null;
@@ -46,7 +46,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -95,5 +95,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '7c149d5a726bed23eddb2cdcab285732';
+(node as any).hash = 'fd32ce5fe60123b9bf29932fe861bcd4';
 export default node;

@@ -28,7 +28,7 @@ fragment MockRelayRendererFixtures_artwork on Artwork {
     url
   }
   artist {
-    slug
+    gravityID
     id
   }
   ...MockRelayRendererFixtures_artworkMetadata
@@ -125,7 +125,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "slug",
+                "name": "gravityID",
                 "args": null,
                 "storageKey": null
               },
@@ -147,7 +147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MockRelayRendererFixturesBadQuery",
-    "id": "fb272ba544200e2e2beef09e1fe0a2f3",
+    "id": "b36364071b6febbb68c78b418e8bfb7d",
     "text": null,
     "metadata": {}
   }

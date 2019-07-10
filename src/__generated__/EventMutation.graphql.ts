@@ -12,7 +12,7 @@ export type EventMutationVariables = {
 export type EventMutationResponse = {
     readonly followShow: {
         readonly show: {
-            readonly slug: string;
+            readonly gravityID: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
         } | null;
@@ -31,7 +31,7 @@ mutation EventMutation(
 ) {
   followShow(input: $input) {
     show {
-      slug
+      gravityID
       internalID
       is_followed
       id
@@ -59,7 +59,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -155,11 +155,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "EventMutation",
-    "id": "22d68793c468a2fc624fd92c048e5900",
+    "id": "ef8a1d904c06c6e1f6ca241c98f14f2c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '94ddf483e55b2654561fa90baea007be';
+(node as any).hash = '3045fff72da58f1d023b96d6da8d3a9a';
 export default node;

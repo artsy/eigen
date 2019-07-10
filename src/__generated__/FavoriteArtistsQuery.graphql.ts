@@ -32,7 +32,7 @@ fragment Artists_me on Me {
     edges {
       node {
         artist {
-          slug
+          gravityID
           id
           name
           href
@@ -169,7 +169,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -246,7 +246,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtistsQuery",
-    "id": "f455dbc0361464d79e63657c3b733f5d",
+    "id": "13ce6e809b67eac867e0f3d07b1d2111",
     "text": null,
     "metadata": {}
   }

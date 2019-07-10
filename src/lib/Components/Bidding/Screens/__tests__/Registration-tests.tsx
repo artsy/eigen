@@ -3,7 +3,6 @@ import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
-import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import Spinner from "../../../Spinner"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
@@ -188,7 +187,7 @@ describe("when pressing register button", () => {
       expect.objectContaining({
         variables: {
           input: {
-            sale_id: sale.slug,
+            sale_id: sale.gravityID,
           },
         },
       })
@@ -615,8 +614,8 @@ const stripeToken = {
   extra: null,
 }
 
-const sale: Partial<Registration_sale> = {
-  slug: "sale-id",
+const sale = {
+  gravityID: "sale-id",
   live_start_at: "2029-06-11T01:00:00+00:00",
   end_at: null,
   name: "Phillips New Now",

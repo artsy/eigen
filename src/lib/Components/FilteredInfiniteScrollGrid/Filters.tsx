@@ -52,7 +52,7 @@ export const FiltersContainer = createFragmentContainer(Filters, {
       aggregations {
         slice
         counts {
-          internalID
+          gravityID
           name
         }
       }

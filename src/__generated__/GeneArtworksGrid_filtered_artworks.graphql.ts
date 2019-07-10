@@ -14,7 +14,7 @@ export type GeneArtworksGrid_filtered_artworks = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly slug: string;
+                readonly gravityID: string;
                 readonly id: string;
                 readonly image: {
                     readonly aspect_ratio: number;
@@ -142,7 +142,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "slug",
+                  "name": "gravityID",
                   "args": null,
                   "storageKey": null
                 },
@@ -193,5 +193,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '70ef1a14ba7d9ef02852652be91d5678';
+(node as any).hash = '8ef8d860daf33acf8a1abca899b1d9ee';
 export default node;

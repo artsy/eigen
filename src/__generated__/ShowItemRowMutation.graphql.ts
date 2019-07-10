@@ -12,7 +12,7 @@ export type ShowItemRowMutationVariables = {
 export type ShowItemRowMutationResponse = {
     readonly followShow: {
         readonly show: {
-            readonly slug: string;
+            readonly gravityID: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
         } | null;
@@ -31,7 +31,7 @@ mutation ShowItemRowMutation(
 ) {
   followShow(input: $input) {
     show {
-      slug
+      gravityID
       internalID
       is_followed
       id
@@ -59,7 +59,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -155,11 +155,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ShowItemRowMutation",
-    "id": "af90decc7c8584f7a5936f9b2e05ed32",
+    "id": "9cce1a5eda2827ba078041e835ccabcc",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'cd30118d1ed16fc20ebba6dbabcc0ca6';
+(node as any).hash = 'ef0b3dc2785b7af03a066afbe891134b';
 export default node;

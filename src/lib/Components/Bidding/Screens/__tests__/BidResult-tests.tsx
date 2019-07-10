@@ -23,7 +23,7 @@ const mockNavigator = { popToTop }
 const refreshBidderInfoMock = jest.fn()
 const refreshSaleArtworkInfoMock = jest.fn()
 
-const saleArtwork: BidResult_sale_artwork = ({
+const saleArtwork = ({
   increments: [
     {
       display: "$10,000",
@@ -54,7 +54,7 @@ const saleArtwork: BidResult_sale_artwork = ({
   sale: {
     live_start_at: "2022-01-01T00:03:00+00:00",
     end_at: "2022-05-01T00:03:00+00:00",
-    slug: "sale-id",
+    gravityID: "sale-id",
   },
 } as any) as BidResult_sale_artwork
 

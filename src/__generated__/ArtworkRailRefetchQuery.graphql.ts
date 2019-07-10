@@ -79,8 +79,7 @@ fragment ArtworkRailHeader_rail on HomePageArtworkModule {
     __typename
     ... on HomePageModuleContextRelatedArtist {
       artist {
-        slug
-        internalID
+        gravityID
         id
       }
       based_on {
@@ -99,7 +98,7 @@ fragment ArtworkRailHeader_rail on HomePageArtworkModule {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
+  gravityID
   image {
     aspect_ratio
   }
@@ -114,7 +113,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -191,7 +190,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -301,13 +300,6 @@ return {
                         "plural": false,
                         "selections": [
                           (v5/*: any*/),
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "internalID",
-                            "args": null,
-                            "storageKey": null
-                          },
                           (v3/*: any*/),
                           (v6/*: any*/)
                         ]
@@ -592,7 +584,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRailRefetchQuery",
-    "id": "bf4eed3b34999a4b6154240daabdf43a",
+    "id": "0438f0cd3b409207264282fcdb9b0197",
     "text": null,
     "metadata": {}
   }

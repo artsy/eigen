@@ -33,7 +33,7 @@ fragment PartnerCard_artwork on Artwork {
     is_default_profile_public
     type
     name
-    slug
+    gravityID
     internalID
     id
     href
@@ -41,7 +41,7 @@ fragment PartnerCard_artwork on Artwork {
     profile {
       id
       internalID
-      slug
+      gravityID
       is_followed
       icon {
         url(version: "square140")
@@ -73,7 +73,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -272,7 +272,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerCardTestsErrorQuery",
-    "id": "921302273093e77da522020a709184eb",
+    "id": "a87308439739d5f9be8fc07dd3894ced",
     "text": null,
     "metadata": {}
   }

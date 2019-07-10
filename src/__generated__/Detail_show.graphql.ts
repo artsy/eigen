@@ -10,13 +10,13 @@ declare const _Detail_show$ref: unique symbol;
 export type Detail_show$ref = typeof _Detail_show$ref;
 export type Detail_show = {
     readonly internalID: string;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly description: string | null;
     readonly city: string | null;
     readonly isStubShow: boolean | null;
     readonly images: ReadonlyArray<{
-        readonly internalID: string | null;
+        readonly gravityID: string | null;
     } | null> | null;
     readonly location: {
         readonly openingHours: ({
@@ -40,7 +40,7 @@ export type Detail_show = {
         readonly " $fragmentRefs": LocationMap_location$ref;
     } | null;
     readonly artists_without_artworks: ReadonlyArray<{
-        readonly slug: string;
+        readonly gravityID: string;
     } | null> | null;
     readonly counts: {
         readonly artworks: number | null;
@@ -68,24 +68,20 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
-};
+},
+v2 = [
+  (v0/*: any*/)
+];
 return {
   "kind": "Fragment",
   "name": "Detail_show",
@@ -93,9 +89,15 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     (v0/*: any*/),
     (v1/*: any*/),
-    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -125,9 +127,7 @@ return {
       "args": null,
       "concreteType": "Image",
       "plural": true,
-      "selections": [
-        (v0/*: any*/)
-      ]
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -208,9 +208,7 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": [
-        (v1/*: any*/)
-      ]
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -257,7 +255,7 @@ return {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            (v2/*: any*/),
+            (v1/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -292,5 +290,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1035beda7c4b77e3f46f060da34bea65';
+(node as any).hash = '05f4cbfa82642ea3af332c86c9e27111';
 export default node;

@@ -6,7 +6,7 @@ declare const _GenericGrid_artworks$ref: unique symbol;
 export type GenericGrid_artworks$ref = typeof _GenericGrid_artworks$ref;
 export type GenericGrid_artworks = ReadonlyArray<{
     readonly id: string;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly image: {
         readonly aspect_ratio: number;
     } | null;
@@ -35,7 +35,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -64,5 +64,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ebd33ca00dc8288bfabcf4167a8663f9';
+(node as any).hash = 'a46b6eab545bd57427676174e7e3b520';
 export default node;

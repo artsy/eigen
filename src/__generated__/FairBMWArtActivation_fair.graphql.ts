@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _FairBMWArtActivation_fair$ref: unique symbol;
 export type FairBMWArtActivation_fair$ref = typeof _FairBMWArtActivation_fair$ref;
 export type FairBMWArtActivation_fair = {
-    readonly slug: string;
+    readonly gravityID: string;
     readonly internalID: string;
     readonly sponsoredContent: {
         readonly activationText: string | null;
@@ -25,7 +25,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -63,5 +63,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'be47ca3ca7dbe8be673f6198196ae359';
+(node as any).hash = '2026a38b644dea99eba8dcafe53a7a47';
 export default node;

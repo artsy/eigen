@@ -25,7 +25,7 @@ interface State {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.ShowAllArtists,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-  context_screen_owner_slug: props.show.slug,
+  context_screen_owner_slug: props.show.gravityID,
   context_screen_owner_id: props.show.internalID,
 }))
 export class ShowArtists extends React.Component<Props, State> {
@@ -52,7 +52,7 @@ export const ShowArtistsContainer = createFragmentContainer(ShowArtists, {
   show: graphql`
     fragment ShowArtists_show on Show {
       internalID
-      slug
+      gravityID
       artists_grouped_by_name {
         letter
         items {

@@ -24,7 +24,7 @@ query indexTestsFairHeaderQuery {
 }
 
 fragment FairHeader_fair on Fair {
-  slug
+  gravityID
   internalID
   name
   formattedOpeningHours
@@ -36,7 +36,7 @@ fragment FairHeader_fair on Fair {
     artists {
       name
       href
-      slug
+      gravityID
       internalID
       id
     }
@@ -49,13 +49,13 @@ fragment FairHeader_fair on Fair {
   partner_names: shows_connection(first: 2) {
     edges {
       node {
-        slug
+        gravityID
         partner {
           __typename
           ... on Partner {
             profile {
               name
-              slug
+              gravityID
               internalID
               id
             }
@@ -76,7 +76,7 @@ fragment FairHeader_fair on Fair {
       node {
         name
         href
-        slug
+        gravityID
         internalID
         id
       }
@@ -89,14 +89,14 @@ fragment FairHeader_fair on Fair {
   }
   profile {
     icon {
-      internalID
+      gravityID
       href
       height
       width
       url(version: "square140")
     }
     id
-    slug
+    gravityID
     name
     is_followed
   }
@@ -117,7 +117,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -436,7 +436,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
+                  (v1/*: any*/),
                   (v4/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -508,7 +508,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairHeaderQuery",
-    "id": "8df986e29eb23b9ca97e12e6f1e2a00a",
+    "id": "6bb401fb0e52bb253819c5100d153a49",
     "text": null,
     "metadata": {}
   }

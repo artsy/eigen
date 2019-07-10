@@ -5,7 +5,7 @@ declare const _ShowItem_show$ref: unique symbol;
 export type ShowItem_show$ref = typeof _ShowItem_show$ref;
 export type ShowItem_show = {
     readonly internalID: string;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly exhibition_period: string | null;
     readonly end_at: string | null;
@@ -52,7 +52,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -117,5 +117,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c24cd3b368beaacb0e6da64cc1f773b2';
+(node as any).hash = '3537d1816ba20c632714599023446d51';
 export default node;

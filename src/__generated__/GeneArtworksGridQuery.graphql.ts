@@ -52,7 +52,7 @@ fragment GeneArtworksGrid_filtered_artworks_1RfMLO on FilterArtworks {
     }
     edges {
       node {
-        slug
+        gravityID
         id
         image {
           aspect_ratio
@@ -73,7 +73,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -307,7 +307,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -536,7 +536,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GeneArtworksGridQuery",
-    "id": "d6c33a23f31b73848837814b2c78513a",
+    "id": "cfe1df9c90b89f0e1e25f9b96404a955",
     "text": null,
     "metadata": {}
   }

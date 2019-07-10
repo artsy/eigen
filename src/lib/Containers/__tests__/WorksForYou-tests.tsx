@@ -177,7 +177,7 @@ const selectedArtistResponse = () => {
   {
     const response = notificationsResponse()
     response.viewer.selectedArtist = {
-      slug: "juliana-huxtable",
+      gravityID: "juliana-huxtable",
       name: "Juliana Huxtable",
       href: "artist/juliana-huxtable",
       image: {
@@ -187,7 +187,7 @@ const selectedArtistResponse = () => {
       },
       artworks: [
         {
-          slug: "4594385943",
+          gravityID: "4594385943",
           title: "Untitled (Casual Power)",
         },
       ],
