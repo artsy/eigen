@@ -1,7 +1,6 @@
-import { Box, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -11,7 +10,6 @@ import { uniq } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import styled from "styled-components/native"
 import { Carousel } from "./Components/Carousel"
 
 interface Props {
@@ -22,11 +20,6 @@ interface Props {
 interface State {
   isFollowedSaving: boolean
 }
-
-const ButtonWrapper = styled(Box)`
-  width: 100%;
-  height: 85;
-`
 
 const track: Track<Props, State> = _track
 
@@ -185,17 +178,17 @@ export class ShowHeader extends React.Component<Props, State> {
             onItemSelected={this.handleArtistSelected.bind(this)}
             onViewAllPressed={this.handleViewAllArtistsPressed.bind(this)}
           />
-          <ButtonWrapper>
-            <Spacer m={1} mt={1} />
-            <InvertedButton
-              inProgress={isFollowedSaving}
-              text={is_followed ? "Show saved" : "Save show"}
-              selected={is_followed}
-              onPress={this.handleFollowShow}
-              grayBorder={true}
-            />
-            <Spacer m={1} />
-          </ButtonWrapper>
+          <Spacer mb={2} />
+          <Button
+            width={100}
+            block
+            loading={isFollowedSaving}
+            onPress={this.handleFollowShow}
+            variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+          >
+            {is_followed ? "Show saved" : "Save show"}
+          </Button>
+          <Spacer mb={2} />
         </Box>
       </>
     )

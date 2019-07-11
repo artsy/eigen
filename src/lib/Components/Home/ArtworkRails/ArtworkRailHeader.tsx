@@ -15,7 +15,7 @@ const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "lib/NativeModules/Events"
 
-import Button from "lib/Components/Buttons/InvertedButton"
+import { Button } from "@artsy/palette"
 import SerifText from "lib/Components/Text/Serif"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
@@ -80,10 +80,12 @@ class ArtworkRailHeader extends React.Component<Props, State> {
       return (
         <View style={styles.followButton}>
           <Button
-            text={this.state.following ? "Following" : "Follow"}
-            selected={this.state.following}
+            variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
             onPress={this.handleFollowChange}
-          />
+            size="small"
+          >
+            {this.state.following ? "Following" : "Follow"}
+          </Button>
         </View>
       )
     }

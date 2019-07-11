@@ -96,7 +96,7 @@ exports[`InvoicePreview renders correctly 1`] = `
         ]
       }
     >
-      REFUNDED
+      Refunded
     </Text>
   </View>
 </View>

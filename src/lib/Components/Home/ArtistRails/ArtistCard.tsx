@@ -18,7 +18,7 @@ import fonts from "lib/data/fonts"
 import Events from "lib/NativeModules/Events"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import { Button } from "@artsy/palette"
 import ImageView from "lib/Components/OpaqueImageView"
 
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
@@ -35,13 +35,11 @@ interface Props {
 interface State {
   processingChange: boolean
   following?: boolean
-  followStatusChanged?: Animated.EndCallback
 }
 
 export class ArtistCard extends React.Component<Props, State> {
   state = {
     processingChange: false,
-    followStatusChanged: null,
     following: null,
   }
 
@@ -72,11 +70,15 @@ export class ArtistCard extends React.Component<Props, State> {
 
   setFollowStatus(status: boolean): ArtistFollowHandlerResult {
     return new Promise(resolve => {
-      this.setState({
-        following: status,
-        processingChange: false,
-        followStatusChanged: resolve,
-      })
+      this.setState(
+        {
+          following: status,
+          processingChange: false,
+        },
+        () => {
+          setTimeout(resolve, 400)
+        }
+      )
     })
   }
 
@@ -113,9 +115,6 @@ export class ArtistCard extends React.Component<Props, State> {
     const artist = this.props.artist
     const imageURL = artist.image && artist.image.url
 
-    const selectionAnimationFinishedHandler = this.state.followStatusChanged
-    delete (this.state as any).followStatusChanged
-
     return (
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
@@ -123,13 +122,16 @@ export class ArtistCard extends React.Component<Props, State> {
             <ImageView style={styles.image} imageURL={imageURL} />
             <View style={styles.textContainer}>{this.renderMetadata()}</View>
             <View style={styles.followButton}>
-              <InvertedButton
-                text={this.state.following ? "Following" : "Follow"}
-                selected={this.state.following}
+              <Button
+                variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
                 onPress={this.handleFollowChange}
-                inProgress={this.state.processingChange}
-                onSelectionAnimationFinished={selectionAnimationFinishedHandler}
-              />
+                size="small"
+                block
+                width={100}
+                loading={this.state.processingChange}
+              >
+                {this.state.following ? "Following" : "Follow"}
+              </Button>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -225,6 +227,7 @@ const ArtistCardContainer = createFragmentContainer(ArtistCard, {
 
 export interface ArtistCardResponse {
   id: string
+  gravityID: string
   internalID: string
   href: string
   name: string
@@ -239,6 +242,7 @@ export interface ArtistCardResponse {
 //      this query is duplicated so we can fetch the data manually.
 export const ArtistCardQuery = `
   ... on Artist {
+    gravityID
     id
     internalID
     href

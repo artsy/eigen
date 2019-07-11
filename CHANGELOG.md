@@ -16,6 +16,9 @@
 
 ### Master
 
+- Metaphysics v2 update that removes gravityID - zephraph
+- Removes InvertedButton - kierangillen
+
 ### 1.12.5
 
 ### 1.12.4
