@@ -76,9 +76,6 @@ export type Artwork_artwork = {
     readonly context: {
         readonly __typename: string;
     } | null;
-    readonly shows: ReadonlyArray<{
-        readonly id: string;
-    } | null> | null;
     readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ContextCard_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref & ArtworkHistory_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
@@ -99,9 +96,6 @@ v1 = {
   "storageKey": null
 },
 v2 = [
-  (v1/*: any*/)
-],
-v3 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -119,22 +113,24 @@ v3 = [
         "args": null,
         "concreteType": "Artwork",
         "plural": false,
-        "selections": (v2/*: any*/)
+        "selections": [
+          (v1/*: any*/)
+        ]
       }
     ]
   }
 ],
-v4 = {
+v3 = {
   "kind": "Variable",
   "name": "exclude",
   "variableName": "excludeArtworkIds"
 },
-v5 = {
+v4 = {
   "kind": "Literal",
   "name": "sort",
   "value": "PUBLISHED_AT_DESC"
 },
-v6 = [
+v5 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -216,7 +212,7 @@ return {
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
-          "selections": (v3/*: any*/)
+          "selections": (v2/*: any*/)
         }
       ]
     },
@@ -243,18 +239,18 @@ return {
           "name": "artworksConnection",
           "storageKey": null,
           "args": [
-            (v4/*: any*/),
+            (v3/*: any*/),
             (v0/*: any*/),
             {
               "kind": "Literal",
               "name": "for_sale",
               "value": true
             },
-            (v5/*: any*/)
+            (v4/*: any*/)
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
-          "selections": (v3/*: any*/)
+          "selections": (v2/*: any*/)
         }
       ]
     },
@@ -298,13 +294,13 @@ return {
           "name": "artworks_connection",
           "storageKey": null,
           "args": [
-            (v4/*: any*/),
+            (v3/*: any*/),
             (v0/*: any*/),
-            (v5/*: any*/)
+            (v4/*: any*/)
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
-          "selections": (v3/*: any*/)
+          "selections": (v2/*: any*/)
         }
       ]
     },
@@ -348,7 +344,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v6/*: any*/)
+      "selections": (v5/*: any*/)
     },
     {
       "kind": "ScalarField",
@@ -365,7 +361,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v6/*: any*/)
+      "selections": (v5/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -375,7 +371,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v6/*: any*/)
+      "selections": (v5/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -385,7 +381,7 @@ return {
       "args": null,
       "concreteType": "ArtworkInfoRow",
       "plural": false,
-      "selections": (v6/*: any*/)
+      "selections": (v5/*: any*/)
     },
     {
       "kind": "ScalarField",
@@ -432,22 +428,6 @@ return {
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "shows",
-      "storageKey": "shows(size:1)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 1
-        }
-      ],
-      "concreteType": "Show",
-      "plural": true,
-      "selections": (v2/*: any*/)
     },
     {
       "kind": "FragmentSpread",
@@ -497,5 +477,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f2b11724c5aabc6662ad31ec2d330c80';
+(node as any).hash = '757cb70aef75c76090e859e190d328df';
 export default node;

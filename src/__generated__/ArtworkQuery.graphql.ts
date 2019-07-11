@@ -102,9 +102,6 @@ fragment Artwork_artwork on Artwork {
       id
     }
   }
-  shows(size: 1) {
-    id
-  }
   ...PartnerCard_artwork
   ...AboutWork_artwork
   ...OtherWorks_artwork
@@ -1222,31 +1219,6 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "shows",
-            "storageKey": "shows(size:1)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "size",
-                "value": 1
-              }
-            ],
-            "concreteType": "Show",
-            "plural": true,
-            "selections": [
-              (v3/*: any*/),
-              (v7/*: any*/),
-              (v9/*: any*/),
-              (v4/*: any*/),
-              (v13/*: any*/),
-              (v18/*: any*/),
-              (v15/*: any*/),
-              (v22/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
             "name": "artists",
             "storageKey": null,
             "args": null,
@@ -1295,6 +1267,31 @@ return {
           (v3/*: any*/),
           (v4/*: any*/),
           (v13/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "shows",
+            "storageKey": "shows(size:1)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "size",
+                "value": 1
+              }
+            ],
+            "concreteType": "Show",
+            "plural": true,
+            "selections": [
+              (v3/*: any*/),
+              (v7/*: any*/),
+              (v9/*: any*/),
+              (v4/*: any*/),
+              (v13/*: any*/),
+              (v18/*: any*/),
+              (v15/*: any*/),
+              (v22/*: any*/)
+            ]
+          },
           (v5/*: any*/),
           (v9/*: any*/),
           {
@@ -1425,7 +1422,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "c8f2b9d4ca2280f291aaceabfae91917",
+    "id": "1f5e3ba11713360a51fa9ba5c4fc90d0",
     "text": null,
     "metadata": {}
   }

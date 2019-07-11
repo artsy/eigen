@@ -249,9 +249,6 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       context {
         __typename
       }
-      shows(size: 1) {
-        id
-      }
 
       ...PartnerCard_artwork
       ...AboutWork_artwork
