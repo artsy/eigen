@@ -33,7 +33,7 @@ describe("Artwork Details", () => {
       artwork: {
         " $refType": null,
         category: "Oil on canvas",
-        conditionDescription: { label: "nice", details: "Included" },
+        conditionDescription: { label: "Condition details", details: "Excellent" },
         signatureInfo: null,
         certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Not included" },
         framed: { label: "Framed", details: "Included" },
@@ -47,7 +47,7 @@ describe("Artwork Details", () => {
     const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
     expect(component.text()).toContain("Artwork Details")
     expect(component.text()).toContain("MediumOil")
-    expect(component.text()).toContain("Conditionnice")
+    expect(component.text()).toContain("ConditionExcellent")
     expect(component.text()).toContain("Certificate of AuthenticityNot included")
     expect(component.text()).not.toContain("FrameIncluded")
     expect(component.text()).not.toContain("Image Rights")
@@ -59,7 +59,7 @@ describe("Artwork Details", () => {
       artwork: {
         " $refType": null,
         category: "Oil on canvas",
-        conditionDescription: { label: "nice", details: "Included" },
+        conditionDescription: { label: "Condition details", details: "Excellent" },
         signatureInfo: { label: "Signature", details: "Signed by artist" },
         certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Not included" },
         framed: { label: "Framed", details: "Included" },
@@ -73,7 +73,7 @@ describe("Artwork Details", () => {
     const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
     expect(component.text()).toContain("Artwork Details")
     expect(component.text()).toContain("MediumOil")
-    expect(component.text()).toContain("Conditionnice")
+    expect(component.text()).toContain("ConditionExcellent")
     expect(component.text()).toContain("SignatureSigned by artist")
     expect(component.text()).not.toContain("Certificate of AuthenticityNot included")
     expect(component.text()).not.toContain("FrameIncluded")

@@ -20,7 +20,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
       { title: "Medium", value: this.props.artwork.category },
       {
         title: "Condition",
-        value: this.props.artwork.conditionDescription ? this.props.artwork.conditionDescription.label : null,
+        value: this.props.artwork.conditionDescription ? this.props.artwork.conditionDescription.details : null,
       },
       { title: "Signature", value: this.props.artwork.signatureInfo && this.props.artwork.signatureInfo.details },
       {
