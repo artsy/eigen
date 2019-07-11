@@ -26,8 +26,8 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
           edges {
             node {
               artwork {
+                gravityID
                 id
-                slug
                 image {
                   aspect_ratio
                 }

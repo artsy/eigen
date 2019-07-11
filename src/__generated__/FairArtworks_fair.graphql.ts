@@ -7,7 +7,7 @@ export type FairArtworks_fair$ref = typeof _FairArtworks_fair$ref;
 export type FairArtworks_fair = {
     readonly id: string;
     readonly internalID: string;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly artworks: {
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
     } | null;
@@ -53,7 +53,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -100,5 +100,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '9a5931a210af8011d1be6968b13cfaea';
+(node as any).hash = '83770f45f03b4b01ac566a4d67eadf27';
 export default node;

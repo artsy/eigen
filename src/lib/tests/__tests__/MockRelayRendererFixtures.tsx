@@ -26,8 +26,7 @@ export const Artwork = createFragmentContainer(
     <View>
       <Image source={{ uri: props.artwork.image.url }} />
       <Metadata artworkMetadata={props.artwork} />
-      {/* FIXME: Should this be a slug? */}
-      {props.artwork.artist && <ArtistQueryRenderer id={props.artwork.artist.slug} />}
+      {props.artwork.artist && <ArtistQueryRenderer id={props.artwork.artist.gravityID} />}
     </View>
   ),
   {
@@ -37,7 +36,7 @@ export const Artwork = createFragmentContainer(
           url
         }
         artist {
-          slug
+          gravityID
         }
         ...MockRelayRendererFixtures_artworkMetadata
       }

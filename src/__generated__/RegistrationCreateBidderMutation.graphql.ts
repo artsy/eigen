@@ -11,7 +11,7 @@ export type RegistrationCreateBidderMutationVariables = {
 export type RegistrationCreateBidderMutationResponse = {
     readonly createBidder: {
         readonly bidder: {
-            readonly internalID: string;
+            readonly gravityID: string;
             readonly qualified_for_bidding: boolean | null;
         } | null;
     } | null;
@@ -29,7 +29,7 @@ mutation RegistrationCreateBidderMutation(
 ) {
   createBidder(input: $input) {
     bidder {
-      internalID
+      gravityID
       qualified_for_bidding
       id
     }
@@ -56,7 +56,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -143,11 +143,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "RegistrationCreateBidderMutation",
-    "id": "69d40b5b15c7778008cfb5bb845c53dd",
+    "id": "1d93f7e2063bf26c8ebdca407c94010d",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3021c683a42e9818aceb538819dc714b';
+(node as any).hash = '415793ff340365341149ed83366d2edd';
 export default node;

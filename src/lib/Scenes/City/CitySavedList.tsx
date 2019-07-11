@@ -89,7 +89,7 @@ export default createPaginationContainer(
               @connection(key: "CitySavedList_shows") {
               edges {
                 node {
-                  slug
+                  gravityID
                   internalID
                   id
                   name

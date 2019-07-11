@@ -24,7 +24,7 @@ query ArtworksPreviewTestsQuery {
 }
 
 fragment ArtworksPreview_fair on Fair {
-  slug
+  gravityID
   id
   filteredArtworks(size: 0, aggregations: [TOTAL]) {
     artworks_connection(first: 6) {
@@ -44,7 +44,7 @@ fragment ArtworksPreview_fair on Fair {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
+  gravityID
   image {
     aspect_ratio
   }
@@ -59,7 +59,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -101,7 +101,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -446,7 +446,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksPreviewTestsQuery",
-    "id": "d2f6664e662db76c0933e41fc31cf8f2",
+    "id": "5286a4038f092bb05a00f959175f8d85",
     "text": null,
     "metadata": {}
   }

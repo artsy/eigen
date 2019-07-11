@@ -17,7 +17,7 @@ export type Gene_gene = {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
-                readonly internalID: string;
+                readonly gravityID: string;
                 readonly name: string | null;
                 readonly count: number | null;
             } | null> | null;
@@ -32,13 +32,6 @@ export type Gene_gene = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
@@ -76,7 +69,13 @@ return {
       "args": null,
       "storageKey": null
     },
-    (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -112,7 +111,7 @@ return {
           "name": "size",
           "value": 0
         },
-        (v1/*: any*/)
+        (v0/*: any*/)
       ],
       "concreteType": "FilterArtworks",
       "plural": false,
@@ -160,7 +159,13 @@ return {
               "concreteType": "AggregationCount",
               "plural": true,
               "selections": [
-                (v0/*: any*/),
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "gravityID",
+                  "args": null,
+                  "storageKey": null
+                },
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -183,7 +188,7 @@ return {
           "kind": "FragmentSpread",
           "name": "GeneArtworksGrid_filtered_artworks",
           "args": [
-            (v1/*: any*/)
+            (v0/*: any*/)
           ]
         }
       ]
@@ -201,5 +206,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '662d8691f155b24b01fb77a4c0cbaa62';
+(node as any).hash = '4e862e30fdb753e31fc73a9effb8d703';
 export default node;

@@ -142,7 +142,7 @@
     "jest-styled-components": "7.0.0-2",
     "lint-staged": "6.1.1",
     "metro-react-native-babel-preset": "0.49.0",
-    "patch-package": "^6.1.2",
+    "patch-package": "6.1.2",
     "postinstall-prepare": "1.0.1",
     "prettier": "1.14.3",
     "pull-lock": "1.0.0",

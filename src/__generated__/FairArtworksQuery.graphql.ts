@@ -30,7 +30,7 @@ query FairArtworksQuery(
 fragment FairArtworks_fair on Fair {
   id
   internalID
-  slug
+  gravityID
   artworks: filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     id
@@ -46,7 +46,7 @@ fragment Filters_filteredArtworks on FilterArtworks {
   aggregations {
     slice
     counts {
-      internalID
+      gravityID
       name
       id
     }
@@ -63,7 +63,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
     }
     edges {
       node {
-        slug
+        gravityID
         id
         image {
           aspect_ratio
@@ -84,7 +84,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -141,33 +141,26 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v6 = [
+v5 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 10
   }
 ],
-v7 = [
-  (v5/*: any*/),
+v6 = [
+  (v4/*: any*/),
   (v2/*: any*/)
 ];
 return {
@@ -212,8 +205,14 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
           (v3/*: any*/),
-          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworks",
@@ -274,7 +273,7 @@ return {
                     "plural": true,
                     "selections": [
                       (v3/*: any*/),
-                      (v5/*: any*/),
+                      (v4/*: any*/),
                       (v2/*: any*/)
                     ]
                   }
@@ -286,7 +285,7 @@ return {
                 "alias": "artworks",
                 "name": "artworks_connection",
                 "storageKey": "artworks_connection(first:10)",
-                "args": (v6/*: any*/),
+                "args": (v5/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -340,7 +339,7 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
+                          (v3/*: any*/),
                           (v2/*: any*/),
                           {
                             "kind": "LinkedField",
@@ -513,7 +512,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": (v7/*: any*/)
+                            "selections": (v6/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -523,7 +522,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v7/*: any*/)
+                            "selections": (v6/*: any*/)
                           },
                           {
                             "kind": "ScalarField",
@@ -556,7 +555,7 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "artworks_connection",
-                "args": (v6/*: any*/),
+                "args": (v5/*: any*/),
                 "handle": "connection",
                 "key": "ArtworksGridPaginationContainer_artworks",
                 "filters": null
@@ -570,7 +569,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtworksQuery",
-    "id": "701f9feb11eff91e50df352b59731220",
+    "id": "13750c45480f1a9c82852c34e90dc7ca",
     "text": null,
     "metadata": {}
   }

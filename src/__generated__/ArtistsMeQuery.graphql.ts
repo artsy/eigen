@@ -38,7 +38,7 @@ fragment Artists_me_1G22uz on Me {
     edges {
       node {
         artist {
-          slug
+          gravityID
           id
           name
           href
@@ -205,7 +205,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -282,7 +282,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistsMeQuery",
-    "id": "9a4f600116fd4cdaaa912cc6d63d04ac",
+    "id": "50c8259fa471d0389d67dfbb57d92dd4",
     "text": null,
     "metadata": {}
   }

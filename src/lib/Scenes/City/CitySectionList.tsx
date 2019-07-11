@@ -133,9 +133,9 @@ export default createPaginationContainer(
           }
           edges {
             node {
-              id
-              slug
+              gravityID
               internalID
+              id
               isStubShow
               is_followed
               start_at

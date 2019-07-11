@@ -6,7 +6,7 @@ export type ArtworkActions_artwork$ref = typeof _ArtworkActions_artwork$ref;
 export type ArtworkActions_artwork = {
     readonly id: string;
     readonly internalID: string;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly title: string | null;
     readonly href: string | null;
     readonly is_saved: boolean | null;
@@ -47,7 +47,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -124,5 +124,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '2aec79a3ff555bec57c9bc2bfac60c4d';
+(node as any).hash = '92be7ba9320a221043aeb63229e391dc';
 export default node;

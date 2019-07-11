@@ -32,7 +32,7 @@ fragment Filters_filteredArtworks on FilterArtworks {
   aggregations {
     slice
     counts {
-      internalID
+      gravityID
       name
       id
     }
@@ -170,7 +170,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "internalID",
+                        "name": "gravityID",
                         "args": null,
                         "storageKey": null
                       },
@@ -197,7 +197,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FiltersTestsQuery",
-    "id": "cfff8141b6f7d0a2da1104ce3355d36d",
+    "id": "cf5a6a27aaf3f51645dd602badd07d9b",
     "text": null,
     "metadata": {}
   }

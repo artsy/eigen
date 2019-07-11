@@ -26,7 +26,7 @@ query ArtistsGroupedByNameTestsQuery {
 fragment ArtistListItem_artist on Artist {
   id
   internalID
-  slug
+  gravityID
   name
   initials
   href
@@ -106,7 +106,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -184,7 +184,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistsGroupedByNameTestsQuery",
-    "id": "cf1414a2cb2975fd7059dc57fe18deff",
+    "id": "06269a5e65dc3b70922a6b51c0c258f8",
     "text": null,
     "metadata": {}
   }

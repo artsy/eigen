@@ -5,13 +5,13 @@ declare const _FairsRail_fairs_module$ref: unique symbol;
 export type FairsRail_fairs_module$ref = typeof _FairsRail_fairs_module$ref;
 export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<{
-        readonly slug: string;
+        readonly gravityID: string;
         readonly name: string | null;
         readonly profile: {
-            readonly slug: string;
+            readonly gravityID: string;
         } | null;
         readonly mobile_image: {
-            readonly internalID: string | null;
+            readonly gravityID: string | null;
             readonly url: string | null;
         } | null;
     } | null>;
@@ -24,7 +24,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
@@ -73,13 +73,7 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "internalID",
-              "args": null,
-              "storageKey": null
-            },
+            (v0/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -94,5 +88,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '45d895ffb382bc512a9e19b51cc5d51c';
+(node as any).hash = '7849f55ec5e577046b113ddf72062595';
 export default node;

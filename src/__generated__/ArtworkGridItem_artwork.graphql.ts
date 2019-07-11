@@ -11,7 +11,7 @@ export type ArtworkGridItem_artwork = {
     readonly is_biddable: boolean | null;
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly sale: {
         readonly is_auction: boolean | null;
         readonly is_live_open: boolean | null;
@@ -109,7 +109,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -255,5 +255,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1da73ad6063e8fde4bf218f2adf01c6c';
+(node as any).hash = 'de917192a71daa8d1d0302bd67078138';
 export default node;

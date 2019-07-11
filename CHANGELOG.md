@@ -17,8 +17,6 @@
 ### Master
 - Added partner type to partner card - lilyfromseattle
 
-- Metaphysics v2 update that removes gravityID - zephraph
-
 ### 1.12.5
 
 ### 1.12.4

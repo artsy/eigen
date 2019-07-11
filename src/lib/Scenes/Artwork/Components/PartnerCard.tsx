@@ -23,7 +23,7 @@ export class PartnerCard extends React.Component<Props, State> {
   handleFollowPartner = () => {
     const { artwork, relay } = this.props
     const {
-      slug: partnerSlug,
+      gravityID: partnerSlug,
       profile: { is_followed: partnerFollowed, internalID: profileID },
     } = artwork.partner
 
@@ -40,7 +40,7 @@ export class PartnerCard extends React.Component<Props, State> {
               followProfile(input: $input) {
                 profile {
                   id
-                  slug
+                  gravityID
                   internalID
                   is_followed
                 }
@@ -58,7 +58,7 @@ export class PartnerCard extends React.Component<Props, State> {
               profile: {
                 id: artwork.partner.profile.id,
                 internalID: profileID,
-                slug: partnerSlug,
+                gravityID: partnerSlug,
                 is_followed: !partnerFollowed,
               },
             },
@@ -138,7 +138,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         is_default_profile_public
         type
         name
-        slug
+        gravityID
         internalID
         id
         href
@@ -146,7 +146,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         profile {
           id
           internalID
-          slug
+          gravityID
           is_followed
           icon {
             url(version: "square140")

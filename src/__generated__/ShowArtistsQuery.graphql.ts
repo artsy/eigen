@@ -29,7 +29,7 @@ query ShowArtistsQuery(
 
 fragment ShowArtists_show on Show {
   internalID
-  slug
+  gravityID
   artists_grouped_by_name {
     letter
     items {
@@ -44,7 +44,7 @@ fragment ShowArtists_show on Show {
 fragment ArtistListItem_artist on Artist {
   id
   internalID
-  slug
+  gravityID
   name
   initials
   href
@@ -84,7 +84,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -252,7 +252,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsQuery",
-    "id": "ff46d403774960d77e62c19354dc53b4",
+    "id": "5121884d23e40c6ff469c95cd8f77c05",
     "text": null,
     "metadata": {}
   }

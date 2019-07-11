@@ -6,16 +6,16 @@ declare const _ShowArtistsPreview_show$ref: unique symbol;
 export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
 export type ShowArtistsPreview_show = {
     readonly internalID: string;
-    readonly slug: string;
+    readonly gravityID: string;
     readonly artists: ReadonlyArray<{
         readonly internalID: string;
-        readonly slug: string;
+        readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     } | null> | null;
     readonly artists_without_artworks: ReadonlyArray<{
         readonly internalID: string;
-        readonly slug: string;
+        readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     } | null> | null;
@@ -35,7 +35,7 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -87,5 +87,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3aa4e315953e40cb75e11949dd1e1b39';
+(node as any).hash = '1305e01a383698e4045cde0d40e6917f';
 export default node;

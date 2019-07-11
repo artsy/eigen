@@ -216,7 +216,7 @@ const artworkActionsArtwork = {
   id: "artwork12345",
   internalID: "12345",
   title: "test title",
-  slug: "andreas-rod-prinzknecht",
+  gravityID: "andreas-rod-prinzknecht",
   href: "/artwork/andreas-rod-prinzknecht",
   artists: [
     {

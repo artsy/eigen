@@ -37,7 +37,7 @@ export class LocationMap extends React.Component<Props> {
   render() {
     const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates || { lat: null, lng: null }
-    const { address_2, address, internalID, postal_code, city, summary } = location
+    const { address_2, address, gravityID, postal_code, city, summary } = location
 
     if (!lat || !lng) {
       return null
@@ -162,7 +162,7 @@ export class LocationMap extends React.Component<Props> {
             scrollEnabled={false}
             attributionEnabled={false}
           >
-            <Mapbox.PointAnnotation id={internalID} coordinate={[lng, lat]}>
+            <Mapbox.PointAnnotation id={gravityID} coordinate={[lng, lat]}>
               <Pin />
             </Mapbox.PointAnnotation>
           </Map>
@@ -177,7 +177,7 @@ export const LocationMapContainer = createFragmentContainer(LocationMap, {
   location: graphql`
     fragment LocationMap_location on Location {
       id
-      internalID
+      gravityID
       city
       address
       address_2

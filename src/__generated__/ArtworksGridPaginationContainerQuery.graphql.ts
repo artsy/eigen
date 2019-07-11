@@ -50,7 +50,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks_1G22uz on FilterArtwor
     }
     edges {
       node {
-        slug
+        gravityID
         id
         image {
           aspect_ratio
@@ -71,7 +71,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  slug
+  gravityID
   sale {
     is_auction
     is_live_open
@@ -292,7 +292,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -519,7 +519,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksGridPaginationContainerQuery",
-    "id": "d6538bb87cdc63b150082de6bbe4309c",
+    "id": "caa0b4b3d7c0d1facc03c833532bdf75",
     "text": null,
     "metadata": {}
   }
