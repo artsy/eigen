@@ -22,7 +22,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
         title: "Condition",
         value: this.props.artwork.conditionDescription ? this.props.artwork.conditionDescription.label : null,
       },
-      { title: "Signature", value: this.props.artwork.signature },
+      { title: "Signature", value: this.props.artwork.signatureInfo && this.props.artwork.signatureInfo.details },
       {
         title: "Certificate of Authenticity",
         value: this.props.artwork.certificateOfAuthenticity && this.props.artwork.certificateOfAuthenticity.details,
@@ -84,7 +84,6 @@ export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDe
         label
         details
       }
-      signature
       signatureInfo {
         label
         details
