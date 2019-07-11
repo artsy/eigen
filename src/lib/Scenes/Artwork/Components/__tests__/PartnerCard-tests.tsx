@@ -94,7 +94,7 @@ describe("PartnerCard", () => {
         .at(0)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"FollowFollow"`)
+    ).toMatchInlineSnapshot(`"FollowFollowing"`)
   })
 
   it("does not render when the partner is an auction house", () => {
@@ -203,7 +203,7 @@ describe("PartnerCard", () => {
       partnerCard.update()
 
       const updatedFollowButton = partnerCard.find(Button).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"FollowFollow"`)
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"FollowFollowing"`)
     })
 
     it("correctly displays when the work is not followed, and allows following", async () => {
@@ -220,7 +220,7 @@ describe("PartnerCard", () => {
       })
 
       const followButton = partnerCard.find(Button).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"FollowFollow"`)
+      expect(followButton.text()).toMatchInlineSnapshot(`"FollowFollowing"`)
 
       await partnerCard
         .find(Button)

@@ -18,6 +18,7 @@
 
 - Metaphysics v2 update that removes gravityID - zephraph
 - Removes InvertedButton - kierangillen
+- Adds ContextCard - kierangillen
 
 ### 1.12.5
 
