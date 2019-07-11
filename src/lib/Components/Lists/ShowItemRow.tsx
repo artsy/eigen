@@ -1,7 +1,6 @@
-import { Box, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { Box, Button, color, Flex, Sans, Serif, space } from "@artsy/palette"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
@@ -162,18 +161,9 @@ export class ShowItemRow extends React.Component<Props, State> {
               )}
           </Flex>
           {!shouldHideSaveButton && (
-            <Flex flexDirection="row">
-              <Box width={50} height={20}>
-                <InvertedButton
-                  inProgress={this.state.isFollowedSaving}
-                  text={show.is_followed ? "Saved" : "Save"}
-                  selected={show.is_followed}
-                  onPress={() => this.handleSave()}
-                  noBackground={true}
-                  hitSlop={{ top: 10, bottom: 10, left: 0, right: 0 }}
-                />
-              </Box>
-            </Flex>
+            <Button variant="noOutline" onPress={() => this.handleSave()} loading={this.state.isFollowedSaving}>
+              {show.is_followed ? "Saved" : "Save"}
+            </Button>
           )}
         </Flex>
       </TouchableWithoutFeedback>

@@ -1,5 +1,4 @@
-import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import { Box, Button, color, Flex, Sans, Theme } from "@artsy/palette"
 import { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import TabBar from "lib/Components/TabBar"
 import { Schema, screenTrack, track } from "lib/utils/track"
@@ -237,8 +236,10 @@ const ErrorScreen: React.SFC<{ relayErrorState: RelayErrorState }> = ({ relayErr
         We are having trouble loading content right now, please try again later.
       </Sans>
       <Flex justifyContent="center" flexDirection="row">
-        <Box width={69} height={34} mt={2}>
-          <InvertedButton text="Retry" onPress={retry} inProgress={isRetrying} />
+        <Box mt={2}>
+          <Button onPress={retry} loading={isRetrying}>
+            Retry
+          </Button>
         </Box>
       </Flex>
     </Box>

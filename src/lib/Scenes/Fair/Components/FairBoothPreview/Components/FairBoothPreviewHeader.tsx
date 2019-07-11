@@ -1,5 +1,4 @@
-import { Box, Flex, Sans, Serif, space } from "@artsy/palette"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import { Box, Button, Flex, Sans, Serif, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
@@ -26,7 +25,7 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
   url,
   onViewFairBoothPressed,
 }) => {
-  const buttonWidth = 102
+  const buttonWidth = 95
   const partnerNameWidth = Dimensions.get("window").width - buttonWidth - roundedImageSize - space(4) - space(1)
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row" mb={1}>
@@ -44,15 +43,15 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
         </ImageAndTextWrapper>
       </TouchableOpacity>
       {isFollowed !== null && (
-        <Box width={102} height={34}>
-          <InvertedButton
-            grayBorder={true}
-            text={isFollowed ? "Following" : "Follow"}
-            onPress={onFollowPartner}
-            selected={isFollowed}
-            inProgress={isFollowedChanging}
-          />
-        </Box>
+        <Button
+          variant={isFollowed ? "secondaryOutline" : "primaryBlack"}
+          onPress={onFollowPartner}
+          size="small"
+          loading={isFollowedChanging}
+          longestText="Following"
+        >
+          {isFollowed ? "Following" : "Follow"}
+        </Button>
       )}
     </Flex>
   )

@@ -1,13 +1,10 @@
 import React from "react"
-import { Schema, Track, track as _track } from "../../utils/track"
-
-import { createFragmentContainer, graphql } from "react-relay"
-
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import { Schema, Track, track as _track } from "../../utils/track"
 const { ARTemporaryAPIModule } = NativeModules
-
+import { Button } from "@artsy/palette"
 import colors from "lib/data/colors"
-import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
@@ -62,11 +59,14 @@ class Header extends React.Component<Props, State> {
     if (this.state.following !== null) {
       return (
         <View style={styles.followButton}>
-          <InvertedButton
-            text={this.state.following ? "Following" : "Follow"}
-            selected={this.state.following}
+          <Button
+            variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
+            block
+            width={100}
             onPress={this.handleFollowChange.bind(this)}
-          />
+          >
+            {this.state.following ? "Following" : "Follow"}
+          </Button>
         </View>
       )
     }

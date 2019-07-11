@@ -94,7 +94,7 @@ describe("PartnerCard", () => {
         .at(0)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"Follow"`)
+    ).toMatchInlineSnapshot(`"FollowFollow"`)
   })
 
   it("does not render when the partner is an auction house", () => {
@@ -191,7 +191,7 @@ describe("PartnerCard", () => {
       })
 
       const followButton = partnerCard.find(Button).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
+      expect(followButton.text()).toMatchInlineSnapshot(`"FollowingFollowing"`)
 
       await partnerCard
         .find(Button)
@@ -203,7 +203,7 @@ describe("PartnerCard", () => {
       partnerCard.update()
 
       const updatedFollowButton = partnerCard.find(Button).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"FollowFollow"`)
     })
 
     it("correctly displays when the work is not followed, and allows following", async () => {
@@ -220,7 +220,7 @@ describe("PartnerCard", () => {
       })
 
       const followButton = partnerCard.find(Button).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(followButton.text()).toMatchInlineSnapshot(`"FollowFollow"`)
 
       await partnerCard
         .find(Button)
@@ -232,7 +232,7 @@ describe("PartnerCard", () => {
       partnerCard.update()
 
       const updatedFollowButton = partnerCard.find(Button).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Following"`)
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"FollowingFollowing"`)
     })
 
     // TODO Update once we can use relay's new facilities for testing
