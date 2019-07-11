@@ -143,7 +143,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
           {formatCounts(counts)}
         </Sans>
         <Spacer m={3} />
-        <Spacer m={1} mt={1} />
+        <Spacer m={1} />
         <Button
           loading={isFollowedChanging}
           onPress={this.handleFollowPartner}
