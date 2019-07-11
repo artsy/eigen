@@ -116,7 +116,7 @@ export class Artwork extends React.Component<Props> {
       sections.push("partnerCard")
     }
 
-    if (context || (shows && shows.length)) {
+    if (context) {
       sections.push("contextCard")
     }
 
