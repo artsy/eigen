@@ -16,6 +16,10 @@ export type ContextCard_artwork = {
         readonly cover_image?: {
             readonly url: string | null;
         } | null;
+        readonly exhibition_period?: string | null;
+        readonly image?: {
+            readonly url: string | null;
+        } | null;
     } & ({
         readonly __typename: "ArtworkContextAuction";
         readonly id: string;
@@ -23,6 +27,12 @@ export type ContextCard_artwork = {
         readonly href: string | null;
         readonly formattedStartDateTime: string | null;
         readonly cover_image: {
+            readonly url: string | null;
+        } | null;
+    } | {
+        readonly __typename: "ArtworkContextFair";
+        readonly exhibition_period: string | null;
+        readonly image: {
             readonly url: string | null;
         } | null;
     } | {
@@ -42,15 +52,6 @@ export type ContextCard_artwork = {
             readonly url: string | null;
         } | null;
     } | null> | null;
-    readonly fair: {
-        readonly id: string;
-        readonly name: string | null;
-        readonly href: string | null;
-        readonly exhibition_period: string | null;
-        readonly image: {
-            readonly url: string | null;
-        } | null;
-    } | null;
     readonly " $refType": ContextCard_artwork$ref;
 };
 
@@ -160,6 +161,26 @@ return {
             },
             (v6/*: any*/)
           ]
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "ArtworkContextFair",
+          "selections": [
+            (v0/*: any*/),
+            (v3/*: any*/),
+            (v4/*: any*/),
+            (v7/*: any*/),
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "image",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Image",
+              "plural": false,
+              "selections": (v5/*: any*/)
+            }
+          ]
         }
       ]
     },
@@ -193,34 +214,9 @@ return {
         },
         (v6/*: any*/)
       ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "fair",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Fair",
-      "plural": false,
-      "selections": [
-        (v0/*: any*/),
-        (v3/*: any*/),
-        (v4/*: any*/),
-        (v7/*: any*/),
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "image",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Image",
-          "plural": false,
-          "selections": (v5/*: any*/)
-        }
-      ]
     }
   ]
 };
 })();
-(node as any).hash = 'ffda626bd82d369978c43f72f9d2bc9a';
+(node as any).hash = '4b0c79f41e9d56a4a99bd97aa3441621';
 export default node;

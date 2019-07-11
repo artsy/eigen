@@ -123,6 +123,13 @@ const fairContextArtwork = {
   internalID: "5d0a7485fc1f78001248b677",
   context: {
     __typename: "ArtworkContextFair",
+    id: "QXJ0d29ya0NvbnRleHRGYWlyOm1hcmtldC1hcnQtcGx1cy1kZXNpZ24tMjAxOQ==",
+    name: "Market Art + Design 2019",
+    href: "/market-art-plus-design-2019",
+    exhibition_period: "Jul 5 – 7",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/R5z4lkyH6DyGhEwAg44NSA/wide.jpg",
+    },
   },
   shows: [
     {
@@ -138,15 +145,6 @@ const fairContextArtwork = {
       },
     },
   ],
-  fair: {
-    id: "RmFpcjptYXJrZXQtYXJ0LXBsdXMtZGVzaWduLTIwMTk=",
-    name: "Market Art + Design 2019",
-    href: "/market-art-plus-design-2019",
-    exhibition_period: "Jul 5 – 7",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/R5z4lkyH6DyGhEwAg44NSA/wide.jpg",
-    },
-  },
   " $refType": null,
   " $fragmentRefs": null,
 }

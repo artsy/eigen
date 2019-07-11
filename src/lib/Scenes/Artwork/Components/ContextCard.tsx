@@ -143,12 +143,11 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           renderContextCard = true
           break
         case "ArtworkContextFair":
-          const { fair } = artwork
           header = "In fair"
-          name = fair.name
-          href = fair.href
-          meta = fair.exhibition_period
-          imageUrl = fair.image && fair.image.url ? fair.image.url : ""
+          name = context.name
+          href = context.href
+          meta = context.exhibition_period
+          imageUrl = context.image && context.image.url ? context.image.url : ""
           renderContextCard = true
           break
         case "ArtworkContextPartnerShow":
@@ -211,6 +210,15 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
             url
           }
         }
+        ... on ArtworkContextFair {
+          id
+          name
+          href
+          exhibition_period
+          image {
+            url
+          }
+        }
       }
       shows(size: 1) {
         id
@@ -221,15 +229,6 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
         exhibition_period
         is_followed
         cover_image {
-          url
-        }
-      }
-      fair {
-        id
-        name
-        href
-        exhibition_period
-        image {
           url
         }
       }

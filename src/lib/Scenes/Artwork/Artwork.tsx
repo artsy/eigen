@@ -88,7 +88,6 @@ export class Artwork extends React.Component<Props> {
     const {
       artist: { biography_blurb },
       context,
-      shows,
     } = artwork
 
     const sections = []
