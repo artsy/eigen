@@ -119,7 +119,7 @@ const Contents: React.SFC<{ deviceProps: DeviceProps; onPress: () => void }> = (
             </SmallHeadline>
           </HorizontalLayout>
           <ButtonsView {...deviceProps}>
-            <FormButton text="GET STARTED" onPress={onPress} style={{ marginTop: 0 }} />
+            <FormButton text="Get started" onPress={onPress} style={{ marginTop: 0 }} />
             <CloseButton />
           </ButtonsView>
         </List>

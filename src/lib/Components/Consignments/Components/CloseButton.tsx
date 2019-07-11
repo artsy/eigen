@@ -10,8 +10,8 @@ export default class CloseButton extends React.Component<ViewProperties> {
   render() {
     return (
       <Box style={Object.assign({ marginTop: 4, width: 174 }, this.props.style)}>
-        <Button block width="100%" onPress={this.exitModal}>
-          CLOSE
+        <Button block width={100} onPress={this.exitModal}>
+          Close
         </Button>
       </Box>
     )

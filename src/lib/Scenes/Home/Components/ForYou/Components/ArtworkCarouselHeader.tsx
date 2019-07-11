@@ -90,6 +90,7 @@ class ArtworkCarouselHeader extends Component<Props, State> {
           <Button
             variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
             onPress={this.handleFollowChange.bind(this)}
+            longestText="Following"
             size="small"
           >
             {this.state.following ? "Following" : "Follow"}

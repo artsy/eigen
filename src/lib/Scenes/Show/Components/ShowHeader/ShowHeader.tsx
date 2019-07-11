@@ -180,7 +180,7 @@ export class ShowHeader extends React.Component<Props, State> {
           />
           <Spacer mb={2} />
           <Button
-            width="100%"
+            width={100}
             block
             loading={isFollowedSaving}
             onPress={this.handleFollowShow}

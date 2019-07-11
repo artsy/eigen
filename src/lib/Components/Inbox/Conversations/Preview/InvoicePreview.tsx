@@ -85,26 +85,26 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, 
     case "PAID":
       return (
         <PayButtonContainer>
-          <PaidLabel>PAID</PaidLabel>
+          <PaidLabel>Paid</PaidLabel>
         </PayButtonContainer>
       )
     case "VOID":
       return (
         <PayButtonContainer>
-          <GrayPaymentStatusLabel>CANCELED</GrayPaymentStatusLabel>
+          <GrayPaymentStatusLabel>Canceled</GrayPaymentStatusLabel>
         </PayButtonContainer>
       )
     case "REFUNDED":
       return (
         <PayButtonContainer>
-          <GrayPaymentStatusLabel>REFUNDED</GrayPaymentStatusLabel>
+          <GrayPaymentStatusLabel>Refunded</GrayPaymentStatusLabel>
         </PayButtonContainer>
       )
     case "UNPAID":
       return (
         <PayButtonContainer>
           <Button block width="100%" size="small" onPress={onSelected}>
-            PAY
+            Pay
           </Button>
         </PayButtonContainer>
       )

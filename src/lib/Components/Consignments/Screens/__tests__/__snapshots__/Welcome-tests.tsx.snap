@@ -421,6 +421,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -658,26 +659,62 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       }
                     }
                     variant="primaryWhite"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#000"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#000",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#000"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#000",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Get started
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      GET STARTED
+                      Get started
                     </Text>
                   </View>
                 </View>
@@ -725,6 +762,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -962,26 +1000,62 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       }
                     }
                     variant="primaryBlack"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#FFF"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#FFF",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#FFF"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#FFF",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Close
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      CLOSE
+                      Close
                     </Text>
                   </View>
                 </View>
@@ -1416,6 +1490,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -1653,26 +1728,62 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       }
                     }
                     variant="primaryWhite"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#000"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#000",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#000"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#000",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Get started
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      GET STARTED
+                      Get started
                     </Text>
                   </View>
                 </View>
@@ -1720,6 +1831,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -1957,26 +2069,62 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       }
                     }
                     variant="primaryBlack"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#FFF"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#FFF",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#FFF"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#FFF",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Close
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      CLOSE
+                      Close
                     </Text>
                   </View>
                 </View>
@@ -2411,6 +2559,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -2648,26 +2797,62 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       }
                     }
                     variant="primaryWhite"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#000"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#000",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#000"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#000",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Get started
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      GET STARTED
+                      Get started
                     </Text>
                   </View>
                 </View>
@@ -2715,6 +2900,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -2952,26 +3138,62 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       }
                     }
                     variant="primaryBlack"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#FFF"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#FFF",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#FFF"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#FFF",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Close
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      CLOSE
+                      Close
                     </Text>
                   </View>
                 </View>
@@ -3406,6 +3628,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -3643,26 +3866,62 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       }
                     }
                     variant="primaryWhite"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#000"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#000",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#000"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#000",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Get started
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      GET STARTED
+                      Get started
                     </Text>
                   </View>
                 </View>
@@ -3710,6 +3969,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -3947,26 +4207,62 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       }
                     }
                     variant="primaryBlack"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#FFF"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#FFF",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#FFF"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#FFF",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Close
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      CLOSE
+                      Close
                     </Text>
                   </View>
                 </View>
@@ -4401,6 +4697,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -4638,26 +4935,62 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       }
                     }
                     variant="primaryWhite"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#000"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#000",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#000"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#000",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Get started
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      GET STARTED
+                      Get started
                     </Text>
                   </View>
                 </View>
@@ -4705,6 +5038,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                           "justifyContent": "center",
                           "paddingLeft": 8,
                           "paddingRight": 8,
+                          "position": "relative",
                           "width": "100%",
                         },
                         Object {
@@ -4942,26 +5276,62 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       }
                     }
                     variant="primaryBlack"
-                    width="100%"
+                    width={100}
                   >
-                    <Text
-                      color="#FFF"
-                      fontFamily="Unica77LL-Medium"
-                      fontSize="14px"
-                      lineHeight="20px"
+                    <View
                       style={
                         Array [
                           Object {
-                            "color": "#FFF",
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "height": "100%",
+                            "justifyContent": "center",
+                            "position": "absolute",
+                            "width": "100%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        color="#FFF"
+                        fontFamily="Unica77LL-Medium"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        style={
+                          Array [
+                            Object {
+                              "color": "#FFF",
+                              "fontFamily": "Unica77LL-Medium",
+                              "fontSize": 14,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        Close
+                      </Text>
+                    </View>
+                    <Text
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="20px"
+                      role="presentation"
+                      style={
+                        Array [
+                          Object {
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
                             "lineHeight": 20,
                           },
-                          Object {},
+                          Object {
+                            "opacity": 0,
+                          },
                         ]
                       }
                     >
-                      CLOSE
+                      Close
                     </Text>
                   </View>
                 </View>

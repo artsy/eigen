@@ -147,7 +147,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
         <Button
           loading={isFollowedChanging}
           onPress={this.handleFollowPartner}
-          width="100%"
+          width={100}
           block
           variant={partnerFollowed ? "secondaryOutline" : "primaryBlack"}
         >

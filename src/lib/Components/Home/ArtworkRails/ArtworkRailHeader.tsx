@@ -84,7 +84,7 @@ class ArtworkRailHeader extends React.Component<Props, State> {
             onPress={this.handleFollowChange}
             size="small"
           >
-            {this.state.following ? "Following" : "Follow123"}
+            {this.state.following ? "Following" : "Follow"}
           </Button>
         </View>
       )

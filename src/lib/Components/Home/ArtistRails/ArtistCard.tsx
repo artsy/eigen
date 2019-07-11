@@ -131,7 +131,7 @@ export class ArtistCard extends React.Component<Props, State> {
                 onPress={this.handleFollowChange}
                 size="small"
                 block
-                width="100%"
+                width={100}
                 loading={this.state.processingChange}
               >
                 {this.state.following ? "Following" : "Follow"}

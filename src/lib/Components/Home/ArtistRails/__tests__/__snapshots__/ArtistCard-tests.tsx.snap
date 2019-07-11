@@ -146,6 +146,7 @@ exports[`renders correctly 1`] = `
                 "justifyContent": "center",
                 "paddingLeft": 10,
                 "paddingRight": 10,
+                "position": "relative",
                 "width": "100%",
               },
               Object {
@@ -383,22 +384,58 @@ exports[`renders correctly 1`] = `
             }
           }
           variant="primaryBlack"
-          width="100%"
+          width={100}
         >
-          <Text
-            color="#FFF"
-            fontFamily="Unica77LL-Medium"
-            fontSize="12px"
-            lineHeight="16px"
+          <View
             style={
               Array [
                 Object {
-                  "color": "#FFF",
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "height": "100%",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "width": "100%",
+                },
+              ]
+            }
+          >
+            <Text
+              color="#FFF"
+              fontFamily="Unica77LL-Medium"
+              fontSize="12px"
+              lineHeight="16px"
+              style={
+                Array [
+                  Object {
+                    "color": "#FFF",
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Follow
+            </Text>
+          </View>
+          <Text
+            fontFamily="Unica77LL-Medium"
+            fontSize="12px"
+            lineHeight="16px"
+            role="presentation"
+            style={
+              Array [
+                Object {
                   "fontFamily": "Unica77LL-Medium",
                   "fontSize": 12,
                   "lineHeight": 16,
                 },
-                Object {},
+                Object {
+                  "opacity": 0,
+                },
               ]
             }
           >

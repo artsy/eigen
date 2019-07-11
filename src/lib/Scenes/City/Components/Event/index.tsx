@@ -159,6 +159,8 @@ export class Event extends React.Component<Props, State> {
               variant={is_followed ? "secondaryOutline" : "primaryBlack"}
               loading={isFollowedSaving}
               onPress={() => this.handleSaveChange()}
+              longestText="Saved"
+              size="small"
             >
               {is_followed ? "Saved" : "Save"}
             </Button>

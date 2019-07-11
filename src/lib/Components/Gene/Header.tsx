@@ -98,7 +98,7 @@ class Header extends React.Component<Props, State> {
         <Button
           variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
           block
-          width="100%"
+          width={100}
           onPress={this.handleFollowChange.bind(this)}
         >
           {this.state.following ? "Following" : "Follow"}

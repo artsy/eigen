@@ -1,15 +1,14 @@
+import { Button } from "@artsy/palette"
+import { RotatingView } from "lib/Components/UtilityViews/RotatingView"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { Image, NavigatorIOS, Route, View, ViewProperties } from "react-native"
-
-import { Schema, screenTrack } from "lib/utils/track"
+import styled from "styled-components/native"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { FormButton } from "../Components/FormElements"
 import { LargeHeadline } from "../Typography/index"
 import Welcome from "./Welcome"
-
-import { RotatingView } from "lib/Components/UtilityViews/RotatingView"
-import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -115,7 +114,7 @@ export default class Confirmation extends React.Component<Props, State> {
           <Subtitle>You will receive a confirmation email shortly.</Subtitle>
         </View>
         <ButtonView>
-          <FormButton text="DONE" onPress={this.exitModal} />
+          <FormButton text="Done" onPress={this.exitModal} />
         </ButtonView>
       </TextContainer>
     </View>
@@ -131,8 +130,10 @@ export default class Confirmation extends React.Component<Props, State> {
           <Subtitle>Please try again.</Subtitle>
         </View>
         <ButtonView>
-          <FormButton text="TRY AGAIN" onPress={this.restart} />
-          <FormButton text="QUIT" onPress={this.exitModal} />
+          <FormButton text="Try again" onPress={this.restart} />
+          <Button block width={100} onPress={this.exitModal}>
+            Quit
+          </Button>
         </ButtonView>
       </TextContainer>
     </View>
