@@ -35,13 +35,11 @@ interface Props {
 interface State {
   processingChange: boolean
   following?: boolean
-  followStatusChanged?: Animated.EndCallback
 }
 
 export class ArtistCard extends React.Component<Props, State> {
   state = {
     processingChange: false,
-    followStatusChanged: null,
     following: null,
   }
 
@@ -116,8 +114,6 @@ export class ArtistCard extends React.Component<Props, State> {
   render() {
     const artist = this.props.artist
     const imageURL = artist.image && artist.image.url
-
-    delete (this.state as any).followStatusChanged
 
     return (
       <View style={styles.container}>
