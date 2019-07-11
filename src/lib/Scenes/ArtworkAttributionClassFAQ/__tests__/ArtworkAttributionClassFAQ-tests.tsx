@@ -1,6 +1,7 @@
 import { Button, Serif } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
+import { Text } from "react-native"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -25,6 +26,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     expect(
       component
         .find(Button)
+        .find(Text)
         .at(0)
         .text()
     ).toEqual("OK")
