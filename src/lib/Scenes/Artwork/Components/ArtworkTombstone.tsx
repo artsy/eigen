@@ -124,11 +124,15 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           </Serif>
         )}
         {artwork.attribution_class && (
-          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleTap("/artwork-classifications")}>
-            <Serif color="black60" size="3t">
+          <Serif color="black60" size="3t" mt={1}>
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              onPress={() => this.handleTap("/artwork-classifications")}
+            >
               {artwork.attribution_class.shortDescription}
-            </Serif>
-          </Text>
+            </Text>
+            .
+          </Serif>
         )}
       </Box>
     )
