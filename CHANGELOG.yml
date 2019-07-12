@@ -9,6 +9,7 @@ upcoming:
     - Integrates View-in-Room support from React Native Artwork view - ash/steve
     - Adds edition information to LAI lot info view - ash/lily
     - Live auction current lot now updates current bid - ash/anson
+    - Trim whitespace in featured links
 
 releases:
   - version: 5.0.5
