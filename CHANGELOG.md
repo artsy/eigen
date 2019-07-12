@@ -21,6 +21,7 @@
 - Adds ContextCard - kierangillen
 - Fixes BottomAlignedButton keyboard clipping - kierangillen
 - Fixes crash and map UX for city guides - ash
+- Fixes spurious, intermittent crash from home feed - ash
 
 ### 1.12.5
 
