@@ -1,4 +1,4 @@
-import { CloseIcon } from "@artsy/palette"
+import { CloseIcon, Sans } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { once } from "lodash"
 import React, { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
@@ -12,6 +12,7 @@ import {
   NativeSyntheticEvent,
   NativeTouchEvent,
   ScrollView,
+  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -166,6 +167,7 @@ export const ImageCarouselFullScreen: React.FC<{
         </VerticalSwipeToDismiss>
         <StatusBarOverlay />
         <CloseButton onClose={onClose} />
+        <IndexIndicator imageIndex={imageIndex} numImages={images.length} />
       </Modal>
     </EntryContext.Provider>
   )
@@ -437,26 +439,26 @@ const CloseButton: React.FC<{ onClose(): void }> = ({ onClose }) => {
     <View
       style={{
         position: "absolute",
-        left: 10,
-        top: top + 10,
+        left: 20,
+        top: top + 20,
         width: 40,
         height: 40,
       }}
     >
       <TouchableOpacity onPress={onClose}>
         <Animated.View
-          style={{
-            opacity,
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: "white",
-            shadowColor: "black",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={[
+            styles.shadow,
+            {
+              opacity,
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: "white",
+              alignItems: "center",
+              justifyContent: "center",
+            },
+          ]}
         >
           <CloseIcon />
         </Animated.View>
@@ -464,3 +466,49 @@ const CloseButton: React.FC<{ onClose(): void }> = ({ onClose }) => {
     </View>
   )
 }
+
+const IndexIndicator: React.FC<{ imageIndex: number; numImages: number }> = ({ imageIndex, numImages }) => {
+  const { isEntering, hasEntered } = useContext(EntryContext)
+  const opacity = useSpringValue(isEntering || hasEntered ? 1 : 0)
+  if (numImages === 1) {
+    return null
+  }
+  return (
+    <View
+      style={{
+        position: "absolute",
+        bottom: 20,
+        right: 0,
+        left: 0,
+        height: 30,
+        alignItems: "center",
+      }}
+    >
+      <Animated.View
+        style={[
+          styles.shadow,
+          {
+            borderRadius: 15,
+            height: 30,
+            backgroundColor: "white",
+            justifyContent: "center",
+            paddingHorizontal: 10,
+            opacity,
+          },
+        ]}
+      >
+        <Sans size="3">
+          {imageIndex + 1} of {numImages}
+        </Sans>
+      </Animated.View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+  },
+})

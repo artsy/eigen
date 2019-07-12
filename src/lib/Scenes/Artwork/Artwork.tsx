@@ -17,6 +17,7 @@ import { CommercialInformationFragmentContainer as CommercialInformation } from 
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
 import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
+import { SafeAreaInsetsContext } from "./Components/SafeAreaInsetsContext"
 
 interface Props {
   artwork: Artwork_artwork
@@ -154,22 +155,24 @@ export class Artwork extends React.Component<Props> {
 
   render() {
     return (
-      <Theme>
-        <Box pt={this.props.safeAreaInsets.top}>
-          <FlatList
-            data={this.sections()}
-            ItemSeparatorComponent={() => (
-              <Box px={2} mx={2} my={3}>
-                <Separator />
-              </Box>
-            )}
-            keyExtractor={(item, index) => item.type + String(index)}
-            renderItem={item =>
-              item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
-            }
-          />
-        </Box>
-      </Theme>
+      <SafeAreaInsetsContext.Provider value={this.props.safeAreaInsets}>
+        <Theme>
+          <Box pt={this.props.safeAreaInsets.top}>
+            <FlatList
+              data={this.sections()}
+              ItemSeparatorComponent={() => (
+                <Box px={2} mx={2} my={3}>
+                  <Separator />
+                </Box>
+              )}
+              keyExtractor={(item, index) => item.type + String(index)}
+              renderItem={item =>
+                item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
+              }
+            />
+          </Box>
+        </Theme>
+      </SafeAreaInsetsContext.Provider>
     )
   }
 }
