@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
-import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
+import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
