@@ -1,4 +1,4 @@
-import { Box, Serif } from "@artsy/palette"
+import { Box, Sans, Spacer } from "@artsy/palette"
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -16,12 +16,12 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
 
   renderConsignmentsLine(artistsCount) {
     return (
-      <Serif size="3t" color="black60">
+      <Sans size="3t" color="black60">
         Want to sell a work by {artistsCount === 1 ? "this artist" : "these artists"}?{" "}
         <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleTap("/consign/info")}>
           Consign with Artsy.
         </Text>
-      </Serif>
+      </Sans>
     )
   }
 
@@ -29,7 +29,12 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     const { artwork } = this.props
     const consignableArtistsCount = artwork.artists.filter(artist => artist.is_consignable).length
 
-    return <Box>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}</Box>
+    return (
+      <Box>
+        <Spacer mb={2} />
+        {!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}
+      </Box>
+    )
   }
 }
 
