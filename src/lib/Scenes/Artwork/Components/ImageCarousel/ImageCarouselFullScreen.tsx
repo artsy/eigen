@@ -10,7 +10,9 @@ import {
   Modal,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  NativeTouchEvent,
   ScrollView,
+  TouchableWithoutFeedback,
   View,
 } from "react-native"
 import { fitInside } from "./geometry"
@@ -198,6 +200,24 @@ const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children, onClo
   )
 }
 
+function useDoublePressCallback<T extends any[]>(cb: (...t: T) => void) {
+  const lastPressTime = useRef(0)
+  return useMemo(
+    () => (...args: T) => {
+      const now = Date.now()
+      if (now - lastPressTime.current < 400) {
+        lastPressTime.current = 0
+        return cb(...args)
+      } else {
+        lastPressTime.current = now
+      }
+    },
+    []
+  )
+}
+
+const MAX_ZOOM_SCALE = 4
+
 const ImageZoomView: React.FC<{
   image: ImageCarousel_images[number]
   baseImageRef: Image
@@ -236,14 +256,43 @@ const ImageZoomView: React.FC<{
 
   const { width, height } = fitInside(screenBoundingBox, image)
 
+  const scrollViewRef = useRef<ScrollView>()
+  const zoomScaleRef = useRef<number>(0)
+
+  const onDoublePress = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
+    const { locationX, locationY } = ev.nativeEvent
+    if (zoomScaleRef.current > 3) {
+      // reset zoom
+      scrollViewRef.current.scrollResponderZoomTo({
+        x: 0,
+        y: 0,
+        width: screenWidth,
+        height: screenHeight,
+      })
+    } else {
+      // zoom to tapped point
+      const w = screenWidth / MAX_ZOOM_SCALE
+      const h = screenHeight / MAX_ZOOM_SCALE
+      scrollViewRef.current.scrollResponderZoomTo({
+        x: locationX - w / 2,
+        y: locationY - h / 2,
+        width: w,
+        height: h,
+      })
+    }
+  })
+
   return (
     // scroll view to allow pinch-to-zoom behaviour
     <ScrollView
+      ref={scrollViewRef}
       scrollEnabled={hasEntered}
+      onScroll={ev => (zoomScaleRef.current = ev.nativeEvent.zoomScale)}
+      scrollEventThrottle={100}
       bounces={false}
       overScrollMode="never"
       minimumZoomScale={1}
-      maximumZoomScale={4}
+      maximumZoomScale={MAX_ZOOM_SCALE}
       centerContent
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
@@ -254,25 +303,27 @@ const ImageZoomView: React.FC<{
         },
       ]}
     >
-      {/* wrapper to apply transform to underlying image */}
-      <Animated.View
-        ref={imageWrapperRef}
-        style={{
-          width,
-          height,
-          transform,
-        }}
-      >
-        <OpaqueImageView
-          noAnimation
-          imageURL={image.url}
-          disableGemini
+      <TouchableWithoutFeedback onPress={onDoublePress}>
+        {/* wrapper to apply transform to underlying image */}
+        <Animated.View
+          ref={imageWrapperRef}
           style={{
             width,
             height,
+            transform,
           }}
-        />
-      </Animated.View>
+        >
+          <OpaqueImageView
+            noAnimation
+            imageURL={image.url}
+            disableGemini
+            style={{
+              width,
+              height,
+            }}
+          />
+        </Animated.View>
+      </TouchableWithoutFeedback>
     </ScrollView>
   )
 }
