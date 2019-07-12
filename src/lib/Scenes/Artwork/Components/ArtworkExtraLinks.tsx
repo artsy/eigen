@@ -31,7 +31,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
 
     return (
       <Box>
-        <Spacer mb={2} />
+        {!!consignableArtistsCount && <Spacer mb={2} />}
         {!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}
       </Box>
     )
