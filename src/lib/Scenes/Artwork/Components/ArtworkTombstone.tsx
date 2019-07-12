@@ -96,6 +96,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
 
   render() {
     const { artwork } = this.props
+    const addedComma = artwork.date ? ", " : ""
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
@@ -104,13 +105,15 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             artwork.cultural_maker &&
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
-        <Flex flexDirection="row">
-          <Serif italic color="black60" size="3t" m="0" p="0">
-            {artwork.title},{" "}
+        <Flex flexDirection="row" flexWrap="wrap">
+          <Serif numberOfLines={1} ellipsizeMode="tail" italic color="black60" size="3t" m="0" p="0">
+            {artwork.title + addedComma}
           </Serif>
-          <Serif color="black60" size="3t" m="0" p="0">
-            {artwork.date}
-          </Serif>
+          {artwork.date && (
+            <Serif numberOfLines={1} ellipsizeMode="tail" color="black60" size="3t" m="0" p="0">
+              {artwork.date}
+            </Serif>
+          )}
         </Flex>
         <Serif color="black60" size="3t">
           {artwork.medium}
