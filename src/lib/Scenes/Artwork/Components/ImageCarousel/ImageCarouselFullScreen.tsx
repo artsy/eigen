@@ -14,6 +14,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
+import { SafeAreaInsetsContext } from "../SafeAreaInsetsContext"
 import { fitInside } from "./geometry"
 import { ImageDescriptor } from "./ImageCarousel"
 
@@ -105,22 +106,23 @@ export const ImageCarouselFullScreen: React.FC<{
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
     // on unmount we use it's built-in fade transition
-    <Modal transparent animated={hasEntered} animationType="fade">
-      {/* This underlay fades in while the image is opaque instantly */}
-      <WhiteUnderlay isEntering={isEntering} />
-      <EntryContext.Provider
-        value={{
-          hasEntered,
-          isEntering,
-          didEnter() {
-            setHasEntered(true)
-            setIsEntering(true)
-          },
-          didStartEntering() {
-            setIsEntering(true)
-          },
-        }}
-      >
+    <EntryContext.Provider
+      value={{
+        hasEntered,
+        isEntering,
+        didEnter() {
+          setHasEntered(true)
+          setIsEntering(true)
+        },
+        didStartEntering() {
+          setIsEntering(true)
+        },
+      }}
+    >
+      <Modal transparent animated={hasEntered} animationType="fade">
+        {/* This underlay fades in while the image is opaque instantly */}
+        <WhiteUnderlay />
+
         <VerticalSwipeToDismiss onClose={onClose}>
           <FlatList<ImageDescriptor>
             data={images}
@@ -160,8 +162,9 @@ export const ImageCarouselFullScreen: React.FC<{
             }}
           />
         </VerticalSwipeToDismiss>
-      </EntryContext.Provider>
-    </Modal>
+        <StatusBarOverlay />
+      </Modal>
+    </EntryContext.Provider>
   )
 }
 
@@ -360,20 +363,31 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
   }
 )
 
-const WhiteUnderlay: React.FC<{ isEntering: boolean }> = ({ isEntering }) => {
-  const opacity = useAnimatedValue(0)
-
+const useSpringValue = (init: number, config: Partial<Animated.SpringAnimationConfig> = {}) => {
+  const value = useMemo(() => new Animated.Value(init), [])
+  const anim = useRef<Animated.CompositeAnimation>()
   useEffect(
     () => {
-      if (isEntering) {
-        Animated.spring(opacity, {
-          toValue: 1,
-          useNativeDriver: true,
-        }).start()
+      if (anim.current) {
+        anim.current.stop()
       }
+      anim.current = Animated.spring(value, {
+        toValue: init,
+        useNativeDriver: true,
+        ...config,
+      })
+      anim.current.start(() => {
+        anim.current = null
+      })
     },
-    [isEntering]
+    [init]
   )
+  return value
+}
+
+const WhiteUnderlay: React.FC = () => {
+  const { isEntering, hasEntered } = useContext(EntryContext)
+  const opacity = useSpringValue(isEntering || hasEntered ? 1 : 0)
 
   return (
     <Animated.View
@@ -385,6 +399,28 @@ const WhiteUnderlay: React.FC<{ isEntering: boolean }> = ({ isEntering }) => {
         right: 0,
         top: 0,
         bottom: 0,
+      }}
+    />
+  )
+}
+
+// used to mask the image during initial transition in case the user has scrolled down some
+// before tapping the image to open the full screen carousel. Without this there's a nasty
+// jarring pop where the area of the image that was behind the status bar becomes fully visible.
+const StatusBarOverlay: React.FC = () => {
+  const { isEntering, hasEntered } = useContext(EntryContext)
+  const opacity = useSpringValue(isEntering || hasEntered ? 0 : 1)
+  const { top: height } = useContext(SafeAreaInsetsContext)
+  return (
+    <Animated.View
+      style={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+        left: 0,
+        opacity,
+        height,
+        backgroundColor: "white",
       }}
     />
   )
