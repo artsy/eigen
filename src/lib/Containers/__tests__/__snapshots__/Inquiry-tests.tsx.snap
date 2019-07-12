@@ -385,7 +385,7 @@ exports[`renders correctly 1`] = `
           ]
         }
       >
-        SEND
+        Send
       </Text>
     </View>
   </View>

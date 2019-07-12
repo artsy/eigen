@@ -40,12 +40,14 @@ export class BottomAlignedButton extends React.Component<BottomAlignedProps> {
   statusBarListener = null
 
   componentDidMount() {
-    StatusBarManager.getHeight(statusBarFrameData => {
-      this.setState({ statusBarHeight: statusBarFrameData.height })
-    })
-    this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
-      this.setState({ statusBarHeight: statusBarData.frame.height })
-    })
+    if (StatusBarManager && StatusBarManager.getHeight) {
+      StatusBarManager.getHeight(statusBarFrameData => {
+        this.setState({ statusBarHeight: statusBarFrameData.height })
+      })
+      this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
+        this.setState({ statusBarHeight: statusBarData.frame.height })
+      })
+    }
   }
 
   componentWillUnmount() {
