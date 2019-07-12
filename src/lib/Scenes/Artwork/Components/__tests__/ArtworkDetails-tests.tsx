@@ -23,7 +23,7 @@ describe("Artwork Details", () => {
     }
 
     const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
-    expect(component.text()).toContain("Artwork Details")
+    expect(component.text()).toContain("Artwork details")
     expect(component.text()).toContain("MediumOil")
     expect(component.text()).toContain("Certificate of AuthenticityNot included")
     expect(component.text()).toContain("FrameIncluded")
@@ -47,7 +47,7 @@ describe("Artwork Details", () => {
     }
 
     const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
-    expect(component.text()).toContain("Artwork Details")
+    expect(component.text()).toContain("Artwork details")
     expect(component.text()).toContain("MediumOil")
     expect(component.text()).toContain("Conditionnice")
     expect(component.text()).toContain("Certificate of AuthenticityNot included")
@@ -74,7 +74,7 @@ describe("Artwork Details", () => {
     }
 
     const component = mount(<ArtworkDetails artwork={artworkDetailsInfo.artwork} />)
-    expect(component.text()).toContain("Artwork Details")
+    expect(component.text()).toContain("Artwork details")
     expect(component.text()).toContain("MediumOil")
     expect(component.text()).toContain("Conditionnice")
     expect(component.text()).toContain("Certificate of AuthenticityNot included")
