@@ -95,9 +95,9 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
         <ImageCarouselFullScreen
           imageIndex={imageIndex}
           setImageIndex={setImageIndex}
-          imageRefs={imageRefs}
+          baseImageRef={imageRefs[imageIndex]}
           images={images}
-          onClosed={() => setFullScreen(false)}
+          onClose={() => setFullScreen(false)}
         />
       )}
     </Flex>
