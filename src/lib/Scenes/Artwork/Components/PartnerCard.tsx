@@ -86,7 +86,7 @@ export class PartnerCard extends React.Component<Props, State> {
       return null
     }
     const { isFollowedChanging } = this.state
-    const imageUrl = partner.profile ? partner.profile.icon.url : null
+    const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
     return (
       <Flex>
@@ -103,6 +103,7 @@ export class PartnerCard extends React.Component<Props, State> {
                   variant={partner.profile.is_followed ? "secondaryOutline" : "primaryBlack"}
                   onPress={this.handleFollowPartner.bind(this)}
                   size="small"
+                  longestText="Following"
                   loading={isFollowedChanging}
                 >
                   {partner.profile.is_followed ? "Following" : "Follow"}

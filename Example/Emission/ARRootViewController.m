@@ -237,7 +237,7 @@
 - (ARCellData *)jumpToArtwork
 {
   return [self tappableCellDataWithTitle:@"Artwork" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"carmen-neely-insects"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"candice-cmc-superman-donuts-1"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

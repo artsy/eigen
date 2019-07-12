@@ -63,6 +63,68 @@ type AnalyticsArtworksPublishedStats {
 # An ISO 8601 datetime
 scalar AnalyticsDateTime
 
+# Visitor countries, device, referals and session page
+type AnalyticsGroupedStats {
+  groupedEntity: AnalyticsGroupedStatsUnion!
+  period: AnalyticsQueryPeriodEnum!
+}
+
+# The connection type for GroupedStats.
+type AnalyticsGroupedStatsConnection {
+  # A list of edges.
+  edges: [AnalyticsGroupedStatsEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsGroupedStats]
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+}
+
+# An edge in a connection.
+type AnalyticsGroupedStatsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsGroupedStats
+}
+
+enum AnalyticsGroupedStatsMetricEnum {
+  # visitor_by_device
+  VISITOR_BY_DEVICE
+
+  # visitor_by_landing_page
+  VISITOR_BY_LANDING_PAGE
+
+  # visitor_by_location
+  VISITOR_BY_LOCATION
+
+  # visitor_by_referral
+  VISITOR_BY_REFERRAL
+}
+
+enum AnalyticsGroupedStatsObjectTypeEnum {
+  # country
+  COUNTRY
+
+  # device type
+  DEVICE
+
+  # landing page
+  LANDING_PAGE
+
+  # referral
+  REFERRAL
+}
+
+# A grouped stat item: country or device etc.
+union AnalyticsGroupedStatsUnion =
+    AnalyticsVisitorsByCountry
+  | AnalyticsVisitorsByDevice
+  | AnalyticsVisitorsByLandingPage
+  | AnalyticsVisitorsByReferral
+
 # A histogram bin
 type AnalyticsHistogramBin {
   maxPriceCents: Int!
@@ -113,6 +175,7 @@ type AnalyticsPageviewStats {
 
 # Audience stats of a partner
 type AnalyticsPartnerAudienceStats {
+  commercialVisitors: Int!
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
   uniqueVisitors: Int!
@@ -177,6 +240,24 @@ type AnalyticsPartnerStats {
 
   # Audience stats
   audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
+
+  # Visitor countries, device, referals and session page
+  groupedStats(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    metric: AnalyticsGroupedStatsMetricEnum!
+    objectType: AnalyticsGroupedStatsObjectTypeEnum!
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsGroupedStatsConnection
 
   # Inquiry stats
   inquiry(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerInquiryStats
@@ -373,6 +454,38 @@ union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | Analytics
 
 type AnalyticsShow {
   entityId: String!
+}
+
+type AnalyticsVisitorsByCountry {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
+}
+
+type AnalyticsVisitorsByDevice {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
+}
+
+type AnalyticsVisitorsByLandingPage {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
+}
+
+type AnalyticsVisitorsByReferral {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
 }
 
 input ApproveOrderInput {
@@ -1223,7 +1336,7 @@ type Artwork implements Node & Searchable & Sellable {
   sale_message: String
   series(format: Format): String
   show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
-  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: ShowSort): [Show]
   signature(format: Format): String
   title: String
   to_s: String
@@ -1343,8 +1456,12 @@ type ArtworkContextAuction implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # A formatted description of when the auction starts or ends or if it has ended
+  formattedStartDateTime: String
   href: String
   name: String
+  initials(length: Int = 3): String
   is_auction: Boolean
   is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
@@ -1735,8 +1852,12 @@ type ArtworkContextSale implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # A formatted description of when the auction starts or ends or if it has ended
+  formattedStartDateTime: String
   href: String
   name: String
+  initials(length: Int = 3): String
   is_auction: Boolean
   is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
@@ -2102,7 +2223,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
   sale_message: String
   series(format: Format): String
   show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
-  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: ShowSort): [Show]
   signature(format: Format): String
   title: String
   to_s: String
@@ -6473,8 +6594,12 @@ type HomePageModuleContextSale implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # A formatted description of when the auction starts or ends or if it has ended
+  formattedStartDateTime: String
   href: String
   name: String
+  initials(length: Int = 3): String
   is_auction: Boolean
   is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
@@ -6692,6 +6817,9 @@ type MarketingCollection {
   # Background image for the header of the collection page
   headerImage: String
 
+  # URL for Thumbnail image to be used when this collection is displayed.
+  thumbnail: String
+
   # Set of keywords used for SEO purposes
   keywords: String!
 
@@ -6714,6 +6842,9 @@ type MarketingCollection {
 
   # Collection has prioritized connection to artist
   is_featured_artist_content: Boolean!
+
+  # CollectionGroups of this collection
+  linkedCollections: [MarketingCollectionGroup!]!
   relatedCollections: [MarketingCollection!]!
   artworks(
     acquireable: Boolean
@@ -6758,6 +6889,13 @@ type MarketingCollectionCategory {
   collections: [MarketingCollection!]!
 }
 
+type MarketingCollectionGroup {
+  internalID: ID!
+  groupType: MarketingGroupTypes!
+  name: String!
+  members: [String!]!
+}
+
 type MarketingCollectionQuery {
   internalID: ID
   acquireable: Boolean
@@ -6792,6 +6930,13 @@ type MarketingCollectionQuery {
 }
 
 scalar MarketingDateTime
+
+# Available types of CollectionGroup
+enum MarketingGroupTypes {
+  ArtistSeries
+  FeaturedCollections
+  OtherCollections
+}
 
 type Me implements Node {
   # A globally unique ID.
@@ -9316,8 +9461,12 @@ type Sale implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # A formatted description of when the auction starts or ends or if it has ended
+  formattedStartDateTime: String
   href: String
   name: String
+  initials(length: Int = 3): String
   is_auction: Boolean
   is_benefit: Boolean @deprecated(reason: "Prefer to use `isBenefit`. [Will be removed in v2]")
   isBenefit: Boolean
