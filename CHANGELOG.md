@@ -19,7 +19,7 @@
 - Metaphysics v2 update that removes gravityID - zephraph
 - Removes InvertedButton - kierangillen
 - Adds ContextCard - kierangillen
-- Fixes BottomAlignedButton keyboard cliping - kieran
+- Fixes BottomAlignedButton keyboard clipping - kierangillen
 
 ### 1.12.5
 
