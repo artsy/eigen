@@ -122,7 +122,9 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 - (void)setupEcho
 {
     // Only allow Echo to get set up once per instance.
-    if (self.isEchoSetup) { return; }
+    if (self.isEchoSetup) {
+        return;
+    }
     self.isEchoSetup = YES;
 
     Aerodramus *aero = self.echo;
@@ -206,17 +208,17 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         __strong typeof (wself) sself = wself;
         return [sself loadShowWithID:parameters[@"id"]];
     }];
-    
+
     // The follow show sub-routes are tightly coupled to Emission and don't exist on Force. Otherwise we would use
     // something like ARShowRoute on Echo. See discussion in https://github.com/artsy/eigen/pull/2782
     [self.routes addRoute:@"/show/:id/artworks" handler:JLRouteParams {
         return [[ARShowArtworksComponentViewController alloc] initWithShowID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/show/:id/artists" handler:JLRouteParams {
         return [[ARShowArtistsComponentViewController alloc] initWithShowID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/show/:id/info" handler:JLRouteParams {
         return [[ARShowMoreInfoComponentViewController alloc] initWithShowID:parameters[@"id"]];
     }];
@@ -234,7 +236,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
         return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
     }];
-    
+
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
         // We want to fall back to the default routing unless this query parameter is specified, from Emission.
         // This prevents someone from opening a /conditions-of-sale link somewhere not within the Emission Bid Flow (eg
@@ -246,23 +248,23 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
             return nil;
         }
     }];
-    
+
     [self.routes addRoute:@"/artwork-classifications" handler:JLRouteParams {
         return [[ARArtworkAttributionClassFAQViewController alloc] init];
     }];
-    
+
     [self.routes addRoute:@"/fair/:id/artworks" handler:JLRouteParams {
         return [[ARFairArtworksComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/fair/:id/artists" handler:JLRouteParams {
         return [[ARFairArtistsComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/fair/:id/exhibitors" handler:JLRouteParams {
         return [[ARFairExhibitorsComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/fair/:id/info" handler:JLRouteParams {
         return [[ARFairMoreInfoComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
@@ -270,7 +272,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     [self.routes addRoute:@"/fair/:id/bmw-sponsored-content" handler:JLRouteParams {
         return [[ARFairBMWArtActivationComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/city/:city_slug/:section" handler:JLRouteParams {
         return [[ARCitySectionListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"] section:parameters[@"section"]];
     }];
