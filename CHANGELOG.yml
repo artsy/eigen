@@ -5,6 +5,7 @@ upcoming:
   dev:
     - Cleans up unused lab options - ash
   user_facing:
+    - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
     - Adds new React Native Artwork view behind lab option - alloy/david
     - Integrates View-in-Room support from React Native Artwork view - ash/steve
     - Adds edition information to LAI lot info view - ash/lily

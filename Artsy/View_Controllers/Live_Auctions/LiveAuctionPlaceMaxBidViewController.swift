@@ -73,7 +73,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         priceOfCurrentBidsLabel.text = bidViewModel.currentLotValueString
 
         // New bids can come in while we are on this screen
-        bidViewModel.currentBid = max(bidViewModel.currentBid, bidViewModel.currentLotValue)
+        bidViewModel.currentBid = max(bidViewModel.currentBid, bidViewModel.currentAskingPrice)
         updateBiddingControls(bidViewModel.currentBid)
 
         shouldShowBiddingOverlay(false, maxBidder: bidViewModel.lotViewModel.userIsBeingSoldTo)

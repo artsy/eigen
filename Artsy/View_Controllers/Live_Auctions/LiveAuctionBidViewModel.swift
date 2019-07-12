@@ -76,9 +76,7 @@ class LiveAuctionBidViewModel: NSObject {
 
         super.init()
 
-        let askingPrice: UInt64 = lotViewModel.askingPriceSignal.peek() ?? 0
-        currentBid = salesPerson.bidIncrements.minimumNextBidCentsIncrement(askingPrice)
-
+        currentBid = self.currentAskingPrice
         bidIncrements = [currentBid]
 
         let threshold = 5 * max(lotVM.askingPrice, (lotVM.highEstimateOrEstimateCents ?? 0))
@@ -102,6 +100,11 @@ class LiveAuctionBidViewModel: NSObject {
     func bidIncrementStringAtIndex(_ index: Int) -> String {
         let value = bidIncrements[index]
         return value.convertToDollarString(lotViewModel.currencySymbol)
+    }
+
+    var currentAskingPrice: UInt64 {
+        // Should not return 0, this is just to satisfy the compiler.
+        return lotViewModel.askingPriceSignal.peek() ?? 0
     }
 
     var currentLotValue: UInt64 {

@@ -180,7 +180,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return lotStateSignal
     }
 
-    let askingPrice: UInt64 = 5_000_00
+    var askingPrice: UInt64 = 5_000_00
     let askingPriceSignal = Observable<UInt64>(5_000_00)
     let numberOfBidsSignal = Observable<Int>()
     let reserveStatusSignal = Observable<ARReserveStatus>(.noReserve)

@@ -63,9 +63,10 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
             it("ensures the bid is moved above the current max bid") {
 
-                expect(subject.bidViewModel.currentBid) == 5_500_00
+                expect(subject.bidViewModel.currentBid) == 5_000_00
 
-                salesPerson.currentLotValue = 6_000_00
+                lotVM.askingPrice = 6_000_00
+                lotVM.askingPriceSignal.update(lotVM.askingPrice)
                 lotVM.newEventsSignal.update([])
 
                 expect(subject.bidViewModel.currentBid) == 6_000_00
