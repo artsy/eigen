@@ -1,7 +1,18 @@
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import { once } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Animated, Dimensions, Image, Modal, PanResponder, ScrollView, TouchableWithoutFeedback } from "react-native"
+import {
+  Animated,
+  Dimensions,
+  Image,
+  Modal,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native"
 import { fitInside } from "./geometry"
 
 interface Box {
@@ -162,111 +173,56 @@ export const ImageCarouselFullScreen: React.FC<{
   )
 }
 
-const animatedQuadraticBezier = ({ p0, p1, p2, t }: { t: Animated.Animated; p0: number; p1: number; p2: number }) => {
-  // (1-t)[(1-t)p0 + tp1] + t[(1-t)p1 + t(p2)]
-  const oneMinusT = Animated.subtract(1, t)
-  return Animated.add(
-    Animated.multiply(oneMinusT, Animated.add(Animated.multiply(oneMinusT, p0), Animated.multiply(t, p1))),
-    Animated.multiply(t, Animated.add(Animated.multiply(oneMinusT, p1), Animated.multiply(t, p2)))
-  )
-}
+const screenHeight = Dimensions.get("screen").height
 
 const VerticalSwipeToDismiss: React.FC<{ onDismiss(): void }> = ({ children, onDismiss }) => {
-  const scrollY = useMemo(() => new Animated.Value(0), [])
-  const goodbyeY = useMemo(() => new Animated.Value(0), [])
-  const goodbyeOpacity = useMemo(() => new Animated.Value(1), [])
-
-  const maxScroll = 500
-  const maxTranslate = 200
-
-  const p0 = 0
-  const p1 = maxTranslate
-  const p2 = maxTranslate
-
-  // do a quadratic bezier curve using proportion of maxScroll as t
-
-  const t = useMemo(() => Animated.divide(scrollY, maxScroll), [])
-  const translateY = useMemo(() => Animated.add(goodbyeY, animatedQuadraticBezier({ p0, p1, p2, t })), [])
+  const scrollY = useMemo(() => new Animated.Value(screenHeight), [])
 
   const scrollOpacity = useMemo(
     () =>
-      translateY.interpolate({
-        inputRange: [0, 300],
-        outputRange: [1, 0],
+      scrollY.interpolate({
+        inputRange: [0, screenHeight, screenHeight * 2],
+        outputRange: [0, 1, 0],
       }),
     []
   )
+  const [isDragging, setIsDragging] = useState(false)
+  const dismiss = useMemo(() => once(() => setTimeout(onDismiss, 200)), [onDismiss])
 
-  const opacity = useMemo(() => Animated.multiply(goodbyeOpacity, scrollOpacity), [])
-  const [exiting, setExiting] = useState(false)
-  useEffect(
-    () => {
-      if (exiting) {
-        setTimeout(onDismiss, 10)
-      }
-    },
-    [exiting]
-  )
-
-  const panResponder = useMemo(
-    () =>
-      PanResponder.create({
-        // Ask to be the responder:
-        onStartShouldSetPanResponder: (evt, gestureState) => true,
-        onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-        onMoveShouldSetPanResponder: (evt, gestureState) => true,
-        onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
-        onPanResponderGrant: (evt, gestureState) => {
-          // The gesture has started. Show visual feedback so the user knows
-          // what is happening!
-          // gestureState.d{x,y} will be set to zero now
-        },
-        // onPanResponderMove: Animated.event([null, { dy: scrollY }]),
-        onPanResponderMove: (_, gestureState) => {
-          scrollY.setValue(Math.min(Math.max(gestureState.dy, 0), maxScroll))
-        },
-        onPanResponderTerminationRequest: (evt, gestureState) => true,
-        onPanResponderRelease: (evt, gestureState) => {
-          if (gestureState.dy > 100) {
-            Animated.parallel([
-              Animated.spring(goodbyeY, {
-                toValue: Dimensions.get("screen").height,
-                useNativeDriver: true,
-              }),
-              Animated.timing(goodbyeOpacity, {
-                toValue: 0,
-                duration: 200,
-                useNativeDriver: true,
-              }),
-            ]).start()
-            setTimeout(() => setExiting(true), 200)
-          } else {
-            Animated.spring(scrollY, { toValue: 0, useNativeDriver: true }).start()
-          }
-          // The user has released all touches while this view is the
-          // responder. This typically means a gesture has succeeded
-        },
-        onPanResponderTerminate: (evt, gestureState) => {
-          // Another component has become the responder, so this gesture
-          // should be cancelled
-        },
-        onShouldBlockNativeResponder: (evt, gestureState) => {
-          // Returns whether this component should block native components from becoming the JS
-          // responder. Returns true by default. Is currently only supported on android.
-          return true
-        },
-      }),
-    []
-  )
-
-  /* outer vertical scrollview to handle the swipe-down-to-dismiss behaviour */
   return (
-    <Animated.View
-      {...panResponder.panHandlers}
-      style={[{ opacity: exiting ? 0 : opacity, transform: [{ translateY }] }]}
+    <Animated.ScrollView
+      contentOffset={{ x: 0, y: screenHeight }}
+      onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+        useNativeDriver: true,
+        listener(ev: NativeSyntheticEvent<NativeScrollEvent>) {
+          if (isDragging) {
+            return
+          }
+          const y = ev.nativeEvent.contentOffset.y
+          if (y > screenHeight + screenHeight / 2 || y < screenHeight / 2) {
+            dismiss()
+          }
+        },
+      })}
+      showsVerticalScrollIndicator={false}
+      onScrollBeginDrag={() => {
+        setIsDragging(true)
+      }}
+      onScrollEndDrag={(ev: NativeSyntheticEvent<NativeScrollEvent>) => {
+        setIsDragging(false)
+        const y = ev.nativeEvent.contentOffset.y
+        if (y > screenHeight + screenHeight / 2 || y < screenHeight / 2) {
+          dismiss()
+        }
+      }}
+      style={[{ opacity: scrollOpacity }]}
+      snapToInterval={screenHeight}
+      decelerationRate="fast"
+      scrollEventThrottle={16}
     >
-      {children}
-    </Animated.View>
+      <View style={{ height: screenHeight * 3, alignItems: "flex-start", justifyContent: "flex-start" }}>
+        <View style={{ height: screenHeight, marginTop: screenHeight }}>{children}</View>
+      </View>
+    </Animated.ScrollView>
   )
 }
