@@ -1,7 +1,6 @@
 import React from "react"
 import { View } from "react-native"
-
-import BottomAlignedButton from "./BottomAlignedButton"
+import { BottomAlignedButton } from "./BottomAlignedButton"
 
 export interface DoneButtonProps extends React.Props<JSX.Element> {
   onPress: () => void
