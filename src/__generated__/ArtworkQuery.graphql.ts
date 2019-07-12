@@ -178,7 +178,6 @@ fragment ArtworkDetails_artwork on Artwork {
     label
     details
   }
-  signature
   signatureInfo {
     label
     details
@@ -1422,7 +1421,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "1f5e3ba11713360a51fa9ba5c4fc90d0",
+    "id": "f3bcaad48e7e062ca3c01f4e49f8a97a",
     "text": null,
     "metadata": {}
   }
