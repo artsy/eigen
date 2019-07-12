@@ -1,3 +1,4 @@
+import { CloseIcon } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { once } from "lodash"
 import React, { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
@@ -11,6 +12,7 @@ import {
   NativeSyntheticEvent,
   NativeTouchEvent,
   ScrollView,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native"
@@ -163,6 +165,7 @@ export const ImageCarouselFullScreen: React.FC<{
           />
         </VerticalSwipeToDismiss>
         <StatusBarOverlay />
+        <CloseButton onClose={onClose} />
       </Modal>
     </EntryContext.Provider>
   )
@@ -423,5 +426,41 @@ const StatusBarOverlay: React.FC = () => {
         backgroundColor: "white",
       }}
     />
+  )
+}
+
+const CloseButton: React.FC<{ onClose(): void }> = ({ onClose }) => {
+  const { isEntering, hasEntered } = useContext(EntryContext)
+  const opacity = useSpringValue(isEntering || hasEntered ? 1 : 0)
+  const { top } = useContext(SafeAreaInsetsContext)
+  return (
+    <View
+      style={{
+        position: "absolute",
+        left: 10,
+        top: top + 10,
+        width: 40,
+        height: 40,
+      }}
+    >
+      <TouchableOpacity onPress={onClose}>
+        <Animated.View
+          style={{
+            opacity,
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            backgroundColor: "white",
+            shadowColor: "black",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CloseIcon />
+        </Animated.View>
+      </TouchableOpacity>
+    </View>
   )
 }
