@@ -6,6 +6,7 @@
 
 @interface FeaturedLink ()
 @property (nonatomic, copy, readonly) NSString *urlFormatString;
+@property (readwrite, nonatomic, copy) NSString *href;
 @end
 
 
@@ -83,6 +84,11 @@
 - (NSUInteger)hash
 {
     return self.featuredLinkID.hash;
+}
+
+- (NSString *)href
+{
+    return [_href stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
 @end

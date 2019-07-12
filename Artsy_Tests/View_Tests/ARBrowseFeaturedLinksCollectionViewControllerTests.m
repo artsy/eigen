@@ -174,4 +174,11 @@ describe(@"reuseIdentifier", ^{
     });
 });
 
+describe(@"model", ^{
+    it(@"strips additional whitespace", ^{
+        FeaturedLink *link = [FeaturedLink modelWithJSON:@{ @"title" : @"one", @"href" : @"/post/one " } error:nil];
+        expect(link.href).to.equal(@"/post/one");
+    });
+});
+
 SpecEnd;
