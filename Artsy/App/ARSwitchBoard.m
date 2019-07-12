@@ -234,10 +234,6 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
         return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
     }];
-
-    [self.routes addRoute:@"/consign/info" handler:JLRouteParams {
-        return [[ARShowConsignmentsFlowViewController alloc] init];
-    }];
     
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
         // We want to fall back to the default routing unless this query parameter is specified, from Emission.
