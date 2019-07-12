@@ -209,13 +209,15 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   resetZoomAndCamera = () => {
-    this.map.setCamera({
-      mode: DefaultCameraMode,
-      zoom: DefaultZoomLevel,
-      pitch: 0,
-      heading: 0,
-      duration: 1000,
-    })
+    if (this.map) {
+      this.map.setCamera({
+        mode: DefaultCameraMode,
+        zoom: DefaultZoomLevel,
+        pitch: 0,
+        heading: 0,
+        duration: 1000,
+      })
+    }
   }
 
   componentDidMount() {
@@ -572,7 +574,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   storeMapRef = (c: any) => {
     if (c) {
-      this.map = c.root
+      this.map = c
     }
   }
 
@@ -683,6 +685,9 @@ export class GlobalMap extends React.Component<Props, State> {
    * access to the shows that the user has tapped on.
    */
   async handleFeaturePress(nativeEvent: any) {
+    if (!this.map) {
+      return
+    }
     const {
       payload: {
         properties: { id, cluster, type },
