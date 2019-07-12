@@ -1,7 +1,7 @@
 import React from "react"
 import { Text } from "react-native"
 
-import BottomAlignedButton, { BottomAlignedProps } from "../Components/BottomAlignedButton"
+import { BottomAlignedButton, BottomAlignedProps } from "../Components/BottomAlignedButton"
 import { SearchResults } from "../Components/SearchResults"
 
 export const name = "Consignments/BottomButton"
