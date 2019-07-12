@@ -6,6 +6,8 @@ class LiveAuctionCurrentLotView: UIButton {
 
     let viewModel: Observable<LiveAuctionLotViewModelType?>
     let salesPerson: LiveAuctionsSalesPersonType
+    
+    var currentBidObserverToken: ObserverToken<CurrentBid>?
 
     init(viewModel: Observable<LiveAuctionLotViewModelType?>, salesPerson: LiveAuctionsSalesPersonType) {
         self.viewModel = viewModel
@@ -67,6 +69,11 @@ class LiveAuctionCurrentLotView: UIButton {
 
         viewModel.subscribe { [weak artistNameLabel, weak biddingPriceLabel, weak thumbnailView, weak self] vm in
             guard let vm = vm else { return }
+            
+            self?.currentBidObserverToken?.unsubscribe()
+            self?.currentBidObserverToken = vm.currentBidSignal.subscribe({ _ in
+                biddingPriceLabel?.text = self?.salesPerson.currentLotValueString(vm) ?? ""
+            })
 
             artistNameLabel?.text = vm.lotArtist
             biddingPriceLabel?.text = self?.salesPerson.currentLotValueString(vm) ?? ""
@@ -76,5 +83,9 @@ class LiveAuctionCurrentLotView: UIButton {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        currentBidObserverToken?.unsubscribe()
     }
 }
