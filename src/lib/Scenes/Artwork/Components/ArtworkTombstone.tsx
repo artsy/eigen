@@ -106,11 +106,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Flex flexDirection="row" flexWrap="wrap">
-          <Serif numberOfLines={1} ellipsizeMode="tail" italic color="black60" size="3t" m="0" p="0">
+          <Serif numberOfLines={1} ellipsizeMode="tail" italic color="black60" size="3t">
             {artwork.title + addedComma}
           </Serif>
           {artwork.date && (
-            <Serif numberOfLines={1} ellipsizeMode="tail" color="black60" size="3t" m="0" p="0">
+            <Serif numberOfLines={1} ellipsizeMode="tail" color="black60" size="3t">
               {artwork.date}
             </Serif>
           )}
