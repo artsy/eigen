@@ -20,7 +20,7 @@ describe("ArtworkExtraLinks", () => {
     const consignmentsLink = component.find(Text).at(1)
     expect(consignmentsLink.text()).toContain("Consign with Artsy.")
     consignmentsLink.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/consign/info")
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/consign/submission")
   })
 
   describe("for an artwork with more than 1 consignable artist", () => {
