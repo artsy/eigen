@@ -1,7 +1,6 @@
-import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { once } from "lodash"
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 import {
   Animated,
   Dimensions,
@@ -16,6 +15,7 @@ import {
   View,
 } from "react-native"
 import { fitInside } from "./geometry"
+import { ImageDescriptor } from "./ImageCarousel"
 
 const useAnimatedValue = (init: number) => useMemo(() => new Animated.Value(init), [])
 
@@ -37,8 +37,6 @@ interface TransitionOffset {
 async function getTransitionOffset({ fromRef, toRef }: { fromRef: any; toRef: any }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
   const toBox = await measure(toRef)
-
-  console.log({ fromBox, toBox })
 
   const scale = fromBox.width / toBox.width
   const translateX = fromBox.x + fromBox.width / 2 - (toBox.x + toBox.width / 2)
@@ -86,7 +84,7 @@ const EntryContext = React.createContext<{
 
 export const ImageCarouselFullScreen: React.FC<{
   baseImageRef: Image
-  images: ImageCarousel_images
+  images: ImageDescriptor[]
   imageIndex: number
   setImageIndex(index: number): void
   onClose(): void
@@ -101,6 +99,8 @@ export const ImageCarouselFullScreen: React.FC<{
     },
     [setImageIndex]
   )
+
+  const zoomViewRefs: ImageZoomView[] = useMemo(() => [], [])
 
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
@@ -122,7 +122,7 @@ export const ImageCarouselFullScreen: React.FC<{
         }}
       >
         <VerticalSwipeToDismiss onClose={onClose}>
-          <FlatList<ImageCarousel_images[number]>
+          <FlatList<ImageDescriptor>
             data={images}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -131,13 +131,30 @@ export const ImageCarouselFullScreen: React.FC<{
             keyExtractor={item => item.url}
             decelerationRate="fast"
             initialScrollIndex={imageIndex}
+            getItemLayout={(_, index) => ({
+              index,
+              offset: index * screenWidth,
+              length: screenWidth,
+            })}
             onScroll={onScroll}
-            renderItem={({ item }) => {
+            onMomentumScrollEnd={() => {
+              for (let i = 0; i < images.length; i++) {
+                if (i !== imageIndex && zoomViewRefs[i]) {
+                  zoomViewRefs[i].resetZoom()
+                }
+              }
+            }}
+            initialNumToRender={3}
+            windowSize={5}
+            maxToRenderPerBatch={3}
+            renderItem={({ item, index }) => {
               return (
                 <ImageZoomView
-                  // prevent entry flicker
                   image={item}
                   baseImageRef={baseImageRef}
+                  ref={ref => {
+                    zoomViewRefs[index] = ref
+                  }}
                 />
               )
             }}
@@ -160,7 +177,7 @@ const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children, onClo
     []
   )
   const [isDragging, setIsDragging] = useState(false)
-  const dismiss = useMemo(() => once(() => setTimeout(onClose, 200)), [onClose])
+  const dismiss = useMemo(() => once(() => setTimeout(onClose, 50)), [onClose])
 
   return (
     <Animated.ScrollView
@@ -218,115 +235,131 @@ function useDoublePressCallback<T extends any[]>(cb: (...t: T) => void) {
 
 const MAX_ZOOM_SCALE = 4
 
-const ImageZoomView: React.FC<{
-  image: ImageCarousel_images[number]
+interface ImageZoomView {
+  resetZoom(): void
+}
+interface ImageZoomViewProps {
+  image: ImageDescriptor
   baseImageRef: Image
-}> = ({ image, baseImageRef }) => {
-  const { hasEntered, isEntering, didEnter, didStartEntering } = useContext(EntryContext)
-  const imageWrapperRef = useRef<{ getNode(): View }>(null)
+  ref: React.Ref<ImageZoomView>
+}
+const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> = React.forwardRef(
+  ({ image, baseImageRef }, ref) => {
+    const { hasEntered, isEntering, didEnter, didStartEntering } = useContext(EntryContext)
+    const imageWrapperRef = useRef<{ getNode(): View }>(null)
 
-  const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset | null>(null)
+    const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset | null>(null)
 
-  const transition = useAnimatedValue(0)
-  const transform = useMemo(() => (imageTransitionOffset ? createTransform(transition, imageTransitionOffset) : []), [
-    imageTransitionOffset,
-  ])
+    const transition = useAnimatedValue(0)
+    const transform = useMemo(() => (imageTransitionOffset ? createTransform(transition, imageTransitionOffset) : []), [
+      imageTransitionOffset,
+    ])
 
-  const animateTransition = useCallback(() => {
-    didStartEntering()
-    Animated.spring(transition, {
-      bounciness: 0,
-      toValue: 1,
-      useNativeDriver: true,
-    }).start(didEnter)
-  }, [])
+    const animateTransition = useCallback(() => {
+      didStartEntering()
+      Animated.spring(transition, {
+        bounciness: 0,
+        toValue: 1,
+        useNativeDriver: true,
+      }).start(didEnter)
+    }, [])
 
-  useEffect(() => {
-    // animate image transition on mount
-    if (!hasEntered) {
-      getTransitionOffset({
-        fromRef: baseImageRef,
-        // @ts-ignore
-        toRef: imageWrapperRef.current.getNode(),
-      })
-        .then(setImageTransitionOffset)
-        .then(() => requestAnimationFrame(animateTransition))
-    }
-  }, [])
+    useEffect(() => {
+      // animate image transition on mount
+      if (!hasEntered) {
+        getTransitionOffset({
+          fromRef: baseImageRef,
+          // @ts-ignore
+          toRef: imageWrapperRef.current.getNode(),
+        })
+          .then(setImageTransitionOffset)
+          .then(() => requestAnimationFrame(animateTransition))
+      }
+    }, [])
 
-  const { width, height } = fitInside(screenBoundingBox, image)
+    const { width, height } = fitInside(screenBoundingBox, image)
 
-  const scrollViewRef = useRef<ScrollView>()
-  const zoomScaleRef = useRef<number>(0)
+    const scrollViewRef = useRef<ScrollView>()
+    const zoomScaleRef = useRef<number>(0)
 
-  const onDoublePress = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
-    const { locationX, locationY } = ev.nativeEvent
-    if (zoomScaleRef.current > 3) {
-      // reset zoom
-      scrollViewRef.current.scrollResponderZoomTo({
-        x: 0,
-        y: 0,
-        width: screenWidth,
-        height: screenHeight,
-      })
-    } else {
-      // zoom to tapped point
-      const w = screenWidth / MAX_ZOOM_SCALE
-      const h = screenHeight / MAX_ZOOM_SCALE
-      scrollViewRef.current.scrollResponderZoomTo({
-        x: locationX - w / 2,
-        y: locationY - h / 2,
-        width: w,
-        height: h,
-      })
-    }
-  })
+    const resetZoom = useCallback(() => {
+      if (scrollViewRef.current && zoomScaleRef.current !== 1) {
+        scrollViewRef.current.scrollResponderZoomTo({
+          x: 0,
+          y: 0,
+          width: screenWidth,
+          height: screenHeight,
+        })
+      }
+    }, [])
 
-  return (
-    // scroll view to allow pinch-to-zoom behaviour
-    <ScrollView
-      ref={scrollViewRef}
-      scrollEnabled={hasEntered}
-      onScroll={ev => (zoomScaleRef.current = ev.nativeEvent.zoomScale)}
-      scrollEventThrottle={100}
-      bounces={false}
-      overScrollMode="never"
-      minimumZoomScale={1}
-      maximumZoomScale={MAX_ZOOM_SCALE}
-      centerContent
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
-      style={[
-        {
-          height: screenBoundingBox.height,
-          opacity: hasEntered || isEntering ? 1 : 0,
-        },
-      ]}
-    >
-      <TouchableWithoutFeedback onPress={onDoublePress}>
-        {/* wrapper to apply transform to underlying image */}
-        <Animated.View
-          ref={imageWrapperRef}
-          style={{
-            width,
-            height,
-            transform,
-          }}
-        >
-          <OpaqueImageView
-            noAnimation
-            imageURL={image.url}
-            disableGemini
+    // expose resetZoom so that when the user swipes, the off-screen zoom levels are reset
+    useImperativeHandle(ref, () => ({ resetZoom }), [])
+
+    const onDoublePress = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
+      const { locationX, locationY } = ev.nativeEvent
+      if (zoomScaleRef.current > 3) {
+        resetZoom()
+      } else {
+        // zoom to tapped point
+        const w = screenWidth / MAX_ZOOM_SCALE
+        const h = screenHeight / MAX_ZOOM_SCALE
+        scrollViewRef.current.scrollResponderZoomTo({
+          x: locationX - w / 2,
+          y: locationY - h / 2,
+          width: w,
+          height: h,
+        })
+      }
+    })
+
+    return (
+      // scroll view to allow pinch-to-zoom behaviour
+      <ScrollView
+        ref={scrollViewRef}
+        scrollEnabled={hasEntered}
+        onScroll={ev => (zoomScaleRef.current = ev.nativeEvent.zoomScale)}
+        scrollEventThrottle={100}
+        bounces={false}
+        overScrollMode="never"
+        minimumZoomScale={1}
+        maximumZoomScale={MAX_ZOOM_SCALE}
+        centerContent
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        style={[
+          {
+            height: screenBoundingBox.height,
+            opacity: hasEntered || isEntering ? 1 : 0,
+          },
+        ]}
+      >
+        <TouchableWithoutFeedback onPress={onDoublePress}>
+          {/* wrapper to apply transform to underlying image */}
+          <Animated.View
+            ref={imageWrapperRef}
             style={{
               width,
               height,
+              transform,
             }}
-          />
-        </Animated.View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
-  )
-}
+          >
+            <OpaqueImageView
+              noAnimation
+              imageURL={image.url}
+              disableGemini
+              style={{
+                width,
+                height,
+              }}
+            />
+          </Animated.View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    )
+  }
+)
+
 const WhiteUnderlay: React.FC<{ isEntering: boolean }> = ({ isEntering }) => {
   const opacity = useAnimatedValue(0)
 

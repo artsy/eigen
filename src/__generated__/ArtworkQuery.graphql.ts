@@ -322,7 +322,7 @@ fragment ArtworkTombstone_artwork on Artwork {
 }
 
 fragment ImageCarousel_images on Image {
-  url
+  image_url
   width
   height
 }
@@ -790,17 +790,16 @@ v18 = {
   "args": null,
   "storageKey": null
 },
-v19 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "url",
-  "args": null,
-  "storageKey": null
-},
-v20 = [
-  (v19/*: any*/)
+v19 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "url",
+    "args": null,
+    "storageKey": null
+  }
 ],
-v21 = {
+v20 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -808,9 +807,9 @@ v21 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": (v20/*: any*/)
+  "selections": (v19/*: any*/)
 },
-v22 = {
+v21 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "cover_image",
@@ -818,7 +817,7 @@ v22 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": (v20/*: any*/)
+  "selections": (v19/*: any*/)
 };
 return {
   "kind": "Request",
@@ -1194,7 +1193,7 @@ return {
                   (v7/*: any*/),
                   (v9/*: any*/),
                   (v18/*: any*/),
-                  (v21/*: any*/)
+                  (v20/*: any*/)
                 ]
               },
               {
@@ -1210,7 +1209,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v22/*: any*/)
+                  (v21/*: any*/)
                 ]
               }
             ]
@@ -1253,7 +1252,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v21/*: any*/),
+              (v20/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1288,7 +1287,7 @@ return {
               (v13/*: any*/),
               (v18/*: any*/),
               (v15/*: any*/),
-              (v22/*: any*/)
+              (v21/*: any*/)
             ]
           },
           (v5/*: any*/),
@@ -1300,7 +1299,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v21/*: any*/),
+          (v20/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1390,7 +1389,13 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              (v19/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "image_url",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1421,7 +1426,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "8c8232fb3e5f2aacaf985e11d5307497",
+    "id": "fda4bc67bc355cbf3a4dfcb12348eb7d",
     "text": null,
     "metadata": {}
   }

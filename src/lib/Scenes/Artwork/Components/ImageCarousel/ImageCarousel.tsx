@@ -4,12 +4,18 @@ import { createGeminiUrl } from "lib/Components/OpaqueImageView"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { findClosestIndex, getMeasurements } from "./geometry"
+import { findClosestIndex, fitInside, getMeasurements } from "./geometry"
 import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 export interface ImageCarouselProps {
   images: ImageCarousel_images
+}
+
+export interface ImageDescriptor {
+  url: string
+  width: number
+  height: number
 }
 
 const windowWidth = Dimensions.get("window").width
@@ -24,16 +30,20 @@ export const cardBoundingBox = { width: windowWidth, height: cardHeight }
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
 export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
-  const images = useMemo(
+  const images: ImageDescriptor[] = useMemo(
     () =>
-      props.images.map(image => ({
-        ...image,
-        url: createGeminiUrl({
-          imageURL: image.url,
-          width: image.width,
-          height: image.height,
-        }),
-      })),
+      props.images.map(image => {
+        const { width, height } = fitInside(cardBoundingBox, image)
+        return {
+          width,
+          height,
+          url: createGeminiUrl({
+            imageURL: image.image_url.replace(":version", "normalized"),
+            width,
+            height,
+          }),
+        }
+      }),
     [props.images]
   )
   const measurements = useMemo(() => getMeasurements({ images, boundingBox: cardBoundingBox }), [images])
@@ -58,7 +68,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
 
   return (
     <Flex>
-      <FlatList<ImageCarousel_images[number]>
+      <FlatList<ImageDescriptor>
         data={images}
         horizontal
         ref={flatListRef}
@@ -68,6 +78,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
         keyExtractor={item => item.url}
         decelerationRate="fast"
         onScroll={onScroll}
+        initialNumToRender={2}
         renderItem={({ item, index }) => {
           const { cumulativeScrollOffset, ...styles } = measurements[index]
           return (
@@ -147,7 +158,7 @@ const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diam
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
   images: graphql`
     fragment ImageCarousel_images on Image @relay(plural: true) {
-      url
+      image_url
       width
       height
     }
