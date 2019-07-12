@@ -1,10 +1,11 @@
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { once } from "lodash"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import {
   Animated,
   Dimensions,
+  FlatList,
   Image,
   Modal,
   NativeScrollEvent,
@@ -34,6 +35,8 @@ interface TransitionOffset {
 async function getTransitionOffset({ fromRef, toRef }: { fromRef: any; toRef: any }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
   const toBox = await measure(toRef)
+
+  console.log({ fromBox, toBox })
 
   const scale = fromBox.width / toBox.width
   const translateX = fromBox.x + fromBox.width / 2 - (toBox.x + toBox.width / 2)
@@ -68,7 +71,16 @@ function createTransform(
   ]
 }
 
-const screenBoundingBox = { width: Dimensions.get("screen").width, height: Dimensions.get("screen").height }
+const screenHeight = Dimensions.get("screen").height
+const screenWidth = Dimensions.get("screen").width
+const screenBoundingBox = { width: screenWidth, height: screenHeight }
+
+const EntryContext = React.createContext<{
+  hasEntered: boolean
+  isEntering: boolean
+  didEnter(): void
+  didStartEntering()
+}>(null)
 
 export const ImageCarouselFullScreen: React.FC<{
   baseImageRef: Image
@@ -76,9 +88,17 @@ export const ImageCarouselFullScreen: React.FC<{
   imageIndex: number
   setImageIndex(index: number): void
   onClose(): void
-}> = ({ baseImageRef, images, onClose, imageIndex }) => {
+}> = ({ baseImageRef, images, onClose, imageIndex, setImageIndex }) => {
   const [hasEntered, setHasEntered] = useState(false)
   const [isEntering, setIsEntering] = useState(false)
+
+  // update the imageIndex on scroll
+  const onScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      setImageIndex(Math.round(e.nativeEvent.contentOffset.x / screenWidth))
+    },
+    [setImageIndex]
+  )
 
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
@@ -86,22 +106,45 @@ export const ImageCarouselFullScreen: React.FC<{
     <Modal transparent animated={hasEntered} animationType="fade">
       {/* This underlay fades in while the image is opaque instantly */}
       <WhiteUnderlay isEntering={isEntering} />
-      <VerticalSwipeToDismiss onClose={onClose}>
-        <ImageZoomView
-          // prevent entry flicker
-          image={images[imageIndex]}
-          baseImageRef={baseImageRef}
-          hasEntered={hasEntered}
-          setHasEntered={setHasEntered}
-          isEntering={isEntering}
-          setIsEntering={setIsEntering}
-        />
-      </VerticalSwipeToDismiss>
+      <EntryContext.Provider
+        value={{
+          hasEntered,
+          isEntering,
+          didEnter() {
+            setHasEntered(true)
+            setIsEntering(true)
+          },
+          didStartEntering() {
+            setIsEntering(true)
+          },
+        }}
+      >
+        <VerticalSwipeToDismiss onClose={onClose}>
+          <FlatList<ImageCarousel_images[number]>
+            data={images}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={images.length > 1}
+            snapToInterval={screenBoundingBox.width}
+            keyExtractor={item => item.url}
+            decelerationRate="fast"
+            initialScrollIndex={imageIndex}
+            onScroll={onScroll}
+            renderItem={({ item }) => {
+              return (
+                <ImageZoomView
+                  // prevent entry flicker
+                  image={item}
+                  baseImageRef={baseImageRef}
+                />
+              )
+            }}
+          />
+        </VerticalSwipeToDismiss>
+      </EntryContext.Provider>
     </Modal>
   )
 }
-
-const screenHeight = Dimensions.get("screen").height
 
 const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children, onClose }) => {
   const scrollY = useAnimatedValue(screenHeight)
@@ -158,11 +201,8 @@ const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children, onClo
 const ImageZoomView: React.FC<{
   image: ImageCarousel_images[number]
   baseImageRef: Image
-  hasEntered: boolean
-  setHasEntered: (hasEntered: boolean) => void
-  isEntering: boolean
-  setIsEntering: (isEntering: boolean) => void
-}> = ({ image, baseImageRef, hasEntered, setHasEntered, isEntering, setIsEntering }) => {
+}> = ({ image, baseImageRef }) => {
+  const { hasEntered, isEntering, didEnter, didStartEntering } = useContext(EntryContext)
   const imageWrapperRef = useRef<{ getNode(): View }>(null)
 
   const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset | null>(null)
@@ -173,15 +213,12 @@ const ImageZoomView: React.FC<{
   ])
 
   const animateTransition = useCallback(() => {
-    setIsEntering(true)
+    didStartEntering()
     Animated.spring(transition, {
       bounciness: 0,
       toValue: 1,
       useNativeDriver: true,
-    }).start(() => {
-      setIsEntering(false)
-      setHasEntered(true)
-    })
+    }).start(didEnter)
   }, [])
 
   useEffect(() => {

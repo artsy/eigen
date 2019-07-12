@@ -1,7 +1,7 @@
 import { color, Flex, space, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { findClosestIndex, getMeasurements } from "./geometry"
@@ -54,11 +54,14 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
 
   const [fullScreen, setFullScreen] = useState(false)
 
+  const flatListRef = useRef<FlatList<any>>(null)
+
   return (
     <Flex>
       <FlatList<ImageCarousel_images[number]>
         data={images}
         horizontal
+        ref={flatListRef}
         showsHorizontalScrollIndicator={false}
         scrollEnabled={images.length > 1}
         snapToOffsets={offsets}
@@ -94,7 +97,12 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
       {fullScreen && (
         <ImageCarouselFullScreen
           imageIndex={imageIndex}
-          setImageIndex={setImageIndex}
+          setImageIndex={index => {
+            if (fullScreen && flatListRef.current) {
+              flatListRef.current.scrollToOffset({ offset: offsets[index], animated: false })
+            }
+            setImageIndex(index)
+          }}
           baseImageRef={imageRefs[imageIndex]}
           images={images}
           onClose={() => setFullScreen(false)}
