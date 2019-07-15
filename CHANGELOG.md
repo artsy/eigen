@@ -22,6 +22,7 @@
 - Fixes crash and map UX for city guides - ash
 - Fixes spurious, intermittent crash from home feed - ash
 - Metaphysics v2 update that removes gravityID - zephraph
+- Updates the copy bidders see when their auction registration status pending - yuki24
 
 ### 1.12.5
 

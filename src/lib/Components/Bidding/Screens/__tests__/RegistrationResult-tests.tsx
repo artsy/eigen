@@ -11,6 +11,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+import { Icon20 } from "../../Components/Icon"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
@@ -23,6 +24,17 @@ describe("Registration result component", () => {
       .toJSON()
     expect(component).toMatchSnapshot()
   })
+
+  it("does not render the icon when the registration status is pending", () => {
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
+      </BiddingThemeProvider>
+    )
+
+    expect(component.root.findAllByType(Icon20).length).toEqual(0)
+  })
+
   it("renders registration complete properly", () => {
     const component = renderer
       .create(
@@ -33,6 +45,7 @@ describe("Registration result component", () => {
       .toJSON()
     expect(component).toMatchSnapshot()
   })
+
   it("renders registration error properly", () => {
     const component = renderer
       .create(
