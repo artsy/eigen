@@ -4,10 +4,9 @@ import { TextInput, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { Button } from "@artsy/palette"
-import { BillingAddress } from "../BillingAddress"
-
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+import { BillingAddress } from "../BillingAddress"
 
 const selectCountry = (component, navigator, country) => {
   // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
@@ -94,8 +93,7 @@ it("updates the validation for country when coming back from the select country 
   selectCountry(component, fakeNavigator, billingAddress.country)
 
   // The <Sans12> instances in the BillingAddress screen display error messages
-  // FIXME:
-  // expect(component.root.findAllByType(Sans).length).toEqual(0)
+  expect(component.root.findAllByType(Sans).length).toEqual(1)
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {

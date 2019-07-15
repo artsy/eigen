@@ -170,7 +170,7 @@ export class Gene extends React.Component<Props, State> {
     owner_slug: props.gene.id,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
-  refineTapped(_button) {
+  refineTapped() {
     const initialSettings = {
       sort: "-partner_updated_at",
       selectedMedium: this.props.medium || "*",
@@ -236,7 +236,7 @@ export class Gene extends React.Component<Props, State> {
             <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
               {this.artworkQuerySummaryString()}
             </SerifText>
-            <Button variant="secondaryOutline" onPress={() => this.refineTapped} size="small">
+            <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">
               Refine
             </Button>
           </View>
