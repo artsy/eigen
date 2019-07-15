@@ -73,10 +73,11 @@ describe("renderMarkdown", () => {
   })
 
   it("handles custom rules", () => {
+    const basicRules = defaultRules(true)
     const customRules = {
-      ...defaultRules,
+      ...basicRules,
       paragraph: {
-        ...defaultRules.paragraph,
+        ...basicRules.paragraph,
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
