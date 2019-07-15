@@ -153,7 +153,7 @@ describe("renderMarkdown", () => {
     expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
   })
 
-  it("doesn't open links modally when specified", () => {
+  it("doesn't open links modally when not specified", () => {
     const basicRules = defaultRules()
     const customRules = {
       ...basicRules,
