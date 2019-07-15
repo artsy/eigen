@@ -4,11 +4,9 @@ import NavigatorIOS from "react-native-navigator-ios"
 
 import { Schema, screenTrack } from "../../../utils/track"
 
-import { Flex } from "../Elements/Flex"
-
+import { Box, Button } from "@artsy/palette"
 import { BackButton } from "lib/Components/Bidding/Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
@@ -55,9 +53,11 @@ export class SelectMaxBidEdit extends React.Component<SelectMaxBidProps, SelectM
             selectedValue={this.state.selectedBidIndex}
           />
 
-          <Flex m={4}>
-            <Button text="Next" onPress={this.onPressNext} />
-          </Flex>
+          <Box m={4}>
+            <Button onPress={this.onPressNext} block width={100}>
+              Next
+            </Button>
+          </Box>
         </Container>
       </BiddingThemeProvider>
     )

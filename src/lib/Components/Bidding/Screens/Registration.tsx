@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Box, Button, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, View, ViewProperties } from "react-native"
@@ -15,7 +15,6 @@ import { Flex } from "../Elements/Flex"
 import { Modal } from "lib/Components/Modal"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { PaymentInfo } from "../Components/PaymentInfo"
@@ -335,15 +334,17 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </Serif>
             </Checkbox>
 
-            <Flex m={4}>
+            <Box m={4}>
               <Button
-                text="Complete registration"
-                inProgress={isLoading}
-                selected={isLoading}
                 onPress={this.canCreateBidder() ? this.register.bind(this) : null}
+                loading={isLoading}
+                block
+                width={100}
                 disabled={!this.canCreateBidder()}
-              />
-            </Flex>
+              >
+                Complete registration
+              </Button>
+            </Box>
           </View>
         </Container>
       </BiddingThemeProvider>

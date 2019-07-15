@@ -1,26 +1,19 @@
-import * as _ from "lodash"
-import React from "react"
-import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createRefetchContainer, graphql } from "react-relay"
-import { RelayRefetchProp } from "react-relay"
-
-import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
-
-import { Schema, Track, track as _track } from "lib/utils/track"
-
-import { GhostButton } from "../Components/Buttons"
-import Separator from "../Components/Separator"
-import SerifText from "../Components/Text/Serif"
-
-import About from "../Components/Gene/About"
-import Header from "../Components/Gene/Header"
-
-import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneArtworksGrid"
-
-import SwitchView, { SwitchEvent } from "../Components/SwitchView"
-
+import { Button, Theme } from "@artsy/palette"
 import { Gene_gene } from "__generated__/Gene_gene.graphql"
 import colors from "lib/data/colors"
+import { Schema, Track, track as _track } from "lib/utils/track"
+import * as _ from "lodash"
+import React from "react"
+import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import ParallaxScrollView from "react-native-parallax-scroll-view"
+import { RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql } from "react-relay"
+import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneArtworksGrid"
+import About from "../Components/Gene/About"
+import Header from "../Components/Gene/Header"
+import Separator from "../Components/Separator"
+import SwitchView, { SwitchEvent } from "../Components/SwitchView"
+import SerifText from "../Components/Text/Serif"
 import Refine from "../NativeModules/triggerRefine"
 
 const isPad = Dimensions.get("window").width > 700
@@ -236,20 +229,20 @@ export class Gene extends React.Component<Props, State> {
     const maxLabelWidth = Dimensions.get("window").width - this.commonPadding * 2 - refineButtonWidth - 10
 
     return (
-      <View style={{ backgroundColor: "white" }}>
-        <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
-        <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
-          <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
-            {this.artworkQuerySummaryString()}
-          </SerifText>
-          <GhostButton
-            text="REFINE"
-            style={{ height: 26, width: refineButtonWidth }}
-            onPress={this.refineTapped.bind(this)}
-          />
+      <Theme>
+        <View style={{ backgroundColor: "white" }}>
+          <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
+          <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
+            <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
+              {this.artworkQuerySummaryString()}
+            </SerifText>
+            <Button variant="secondaryOutline" onPress={() => this.refineTapped} size="small">
+              Refine
+            </Button>
+          </View>
+          <Separator style={{ backgroundColor: separatorColor }} />
         </View>
-        <Separator style={{ backgroundColor: separatorColor }} />
-      </View>
+      </Theme>
     )
   }
 

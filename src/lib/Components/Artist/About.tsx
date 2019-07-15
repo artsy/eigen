@@ -44,7 +44,7 @@ class About extends React.Component<Props> {
       const sideMargin = Dimensions.get("window").width > 700 ? 50 : 20
       const url = `/artist/${this.props.artist.slug}/auction-results`
       return (
-        <NavButton title="Auction Results" href={url} style={{ marginLeft: sideMargin, marginRight: sideMargin }} />
+        <NavButton title="Auction results" href={url} style={{ marginLeft: sideMargin, marginRight: sideMargin }} />
       )
     }
   }

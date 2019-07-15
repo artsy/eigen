@@ -6,10 +6,10 @@ import { Flex } from "../Elements/Flex"
 
 import { Markdown } from "../../Markdown"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { BidGhostButton } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
 
+import { Button } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "../../../utils/track"
 
@@ -111,7 +111,9 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
               <Markdown mb={5}>{msg}</Markdown>
             </Flex>
           </View>
-          <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
+          <Button variant="secondaryOutline" onPress={this.exitBidFlow} block width={100}>
+            Continue
+          </Button>
         </Container>
       </BiddingThemeProvider>
     )

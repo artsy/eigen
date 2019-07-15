@@ -1,15 +1,14 @@
-import React from "react"
-import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
-import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-
+import { Button, Theme } from "@artsy/palette"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import SaleArtworksGrid from "lib/Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
-import { GhostButton } from "lib/Components/Buttons"
 import Header from "lib/Components/Sale/Header"
 import Separator from "lib/Components/Separator"
 import SerifText from "lib/Components/Text/Serif"
 import colors from "lib/data/colors"
+import React from "react"
+import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import ParallaxScrollView from "react-native-parallax-scroll-view"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 const isPad = Dimensions.get("window").width > 700
 const HeaderHeight = 64
@@ -55,14 +54,20 @@ export class Sale extends React.Component<Props, State> {
     const maxLabelWidth = Dimensions.get("window").width - this.commonPadding * 2 - refineButtonWidth - 10
 
     return (
-      <View style={{ backgroundColor: "white" }}>
-        <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
-        <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
-          <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>Hey replace me!</SerifText>
-          <GhostButton text="REFINE" style={{ height: 26, width: refineButtonWidth }} onPress={this.refineTapped} />
+      <Theme>
+        <View style={{ backgroundColor: "white" }}>
+          <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
+          <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
+            <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
+              Hey replace me!
+            </SerifText>
+            <Button variant="secondaryOutline" onPress={() => this.refineTapped} size="small">
+              Refine
+            </Button>
+          </View>
+          <Separator style={{ backgroundColor: separatorColor }} />
         </View>
-        <Separator style={{ backgroundColor: separatorColor }} />
-      </View>
+      </Theme>
     )
   }
 
