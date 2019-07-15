@@ -43,10 +43,12 @@ fragment Messages_conversation_2QE1um on Conversation {
     name
     email
     initials
+    id
   }
   to {
     name
     initials
+    id
   }
   initial_message
   messages(first: $count, after: $after, sort: DESC) {
@@ -65,6 +67,7 @@ fragment Messages_conversation_2QE1um on Conversation {
         body
         attachments {
           internalID
+          id
         }
         ...Message_message
         __typename
@@ -115,11 +118,12 @@ fragment Message_message on Message {
     file_name
     ...ImagePreview_attachment
     ...PDFPreview_attachment
+    id
   }
 }
 
 fragment ArtworkPreview_artwork on Artwork {
-  gravityID
+  slug
   internalID
   title
   artist_names
@@ -130,7 +134,7 @@ fragment ArtworkPreview_artwork on Artwork {
 }
 
 fragment ShowPreview_show on Show {
-  gravityID
+  slug
   internalID
   name
   cover_image {
@@ -274,7 +278,7 @@ v10 = {
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -368,7 +372,8 @@ return {
                 "selections": [
                   (v5/*: any*/),
                   (v6/*: any*/),
-                  (v7/*: any*/)
+                  (v7/*: any*/),
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -381,7 +386,8 @@ return {
                 "plural": false,
                 "selections": [
                   (v5/*: any*/),
-                  (v7/*: any*/)
+                  (v7/*: any*/),
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -496,6 +502,7 @@ return {
                             "plural": true,
                             "selections": [
                               (v4/*: any*/),
+                              (v3/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -735,7 +742,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "0b024bc14b66577095b5337d763a41f4",
+    "id": "9e6bd3fd9402d736e5b697f18e5cfc62",
     "text": null,
     "metadata": {}
   }

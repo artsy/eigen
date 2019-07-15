@@ -10,7 +10,7 @@ export type CityBMWList_city = {
         readonly shows: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly gravityID: string;
+                    readonly slug: string;
                     readonly internalID: string;
                     readonly id: string;
                     readonly name: string | null;
@@ -72,6 +72,13 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
@@ -109,13 +116,7 @@ return {
   ],
   "selections": [
     (v0/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -163,13 +164,7 @@ return {
                   "concreteType": "Show",
                   "plural": false,
                   "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "gravityID",
-                      "args": null,
-                      "storageKey": null
-                    },
+                    (v1/*: any*/),
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -274,7 +269,7 @@ return {
                         }
                       ]
                     },
-                    (v1/*: any*/),
+                    (v2/*: any*/),
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -303,7 +298,7 @@ return {
                           "type": "Partner",
                           "selections": [
                             (v0/*: any*/),
-                            (v1/*: any*/),
+                            (v2/*: any*/),
                             {
                               "kind": "LinkedField",
                               "alias": null,
@@ -393,5 +388,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'de715332a242b36b73e995e7f9e7b038';
+(node as any).hash = 'd05b712720fdf7c6e92f21ffbc46d930';
 export default node;

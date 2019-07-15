@@ -12,7 +12,7 @@ export type ContextCardFollowMutationVariables = {
 export type ContextCardFollowMutationResponse = {
     readonly followShow: {
         readonly show: {
-            readonly gravityID: string;
+            readonly slug: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
             readonly id: string;
@@ -32,7 +32,7 @@ mutation ContextCardFollowMutation(
 ) {
   followShow(input: $input) {
     show {
-      gravityID
+      slug
       internalID
       is_followed
       id
@@ -78,7 +78,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "gravityID",
+            "name": "slug",
             "args": null,
             "storageKey": null
           },
@@ -127,11 +127,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ContextCardFollowMutation",
-    "id": "1b3afe3ff2b4d93c14d2c6896264c335",
+    "id": "3ec79ad6cdb59bd5ffaeacfc37334532",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3e069c5c759650c691cfd8ad4033c6b8';
+(node as any).hash = '241a1aff181f2b5729f477cd08868d5b';
 export default node;

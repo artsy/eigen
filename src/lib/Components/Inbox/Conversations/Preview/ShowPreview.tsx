@@ -62,7 +62,7 @@ export class ShowPreview extends React.Component<Props> {
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentShow,
     owner_type: Schema.OwnerEntityTypes.Show,
-    owner_slug: props.show.gravityID,
+    owner_slug: props.show.slug,
     owner_id: props.show.internalID,
   }))
   attachmentSelected() {
@@ -89,7 +89,7 @@ export class ShowPreview extends React.Component<Props> {
 export default createFragmentContainer(ShowPreview, {
   show: graphql`
     fragment ShowPreview_show on Show {
-      gravityID
+      slug
       internalID
       name
       cover_image {

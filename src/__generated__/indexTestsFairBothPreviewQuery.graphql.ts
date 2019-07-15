@@ -24,7 +24,7 @@ query indexTestsFairBothPreviewQuery {
 }
 
 fragment FairBoothPreview_show on Show {
-  gravityID
+  slug
   internalID
   name
   is_fair_booth
@@ -36,7 +36,7 @@ fragment FairBoothPreview_show on Show {
     ... on Partner {
       name
       href
-      gravityID
+      slug
       internalID
       id
       profile {
@@ -75,7 +75,7 @@ fragment FairBoothPreview_show on Show {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  gravityID
+  slug
   image {
     aspect_ratio
   }
@@ -90,7 +90,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -132,7 +132,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -561,7 +561,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairBothPreviewQuery",
-    "id": "d93608dbc371ecaba45bf9e367d754af",
+    "id": "bc6f70a6e6bbf39f159c04d304449229",
     "text": null,
     "metadata": {}
   }

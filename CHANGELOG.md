@@ -16,13 +16,13 @@
 
 ### Master
 
-- Metaphysics v2 update that removes gravityID - zephraph
 - Removes InvertedButton - kierangillen
 - Adds ContextCard - kierangillen
 - Fixes BottomAlignedButton keyboard clipping - kierangillen
 - Fixes crash and map UX for city guides - ash
 - Fixes spurious, intermittent crash from home feed - ash
 - Markdown links don't open modally unless specified - lilyfromseattle
+- Metaphysics v2 update that removes gravityID - zephraph
 
 ### 1.12.5
 

@@ -15,7 +15,7 @@ export type GlobalMap_viewer = {
             readonly introText: string | null;
             readonly artGuideUrl: string | null;
             readonly featuredShows: ReadonlyArray<{
-                readonly gravityID: string;
+                readonly slug: string;
                 readonly internalID: string;
                 readonly id: string;
                 readonly name: string | null;
@@ -55,7 +55,7 @@ export type GlobalMap_viewer = {
         readonly upcomingShows: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly gravityID: string;
+                    readonly slug: string;
                     readonly internalID: string;
                     readonly id: string;
                     readonly isStubShow: boolean | null;
@@ -103,7 +103,7 @@ export type GlobalMap_viewer = {
         readonly shows: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly gravityID: string;
+                    readonly slug: string;
                     readonly internalID: string;
                     readonly id: string;
                     readonly isStubShow: boolean | null;
@@ -151,7 +151,7 @@ export type GlobalMap_viewer = {
         readonly fairs: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly gravityID: string;
+                    readonly slug: string;
                     readonly name: string | null;
                     readonly exhibition_period: string | null;
                     readonly counts: {
@@ -170,14 +170,14 @@ export type GlobalMap_viewer = {
                     } | null;
                     readonly profile: {
                         readonly icon: {
-                            readonly gravityID: string | null;
+                            readonly internalID: string | null;
                             readonly href: string | null;
                             readonly height: number | null;
                             readonly width: number | null;
                             readonly url: string | null;
                         } | null;
                         readonly id: string;
-                        readonly gravityID: string;
+                        readonly slug: string;
                         readonly name: string | null;
                     } | null;
                     readonly start_at: string | null;
@@ -200,6 +200,13 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "coordinates",
@@ -223,13 +230,6 @@ v1 = {
       "storageKey": null
     }
   ]
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
@@ -308,7 +308,7 @@ v12 = {
   "concreteType": "Location",
   "plural": false,
   "selections": [
-    (v1/*: any*/)
+    (v2/*: any*/)
   ]
 },
 v13 = {
@@ -366,7 +366,7 @@ v19 = [
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
+          (v1/*: any*/),
           (v3/*: any*/),
           (v4/*: any*/),
           (v6/*: any*/),
@@ -475,14 +475,8 @@ return {
       "plural": false,
       "selections": [
         (v0/*: any*/),
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "slug",
-          "args": null,
-          "storageKey": null
-        },
         (v1/*: any*/),
+        (v2/*: any*/),
         {
           "kind": "LinkedField",
           "alias": null,
@@ -515,7 +509,7 @@ return {
               "concreteType": "Show",
               "plural": true,
               "selections": [
-                (v2/*: any*/),
+                (v1/*: any*/),
                 (v3/*: any*/),
                 (v4/*: any*/),
                 (v0/*: any*/),
@@ -659,7 +653,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    (v2/*: any*/),
+                    (v1/*: any*/),
                     (v0/*: any*/),
                     (v9/*: any*/),
                     {
@@ -725,7 +719,7 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            (v2/*: any*/),
+                            (v3/*: any*/),
                             (v7/*: any*/),
                             {
                               "kind": "ScalarField",
@@ -757,7 +751,7 @@ return {
                           ]
                         },
                         (v4/*: any*/),
-                        (v2/*: any*/),
+                        (v1/*: any*/),
                         (v0/*: any*/)
                       ]
                     },
@@ -774,5 +768,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '756780b1d5a561adb5ff1c64a00d3ba8';
+(node as any).hash = '1f5ad39a7b19c7e3576f37f42d305c86';
 export default node;

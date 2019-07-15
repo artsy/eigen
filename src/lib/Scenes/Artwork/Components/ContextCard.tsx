@@ -26,7 +26,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
   handleFollowShow = show => {
     const { relay } = this.props
-    const { gravityID, id, internalID, is_followed } = show
+    const { slug, id, internalID, is_followed } = show
     this.setState(
       {
         isSaving: true,
@@ -38,7 +38,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
             mutation ContextCardFollowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
                 show {
-                  gravityID
+                  slug
                   internalID
                   is_followed
                   id
@@ -57,7 +57,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
               show: {
                 internalID,
                 is_followed: !is_followed,
-                gravityID,
+                slug,
                 id,
               },
             },
@@ -197,7 +197,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
   artwork: graphql`
     fragment ContextCard_artwork on Artwork {
       id
-      gravityID
+      slug
       internalID
       context {
         __typename
@@ -224,7 +224,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
         id
         name
         href
-        gravityID
+        slug
         internalID
         exhibition_period
         is_followed

@@ -47,7 +47,7 @@ const PressReleaseContainer = styled(Flex)`
     ({
       context_screen: Schema.PageNames.BMWFairActivation,
       context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-      context_screen_owner_slug: props.fair.gravityID,
+      context_screen_owner_slug: props.fair.slug,
       context_screen_owner_id: props.fair.internalID,
     } as any)
 )
@@ -153,7 +153,7 @@ function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTyp
 const FairBMWArtActivationFragmentContainer = createFragmentContainer(FairBMWArtActivation, {
   fair: graphql`
     fragment FairBMWArtActivation_fair on Fair {
-      gravityID
+      slug
       internalID
       sponsoredContent {
         activationText

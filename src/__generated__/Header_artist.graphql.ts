@@ -5,7 +5,7 @@ declare const _Header_artist$ref: unique symbol;
 export type Header_artist$ref = typeof _Header_artist$ref;
 export type Header_artist = {
     readonly internalID: string;
-    readonly gravityID: string;
+    readonly slug: string;
     readonly name: string | null;
     readonly nationality: string | null;
     readonly birthday: string | null;
@@ -34,7 +34,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -79,5 +79,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ed4bda1101c9d94982035be6a1d862b3';
+(node as any).hash = '9ebfd7d67218d4bc0c239e73ed458754';
 export default node;

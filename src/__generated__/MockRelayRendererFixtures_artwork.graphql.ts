@@ -9,7 +9,7 @@ export type MockRelayRendererFixtures_artwork = {
         readonly url: string | null;
     } | null;
     readonly artist: {
-        readonly gravityID: string;
+        readonly slug: string;
     } | null;
     readonly " $fragmentRefs": MockRelayRendererFixtures_artworkMetadata$ref;
     readonly " $refType": MockRelayRendererFixtures_artwork$ref;
@@ -54,7 +54,7 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "gravityID",
+          "name": "slug",
           "args": null,
           "storageKey": null
         }
@@ -67,5 +67,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '418d67208237e68e952c6b28bc267e57';
+(node as any).hash = '35b0d2a11cf28fcc477de58eac475015';
 export default node;
