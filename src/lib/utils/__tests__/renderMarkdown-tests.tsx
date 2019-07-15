@@ -1,8 +1,15 @@
-import { Flex, Sans, Serif } from "@artsy/palette"
-import { shallow } from "enzyme"
+import { Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { mount, shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"
 import React from "react"
 import { defaultRules, renderMarkdown } from "../renderMarkdown"
+
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  presentNavigationViewController: jest.fn(),
+  presentModalViewController: jest.fn(),
+}))
+
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 describe("renderMarkdown", () => {
   it("returns markdown for a simple string", () => {
@@ -73,7 +80,7 @@ describe("renderMarkdown", () => {
   })
 
   it("handles custom rules", () => {
-    const basicRules = defaultRules(true)
+    const basicRules = defaultRules()
     const customRules = {
       ...basicRules,
       paragraph: {
@@ -108,5 +115,77 @@ describe("renderMarkdown", () => {
         .at(1)
         .text()
     ).toEqual("This is a second paragraph")
+  })
+
+  it("opens links modally when specified", () => {
+    const basicRules = defaultRules(true)
+    const customRules = {
+      ...basicRules,
+      paragraph: {
+        ...basicRules.paragraph,
+        react: (node, output, state) => {
+          return (
+            <Serif size="3t" color="black60" key={state.key}>
+              {output(node.content, state)}
+            </Serif>
+          )
+        },
+      },
+    }
+    const componentList = renderMarkdown(
+      "This is a [first](/artist/first) paragraph\n\nThis is a [second](/gene/second) paragraph",
+      customRules
+    ) as any
+
+    const renderedComponent = mount(
+      <Theme>
+        <Flex>{componentList}</Flex>
+      </Theme>
+    )
+    expect(renderedComponent.find(LinkText).length).toEqual(2)
+
+    renderedComponent
+      .find(LinkText)
+      .at(0)
+      .props()
+      .onPress()
+
+    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
+  })
+
+  it("doesn't open links modally when specified", () => {
+    const basicRules = defaultRules()
+    const customRules = {
+      ...basicRules,
+      paragraph: {
+        ...basicRules.paragraph,
+        react: (node, output, state) => {
+          return (
+            <Serif size="3t" color="black60" key={state.key}>
+              {output(node.content, state)}
+            </Serif>
+          )
+        },
+      },
+    }
+    const componentList = renderMarkdown(
+      "This is a [first](/artist/first) paragraph\n\nThis is a [second](/gene/second) paragraph",
+      customRules
+    ) as any
+
+    const renderedComponent = mount(
+      <Theme>
+        <Flex>{componentList}</Flex>
+      </Theme>
+    )
+    expect(renderedComponent.find(LinkText).length).toEqual(2)
+
+    renderedComponent
+      .find(LinkText)
+      .at(0)
+      .props()
+      .onPress()
+
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
   })
 })
