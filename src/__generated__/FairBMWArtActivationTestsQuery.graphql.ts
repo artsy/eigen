@@ -4,7 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 export type FairBMWArtActivationTestsQueryVariables = {};
 export type FairBMWArtActivationTestsQueryResponse = {
     readonly fair: {
-        readonly gravityID: string;
+        readonly slug: string;
         readonly internalID: string;
         readonly sponsoredContent: {
             readonly activationText: string | null;
@@ -22,7 +22,7 @@ export type FairBMWArtActivationTestsQuery = {
 /*
 query FairBMWArtActivationTestsQuery {
   fair(id: "art-basel-in-miami-beach-2018") {
-    gravityID
+    slug
     internalID
     sponsoredContent {
       activationText
@@ -44,7 +44,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -136,11 +136,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBMWArtActivationTestsQuery",
-    "id": "65fba72d9701712f1d6a9902a03b9688",
+    "id": "d56c9ab97d9553bcc60be71e5bf293c8",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '12397aa34f48c87c16800a8f2339ae29';
+(node as any).hash = '9a435ad01c3ab13df103b7660ef56d1b';
 export default node;

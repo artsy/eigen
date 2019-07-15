@@ -5,7 +5,7 @@ declare const _LocationMap_location$ref: unique symbol;
 export type LocationMap_location$ref = typeof _LocationMap_location$ref;
 export type LocationMap_location = {
     readonly id: string;
-    readonly gravityID: string;
+    readonly internalID: string;
     readonly city: string | null;
     readonly address: string | null;
     readonly address_2: string | null;
@@ -60,7 +60,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -213,5 +213,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4ab899f51b80ed405fe2b1b6d362dcd3';
+(node as any).hash = '9249538f5a258e9b1a3c31a13e0b2029';
 export default node;

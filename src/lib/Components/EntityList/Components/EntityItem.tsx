@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native"
 export interface Item {
   name: string
   href: string
-  gravityID: string
+  slug: string
   internalID: string
 }
 
@@ -13,11 +13,11 @@ export interface EntityItemProps {
   item: Item
   isFirst: boolean
   isLast: boolean
-  onPress: (href: string, gravityID: string, internalID: string) => void
+  onPress: (href: string, slug: string, internalID: string) => void
 }
 
 export const EntityItem: React.SFC<EntityItemProps> = ({
-  item: { name, href, gravityID, internalID },
+  item: { name, href, slug, internalID },
   isFirst,
   isLast,
   onPress,
@@ -29,7 +29,8 @@ export const EntityItem: React.SFC<EntityItemProps> = ({
   }
 
   return (
-    <TouchableOpacity onPress={() => onPress(href, gravityID, internalID)}>
+    // FIXME: Should this be a slug or internalID?
+    <TouchableOpacity onPress={() => onPress(href, slug, internalID)}>
       <Sans weight="medium" size="3" lineHeight="19">
         {text}
       </Sans>

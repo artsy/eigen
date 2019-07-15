@@ -8,7 +8,7 @@ export type CityFairList_city = {
     readonly fairs: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly gravityID: string;
+                readonly internalID: string;
                 readonly name: string | null;
                 readonly exhibition_period: string | null;
                 readonly counts: {
@@ -27,14 +27,14 @@ export type CityFairList_city = {
                 } | null;
                 readonly profile: {
                     readonly icon: {
-                        readonly gravityID: string | null;
+                        readonly internalID: string | null;
                         readonly href: string | null;
                         readonly height: number | null;
                         readonly width: number | null;
                         readonly url: string | null;
                     } | null;
                     readonly id: string;
-                    readonly gravityID: string;
+                    readonly slug: string;
                     readonly name: string | null;
                 } | null;
                 readonly start_at: string | null;
@@ -51,11 +51,18 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -93,13 +100,7 @@ return {
     }
   ],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "fairs",
@@ -138,8 +139,8 @@ return {
               "concreteType": "Fair",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
                 (v1/*: any*/),
+                (v2/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -251,7 +252,7 @@ return {
                       "concreteType": "Image",
                       "plural": false,
                       "selections": [
-                        (v0/*: any*/),
+                        (v1/*: any*/),
                         {
                           "kind": "ScalarField",
                           "alias": null,
@@ -296,7 +297,7 @@ return {
                       "storageKey": null
                     },
                     (v0/*: any*/),
-                    (v1/*: any*/)
+                    (v2/*: any*/)
                   ]
                 },
                 {
@@ -361,5 +362,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b69ae96800a8605eea2b0c23647e9d63';
+(node as any).hash = 'b76fad505f2a5b06df60c65b3c35cd5b';
 export default node;

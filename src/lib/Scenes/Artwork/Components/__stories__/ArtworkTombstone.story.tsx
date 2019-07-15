@@ -27,8 +27,8 @@ const artworkTombstoneArtwork = {
     {
       name: "Andy Warhol",
       href: "/artist/andy-warhol",
-      id: "12345",
-      gravityID: "andy-warhol",
+      id: "1234",
+      slug: "andy-warhol",
       is_followed: false,
       " $fragmentRefs": null,
     },

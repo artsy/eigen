@@ -9,7 +9,7 @@ import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
 declare const _FairBooth_show$ref: unique symbol;
 export type FairBooth_show$ref = typeof _FairBooth_show$ref;
 export type FairBooth_show = {
-    readonly gravityID: string;
+    readonly slug: string;
     readonly internalID: string;
     readonly " $fragmentRefs": FairBoothHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & ShowArtists_show$ref & ShowArtworks_show$ref;
     readonly " $refType": FairBooth_show$ref;
@@ -27,7 +27,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -65,5 +65,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1537a5257d548d7f92ed7bdfacbd282c';
+(node as any).hash = '5d6dc4f8d1fa3a1e04440e6676420abd';
 export default node;

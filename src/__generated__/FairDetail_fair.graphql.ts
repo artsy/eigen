@@ -7,7 +7,7 @@ import { LocationMap_location$ref } from "./LocationMap_location.graphql";
 declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
-    readonly gravityID: string;
+    readonly slug: string;
     readonly internalID: string;
     readonly name: string | null;
     readonly hours: string | null;
@@ -40,12 +40,12 @@ export type FairDetail_fair = {
         readonly edges: ReadonlyArray<{
             readonly cursor: string;
             readonly node: {
-                readonly gravityID: string;
+                readonly slug: string;
                 readonly internalID: string;
                 readonly artworks_connection: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
-                            readonly gravityID: string;
+                            readonly slug: string;
                         } | null;
                     } | null> | null;
                 } | null;
@@ -63,7 +63,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -373,5 +373,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '21bcee8ba13095494831a355104f2ba9';
+(node as any).hash = '7f54b3a49bb66c440d4bc272c993475b';
 export default node;

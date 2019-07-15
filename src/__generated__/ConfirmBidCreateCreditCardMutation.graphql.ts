@@ -13,7 +13,7 @@ export type ConfirmBidCreateCreditCardMutationResponse = {
     readonly createCreditCard: {
         readonly creditCardOrError: ({
             readonly creditCard?: {
-                readonly gravityID: string;
+                readonly internalID: string;
                 readonly brand: string;
                 readonly name: string | null;
                 readonly last_digits: string;
@@ -27,7 +27,7 @@ export type ConfirmBidCreateCreditCardMutationResponse = {
             } | null;
         } & ({
             readonly creditCard: {
-                readonly gravityID: string;
+                readonly internalID: string;
                 readonly brand: string;
                 readonly name: string | null;
                 readonly last_digits: string;
@@ -63,7 +63,7 @@ mutation ConfirmBidCreateCreditCardMutation(
       __typename
       ... on CreditCardMutationSuccess {
         creditCard {
-          gravityID
+          internalID
           brand
           name
           last_digits
@@ -103,7 +103,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -307,11 +307,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ConfirmBidCreateCreditCardMutation",
-    "id": "5095db51dc9e8a16f0a0def83f0d46f0",
+    "id": "aa419921ad412f213d938fc394327ba4",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'fd1e6e98e8876a03e8d2014261f9af3c';
+(node as any).hash = '6578d680e66b5f8b07d85c13c640524d';
 export default node;

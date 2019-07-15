@@ -7,12 +7,12 @@ export type ConfirmBid_sale_artwork$ref = typeof _ConfirmBid_sale_artwork$ref;
 export type ConfirmBid_sale_artwork = {
     readonly internalID: string;
     readonly sale: {
-        readonly gravityID: string;
+        readonly slug: string;
         readonly live_start_at: string | null;
         readonly end_at: string | null;
     } | null;
     readonly artwork: {
-        readonly gravityID: string;
+        readonly slug: string;
         readonly title: string | null;
         readonly date: string | null;
         readonly artist_names: string | null;
@@ -28,7 +28,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 };
@@ -120,5 +120,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd80b17b99bcad40f06a5e689f9d9611a';
+(node as any).hash = '1b9a43f0c7c6b39496d6c12620502354';
 export default node;

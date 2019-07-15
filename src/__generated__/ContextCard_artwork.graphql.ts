@@ -5,7 +5,7 @@ declare const _ContextCard_artwork$ref: unique symbol;
 export type ContextCard_artwork$ref = typeof _ContextCard_artwork$ref;
 export type ContextCard_artwork = {
     readonly id: string;
-    readonly gravityID: string;
+    readonly slug: string;
     readonly internalID: string;
     readonly context: ({
         readonly __typename: string;
@@ -44,7 +44,7 @@ export type ContextCard_artwork = {
         readonly id: string;
         readonly name: string | null;
         readonly href: string | null;
-        readonly gravityID: string;
+        readonly slug: string;
         readonly internalID: string;
         readonly exhibition_period: string | null;
         readonly is_followed: boolean | null;
@@ -68,7 +68,7 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -218,5 +218,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4b0c79f41e9d56a4a99bd97aa3441621';
+(node as any).hash = '165891be644fe2bb22c972512b0ab31c';
 export default node;

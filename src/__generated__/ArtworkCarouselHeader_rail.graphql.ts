@@ -9,12 +9,12 @@ export type ArtworkCarouselHeader_rail = {
     readonly followedArtistContext: ({
         readonly artist?: {
             readonly internalID: string;
-            readonly gravityID: string;
+            readonly slug: string;
         } | null;
     } & ({
         readonly artist: {
             readonly internalID: string;
-            readonly gravityID: string;
+            readonly slug: string;
         } | null;
     } | {
         /*This will never be '% other', but we need some
@@ -24,7 +24,7 @@ export type ArtworkCarouselHeader_rail = {
     readonly relatedArtistContext: ({
         readonly artist?: {
             readonly internalID: string;
-            readonly gravityID: string;
+            readonly slug: string;
         } | null;
         readonly based_on?: {
             readonly name: string | null;
@@ -32,7 +32,7 @@ export type ArtworkCarouselHeader_rail = {
     } & ({
         readonly artist: {
             readonly internalID: string;
-            readonly gravityID: string;
+            readonly slug: string;
         } | null;
         readonly based_on: {
             readonly name: string | null;
@@ -67,7 +67,7 @@ var v0 = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     }
@@ -151,5 +151,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f9f8ed70e15feeab8e14270b8390a7e8';
+(node as any).hash = '0fba008f8d8b6d76ae5096c7d258fb3f';
 export default node;

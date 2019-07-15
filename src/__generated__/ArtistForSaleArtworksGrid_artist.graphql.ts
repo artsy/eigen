@@ -14,7 +14,7 @@ export type ArtistForSaleArtworksGrid_artist = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly gravityID: string;
+                readonly slug: string;
                 readonly id: string;
                 readonly image: {
                     readonly aspect_ratio: number;
@@ -149,7 +149,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "gravityID",
+                  "name": "slug",
                   "args": null,
                   "storageKey": null
                 },
@@ -200,5 +200,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '74b701e18d6a4f76b8fe80db61c6f019';
+(node as any).hash = '9f49b72c694228be4e5972fe2cce7e1a';
 export default node;

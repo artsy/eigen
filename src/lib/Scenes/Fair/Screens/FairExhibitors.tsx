@@ -26,7 +26,7 @@ interface State {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairAllExhibitorsPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.gravityID,
+  context_screen_owner_slug: props.fair.slug,
   context_screen_owner_id: props.fair.internalID,
 }))
 export class FairExhibitors extends React.Component<Props, State> {
@@ -128,13 +128,13 @@ export class FairExhibitors extends React.Component<Props, State> {
 const FairExhibitorsFragmentContainer = createFragmentContainer(FairExhibitors, {
   fair: graphql`
     fragment FairExhibitors_fair on Fair {
-      gravityID
+      slug
       internalID
       exhibitors_grouped_by_name {
         letter
         exhibitors {
           name
-          gravityID
+          slug
           profile_id
           partner_id
         }

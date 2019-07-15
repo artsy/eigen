@@ -35,7 +35,7 @@ fragment CityFairList_city_1G22uz on City {
   fairs(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
-        gravityID
+        internalID
         name
         exhibition_period
         counts {
@@ -55,14 +55,14 @@ fragment CityFairList_city_1G22uz on City {
         }
         profile {
           icon {
-            gravityID
+            internalID
             href
             height
             width
             url(version: "square140")
           }
           id
-          gravityID
+          slug
           name
         }
         start_at
@@ -108,7 +108,14 @@ v1 = [
     "variableName": "citySlug"
   }
 ],
-v2 = [
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v3 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -130,21 +137,21 @@ v2 = [
     "value": "CURRENT"
   }
 ],
-v3 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -203,19 +210,13 @@ return {
         "concreteType": "City",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "slug",
-            "args": null,
-            "storageKey": null
-          },
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "fairs",
             "storageKey": null,
-            "args": (v2/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "FairConnection",
             "plural": false,
             "selections": [
@@ -237,8 +238,8 @@ return {
                     "concreteType": "Fair",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
                       (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -298,7 +299,7 @@ return {
                               }
                             ]
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ]
                       },
                       {
@@ -351,7 +352,7 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -388,9 +389,9 @@ return {
                               }
                             ]
                           },
-                          (v5/*: any*/),
-                          (v3/*: any*/),
-                          (v4/*: any*/)
+                          (v6/*: any*/),
+                          (v2/*: any*/),
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -407,7 +408,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -457,7 +458,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "fairs",
-            "args": (v2/*: any*/),
+            "args": (v3/*: any*/),
             "handle": "connection",
             "key": "CityFairList_fairs",
             "filters": [
@@ -472,7 +473,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CityFairListQuery",
-    "id": "bb8dfd7159d1daafb025f0ffb652d48a",
+    "id": "e7d1ead3e0533d2de11eb9c101effebb",
     "text": null,
     "metadata": {}
   }
