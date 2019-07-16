@@ -150,7 +150,7 @@ export const ImageCarouselFullScreen: React.FC<{
               }
             }}
             initialNumToRender={3}
-            windowSize={5}
+            windowSize={images.length * 2 + 1}
             maxToRenderPerBatch={3}
             renderItem={({ item, index }) => {
               return (
@@ -185,7 +185,7 @@ const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children, onClo
     []
   )
   const [isDragging, setIsDragging] = useState(false)
-  const dismiss = useMemo(() => once(() => setTimeout(onClose, 50)), [onClose])
+  const dismiss = useMemo(() => once(onClose), [onClose])
 
   return (
     <Animated.ScrollView
