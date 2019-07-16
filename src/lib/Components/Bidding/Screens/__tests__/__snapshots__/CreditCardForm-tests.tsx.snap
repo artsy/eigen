@@ -109,7 +109,49 @@ exports[`renders properly 1`] = `
                 ]
               }
             >
+              <Text
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="16px"
+                lineHeight="20px"
+                mb={2}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 16,
+                      "lineHeight": 20,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Card Information
+              </Text>
               PaymentCardTextField
+              <Text
+                color="black60"
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="24px"
+                mt="6"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 24,
+                      "marginTop": 40,
+                      "textAlign": "center",
+                    },
+                    Object {},
+                  ]
+                }
+                textAlign="center"
+              >
+                Registration is free. Artsy will never charge this card without your permission, and you are not required to use this card to pay if you win.
+              </Text>
             </View>
           </View>
         </View>

@@ -23,6 +23,8 @@
 - Fixes spurious, intermittent crash from home feed - ash
 - Metaphysics v2 update that removes gravityID - zephraph
 - Updates the copy bidders see when their auction registration status pending - yuki24
+- Adds more clarifications to the credit card form screen - yuki24
+- Adds a message to the registration screen that bidders need a valid credit card - yuki24
 
 ### 1.12.5
 
