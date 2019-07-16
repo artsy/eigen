@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Box, Button, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, View, ViewProperties } from "react-native"
@@ -15,7 +15,6 @@ import { Flex } from "../Elements/Flex"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../Components/BidInfoRow"
-import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
@@ -508,15 +507,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Flex>
             )}
 
-            <Flex m={4}>
+            <Box m={4}>
               <Button
-                text="Bid"
-                inProgress={this.state.isLoading}
-                selected={this.state.isLoading}
-                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+                loading={this.state.isLoading}
+                block
+                width={100}
                 disabled={!this.canPlaceBid()}
-              />
-            </Flex>
+                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+              >
+                Bid
+              </Button>
+            </Box>
           </View>
         </Container>
       </BiddingThemeProvider>

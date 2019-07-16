@@ -21,7 +21,6 @@ Array [
   "Inquiry",
   "MyProfile",
   "RegistrationFlow",
-  "Sale",
   "Show",
   "WorksForYou",
 ]

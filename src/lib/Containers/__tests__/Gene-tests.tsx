@@ -74,7 +74,7 @@ describe("state", () => {
       })
 
     // Then when the gene has been tapped, it returns the refine data above
-    return gene.refineTapped(null).then(() => {
+    return gene.refineTapped().then(() => {
       // This should trigger new state inside the component
       expect(gene.setState).lastCalledWith({
         selectedMedium: "porcupines",

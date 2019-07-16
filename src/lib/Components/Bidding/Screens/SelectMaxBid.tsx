@@ -6,10 +6,8 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import Spinner from "../../../Components/Spinner"
 import { Schema, screenTrack } from "../../../utils/track"
 
-import { Flex } from "../Elements/Flex"
-
+import { Box, Button } from "@artsy/palette"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
@@ -84,9 +82,11 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
             />
           )}
 
-          <Flex m={4}>
-            <Button text="Next" onPress={this.onPressNext} />
-          </Flex>
+          <Box m={4}>
+            <Button block width={100} onPress={this.onPressNext}>
+              Next
+            </Button>
+          </Box>
         </Container>
       </BiddingThemeProvider>
     )

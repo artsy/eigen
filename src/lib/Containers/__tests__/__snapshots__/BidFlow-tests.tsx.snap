@@ -182,56 +182,332 @@ exports[`renders properly 1`] = `
           }
         >
           <View
-            height={50}
+            accessible={true}
+            flexDirection="row"
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               Array [
                 Object {
-                  "height": 50,
+                  "display": "flex",
+                  "flexDirection": "row",
                 },
               ]
             }
           >
             <View
-              accessible={true}
-              isTVSelectable={true}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
+              block={true}
+              onPress={[Function]}
+              px={2}
+              size="medium"
               style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "borderRadius": 3,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "paddingLeft": 20,
+                    "paddingRight": 20,
+                    "position": "relative",
+                    "width": "100%",
+                  },
+                  Object {
+                    "backgroundColor": "rgba(0, 0, 0, 1)",
+                    "borderColor": "rgba(0, 0, 0, 1)",
+                    "color": "rgba(255, 255, 255, 1)",
+                    "height": 41,
+                    "opacity": 1,
+                  },
+                ]
+              }
+              theme={
                 Object {
-                  "alignItems": "center",
-                  "backgroundColor": "rgba(0, 0, 0, 1)",
-                  "borderRadius": 2,
-                  "flex": 1,
-                  "justifyContent": "center",
+                  "borders": Array [
+                    "1px solid",
+                    "2px solid",
+                  ],
+                  "breakpoints": Array [
+                    768,
+                    900,
+                    1024,
+                    1192,
+                  ],
+                  "colors": Object {
+                    "black10": "#E5E5E5",
+                    "black100": "#000",
+                    "black30": "#C2C2C2",
+                    "black5": "#F8F8F8",
+                    "black60": "#666",
+                    "black80": "#333",
+                    "green100": "#0EDA83",
+                    "purple100": "#6E1EFF",
+                    "purple30": "#D3BBFF",
+                    "purple5": "#F8F3FF",
+                    "red100": "#F7625A",
+                    "white100": "#FFF",
+                    "yellow10": "#FDF7E8",
+                    "yellow100": "#F1AF1B",
+                    "yellow30": "#FAE7BA",
+                  },
+                  "fontFamily": Object {
+                    "display": Object {
+                      "regular": "AvantGardeGothicITC",
+                    },
+                    "sans": Object {
+                      "italic": "Unica77LL-Italic",
+                      "medium": "Unica77LL-Medium",
+                      "mediumItalic": "Unica77LL-MediumItalic",
+                      "regular": "Unica77LL-Regular",
+                    },
+                    "serif": Object {
+                      "italic": "ReactNativeAGaramondPro-Italic",
+                      "regular": "ReactNativeAGaramondPro-Regular",
+                      "semibold": "ReactNativeAGaramondPro-Semibold",
+                    },
+                  },
+                  "grid": Object {
+                    "breakpoints": Object {
+                      "lg": 1024,
+                      "md": 900,
+                      "sm": 768,
+                      "xl": 1192,
+                      "xs": 767,
+                    },
+                    "col": Object {
+                      "padding": 0,
+                    },
+                    "container": Object {
+                      "padding": 0,
+                    },
+                    "row": Object {
+                      "padding": 0,
+                    },
+                  },
+                  "mediaQueries": Object {
+                    "hover": "not all and (pointer: coarse), not all and (-moz-touch-enabled: 1)",
+                    "lg": "(min-width: 1024px) and (max-width: 1191px)",
+                    "md": "(min-width: 900px) and (max-width: 1023px)",
+                    "sm": "(min-width: 768px) and (max-width: 899px)",
+                    "xl": "(min-width: 1192px)",
+                    "xs": "(max-width: 767px)",
+                  },
+                  "space": Object {
+                    "0.3": 3,
+                    "0.5": 5,
+                    "1": 10,
+                    "12": 120,
+                    "18": 180,
+                    "2": 20,
+                    "3": 30,
+                    "4": 40,
+                    "6": 60,
+                    "9": 90,
+                  },
+                  "typeSizes": Object {
+                    "display": Object {
+                      "2": Object {
+                        "fontSize": 10,
+                        "lineHeight": 12,
+                      },
+                      "3t": Object {
+                        "fontSize": 12,
+                        "lineHeight": 16,
+                      },
+                      "4t": Object {
+                        "fontSize": 14,
+                        "lineHeight": 18,
+                      },
+                      "5t": Object {
+                        "fontSize": 16,
+                        "lineHeight": 20,
+                      },
+                      "6": Object {
+                        "fontSize": 18,
+                        "lineHeight": 22,
+                      },
+                      "8": Object {
+                        "fontSize": 22,
+                        "lineHeight": 24,
+                      },
+                    },
+                    "sans": Object {
+                      "0": Object {
+                        "fontSize": 8,
+                        "lineHeight": 8,
+                      },
+                      "1": Object {
+                        "fontSize": 10,
+                        "lineHeight": 14,
+                      },
+                      "10": Object {
+                        "fontSize": 42,
+                        "lineHeight": 50,
+                      },
+                      "12": Object {
+                        "fontSize": 60,
+                        "lineHeight": 66,
+                      },
+                      "14": Object {
+                        "fontSize": 80,
+                        "lineHeight": 84,
+                      },
+                      "16": Object {
+                        "fontSize": 100,
+                        "lineHeight": 104,
+                      },
+                      "2": Object {
+                        "fontSize": 12,
+                        "lineHeight": 16,
+                      },
+                      "3": Object {
+                        "fontSize": 14,
+                        "lineHeight": 24,
+                      },
+                      "3t": Object {
+                        "fontSize": 14,
+                        "lineHeight": 20,
+                      },
+                      "4": Object {
+                        "fontSize": 16,
+                        "lineHeight": 26,
+                      },
+                      "4t": Object {
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      "5": Object {
+                        "fontSize": 18,
+                        "lineHeight": 30,
+                      },
+                      "5t": Object {
+                        "fontSize": 18,
+                        "lineHeight": 26,
+                      },
+                      "6": Object {
+                        "fontSize": 22,
+                        "lineHeight": 30,
+                      },
+                      "8": Object {
+                        "fontSize": 28,
+                        "lineHeight": 36,
+                      },
+                    },
+                    "serif": Object {
+                      "1": Object {
+                        "fontSize": 12,
+                        "lineHeight": 16,
+                      },
+                      "10": Object {
+                        "fontSize": 44,
+                        "lineHeight": 50,
+                      },
+                      "12": Object {
+                        "fontSize": 60,
+                        "lineHeight": 70,
+                      },
+                      "2": Object {
+                        "fontSize": 14,
+                        "lineHeight": 18,
+                      },
+                      "3": Object {
+                        "fontSize": 16,
+                        "lineHeight": 24,
+                      },
+                      "3t": Object {
+                        "fontSize": 16,
+                        "lineHeight": 20,
+                      },
+                      "4": Object {
+                        "fontSize": 18,
+                        "lineHeight": 26,
+                      },
+                      "4t": Object {
+                        "fontSize": 18,
+                        "lineHeight": 22,
+                      },
+                      "5": Object {
+                        "fontSize": 22,
+                        "lineHeight": 32,
+                      },
+                      "5t": Object {
+                        "fontSize": 22,
+                        "lineHeight": 28,
+                      },
+                      "6": Object {
+                        "fontSize": 26,
+                        "lineHeight": 32,
+                      },
+                      "8": Object {
+                        "fontSize": 32,
+                        "lineHeight": 38,
+                      },
+                    },
+                  },
                 }
               }
+              variant="primaryBlack"
+              width={100}
             >
               <View
-                style={null}
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "height": "100%",
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "width": "100%",
+                    },
+                  ]
+                }
               >
                 <Text
+                  color="#FFF"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="20px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 14,
-                      },
-                      Object {
-                        "color": "white",
-                        "opacity": 1,
-                      },
-                      Object {
+                        "color": "#FFF",
                         "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 20,
                       },
+                      Object {},
                     ]
                   }
                 >
                   Next
                 </Text>
               </View>
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="14px"
+                lineHeight="20px"
+                role="presentation"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {
+                      "opacity": 0,
+                    },
+                  ]
+                }
+              >
+                Next
+              </Text>
             </View>
           </View>
         </View>

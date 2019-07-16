@@ -1,8 +1,7 @@
-import { Sans } from "@artsy/palette"
+import { Button, Sans } from "@artsy/palette"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import { Button } from "../../Components/Button"
 import { CreditCardForm } from "../CreditCardForm"
 
 jest.mock("tipsi-stripe", () => ({

@@ -5,12 +5,12 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { Button } from "@artsy/palette"
 import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
 
 import { Markdown } from "../../Markdown"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { BidGhostButton, Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
@@ -96,9 +96,13 @@ export class BidResult extends React.Component<BidResultProps> {
             </Flex>
           </View>
           {this.canBidAgain(status) ? (
-            <Button text="Bid again" onPress={() => this.onPressBidAgain()} />
+            <Button block width={100} onPress={() => this.onPressBidAgain()}>
+              Bid again
+            </Button>
           ) : (
-            <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
+            <Button variant="secondaryOutline" block width={100} onPress={this.exitBidFlow}>
+              Continue
+            </Button>
           )}
         </Container>
       </BiddingThemeProvider>

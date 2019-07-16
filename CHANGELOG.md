@@ -25,6 +25,7 @@
 - Updates the copy bidders see when their auction registration status pending - yuki24
 - Adds more clarifications to the credit card form screen - yuki24
 - Adds a message to the registration screen that bidders need a valid credit card - yuki24
+- Replaces most Emission buttons with new Palette Button - kierangillen
 
 ### 1.12.5
 

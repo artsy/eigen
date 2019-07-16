@@ -152,7 +152,7 @@ randomBOOL(void)
                                                                 authenticationToken:accessToken
                                                                           sentryDSN:sentryDSN
                                                                stripePublishableKey:[keys stripePublishableKey]
-                                                                   googleMapsAPIKey:nil
+                                                                   googleMapsAPIKey:[keys googleMapsAPIKey]
                                                                  mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
                                                                          gravityURL:setup.gravityURL
                                                                      metaphysicsURL:setup.metaphysicsURL
