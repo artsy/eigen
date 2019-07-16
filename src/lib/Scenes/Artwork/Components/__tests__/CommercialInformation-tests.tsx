@@ -70,6 +70,10 @@ describe("CommercialInformation", () => {
 
 const CommercialInformationArtwork = {
   availability: "Sold",
+  sale: {
+    is_auction: false,
+    is_closed: false,
+  },
   partner: {
     name: "I'm a Gallery",
     " $refType": null,
