@@ -54,25 +54,27 @@ beforeEach(() => {
 })
 
 it("renders properly for a user without a credit card", () => {
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <Registration {...initialPropsForUserWithoutCreditCard} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+  const component = renderer.create(
+    <BiddingThemeProvider>
+      <Registration {...initialPropsForUserWithoutCreditCard} />
+    </BiddingThemeProvider>
+  )
+
+  expect(component.toJSON()).toMatchSnapshot()
+  expect(component.root.findAllByType(Sans)[4].props.children).toEqual("A valid credit card is required for bidding.")
 })
 
 it("renders properly for a user with a credit card", () => {
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <Registration {...initialPropsForUserWithCreditCard} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+  const component = renderer.create(
+    <BiddingThemeProvider>
+      <Registration {...initialPropsForUserWithCreditCard} />
+    </BiddingThemeProvider>
+  )
+
+  expect(component.toJSON()).toMatchSnapshot()
+  expect(component.root.findAllByType(Sans)[2].props.children).toEqual(
+    "To complete your registration, please confirm that you agree to the Conditions of Sale."
+  )
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {

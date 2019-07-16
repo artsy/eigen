@@ -1,4 +1,4 @@
-import { Box, Button, Serif } from "@artsy/palette"
+import { Box, Button, Sans, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, View, ViewProperties } from "react-native"
@@ -302,7 +302,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </Serif>
             </Flex>
 
-            {this.state.requiresPaymentInformation && (
+            {this.state.requiresPaymentInformation ? (
               <PaymentInfo
                 navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
                 onCreditCardAdded={this.onCreditCardAdded.bind(this)}
@@ -311,6 +311,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 creditCardFormParams={this.state.creditCardFormParams}
                 creditCardToken={this.state.creditCardToken}
               />
+            ) : (
+              <Sans mx={6} size="4t" color="black60" textAlign="center">
+                To complete your registration, please confirm that you agree to the Conditions of Sale.
+              </Sans>
             )}
 
             <Modal

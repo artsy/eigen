@@ -126,6 +126,30 @@ exports[`renders properly for a user with a credit card 1`] = `
         Phillips New Now
       </Text>
     </View>
+    <Text
+      color="black60"
+      fontFamily="Unica77LL-Regular"
+      fontSize="16px"
+      lineHeight="22px"
+      mx={6}
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 16,
+            "lineHeight": 22,
+            "marginLeft": 40,
+            "marginRight": 40,
+            "textAlign": "center",
+          },
+          Object {},
+        ]
+      }
+      textAlign="center"
+    >
+      To complete your registration, please confirm that you agree to the Conditions of Sale.
+    </Text>
     <View
       style={
         Object {

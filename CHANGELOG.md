@@ -27,6 +27,7 @@
 - Adds more clarifications to the credit card form screen - yuki24
 - Adds a message to the registration screen that bidders need a valid credit card - yuki24
 - Replaces most Emission buttons with new Palette Button - kierangillen
+- Adds a message to the registration screen for bidders who already have a credit card - yuki24
 
 ### 1.12.5
 
