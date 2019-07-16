@@ -78,10 +78,11 @@ describe("Markdown", () => {
   })
 
   it("accepts a rules prop", () => {
+    const basicRules = defaultRules(true)
     const rules = {
-      ...defaultRules,
+      ...basicRules,
       paragraph: {
-        ...defaultRules.paragraph,
+        ...basicRules.paragraph,
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     }

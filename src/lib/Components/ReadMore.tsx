@@ -9,24 +9,25 @@ import { LinkText } from "./Text/LinkText"
 interface Props {
   content: string
   maxChars: number
+  presentLinksModally?: boolean
 }
 
-const rules = {
-  ...defaultRules,
-  paragraph: {
-    ...defaultRules.paragraph,
-    react: (node, output, state) => {
-      return (
-        <Serif size="3t" color="black100" key={state.key}>
-          {output(node.content, state)}
-        </Serif>
-      )
-    },
-  },
-}
-
-export const ReadMore = React.memo(({ content, maxChars }: Props) => {
+export const ReadMore = React.memo(({ content, maxChars, presentLinksModally }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const basicRules = defaultRules(presentLinksModally)
+  const rules = {
+    ...basicRules,
+    paragraph: {
+      ...basicRules.paragraph,
+      react: (node, output, state) => {
+        return (
+          <Serif size="3t" color="black100" key={state.key}>
+            {output(node.content, state)}
+          </Serif>
+        )
+      },
+    },
+  }
   const root = renderMarkdown(content, rules)
   // Removes the last empty space in the markdown array
   if (Array.isArray(root)) {

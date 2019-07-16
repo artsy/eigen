@@ -21,6 +21,7 @@
 - Fixes BottomAlignedButton keyboard clipping - kierangillen
 - Fixes crash and map UX for city guides - ash
 - Fixes spurious, intermittent crash from home feed - ash
+- Markdown links don't open modally unless specified - lilyfromseattle
 - Metaphysics v2 update that removes gravityID - zephraph
 - Updates the copy bidders see when their auction registration status pending - yuki24
 - Adds more clarifications to the credit card form screen - yuki24
