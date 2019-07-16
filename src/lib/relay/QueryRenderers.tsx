@@ -46,7 +46,6 @@ import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery
 import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
 import { QueryRenderersMyProfileQuery } from "__generated__/QueryRenderersMyProfileQuery.graphql"
 import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderersRegistrationFlowQuery.graphql"
-import { QueryRenderersSaleQuery } from "__generated__/QueryRenderersSaleQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
@@ -215,27 +214,6 @@ export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, med
         medium,
         price_range,
       }}
-      render={render}
-    />
-  )
-}
-
-interface SaleRendererProps extends RendererProps {
-  saleID: string
-}
-
-export const SaleRenderer: React.SFC<SaleRendererProps> = ({ render, saleID }) => {
-  return (
-    <QueryRenderer<QueryRenderersSaleQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersSaleQuery($saleID: String!) {
-          sale(id: $saleID) {
-            ...Sale_sale
-          }
-        }
-      `}
-      variables={{ saleID }}
       render={render}
     />
   )
