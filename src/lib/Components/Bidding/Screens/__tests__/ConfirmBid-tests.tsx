@@ -816,6 +816,9 @@ const saleArtwork = {
     title: "Meteor Shower",
     date: "2015",
     artist_names: "Makiko Kudo",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
+    },
   },
   sale: {
     id: "best-art-sale-in-town",
