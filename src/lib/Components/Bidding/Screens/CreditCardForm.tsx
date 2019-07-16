@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans, Serif } from "@artsy/palette"
 import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
@@ -105,6 +105,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                 <Title>Your credit card</Title>
 
                 <Flex m={4}>
+                  <Serif size="3t" mb={2}>
+                    Card Information
+                  </Serif>
                   <PaymentCardTextField
                     ref={this.paymentInfo}
                     style={styles.field}
@@ -118,6 +121,11 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                       {errorText}
                     </Sans>
                   )}
+
+                  <Sans mt="6" size="3" color="black60" textAlign="center">
+                    Registration is free. Artsy will never charge this card without your permission, and you are not
+                    required to use this card to pay if you win.
+                  </Sans>
                 </Flex>
               </View>
             </Container>
