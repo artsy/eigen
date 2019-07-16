@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Box, Button, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, View, ViewProperties } from "react-native"
@@ -15,7 +15,6 @@ import { Flex } from "../Elements/Flex"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../Components/BidInfoRow"
-import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
@@ -233,7 +232,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               creditCardOrError {
                 ... on CreditCardMutationSuccess {
                   creditCard {
-                    gravityID
+                    internalID
                     brand
                     name
                     last_digits
@@ -270,7 +269,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               message_header
               message_description_md
               position {
-                gravityID
+                internalID
                 suggested_next_bid {
                   cents
                   display
@@ -282,8 +281,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
-          sale_id: this.props.sale_artwork.sale.gravityID,
-          artwork_id: this.props.sale_artwork.artwork.gravityID,
+          // FIXME: Should this be internal id?
+          sale_id: this.props.sale_artwork.sale.slug,
+          artwork_id: this.props.sale_artwork.artwork.slug,
           max_bid_amount_cents: this.selectedBid().cents,
         },
       },
@@ -331,7 +331,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   refreshBidderInfo = () => {
     this.props.relay.refetch(
-      { saleID: this.props.sale_artwork.sale.gravityID },
+      // FIXME: Should this be internalID?
+      { saleID: this.props.sale_artwork.sale.slug },
       null,
       error => {
         if (error) {
@@ -385,11 +386,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale.gravityID,
-      ARAuctionArtworkID: this.props.sale_artwork.artwork.gravityID,
+      ARAuctionID: this.props.sale_artwork.sale.slug,
+      ARAuctionArtworkID: this.props.sale_artwork.artwork.slug,
     })
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale.gravityID,
+      ARAuctionID: this.props.sale_artwork.sale.slug,
     })
 
     this.props.navigator.push({
@@ -506,15 +507,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Flex>
             )}
 
-            <Flex m={4}>
+            <Box m={4}>
               <Button
-                text="Bid"
-                inProgress={this.state.isLoading}
-                selected={this.state.isLoading}
-                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+                loading={this.state.isLoading}
+                block
+                width={100}
                 disabled={!this.canPlaceBid()}
-              />
-            </Flex>
+                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+              >
+                Bid
+              </Button>
+            </Box>
           </View>
         </Container>
       </BiddingThemeProvider>
@@ -540,12 +543,12 @@ export const ConfirmBidScreen = createRefetchContainer(
       fragment ConfirmBid_sale_artwork on SaleArtwork {
         internalID
         sale {
-          gravityID
+          slug
           live_start_at
           end_at
         }
         artwork {
-          gravityID
+          slug
           title
           date
           artist_names

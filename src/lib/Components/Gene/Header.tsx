@@ -1,12 +1,9 @@
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 const { ARTemporaryAPIModule } = NativeModules
-
+import { Button } from "@artsy/palette"
 import { Schema, Track, track as _track } from "../../utils/track"
-
-import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
 
 import { Header_gene } from "__generated__/Header_gene.graphql"
@@ -54,7 +51,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.GeneUnfollow : Schema.ActionNames.GeneFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.gene.internalID,
-    owner_slug: props.gene.gravityID,
+    owner_slug: props.gene.slug,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
   handleFollowChange() {
@@ -74,7 +71,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.gene.internalID,
-    owner_slug: props.gene.gravityID,
+    owner_slug: props.gene.slug,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
   successfulFollowChange() {
@@ -85,7 +82,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.gene.internalID,
-    owner_slug: props.gene.gravityID,
+    owner_slug: props.gene.slug,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
   failedFollowChange() {
@@ -96,23 +93,18 @@ class Header extends React.Component<Props, State> {
     if (this.props.shortForm) {
       return null
     }
-    if (this.state.following !== null) {
-      return (
-        <View style={styles.followButton}>
-          <InvertedButton
-            text={this.state.following ? "Following" : "Follow"}
-            selected={this.state.following}
-            onPress={this.handleFollowChange.bind(this)}
-          />
-        </View>
-      )
-    } else {
-      return (
-        <View style={styles.followButton}>
-          <InvertedButton text="" onPress={this.handleFollowChange.bind(this)} />
-        </View>
-      )
-    }
+    return (
+      <View style={styles.followButton}>
+        <Button
+          variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
+          block
+          width={100}
+          onPress={this.handleFollowChange.bind(this)}
+        >
+          {this.state.following ? "Following" : "Follow"}
+        </Button>
+      </View>
+    )
   }
 }
 
@@ -147,7 +139,7 @@ export default createFragmentContainer(Header, {
   gene: graphql`
     fragment Header_gene on Gene {
       internalID
-      gravityID
+      slug
       name
     }
   `,

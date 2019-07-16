@@ -10,6 +10,7 @@ import styled from "styled-components/native"
 import SerifText from "../Text/Serif"
 
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { get } from "lib/utils/get"
 
 const Badges = styled.View`
   position: absolute;
@@ -38,8 +39,9 @@ interface Props {
 
 export class Artwork extends React.Component<Props, any> {
   handleTap() {
-    this.props.onPress && this.props.artwork.gravityID
-      ? this.props.onPress(this.props.artwork.gravityID)
+    // FIXME: Should this be internalID?
+    this.props.onPress && this.props.artwork.slug
+      ? this.props.onPress(this.props.artwork.slug)
       : SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
   }
 
@@ -149,11 +151,10 @@ export class Artwork extends React.Component<Props, any> {
   saleMessageOrBidInfo() {
     const { artwork } = this.props
     const { sale, sale_artwork } = artwork
-    const inRunningAuction = sale && sale_artwork && sale.is_auction && !sale.is_closed
+    const inRunningAuction = sale && sale.is_auction && !sale.is_closed
 
     if (inRunningAuction) {
-      const currentBid = sale_artwork.current_bid
-      return currentBid && currentBid.display
+      return get(sale_artwork, sa => sa.current_bid.display)
     }
 
     // TODO: Extract this sentence-cased version and apply everywhere.
@@ -202,7 +203,7 @@ export default createFragmentContainer(Artwork, {
       is_biddable
       is_acquireable
       is_offerable
-      gravityID
+      slug
       sale {
         is_auction
         is_live_open

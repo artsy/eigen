@@ -6,10 +6,10 @@ import { Flex } from "../Elements/Flex"
 
 import { Markdown } from "../../Markdown"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { BidGhostButton } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
 
+import { Button } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "../../../utils/track"
 
@@ -38,9 +38,9 @@ const registrationCompleteMessage = {
 const registrationPendingMessage = {
   title: "Registration pending",
   description:
-    "Your registration status is pending.\n" +
-    "Please contact [support@artsy.net](mailto:support@artsy.net) for\n" +
-    "more information.",
+    "You will receive an email from an Artsy specialist once your registration has been confirmed.\n" +
+    "\n" +
+    "In the meantime, you can still view works and watch lots that you’re interested in.",
 }
 
 const registrationErrorMessage = {
@@ -104,14 +104,16 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
-              <Icon20 source={Icons[status]} />
+              {status !== RegistrationStatus.RegistrationStatusPending && <Icon20 source={Icons[status]} />}
               <Title mt={2} mb={4}>
                 {title}
               </Title>
               <Markdown mb={5}>{msg}</Markdown>
             </Flex>
           </View>
-          <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
+          <Button variant="secondaryOutline" onPress={this.exitBidFlow} block width={100}>
+            Continue
+          </Button>
         </Container>
       </BiddingThemeProvider>
     )

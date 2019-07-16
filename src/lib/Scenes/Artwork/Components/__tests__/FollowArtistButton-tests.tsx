@@ -144,7 +144,7 @@ describe("FollowArtistButton", () => {
 
 const followArtistButtonArtist = {
   id: "12345",
-  gravityID: "andy-warhol",
+  slug: "andy-warhol",
   is_followed: false,
   " $refType": null,
   " $fragmentRefs": null,

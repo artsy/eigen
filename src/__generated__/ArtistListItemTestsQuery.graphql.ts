@@ -26,7 +26,7 @@ query ArtistListItemTestsQuery {
 fragment ArtistListItem_artist on Artist {
   id
   internalID
-  gravityID
+  slug
   name
   initials
   href
@@ -106,7 +106,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "gravityID",
+            "name": "slug",
             "args": null,
             "storageKey": null
           },
@@ -184,7 +184,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistListItemTestsQuery",
-    "id": "b078588ae9b09851392fa58f4f715e3e",
+    "id": "c61c378c8cc64c318ef200a50543bf5a",
     "text": null,
     "metadata": {}
   }

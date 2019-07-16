@@ -14,7 +14,6 @@ import Gene from "./Gene"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
 import RegistrationFlow from "./RegistrationFlow"
-import Sale from "./Sale"
 import WorksForYou from "./WorksForYou"
 
 export default {
@@ -33,7 +32,6 @@ export default {
   Inquiry,
   MyProfile,
   RegistrationFlow,
-  Sale,
   Show,
   WorksForYou,
 }

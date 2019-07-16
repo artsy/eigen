@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Box, Button, Sans, Serif } from "@artsy/palette"
 import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
@@ -8,10 +8,8 @@ import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
-import { Flex } from "../Elements/Flex"
 import { theme } from "../Elements/Theme"
 import { PaymentCardTextFieldParams } from "../types"
 
@@ -67,14 +65,17 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
   render() {
     const buttonComponent = (
-      <Flex m={4}>
+      <Box m={4}>
         <Button
-          text="Add credit card"
           disabled={!this.state.valid}
-          inProgress={this.state.isLoading}
+          loading={this.state.isLoading}
+          block
+          width={100}
           onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
-        />
-      </Flex>
+        >
+          Add credit card
+        </Button>
+      </Box>
     )
 
     const styles = StyleSheet.create({
@@ -104,7 +105,10 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
               <View>
                 <Title>Your credit card</Title>
 
-                <Flex m={4}>
+                <Box m={4}>
+                  <Serif size="3t" mb={2}>
+                    Card Information
+                  </Serif>
                   <PaymentCardTextField
                     ref={this.paymentInfo}
                     style={styles.field}
@@ -118,7 +122,11 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                       {errorText}
                     </Sans>
                   )}
-                </Flex>
+                  <Sans mt="6" size="3" color="black60" textAlign="center">
+                    Registration is free. Artsy will never charge this card without your permission, and you are not
+                    required to use this card to pay if you win.
+                  </Sans>
+                </Box>
               </View>
             </Container>
           </ScrollView>

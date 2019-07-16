@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Registration_sale$ref: unique symbol;
 export type Registration_sale$ref = typeof _Registration_sale$ref;
 export type Registration_sale = {
-    readonly gravityID: string;
+    readonly slug: string;
     readonly end_at: string | null;
     readonly is_preview: boolean | null;
     readonly live_start_at: string | null;
@@ -25,7 +25,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -66,5 +66,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '9b526f8afc6c9c8a41dbad16bcfa1db7';
+(node as any).hash = '09f732c342c6b61f33997cffc139e617';
 export default node;

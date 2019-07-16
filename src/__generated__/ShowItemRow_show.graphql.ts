@@ -4,9 +4,9 @@ import { ReaderFragment } from "relay-runtime";
 declare const _ShowItemRow_show$ref: unique symbol;
 export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
 export type ShowItemRow_show = {
-    readonly gravityID: string;
-    readonly internalID: string;
     readonly id: string;
+    readonly slug: string;
+    readonly internalID: string;
     readonly is_followed: boolean | null;
     readonly name: string | null;
     readonly isStubShow: boolean | null;
@@ -62,7 +62,14 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -70,13 +77,6 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -218,5 +218,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '05ae912a7982994a321b69b0f1414043';
+(node as any).hash = '29f3e211c276bba931b7a9a18efd07e1';
 export default node;

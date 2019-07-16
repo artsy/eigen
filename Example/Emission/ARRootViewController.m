@@ -237,7 +237,7 @@
 - (ARCellData *)jumpToArtwork
 {
   return [self tappableCellDataWithTitle:@"Artwork" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"carmen-neely-insects"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"candice-cmc-superman-donuts-1"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -388,7 +388,7 @@
 - (ARCellData *)jumpToShow
 {
   return [self tappableCellDataWithTitle:@"Show" selection:^{
-    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"abxy-blk-and-blue"];
+    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"harlan-levey-projects-recreational-painting"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

@@ -1,6 +1,7 @@
 import { Box, Serif } from "@artsy/palette"
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Router } from "lib/utils/router"
 import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -14,11 +15,15 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
+  handleConsignmentsTap() {
+    SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
+  }
+
   renderConsignmentsLine(artistsCount) {
     return (
       <Serif size="3t" color="black60">
         Want to sell a work by {artistsCount === 1 ? "this artist" : "these artists"}?{" "}
-        <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleTap("/consign/info")}>
+        <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConsignmentsTap()}>
           Consign with Artsy.
         </Text>
       </Serif>

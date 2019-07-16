@@ -36,7 +36,7 @@ const track: Track<Props, State> = _track
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.gravityID,
+  context_screen_owner_slug: props.fair.slug,
   context_screen_owner_id: props.fair.internalID,
 }))
 export class FairDetail extends React.Component<Props, State> {
@@ -99,13 +99,15 @@ export class FairDetail extends React.Component<Props, State> {
       sections.push({
         type: "artistsExhibitorsWorks",
         data: {
-          fairID: fair.gravityID,
+          // FIXME: Should this be slug, internalID, or id?
+          fairID: fair.slug,
         },
       })
       sections.push({
         type: "search",
         data: {
-          id: fair.gravityID,
+          // FIXME: Should this be slug, internalID, or id?
+          id: fair.slug,
           internalID: fair.internalID,
         },
       })
@@ -141,12 +143,12 @@ export class FairDetail extends React.Component<Props, State> {
     if (shouldGoStraightToWebsite(this.props.fair)) {
       SwitchBoard.presentNavigationViewController(this, this.props.fair.organizer.website)
     } else {
-      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/info`)
+      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/info`)
     }
   }
 
   onViewBMWArtActivationPressed = () => {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/bmw-sponsored-content`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/bmw-sponsored-content`)
   }
 
   renderItem = ({ item: { data, type, showIndex } }) => {
@@ -259,7 +261,7 @@ export const FairDetailContainer = createPaginationContainer(
       fragment FairDetail_fair on Fair
         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         ...FairHeader_fair
-        gravityID
+        slug
         internalID
         name
         hours
@@ -293,12 +295,12 @@ export const FairDetailContainer = createPaginationContainer(
           edges {
             cursor
             node {
-              gravityID
+              slug
               internalID
               artworks_connection(first: 4) {
                 edges {
                   node {
-                    gravityID
+                    slug
                   }
                 }
               }

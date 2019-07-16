@@ -14,12 +14,11 @@ import {
 
 const { ARTemporaryAPIModule } = NativeModules
 
-import { Schema, Track, track as _track } from "lib/utils/track"
-
-import Button from "lib/Components/Buttons/InvertedButton"
+import { Button } from "@artsy/palette"
 import SerifText from "lib/Components/Text/Serif"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import SectionTitle from "../../SectionTitle"
 
 import { ArtworkCarouselHeader_rail } from "__generated__/ArtworkCarouselHeader_rail.graphql"
@@ -89,10 +88,13 @@ class ArtworkCarouselHeader extends Component<Props, State> {
       return (
         <View style={styles.followButton}>
           <Button
-            text={this.state.following ? "Following" : "Follow"}
-            selected={this.state.following}
+            variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
             onPress={this.handleFollowChange.bind(this)}
-          />
+            longestText="Following"
+            size="small"
+          >
+            {this.state.following ? "Following" : "Follow"}
+          </Button>
         </View>
       )
     }
@@ -104,13 +106,13 @@ class ArtworkCarouselHeader extends Component<Props, State> {
       action_name: Schema.ActionNames.HomeArtistArtworksBlockFollow,
       action_type: Schema.ActionTypes.Tap,
       owner_id: artist.internalID,
-      owner_slug: artist.gravityID,
+      owner_slug: artist.slug,
       owner_type: Schema.OwnerEntityTypes.Artist,
     }
   })
   handleFollowChange() {
     const artist = getSubjectArtist(this.props)
-    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, artist.gravityID, (error, following) => {
+    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, artist.slug, (error, following) => {
       if (error) {
         console.error("ArtworkCarouselHeader.tsx", error)
       }
@@ -151,8 +153,6 @@ const styles = StyleSheet.create<Styles>({
   followButton: {
     marginTop: 5,
     marginBottom: 0,
-    height: 30,
-    width: 90,
   },
   followAnnotation: {
     fontSize: 20,
@@ -169,7 +169,7 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
         ... on HomePageModuleContextFollowedArtist {
           artist {
             internalID
-            gravityID
+            slug
           }
         }
       }
@@ -177,7 +177,7 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
         ... on HomePageModuleContextRelatedArtist {
           artist {
             internalID
-            gravityID
+            slug
           }
           based_on {
             name

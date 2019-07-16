@@ -33,7 +33,7 @@ fragment Sales_viewer on Viewer {
 }
 
 fragment SaleListItem_sale on Sale {
-  gravityID
+  slug
   name
   href
   is_open
@@ -72,7 +72,7 @@ fragment LotsByFollowedArtists_viewer on Viewer {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  gravityID
+  slug
   image {
     aspect_ratio
   }
@@ -87,7 +87,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -127,7 +127,7 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -593,7 +593,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SalesQuery",
-    "id": "74cbe27360944962cd6218224d171de6",
+    "id": "345d8de134682a5f769151bdb7b93ee5",
     "text": null,
     "metadata": {}
   }

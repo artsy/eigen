@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Box, Button, Sans, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, View, ViewProperties } from "react-native"
@@ -15,7 +15,6 @@ import { Flex } from "../Elements/Flex"
 import { Modal } from "lib/Components/Modal"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { PaymentInfo } from "../Components/PaymentInfo"
@@ -197,7 +196,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               creditCardOrError {
                 ... on CreditCardMutationSuccess {
                   creditCard {
-                    gravityID
+                    internalID
                     brand
                     name
                     last_digits
@@ -234,19 +233,20 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
           createBidder(input: $input) {
             bidder {
-              gravityID
+              internalID
               qualified_for_bidding
             }
           }
         }
       `,
-      variables: { input: { sale_id: this.props.sale.gravityID } },
+      // FIXME: Should this be slug or internalID?
+      variables: { input: { sale_id: this.props.sale.slug } },
     })
   }
 
   presentRegistrationSuccess({ createBidder }) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
-      ARAuctionID: this.props.sale.gravityID,
+      ARAuctionID: this.props.sale.slug,
     })
 
     const qualifiedForBidding = createBidder.bidder.qualified_for_bidding
@@ -302,7 +302,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </Serif>
             </Flex>
 
-            {this.state.requiresPaymentInformation && (
+            {this.state.requiresPaymentInformation ? (
               <PaymentInfo
                 navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
                 onCreditCardAdded={this.onCreditCardAdded.bind(this)}
@@ -311,6 +311,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 creditCardFormParams={this.state.creditCardFormParams}
                 creditCardToken={this.state.creditCardToken}
               />
+            ) : (
+              <Sans mx={6} size="4t" color="black60" textAlign="center">
+                To complete your registration, please confirm that you agree to the Conditions of Sale.
+              </Sans>
             )}
 
             <Modal
@@ -334,15 +338,17 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </Serif>
             </Checkbox>
 
-            <Flex m={4}>
+            <Box m={4}>
               <Button
-                text="Complete registration"
-                inProgress={isLoading}
-                selected={isLoading}
                 onPress={this.canCreateBidder() ? this.register.bind(this) : null}
+                loading={isLoading}
+                block
+                width={100}
                 disabled={!this.canCreateBidder()}
-              />
-            </Flex>
+              >
+                Complete registration
+              </Button>
+            </Box>
           </View>
         </Container>
       </BiddingThemeProvider>
@@ -353,7 +359,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 export const RegistrationScreen = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
-      gravityID
+      slug
       end_at
       is_preview
       live_start_at

@@ -3,8 +3,8 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 
+import { Button } from "@artsy/palette"
 import Spinner from "../../../../Components/Spinner"
-import { Button } from "../../Components/Button"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"

@@ -9,7 +9,6 @@ export type ArtworkDetails_artwork = {
         readonly label: string | null;
         readonly details: string | null;
     } | null;
-    readonly signature: string | null;
     readonly signatureInfo: {
         readonly label: string | null;
         readonly details: string | null;
@@ -73,13 +72,6 @@ return {
       "selections": (v0/*: any*/)
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "signature",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
       "alias": null,
       "name": "signatureInfo",
@@ -140,5 +132,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6d3e3785d9bbf65c2aa3a4d06dce2cde';
+(node as any).hash = '2e44bcda520f3cff508e2fd41e1cb3f8';
 export default node;

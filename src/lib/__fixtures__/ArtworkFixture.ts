@@ -35,6 +35,20 @@ export const ArtworkFixture = {
     cm: "59 × 84 cm",
   },
   images: [],
+  shows: [
+    {
+      id: "U2hvdzpjYW1hLWdhbGxlcnktMS10aW1lLWxhcHNl",
+      name: "Time Lapse",
+      href: "/show/cama-gallery-1-time-lapse",
+      gravityID: "cama-gallery-1-time-lapse",
+      internalID: "5b335e329c18db4a5a5015cc",
+      exhibition_period: "Jun 22 – Jul 3, 2018",
+      is_followed: null,
+      cover_image: {
+        url: "https://d32dm0rphc51dk.cloudfront.net/MYRUdCdCDdpU9dLTcmDX0A/medium.jpg",
+      },
+    },
+  ],
   artists: [
     {
       " $refType": null,

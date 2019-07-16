@@ -5,7 +5,7 @@ declare const _Header_gene$ref: unique symbol;
 export type Header_gene$ref = typeof _Header_gene$ref;
 export type Header_gene = {
     readonly internalID: string;
-    readonly gravityID: string;
+    readonly slug: string;
     readonly name: string | null;
     readonly " $refType": Header_gene$ref;
 };
@@ -29,7 +29,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -42,5 +42,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'da8912171a0e8dc521bfa6ce2abb4141';
+(node as any).hash = '58fa9bde8f91435eb6feba670d7afdac';
 export default node;

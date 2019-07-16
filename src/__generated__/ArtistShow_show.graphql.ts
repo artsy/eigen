@@ -5,7 +5,7 @@ import { Metadata_show$ref } from "./Metadata_show.graphql";
 declare const _ArtistShow_show$ref: unique symbol;
 export type ArtistShow_show$ref = typeof _ArtistShow_show$ref;
 export type ArtistShow_show = {
-    readonly gravityID: string;
+    readonly slug: string;
     readonly href: string | null;
     readonly is_fair_booth: boolean | null;
     readonly cover_image: {
@@ -27,7 +27,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -76,5 +76,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1419f583cf26f035fcee1cf36fbc5584';
+(node as any).hash = '376118a70fac0f1543df56b788ffc408';
 export default node;

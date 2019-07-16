@@ -1,7 +1,6 @@
-import { Box, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { Box, Button, color, Flex, Sans, Serif, space } from "@artsy/palette"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
@@ -36,7 +35,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
   isTapped: boolean
 
-  handleTap(_slug, _gravityID) {
+  handleTap(_slug, _internalID) {
     this.isTapped = true
     const href = hrefForPartialShow(this.props.show)
     SwitchBoard.presentNavigationViewController(this, href)
@@ -47,7 +46,7 @@ export class ShowItemRow extends React.Component<Props, State> {
 
   @track(props => {
     const {
-      show: { gravityID: slug, internalID, is_followed },
+      show: { slug, internalID, is_followed },
     } = props
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
@@ -59,7 +58,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   })
   handleSave() {
     const {
-      show: { gravityID: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed },
+      show: { slug: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed },
     } = this.props
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
@@ -78,7 +77,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               mutation ShowItemRowMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
-                    gravityID
+                    slug
                     internalID
                     is_followed
                   }
@@ -94,7 +93,7 @@ export class ShowItemRow extends React.Component<Props, State> {
             optimisticResponse: {
               followShow: {
                 show: {
-                  gravityID: showSlug,
+                  slug: showSlug,
                   internalID: showID,
                   is_followed: !isShowFollowed,
                 },
@@ -127,9 +126,7 @@ export class ShowItemRow extends React.Component<Props, State> {
     const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
-      <TouchableWithoutFeedback
-        onPress={() => (!this.isTapped ? this.handleTap(show.gravityID, show.internalID) : null)}
-      >
+      <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.slug, show.internalID) : null)}>
         <Flex flexDirection="row">
           {!imageURL ? (
             <DefaultImageContainer p={15}>
@@ -162,18 +159,9 @@ export class ShowItemRow extends React.Component<Props, State> {
               )}
           </Flex>
           {!shouldHideSaveButton && (
-            <Flex flexDirection="row">
-              <Box width={50} height={20}>
-                <InvertedButton
-                  inProgress={this.state.isFollowedSaving}
-                  text={show.is_followed ? "Saved" : "Save"}
-                  selected={show.is_followed}
-                  onPress={() => this.handleSave()}
-                  noBackground={true}
-                  hitSlop={{ top: 10, bottom: 10, left: 0, right: 0 }}
-                />
-              </Box>
-            </Flex>
+            <Button variant="noOutline" onPress={() => this.handleSave()} loading={this.state.isFollowedSaving}>
+              {show.is_followed ? "Saved" : "Save"}
+            </Button>
           )}
         </Flex>
       </TouchableWithoutFeedback>
@@ -187,9 +175,9 @@ export class ShowItemRow extends React.Component<Props, State> {
 export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
   show: graphql`
     fragment ShowItemRow_show on Show {
-      gravityID
-      internalID
       id
+      slug
+      internalID
       is_followed
       name
       isStubShow

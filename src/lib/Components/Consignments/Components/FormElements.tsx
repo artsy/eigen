@@ -1,8 +1,16 @@
+import { Box, Button } from "@artsy/palette"
 import React from "react"
-
 import { ScrollView, View, ViewProperties } from "react-native"
-import { ButtonProps, InvertedBorderedButton, InvertedButton, WhiteButton } from "../../Buttons"
 import { BodyText, LargeHeadline } from "../Typography/index"
+
+export interface FormButtonProps extends ViewProperties {
+  /** The text value on the string */
+  text: string
+  /** Optional callback function, not including it implies the button is not enabled */
+  onPress?: React.TouchEventHandler<Button>
+  /** Disables the button from executing onPress and shows in distable styling */
+  disabled?: boolean
+}
 
 /** A re-usable full-screen form with a scrollview */
 export const Form: React.SFC<{ title?: string }> = props => (
@@ -26,14 +34,10 @@ export const Label = (props: any) => (
   <BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>{props.children}</BodyText>
 )
 
-export const Button: React.SFC<ButtonProps> = props => (
-  <WhiteButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />
-)
-
-export const BlackButton: React.SFC<ButtonProps> = props => (
-  <InvertedButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />
-)
-
-export const BorderedBlackButton: React.SFC<ButtonProps> = props => (
-  <InvertedBorderedButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />
+export const FormButton: React.SFC<FormButtonProps> = props => (
+  <Box style={Object.assign({ width: 174, marginTop: 20 }, props.style)}>
+    <Button block width={100} variant="primaryWhite" onPress={props.onPress}>
+      {props.text}
+    </Button>
+  </Box>
 )

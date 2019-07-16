@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkPreview_artwork$ref: unique symbol;
 export type ArtworkPreview_artwork$ref = typeof _ArtworkPreview_artwork$ref;
 export type ArtworkPreview_artwork = {
-    readonly gravityID: string;
+    readonly slug: string;
     readonly internalID: string;
     readonly title: string | null;
     readonly artist_names: string | null;
@@ -27,7 +27,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -79,5 +79,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c80acf0d484521269ae9bcc65e66be82';
+(node as any).hash = '6169160f6c19d379f500731f63adc613';
 export default node;

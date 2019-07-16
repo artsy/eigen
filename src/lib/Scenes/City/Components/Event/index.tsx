@@ -1,6 +1,5 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, Button, color, Flex, Sans, Serif } from "@artsy/palette"
 import { EventMutation } from "__generated__/EventMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
@@ -40,7 +39,7 @@ export class Event extends React.Component<Props, State> {
   }
 
   @track(props => {
-    const { gravityID, internalID, is_followed } = props.event
+    const { slug, internalID, is_followed } = props.event
     const { section } = props
     let actionName
     if (!!section && section === "bmw") {
@@ -53,12 +52,12 @@ export class Event extends React.Component<Props, State> {
       action_type: Schema.ActionTypes.Success,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: internalID,
-      owner_slug: gravityID,
+      owner_slug: slug,
     } as any
   })
   handleSaveChange() {
     const node = this.props.event
-    const { gravityID: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed } = node
+    const { slug: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed } = node
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
       this.setState(
@@ -72,7 +71,7 @@ export class Event extends React.Component<Props, State> {
               mutation EventMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
-                    gravityID
+                    slug
                     internalID
                     is_followed
                   }
@@ -88,7 +87,7 @@ export class Event extends React.Component<Props, State> {
             optimisticResponse: {
               followShow: {
                 show: {
-                  gravityID: showSlug,
+                  slug: showSlug,
                   internalID: showID,
                   is_followed: !isShowFollowed,
                 },
@@ -115,17 +114,17 @@ export class Event extends React.Component<Props, State> {
       owner_slug: slug,
     } as any
   })
-  trackShowTap(_actionName, _slug, _gravityID) {
+  trackShowTap(_actionName, _slug, _internalID) {
     return null
   }
 
   handleTap = () => {
     const { section } = this.props
-    const { gravityID, internalID } = this.props.event
+    const { slug, internalID } = this.props.event
     if (section === "bmw") {
-      this.trackShowTap(Schema.ActionNames.OpenBMWShow, gravityID, internalID)
+      this.trackShowTap(Schema.ActionNames.OpenBMWShow, slug, internalID)
     }
-    SwitchBoard.presentNavigationViewController(this, `/show/${gravityID}`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${slug}`)
   }
 
   render() {
@@ -156,15 +155,15 @@ export class Event extends React.Component<Props, State> {
                 </Sans>
               )}
             </TextContainer>
-            <Flex maxWidth={102} height={34} flexBasis="29%" flexDirection="row" flexGrow={1}>
-              <InvertedButton
-                grayBorder={true}
-                text={is_followed ? "Saved" : "Save"}
-                onPress={() => this.handleSaveChange()}
-                selected={is_followed}
-                inProgress={isFollowedSaving}
-              />
-            </Flex>
+            <Button
+              variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+              loading={isFollowedSaving}
+              onPress={() => this.handleSaveChange()}
+              longestText="Saved"
+              size="small"
+            >
+              {is_followed ? "Saved" : "Save"}
+            </Button>
           </Flex>
         </Box>
       </TouchableWithoutFeedback>

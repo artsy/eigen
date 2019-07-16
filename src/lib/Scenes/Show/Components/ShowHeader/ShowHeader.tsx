@@ -1,7 +1,6 @@
-import { Box, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -11,7 +10,6 @@ import { uniq } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import styled from "styled-components/native"
 import { Carousel } from "./Components/Carousel"
 
 interface Props {
@@ -22,11 +20,6 @@ interface Props {
 interface State {
   isFollowedSaving: boolean
 }
-
-const ButtonWrapper = styled(Box)`
-  width: 100%;
-  height: 85;
-`
 
 const track: Track<Props, State> = _track
 
@@ -45,7 +38,7 @@ export class ShowHeader extends React.Component<Props, State> {
   handleFollowShow = () => {
     const {
       relay,
-      show: { gravityID: showSlugID, id: relayID, internalID: showID, is_followed: isShowFollowed },
+      show: { slug: showSlug, id: relayID, internalID: showID, is_followed: isShowFollowed },
     } = this.props
 
     this.setState(
@@ -59,7 +52,7 @@ export class ShowHeader extends React.Component<Props, State> {
             mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
                 show {
-                  gravityID
+                  slug
                   internalID
                   is_followed
                 }
@@ -77,7 +70,7 @@ export class ShowHeader extends React.Component<Props, State> {
               show: {
                 internalID: showID,
                 is_followed: !isShowFollowed,
-                gravityID: showSlugID,
+                slug: showSlug,
               },
             },
           },
@@ -93,7 +86,7 @@ export class ShowHeader extends React.Component<Props, State> {
     action_name: props.show.is_followed ? Schema.ActionNames.SaveShow : Schema.ActionNames.UnsaveShow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.show.internalID,
-    owner_slug: props.show.gravityID,
+    owner_slug: props.show.slug,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   handleShowSuccessfullyUpdated() {
@@ -106,7 +99,7 @@ export class ShowHeader extends React.Component<Props, State> {
     action_name: Schema.ActionNames.CarouselSwipe,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.show.internalID,
-    owner_slug: props.show.gravityID,
+    owner_slug: props.show.slug,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   handleUserSwipingCarousel() {
@@ -124,12 +117,12 @@ export class ShowHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handleArtistSelected(url, _slug, _gravityID) {
+  handleArtistSelected(url, _slug, _internalID) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
 
   handleViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artists`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artists`)
   }
 
   render() {
@@ -185,17 +178,17 @@ export class ShowHeader extends React.Component<Props, State> {
             onItemSelected={this.handleArtistSelected.bind(this)}
             onViewAllPressed={this.handleViewAllArtistsPressed.bind(this)}
           />
-          <ButtonWrapper>
-            <Spacer m={1} mt={1} />
-            <InvertedButton
-              inProgress={isFollowedSaving}
-              text={is_followed ? "Show saved" : "Save show"}
-              selected={is_followed}
-              onPress={this.handleFollowShow}
-              grayBorder={true}
-            />
-            <Spacer m={1} />
-          </ButtonWrapper>
+          <Spacer mb={2} />
+          <Button
+            width={100}
+            block
+            loading={isFollowedSaving}
+            onPress={this.handleFollowShow}
+            variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+          >
+            {is_followed ? "Show saved" : "Save show"}
+          </Button>
+          <Spacer mb={2} />
         </Box>
       </>
     )
@@ -205,7 +198,7 @@ export class ShowHeader extends React.Component<Props, State> {
 export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
   show: graphql`
     fragment ShowHeader_show on Show {
-      gravityID
+      slug
       internalID
       id
       name
@@ -218,7 +211,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       partner {
         ... on Partner {
           name
-          gravityID
+          slug
           href
         }
       }
@@ -232,7 +225,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
             artist {
               name
               href
-              gravityID
+              slug
               internalID
             }
           }
@@ -241,7 +234,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       artists {
         name
         href
-        gravityID
+        slug
         internalID
       }
     }
