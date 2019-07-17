@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.12.7
+
 - Display the image of an artwork on the confirm bid screen - yuki24
 
 ### 1.12.6
