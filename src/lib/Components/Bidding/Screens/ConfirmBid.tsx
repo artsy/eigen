@@ -1,7 +1,7 @@
 import { Box, Button, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { NativeModules, View, ViewProperties } from "react-native"
+import { Image, NativeModules, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import stripe from "tipsi-stripe"
@@ -16,7 +16,6 @@ import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../Components/BidInfoRow"
 import { Checkbox } from "../Components/Checkbox"
-import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
@@ -429,60 +428,64 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     return (
       <BiddingThemeProvider>
-        <Container m={0}>
-          <Flex alignItems="center">
-            <Title mb={3}>Confirm your bid</Title>
-            <Timer liveStartsAt={sale.live_start_at} endsAt={sale.end_at} />
-          </Flex>
-
-          <View>
-            <Flex m={4} mt={0} alignItems="center">
-              <Serif size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
-                {artwork.artist_names}
-              </Serif>
-              <Serif size="2" weight="semibold">
-                Lot {lot_label}
-              </Serif>
-
-              <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
-                {artwork.title}
-                {artwork.date && <Serif size="2">, {artwork.date}</Serif>}
-              </Serif>
+        <Flex m={0} flex={1} flexDirection="column">
+          <ScrollView scrollEnabled>
+            <Flex alignItems="center">
+              <Title mb={3}>Confirm your bid</Title>
+              <Timer liveStartsAt={sale.live_start_at} endsAt={sale.end_at} />
             </Flex>
 
-            <Divider />
+            <View>
+              <Flex m={4} alignItems="center">
+                <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artwork.image.url }} />
 
-            <BidInfoRow
-              label="Max bid"
-              value={this.selectedBid().display}
-              onPress={isLoading ? () => null : () => this.goBackToSelectMaxBid()}
-            />
+                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
+                  {artwork.artist_names}
+                </Serif>
+                <Serif size="2" weight="semibold">
+                  Lot {lot_label}
+                </Serif>
 
-            {requiresPaymentInformation ? (
-              <PaymentInfo
-                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-                billingAddress={this.state.billingAddress}
-                creditCardFormParams={this.state.creditCardFormParams}
-                creditCardToken={this.state.creditCardToken}
+                <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
+                  {artwork.title}
+                  {artwork.date && <Serif size="2">, {artwork.date}</Serif>}
+                </Serif>
+              </Flex>
+
+              <Divider />
+
+              <BidInfoRow
+                label="Max bid"
+                value={this.selectedBid().display}
+                onPress={isLoading ? () => null : () => this.goBackToSelectMaxBid()}
               />
-            ) : (
-              <Divider mb={9} />
-            )}
 
-            <Modal
-              visible={this.state.errorModalVisible}
-              headerText="An error occurred"
-              detailText={this.state.errorModalDetailText}
-              closeModal={this.closeModal.bind(this)}
-            />
-          </View>
+              {requiresPaymentInformation ? (
+                <PaymentInfo
+                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                  billingAddress={this.state.billingAddress}
+                  creditCardFormParams={this.state.creditCardFormParams}
+                  creditCardToken={this.state.creditCardToken}
+                />
+              ) : (
+                <Divider mb={9} />
+              )}
+
+              <Modal
+                visible={this.state.errorModalVisible}
+                headerText="An error occurred"
+                detailText={this.state.errorModalDetailText}
+                closeModal={this.closeModal.bind(this)}
+              />
+            </View>
+          </ScrollView>
 
           <View>
             {requiresCheckbox ? (
               <Checkbox
-                mb={4}
+                mt={3}
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
@@ -519,7 +522,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Button>
             </Box>
           </View>
-        </Container>
+        </Flex>
       </BiddingThemeProvider>
     )
   }
@@ -552,6 +555,9 @@ export const ConfirmBidScreen = createRefetchContainer(
           title
           date
           artist_names
+          image {
+            url(version: "small")
+          }
         }
         lot_label
         ...BidResult_sale_artwork

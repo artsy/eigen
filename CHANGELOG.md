@@ -16,10 +16,11 @@
 
 ### Master
 
+- Display the image of an artwork on the confirm bid screen - yuki24
+
 ### 1.12.6
 
 - Added partner type to partner card - lilyfromseattle
-
 - Removes InvertedButton - kierangillen
 - Adds ContextCard - kierangillen
 - Fixes BottomAlignedButton keyboard clipping - kierangillen
