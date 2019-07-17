@@ -13,11 +13,14 @@ interface CommercialInformationProps {
 export class CommercialInformation extends React.Component<CommercialInformationProps> {
   render() {
     const { artwork } = this.props
+    const consignableArtistsCount = artwork.artists.filter(artist => artist.is_consignable).length
+
     return (
       <Box>
         {artwork.availability && <ArtworkAvailability artwork={artwork} />}
         {artwork.availability && artwork.partner && artwork.partner.name && <Spacer mb={2} />}
         {artwork.partner && artwork.partner.name && <SellerInfo artwork={artwork} />}
+        {!!consignableArtistsCount && <Spacer mb={2} />}
         <ArtworkExtraLinks artwork={artwork} />
       </Box>
     )
@@ -30,6 +33,9 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       availability
       partner {
         name
+      }
+      artists {
+        is_consignable
       }
       ...ArtworkAvailability_artwork
       ...SellerInfo_artwork

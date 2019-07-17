@@ -1,4 +1,4 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box, Sans } from "@artsy/palette"
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -29,12 +29,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     const { artwork } = this.props
     const consignableArtistsCount = artwork.artists.filter(artist => artist.is_consignable).length
 
-    return (
-      <Box>
-        {!!consignableArtistsCount && <Spacer mb={2} />}
-        {!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}
-      </Box>
-    )
+    return <Box>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}</Box>
   }
 }
 

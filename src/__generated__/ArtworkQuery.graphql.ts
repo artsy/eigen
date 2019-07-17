@@ -253,6 +253,10 @@ fragment CommercialInformation_artwork on Artwork {
     name
     id
   }
+  artists {
+    is_consignable
+    id
+  }
   ...ArtworkAvailability_artwork
   ...SellerInfo_artwork
   ...ArtworkExtraLinks_artwork
@@ -1422,7 +1426,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "1f5e3ba11713360a51fa9ba5c4fc90d0",
+    "id": "e81ce13dee05ae4ac32ace3c0750bbdf",
     "text": null,
     "metadata": {}
   }

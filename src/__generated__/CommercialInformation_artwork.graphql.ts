@@ -11,6 +11,9 @@ export type CommercialInformation_artwork = {
     readonly partner: {
         readonly name: string | null;
     } | null;
+    readonly artists: ReadonlyArray<{
+        readonly is_consignable: boolean | null;
+    } | null> | null;
     readonly " $fragmentRefs": ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref & ArtworkExtraLinks_artwork$ref;
     readonly " $refType": CommercialInformation_artwork$ref;
 };
@@ -50,6 +53,24 @@ const node: ReaderFragment = {
       ]
     },
     {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artists",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_consignable",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "ArtworkAvailability_artwork",
       "args": null
@@ -66,5 +87,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c5ec1793deb204d0e8de84e030a411df';
+(node as any).hash = 'bdcda14241099b2918b141c1df40fb2a';
 export default node;
