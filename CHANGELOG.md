@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes a CI build/deploy failure caused by an unexpected local change - yuki24
+
 ### 1.12.7
 
 - Display the image of an artwork on the confirm bid screen - yuki24
