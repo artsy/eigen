@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes a persistent top border when integrated with Eigen - ash
+
 ### 1.12.8
 
 - Fixes a CI build/deploy failure caused by an unexpected local change - yuki24
