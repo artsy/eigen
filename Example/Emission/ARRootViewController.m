@@ -114,7 +114,10 @@
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
-  [sectionData addCellData:self.jumpToArtwork];
+  [sectionData addCellData:self.jumpToArtwork1];
+  [sectionData addCellData:self.jumpToArtwork2];
+  [sectionData addCellData:self.jumpToArtwork3];
+  [sectionData addCellData:self.jumpToArtwork4];
   [sectionData addCellData:self.jumpToArtworkAttributionClassFAQ];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
@@ -234,13 +237,40 @@
   }];
 }
 
-- (ARCellData *)jumpToArtwork
+- (ARCellData *)jumpToArtwork1
 {
-  return [self tappableCellDataWithTitle:@"Artwork" selection:^{
+  return [self tappableCellDataWithTitle:@"Artwork1" selection:^{
     id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"candice-cmc-superman-donuts-1"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
+
+
+- (ARCellData *)jumpToArtwork2
+{
+  return [self tappableCellDataWithTitle:@"Artwork2" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"andy-warhol-mao-one-plate-3"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+
+- (ARCellData *)jumpToArtwork3
+{
+  return [self tappableCellDataWithTitle:@"Artwork3" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"francis-bacon-study-after-velazquez"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToArtwork4
+{
+  return [self tappableCellDataWithTitle:@"Artwork4" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"jean-leon-gerome-the-guard"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
 
 - (ARCellData *)jumpToArtworkAttributionClassFAQ
 {

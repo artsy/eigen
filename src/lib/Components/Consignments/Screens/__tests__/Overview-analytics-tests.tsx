@@ -5,6 +5,7 @@ import React from "react"
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 jest.unmock("react-tracking")
+
 import Overview from "../Overview"
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
@@ -15,7 +16,7 @@ beforeEach(jest.resetAllMocks)
 
 it("calls the draft created event", () => {
   const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submission_id: "123" }} />).dive()
-  const overview = overviewComponent.instance()
+  const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftCreated()
   expect(Event.postEvent).toBeCalledWith({
@@ -31,7 +32,7 @@ it("calls the draft created event", () => {
 
 it("calls the draft created event", () => {
   const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submission_id: "123" }} />).dive()
-  const overview = overviewComponent.instance()
+  const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftSubmitted()
   expect(Event.postEvent).toBeCalledWith({

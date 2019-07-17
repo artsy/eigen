@@ -1,19 +1,24 @@
 import { Flex, Sans, Serif } from "@artsy/palette"
 import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
+import { Schema } from "lib/utils/track"
 import _ from "lodash"
 import React, { useState } from "react"
 import { Text } from "react-native"
+import { useTracking } from "react-tracking"
 import { LinkText } from "./Text/LinkText"
 
 interface Props {
   content: string
   maxChars: number
   presentLinksModally?: boolean
+  contextModule?: string
+  trackingFlow?: string
 }
 
-export const ReadMore = React.memo(({ content, maxChars, presentLinksModally }: Props) => {
+export const ReadMore = React.memo(({ content, maxChars, presentLinksModally, trackingFlow, contextModule }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const tracking = useTracking()
   const basicRules = defaultRules(presentLinksModally)
   const rules = {
     ...basicRules,
@@ -43,7 +48,21 @@ export const ReadMore = React.memo(({ content, maxChars, presentLinksModally }: 
     root
   ) : (
     <Flex>
-      <Text>{truncate({ root, maxChars, onExpand: () => setIsExpanded(true) })}</Text>
+      <Text>
+        {truncate({
+          root,
+          maxChars,
+          onExpand: () => {
+            tracking.trackEvent({
+              action_name: Schema.ActionNames.ReadMore,
+              action_type: Schema.ActionTypes.Tap,
+              context_module: contextModule ? contextModule : null,
+              flow: trackingFlow ? trackingFlow : null,
+            })
+            setIsExpanded(true)
+          },
+        })}
+      </Text>
     </Flex>
   )
 })

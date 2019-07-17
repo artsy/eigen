@@ -2,6 +2,7 @@ import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { AboutArtist_artwork } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
+import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -28,14 +29,19 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           </Sans>
           <Join separator={<Spacer my={1} />}>
             {artists.map(artist => (
-              <ArtistListItem key={artist.id} artist={artist} />
+              <ArtistListItem key={artist.id} artist={artist} contextModule={Schema.ContextModules.AboutTheArtist} />
             ))}
           </Join>
         </Flex>
         {hasSingleArtist &&
           text && (
             <Box mt={2}>
-              <ReadMore content={text} maxChars={140} />
+              <ReadMore
+                content={text}
+                trackingFlow={Schema.Flow.AboutTheArtist}
+                maxChars={140}
+                contextModule={Schema.ContextModules.ArtistBiography}
+              />
             </Box>
           )}
       </>

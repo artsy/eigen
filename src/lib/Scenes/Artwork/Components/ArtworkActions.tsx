@@ -1,6 +1,7 @@
 import { Box, color, EyeOpenedIcon, Flex, HeartFillIcon, HeartIcon, Sans, ShareIcon } from "@artsy/palette"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -32,8 +33,16 @@ export const shareMessage = (title, href, artists) => {
   return message
 }
 
+@track()
 export class ArtworkActions extends React.Component<ArtworkActionsProps> {
-  handleArtworkSave = () => {
+  @track((props: ArtworkActionsProps) => {
+    return {
+      action_name: props.artwork.is_saved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
+      action_type: Schema.ActionTypes.Success,
+      context_module: Schema.ContextModules.ArtworkActions,
+    } as any
+  })
+  handleArtworkSave() {
     const { artwork, relay } = this.props
     commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
       mutation: graphql`
@@ -51,7 +60,14 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     })
   }
 
-  handleArtworkShare = async () => {
+  @track(() => {
+    return {
+      action_name: Schema.ActionNames.Share,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.ArtworkActions,
+    } as any
+  })
+  async handleArtworkShare() {
     const { title, href, artists } = this.props.artwork
     try {
       await Share.share({
@@ -62,13 +78,27 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     }
   }
 
-  render() {
+  @track(() => {
+    return {
+      action_name: Schema.ActionNames.ViewInRoom,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.ArtworkActions,
+    } as any
+  })
+  openViewInRoom() {
     const {
-      artwork: { is_saved, image, id, slug, heightCm, widthCm },
+      artwork: { image, id, slug, heightCm, widthCm },
     } = this.props
-
     const heightIn = heightCm / 2.54
     const widthIn = widthCm / 2.54
+
+    ApiModule.presentAugmentedRealityVIR(image.url, heightIn, widthIn, slug, id)
+  }
+
+  render() {
+    const {
+      artwork: { is_saved },
+    } = this.props
 
     return (
       <View>
@@ -82,9 +112,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </UtilButton>
           </TouchableWithoutFeedback>
           {Constants.AREnabled && (
-            <TouchableWithoutFeedback
-              onPress={() => ApiModule.presentAugmentedRealityVIR(image.url, heightIn, widthIn, slug, id)}
-            >
+            <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>
                   <EyeOpenedIcon />

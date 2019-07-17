@@ -48,6 +48,7 @@ fragment ArtworkTombstone_artwork on Artwork {
 fragment FollowArtistButton_artist on Artist {
   id
   slug
+  internalID
   is_followed
 }
 */
@@ -170,6 +171,13 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
+                "name": "internalID",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
                 "name": "is_followed",
                 "args": null,
                 "storageKey": null
@@ -235,7 +243,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTombstoneStoryQuery",
-    "id": "03ecf232f214fa85420b41189a322f3b",
+    "id": "54599ef5ef2c7c3536a7ef14134edc10",
     "text": null,
     "metadata": {}
   }
