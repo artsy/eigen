@@ -8,6 +8,7 @@ upcoming:
     - Adds new React Native Artwork view behind lab option - alloy/david
     - Integrates View-in-Room support from React Native Artwork view - ash/steve
     - LAI view now updates the number of bids as they come in - ash
+    - LAI view now opens on all sales - ash
     - Adds edition information to LAI lot info view - ash/lily
     - Don't push same search view if it already exists
     - Live auction current lot now updates current bid - ash/anson

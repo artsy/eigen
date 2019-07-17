@@ -133,12 +133,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.askingPriceCents)
 
-        // We merge with the numberOfBidsSignal, then throw away its value in map, so
-        // that the lotStateSignal fires whenever there is a new bid. This lets the UI
-        // update with the current value from the view model.
-        lotStateSignal = numberOfBidsSignal.merge(biddingStatusSignal).map { (_, status) -> BiddingStatus in
-            return status
-        }.map { (biddingStatus, passed, isHighestBidder) -> LotState in
+        lotStateSignal = biddingStatusSignal.map { (biddingStatus, passed, isHighestBidder) -> LotState in
             switch biddingStatus {
             case .upcoming: fallthrough // Case that sale is not yet open
             case .open:                 // Case that lot is open to leave max bids
@@ -330,11 +325,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     func updateBiddingStatus(_ biddingStatus: String, wasPassed: Bool) {
-        let updated = model.updateBiddingStatus(with: biddingStatus)
-
-        if updated {
-            biddingStatusSignal.update((status: model.biddingStatus, wasPassed: wasPassed, isHighestBidder: self.userIsWinning))
-        }
+        model.updateBiddingStatus(with: biddingStatus)
+        biddingStatusSignal.update((status: model.biddingStatus, wasPassed: wasPassed, isHighestBidder: self.userIsWinning))
     }
 
     func updateOnlineBidCount(_ onlineBidCount: Int) {
