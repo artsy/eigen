@@ -30,6 +30,7 @@ export const ArtworkFixture = {
   context: {
     __typename: "ArtworkContextPartnerShow",
   },
+  contextGrids: [],
   dimensions: {
     in: "23 1/5 × 33 1/10 in",
     cm: "59 × 84 cm",

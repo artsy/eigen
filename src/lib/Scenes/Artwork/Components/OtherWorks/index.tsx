@@ -7,18 +7,21 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ContextGridCTA } from "./ContextGridCTA"
 import { Header } from "./Header"
 
+export const populatedGrids = grids => {
+  if (grids && grids.length > 0) {
+    return filter(grids, grid => {
+      const artworkNodes = grid.artworks && grid.artworks.edges && grid.artworks.edges.map(({ node }) => node)
+      return artworkNodes && artworkNodes.length > 0
+    })
+  }
+}
+
 export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: OtherWorks_artwork }>(
   props => {
     const grids = props.artwork.contextGrids
-    const populatedGrids =
-      grids &&
-      grids.length > 0 &&
-      filter(grids, grid => {
-        const artworkNodes = grid.artworks && grid.artworks.edges && grid.artworks.edges.map(({ node }) => node)
-        return artworkNodes && artworkNodes.length > 0
-      })
+    const gridsToShow = populatedGrids(grids)
 
-    if (populatedGrids && populatedGrids.length > 0) {
+    if (gridsToShow && gridsToShow.length > 0) {
       return (
         <Join
           separator={
@@ -27,7 +30,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
             </Box>
           }
         >
-          {populatedGrids.map((grid, index) => (
+          {gridsToShow.map((grid, index) => (
             <React.Fragment key={`Grid-${index}`}>
               <Header title={grid.title} />
               <Spacer mb={3} />
