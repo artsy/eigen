@@ -1,4 +1,4 @@
-import { Button, EntityHeader, Flex } from "@artsy/palette"
+import { Button, EntityHeader, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -88,8 +88,19 @@ export class PartnerCard extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
     const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
+    const showPartnerType =
+      partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"
+    const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"
     return (
       <Flex>
+        {showPartnerType && (
+          <>
+            <Sans size="3t" weight="medium">
+              At {partnerTypeDisplayText}
+            </Sans>
+            <Spacer my={1} />
+          </>
+        )}
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href)}>
           <EntityHeader
             name={partner.name}

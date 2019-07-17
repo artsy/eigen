@@ -15,6 +15,7 @@
 -->
 
 ### Master
+- Added partner type to partner card - lilyfromseattle
 
 - Removes InvertedButton - kierangillen
 - Adds ContextCard - kierangillen

@@ -4,6 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _SellerInfo_artwork$ref: unique symbol;
 export type SellerInfo_artwork$ref = typeof _SellerInfo_artwork$ref;
 export type SellerInfo_artwork = {
+    readonly availability: string | null;
     readonly partner: {
         readonly name: string | null;
     } | null;
@@ -19,6 +20,13 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "availability",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -39,5 +47,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '490867aced0224449daac54947d7f5c4';
+(node as any).hash = '256b803b1f8c60488dd1f875e42b92e3';
 export default node;
