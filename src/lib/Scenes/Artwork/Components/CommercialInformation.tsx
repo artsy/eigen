@@ -3,7 +3,7 @@ import { CommercialInformation_artwork } from "__generated__/CommercialInformati
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./ArtworkAvailability"
-import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
+import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { SellerInfoFragmentContainer as SellerInfo } from "./SellerInfo"
 
 interface CommercialInformationProps {
@@ -21,7 +21,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
         {artwork.availability && artwork.partner && artwork.partner.name && <Spacer mb={2} />}
         {artwork.partner && artwork.partner.name && <SellerInfo artwork={artwork} />}
         {!!consignableArtistsCount && <Spacer mb={2} />}
-        <ArtworkExtraLinks artwork={artwork} />
+        <ArtworkExtraLinks consignableArtistsCount={consignableArtistsCount} />
       </Box>
     )
   }
@@ -39,7 +39,6 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       }
       ...ArtworkAvailability_artwork
       ...SellerInfo_artwork
-      ...ArtworkExtraLinks_artwork
     }
   `,
 })

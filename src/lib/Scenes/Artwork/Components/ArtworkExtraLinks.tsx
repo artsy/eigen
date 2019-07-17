@@ -6,7 +6,7 @@ import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkExtraLinksProps {
-  artwork: ArtworkExtraLinks_artwork
+  consignableArtistsCount: number
 }
 
 export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
@@ -26,8 +26,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   render() {
-    const { artwork } = this.props
-    const consignableArtistsCount = artwork.artists.filter(artist => artist.is_consignable).length
+    const { consignableArtistsCount } = this.props
 
     return <Box>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}</Box>
   }
