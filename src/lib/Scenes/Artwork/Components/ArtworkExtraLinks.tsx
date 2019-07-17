@@ -1,9 +1,7 @@
 import { Box, Sans } from "@artsy/palette"
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Text } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkExtraLinksProps {
   consignableArtistsCount: number
@@ -31,13 +29,3 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     return <Box>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}</Box>
   }
 }
-
-export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
-  artwork: graphql`
-    fragment ArtworkExtraLinks_artwork on Artwork {
-      artists {
-        is_consignable
-      }
-    }
-  `,
-})
