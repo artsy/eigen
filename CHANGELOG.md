@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.12.8
+
 - Fixes a CI build/deploy failure caused by an unexpected local change - yuki24
 
 ### 1.12.7
