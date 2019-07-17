@@ -155,7 +155,7 @@ export class Artwork extends React.Component<Props> {
   render() {
     return (
       <Theme>
-        <Box pt={this.props.safeAreaInsets.top}>
+        <Box>
           <FlatList
             data={this.sections()}
             ItemSeparatorComponent={() => (
@@ -163,6 +163,7 @@ export class Artwork extends React.Component<Props> {
                 <Separator />
               </Box>
             )}
+            style={{ paddingTop: this.props.safeAreaInsets.top }}
             keyExtractor={(item, index) => item.type + String(index)}
             renderItem={item =>
               item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
