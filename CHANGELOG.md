@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes a persistent top border when integrated with Eigen - ash
+- Adds remaining Other Works Grids to the artwork view - sweir27
 
 ### 1.12.8
 
