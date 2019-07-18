@@ -58,7 +58,7 @@ export class ArtistCard extends React.Component<Props, State> {
         Events.postEvent({
           name: "Follow artist",
           artist_id: this.props.artist.internalID,
-          artist_slug: this.props.artist.gravityID,
+          artist_slug: this.props.artist.slug,
           // TODO: At some point, this component might be on other screens.
           source_screen: "home page",
           context_module: "artist rail",
@@ -212,7 +212,7 @@ const styles = StyleSheet.create<Styles>({
 const ArtistCardContainer = createFragmentContainer(ArtistCard, {
   artist: graphql`
     fragment ArtistCard_artist on Artist {
-      gravityID
+      slug
       internalID
       href
       name

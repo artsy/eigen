@@ -8,14 +8,16 @@ export type ArtworkRailHeader_rail = {
     readonly key: string | null;
     readonly context: ({
         readonly artist?: {
-            readonly gravityID: string;
+            readonly slug: string;
+            readonly internalID: string;
         } | null;
         readonly based_on?: {
             readonly name: string | null;
         } | null;
     } & ({
         readonly artist: {
-            readonly gravityID: string;
+            readonly slug: string;
+            readonly internalID: string;
         } | null;
         readonly based_on: {
             readonly name: string | null;
@@ -76,7 +78,14 @@ const node: ReaderFragment = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "gravityID",
+                  "name": "slug",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "internalID",
                   "args": null,
                   "storageKey": null
                 }
@@ -106,5 +115,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ed60c0a7afa22d89b838d4deab5bd106';
+(node as any).hash = 'd5b1f07a1d2dbba9edc5831e8c733ecf';
 export default node;

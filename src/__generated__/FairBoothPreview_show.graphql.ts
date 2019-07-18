@@ -5,7 +5,7 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _FairBoothPreview_show$ref: unique symbol;
 export type FairBoothPreview_show$ref = typeof _FairBoothPreview_show$ref;
 export type FairBoothPreview_show = {
-    readonly gravityID: string;
+    readonly slug: string;
     readonly internalID: string;
     readonly name: string | null;
     readonly is_fair_booth: boolean | null;
@@ -15,7 +15,7 @@ export type FairBoothPreview_show = {
     readonly partner: ({
         readonly name?: string | null;
         readonly href?: string | null;
-        readonly gravityID?: string;
+        readonly slug?: string;
         readonly internalID?: string;
         readonly id?: string;
         readonly profile?: {
@@ -25,7 +25,7 @@ export type FairBoothPreview_show = {
     } & ({
         readonly name: string | null;
         readonly href: string | null;
-        readonly gravityID: string;
+        readonly slug: string;
         readonly internalID: string;
         readonly id: string;
         readonly profile: {
@@ -62,7 +62,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -263,5 +263,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '49db3c85768b56bad9c3a1813b5d851c';
+(node as any).hash = 'f0b14d418bb3b9ea742e1429862bd06b';
 export default node;

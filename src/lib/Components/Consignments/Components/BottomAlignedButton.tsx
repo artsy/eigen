@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, KeyboardAvoidingView, TouchableOpacity, View } from "react-native"
+import { KeyboardAvoidingView, NativeModules, StatusBarIOS, TouchableOpacity, View } from "react-native"
 
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
@@ -33,25 +33,39 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   verticalOffset?: number
 }
 
-// TODO: Remove this once React Native has been updated
-const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
-const defaultVerticalOffset = isPhoneX ? 30 : 15
+const { StatusBarManager } = NativeModules
 
-const BottomAlignedButton: React.SFC<BottomAlignedProps> = props => (
-  <KeyboardAvoidingView
-    behavior="padding"
-    keyboardVerticalOffset={props.verticalOffset || defaultVerticalOffset}
-    style={{ flex: 1 }}
-  >
-    <View key="space-eater" style={{ flexGrow: 1 }}>
-      {props.children}
-    </View>
+export class BottomAlignedButton extends React.Component<BottomAlignedProps> {
+  state = { statusBarHeight: 0 }
+  statusBarListener = null
 
-    <Separator key="separator" />
-    <TouchableOpacity key="button" onPress={props.onPress} style={props.bodyStyle} disabled={props.disabled}>
-      <ButtonText>{props.buttonText}</ButtonText>
-    </TouchableOpacity>
-  </KeyboardAvoidingView>
-)
+  componentDidMount() {
+    if (StatusBarManager && StatusBarManager.getHeight) {
+      StatusBarManager.getHeight(statusBarFrameData => {
+        this.setState({ statusBarHeight: statusBarFrameData.height })
+      })
+      this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
+        this.setState({ statusBarHeight: statusBarData.frame.height })
+      })
+    }
+  }
 
-export default BottomAlignedButton
+  componentWillUnmount() {
+    this.statusBarListener.remove()
+  }
+  render() {
+    const { buttonText, onPress, children, bodyStyle, disabled } = this.props
+    return (
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.state.statusBarHeight} style={{ flex: 1 }}>
+        <View key="space-eater" style={{ flexGrow: 1 }}>
+          {children}
+        </View>
+
+        <Separator key="separator" />
+        <TouchableOpacity key="button" onPress={onPress} style={bodyStyle} disabled={disabled}>
+          <ButtonText>{buttonText}</ButtonText>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    )
+  }
+}

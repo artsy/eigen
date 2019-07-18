@@ -5,8 +5,8 @@ import { FairDetail_fair$ref } from "./FairDetail_fair.graphql";
 declare const _Fair_fair$ref: unique symbol;
 export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
-    readonly gravityID: string;
     readonly id: string;
+    readonly slug: string;
     readonly organizer: {
         readonly website: string | null;
     } | null;
@@ -28,14 +28,14 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -78,5 +78,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'fb981a467b3b8c7da3bc732b41742b1d';
+(node as any).hash = '7d29e01ba0979b98334e0d51983fa962';
 export default node;

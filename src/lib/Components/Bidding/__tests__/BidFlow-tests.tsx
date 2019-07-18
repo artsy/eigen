@@ -3,8 +3,8 @@ import "react-native"
 import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
+import { Button } from "@artsy/palette"
 import relay from "react-relay"
-import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { SelectMaxBid } from "../Screens/SelectMaxBid"
@@ -55,7 +55,7 @@ it("allows bidders with a qualified credit card to bid", () => {
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
-  screen.root.findByType(Button).instance.props.onPress()
+  screen.root.findAllByType(Button)[0].instance.props.onPress()
 
   screen = fakeNavigator.nextStep()
 
@@ -68,7 +68,7 @@ it("allows bidders with a qualified credit card to bid", () => {
   }) as any
 
   screen.root.findByType(Checkbox).instance.props.onPress()
-  screen.root.findByType(Button).instance.props.onPress()
+  screen.root.findAllByType(Button)[1].instance.props.onPress()
 
   jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
 
@@ -90,7 +90,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
-  screen.root.findByType(Button).instance.props.onPress()
+  screen.root.findAllByType(Button)[0].instance.props.onPress()
 
   screen = fakeNavigator.nextStep()
 
@@ -117,7 +117,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   })
 
   screen.root.findByType(Checkbox).instance.props.onPress()
-  await screen.root.findByType(Button).instance.props.onPress()
+  await screen.root.findAllByType(Button)[1].instance.props.onPress()
 
   expect(stripe.createTokenWithCard).toHaveBeenCalledWith({
     ...creditCardFormParams,
@@ -182,6 +182,9 @@ const SaleArtwork = {
     title: "Meteor Shower",
     date: "2015",
     artist_names: "Makiko Kudo",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
+    },
   },
   sale: {
     id: "best-art-sale-in-town",

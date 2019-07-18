@@ -8,7 +8,7 @@ export type FairExhibitorsTestsQueryResponse = {
             readonly letter: string | null;
             readonly exhibitors: ReadonlyArray<{
                 readonly name: string | null;
-                readonly gravityID: string | null;
+                readonly slug: string;
                 readonly profile_id: string | null;
             } | null> | null;
         } | null> | null;
@@ -28,9 +28,8 @@ query FairExhibitorsTestsQuery {
       letter
       exhibitors {
         name
-        gravityID
+        slug
         profile_id
-        id
       }
     }
     id
@@ -47,39 +46,54 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
+  "kind": "LinkedField",
   "alias": null,
-  "name": "letter",
+  "name": "exhibitors_grouped_by_name",
+  "storageKey": null,
   "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "profile_id",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
+  "concreteType": "FairExhibitorsGroup",
+  "plural": true,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "letter",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "exhibitors",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "FairExhibitor",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "profile_id",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    }
+  ]
 };
 return {
   "kind": "Request",
@@ -99,32 +113,7 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "exhibitors_grouped_by_name",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "FairExhibitorsGroup",
-            "plural": true,
-            "selections": [
-              (v1/*: any*/),
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "exhibitors",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "FairExhibitor",
-                "plural": true,
-                "selections": [
-                  (v2/*: any*/),
-                  (v3/*: any*/),
-                  (v4/*: any*/)
-                ]
-              }
-            ]
-          }
+          (v1/*: any*/)
         ]
       }
     ]
@@ -143,34 +132,14 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
-            "kind": "LinkedField",
+            "kind": "ScalarField",
             "alias": null,
-            "name": "exhibitors_grouped_by_name",
-            "storageKey": null,
+            "name": "id",
             "args": null,
-            "concreteType": "FairExhibitorsGroup",
-            "plural": true,
-            "selections": [
-              (v1/*: any*/),
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "exhibitors",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "FairExhibitor",
-                "plural": true,
-                "selections": [
-                  (v2/*: any*/),
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  (v5/*: any*/)
-                ]
-              }
-            ]
-          },
-          (v5/*: any*/)
+            "storageKey": null
+          }
         ]
       }
     ]
@@ -178,11 +147,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairExhibitorsTestsQuery",
-    "id": "b72de60b496d1e34e39ba9318b89bdae",
+    "id": "e37ecc5d1a7041efe8eb037cd715f152",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '48bc24459b211231935a2c059ec68240';
+(node as any).hash = 'a3bb77d8029fbfd9a18048ba5ac24950';
 export default node;

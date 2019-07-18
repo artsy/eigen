@@ -39,16 +39,19 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 fragment ConfirmBid_sale_artwork on SaleArtwork {
   internalID
   sale {
-    gravityID
+    slug
     live_start_at
     end_at
     id
   }
   artwork {
-    gravityID
+    slug
     title
     date
     artist_names
+    image {
+      url(version: "small")
+    }
     id
   }
   lot_label
@@ -64,7 +67,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
-    gravityID
+    slug
     id
   }
 }
@@ -103,7 +106,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -239,6 +242,30 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "version",
+                        "value": "small"
+                      }
+                    ],
+                    "storageKey": "url(version:\"small\")"
+                  }
+                ]
+              },
               (v5/*: any*/)
             ]
           },
@@ -277,7 +304,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SelectMaxBidRefetchQuery",
-    "id": "4d52dcd1baccb5d70cbad979c571a698",
+    "id": "097a6b35c99dd5ef54d9e05a9d420227",
     "text": null,
     "metadata": {}
   }

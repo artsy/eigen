@@ -1,8 +1,7 @@
-import { Sans } from "@artsy/palette"
+import { Button, Sans } from "@artsy/palette"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import { Button } from "../../Components/Button"
 import { CreditCardForm } from "../CreditCardForm"
 
 jest.mock("tipsi-stripe", () => ({
@@ -106,7 +105,7 @@ it("shows an error when stripe's API returns an error", () => {
   component.root.findByType(Button).instance.props.onPress()
 
   jest.runAllTicks()
-  expect(component.root.findByType(Sans).props.children).toEqual("There was an error. Please try again.")
+  expect(component.root.findAllByType(Sans)[0].props.children).toEqual("There was an error. Please try again.")
 })
 
 const creditCard = {

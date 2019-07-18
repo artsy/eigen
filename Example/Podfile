@@ -103,7 +103,8 @@ plugin 'cocoapods-keys',
          'ArtsyAPIClientKey',      #
          'StripePublishableKey',   # Used in Auctions registration flow
          'MapBoxAPIClientKey',     # Used in City Maps
-         'SentryProductionDSN'     # Used in the Emission betas
+         'SentryProductionDSN',    # Used in the Emission betas
+         'GoogleMapsAPIKey'        #
        ]
 
 post_install do |installer|

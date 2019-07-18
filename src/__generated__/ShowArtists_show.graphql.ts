@@ -6,7 +6,7 @@ declare const _ShowArtists_show$ref: unique symbol;
 export type ShowArtists_show$ref = typeof _ShowArtists_show$ref;
 export type ShowArtists_show = {
     readonly internalID: string;
-    readonly gravityID: string;
+    readonly slug: string;
     readonly artists_grouped_by_name: ReadonlyArray<{
         readonly letter: string | null;
         readonly items: ReadonlyArray<{
@@ -37,7 +37,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -91,5 +91,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b41972dd9b548a1f37d53382bdbce28d';
+(node as any).hash = '600227054ab1393a0e5bd7983296e334';
 export default node;

@@ -38,7 +38,7 @@ export class ShowItem extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   onPress() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}`)
   }
 
   render() {
@@ -80,7 +80,7 @@ export const ShowItemContainer = createFragmentContainer(ShowItem, {
   show: graphql`
     fragment ShowItem_show on Show {
       internalID
-      gravityID
+      slug
       name
       exhibition_period
       end_at

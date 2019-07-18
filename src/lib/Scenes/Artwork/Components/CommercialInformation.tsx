@@ -14,12 +14,12 @@ export class CommercialInformation extends React.Component<CommercialInformation
   render() {
     const { artwork } = this.props
     const consignableArtistsCount = artwork.artists.filter(artist => artist.is_consignable).length
-
+    const inClosedAuction = artwork.sale && artwork.sale.is_auction && artwork.sale.is_closed
     return (
       <Box>
         {artwork.availability && <ArtworkAvailability artwork={artwork} />}
         {artwork.availability && artwork.partner && artwork.partner.name && <Spacer mb={2} />}
-        {artwork.partner && artwork.partner.name && <SellerInfo artwork={artwork} />}
+        {artwork.partner && artwork.partner.name && !inClosedAuction && <SellerInfo artwork={artwork} />}
         {!!consignableArtistsCount && <Spacer mb={2} />}
         <ArtworkExtraLinks consignableArtistsCount={consignableArtistsCount} />
       </Box>
@@ -36,6 +36,10 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       }
       artists {
         is_consignable
+      }
+      sale {
+        is_auction
+        is_closed
       }
       ...ArtworkAvailability_artwork
       ...SellerInfo_artwork

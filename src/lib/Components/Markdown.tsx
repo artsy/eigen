@@ -12,9 +12,10 @@ function stringifyChildren(children: any): string {
   return _.isArray(children) ? children.join("") : children
 }
 
+const basicRules = defaultRules(true)
 export class Markdown extends React.Component<Props & FlexProps> {
   static defaultProps = {
-    rules: defaultRules,
+    rules: basicRules,
   }
 
   // Be agressive with re-rendering this component

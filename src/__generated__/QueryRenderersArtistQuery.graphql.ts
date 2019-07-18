@@ -31,7 +31,7 @@ query QueryRenderersArtistQuery(
 
 fragment Artist_artist on Artist {
   internalID
-  gravityID
+  slug
   has_metadata
   counts {
     artworks
@@ -47,7 +47,7 @@ fragment Artist_artist on Artist {
 
 fragment Header_artist on Artist {
   internalID
-  gravityID
+  slug
   name
   nationality
   birthday
@@ -59,7 +59,7 @@ fragment Header_artist on Artist {
 fragment About_artist on Artist {
   has_metadata
   is_display_auction_link
-  gravityID
+  slug
   ...Biography_artist
   related_artists: artists(size: 16) {
     ...RelatedArtists_artists
@@ -109,7 +109,7 @@ fragment ArtistForSaleArtworksGrid_artist on Artist {
     }
     edges {
       node {
-        gravityID
+        slug
         id
         image {
           aspect_ratio
@@ -132,7 +132,7 @@ fragment ArtistNotForSaleArtworksGrid_artist on Artist {
     }
     edges {
       node {
-        gravityID
+        slug
         id
         image {
           aspect_ratio
@@ -153,7 +153,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -193,7 +193,7 @@ fragment SmallList_shows on Show {
 }
 
 fragment ArtistShow_show on Show {
-  gravityID
+  slug
   href
   is_fair_booth
   cover_image {
@@ -292,7 +292,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -1089,7 +1089,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersArtistQuery",
-    "id": "c507c0291ebbfb75d26138e67a9c78ae",
+    "id": "d747fe0089dc31df1ca24e5f94b56b6a",
     "text": null,
     "metadata": {}
   }

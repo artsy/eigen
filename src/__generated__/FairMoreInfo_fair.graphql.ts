@@ -7,7 +7,7 @@ export type FairMoreInfo_fair = {
     readonly organizer: {
         readonly website: string | null;
     } | null;
-    readonly gravityID: string;
+    readonly slug: string;
     readonly internalID: string;
     readonly about: string | null;
     readonly ticketsLink: string | null;
@@ -44,7 +44,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -71,5 +71,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1e608ac8da4ecc3364e869e73889400e';
+(node as any).hash = '70077522c1800bfee9ee140deea2aabd';
 export default node;

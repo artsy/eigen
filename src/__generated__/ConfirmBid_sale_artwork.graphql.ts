@@ -7,15 +7,18 @@ export type ConfirmBid_sale_artwork$ref = typeof _ConfirmBid_sale_artwork$ref;
 export type ConfirmBid_sale_artwork = {
     readonly internalID: string;
     readonly sale: {
-        readonly gravityID: string;
+        readonly slug: string;
         readonly live_start_at: string | null;
         readonly end_at: string | null;
     } | null;
     readonly artwork: {
-        readonly gravityID: string;
+        readonly slug: string;
         readonly title: string | null;
         readonly date: string | null;
         readonly artist_names: string | null;
+        readonly image: {
+            readonly url: string | null;
+        } | null;
     } | null;
     readonly lot_label: string | null;
     readonly " $fragmentRefs": BidResult_sale_artwork$ref;
@@ -28,7 +31,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 };
@@ -102,6 +105,30 @@ return {
           "name": "artist_names",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "image",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Image",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "url",
+              "args": [
+                {
+                  "kind": "Literal",
+                  "name": "version",
+                  "value": "small"
+                }
+              ],
+              "storageKey": "url(version:\"small\")"
+            }
+          ]
         }
       ]
     },
@@ -120,5 +147,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd80b17b99bcad40f06a5e689f9d9611a';
+(node as any).hash = '40452e0f6179b4f0c772d5d60fd1ebf8';
 export default node;

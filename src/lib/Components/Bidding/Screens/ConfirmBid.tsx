@@ -1,7 +1,7 @@
-import { Serif } from "@artsy/palette"
+import { Box, Button, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { NativeModules, View, ViewProperties } from "react-native"
+import { Image, NativeModules, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import stripe from "tipsi-stripe"
@@ -15,9 +15,7 @@ import { Flex } from "../Elements/Flex"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../Components/BidInfoRow"
-import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
-import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
@@ -233,7 +231,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               creditCardOrError {
                 ... on CreditCardMutationSuccess {
                   creditCard {
-                    gravityID
+                    internalID
                     brand
                     name
                     last_digits
@@ -270,7 +268,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               message_header
               message_description_md
               position {
-                gravityID
+                internalID
                 suggested_next_bid {
                   cents
                   display
@@ -282,8 +280,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
-          sale_id: this.props.sale_artwork.sale.gravityID,
-          artwork_id: this.props.sale_artwork.artwork.gravityID,
+          // FIXME: Should this be internal id?
+          sale_id: this.props.sale_artwork.sale.slug,
+          artwork_id: this.props.sale_artwork.artwork.slug,
           max_bid_amount_cents: this.selectedBid().cents,
         },
       },
@@ -331,7 +330,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   refreshBidderInfo = () => {
     this.props.relay.refetch(
-      { saleID: this.props.sale_artwork.sale.gravityID },
+      // FIXME: Should this be internalID?
+      { saleID: this.props.sale_artwork.sale.slug },
       null,
       error => {
         if (error) {
@@ -385,11 +385,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale.gravityID,
-      ARAuctionArtworkID: this.props.sale_artwork.artwork.gravityID,
+      ARAuctionID: this.props.sale_artwork.sale.slug,
+      ARAuctionArtworkID: this.props.sale_artwork.artwork.slug,
     })
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale.gravityID,
+      ARAuctionID: this.props.sale_artwork.sale.slug,
     })
 
     this.props.navigator.push({
@@ -428,60 +428,64 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     return (
       <BiddingThemeProvider>
-        <Container m={0}>
-          <Flex alignItems="center">
-            <Title mb={3}>Confirm your bid</Title>
-            <Timer liveStartsAt={sale.live_start_at} endsAt={sale.end_at} />
-          </Flex>
-
-          <View>
-            <Flex m={4} mt={0} alignItems="center">
-              <Serif size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
-                {artwork.artist_names}
-              </Serif>
-              <Serif size="2" weight="semibold">
-                Lot {lot_label}
-              </Serif>
-
-              <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
-                {artwork.title}
-                {artwork.date && <Serif size="2">, {artwork.date}</Serif>}
-              </Serif>
+        <Flex m={0} flex={1} flexDirection="column">
+          <ScrollView scrollEnabled>
+            <Flex alignItems="center">
+              <Title mb={3}>Confirm your bid</Title>
+              <Timer liveStartsAt={sale.live_start_at} endsAt={sale.end_at} />
             </Flex>
 
-            <Divider />
+            <View>
+              <Flex m={4} alignItems="center">
+                <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artwork.image.url }} />
 
-            <BidInfoRow
-              label="Max bid"
-              value={this.selectedBid().display}
-              onPress={isLoading ? () => null : () => this.goBackToSelectMaxBid()}
-            />
+                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
+                  {artwork.artist_names}
+                </Serif>
+                <Serif size="2" weight="semibold">
+                  Lot {lot_label}
+                </Serif>
 
-            {requiresPaymentInformation ? (
-              <PaymentInfo
-                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-                billingAddress={this.state.billingAddress}
-                creditCardFormParams={this.state.creditCardFormParams}
-                creditCardToken={this.state.creditCardToken}
+                <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
+                  {artwork.title}
+                  {artwork.date && <Serif size="2">, {artwork.date}</Serif>}
+                </Serif>
+              </Flex>
+
+              <Divider />
+
+              <BidInfoRow
+                label="Max bid"
+                value={this.selectedBid().display}
+                onPress={isLoading ? () => null : () => this.goBackToSelectMaxBid()}
               />
-            ) : (
-              <Divider mb={9} />
-            )}
 
-            <Modal
-              visible={this.state.errorModalVisible}
-              headerText="An error occurred"
-              detailText={this.state.errorModalDetailText}
-              closeModal={this.closeModal.bind(this)}
-            />
-          </View>
+              {requiresPaymentInformation ? (
+                <PaymentInfo
+                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                  billingAddress={this.state.billingAddress}
+                  creditCardFormParams={this.state.creditCardFormParams}
+                  creditCardToken={this.state.creditCardToken}
+                />
+              ) : (
+                <Divider mb={9} />
+              )}
+
+              <Modal
+                visible={this.state.errorModalVisible}
+                headerText="An error occurred"
+                detailText={this.state.errorModalDetailText}
+                closeModal={this.closeModal.bind(this)}
+              />
+            </View>
+          </ScrollView>
 
           <View>
             {requiresCheckbox ? (
               <Checkbox
-                mb={4}
+                mt={3}
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
@@ -506,17 +510,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Flex>
             )}
 
-            <Flex m={4}>
+            <Box m={4}>
               <Button
-                text="Bid"
-                inProgress={this.state.isLoading}
-                selected={this.state.isLoading}
-                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+                loading={this.state.isLoading}
+                block
+                width={100}
                 disabled={!this.canPlaceBid()}
-              />
-            </Flex>
+                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+              >
+                Bid
+              </Button>
+            </Box>
           </View>
-        </Container>
+        </Flex>
       </BiddingThemeProvider>
     )
   }
@@ -540,15 +546,18 @@ export const ConfirmBidScreen = createRefetchContainer(
       fragment ConfirmBid_sale_artwork on SaleArtwork {
         internalID
         sale {
-          gravityID
+          slug
           live_start_at
           end_at
         }
         artwork {
-          gravityID
+          slug
           title
           date
           artist_names
+          image {
+            url(version: "small")
+          }
         }
         lot_label
         ...BidResult_sale_artwork

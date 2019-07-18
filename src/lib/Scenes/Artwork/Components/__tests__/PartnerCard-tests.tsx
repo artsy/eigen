@@ -41,6 +41,71 @@ describe("PartnerCard", () => {
     expect(component.find(Image)).toHaveLength(1)
   })
 
+  it("renders partner type", () => {
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+      </Theme>
+    )
+
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).toMatchInlineSnapshot(`"At gallery"`)
+  })
+
+  it("renders partner type correctly for institutional sellers", () => {
+    const PartnerCardArtworkInstitutionalSeller = {
+      ...PartnerCardArtwork,
+      partner: {
+        ...PartnerCardArtwork.partner,
+        type: "Institutional Seller",
+      },
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkInstitutionalSeller} />
+      </Theme>
+    )
+
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).toMatchInlineSnapshot(`"At institution"`)
+  })
+
+  it("doesn't render partner type for partners that aren't institutions or galleries", () => {
+    const PartnerCardArtworkOtherType = {
+      ...PartnerCardArtwork,
+      partner: {
+        ...PartnerCardArtwork.partner,
+        type: "Some Other Partner Type",
+      },
+    }
+    const component = mount(
+      <Theme>
+        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkOtherType} />
+      </Theme>
+    )
+
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).not.toEqual("At institution")
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).not.toEqual("At gallery")
+  })
+
   it("renders partner initials when no image is present", () => {
     const PartnerCardArtworkWithoutImage = {
       ...PartnerCardArtwork,
@@ -74,7 +139,7 @@ describe("PartnerCard", () => {
     expect(
       component
         .find(Sans)
-        .at(0)
+        .at(1)
         .render()
         .text()
     ).toMatchInlineSnapshot(`"Miami, New York, +3 more"`)
@@ -180,7 +245,7 @@ describe("PartnerCard", () => {
       const unfollowResponse = {
         profile: {
           is_followed: false,
-          gravityID: PartnerCardArtwork.partner.gravityID,
+          slug: PartnerCardArtwork.partner.slug,
           internalID: PartnerCardArtwork.partner.internalID,
         },
       }
@@ -210,7 +275,7 @@ describe("PartnerCard", () => {
       const followResponse = {
         profile: {
           is_followed: true,
-          gravityID: PartnerCardArtwork.partner.gravityID,
+          slug: PartnerCardArtwork.partner.slug,
           internalID: PartnerCardArtwork.partner.internalID,
         },
       }
@@ -281,7 +346,7 @@ const PartnerCardArtwork = {
     is_default_profile_public: true,
     type: "Gallery",
     name: "Test Gallery",
-    gravityID: "12345",
+    slug: "12345",
     internalID: "56789",
     id: "12345",
     href: "",
@@ -289,7 +354,7 @@ const PartnerCardArtwork = {
     profile: {
       id: "12345",
       internalID: "56789",
-      gravityID: "12345",
+      slug: "12345",
       is_followed: false,
       icon: {
         url: "https://d32dm0rphc51dk.cloudfront.net/YciR5levjrhp2JnFYlPxpw/square140.png",

@@ -14,7 +14,7 @@ export type ArtworksGridPaginationContainer_filteredArtworks = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly gravityID: string;
+                readonly slug: string;
                 readonly id: string;
                 readonly image: {
                     readonly aspect_ratio: number;
@@ -130,7 +130,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "gravityID",
+                  "name": "slug",
                   "args": null,
                   "storageKey": null
                 },
@@ -181,5 +181,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '9cd3d2abd2a116da00147685378bacb7';
+(node as any).hash = 'cecb3cb04038e1c73cd53d0fc5ecfbba';
 export default node;

@@ -1,22 +1,17 @@
+import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import React from "react"
 import { Dimensions, NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
-import { Schema, Track, track as _track } from "../utils/track"
-
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-
-import BottomAlignedButton from "../Components/Consignments/Components/BottomAlignedButton"
-
+import { BottomAlignedButton } from "../Components/Consignments/Components/BottomAlignedButton"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
+import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
 import { NetworkError } from "../utils/errors"
-
-import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
+import { Schema, Track, track as _track } from "../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -113,7 +108,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquiryCancel,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork.internalID,
-    owner_slug: props.artwork.gravityID,
+    owner_slug: props.artwork.slug,
   }))
   cancelModal() {
     this.dismissModal()
@@ -124,7 +119,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork.internalID,
-    owner_slug: props.artwork.gravityID,
+    owner_slug: props.artwork.slug,
   }))
   inquirySent() {
     this.dismissModal()
@@ -139,7 +134,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork.internalID,
-    owner_slug: props.artwork.gravityID,
+    owner_slug: props.artwork.slug,
   }))
   sendInquiry() {
     // Using setState to trigger re-render for the button
@@ -153,7 +148,7 @@ export class Inquiry extends React.Component<Props, State> {
         "User-Agent": Emission.userAgent,
       },
       body: JSON.stringify({
-        artwork: this.props.artwork.gravityID,
+        artwork: this.props.artwork.slug,
         message: this.state.text,
       }),
     })
@@ -176,7 +171,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork.internalID,
-    owner_slug: props.artwork.gravityID,
+    owner_slug: props.artwork.slug,
   }))
   sendFailed(error) {
     this.setState(() => ({ sending: false }))
@@ -188,7 +183,7 @@ export class Inquiry extends React.Component<Props, State> {
     const partnerResponseRate = " " // currently hardcoded for alignment
     const artwork = this.props.artwork
     const partnerName = this.props.artwork.partner.name
-    const buttonText = this.state.sending ? "SENDING..." : "SEND"
+    const buttonText = this.state.sending ? "Sending..." : "Send"
 
     const doneButtonStyles = {
       backgroundColor: colors["purple-regular"],
@@ -208,7 +203,7 @@ export class Inquiry extends React.Component<Props, State> {
           <Header>
             <HeaderTextContainer>
               <CancelButton onPress={this.cancelModal.bind(this)}>
-                <MetadataText>CANCEL</MetadataText>
+                <MetadataText>Cancel</MetadataText>
               </CancelButton>
               <TitleView>
                 <PartnerName>{partnerName}</PartnerName>
@@ -217,7 +212,7 @@ export class Inquiry extends React.Component<Props, State> {
                   <ResponseRate>{partnerResponseRate}</ResponseRate>
                 </ResponseRateLine>
               </TitleView>
-              <PlaceholderView>CANCEL</PlaceholderView>
+              <PlaceholderView>Cancel</PlaceholderView>
             </HeaderTextContainer>
           </Header>
           <Content>
@@ -242,8 +237,8 @@ export class Inquiry extends React.Component<Props, State> {
 export default createFragmentContainer(Inquiry, {
   artwork: graphql`
     fragment Inquiry_artwork on Artwork {
+      slug
       internalID
-      gravityID
       contact_message
       partner {
         name

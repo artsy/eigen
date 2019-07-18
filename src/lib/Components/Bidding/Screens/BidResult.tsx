@@ -5,12 +5,12 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { Button } from "@artsy/palette"
 import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
 
 import { Markdown } from "../../Markdown"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { BidGhostButton, Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
@@ -62,8 +62,8 @@ export class BidResult extends React.Component<BidResultProps> {
   exitBidFlow = async () => {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
       const Emission = NativeModules.Emission || {}
-      const saleID = this.props.sale_artwork.sale.gravityID
-      const url = `${Emission.predictionURL}/${saleID}`
+      const saleSlug = this.props.sale_artwork.sale.slug
+      const url = `${Emission.predictionURL}/${saleSlug}`
       SwitchBoard.presentModalViewController(this, url)
     } else {
       SwitchBoard.dismissModalViewController(this)
@@ -96,9 +96,13 @@ export class BidResult extends React.Component<BidResultProps> {
             </Flex>
           </View>
           {this.canBidAgain(status) ? (
-            <Button text="Bid again" onPress={() => this.onPressBidAgain()} />
+            <Button block width={100} onPress={() => this.onPressBidAgain()}>
+              Bid again
+            </Button>
           ) : (
-            <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
+            <Button variant="secondaryOutline" block width={100} onPress={this.exitBidFlow}>
+              Continue
+            </Button>
           )}
         </Container>
       </BiddingThemeProvider>
@@ -125,7 +129,7 @@ export const BidResultScreen = createFragmentContainer(BidResult, {
       sale {
         live_start_at
         end_at
-        gravityID
+        slug
       }
     }
   `,

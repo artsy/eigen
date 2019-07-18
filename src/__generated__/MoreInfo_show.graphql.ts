@@ -6,7 +6,7 @@ declare const _MoreInfo_show$ref: unique symbol;
 export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
     readonly internalID: string;
-    readonly gravityID: string;
+    readonly slug: string;
     readonly exhibition_period: string | null;
     readonly pressReleaseUrl: string | null;
     readonly openingReceptionText: string | null;
@@ -47,7 +47,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -128,5 +128,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f42f7629f5a8030c1abdbf7570830617';
+(node as any).hash = '1121b20814570aaecd0d64799b6e8dd6';
 export default node;

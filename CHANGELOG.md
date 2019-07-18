@@ -16,9 +16,31 @@
 
 ### Master
 
-- Metaphysics v2 update that removes gravityID - zephraph
+- Fixes a persistent top border when integrated with Eigen - ash
+
+### 1.12.8
+
+- Fixes a CI build/deploy failure caused by an unexpected local change - yuki24
+
+### 1.12.7
+
+- Display the image of an artwork on the confirm bid screen - yuki24
+
+### 1.12.6
+
+- Added partner type to partner card - lilyfromseattle
 - Removes InvertedButton - kierangillen
 - Adds ContextCard - kierangillen
+- Fixes BottomAlignedButton keyboard clipping - kierangillen
+- Fixes crash and map UX for city guides - ash
+- Fixes spurious, intermittent crash from home feed - ash
+- Markdown links don't open modally unless specified - lilyfromseattle
+- Metaphysics v2 update that removes gravityID - zephraph
+- Updates the copy bidders see when their auction registration status pending - yuki24
+- Adds more clarifications to the credit card form screen - yuki24
+- Adds a message to the registration screen that bidders need a valid credit card - yuki24
+- Replaces most Emission buttons with new Palette Button - kierangillen
+- Adds a message to the registration screen for bidders who already have a credit card - yuki24
 
 ### 1.12.5
 

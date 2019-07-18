@@ -90,14 +90,14 @@ fragment ArtistRail_rail on HomePageArtistModule {
 
 fragment FairsRail_fairs_module on HomePageFairsModule {
   results {
-    gravityID
+    slug
     name
     profile {
-      gravityID
+      slug
       id
     }
     mobile_image {
-      gravityID
+      internalID
       url
     }
     id
@@ -105,7 +105,7 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
 }
 
 fragment ArtistCard_artist on Artist {
-  gravityID
+  slug
   internalID
   href
   name
@@ -124,7 +124,7 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
     ... on HomePageModuleContextFollowedArtist {
       artist {
         internalID
-        gravityID
+        slug
         id
       }
     }
@@ -140,7 +140,7 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
     ... on HomePageModuleContextRelatedArtist {
       artist {
         internalID
-        gravityID
+        slug
         id
       }
       based_on {
@@ -159,7 +159,7 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  gravityID
+  slug
   image {
     aspect_ratio
   }
@@ -174,7 +174,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  gravityID
+  slug
   sale {
     is_auction
     is_live_open
@@ -244,7 +244,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -790,7 +790,7 @@ return {
                     "concreteType": "Image",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -812,7 +812,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "b2a0d8052d6b74a473485b1eaab0c374",
+    "id": "a31e00d849c112642f9dc11193074a2f",
     "text": null,
     "metadata": {}
   }

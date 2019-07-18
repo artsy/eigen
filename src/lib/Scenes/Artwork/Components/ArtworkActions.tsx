@@ -64,7 +64,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   render() {
     const {
-      artwork: { is_saved, image, id, gravityID, heightCm, widthCm },
+      artwork: { is_saved, image, id, slug, heightCm, widthCm },
     } = this.props
 
     const heightIn = heightCm / 2.54
@@ -83,7 +83,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           </TouchableWithoutFeedback>
           {Constants.AREnabled && (
             <TouchableWithoutFeedback
-              onPress={() => ApiModule.presentAugmentedRealityVIR(image.url, heightIn, widthIn, gravityID, id)}
+              onPress={() => ApiModule.presentAugmentedRealityVIR(image.url, heightIn, widthIn, slug, id)}
             >
               <UtilButton pr={3}>
                 <Box mr={0.5}>
@@ -118,7 +118,7 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
     fragment ArtworkActions_artwork on Artwork {
       id
       internalID
-      gravityID
+      slug
       title
       href
       is_saved

@@ -1,9 +1,8 @@
-import React from "react"
-import { Image, Text, TouchableWithoutFeedback, View } from "react-native"
-
-import fonts from "lib/data/fonts"
+import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
+import ChevronIcon from "lib/Icons/ChevronIcon"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import Separator from "../Separator"
+import React from "react"
+import { TouchableWithoutFeedback, View } from "react-native"
 
 interface Props extends React.Props<NavigationButton> {
   href: string
@@ -14,20 +13,22 @@ interface Props extends React.Props<NavigationButton> {
 export default class NavigationButton extends React.Component<Props, any> {
   render() {
     return (
-      <View style={[{ marginBottom: 20, marginLeft: 20, marginRight: 20 }, this.props.style]}>
-        <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
-          <View style={{}}>
-            <Separator style={{ marginRight: 0, marginLeft: 0 }} />
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontFamily: fonts["avant-garde-regular"], marginTop: 14, marginBottom: 14 }}>
-                {this.props.title.toUpperCase()}
-              </Text>
-              <Image style={{ alignSelf: "center" }} source={require("../../../../images/horizontal_chevron.png")} />
-            </View>
-            <Separator style={{ marginRight: 0, marginLeft: 0 }} />
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      <Theme>
+        <View style={[{ marginBottom: 20, marginLeft: 20, marginRight: 20 }, this.props.style]}>
+          <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
+            <Box>
+              <Separator mb={1} />
+              <Flex flexDirection="row" alignItems="center" flexWrap="nowrap" justifyContent="space-between">
+                <Sans size="3" weight="medium">
+                  {this.props.title}
+                </Sans>
+                <ChevronIcon />
+              </Flex>
+              <Separator mt={1} />
+            </Box>
+          </TouchableWithoutFeedback>
+        </View>
+      </Theme>
     )
   }
 

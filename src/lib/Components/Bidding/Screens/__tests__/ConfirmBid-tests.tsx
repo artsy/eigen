@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Button, Serif } from "@artsy/palette"
 import { merge, times } from "lodash"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
@@ -9,7 +9,6 @@ import Spinner from "../../../Spinner"
 
 import { LinkText } from "../../../Text/LinkText"
 import { BidInfoRow } from "../../Components/BidInfoRow"
-import { Button } from "../../Components/Button"
 import { Checkbox } from "../../Components/Checkbox"
 
 import { BidResultScreen } from "../BidResult"
@@ -36,7 +35,6 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { SecondaryOutlineButton } from "lib/Components/Buttons"
 import { Modal } from "lib/Components/Modal"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
@@ -645,7 +643,7 @@ describe("ConfirmBid for unqualified user", () => {
     )
     component.root
       .findByType(Modal)
-      .findByType(SecondaryOutlineButton)
+      .findByType(Button)
       .props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -680,7 +678,7 @@ describe("ConfirmBid for unqualified user", () => {
     )
     component.root
       .findByType(Modal)
-      .findByType(SecondaryOutlineButton)
+      .findByType(Button)
       .props.onPress()
 
     // it dismisses the modal
@@ -714,7 +712,7 @@ describe("ConfirmBid for unqualified user", () => {
     )
     component.root
       .findByType(Modal)
-      .findByType(SecondaryOutlineButton)
+      .findByType(Button)
       .props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -818,6 +816,9 @@ const saleArtwork = {
     title: "Meteor Shower",
     date: "2015",
     artist_names: "Makiko Kudo",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
+    },
   },
   sale: {
     id: "best-art-sale-in-town",

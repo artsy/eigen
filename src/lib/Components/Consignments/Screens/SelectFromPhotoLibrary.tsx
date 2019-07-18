@@ -1,6 +1,6 @@
 import React from "react"
 
-import DoneButton from "../Components/BottomAlignedButton"
+import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
 
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
@@ -199,7 +199,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   render() {
     return (
       <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
+        <BottomAlignedButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
           <ScrollView
             style={{ flex: 1 }}
             scrollsToTop={true}
@@ -216,7 +216,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
               />
             </View>
           </ScrollView>
-        </DoneButton>
+        </BottomAlignedButton>
       </ConsignmentBG>
     )
   }

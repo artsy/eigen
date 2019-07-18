@@ -1,7 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import { BidGhostButton } from "lib/Components/Bidding/Components/Button"
+import { Button } from "@artsy/palette"
 import { RegistrationResult, RegistrationStatus } from "../RegistrationResult"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -11,6 +11,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+import { Icon20 } from "../../Components/Icon"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
@@ -23,6 +24,17 @@ describe("Registration result component", () => {
       .toJSON()
     expect(component).toMatchSnapshot()
   })
+
+  it("does not render the icon when the registration status is pending", () => {
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
+      </BiddingThemeProvider>
+    )
+
+    expect(component.root.findAllByType(Icon20).length).toEqual(0)
+  })
+
   it("renders registration complete properly", () => {
     const component = renderer
       .create(
@@ -33,6 +45,7 @@ describe("Registration result component", () => {
       .toJSON()
     expect(component).toMatchSnapshot()
   })
+
   it("renders registration error properly", () => {
     const component = renderer
       .create(
@@ -54,7 +67,7 @@ describe("Registration result component", () => {
     const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
     mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-    component.root.findByType(BidGhostButton).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
     jest.runAllTicks()
 
     expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()

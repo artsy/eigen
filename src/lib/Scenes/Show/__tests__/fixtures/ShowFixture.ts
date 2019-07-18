@@ -3,7 +3,7 @@ export const ShowFixture = {
     id: "anderson-fine-art-gallery-flickinger-collection",
     location: {
       id: "TG9jYXRpb246NWIzNjQ2NjRjYjRjMjcxNzQzNDkwMTkx",
-      gravityID: "5b364664cb4c271743490191",
+      internalID: "5b364664cb4c271743490191",
       city: "Sea Island ",
       address: "Online Exclusive",
       address_2: "",
@@ -13,109 +13,109 @@ export const ShowFixture = {
     artists: [
       {
         id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
-        gravityID: "hans-hofmann",
+        slug: "hans-hofmann",
         name: "Hans Hofmann",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmRhdmlkLWhvY2tuZXk=",
-        gravityID: "david-hockney",
+        slug: "david-hockney",
         name: "David Hockney",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
-        gravityID: "sam-francis",
+        slug: "sam-francis",
         name: "Sam Francis",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
-        gravityID: "pablo-picasso",
+        slug: "pablo-picasso",
         name: "Pablo Picasso",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OndvbGYta2Fobg==",
-        gravityID: "wolf-kahn",
+        slug: "wolf-kahn",
         name: "Wolf Kahn",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OnJvYmVydC1tb3RoZXJ3ZWxs",
-        gravityID: "robert-motherwell",
+        slug: "robert-motherwell",
         name: "Robert Motherwell",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmppbS1kaW5l",
-        gravityID: "jim-dine",
+        slug: "jim-dine",
         name: "Jim Dine",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmVsbHN3b3J0aC1rZWxseQ==",
-        gravityID: "ellsworth-kelly",
+        slug: "ellsworth-kelly",
         name: "Ellsworth Kelly",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmJyaWRnZXQtcmlsZXk=",
-        gravityID: "bridget-riley",
+        slug: "bridget-riley",
         name: "Bridget Riley",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmNhcnJvbGwtZHVuaGFt",
-        gravityID: "carroll-dunham",
+        slug: "carroll-dunham",
         name: "Carroll Dunham",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OnJpY2hhcmQtZGllYmVua29ybg==",
-        gravityID: "richard-diebenkorn",
+        slug: "richard-diebenkorn",
         name: "Richard Diebenkorn",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmthcmVsLWFwcGVs",
-        gravityID: "karel-appel",
+        slug: "karel-appel",
         name: "Karel Appel",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmRhbGUtY2hpaHVseQ==",
-        gravityID: "dale-chihuly",
+        slug: "dale-chihuly",
         name: "Dale Chihuly",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OnBvbGx5LWFwZmVsYmF1bQ==",
-        gravityID: "polly-apfelbaum",
+        slug: "polly-apfelbaum",
         name: "Polly Apfelbaum",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmNhcm9seW4tYnJhZHk=",
-        gravityID: "carolyn-brady",
+        slug: "carolyn-brady",
         name: "Carolyn Brady",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0Om5lbGwtYmxhaW5l",
-        gravityID: "nell-blaine",
+        slug: "nell-blaine",
         name: "Nell Blaine",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OmJydWNlLWJlYXNsZXk=",
-        gravityID: "bruce-beasley",
+        slug: "bruce-beasley",
         name: "Bruce Beasley",
         is_followed: false,
       },
       {
         id: "QXJ0aXN0OnJvYmVydC1oYXJtcw==",
-        gravityID: "robert-harms",
+        slug: "robert-harms",
         name: "Robert Harms",
         is_followed: false,
       },
@@ -123,7 +123,7 @@ export const ShowFixture = {
     artworks: [
       {
         id: "QXJ0d29yazpkYXZpZC1ob2NrbmV5LXBhcGVyLXBvb2xz",
-        gravityID: "david-hockney-paper-pools",
+        slug: "david-hockney-paper-pools",
         artist_names: "David Hockney",
         image: {
           id: "5b3a33267622dd0a9cfcfdc4",
@@ -135,7 +135,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U=",
-        gravityID: "carolyn-brady-stourhead-across-the-lake",
+        slug: "carolyn-brady-stourhead-across-the-lake",
         artist_names: "Carolyn Brady",
         image: {
           id: "5b4b636f64067502ce65a990",
@@ -147,7 +147,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpyb2JlcnQtaGFybXMtYmx1ZmYtcm9hZA==",
-        gravityID: "robert-harms-bluff-road",
+        slug: "robert-harms-bluff-road",
         artist_names: "Robert Harms",
         image: {
           id: "5b33ebad275b240e5f927a93",
@@ -159,7 +159,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpqaW0tZGluZS1hbi1pbmZvcm1hbC10aWU=",
-        gravityID: "jim-dine-an-informal-tie",
+        slug: "jim-dine-an-informal-tie",
         artist_names: "Jim Dine",
         image: {
           id: "5b33e310cb4c273c8abed039",
@@ -171,7 +171,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpyaWNoYXJkLWRpZWJlbmtvcm4tYmx1ZS13aXRoLXJlZC0xNQ==",
-        gravityID: "richard-diebenkorn-blue-with-red-15",
+        slug: "richard-diebenkorn-blue-with-red-15",
         artist_names: "Richard Diebenkorn",
         image: {
           id: "5b33d87dcd530e5746e1187b",
@@ -183,7 +183,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpjYXJyb2xsLWR1bmhhbS1jb2xvci1tZXNzYWdlcy1hLWItYW5kLWM=",
-        gravityID: "carroll-dunham-color-messages-a-b-and-c",
+        slug: "carroll-dunham-color-messages-a-b-and-c",
         artist_names: "Carroll Dunham",
         image: {
           id: "5b33ea119c18db46398bf3a6",
@@ -195,7 +195,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazprYXJlbC1hcHBlbC1oYXBweS1naG9zdA==",
-        gravityID: "karel-appel-happy-ghost",
+        slug: "karel-appel-happy-ghost",
         artist_names: "Karel Appel",
         image: {
           id: "5b33c803a09a6779c76cd6af",
@@ -207,7 +207,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpuZWxsLWJsYWluZS1hdWd1c3QtbGlnaHQ=",
-        gravityID: "nell-blaine-august-light",
+        slug: "nell-blaine-august-light",
         artist_names: "Nell Blaine",
         image: {
           id: "5b33cf9b7076d070a64d7ac7",
@@ -219,7 +219,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpicnVjZS1iZWFzbGV5LXZveWFnZXI=",
-        gravityID: "bruce-beasley-voyager",
+        slug: "bruce-beasley-voyager",
         artist_names: "Bruce Beasley",
         image: {
           id: "5babb3f7c786fb5e3fc9f10f",
@@ -231,7 +231,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpzYW0tZnJhbmNpcy11bmRlci1ibHVlLTM=",
-        gravityID: "sam-francis-under-blue-3",
+        slug: "sam-francis-under-blue-3",
         artist_names: "Sam Francis",
         image: {
           id: "5b33ea9e5b2fba17ddc57257",
@@ -243,7 +243,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXRhbWFyaW5k",
-        gravityID: "carolyn-brady-tamarind",
+        slug: "carolyn-brady-tamarind",
         artist_names: "Carolyn Brady",
         image: {
           id: "5b33d4caa6ca6d137cebf02b",
@@ -255,7 +255,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpyb2JlcnQtbW90aGVyd2VsbC1udW1iZXItOA==",
-        gravityID: "robert-motherwell-number-8",
+        slug: "robert-motherwell-number-8",
         artist_names: "Robert Motherwell",
         image: {
           id: "5b4b8703a7bb3b324e71bb0b",
@@ -267,7 +267,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazplbGxzd29ydGgta2VsbHktZ3JlZW4tY3VydmUtMTQ=",
-        gravityID: "ellsworth-kelly-green-curve-14",
+        slug: "ellsworth-kelly-green-curve-14",
         artist_names: "Ellsworth Kelly",
         image: {
           id: "5b4b7c655a8a0c02f6df7999",
@@ -279,7 +279,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazp3b2xmLWthaG4taW4taXBzd2ljaC1tYXNz",
-        gravityID: "wolf-kahn-in-ipswich-mass",
+        slug: "wolf-kahn-in-ipswich-mass",
         artist_names: "Wolf Kahn",
         image: {
           id: "5b4b7a60031bec5fa824e4d7",
@@ -291,7 +291,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpkYXZpZC1ob2NrbmV5LW15LXBvb2wtYW5kLXRlcnJhY2UtNA==",
-        gravityID: "david-hockney-my-pool-and-terrace-4",
+        slug: "david-hockney-my-pool-and-terrace-4",
         artist_names: "David Hockney",
         image: {
           id: "5b4b7596c3f01104a3b8cd03",
@@ -303,7 +303,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazp3b2xmLWthaG4tb3JjaGFyZC1hdC1kdXNr",
-        gravityID: "wolf-kahn-orchard-at-dusk",
+        slug: "wolf-kahn-orchard-at-dusk",
         artist_names: "Wolf Kahn",
         image: {
           id: "5b4b7a3fc4c7147ec8ed12b8",
@@ -315,7 +315,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpoYW5zLWhvZm1hbm4tdW50aXRsZWQtMjIx",
-        gravityID: "hans-hofmann-untitled-221",
+        slug: "hans-hofmann-untitled-221",
         artist_names: "Hans Hofmann",
         image: {
           id: "5b4b7872841d6662f71bb141",
@@ -327,7 +327,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpwb2xseS1hcGZlbGJhdW0tbG92ZS1tZS10ZW5kZXItaWk=",
-        gravityID: "polly-apfelbaum-love-me-tender-ii",
+        slug: "polly-apfelbaum-love-me-tender-ii",
         artist_names: "Polly Apfelbaum",
         image: {
           id: "5b4cccb8efdaeb002387b941",
@@ -339,7 +339,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpicmlkZ2V0LXJpbGV5LWJsdWUtZG9taW5hbmNl",
-        gravityID: "bridget-riley-blue-dominance",
+        slug: "bridget-riley-blue-dominance",
         artist_names: "Bridget Riley",
         image: {
           id: "5b4b64635a8a0c796e7ee64f",
@@ -352,7 +352,7 @@ export const ShowFixture = {
       {
         id:
           "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
-        gravityID: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
+        slug: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
         artist_names: "Pablo Picasso",
         image: {
           id: "5b4b9901640675075eedee14",
@@ -364,7 +364,7 @@ export const ShowFixture = {
       },
       {
         id: "QXJ0d29yazpkYWxlLWNoaWh1bHktY2VsdGljLWVtZXJhbGQtcGVyc2lhbi1wYWly",
-        gravityID: "dale-chihuly-celtic-emerald-persian-pair",
+        slug: "dale-chihuly-celtic-emerald-persian-pair",
         artist_names: "Dale Chihuly",
         image: {
           id: "5b4b9d53a7bb3b3b27bcec67",

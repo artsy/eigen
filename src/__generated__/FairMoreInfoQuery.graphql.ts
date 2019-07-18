@@ -30,8 +30,9 @@ query FairMoreInfoQuery(
 fragment FairMoreInfo_fair on Fair {
   organizer {
     website
+    id
   }
-  gravityID
+  slug
   internalID
   about
   ticketsLink
@@ -53,7 +54,14 @@ v1 = [
     "name": "id",
     "variableName": "fairID"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -110,13 +118,14 @@ return {
                 "name": "website",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v2/*: any*/)
             ]
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "gravityID",
+            "name": "slug",
             "args": null,
             "storageKey": null
           },
@@ -141,13 +150,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          }
+          (v2/*: any*/)
         ]
       }
     ]
@@ -155,7 +158,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairMoreInfoQuery",
-    "id": "7d5a32c7a478e75020987bfbc0c09438",
+    "id": "81a1728ed5a285d5dccbf781875f2108",
     "text": null,
     "metadata": {}
   }

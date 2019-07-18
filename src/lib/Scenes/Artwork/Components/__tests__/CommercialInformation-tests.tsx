@@ -19,9 +19,31 @@ describe("CommercialInformation", () => {
     expect(component.text()).toContain("Consign with Artsy.")
   })
 
+  it("hides seller info for works from closed auctions", () => {
+    const CommercialInformationArtworkClosedAuction = {
+      ...CommercialInformationArtwork,
+      sale: {
+        is_auction: true,
+        is_closed: true,
+      },
+    }
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationArtworkClosedAuction} />
+      </Theme>
+    )
+    expect(component.text()).toContain("Sold")
+    expect(component.text()).not.toContain("I'm a Gallery")
+    expect(component.text()).toContain("Consign with Artsy.")
+  })
+
   it("doesn't render information when the data is not present", () => {
     const CommercialInformationArtworkNoData = {
       availability: null,
+      sale: {
+        is_auction: false,
+        is_closed: false,
+      },
       partner: {
         name: null,
         " $refType": null,
@@ -48,6 +70,10 @@ describe("CommercialInformation", () => {
 
 const CommercialInformationArtwork = {
   availability: "Sold",
+  sale: {
+    is_auction: false,
+    is_closed: false,
+  },
   partner: {
     name: "I'm a Gallery",
     " $refType": null,

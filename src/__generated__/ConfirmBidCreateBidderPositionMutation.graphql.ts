@@ -17,7 +17,7 @@ export type ConfirmBidCreateBidderPositionMutationResponse = {
             readonly message_header: string | null;
             readonly message_description_md: string | null;
             readonly position: {
-                readonly gravityID: string;
+                readonly internalID: string;
                 readonly suggested_next_bid: {
                     readonly cents: number | null;
                     readonly display: string | null;
@@ -43,7 +43,7 @@ mutation ConfirmBidCreateBidderPositionMutation(
       message_header
       message_description_md
       position {
-        gravityID
+        internalID
         suggested_next_bid {
           cents
           display
@@ -95,7 +95,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -228,11 +228,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ConfirmBidCreateBidderPositionMutation",
-    "id": "b31b4dd9bc76276e2511a378a84fc357",
+    "id": "de837d86f37e7aab09140b5a4256ad5a",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '260a925870a8baed707b576c1a5977e2';
+(node as any).hash = '724885bd176c9253f1967c80ad82385b';
 export default node;
