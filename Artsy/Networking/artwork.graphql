@@ -17,6 +17,8 @@ query OldArtworkQuery($artworkID: String!) {
       sortable_id
     }
 
+    is_in_auction
+
     partner {
       name
       id

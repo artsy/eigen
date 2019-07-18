@@ -84,6 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *saleMessage;
 
+/** Note that this field is only populated from Metaphysics requests. */
+@property (nonatomic, assign) BOOL isInAuction;
+
 /// An artwork is BuyNowable if it isAcquirable but doesn't have multiple editions.
 @property (nonatomic, assign, readonly) BOOL isBuyNowable;
 
