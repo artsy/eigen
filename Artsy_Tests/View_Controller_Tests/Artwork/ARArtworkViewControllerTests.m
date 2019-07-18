@@ -61,7 +61,7 @@ StubArtworkWithSaleArtwork()
                 @"id" : @"some-artwork",
                 @"title" : @"Some Title",
                 @"availability" : @"for sale",
-                @"sale_artwork": @{@"id": @"some-sale-artwork-id"}
+                @"is_in_auction": @(YES)
             }
         }
     };

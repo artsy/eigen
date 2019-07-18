@@ -27,7 +27,7 @@
 
     BOOL isArtworkNonCommerical = self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable.boolValue;
     BOOL isArtworkNSOInquiry = self.artwork.isOfferable || self.artwork.isAcquireable || self.artwork.isInquireable;
-    BOOL isArtworkAuctions = self.artwork.saleArtwork;
+    BOOL isArtworkAuctions = self.artwork.isInAuction;
 
     if ([AROptions boolForOption:AROptionsRNArtworkNonCommerical] && isArtworkNonCommerical) {
         return YES;

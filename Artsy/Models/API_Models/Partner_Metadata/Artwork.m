@@ -112,6 +112,7 @@
         ar_keypath(Artwork.new, gravIsPriceHidden) : @"price_hidden",
         
         ar_keypath(Artwork.new, mpSold) : @"is_sold",
+        ar_keypath(Artwork.new, isInAuction) : @"is_in_auction",
         ar_keypath(Artwork.new, mpIsAcquirable) : @"is_acquireable",
         ar_keypath(Artwork.new, mpIsInquirable) : @"is_inquireable",
         ar_keypath(Artwork.new, mpIsOfferable) : @"is_offerable",
