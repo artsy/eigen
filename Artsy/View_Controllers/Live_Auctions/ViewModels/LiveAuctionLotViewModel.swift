@@ -325,11 +325,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     func updateBiddingStatus(_ biddingStatus: String, wasPassed: Bool) {
-        let updated = model.updateBiddingStatus(with: biddingStatus)
-
-        if updated {
-            biddingStatusSignal.update((status: model.biddingStatus, wasPassed: wasPassed, isHighestBidder: self.userIsWinning))
-        }
+        model.updateBiddingStatus(with: biddingStatus)
+        biddingStatusSignal.update((status: model.biddingStatus, wasPassed: wasPassed, isHighestBidder: self.userIsWinning))
     }
 
     func updateOnlineBidCount(_ onlineBidCount: Int) {
