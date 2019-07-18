@@ -41,12 +41,12 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
 
   const [imageIndex, setImageIndex] = useState(0)
-  const prevCount = usePrevious(imageIndex)
+  const prevImageIndex = usePrevious(imageIndex)
 
   // Track swipe when index updates
   useEffect(
     () => {
-      if (prevCount && imageIndex !== prevCount) {
+      if (prevImageIndex && imageIndex !== prevImageIndex) {
         tracking.trackEvent({
           action_name: Schema.ActionNames.ArtworkImageSwipe,
           action_type: Schema.ActionTypes.Swipe,
