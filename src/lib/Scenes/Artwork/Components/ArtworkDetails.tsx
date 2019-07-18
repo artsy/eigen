@@ -46,7 +46,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
       <Box>
         <Join separator={<Spacer my={1} />}>
           <Sans size="3t" weight="medium">
-            Artwork Details
+            Artwork details
           </Sans>
           {truncatedDisplayItems.map(({ title, value }, index) => (
             <React.Fragment key={index}>

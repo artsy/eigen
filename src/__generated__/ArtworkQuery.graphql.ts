@@ -252,6 +252,10 @@ fragment CommercialInformation_artwork on Artwork {
     name
     id
   }
+  artists {
+    is_consignable
+    id
+  }
   sale {
     is_auction
     is_closed
@@ -259,7 +263,6 @@ fragment CommercialInformation_artwork on Artwork {
   }
   ...ArtworkAvailability_artwork
   ...SellerInfo_artwork
-  ...ArtworkExtraLinks_artwork
 }
 
 fragment ArtworkHistory_artwork on Artwork {
@@ -276,13 +279,6 @@ fragment SellerInfo_artwork on Artwork {
   availability
   partner {
     name
-    id
-  }
-}
-
-fragment ArtworkExtraLinks_artwork on Artwork {
-  artists {
-    is_consignable
     id
   }
 }
@@ -1431,7 +1427,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "48077f48fbae2288ffb70d4867e28172",
+    "id": "90204594a8a0592e63af3b3c18b43670",
     "text": null,
     "metadata": {}
   }

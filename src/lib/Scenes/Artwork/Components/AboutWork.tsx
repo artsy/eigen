@@ -17,12 +17,12 @@ export class AboutWork extends React.Component<AboutWorkProps> {
       hasArtworkInfo && (
         <Join separator={<Spacer mb={2} />}>
           <Sans size="3t" weight="medium">
-            About this work
+            About the work
           </Sans>
           {additional_information && <ReadMore content={additional_information} maxChars={140} />}
           {description && (
             <Flex>
-              <Sans size="2" color="black60">
+              <Sans size="2" color="black60" mb="3px">
                 From Artsy Specialist:
               </Sans>
               <ReadMore content={description} maxChars={140} />
