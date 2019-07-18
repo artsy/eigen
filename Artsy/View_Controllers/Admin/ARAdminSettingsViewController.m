@@ -452,7 +452,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Labs";
     
-    NSArray *options = [AROptions labsOptions];
+    NSArray *options = [[AROptions labsOptions] sortedArrayUsingSelector:@selector(compare:)];
     for (NSInteger index = 0; index < options.count; index++) {
         NSString *key = options[index];
         NSString *title = [AROptions descriptionForOption:key];
