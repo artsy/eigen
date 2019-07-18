@@ -1,12 +1,14 @@
-import { color, Flex, space, Spacer } from "@artsy/palette"
+import { Flex, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Animated, Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import React, { useCallback, useContext, useMemo, useRef, useState } from "react"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { findClosestIndex, fitInside, getMeasurements } from "./geometry"
+import { fitInside } from "./geometry"
+import { baseCardBoundingBox, ImageCarouselBase } from "./ImageCarouselBase"
+import { FullScreenState, ImageCarouselAction, ImageCarouselContext } from "./ImageCarouselContext"
 import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
-import { ImageWithLoadingState } from "./ImageWithLoadingState"
+import { PaginationDot } from "./PaginationDot"
 
 export interface ImageCarouselProps {
   images: ImageCarousel_images
@@ -18,11 +20,6 @@ export interface ImageDescriptor {
   height: number
 }
 
-const windowWidth = Dimensions.get("window").width
-// The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-const cardHeight = windowWidth >= 375 ? 340 : 290
-export const cardBoundingBox = { width: windowWidth, height: cardHeight }
-
 /**
  * ImageCarousel
  * NOTE: This component currently assumes it is being rendered at the full width of the screen.
@@ -33,7 +30,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
   const images: ImageDescriptor[] = useMemo(
     () =>
       props.images.map(image => {
-        const { width, height } = fitInside(cardBoundingBox, image)
+        const { width, height } = fitInside(baseCardBoundingBox, image)
         return {
           width,
           height,
@@ -46,112 +43,73 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = props => {
       }),
     [props.images]
   )
-  const measurements = useMemo(() => getMeasurements({ images, boundingBox: cardBoundingBox }), [images])
-  const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
-  const imageRefs = useMemo(() => [], [])
+  const baseImageRefs = useMemo(() => [], [])
+  const baseFlatListRef = useRef<FlatList<any>>()
 
-  const [imageIndex, setImageIndex] = useState(0)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  // update the imageIndex on scroll
-  const onScroll = useCallback(
-    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      // This finds the index of the image which is being given the most
-      // screen real estate at any given point in time.
-      setImageIndex(findClosestIndex(offsets, e.nativeEvent.contentOffset.x))
+  const [fullScreenState, setFullScreenState] = useState<FullScreenState>("none")
+
+  const isFullScreen = fullScreenState !== "none"
+
+  const dispatch = useCallback(
+    (action: ImageCarouselAction) => {
+      // console.warn(action)
+      switch (action.type) {
+        case "IMAGE_INDEX_CHANGED":
+          setCurrentImageIndex(action.nextImageIndex)
+          if (isFullScreen) {
+            baseFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
+          }
+          break
+        case "FULL_SCREEN_DISMISSED":
+          setFullScreenState("none")
+          break
+        case "TAPPED_TO_GO_FULL_SCREEN":
+          setFullScreenState("doing first render")
+          break
+        case "FULL_SCREEN_INITIAL_RENDER_COMPLETED":
+          setFullScreenState("animating entry transition")
+          break
+        case "FULL_SCREEN_FINISHED_ENTERING":
+          setFullScreenState("entered")
+          break
+      }
     },
-    [setImageIndex, offsets]
+    [isFullScreen]
   )
 
-  const [fullScreen, setFullScreen] = useState(false)
-
-  const flatListRef = useRef<FlatList<any>>(null)
-
   return (
-    <Flex>
-      <FlatList<ImageDescriptor>
-        data={images}
-        horizontal
-        ref={flatListRef}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={images.length > 1}
-        snapToOffsets={offsets}
-        keyExtractor={item => item.url}
-        decelerationRate="fast"
-        onScroll={onScroll}
-        initialNumToRender={2}
-        renderItem={({ item, index }) => {
-          const { cumulativeScrollOffset, ...styles } = measurements[index]
-          return (
-            <ImageWithLoadingState
-              imageURL={item.url}
-              width={styles.width}
-              height={styles.height}
-              onPress={() => setFullScreen(true)}
-              ref={ref => {
-                imageRefs[index] = ref
-              }}
-              style={styles}
-            />
-          )
-        }}
-      />
-      {images.length > 1 && (
-        <>
-          <Spacer mb={space(2)} />
-          <Flex flexDirection="row" justifyContent="center">
-            {images.map((_, index) => (
-              <PaginationDot key={index} diameter={5} selected={index === imageIndex} />
-            ))}
-          </Flex>
-        </>
-      )}
-      {fullScreen && (
-        <ImageCarouselFullScreen
-          imageIndex={imageIndex}
-          setImageIndex={index => {
-            if (fullScreen && flatListRef.current) {
-              flatListRef.current.scrollToOffset({ offset: offsets[index], animated: false })
-            }
-            setImageIndex(index)
-          }}
-          baseImageRef={imageRefs[imageIndex]}
-          images={images}
-          onClose={() => setFullScreen(false)}
-        />
-      )}
-    </Flex>
+    <ImageCarouselContext.Provider
+      value={{
+        dispatch,
+        baseFlatListRef,
+        baseImageRefs,
+        currentImageIndex,
+        images,
+        fullScreenState,
+      }}
+    >
+      <Flex>
+        <ImageCarouselBase />
+        {images.length > 1 && <PaginationDots />}
+        {isFullScreen && <ImageCarouselFullScreen />}
+      </Flex>
+    </ImageCarouselContext.Provider>
   )
 }
 
-const PaginationDot: React.FC<{ diameter: number; selected: boolean }> = ({ diameter, selected }) => {
-  const animatedValues = useMemo(() => {
-    const toggle = new Animated.Value(selected ? 1 : 0)
-    const dotColor = toggle.interpolate({
-      inputRange: [0, 1],
-      outputRange: [color("black10"), "black"],
-    })
-    return { toggle, dotColor }
-  }, [])
-
-  useEffect(
-    () => {
-      Animated.spring(animatedValues.toggle, {
-        toValue: selected ? 1 : 0,
-      }).start()
-    },
-    [selected]
-  )
-
+function PaginationDots() {
+  const { currentImageIndex, images } = useContext(ImageCarouselContext)
   return (
-    <Animated.View
-      style={{
-        marginHorizontal: diameter * 0.8,
-        borderRadius: diameter / 2,
-        width: diameter,
-        height: diameter,
-        backgroundColor: animatedValues.dotColor,
-      }}
-    />
+    <>
+      <Spacer mb={2} />
+      <Flex flexDirection="row" justifyContent="center">
+        {images.map((_, index) => (
+          <PaginationDot key={index} diameter={5} selected={index === currentImageIndex} />
+        ))}
+      </Flex>
+    </>
   )
 }
 

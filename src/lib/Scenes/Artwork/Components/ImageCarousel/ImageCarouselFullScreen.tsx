@@ -6,7 +6,6 @@ import {
   Animated,
   Dimensions,
   FlatList,
-  Image,
   Modal,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -20,6 +19,8 @@ import {
 import { SafeAreaInsetsContext } from "../SafeAreaInsetsContext"
 import { fitInside } from "./geometry"
 import { ImageDescriptor } from "./ImageCarousel"
+import { ImageCarouselContext } from "./ImageCarouselContext"
+import { useSpringValue } from "./useSpringValue"
 
 const useAnimatedValue = (init: number) => useMemo(() => new Animated.Value(init), [])
 
@@ -79,29 +80,28 @@ const screenHeight = Dimensions.get("screen").height
 const screenWidth = Dimensions.get("screen").width
 const screenBoundingBox = { width: screenWidth, height: screenHeight }
 
-const EntryContext = React.createContext<{
-  hasEntered: boolean
-  isEntering: boolean
-  didEnter(): void
-  didStartEntering()
-}>(null)
+export function ImageCarouselFullScreen() {
+  const { currentImageIndex, images, dispatch, fullScreenState } = useContext(ImageCarouselContext)
 
-export const ImageCarouselFullScreen: React.FC<{
-  baseImageRef: Image
-  images: ImageDescriptor[]
-  imageIndex: number
-  setImageIndex(index: number): void
-  onClose(): void
-}> = ({ baseImageRef, images, onClose, imageIndex, setImageIndex }) => {
-  const [hasEntered, setHasEntered] = useState(false)
-  const [isEntering, setIsEntering] = useState(false)
+  const onClose = useCallback(
+    () => {
+      if (fullScreenState === "entered") {
+        dispatch({ type: "FULL_SCREEN_DISMISSED" })
+      }
+    },
+    [dispatch, fullScreenState]
+  )
 
   // update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      setImageIndex(Math.round(e.nativeEvent.contentOffset.x / screenWidth))
+      // console.warn("ya boy scrollin'")
+      const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenWidth)
+      if (fullScreenState === "entered" && nextImageIndex !== currentImageIndex) {
+        dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
+      }
     },
-    [setImageIndex]
+    [dispatch, currentImageIndex, fullScreenState]
   )
 
   const zoomViewRefs: ImageZoomView[] = useMemo(() => [], [])
@@ -109,67 +109,53 @@ export const ImageCarouselFullScreen: React.FC<{
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
     // on unmount we use it's built-in fade transition
-    <EntryContext.Provider
-      value={{
-        hasEntered,
-        isEntering,
-        didEnter() {
-          setHasEntered(true)
-          setIsEntering(true)
-        },
-        didStartEntering() {
-          setIsEntering(true)
-        },
-      }}
-    >
-      <Modal transparent animated={hasEntered} animationType="fade">
-        {/* This underlay fades in while the image is opaque instantly */}
-        <WhiteUnderlay />
+    <Modal transparent animated={false} animationType="fade">
+      {/* This underlay fades in while the image is opaque instantly */}
+      <WhiteUnderlay />
 
-        <VerticalSwipeToDismiss onClose={onClose}>
-          <FlatList<ImageDescriptor>
-            data={images}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={images.length > 1}
-            snapToInterval={screenBoundingBox.width}
-            keyExtractor={item => item.url}
-            decelerationRate="fast"
-            initialScrollIndex={imageIndex}
-            getItemLayout={(_, index) => ({
-              index,
-              offset: index * screenWidth,
-              length: screenWidth,
-            })}
-            onScroll={onScroll}
-            onMomentumScrollEnd={() => {
-              for (let i = 0; i < images.length; i++) {
-                if (i !== imageIndex && zoomViewRefs[i]) {
-                  zoomViewRefs[i].resetZoom()
-                }
+      <VerticalSwipeToDismiss onClose={onClose}>
+        <FlatList<ImageDescriptor>
+          data={images}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={images.length > 1}
+          snapToInterval={screenBoundingBox.width}
+          keyExtractor={item => item.url}
+          decelerationRate="fast"
+          initialScrollIndex={currentImageIndex}
+          getItemLayout={(_, index) => ({
+            index,
+            offset: index * screenWidth,
+            length: screenWidth,
+          })}
+          onScroll={onScroll}
+          onMomentumScrollEnd={() => {
+            for (let i = 0; i < images.length; i++) {
+              if (i !== currentImageIndex && zoomViewRefs[i]) {
+                zoomViewRefs[i].resetZoom()
               }
-            }}
-            initialNumToRender={3}
-            windowSize={images.length * 2 + 1}
-            maxToRenderPerBatch={3}
-            renderItem={({ item, index }) => {
-              return (
-                <ImageZoomView
-                  image={item}
-                  baseImageRef={baseImageRef}
-                  ref={ref => {
-                    zoomViewRefs[index] = ref
-                  }}
-                />
-              )
-            }}
-          />
-        </VerticalSwipeToDismiss>
-        <StatusBarOverlay />
-        <CloseButton onClose={onClose} />
-        <IndexIndicator imageIndex={imageIndex} numImages={images.length} />
-      </Modal>
-    </EntryContext.Provider>
+            }
+          }}
+          initialNumToRender={3}
+          windowSize={images.length * 2 + 1}
+          maxToRenderPerBatch={3}
+          renderItem={({ item, index }) => {
+            return (
+              <ImageZoomView
+                image={item}
+                index={index}
+                ref={ref => {
+                  zoomViewRefs[index] = ref
+                }}
+              />
+            )
+          }}
+        />
+      </VerticalSwipeToDismiss>
+      <StatusBarOverlay />
+      <CloseButton onClose={onClose} />
+      <IndexIndicator imageIndex={currentImageIndex} numImages={images.length} />
+    </Modal>
   )
 }
 
@@ -248,12 +234,14 @@ interface ImageZoomView {
 }
 interface ImageZoomViewProps {
   image: ImageDescriptor
-  baseImageRef: Image
   ref: React.Ref<ImageZoomView>
+  index: number
 }
+
 const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> = React.forwardRef(
-  ({ image, baseImageRef }, ref) => {
-    const { hasEntered, isEntering, didEnter, didStartEntering } = useContext(EntryContext)
+  ({ image, index }, ref) => {
+    const { currentImageIndex, fullScreenState, baseImageRefs, dispatch } = useContext(ImageCarouselContext)
+
     const imageWrapperRef = useRef<{ getNode(): View }>(null)
 
     const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset | null>(null)
@@ -263,35 +251,37 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
       imageTransitionOffset,
     ])
 
-    const animateTransition = useCallback(() => {
-      didStartEntering()
-      Animated.spring(transition, {
-        bounciness: 0,
-        toValue: 1,
-        useNativeDriver: true,
-      }).start(didEnter)
-    }, [])
-
     useEffect(() => {
       // animate image transition on mount
-      if (!hasEntered) {
+      if (fullScreenState !== "entered" && currentImageIndex === index) {
         getTransitionOffset({
-          fromRef: baseImageRef,
+          fromRef: baseImageRefs[currentImageIndex],
           // @ts-ignore
           toRef: imageWrapperRef.current.getNode(),
         })
           .then(setImageTransitionOffset)
-          .then(() => requestAnimationFrame(animateTransition))
+          .then(() => {
+            dispatch({ type: "FULL_SCREEN_INITIAL_RENDER_COMPLETED" })
+            requestAnimationFrame(() => {
+              Animated.spring(transition, {
+                bounciness: 0,
+                toValue: 1,
+                useNativeDriver: true,
+              }).start(() => dispatch({ type: "FULL_SCREEN_FINISHED_ENTERING" }))
+            })
+          })
       }
     }, [])
 
     const { width, height } = fitInside(screenBoundingBox, image)
 
+    // we need to be able to reset the scroll view zoom level when the user
+    // swipes to another image
     const scrollViewRef = useRef<ScrollView>()
-    const zoomScaleRef = useRef<number>(0)
+    const zoomScale = useRef<number>(0)
 
     const resetZoom = useCallback(() => {
-      if (scrollViewRef.current && zoomScaleRef.current !== 1) {
+      if (scrollViewRef.current && zoomScale.current !== 1) {
         scrollViewRef.current.scrollResponderZoomTo({
           x: 0,
           y: 0,
@@ -306,7 +296,7 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
 
     const onDoublePress = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
       const { locationX, locationY } = ev.nativeEvent
-      if (zoomScaleRef.current > 3) {
+      if (zoomScale.current > 3) {
         resetZoom()
       } else {
         // zoom to tapped point
@@ -325,8 +315,8 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
       // scroll view to allow pinch-to-zoom behaviour
       <ScrollView
         ref={scrollViewRef}
-        scrollEnabled={hasEntered}
-        onScroll={ev => (zoomScaleRef.current = ev.nativeEvent.zoomScale)}
+        // scrollEnabled={hasEntered}
+        onScroll={ev => (zoomScale.current = ev.nativeEvent.zoomScale)}
         scrollEventThrottle={100}
         bounces={false}
         overScrollMode="never"
@@ -338,7 +328,7 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
         style={[
           {
             height: screenBoundingBox.height,
-            opacity: hasEntered || isEntering ? 1 : 0,
+            opacity: fullScreenState !== "doing first render" ? 1 : 0,
           },
         ]}
       >
@@ -368,31 +358,14 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
   }
 )
 
-const useSpringValue = (init: number, config: Partial<Animated.SpringAnimationConfig> = {}) => {
-  const value = useMemo(() => new Animated.Value(init), [])
-  const anim = useRef<Animated.CompositeAnimation>()
-  useEffect(
-    () => {
-      if (anim.current) {
-        anim.current.stop()
-      }
-      anim.current = Animated.spring(value, {
-        toValue: init,
-        useNativeDriver: true,
-        ...config,
-      })
-      anim.current.start(() => {
-        anim.current = null
-      })
-    },
-    [init]
-  )
-  return value
+const useSpringFade = (fade: "in" | "out") => {
+  const { fullScreenState } = useContext(ImageCarouselContext)
+  const [from, to] = fade === "in" ? [0, 1] : [1, 0]
+  return useSpringValue(fullScreenState === "animating entry transition" || fullScreenState === "entered" ? to : from)
 }
 
 const WhiteUnderlay: React.FC = () => {
-  const { isEntering, hasEntered } = useContext(EntryContext)
-  const opacity = useSpringValue(isEntering || hasEntered ? 1 : 0)
+  const opacity = useSpringFade("in")
 
   return (
     <Animated.View
@@ -413,8 +386,7 @@ const WhiteUnderlay: React.FC = () => {
 // before tapping the image to open the full screen carousel. Without this there's a nasty
 // jarring pop where the area of the image that was behind the status bar becomes fully visible.
 const StatusBarOverlay: React.FC = () => {
-  const { isEntering, hasEntered } = useContext(EntryContext)
-  const opacity = useSpringValue(isEntering || hasEntered ? 0 : 1)
+  const opacity = useSpringFade("out")
   const { top: height } = useContext(SafeAreaInsetsContext)
   return (
     <Animated.View
@@ -432,8 +404,7 @@ const StatusBarOverlay: React.FC = () => {
 }
 
 const CloseButton: React.FC<{ onClose(): void }> = ({ onClose }) => {
-  const { isEntering, hasEntered } = useContext(EntryContext)
-  const opacity = useSpringValue(isEntering || hasEntered ? 1 : 0)
+  const opacity = useSpringFade("in")
   const { top } = useContext(SafeAreaInsetsContext)
   return (
     <View
@@ -468,8 +439,7 @@ const CloseButton: React.FC<{ onClose(): void }> = ({ onClose }) => {
 }
 
 const IndexIndicator: React.FC<{ imageIndex: number; numImages: number }> = ({ imageIndex, numImages }) => {
-  const { isEntering, hasEntered } = useContext(EntryContext)
-  const opacity = useSpringValue(isEntering || hasEntered ? 1 : 0)
+  const opacity = useSpringFade("in")
   if (numImages === 1) {
     return null
   }
