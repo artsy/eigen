@@ -55,13 +55,13 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             it("updates when new events come in") {
                 expect(subject.priceOfCurrentBidsLabel.text) == "$Value"
 
-                salesPerson.currentLotValueString = "£200"
+                salesPerson.askingPriceValueString = "£200"
                 lotVM.newEventsSignal.update([])
 
                 expect(subject.priceOfCurrentBidsLabel.text) == "£200"
             }
 
-            it("ensures the bid is moved above the current max bid") {
+            it("ensures that the minimum possible bid is at the asking price") {
 
                 expect(subject.bidViewModel.currentBid) == 5_000_00
 

@@ -107,12 +107,8 @@ class LiveAuctionBidViewModel: NSObject {
         return lotViewModel.askingPriceSignal.peek() ?? 0
     }
 
-    var currentLotValue: UInt64 {
-        return salesPerson.currentLotValue(lotViewModel)
-    }
-
-    var currentLotValueString: String {
-        return salesPerson.currentLotValueString(lotViewModel)
+    var currentLotAskingPriceString: String {
+        return salesPerson.askingPriceString(lotViewModel)
     }
 
     var currentBidDollars: String {

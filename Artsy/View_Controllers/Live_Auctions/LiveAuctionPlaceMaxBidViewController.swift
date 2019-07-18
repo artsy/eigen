@@ -70,7 +70,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
     fileprivate func updateCurrentBidInformation(_: [LiveAuctionEventViewModel]) {
         numberOfCurrentBidsLabel.text = bidViewModel.currentBidsAndReserve
-        priceOfCurrentBidsLabel.text = bidViewModel.currentLotValueString
+        priceOfCurrentBidsLabel.text = bidViewModel.currentLotAskingPriceString
 
         // New bids can come in while we are on this screen
         bidViewModel.currentBid = max(bidViewModel.currentBid, bidViewModel.currentAskingPrice)

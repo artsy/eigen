@@ -72,11 +72,11 @@ class LiveAuctionCurrentLotView: UIButton {
             
             self?.currentBidObserverToken?.unsubscribe()
             self?.currentBidObserverToken = vm.currentBidSignal.subscribe({ _ in
-                biddingPriceLabel?.text = self?.salesPerson.currentLotValueString(vm) ?? ""
+                biddingPriceLabel?.text = self?.salesPerson.askingPriceString(vm) ?? ""
             })
 
             artistNameLabel?.text = vm.lotArtist
-            biddingPriceLabel?.text = self?.salesPerson.currentLotValueString(vm) ?? ""
+            biddingPriceLabel?.text = self?.salesPerson.askingPriceString(vm) ?? ""
             thumbnailView?.ar_setImage(with: vm.urlForThumbnail)
         }
     }

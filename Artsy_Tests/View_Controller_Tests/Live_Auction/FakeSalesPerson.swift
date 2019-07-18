@@ -28,13 +28,10 @@ class Stub_LiveAuctionsSalesPerson: LiveAuctionsSalesPerson {
     }
 
     var currentLotValue: UInt64 = 1234
-    override func currentLotValue(_ lot: LiveAuctionLotViewModelType) -> UInt64 {
-        return currentLotValue
-    }
 
-    var currentLotValueString: String = "$Value"
-    override func currentLotValueString(_ lot: LiveAuctionLotViewModelType) -> String {
-        return currentLotValueString
+    var askingPriceValueString: String = "$Value"
+    override func askingPriceString(_ lot: LiveAuctionLotViewModelType) -> String {
+        return askingPriceValueString
     }
 }
 
