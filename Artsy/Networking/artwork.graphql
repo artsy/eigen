@@ -17,6 +17,11 @@ query OldArtworkQuery($artworkID: String!) {
       sortable_id
     }
 
+    sale_artwork {
+      id
+      _id
+    }
+
     partner {
       name
       id

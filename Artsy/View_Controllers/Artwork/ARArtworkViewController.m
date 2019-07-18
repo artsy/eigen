@@ -21,7 +21,24 @@
 
 - (BOOL)shouldShowNewVersion;
 {
-    return [AROptions boolForOption:AROptionsRNArtwork] && self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable.boolValue;
+    if ([AROptions boolForOption:AROptionsRNArtworkAlways]) {
+        return YES;
+    }
+
+    BOOL isArtworkNonCommerical = self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable.boolValue;
+    BOOL isArtworkNSOInquiry = self.artwork.isOfferable || self.artwork.isAcquireable || self.artwork.isInquireable;
+    BOOL isArtworkAuctions = self.artwork.saleArtwork;
+
+    if ([AROptions boolForOption:AROptionsRNArtworkNonCommerical] && isArtworkNonCommerical) {
+        return YES;
+    } else if ([AROptions boolForOption:AROptionsRNArtworkNSOInquiry] && isArtworkNSOInquiry) {
+        return YES;
+    } else if ([AROptions boolForOption:AROptionsRNArtworkAuctions] && isArtworkAuctions) {
+        return YES;
+    }
+
+    // Should never get here, but let's return NO to satisfy the compiler.
+    return NO;
 }
 
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair;
