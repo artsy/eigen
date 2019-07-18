@@ -13,7 +13,7 @@ describe("AboutWork", () => {
         .find(Sans)
         .at(0)
         .text()
-    ).toMatchInlineSnapshot(`"About this work"`)
+    ).toMatchInlineSnapshot(`"About the work"`)
     expect(
       component
         .find(Sans)
@@ -34,7 +34,7 @@ describe("AboutWork", () => {
         .find(Sans)
         .at(0)
         .text()
-    ).toMatchInlineSnapshot(`"About this work"`)
+    ).toMatchInlineSnapshot(`"About the work"`)
 
     expect(component.find(ReadMore).length).toEqual(1)
   })
@@ -49,7 +49,7 @@ describe("AboutWork", () => {
         .find(Sans)
         .at(0)
         .text()
-    ).toMatchInlineSnapshot(`"About this work"`)
+    ).toMatchInlineSnapshot(`"About the work"`)
 
     expect(
       component

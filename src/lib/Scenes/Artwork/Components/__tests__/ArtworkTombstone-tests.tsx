@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
-import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
+import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -41,7 +41,7 @@ describe("ArtworkTombstone", () => {
         <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       </Theme>
     )
-    const attributionClass = component.find(Text).at(10)
+    const attributionClass = component.find(TouchableWithoutFeedback).at(4)
     expect(attributionClass.text()).toContain("This is an edition of something")
     attributionClass.props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
