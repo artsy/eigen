@@ -5,6 +5,7 @@ upcoming:
   dev:
     - Cleans up unused lab options - ash
     - Removes concept of a lot's "current value" in favour of using the asking price - ash
+    - Adds more granular lab options for testing new RN artwork view - ash
   user_facing:
     - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
     - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
@@ -16,6 +17,7 @@ upcoming:
     - Don't push same search view if it already exists
     - Live auction current lot now updates current bid - ash/anson
     - Trim whitespace in featured links
+    - Improves UX when opening artwork view - ash
 
 releases:
   - version: 5.0.5

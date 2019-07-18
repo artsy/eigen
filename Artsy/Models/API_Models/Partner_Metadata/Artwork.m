@@ -89,6 +89,7 @@
         ar_keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
         ar_keypath(Artwork.new, mpAttributionClass) : @"mp_attribution_class.name",
         ar_keypath(Artwork.new, gravAttributionClass) : @"attribution_class",
+        ar_keypath(Artwork.new, saleArtwork) : @"sale_artwork",
         
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
         ar_keypath(Artwork.new, editionOf) : @"edition_of",
@@ -111,6 +112,7 @@
         ar_keypath(Artwork.new, gravIsPriceHidden) : @"price_hidden",
         
         ar_keypath(Artwork.new, mpSold) : @"is_sold",
+        ar_keypath(Artwork.new, isInAuction) : @"is_in_auction",
         ar_keypath(Artwork.new, mpIsAcquirable) : @"is_acquireable",
         ar_keypath(Artwork.new, mpIsInquirable) : @"is_inquireable",
         ar_keypath(Artwork.new, mpIsOfferable) : @"is_offerable",
@@ -144,6 +146,11 @@
 + (NSValueTransformer *)partnerJSONTransformer
 {
     return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[Partner class]];
+}
+
++ (NSValueTransformer *)saleArtworkJSONTransformer
+{
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[SaleArtwork class]];
 }
 
 + (NSValueTransformer *)defaultImageJSONTransformer

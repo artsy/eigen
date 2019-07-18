@@ -20,7 +20,10 @@ NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 // Dev
 NSString *const AROptionsUseVCR = @"Use offline recording";
 
-NSString *const AROptionsRNArtwork = @"Enable React Native Artwork view";
+NSString *const AROptionsRNArtworkAlways = @"New RN Artwork view (Always)";
+NSString *const AROptionsRNArtworkNonCommerical = @"New RN Artwork view (Non-commerical)";
+NSString *const AROptionsRNArtworkNSOInquiry = @"New RN Artwork view (NSO&Inquiry)";
+NSString *const AROptionsRNArtworkAuctions = @"New RN Artwork view (Auctions)";
 
 @implementation AROptions
 
@@ -34,7 +37,10 @@ NSString *const AROptionsRNArtwork = @"Enable React Native Artwork view";
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
 
-         AROptionsRNArtwork: AROptionsRNArtwork,
+         AROptionsRNArtworkAlways: AROptionsRNArtworkAlways,
+         AROptionsRNArtworkNonCommerical: AROptionsRNArtworkNonCommerical,
+         AROptionsRNArtworkNSOInquiry: AROptionsRNArtworkNSOInquiry,
+         AROptionsRNArtworkAuctions: AROptionsRNArtworkAuctions,
 
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };

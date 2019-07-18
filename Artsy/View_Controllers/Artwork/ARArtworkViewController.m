@@ -4,6 +4,7 @@
 #import "ARDispatchManager.h"
 #import "ARSpinner.h"
 #import "AROptions.h"
+#import "UIViewController+SimpleChildren.h"
 
 #import <Emission/ARArtworkComponentViewController.h>
 
@@ -20,7 +21,23 @@
 
 - (BOOL)shouldShowNewVersion;
 {
-    return [AROptions boolForOption:AROptionsRNArtwork] && self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable.boolValue;
+    if ([AROptions boolForOption:AROptionsRNArtworkAlways]) {
+        return YES;
+    }
+
+    BOOL isArtworkNonCommerical = self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable.boolValue;
+    BOOL isArtworkNSOInquiry = self.artwork.isOfferable || self.artwork.isAcquireable || self.artwork.isInquireable;
+    BOOL isArtworkAuctions = self.artwork.isInAuction;
+
+    if ([AROptions boolForOption:AROptionsRNArtworkNonCommerical] && isArtworkNonCommerical) {
+        return YES;
+    } else if ([AROptions boolForOption:AROptionsRNArtworkNSOInquiry] && isArtworkNSOInquiry) {
+        return YES;
+    } else if ([AROptions boolForOption:AROptionsRNArtworkAuctions] && isArtworkAuctions) {
+        return YES;
+    }
+
+    return NO;
 }
 
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair;
@@ -37,7 +54,7 @@
     self.view = [UIView new];
 
     ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [spinner fadeInAnimated:ARPerformWorkAsynchronously];
+    [spinner fadeInAnimated:NO];
     [spinner constrainHeight:@"100"];
     [self.view addSubview:spinner];
     [spinner alignCenterWithView:self.view];
@@ -47,42 +64,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
 
     __weak typeof(self) wself = self;
 
     [self.artwork onArtworkUpdate:^{
-    ar_dispatch_main_queue(^{
-      NSAssert(wself, @"Did not expect the VC to have been released.");
-      if (!wself) {
-        return;
-      }
-      __strong typeof(wself) sself = wself;
+        ar_dispatch_main_queue(^{
+            NSAssert(wself, @"Did not expect the VC to have been released.");
+            if (!wself) {
+                return;
+            }
+            __strong typeof(wself) sself = wself;
 
-      [sself.spinner stopAnimating];
-      [sself.spinner removeFromSuperview];
+            [sself.spinner stopAnimating];
+            [sself.spinner removeFromSuperview];
 
-      if (sself.shouldShowNewVersion) {
-        ARArtworkComponentViewController *vc = [[ARArtworkComponentViewController alloc] initWithArtworkID:sself.artwork.artworkID];
-        [sself addChildViewController:vc];
-        [sself.view addSubview:vc.view];
-        [vc.view alignToView:sself.view];
-      } else {
-        // Pass a copy of the artwork instance here, because we don’t want our
-        // artwork's onArtworkUpdate deferred callback to be triggered again.
-        sself.legacyViewController = [[ARLegacyArtworkViewController alloc] initWithArtwork:[sself.artwork copy]
-                                                                                       fair:sself.fair];
-        [sself addChildViewController:sself.legacyViewController];
-        [sself.view addSubview:sself.legacyViewController.view];
-        [sself.legacyViewController.view alignToView:sself.view];
+            if (sself.shouldShowNewVersion) {
+                ARArtworkComponentViewController *vc = [[ARArtworkComponentViewController alloc] initWithArtworkID:sself.artwork.artworkID];
+                [sself ar_addAlignedModernChildViewController:vc];
+            } else {
+                // Pass a copy of the artwork instance here, because we don’t want our
+                // artwork's onArtworkUpdate deferred callback to be triggered again.
+                sself.legacyViewController = [[ARLegacyArtworkViewController alloc] initWithArtwork:[sself.artwork copy]
+                                                                                               fair:sself.fair];
+                [sself ar_addAlignedModernChildViewController:sself.legacyViewController];
 
-        // This replicates what previously the ARArtworkSetViewController would invoke on the legacy VC,
-        // which in turn ends up invoking -setupUI and render everything below the fold.
-        [sself.legacyViewController setHasFinishedScrolling];
-      }
-    });
+                // This replicates what previously the ARArtworkSetViewController would invoke on the legacy VC,
+                // which in turn ends up invoking -setupUI and render everything below the fold.
+                [sself.legacyViewController setHasFinishedScrolling];
+            }
+        });
     } failure:^(NSError *error) {
-    // TODO
-    NSLog(@"FAILED TO UPDATE: %@", error);
+        // TODO
+        NSLog(@"FAILED TO UPDATE: %@", error);
     }];
 
     [self.artwork updateArtwork];
