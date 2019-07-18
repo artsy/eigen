@@ -13,6 +13,7 @@ upcoming:
     - Don't push same search view if it already exists
     - Live auction current lot now updates current bid - ash/anson
     - Trim whitespace in featured links
+    - Improves UX when opening artwork view - ash
 
 releases:
   - version: 5.0.5

@@ -37,7 +37,6 @@
         return YES;
     }
 
-    // Should never get here, but let's return NO to satisfy the compiler.
     return NO;
 }
 
@@ -65,6 +64,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
 
     __weak typeof(self) wself = self;
 
