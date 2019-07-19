@@ -1,6 +1,7 @@
 import { Box, Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Text } from "react-native"
 
@@ -8,11 +9,19 @@ interface ArtworkExtraLinksProps {
   consignableArtistsCount: number
 }
 
+@track()
 export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   handleTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
+  @track(() => {
+    return {
+      action_name: Schema.ActionNames.ConsignWithArtsy,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.ArtworkExtraLinks,
+    } as any
+  })
   handleConsignmentsTap() {
     SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
   }

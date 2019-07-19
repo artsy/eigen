@@ -1,5 +1,6 @@
 import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { LinkText } from "../../../Components/Text/LinkText"
@@ -12,8 +13,22 @@ interface ArtworkDetailsState {
   showAll: boolean
 }
 
+@track()
 export class ArtworkDetails extends React.Component<ArtworkDetailsProps, ArtworkDetailsState> {
   state = { showAll: false }
+
+  @track(
+    () =>
+      ({
+        action_name: Schema.ActionNames.ShowMoreArtworksDetails,
+        action_type: Schema.ActionTypes.Tap,
+        flow: Schema.Flow.ArtworkDetails,
+        context_module: Schema.ContextModules.ArtworkDetails,
+      } as any)
+  )
+  showAllArtworks() {
+    this.setState({ showAll: true })
+  }
 
   render() {
     const listItems = [
@@ -62,7 +77,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
             (displayItems.length > 3 && (
               <LinkText
                 onPress={() => {
-                  this.setState({ showAll: true })
+                  this.showAllArtworks()
                 }}
               >
                 <Sans size="3t" weight="regular">

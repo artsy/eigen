@@ -14,6 +14,8 @@ import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
 declare const _Artwork_artwork$ref: unique symbol;
 export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
 export type Artwork_artwork = {
+    readonly slug: string;
+    readonly internalID: string;
     readonly additional_information: string | null;
     readonly description: string | null;
     readonly provenance: string | null;
@@ -54,6 +56,11 @@ export type Artwork_artwork = {
     readonly context: {
         readonly __typename: string;
     } | null;
+    readonly is_acquireable: boolean | null;
+    readonly is_offerable: boolean | null;
+    readonly is_biddable: boolean | null;
+    readonly is_inquireable: boolean | null;
+    readonly availability: string | null;
     readonly contextGrids: ReadonlyArray<{
         readonly title: string | null;
         readonly ctaTitle: string | null;
@@ -89,6 +96,20 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -311,6 +332,41 @@ return {
       ]
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_acquireable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_offerable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_biddable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_inquireable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "availability",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "contextGrids",
@@ -434,5 +490,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '833f68333e7704bacd52d0cc27355d22';
+(node as any).hash = 'd960c5d11072aa8c718485ae7b8fa153';
 export default node;

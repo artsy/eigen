@@ -5,6 +5,7 @@ import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -23,6 +24,17 @@ interface Props {
   safeAreaInsets: SafeAreaInsets
 }
 
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ArtworkPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+  context_screen_owner_slug: props.artwork.slug,
+  context_screen_owner_id: props.artwork.internalID,
+  availability: props.artwork.availability,
+  acquireable: props.artwork.is_acquireable,
+  inquireable: props.artwork.is_inquireable,
+  offerable: props.artwork.is_offerable,
+  biddable: props.artwork.is_biddable,
+}))
 export class Artwork extends React.Component<Props> {
   shouldRenderDetails = () => {
     const {
@@ -170,6 +182,8 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
+      slug
+      internalID
       additional_information
       description
       provenance
@@ -218,6 +232,13 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       context {
         __typename
       }
+
+      # For analytics
+      is_acquireable
+      is_offerable
+      is_biddable
+      is_inquireable
+      availability
 
       ...PartnerCard_artwork
       ...AboutWork_artwork

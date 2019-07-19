@@ -115,6 +115,9 @@
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
   [sectionData addCellData:self.jumpToArtwork];
+  [sectionData addCellData:self.jumpToArtworkInAuction];
+  [sectionData addCellData:self.jumpToArtworkWithMultipleImages];
+  [sectionData addCellData:self.jumpToArtworkWithInstitutionPartner];
   [sectionData addCellData:self.jumpToArtworkAttributionClassFAQ];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
@@ -241,6 +244,33 @@
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
+
+
+- (ARCellData *)jumpToArtworkInAuction
+{
+  return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"andy-warhol-mao-one-plate-3"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+
+- (ARCellData *)jumpToArtworkWithMultipleImages
+{
+  return [self tappableCellDataWithTitle:@"Artwork With Multiple Images" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"francis-bacon-study-after-velazquez"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToArtworkWithInstitutionPartner
+{
+  return [self tappableCellDataWithTitle:@"Artwork With Institution Partner" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"jean-leon-gerome-the-guard"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
 
 - (ARCellData *)jumpToArtworkAttributionClassFAQ
 {

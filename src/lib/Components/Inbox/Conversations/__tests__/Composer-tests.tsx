@@ -39,7 +39,7 @@ describe("regarding the send button", () => {
     // This is because the component is wrapped by react-tracking, which changes the tree structure
     const tree = shallow(<Composer value={overrideText} disabled={true} />).dive()
 
-    const instance = tree.instance()
+    const instance = tree.dive().instance()
     instance.componentDidUpdate()
 
     expect(tree).toMatchSnapshot()
@@ -49,7 +49,9 @@ describe("regarding the send button", () => {
     const onSubmit = jest.fn()
     // We're using 'dive' here to only fetch the component we want to test
     // This is because the component is wrapped by react-tracking, which changes the tree structure
-    const wrapper = shallow(<Composer onSubmit={onSubmit} />).dive()
+    const wrapper = shallow(<Composer onSubmit={onSubmit} />)
+      .dive()
+      .dive()
     const text = "Don't trust everything you see, even salt looks like sugar"
     wrapper.setState({ text })
     wrapper.find(TouchableWithoutFeedback).simulate("press")

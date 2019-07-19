@@ -1582,10 +1582,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-tracking@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-5.0.0.tgz#5e295829b8dc2f98ae57c3b9ffcba81e267812ca"
-  integrity sha512-U0YQIZwx81Z5ZPjE9nxGQEzYZNt4dEaVZcewD76RGqHwt47T9eDFDMpvqR/rrteTGlvm+G/D9ikNR4b/QGJy6w==
+"@types/react-tracking@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-7.0.1.tgz#aa431b621c9fbee5d5a56844039216bfbfe3f713"
+  integrity sha512-W/EzjMYKbFUMYm/FvWd5vK1PjZ1Lt4Q7UxHlA4QaTw1sjL+QNTIgoqlPfIlxxFcxu2RB91uXrqqSVPsLxmKoPw==
   dependencies:
     "@types/react" "*"
 
@@ -4693,6 +4693,11 @@ core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
   integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
+
+core-js@^3.1.1:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.4.tgz#3a2837fc48e582e1ae25907afcd6cf03b0cc7a07"
+  integrity sha512-YNZN8lt82XIMLnLirj9MhKDFZHalwzzrL9YLt6eb0T5D0EDl4IQ90IGkua8mHbnxNrkj1d8hbdizMc0Qmg1WnQ==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -12571,11 +12576,12 @@ react-timer-mixin@^0.13.3:
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
   integrity sha1-Dai5+AfsB9w+hU0ILHN8ZWBbPSI=
 
-react-tracking@5.7.0:
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-5.7.0.tgz#d0bfebfcfad67a8f5b05bde3594eadba38bc7458"
-  integrity sha512-1TV/6WawJnLZtCzCk76qXD4LbxXAk+rHhjhwd/6Dm9uzouiH1IYflqBq/xut3GlYl3lmCEkbnjIwk4ZbiBTmmQ==
+react-tracking@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-7.0.1.tgz#8d0c21374b58e7259a3a42d908d68923e6c1e112"
+  integrity sha512-O7Gh55b86J9mBNVbUFwnT+GHHY27QtireG97tJdZQvmsQ3ScmJrqLTPq4kFJu/Nyt8Q3AWuM8+jpnmR29GAnWQ==
   dependencies:
+    core-js "^3.1.1"
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 

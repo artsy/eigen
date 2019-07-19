@@ -1,17 +1,28 @@
 import { Sans, Serif, Theme } from "@artsy/palette"
 import { mount, shallow } from "enzyme"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
+import { useTracking } from "react-tracking"
 import { ReadMore } from "../ReadMore"
 import { LinkText } from "../Text/LinkText"
 
+const trackEvent = jest.fn()
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
   presentModalViewController: jest.fn(),
 }))
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-
 describe("ReadMore", () => {
+  beforeEach(() => {
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
   it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {
     const component = shallow(<ReadMore maxChars={20} content="Small text." />)
 

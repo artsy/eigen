@@ -1,9 +1,11 @@
 import { color, Flex, space, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { devCacheBust } from "lib/utils/devCacheBust"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { Schema } from "lib/utils/track"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
@@ -16,6 +18,17 @@ const windowWidth = Dimensions.get("window").width
 const cardHeight = windowWidth >= 375 ? 340 : 290
 export const cardBoundingBox = { width: windowWidth, height: cardHeight }
 
+const usePrevious = value => {
+  const ref = useRef()
+  useEffect(
+    () => {
+      ref.current = value
+    },
+    [value]
+  )
+  return ref.current
+}
+
 /**
  * ImageCarousel
  * NOTE: This component currently assumes it is being rendered at the full width of the screen.
@@ -23,10 +36,26 @@ export const cardBoundingBox = { width: windowWidth, height: cardHeight }
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
 export const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
+  const tracking = useTracking()
   const measurements = useMemo(() => getMeasurements({ images, boundingBox: cardBoundingBox }), [images])
   const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
 
   const [imageIndex, setImageIndex] = useState(0)
+  const prevImageIndex = usePrevious(imageIndex)
+
+  // Track swipe when index updates
+  useEffect(
+    () => {
+      if (prevImageIndex && imageIndex !== prevImageIndex) {
+        tracking.trackEvent({
+          action_name: Schema.ActionNames.ArtworkImageSwipe,
+          action_type: Schema.ActionTypes.Swipe,
+          context_module: Schema.ContextModules.ArtworkImage,
+        })
+      }
+    },
+    [imageIndex]
+  )
 
   // update the imageIndex on scroll
   const onScroll = useCallback(
