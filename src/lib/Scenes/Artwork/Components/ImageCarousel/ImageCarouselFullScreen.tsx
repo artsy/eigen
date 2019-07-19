@@ -39,9 +39,8 @@ interface TransitionOffset {
   translateY: number
   scale: number
 }
-async function getTransitionOffset({ fromRef, toRef }: { fromRef: any; toRef: any }): Promise<TransitionOffset> {
+async function getTransitionOffset({ fromRef, toBox }: { fromRef: any; toBox: Box }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
-  const toBox = await measure(toRef)
 
   const scale = fromBox.width / toBox.width
   const translateX = fromBox.x + fromBox.width / 2 - (toBox.x + toBox.width / 2)
@@ -243,10 +242,10 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
     useEffect(() => {
       // animate image transition on mount
       if (state.fullScreenState !== "entered" && state.imageIndex === index) {
+        const { marginHorizontal, marginVertical, ...dimensions } = fitInside(screenBoundingBox, image)
         getTransitionOffset({
           fromRef: baseImageRefs[state.imageIndex],
-          // @ts-ignore
-          toRef: imageWrapperRef.current.getNode(),
+          toBox: { ...dimensions, x: marginHorizontal, y: marginVertical },
         })
           .then(setImageTransitionOffset)
           .then(() => {
