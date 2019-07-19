@@ -1,5 +1,6 @@
-import React, { useCallback, useContext, useMemo, useRef } from "react"
-import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, NativeTouchEvent } from "react-native"
+import { observer } from "mobx-react"
+import React, { useCallback, useContext, useMemo } from "react"
+import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
@@ -10,27 +11,24 @@ const cardHeight = windowWidth >= 375 ? 340 : 290
 export const baseCardBoundingBox = { width: windowWidth, height: cardHeight }
 
 // This is the main image caoursel visible on the root of the artwork page
-export function ImageCarouselBase() {
-  const { images, baseFlatListRef, baseImageRefs, dispatch, currentImageIndex } = useContext(ImageCarouselContext)
+export const ImageCarouselBase = observer(() => {
+  const { images, baseFlatListRef, baseImageRefs, dispatch, state } = useContext(ImageCarouselContext)
 
-  const measurements = useMemo(() => getMeasurements({ images, boundingBox: baseCardBoundingBox }), [images])
-  const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [measurements])
+  const measurements = useMemo(() => getMeasurements({ images, boundingBox: baseCardBoundingBox }), [])
+  const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [])
 
   // update the imageIndex on scroll
-  const onScroll = useCallback(
-    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      // This finds the index of the image which is being given the most
-      // screen real estate at any given point in time.
-      const nextImageIndex = findClosestIndex(offsets, e.nativeEvent.contentOffset.x)
-      if (nextImageIndex !== currentImageIndex) {
-        dispatch({
-          type: "IMAGE_INDEX_CHANGED",
-          nextImageIndex,
-        })
-      }
-    },
-    [dispatch, offsets, currentImageIndex]
-  )
+  const onScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    // This finds the index of the image which is being given the most
+    // screen real estate at any given point in time.
+    const nextImageIndex = findClosestIndex(offsets, e.nativeEvent.contentOffset.x)
+    if (nextImageIndex !== state.imageIndex) {
+      dispatch({
+        type: "IMAGE_INDEX_CHANGED",
+        nextImageIndex,
+      })
+    }
+  }, [])
 
   const goFullScreen = useCallback(() => dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" }), [dispatch])
 
@@ -91,4 +89,4 @@ export function ImageCarouselBase() {
       }}
     />
   )
-}
+})
