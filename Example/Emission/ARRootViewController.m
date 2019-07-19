@@ -114,10 +114,10 @@
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
-  [sectionData addCellData:self.jumpToArtwork1];
-  [sectionData addCellData:self.jumpToArtwork2];
-  [sectionData addCellData:self.jumpToArtwork3];
-  [sectionData addCellData:self.jumpToArtwork4];
+  [sectionData addCellData:self.jumpToArtwork];
+  [sectionData addCellData:self.jumpToArtworkInAuction];
+  [sectionData addCellData:self.jumpToArtworkWithMultipleImages];
+  [sectionData addCellData:self.jumpToArtworkWithInstitutionPartner];
   [sectionData addCellData:self.jumpToArtworkAttributionClassFAQ];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
@@ -237,35 +237,35 @@
   }];
 }
 
-- (ARCellData *)jumpToArtwork1
+- (ARCellData *)jumpToArtwork
 {
-  return [self tappableCellDataWithTitle:@"Artwork1" selection:^{
+  return [self tappableCellDataWithTitle:@"Artwork" selection:^{
     id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"candice-cmc-superman-donuts-1"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
 
 
-- (ARCellData *)jumpToArtwork2
+- (ARCellData *)jumpToArtworkInAuction
 {
-  return [self tappableCellDataWithTitle:@"Artwork2" selection:^{
+  return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
     id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"andy-warhol-mao-one-plate-3"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
 
 
-- (ARCellData *)jumpToArtwork3
+- (ARCellData *)jumpToArtworkWithMultipleImages
 {
-  return [self tappableCellDataWithTitle:@"Artwork3" selection:^{
+  return [self tappableCellDataWithTitle:@"Artwork With Multiple Images" selection:^{
     id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"francis-bacon-study-after-velazquez"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
 
-- (ARCellData *)jumpToArtwork4
+- (ARCellData *)jumpToArtworkWithInstitutionPartner
 {
-  return [self tappableCellDataWithTitle:@"Artwork4" selection:^{
+  return [self tappableCellDataWithTitle:@"Artwork With Institution Partner" selection:^{
     id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"jean-leon-gerome-the-guard"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
