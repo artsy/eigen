@@ -79,10 +79,7 @@ export class Artwork extends React.Component<Props> {
 
   sections = () => {
     const { artwork } = this.props
-    const {
-      artist: { biography_blurb },
-      context,
-    } = artwork
+    const { artist, context } = artwork
 
     const sections = []
 
@@ -101,7 +98,7 @@ export class Artwork extends React.Component<Props> {
       sections.push("history")
     }
 
-    if (biography_blurb) {
+    if (artist && artist.biography_blurb) {
       sections.push("aboutArtist")
     }
 
@@ -157,6 +154,7 @@ export class Artwork extends React.Component<Props> {
                 <Separator />
               </Box>
             )}
+            contentInset={{ bottom: 40 }}
             style={{ paddingTop: this.props.safeAreaInsets.top }}
             keyExtractor={(item, index) => item.type + String(index)}
             renderItem={item =>
