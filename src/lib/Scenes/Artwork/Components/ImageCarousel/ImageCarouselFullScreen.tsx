@@ -403,6 +403,9 @@ const StatusBarOverlay: React.FC = observer(() => {
   )
 })
 
+// taken from https://github.com/ds300/eigen/blob/0831853cb574566415f3bd8b3908b26b61f61eec/Artsy/View_Controllers/Util/ARNavigationController.m#L125
+const CLOSE_BUTTON_MARGIN = 12
+
 const CloseButton: React.FC<{ onClose(): void }> = observer(({ onClose }) => {
   const opacity = useSpringFade("in")
   const { top } = useContext(SafeAreaInsetsContext)
@@ -410,10 +413,14 @@ const CloseButton: React.FC<{ onClose(): void }> = observer(({ onClose }) => {
     <View
       style={{
         position: "absolute",
-        left: 20,
-        top: top + 20,
+        left: 0,
+        top,
         width: 40,
         height: 40,
+        paddingLeft: CLOSE_BUTTON_MARGIN,
+        paddingTop: CLOSE_BUTTON_MARGIN,
+        paddingRight: 20,
+        paddingBottom: 20,
       }}
     >
       <TouchableOpacity onPress={onClose}>
