@@ -1,4 +1,4 @@
-import { CloseIcon, color, Sans } from "@artsy/palette"
+import { CloseIcon, Sans } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { observer } from "mobx-react"
 import React, { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
