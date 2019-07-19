@@ -264,7 +264,7 @@ extension PrivateFunctions {
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
     func bidButtonRequestedBid(_ button: LiveAuctionBidButton) {
-        salesPerson.bidOnLot(lotViewModel, amountCents: salesPerson.currentLotValue(lotViewModel), biddingViewModel: biddingViewModel)
+        salesPerson.bidOnLot(lotViewModel, amountCents: lotViewModel.askingPrice, biddingViewModel: biddingViewModel)
     }
 
     func bidButtonRequestedRegisterToBid(_ button: LiveAuctionBidButton) {
