@@ -9,6 +9,7 @@ export const ArtworkFixture = {
   is_acquireable: false,
   is_offerable: false,
   is_biddable: true,
+  is_inquireable: false,
   slug: "andreas-rod-prinzknecht",
   href: "/artwork/andreas-rod-prinzknecht",
   availability: "for sale",
