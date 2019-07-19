@@ -1,74 +1,135 @@
-import { shallow } from "enzyme"
-import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { Serif } from "@artsy/palette"
+import { mount, shallow } from "enzyme"
 import React from "react"
-import { ArtworkContextArtistFragmentContainer as ArtworkContextArtist } from "../OtherWorks/ArtworkContexts/ArtworkContextArtist"
+import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/index"
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  presentNavigationViewController: jest.fn(),
+}))
+
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { TouchableWithoutFeedback } from "react-native"
 
 describe("OtherWorks", () => {
-  it("renders ArtistArtworkGrid with empty context", () => {
-    const regularArtwork = {
-      ...ArtworkFixture,
-      context: null,
+  it("renders no grids if there are none provided", () => {
+    const noGridsArtworkProps = {
+      contextGrids: null,
+      " $fragmentRefs": null,
     }
-    const component = shallow(<OtherWorks artwork={regularArtwork} />)
-    expect(component.find(ArtworkContextArtist).length).toEqual(1)
-    const componentText = component
-      .find(ArtworkContextArtist)
-      .at(0)
-      .render()
-      .text()
-    expect(componentText).toContain("Other works by Abbas Kiarostami")
-    expect(componentText).toContain("Other works from CAMA Gallery")
-    expect(componentText).toContain("Related Works")
+    const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
+    expect(component.find(Header).length).toEqual(0)
   })
 
-  it("renders ArtistArtworkGrid with correct components", () => {
-    const regularArtwork = {
-      ...ArtworkFixture,
-      context: "ArtworkContextArtist",
-    }
-    const component = shallow(<OtherWorks artwork={regularArtwork} />)
-    expect(component.find(ArtworkContextArtist).length).toEqual(1)
-    const componentText = component
-      .find(ArtworkContextArtist)
-      .at(0)
-      .render()
-      .text()
-    expect(componentText).toContain("Other works by Abbas Kiarostami")
-    expect(componentText).toContain("Other works from CAMA Gallery")
-    expect(componentText).toContain("Related Works")
+  it("renders no grids if an empty array is provided", () => {
+    const noGridsArtworkProps = { contextGrids: [], " $fragmentRefs": null }
+    const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
+    expect(component.find(Header).length).toEqual(0)
   })
 
-  it("returns null for artwork with ArtworkContextAuction context", () => {
-    const regularArtwork = {
-      ...ArtworkFixture,
-      context: {
-        __typename: "ArtworkContextAuction",
-      },
+  it("renders the grid if one is provided", () => {
+    const oneGridArtworkProps = {
+      contextGrids: [
+        {
+          title: "Other works by Andy Warhol",
+          ctaTitle: "View all works by Andy Warhol",
+          ctaHref: "/artist/andy-warhol",
+          artworks: {
+            edges: [
+              {
+                node: {
+                  id: "artwork1",
+                },
+              },
+            ],
+          },
+        },
+      ],
+      " $fragmentRefs": null,
     }
-    const component = shallow(<OtherWorks artwork={regularArtwork} />)
-    expect(component.render().text()).toEqual("")
+    const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
+    expect(component.find(Header).length).toEqual(1)
+    expect(component.find(Serif).text()).toEqual("Other works by Andy Warhol")
+    component
+      .find(TouchableWithoutFeedback)
+      .props()
+      .onPress()
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
   })
 
-  it("returns null for artwork with ArtworkContextFair context", () => {
-    const regularArtwork = {
-      ...ArtworkFixture,
-      context: {
-        __typename: "ArtworkContextFair",
-      },
+  it("renders the grids if multiple are provided", () => {
+    const oneGridArtworkProps = {
+      contextGrids: [
+        {
+          title: "Other works by Andy Warhol",
+          ctaTitle: "View all works by Andy Warhol",
+          ctaHref: "/artist/andy-warhol",
+          artworks: { edges: [{ node: { id: "artwork1" } }] },
+        },
+        {
+          title: "Other works from Gagosian Gallery",
+          ctaTitle: "View all works from Gagosian Gallery",
+          ctaHref: "/gagosian-gallery",
+          artworks: { edges: [{ node: { id: "artwork1" } }] },
+        },
+      ],
+      " $fragmentRefs": null,
     }
-    const component = shallow(<OtherWorks artwork={regularArtwork} />)
-    expect(component.render().text()).toEqual("")
+    const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
+    expect(component.find(Header).length).toEqual(2)
+    expect(
+      component
+        .find(Serif)
+        .first()
+        .text()
+    ).toEqual("Other works by Andy Warhol")
+    expect(
+      component
+        .find(Serif)
+        .last()
+        .text()
+    ).toEqual("Other works from Gagosian Gallery")
+
+    component
+      .find(TouchableWithoutFeedback)
+      .first()
+      .props()
+      .onPress()
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+
+    component
+      .find(TouchableWithoutFeedback)
+      .last()
+      .props()
+      .onPress()
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/gagosian-gallery")
   })
 
-  it("returns null for artwork with ArtworkContextPartnerShow context", () => {
-    const regularArtwork = {
-      ...ArtworkFixture,
-      context: {
-        __typename: "ArtworkContextPartnerShow",
-      },
+  it("renders only grids with artworks", () => {
+    const oneGridArtworkProps = {
+      contextGrids: [
+        {
+          title: "Other works by Andy Warhol",
+          ctaTitle: "View all works by Andy Warhol",
+          ctaHref: "/artist/andy-warhol",
+          artworks: { edges: [{ node: { id: "artwork1" } }] },
+        },
+        {
+          title: "Other works from Gagosian Gallery",
+          ctaTitle: "View all works from Gagosian Gallery",
+          ctaHref: "/gagosian-gallery",
+          artworks: null,
+        },
+        {
+          title: "Other works from Gagosian Gallery at Art Basel 2019",
+          ctaTitle: "View all works from the booth",
+          ctaHref: "/show/gagosian-gallery-at-art-basel-2019",
+          artworks: { edges: [] },
+        },
+      ],
+      " $fragmentRefs": null,
     }
-    const component = shallow(<OtherWorks artwork={regularArtwork} />)
-    expect(component.render().text()).toEqual("")
+    const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
+    expect(component.find(Header).length).toEqual(1)
+    expect(component.find(Serif).text()).toEqual("Other works by Andy Warhol")
   })
 })

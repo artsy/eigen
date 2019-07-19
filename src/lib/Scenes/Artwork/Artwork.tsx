@@ -15,7 +15,7 @@ import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/Ar
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
-import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
+import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
 interface Props {
@@ -67,16 +67,10 @@ export class Artwork extends React.Component<Props> {
   }
 
   shouldRenderOtherWorks = () => {
-    const {
-      artist: { artworks_connection },
-      partner: { artworksConnection },
-      layer,
-    } = this.props.artwork
-    if (
-      (artworks_connection && artworks_connection.edges && artworks_connection.edges.length) ||
-      (artworksConnection && artworksConnection.edges && artworksConnection.edges.length) ||
-      (layer && layer.artworksConnection && layer.artworksConnection.edges && layer.artworksConnection.edges.length)
-    ) {
+    const { contextGrids } = this.props.artwork
+    const gridsToShow = populatedGrids(contextGrids)
+
+    if (gridsToShow && gridsToShow.length > 0) {
       return true
     } else {
       return false
@@ -184,39 +178,15 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       exhibition_history
       literature
 
-      layer(id: "main") {
-        artworksConnection(first: 6) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-
       partner {
         type
         id
-        artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
       }
 
       artist {
         name
         biography_blurb {
           text
-        }
-        artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
-          edges {
-            node {
-              id
-            }
-          }
         }
       }
 
@@ -253,6 +223,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
 
       ...PartnerCard_artwork
       ...AboutWork_artwork
+      ...OtherWorks_artwork @relay(mask: false)
       ...OtherWorks_artwork
       ...AboutArtist_artwork
       ...ArtworkDetails_artwork
@@ -272,7 +243,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!]) {
+        query ArtworkQuery($artworkID: String!) {
           artwork(id: $artworkID) {
             ...Artwork_artwork
           }
@@ -280,7 +251,6 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
       `}
       variables={{
         artworkID,
-        excludeArtworkIds: [artworkID],
       }}
       render={renderWithLoadProgress(ArtworkContainer, others)}
     />
