@@ -1,4 +1,4 @@
-import { CloseIcon, Sans } from "@artsy/palette"
+import { CloseIcon, color, Sans } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { observer } from "mobx-react"
 import React, { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
@@ -112,7 +112,7 @@ export const ImageCarouselFullScreen = observer(() => {
           data={images}
           horizontal
           showsHorizontalScrollIndicator={false}
-          scrollEnabled={images.length > 1}
+          scrollEnabled={images.length > 1 && state.fullScreenState === "entered"}
           snapToInterval={screenBoundingBox.width}
           keyExtractor={item => item.url}
           decelerationRate="fast"
@@ -130,9 +130,6 @@ export const ImageCarouselFullScreen = observer(() => {
               }
             }
           }}
-          initialNumToRender={3}
-          windowSize={images.length * 2 + 1}
-          maxToRenderPerBatch={3}
           renderItem={({ item, index }) => {
             return (
               <ImageZoomView
@@ -259,7 +256,11 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
                 bounciness: 0,
                 toValue: 1,
                 useNativeDriver: true,
-              }).start(() => dispatch({ type: "FULL_SCREEN_FINISHED_ENTERING" }))
+              }).start()
+              // to make this feel snappy we'll actually finish earlier than the animation ends.
+              setTimeout(() => {
+                dispatch({ type: "FULL_SCREEN_FINISHED_ENTERING" })
+              }, 50)
             })
           })
       }
@@ -303,13 +304,18 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
       }
     })
 
-    const fullScreenState = useFullScreenState()
+    // as a perf optimisation, when doing the 'zoom im' transition, we only render the
+    // current zoomable image
+    // in place of the other images we just render a blank box
+    if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
+      return <View style={screenBoundingBox} />
+    }
 
     return (
       // scroll view to allow pinch-to-zoom behaviour
       <ScrollView
         ref={scrollViewRef}
-        // scrollEnabled={hasEntered}
+        scrollEnabled={state.fullScreenState === "entered"}
         onScroll={ev => (zoomScale.current = ev.nativeEvent.zoomScale)}
         scrollEventThrottle={100}
         bounces={false}
@@ -322,7 +328,7 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
         style={[
           {
             height: screenBoundingBox.height,
-            opacity: fullScreenState !== "doing first render" ? 1 : 0,
+            opacity: state.fullScreenState !== "doing first render" ? 1 : 0,
           },
         ]}
       >
