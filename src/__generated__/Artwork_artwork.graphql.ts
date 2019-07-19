@@ -59,6 +59,7 @@ export type Artwork_artwork = {
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
     readonly is_biddable: boolean | null;
+    readonly is_inquireable: boolean | null;
     readonly availability: string | null;
     readonly contextGrids: ReadonlyArray<{
         readonly title: string | null;
@@ -354,6 +355,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "is_inquireable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "availability",
       "args": null,
       "storageKey": null
@@ -482,5 +490,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '111aa7ec1604d1f442cb2d4e25292e95';
+(node as any).hash = 'd960c5d11072aa8c718485ae7b8fa153';
 export default node;

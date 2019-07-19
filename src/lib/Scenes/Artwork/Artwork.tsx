@@ -31,6 +31,7 @@ interface Props {
   context_screen_owner_id: props.artwork.internalID,
   availability: props.artwork.availability,
   acquireable: props.artwork.is_acquireable,
+  inquireable: props.artwork.is_inquireable,
   offerable: props.artwork.is_offerable,
   biddable: props.artwork.is_biddable,
 }))
@@ -238,6 +239,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       is_acquireable
       is_offerable
       is_biddable
+      is_inquireable
       availability
 
       ...PartnerCard_artwork

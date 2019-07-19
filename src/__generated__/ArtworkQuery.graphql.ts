@@ -81,6 +81,7 @@ fragment Artwork_artwork on Artwork {
   is_acquireable
   is_offerable
   is_biddable
+  is_inquireable
   availability
   ...PartnerCard_artwork
   ...AboutWork_artwork
@@ -930,6 +931,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "is_inquireable",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "availability",
             "args": null,
             "storageKey": null
@@ -1341,7 +1349,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "6eb4a0ceea739ace916937e15a4b19a5",
+    "id": "0bdb5c79a9e079751bf2a472c548bb8c",
     "text": null,
     "metadata": {}
   }
