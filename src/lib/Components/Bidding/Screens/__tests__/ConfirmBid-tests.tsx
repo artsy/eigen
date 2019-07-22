@@ -51,6 +51,14 @@ const findPlaceBidButton = component => {
   return component.root.findAllByType(Button)[1]
 }
 
+const mountConfirmBidComponent = props => {
+  return renderer.create(
+    <BiddingThemeProvider>
+      <ConfirmBid {...props} />
+    </BiddingThemeProvider>
+  )
+}
+
 beforeEach(() => {
   nextStep = null // reset nextStep between tests
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
@@ -60,22 +68,13 @@ beforeEach(() => {
 })
 
 it("renders properly", () => {
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialProps} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
+  const component = mountConfirmBidComponent(initialProps).toJSON()
+
   expect(component).toMatchSnapshot()
 })
 
 it("enables the bid button when checkbox is ticked", () => {
-  const component = renderer.create(
-    <BiddingThemeProvider>
-      <ConfirmBid {...initialProps} />
-    </BiddingThemeProvider>
-  )
+  const component = mountConfirmBidComponent(initialProps)
 
   expect(findPlaceBidButton(component).props.onPress).toBeFalsy()
 
@@ -85,21 +84,13 @@ it("enables the bid button when checkbox is ticked", () => {
 })
 
 it("enables the bid button by default if the user is registered", () => {
-  const component = renderer.create(
-    <BiddingThemeProvider>
-      <ConfirmBid {...initialPropsForRegisteredUser} />
-    </BiddingThemeProvider>
-  )
+  const component = mountConfirmBidComponent(initialPropsForRegisteredUser)
 
   expect(findPlaceBidButton(component).props.onPress).toBeDefined()
 })
 
 it("displays the artwork title correctly with date", () => {
-  const component = renderer.create(
-    <BiddingThemeProvider>
-      <ConfirmBid {...initialProps} />
-    </BiddingThemeProvider>
-  )
+  const component = mountConfirmBidComponent(initialProps)
 
   expect(serifChildren(component)).toContain(", 2015")
 })
@@ -117,11 +108,7 @@ it("displays the artwork title correctly without date", () => {
 
 describe("checkbox and payment info display", () => {
   it("shows no checkbox or payment info if the user is registered", () => {
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForRegisteredUser} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialPropsForRegisteredUser)
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(0)
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
@@ -131,22 +118,14 @@ describe("checkbox and payment info display", () => {
   })
 
   it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialProps} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialProps)
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(1)
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
   })
 
   it("shows a checkbox and payment info if the user is not registered and has no cc on file", () => {
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(1)
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(3)
@@ -155,11 +134,8 @@ describe("checkbox and payment info display", () => {
 
 describe("when pressing bid button", () => {
   it("commits mutation", () => {
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialProps} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialProps)
+
     component.root.findByType(Checkbox).props.onPress()
 
     relay.commitMutation = jest.fn()
@@ -169,11 +145,8 @@ describe("when pressing bid button", () => {
   })
 
   it("shows a spinner", () => {
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialProps} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialProps)
+
     component.root.findByType(Checkbox).props.onPress()
     relay.commitMutation = jest.fn()
     const placeBidButton = findPlaceBidButton(component)
@@ -187,11 +160,7 @@ describe("when pressing bid button", () => {
     const navigator = { push: jest.fn() } as any
     relay.commitMutation = jest.fn()
 
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForUnqualifiedUser} navigator={navigator} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent({ ...initialPropsForUnqualifiedUser, navigator })
 
     component.root.findByType(ConfirmBid).instance.setState({
       conditionsOfSaleChecked: true,
@@ -224,11 +193,8 @@ describe("when pressing bid button", () => {
 
   describe("when pressing bid", () => {
     it("commits the mutation", () => {
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialProps)
+
       component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = jest.fn()
@@ -241,11 +207,8 @@ describe("when pressing bid button", () => {
     describe("when mutation fails", () => {
       it("does not verify bid position", () => {
         // Probably due to a network problem.
-        const component = renderer.create(
-          <BiddingThemeProvider>
-            <ConfirmBid {...initialProps} />
-          </BiddingThemeProvider>
-        )
+        const component = mountConfirmBidComponent(initialProps)
+
         component.root.findByType(Checkbox).props.onPress()
         console.error = jest.fn() // Silences component logging.
         relay.commitMutation = commitMutationMock((_, { onError }) => {
@@ -260,11 +223,8 @@ describe("when pressing bid button", () => {
       })
 
       it("displays an error message on a network failure", () => {
-        const component = renderer.create(
-          <BiddingThemeProvider>
-            <ConfirmBid {...initialProps} />
-          </BiddingThemeProvider>
-        )
+        const component = mountConfirmBidComponent(initialProps)
+
         component.root.findByType(Checkbox).props.onPress()
         console.error = jest.fn() // Silences component logging.
 
@@ -298,11 +258,7 @@ describe("when pressing bid button", () => {
           return null
         }) as any
 
-        const component = renderer.create(
-          <BiddingThemeProvider>
-            <ConfirmBid {...initialProps} />
-          </BiddingThemeProvider>
-        )
+        const component = mountConfirmBidComponent(initialProps)
 
         component.root.findByType(Checkbox).props.onPress()
         findPlaceBidButton(component).props.onPress()
@@ -333,11 +289,7 @@ describe("editing bid amount", () => {
     }
     fakeNavigator.push({ component: ConfirmBid, id: "", title: "", passProps: fakeNavigatorProps })
 
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForRegisteredUser} navigator={fakeNavigator} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent({ ...initialPropsForRegisteredUser, navigator: fakeNavigator })
 
     const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
 
@@ -360,11 +312,8 @@ describe("editing bid amount", () => {
 describe("polling to verify bid position", () => {
   describe("bid success", () => {
     it("polls for new results", () => {
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialProps)
+
       component.root.findByType(Checkbox).props.onPress()
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
@@ -395,11 +344,8 @@ describe("polling to verify bid position", () => {
     })
 
     it("shows error when polling attempts exceed max", () => {
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialProps)
+
       component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -423,11 +369,8 @@ describe("polling to verify bid position", () => {
     })
 
     it("shows successful bid result when highest bidder", () => {
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialProps)
+
       component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -447,11 +390,8 @@ describe("polling to verify bid position", () => {
     })
 
     it("shows outbid bidSuccessResult when outbid", () => {
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialProps)
+
       component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -471,11 +411,8 @@ describe("polling to verify bid position", () => {
     })
 
     it("shows reserve not met when reserve is not met", () => {
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialProps)
+
       component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -496,11 +433,11 @@ describe("polling to verify bid position", () => {
 
     it("updates the main auction screen", () => {
       const mockedMockNavigator = { push: jest.fn() }
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} navigator={mockedMockNavigator as any} refreshSaleArtwork={jest.fn()} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent({
+        ...initialProps,
+        navigator: mockedMockNavigator as any,
+        refreshSaleArtwork: jest.fn(),
+      })
       component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -557,11 +494,8 @@ describe("polling to verify bid position", () => {
 
   describe("bid failure", () => {
     it("shows the error screen with a failure", () => {
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialProps} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialProps)
+
       component.root.findByType(Checkbox).props.onPress()
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidRejected, null)
@@ -593,13 +527,9 @@ describe("ConfirmBid for unqualified user", () => {
   }
 
   it("shows the billing address that the user typed in the billing address form", () => {
-    const billingAddressRow = renderer
-      .create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialPropsForUnqualifiedUser} />
-        </BiddingThemeProvider>
-      )
-      .root.findAllByType(TouchableWithoutFeedback)[2]
+    const billingAddressRow = mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(
+      TouchableWithoutFeedback
+    )[2]
 
     billingAddressRow.instance.props.onPress()
 
@@ -611,13 +541,9 @@ describe("ConfirmBid for unqualified user", () => {
   })
 
   it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-    const creditcardRow = renderer
-      .create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialPropsForUnqualifiedUser} />
-        </BiddingThemeProvider>
-      )
-      .root.findAllByType(TouchableWithoutFeedback)[1]
+    const creditcardRow = mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(
+      TouchableWithoutFeedback
+    )[1]
 
     creditcardRow.instance.props.onPress()
 
@@ -634,12 +560,7 @@ describe("ConfirmBid for unqualified user", () => {
     })
 
     jest.useFakeTimers()
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </BiddingThemeProvider>
-    )
-
+    const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
     fillOutFormAndSubmit(component)
 
     expect(stripe.createTokenWithCard.mock.calls.length).toEqual(1)
@@ -660,11 +581,7 @@ describe("ConfirmBid for unqualified user", () => {
       return null
     }) as any
 
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
     fillOutFormAndSubmit(component)
 
@@ -689,11 +606,7 @@ describe("ConfirmBid for unqualified user", () => {
       return null
     }) as any
 
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
     fillOutFormAndSubmit(component)
 
@@ -717,11 +630,7 @@ describe("ConfirmBid for unqualified user", () => {
       return null
     }) as any
 
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
     fillOutFormAndSubmit(component)
 
@@ -744,11 +653,7 @@ describe("ConfirmBid for unqualified user", () => {
       return null
     }) as any
 
-    const component = renderer.create(
-      <BiddingThemeProvider>
-        <ConfirmBid {...initialPropsForUnqualifiedUser} />
-      </BiddingThemeProvider>
-    )
+    const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
     fillOutFormAndSubmit(component)
 
@@ -776,11 +681,7 @@ describe("ConfirmBid for unqualified user", () => {
     it("commits two mutations, createCreditCard followed by createBidderPosition", () => {
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
-      const component = renderer.create(
-        <BiddingThemeProvider>
-          <ConfirmBid {...initialPropsForUnqualifiedUser} />
-        </BiddingThemeProvider>
-      )
+      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
       fillOutFormAndSubmit(component)
 
