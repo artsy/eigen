@@ -1,6 +1,7 @@
 import { Box, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
+import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -156,6 +157,9 @@ export class Artwork extends React.Component<Props> {
   }
 
   render() {
+    console.log("[RetryErrorBoundary] Rendering Artwork page")
+    const a: any = {}
+    console.log(a.thing.thisshouldcrash)
     return (
       <Theme>
         <FlatList
@@ -257,19 +261,25 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
   ...others
 }) => {
   return (
-    <QueryRenderer<ArtworkQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query ArtworkQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            ...Artwork_artwork
-          }
-        }
-      `}
-      variables={{
-        artworkID,
+    <RetryErrorBoundary
+      render={() => {
+        return (
+          <QueryRenderer<ArtworkQuery>
+            environment={defaultEnvironment}
+            query={graphql`
+              query ArtworkQuery($artworkID: String!) {
+                artwork(id: $artworkID) {
+                  ...Artwork_artwork
+                }
+              }
+            `}
+            variables={{
+              artworkID,
+            }}
+            render={renderWithLoadProgress(ArtworkContainer, others)}
+          />
+        )
       }}
-      render={renderWithLoadProgress(ArtworkContainer, others)}
     />
   )
 }
