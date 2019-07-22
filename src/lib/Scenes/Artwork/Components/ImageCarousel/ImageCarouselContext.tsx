@@ -32,6 +32,7 @@ export interface ImageCarouselContext {
   state: {
     imageIndex: number
     fullScreenState: FullScreenState
+    isZoomedCompletelyOut: boolean
   }
   images: ImageDescriptor[]
   baseImageRefs: View[]
@@ -45,6 +46,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
   const state = observable({
     imageIndex: 0,
     fullScreenState: "none" as FullScreenState,
+    isZoomedCompletelyOut: true,
   })
   return useMemo(
     () => ({

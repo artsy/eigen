@@ -178,6 +178,7 @@ const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({ childr
 
   return (
     <Animated.ScrollView
+      scrollsToTop={false}
       scollEnabled={state.fullScreenState === "entered"}
       contentOffset={{ x: 0, y: screenHeight }}
       onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
@@ -315,7 +316,12 @@ const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewPr
       <ScrollView
         ref={scrollViewRef}
         scrollEnabled={state.fullScreenState === "entered"}
-        onScroll={ev => (zoomScale.current = ev.nativeEvent.zoomScale)}
+        onScroll={ev => {
+          zoomScale.current = ev.nativeEvent.zoomScale
+          if (state.imageIndex === index) {
+            state.isZoomedCompletelyOut = zoomScale.current <= 1
+          }
+        }}
         scrollEventThrottle={100}
         bounces={false}
         overScrollMode="never"
@@ -445,10 +451,13 @@ const CloseButton: React.FC<{ onClose(): void }> = observer(({ onClose }) => {
 })
 
 const IndexIndicator: React.FC = observer(() => {
-  const numImages = useContext(ImageCarouselContext).images.length
+  const { images, state } = useContext(ImageCarouselContext)
+
   const imageIndex = useImageIndex()
-  const opacity = useSpringFade("in")
-  if (numImages === 1) {
+  const entryOpacity = useSpringFade("in")
+  const hideOpacity = useSpringValue(state.isZoomedCompletelyOut ? 1 : 0)
+  const opacity = Animated.multiply(entryOpacity, hideOpacity)
+  if (images.length === 1) {
     return null
   }
   return (
@@ -476,7 +485,7 @@ const IndexIndicator: React.FC = observer(() => {
         ]}
       >
         <Sans size="3">
-          {imageIndex + 1} of {numImages}
+          {imageIndex + 1} of {images.length}
         </Sans>
       </Animated.View>
     </View>
