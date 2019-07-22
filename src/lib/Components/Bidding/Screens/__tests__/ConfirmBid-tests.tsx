@@ -668,7 +668,7 @@ describe("ConfirmBid for unqualified user", () => {
     )
   })
 
-  describe("on a successful bid", () => {
+  describe("After successful mutations", () => {
     beforeEach(() => {
       stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = jest
@@ -678,8 +678,10 @@ describe("ConfirmBid for unqualified user", () => {
         .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
     })
 
-    it("commits two mutations, createCreditCard followed by createBidderPosition", () => {
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+    it("commits two mutations, createCreditCard followed by createBidderPosition on a successful bid", () => {
+      mockphysics
+        .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.pending))
+        .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
@@ -720,6 +722,12 @@ describe("ConfirmBid for unqualified user", () => {
           },
         })
       )
+
+      jest.runOnlyPendingTimers()
+
+      expect(mockphysics.mock.calls.length).toEqual(2)
+      expect(mockphysics.mock.calls[0][0].variables).toEqual({ bidderPositionID: "bidder-position-id-from-mutation" })
+      expect(mockphysics.mock.calls[1][0].variables).toEqual({ bidderPositionID: "bidder-position-id-from-polling" })
     })
   })
 })
@@ -803,7 +811,7 @@ const mockRequestResponses = {
           message_header: "Success",
           message_description_md: "",
           position: {
-            internalID: "some-bidder-position-id",
+            internalID: "bidder-position-id-from-mutation",
           },
         },
       },
@@ -844,7 +852,9 @@ const mockRequestResponses = {
       data: {
         me: {
           bidder_position: {
-            position: {},
+            position: {
+              internalID: "bidder-position-id-from-polling",
+            },
             status: "PENDING",
           },
         },

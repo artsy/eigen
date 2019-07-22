@@ -64,14 +64,14 @@ const MAX_POLL_ATTEMPTS = 20
 const queryForBidPosition = (bidderPositionID: string) => {
   return metaphysics({
     query: `
-      {
+      query ConfirmBidBidderPositionQuery($bidderPositionID: String!) {
         me {
-          bidder_position(id: "${bidderPositionID}") {
+          bidder_position(id: $bidderPositionID) {
             status
             message_header
             message_description_md
             position {
-              id
+              internalID
               suggested_next_bid {
                 cents
                 display
@@ -81,6 +81,7 @@ const queryForBidPosition = (bidderPositionID: string) => {
         }
       }
     `,
+    variables: { bidderPositionID },
   })
 }
 
@@ -293,7 +294,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     const { result } = results.createBidderPosition
 
     if (result.status === "SUCCESS") {
-      this.bidPlacedSuccessfully(result.position.id)
+      this.bidPlacedSuccessfully(result.position.internalID)
     } else {
       this.presentBidResult(result)
     }
@@ -312,7 +313,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
-      setTimeout(() => queryForBidPosition(bidder_position.position.id).then(this.checkBidPosition.bind(this)), 1000)
+      setTimeout(
+        () => queryForBidPosition(bidder_position.position.internalID).then(this.checkBidPosition.bind(this)),
+        1000
+      )
 
       this.pollCount += 1
     } else {
