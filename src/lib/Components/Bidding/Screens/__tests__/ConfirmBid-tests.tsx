@@ -5,15 +5,13 @@ import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Spinner from "../../../Spinner"
-
 import { LinkText } from "../../../Text/LinkText"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Checkbox } from "../../Components/Checkbox"
 
 import { BidResultScreen } from "../BidResult"
 import { BillingAddress } from "../BillingAddress"
-import { ConfirmBid } from "../ConfirmBid"
+import { ConfirmBid, ConfirmBidProps } from "../ConfirmBid"
 import { CreditCardForm } from "../CreditCardForm"
 
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
@@ -34,16 +32,24 @@ jest.mock("tipsi-stripe", () => ({
 }))
 import stripe from "tipsi-stripe"
 
+import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
+import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { Modal } from "lib/Components/Modal"
-import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
-
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+import { Address } from "../../types"
+import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
 jest.useFakeTimers()
 const mockPostNotificationName = jest.fn()
+
+const findPlaceBidButton = component => {
+  return component.root.findAllByType(Button)[1]
+}
 
 beforeEach(() => {
   nextStep = null // reset nextStep between tests
@@ -71,11 +77,11 @@ it("enables the bid button when checkbox is ticked", () => {
     </BiddingThemeProvider>
   )
 
-  expect(component.root.findByType(Button).instance.props.onPress).toBeFalsy()
+  expect(findPlaceBidButton(component).props.onPress).toBeFalsy()
 
-  component.root.instance.setState({ conditionsOfSaleChecked: true })
+  component.root.findByType(Checkbox).props.onPress()
 
-  expect(component.root.findByType(Button).instance.props.onPress).toBeDefined()
+  expect(findPlaceBidButton(component).props.onPress).toBeDefined()
 })
 
 it("enables the bid button by default if the user is registered", () => {
@@ -85,7 +91,7 @@ it("enables the bid button by default if the user is registered", () => {
     </BiddingThemeProvider>
   )
 
-  expect(component.root.findByType(Button).instance.props.onPress).toBeDefined()
+  expect(findPlaceBidButton(component).props.onPress).toBeDefined()
 })
 
 it("displays the artwork title correctly with date", () => {
@@ -109,7 +115,7 @@ it("displays the artwork title correctly without date", () => {
   expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork.title},`)
 })
 
-describe.only("checkbox and payment info display", () => {
+describe("checkbox and payment info display", () => {
   it("shows no checkbox or payment info if the user is registered", () => {
     const component = renderer.create(
       <BiddingThemeProvider>
@@ -154,11 +160,11 @@ describe("when pressing bid button", () => {
         <ConfirmBid {...initialProps} />
       </BiddingThemeProvider>
     )
-    component.root.instance.setState({ conditionsOfSaleChecked: true })
+    component.root.findByType(Checkbox).props.onPress()
 
     relay.commitMutation = jest.fn()
 
-    component.root.findByType(Button).instance.props.onPress()
+    findPlaceBidButton(component).props.onPress()
     expect(relay.commitMutation).toHaveBeenCalled()
   })
 
@@ -168,12 +174,13 @@ describe("when pressing bid button", () => {
         <ConfirmBid {...initialProps} />
       </BiddingThemeProvider>
     )
-    component.root.instance.setState({ conditionsOfSaleChecked: true })
+    component.root.findByType(Checkbox).props.onPress()
     relay.commitMutation = jest.fn()
+    const placeBidButton = findPlaceBidButton(component)
 
-    component.root.findByType(Button).instance.props.onPress()
+    placeBidButton.props.onPress()
 
-    expect(component.root.findAllByType(Spinner).length).toEqual(1)
+    expect(placeBidButton.props.loading).toEqual(true)
   })
 
   it("disables tap events while a spinner is being shown", () => {
@@ -186,13 +193,13 @@ describe("when pressing bid button", () => {
       </BiddingThemeProvider>
     )
 
-    component.root.instance.setState({
+    component.root.findByType(ConfirmBid).instance.setState({
       conditionsOfSaleChecked: true,
       creditCardToken: stripeToken,
       billingAddress,
     })
 
-    component.root.findByType(Button).instance.props.onPress()
+    findPlaceBidButton(component).props.onPress()
 
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
@@ -211,8 +218,8 @@ describe("when pressing bid button", () => {
     billingAddressRow.instance.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
-    expect(conditionsOfSaleLink.instance.props.onPress).toBeNull()
-    expect(conditionsOfSaleCheckbox.instance.props.disabled).toBeTruthy()
+    expect(conditionsOfSaleLink.props.onPress).toBeNull()
+    expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
   })
 
   describe("when pressing bid", () => {
@@ -222,11 +229,11 @@ describe("when pressing bid button", () => {
           <ConfirmBid {...initialProps} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = jest.fn()
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
 
       expect(relay.commitMutation).toHaveBeenCalled()
     })
@@ -239,14 +246,14 @@ describe("when pressing bid button", () => {
             <ConfirmBid {...initialProps} />
           </BiddingThemeProvider>
         )
-        component.root.instance.setState({ conditionsOfSaleChecked: true })
+        component.root.findByType(Checkbox).props.onPress()
         console.error = jest.fn() // Silences component logging.
         relay.commitMutation = commitMutationMock((_, { onError }) => {
           onError(new Error("An error occurred."))
           return null
         }) as any
 
-        component.root.findByType(Button).instance.props.onPress()
+        findPlaceBidButton(component).props.onPress()
 
         expect(relay.commitMutation).toHaveBeenCalled()
         expect(mockphysics).not.toHaveBeenCalled()
@@ -258,7 +265,7 @@ describe("when pressing bid button", () => {
             <ConfirmBid {...initialProps} />
           </BiddingThemeProvider>
         )
-        component.root.instance.setState({ conditionsOfSaleChecked: true })
+        component.root.findByType(Checkbox).props.onPress()
         console.error = jest.fn() // Silences component logging.
 
         // A TypeError is raised when the device has no internet connection.
@@ -267,7 +274,7 @@ describe("when pressing bid button", () => {
           return null
         }) as any
 
-        component.root.findByType(Button).instance.props.onPress()
+        findPlaceBidButton(component).props.onPress()
 
         expect(nextStep.component).toEqual(BidResultScreen)
         expect(nextStep.passProps).toEqual(
@@ -297,8 +304,8 @@ describe("when pressing bid button", () => {
           </BiddingThemeProvider>
         )
 
-        component.root.findByType(Checkbox).instance.props.onPress()
-        component.root.findByType(Button).instance.props.onPress()
+        component.root.findByType(Checkbox).props.onPress()
+        findPlaceBidButton(component).props.onPress()
 
         jest.runAllTicks()
 
@@ -333,18 +340,20 @@ describe("editing bid amount", () => {
     )
 
     const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-    expect(selectMaxBidRow.findByType(Serif).props.children).toEqual("$45,000")
+
+    expect(selectMaxBidRow.findAllByType(Serif)[1].props.children).toEqual("$45,000")
+
     selectMaxBidRow.instance.props.onPress()
 
-    const editScreen = fakeNavigator.nextStep()
-    expect(editScreen.root.type).toEqual(SelectMaxBidEdit)
-    expect(editScreen.root.props.selectedBidIndex).toEqual(0)
-    editScreen.root.instance.setState({ selectedBidIndex: 1 })
+    const editScreen = fakeNavigator.nextStep().root.findByType(SelectMaxBidEdit)
 
-    editScreen.root.findByType(Button).instance.props.onPress()
+    expect(editScreen.props.selectedBidIndex).toEqual(0)
+
+    editScreen.instance.setState({ selectedBidIndex: 1 })
+    editScreen.findByType(Button).props.onPress()
 
     const updatedBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-    expect(updatedBidRow.findByType(Serif).props.children).toEqual("$46,000")
+    expect(updatedBidRow.findAllByType(Serif)[1].props.children).toEqual("$46,000")
   })
 })
 
@@ -356,7 +365,7 @@ describe("polling to verify bid position", () => {
           <ConfirmBid {...initialProps} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
@@ -371,7 +380,7 @@ describe("polling to verify bid position", () => {
         }
       })
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
       times(6, () => {
         jest.runOnlyPendingTimers()
         jest.runAllTicks()
@@ -391,14 +400,14 @@ describe("polling to verify bid position", () => {
           <ConfirmBid {...initialProps} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
       }) as any
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
 
       times(22, () => {
         jest.runOnlyPendingTimers()
@@ -419,14 +428,14 @@ describe("polling to verify bid position", () => {
           <ConfirmBid {...initialProps} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
       }) as any
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
       jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
 
       expect(nextStep.component).toEqual(BidResultScreen)
@@ -443,14 +452,14 @@ describe("polling to verify bid position", () => {
           <ConfirmBid {...initialProps} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
       }) as any
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
       jest.runAllTicks()
 
       expect(nextStep.component).toEqual(BidResultScreen)
@@ -467,14 +476,14 @@ describe("polling to verify bid position", () => {
           <ConfirmBid {...initialProps} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
       }) as any
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
       jest.runAllTicks()
 
       expect(nextStep.component).toEqual(BidResultScreen)
@@ -492,14 +501,14 @@ describe("polling to verify bid position", () => {
           <ConfirmBid {...initialProps} navigator={mockedMockNavigator as any} refreshSaleArtwork={jest.fn()} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
       }) as any
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
       jest.runAllTicks()
 
       expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
@@ -507,20 +516,38 @@ describe("polling to verify bid position", () => {
       })
       expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkBidUpdated", {
         ARAuctionID: "best-art-sale-in-town",
-        ARAuctionArtworkID: "meteor shower",
+        ARAuctionArtworkID: "meteor-shower",
       })
 
       // navigates to bid result screen
       expect(mockedMockNavigator.push).toHaveBeenCalledWith({
         component: BidResultScreen,
         passProps: {
-          bidderPositionResult: { position: {}, status: "RESERVE_NOT_MET" },
+          bidderPositionResult: {
+            position: {},
+            status: "RESERVE_NOT_MET",
+          },
           refreshBidderInfo: expect.anything(),
           refreshSaleArtwork: expect.anything(),
           sale_artwork: {
-            artwork: { artist_names: "Makiko Kudo", date: "2015", id: "meteor shower", title: "Meteor Shower" },
+            internalID: "internal-id",
+            " $fragmentRefs": null,
+            " $refType": null,
+            artwork: {
+              artist_names: "Makiko Kudo",
+              date: "2015",
+              slug: "meteor-shower",
+              title: "Meteor Shower",
+              image: {
+                url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
+              },
+            },
             lot_label: "538",
-            sale: { endsAt: "2018-05-10T20:22:42+00:00", id: "best-art-sale-in-town" },
+            sale: {
+              end_at: "2018-05-10T20:22:42+00:00",
+              live_start_at: "2018-05-09T20:22:42+00:00",
+              slug: "best-art-sale-in-town",
+            },
           },
         },
         title: "",
@@ -535,13 +562,13 @@ describe("polling to verify bid position", () => {
           <ConfirmBid {...initialProps} />
         </BiddingThemeProvider>
       )
-      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      component.root.findByType(Checkbox).props.onPress()
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidRejected, null)
         return null
       }) as any
 
-      component.root.findByType(Button).instance.props.onPress()
+      findPlaceBidButton(component).props.onPress()
       jest.runAllTicks()
 
       expect(nextStep.component).toEqual(BidResultScreen)
@@ -555,6 +582,16 @@ describe("polling to verify bid position", () => {
 })
 
 describe("ConfirmBid for unqualified user", () => {
+  const fillOutFormAndSubmit = component => {
+    // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
+    component.root.findByType(ConfirmBid).instance.setState({ billingAddress })
+    component.root.findByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).props.onPress()
+    findPlaceBidButton(component).props.onPress()
+
+    jest.runAllTicks()
+  }
+
   it("shows the billing address that the user typed in the billing address form", () => {
     const billingAddressRow = renderer
       .create(
@@ -586,7 +623,12 @@ describe("ConfirmBid for unqualified user", () => {
 
     expect(nextStep.component).toEqual(CreditCardForm)
   })
+
   it("shows the error screen when stripe's API returns an error", () => {
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({}, null)
+      return null
+    }) as any
     stripe.createTokenWithCard.mockImplementationOnce(() => {
       throw new Error("Error tokenizing card")
     })
@@ -598,22 +640,16 @@ describe("ConfirmBid for unqualified user", () => {
       </BiddingThemeProvider>
     )
 
-    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findByType(Button).instance.props.onPress()
+    fillOutFormAndSubmit(component)
 
-    jest.runAllTicks()
-    expect(nextStep.component).toEqual(BidResultScreen)
-    expect(nextStep.passProps).toEqual(
-      expect.objectContaining({
-        bidderPositionResult: {
-          message_header: "An error occurred",
-          message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
-        },
-      })
+    expect(stripe.createTokenWithCard.mock.calls.length).toEqual(1)
+
+    const modal = component.root.findByType(Modal)
+
+    expect(modal.props.detailText).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
     )
+    expect(modal.props.visible).toEqual(true)
   })
 
   it("shows the error screen with the correct error message on a createCreditCard mutation failure", () => {
@@ -630,13 +666,7 @@ describe("ConfirmBid for unqualified user", () => {
       </BiddingThemeProvider>
     )
 
-    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findByType(Button).instance.props.onPress()
-
-    jest.runAllTicks()
+    fillOutFormAndSubmit(component)
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "Your card's security code is incorrect."
@@ -665,13 +695,7 @@ describe("ConfirmBid for unqualified user", () => {
       </BiddingThemeProvider>
     )
 
-    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findByType(Button).instance.props.onPress()
-
-    jest.runAllTicks()
+    fillOutFormAndSubmit(component)
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
@@ -699,13 +723,7 @@ describe("ConfirmBid for unqualified user", () => {
       </BiddingThemeProvider>
     )
 
-    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findByType(Button).instance.props.onPress()
-
-    jest.runAllTicks()
+    fillOutFormAndSubmit(component)
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
@@ -732,13 +750,7 @@ describe("ConfirmBid for unqualified user", () => {
       </BiddingThemeProvider>
     )
 
-    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.instance.setState({ billingAddress })
-    component.root.instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findByType(Button).instance.props.onPress()
-
-    jest.runAllTicks()
+    fillOutFormAndSubmit(component)
 
     expect(nextStep.component).toEqual(BidResultScreen)
     expect(nextStep.passProps).toEqual(
@@ -756,6 +768,7 @@ describe("ConfirmBid for unqualified user", () => {
       stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = jest
         .fn()
+        .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
         .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
         .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
     })
@@ -769,13 +782,19 @@ describe("ConfirmBid for unqualified user", () => {
         </BiddingThemeProvider>
       )
 
-      // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
-      component.root.instance.setState({ billingAddress })
-      component.root.instance.setState({ creditCardToken: stripeToken })
-      component.root.findByType(Checkbox).instance.props.onPress()
-      component.root.findByType(Button).instance.props.onPress()
+      fillOutFormAndSubmit(component)
 
-      jest.runAllTicks()
+      expect(relay.commitMutation).toHaveBeenCalled()
+      expect(relay.commitMutation).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.objectContaining({
+          variables: {
+            input: {
+              phone: "111 222 4444",
+            },
+          },
+        })
+      )
 
       expect(relay.commitMutation).toHaveBeenCalledWith(
         expect.any(Object),
@@ -793,8 +812,8 @@ describe("ConfirmBid for unqualified user", () => {
         expect.objectContaining({
           variables: {
             input: {
-              sale_id: saleArtwork.sale.id,
-              artwork_id: saleArtwork.artwork.id,
+              sale_id: saleArtwork.sale.slug,
+              artwork_id: saleArtwork.artwork.slug,
               max_bid_amount_cents: 450000,
             },
           },
@@ -810,9 +829,10 @@ const serifChildren = comp =>
     .map(c => (c.props.children.join ? c.props.children.join("") : c.props.children))
     .join(" ")
 
-const saleArtwork = {
+const saleArtwork: ConfirmBid_sale_artwork = {
+  internalID: "internal-id",
   artwork: {
-    id: "meteor shower",
+    slug: "meteor-shower",
     title: "Meteor Shower",
     date: "2015",
     artist_names: "Makiko Kudo",
@@ -821,10 +841,13 @@ const saleArtwork = {
     },
   },
   sale: {
-    id: "best-art-sale-in-town",
-    endsAt: "2018-05-10T20:22:42+00:00",
+    slug: "best-art-sale-in-town",
+    live_start_at: "2018-05-09T20:22:42+00:00",
+    end_at: "2018-05-10T20:22:42+00:00",
   },
   lot_label: "538",
+  " $fragmentRefs": null, // needs this to keep TS happy
+  " $refType": null, // needs this to keep TS happy
 }
 
 const mockRequestResponses = {
@@ -834,16 +857,21 @@ const mockRequestResponses = {
         phone: "111 222 4444",
       },
     },
-  },
+  } as ConfirmBidUpdateUserMutationResponse,
   creatingCreditCardSuccess: {
     createCreditCard: {
       creditCardOrError: {
         creditCard: {
-          id: "new-credit-card",
+          internalID: "new-credit-card",
+          brand: "VISA",
+          name: "TEST",
+          last_digits: "4242",
+          expiration_month: 1,
+          expiration_year: 2020,
         },
       },
     },
-  },
+  } as ConfirmBidCreateCreditCardMutationResponse,
   creatingCreditCardEmptyError: {
     createCreditCard: {
       creditCardOrError: {
@@ -854,7 +882,7 @@ const mockRequestResponses = {
         },
       },
     },
-  },
+  } as ConfirmBidCreateCreditCardMutationResponse,
   creatingCreditCardError: {
     createCreditCard: {
       creditCardOrError: {
@@ -865,16 +893,20 @@ const mockRequestResponses = {
         },
       },
     },
-  },
+  } as ConfirmBidCreateCreditCardMutationResponse,
   placingBid: {
     bidAccepted: {
       createBidderPosition: {
         result: {
           status: "SUCCESS",
-          position: { id: "some-bidder-position-id" },
+          message_header: "Success",
+          message_description_md: "",
+          position: {
+            internalID: "some-bidder-position-id",
+          },
         },
       },
-    },
+    } as ConfirmBidCreateBidderPositionMutationResponse,
     bidRejected: {
       createBidderPosition: {
         result: {
@@ -883,8 +915,9 @@ const mockRequestResponses = {
           message_description_md: "Some markdown description",
         },
       },
-    },
+    } as ConfirmBidCreateBidderPositionMutationResponse,
   },
+  // TODO: Add types for each mock response
   pollingForBid: {
     highestBidder: {
       data: {
@@ -929,13 +962,14 @@ const mockRequestResponses = {
   },
 }
 
-const billingAddress = {
+const billingAddress: Address = {
   fullName: "Yuki Stockmeier",
   addressLine1: "401 Broadway",
   addressLine2: "25th floor",
   city: "New York",
   state: "NY",
   postalCode: "10013",
+  phoneNumber: "111 222 4444",
   country: {
     longName: "United States",
     shortName: "US",
@@ -954,7 +988,7 @@ const stripeToken = {
   extra: null,
 }
 
-const initialProps = {
+const initialProps: ConfirmBidProps = {
   sale_artwork: saleArtwork,
   increments: [
     {
