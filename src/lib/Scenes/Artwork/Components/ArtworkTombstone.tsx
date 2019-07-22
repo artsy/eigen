@@ -116,14 +116,16 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Flex flexDirection="row" flexWrap="wrap">
-          <Serif italic color="black60" size="3t">
-            {artwork.title + addedComma}
-          </Serif>
-          {artwork.date && (
-            <Serif color="black60" size="3t">
-              {artwork.date}
+          <Serif size="3t">
+            <Serif italic color="black60" size="3t">
+              {artwork.title + addedComma}
             </Serif>
-          )}
+            {artwork.date && (
+              <Serif color="black60" size="3t">
+                {artwork.date}
+              </Serif>
+            )}
+          </Serif>
         </Flex>
         <Serif color="black60" size="3t">
           {artwork.medium}
