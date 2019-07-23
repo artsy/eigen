@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes an issue where placing a bid hangs - yuki24
+
 ### 1.12.9
 
 - Fixes a persistent top border when integrated with Eigen - ash

@@ -61,17 +61,17 @@ interface ConfirmBidState {
 
 const MAX_POLL_ATTEMPTS = 20
 
-const queryForBidPosition = (bidderPositionID: string) => {
+const queryForBidderPosition = (bidderPositionID: string) => {
   return metaphysics({
     query: `
-      {
+      query ConfirmBidBidderPositionQuery($bidderPositionID: String!) {
         me {
-          bidder_position(id: "${bidderPositionID}") {
+          bidder_position(id: $bidderPositionID) {
             status
             message_header
             message_description_md
             position {
-              id
+              internalID
               suggested_next_bid {
                 cents
                 display
@@ -81,6 +81,7 @@ const queryForBidPosition = (bidderPositionID: string) => {
         }
       }
     `,
+    variables: { bidderPositionID },
   })
 }
 
@@ -258,7 +259,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   createBidderPosition() {
     commitMutation<ConfirmBidCreateBidderPositionMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) =>
-        isEmpty(errors) ? this.verifyBidPosition(results) : this.presentErrorResult(errors),
+        isEmpty(errors) ? this.verifyBidderPosition(results) : this.presentErrorResult(errors),
       onError: this.presentErrorResult.bind(this),
       mutation: graphql`
         mutation ConfirmBidCreateBidderPositionMutation($input: BidderPositionInput!) {
@@ -289,11 +290,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
   }
 
-  verifyBidPosition(results) {
+  verifyBidderPosition(results) {
     const { result } = results.createBidderPosition
 
     if (result.status === "SUCCESS") {
-      this.bidPlacedSuccessfully(result.position.id)
+      this.bidPlacedSuccessfully(result.position.internalID)
     } else {
       this.presentBidResult(result)
     }
@@ -304,15 +305,18 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     action_name: Schema.ActionNames.BidFlowPlaceBid,
   })
   bidPlacedSuccessfully(positionId) {
-    queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
+    queryForBidderPosition(positionId).then(this.checkBidderPosition.bind(this))
   }
 
-  checkBidPosition(result) {
+  checkBidderPosition(result) {
     const { bidder_position } = result.data.me
 
     if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
-      setTimeout(() => queryForBidPosition(bidder_position.position.id).then(this.checkBidPosition.bind(this)), 1000)
+      setTimeout(
+        () => queryForBidderPosition(bidder_position.position.internalID).then(this.checkBidderPosition.bind(this)),
+        1000
+      )
 
       this.pollCount += 1
     } else {
