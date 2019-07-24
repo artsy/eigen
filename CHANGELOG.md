@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.12.10
+
 - Display an error message when polling fails on bidding - yuki24
 - Fixes an issue where placing a bid hangs - yuki24
 
