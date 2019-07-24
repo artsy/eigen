@@ -729,6 +729,26 @@ describe("ConfirmBid for unqualified user", () => {
       expect(mockphysics.mock.calls[0][0].variables).toEqual({ bidderPositionID: "bidder-position-id-from-mutation" })
       expect(mockphysics.mock.calls[1][0].variables).toEqual({ bidderPositionID: "bidder-position-id-from-polling" })
     })
+
+    it("displays an error message on polling failure", () => {
+      console.error = jest.fn() // Silences component logging.
+      mockphysics.mockReturnValueOnce(Promise.reject({ message: "error" }))
+
+      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+
+      fillOutFormAndSubmit(component)
+
+      expect(nextStep.component).toEqual(BidResultScreen)
+      expect(nextStep.passProps).toEqual(
+        expect.objectContaining({
+          bidderPositionResult: {
+            message_header: "An error occurred",
+            message_description_md:
+              "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+          },
+        })
+      )
+    })
   })
 })
 
