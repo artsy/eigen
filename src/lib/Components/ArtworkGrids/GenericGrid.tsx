@@ -1,10 +1,9 @@
+import Spinner from "lib/Components/Spinner"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-
-import Spinner from "lib/Components/Spinner"
+import { Schema, Track, track as _track } from "../../utils/track"
 import Artwork from "./ArtworkGridItem"
 
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
@@ -15,6 +14,8 @@ interface Props {
   sectionMargin?: number
   itemMargin?: number
   isLoading?: boolean
+  trackingFlow?: string
+  contextModule?: string
 }
 
 interface State {
@@ -22,6 +23,9 @@ interface State {
   sectionCount: number
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 export class GenericArtworksGrid extends React.Component<Props, State> {
   static defaultProps = {
     sectionDirection: "column" as "column",
@@ -36,7 +40,16 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
 
   width = 0
 
-  tappedOnArtwork = (artworkID: string) => {
+  @track(
+    (props: Props) =>
+      ({
+        action_name: Schema.ActionNames.GridArtwork,
+        action_type: Schema.ActionTypes.Tap,
+        flow: props.trackingFlow,
+        context_module: props.contextModule,
+      } as any)
+  )
+  tappedOnArtwork(artworkID: string) {
     // FIXME: Should this be internalID?
     const allArtworkIDs = this.props.artworks.map(a => a.slug)
     const index = allArtworkIDs.indexOf(artworkID)

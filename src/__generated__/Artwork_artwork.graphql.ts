@@ -14,8 +14,6 @@ import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
 declare const _Artwork_artwork$ref: unique symbol;
 export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
 export type Artwork_artwork = {
-    readonly slug: string;
-    readonly internalID: string;
     readonly additional_information: string | null;
     readonly description: string | null;
     readonly provenance: string | null;
@@ -56,12 +54,15 @@ export type Artwork_artwork = {
     readonly context: {
         readonly __typename: string;
     } | null;
+    readonly slug: string;
+    readonly internalID: string;
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
     readonly is_biddable: boolean | null;
     readonly is_inquireable: boolean | null;
     readonly availability: string | null;
     readonly contextGrids: ReadonlyArray<{
+        readonly __typename: string;
         readonly title: string | null;
         readonly ctaTitle: string | null;
         readonly ctaHref: string | null;
@@ -88,7 +89,14 @@ var v0 = [
     "args": null,
     "storageKey": null
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__typename",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Fragment",
   "name": "Artwork_artwork",
@@ -96,20 +104,6 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -322,14 +316,22 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "__typename",
-          "args": null,
-          "storageKey": null
-        }
+        (v1/*: any*/)
       ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
@@ -375,6 +377,7 @@ return {
       "concreteType": null,
       "plural": true,
       "selections": [
+        (v1/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -490,5 +493,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd960c5d11072aa8c718485ae7b8fa153';
+(node as any).hash = 'cc8701e8dc03cdcae56719561473f9c1';
 export default node;

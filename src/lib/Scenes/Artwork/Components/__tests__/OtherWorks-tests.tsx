@@ -2,7 +2,7 @@ import { Serif } from "@artsy/palette"
 import { mount, shallow } from "enzyme"
 import React from "react"
 import { Header } from "../OtherWorks/Header"
-import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/index"
+import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))

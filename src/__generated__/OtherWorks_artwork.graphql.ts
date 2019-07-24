@@ -6,6 +6,7 @@ declare const _OtherWorks_artwork$ref: unique symbol;
 export type OtherWorks_artwork$ref = typeof _OtherWorks_artwork$ref;
 export type OtherWorks_artwork = {
     readonly contextGrids: ReadonlyArray<{
+        readonly __typename: string;
         readonly title: string | null;
         readonly ctaTitle: string | null;
         readonly ctaHref: string | null;
@@ -38,6 +39,13 @@ const node: ReaderFragment = {
       "concreteType": null,
       "plural": true,
       "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "__typename",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -107,5 +115,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8cf180e431c87320e051e042079e5167';
+(node as any).hash = '43a2354d58c7da231704615419bae77d';
 export default node;

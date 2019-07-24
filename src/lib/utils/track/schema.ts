@@ -169,6 +169,7 @@ export enum ActionNames {
   ArtworkUnsave = "artworkUnsave",
   ArtworkClassification = "artworkClassification",
   ConsignWithArtsy = "consignWithArtsy",
+  GridArtwork = "gridArtwork",
   Share = "share",
   ViewInRoom = "viewInRoom",
   ReadMore = "readMore",
@@ -302,4 +303,5 @@ export enum Flow {
   AboutTheArtist = "AboutTheArtist",
   AboutTheWork = "AboutTheWork",
   ArtworkDetails = "ArtworkDetails",
+  RecommendedArtworks = "RecommendedArtworks",
 }

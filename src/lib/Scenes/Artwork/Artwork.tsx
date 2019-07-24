@@ -16,7 +16,7 @@ import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/Ar
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
-import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks"
+import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
 interface Props {
@@ -158,22 +158,20 @@ export class Artwork extends React.Component<Props> {
   render() {
     return (
       <Theme>
-        <Box>
-          <FlatList
-            data={this.sections()}
-            ItemSeparatorComponent={() => (
-              <Box px={2} mx={2} my={3}>
-                <Separator />
-              </Box>
-            )}
-            contentInset={{ bottom: 40 }}
-            style={{ paddingTop: this.props.safeAreaInsets.top }}
-            keyExtractor={(item, index) => item.type + String(index)}
-            renderItem={item =>
-              item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
-            }
-          />
-        </Box>
+        <FlatList
+          data={this.sections()}
+          ItemSeparatorComponent={() => (
+            <Box px={2} mx={2} my={3}>
+              <Separator />
+            </Box>
+          )}
+          contentInset={{ bottom: 40 }}
+          style={{ paddingTop: this.props.safeAreaInsets.top }}
+          keyExtractor={(item, index) => item.type + String(index)}
+          renderItem={item =>
+            item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
+          }
+        />
       </Theme>
     )
   }
@@ -182,8 +180,6 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      slug
-      internalID
       additional_information
       description
       provenance
@@ -202,13 +198,13 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         }
       }
 
-      # Partner Card
+      # For Partner Card
       sale {
         isBenefit
         isGalleryAuction
       }
 
-      # Details
+      # For Details
       category
       conditionDescription {
         details
@@ -234,6 +230,8 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       }
 
       # For analytics
+      slug
+      internalID
       is_acquireable
       is_offerable
       is_biddable
