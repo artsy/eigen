@@ -11,6 +11,7 @@ interface Props {
   artist: ArtistListItem_artist
   relay: RelayProp
   Component?: any
+  contextModule?: string
 }
 
 interface State {
@@ -83,13 +84,17 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 
-  @track((props: Props) => ({
-    action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
-    action_type: Schema.ActionTypes.Success,
-    owner_id: props.artist.internalID,
-    owner_slug: props.artist.slug,
-    owner_type: Schema.OwnerEntityTypes.Artist,
-  }))
+  @track(
+    (props: Props) =>
+      ({
+        action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+        action_type: Schema.ActionTypes.Success,
+        owner_id: props.artist.internalID,
+        owner_slug: props.artist.slug,
+        owner_type: Schema.OwnerEntityTypes.Artist,
+        context_module: props.contextModule ? props.contextModule : null,
+      } as any)
+  )
   handleShowSuccessfullyUpdated() {
     this.setState({
       isFollowedChanging: false,

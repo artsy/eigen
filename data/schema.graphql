@@ -202,7 +202,7 @@ type AnalyticsPartnerInquiryStats {
 # Sales stats of a partner
 type AnalyticsPartnerSalesStats {
   orderCount: Int!
-  orderResponseTime: Int!
+  orderResponseTime: Int
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
 
@@ -266,7 +266,7 @@ type AnalyticsPartnerStats {
   pageviews(period: AnalyticsQueryPeriodEnum!): AnalyticsPageviewStats
   partnerId: String!
 
-  # Artworks, shows, or artists ranked by views. Capped at 10 by the underlying sql query.
+  # Artworks, shows, or artists ranked by views. Capped at 20 by the underlying sql query.
   rankedStats(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -792,6 +792,13 @@ type Artist implements Node & Searchable {
   marketingCollections(size: Int): [MarketingCollection]
 }
 
+type ArtistArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
 enum ArtistArtworksFilters {
   IS_FOR_SALE
   IS_NOT_FOR_SALE
@@ -1232,6 +1239,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns the associated Fair/Sale/PartnerShow
   context: ArtworkContext
+  contextGrids: [ArtworkContextGrid]
   cultural_maker: String
   date: String
   description(format: Format): String
@@ -1315,7 +1323,7 @@ type Artwork implements Node & Searchable & Sellable {
     shallow: Boolean
   ): Partner
   pickup_available: Boolean
-  price: String
+  price: String @deprecated(reason: "Prefer to use `sale_message`. [Will be removed in v2]")
   priceCents: PriceCents @deprecated(reason: "Prefer to use `listPrice`. [Will be removed in v2]")
   listPrice: ListPrice
   price_currency: String
@@ -1339,7 +1347,7 @@ type Artwork implements Node & Searchable & Sellable {
   shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: ShowSort): [Show]
   signature(format: Format): String
   title: String
-  to_s: String
+  to_s: String @deprecated(reason: "Unused field named using Ruby idiom. [Will be removed in v2]")
 
   # Whether this Artwork is Published of not
   published: Boolean!
@@ -1651,28 +1659,46 @@ type ArtworkContextFair {
   sponsoredContent: FairSponsoredContent
 }
 
+# A specific grid.
+interface ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
 type ArtworkContextPartnerShow implements Node {
   # A globally unique ID.
   id: ID!
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A slug ID.
   slug: ID!
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   cached: Int
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   artists: [Artist]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # The artworks featured in the show
   artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     all: Boolean
     page: Int = 1
@@ -1680,24 +1706,32 @@ type ArtworkContextPartnerShow implements Node {
     # Number of artworks to return
     size: Int = 25
   ): [Artwork]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A connection of artworks featured in the show
   artworksConnection(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     after: String
     first: Int
     before: String
     last: Int
   ): ArtworkConnection
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   counts: PartnerShowCounts
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   cover_image: Image
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   created_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -1706,11 +1740,17 @@ type ArtworkContextPartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   description: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   displayable: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -1719,17 +1759,27 @@ type ArtworkContextPartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   events: [PartnerShowEventType]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A formatted description of the start to end dates
   exhibition_period: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   fair: Fair
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   href: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   images(
     # Number of images to return
     size: Int
@@ -1738,33 +1788,55 @@ type ArtworkContextPartnerShow implements Node {
     default: Boolean
     page: Int
   ): [Image]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # Flag showing if show has any location.
   has_location: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   is_displayable: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   is_fair_booth: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   kind: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   location: Location
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   meta_image: Image
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # The exhibition title
   name: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   partner: Partner
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   press_release(format: Format): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   start_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -1773,18 +1845,26 @@ type ArtworkContextPartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   status: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A formatted update on upcoming status changes
   status_update(
     # Before this many days no update will be generated
     max_days: Int
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   type: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 }
 
 type ArtworkContextSale implements Node {
@@ -2116,6 +2196,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
 
   # Returns the associated Fair/Sale/PartnerShow
   context: ArtworkContext
+  contextGrids: [ArtworkContextGrid]
   cultural_maker: String
   date: String
   description(format: Format): String
@@ -2199,7 +2280,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
     shallow: Boolean
   ): Partner
   pickup_available: Boolean
-  price: String
+  price: String @deprecated(reason: "Prefer to use `sale_message`. [Will be removed in v2]")
   priceCents: PriceCents @deprecated(reason: "Prefer to use `listPrice`. [Will be removed in v2]")
   listPrice: ListPrice
   price_currency: String
@@ -2223,7 +2304,7 @@ type ArtworkItem implements Node & Searchable & Sellable {
   shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: ShowSort): [Show]
   signature(format: Format): String
   title: String
-  to_s: String
+  to_s: String @deprecated(reason: "Unused field named using Ruby idiom. [Will be removed in v2]")
 
   # Whether this Artwork is Published of not
   published: Boolean!
@@ -2384,6 +2465,13 @@ type AttributionClass {
 
   # Long descriptive phrase used as companion for short_description
   longDescription: String
+}
+
+type AuctionArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 # In centimeters.
@@ -3153,7 +3241,7 @@ type CommerceBuyOrder implements CommerceOrder {
   code: String!
   commissionFeeCents: Int
   commissionRate: Float
-  createdAt: CommerceDateTime!
+  createdAt: String!
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
@@ -3161,8 +3249,22 @@ type CommerceBuyOrder implements CommerceOrder {
 
   # Item total in cents, for Offer Orders this field reflects current offer
   itemsTotalCents: Int
-  lastApprovedAt: CommerceDateTime
-  lastSubmittedAt: CommerceDateTime
+  lastApprovedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  lastSubmittedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   lastTransactionFailed: Boolean
   lineItems(
     # Returns the elements in the list that come after the specified cursor.
@@ -3183,13 +3285,27 @@ type CommerceBuyOrder implements CommerceOrder {
   sellerTotalCents: Int
   shippingTotalCents: Int
   state: CommerceOrderStateEnum!
-  stateExpiresAt: CommerceDateTime
+  stateExpiresAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   stateReason: String
-  stateUpdatedAt: CommerceDateTime
+  stateUpdatedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   taxTotalCents: Int
   totalListPriceCents: Int!
   transactionFeeCents: Int
-  updatedAt: CommerceDateTime!
+  updatedAt: String!
   buyerDetails: OrderParty
   sellerDetails: OrderParty
   itemsTotal(
@@ -3523,7 +3639,7 @@ type CommerceLineItemEdge {
 type CommerceOffer {
   amountCents: Int!
   buyerTotalCents: Int
-  createdAt: CommerceDateTime!
+  createdAt: String!
   creatorId: String!
   from: CommerceOrderPartyUnion!
   fromParticipant: CommerceOrderParticipantEnum
@@ -3532,7 +3648,14 @@ type CommerceOffer {
   order: CommerceOrder!
   respondsTo: CommerceOffer
   shippingTotalCents: Int
-  submittedAt: CommerceDateTime
+  submittedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   taxTotalCents: Int
   fromDetails: OrderParty
   amount(
@@ -3602,7 +3725,7 @@ type CommerceOfferOrder implements CommerceOrder {
   code: String!
   commissionFeeCents: Int
   commissionRate: Float
-  createdAt: CommerceDateTime!
+  createdAt: String!
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
@@ -3610,11 +3733,25 @@ type CommerceOfferOrder implements CommerceOrder {
 
   # Item total in cents, for Offer Orders this field reflects current offer
   itemsTotalCents: Int
-  lastApprovedAt: CommerceDateTime
+  lastApprovedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 
   # Last submitted offer
   lastOffer: CommerceOffer
-  lastSubmittedAt: CommerceDateTime
+  lastSubmittedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   lastTransactionFailed: Boolean
   lineItems(
     # Returns the elements in the list that come after the specified cursor.
@@ -3651,13 +3788,27 @@ type CommerceOfferOrder implements CommerceOrder {
   sellerTotalCents: Int
   shippingTotalCents: Int
   state: CommerceOrderStateEnum!
-  stateExpiresAt: CommerceDateTime
+  stateExpiresAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   stateReason: String
-  stateUpdatedAt: CommerceDateTime
+  stateUpdatedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   taxTotalCents: Int
   totalListPriceCents: Int!
   transactionFeeCents: Int
-  updatedAt: CommerceDateTime!
+  updatedAt: String!
   buyerDetails: OrderParty
   sellerDetails: OrderParty
   itemsTotal(
@@ -3751,7 +3902,7 @@ interface CommerceOrder {
   code: String!
   commissionFeeCents: Int
   commissionRate: Float
-  createdAt: CommerceDateTime!
+  createdAt: String!
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
@@ -3759,8 +3910,22 @@ interface CommerceOrder {
 
   # Item total in cents, for Offer Orders this field reflects current offer
   itemsTotalCents: Int
-  lastApprovedAt: CommerceDateTime
-  lastSubmittedAt: CommerceDateTime
+  lastApprovedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  lastSubmittedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   lastTransactionFailed: Boolean
   lineItems(
     # Returns the elements in the list that come after the specified cursor.
@@ -3781,13 +3946,27 @@ interface CommerceOrder {
   sellerTotalCents: Int
   shippingTotalCents: Int
   state: CommerceOrderStateEnum!
-  stateExpiresAt: CommerceDateTime
+  stateExpiresAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   stateReason: String
-  stateUpdatedAt: CommerceDateTime
+  stateUpdatedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   taxTotalCents: Int
   totalListPriceCents: Int!
   transactionFeeCents: Int
-  updatedAt: CommerceDateTime!
+  updatedAt: String!
   buyerDetails: OrderParty
   sellerDetails: OrderParty
   itemsTotal(
@@ -5903,7 +6082,7 @@ type HighlightedShow implements Node {
   artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     all: Boolean
     page: Int = 1
@@ -5916,7 +6095,7 @@ type HighlightedShow implements Node {
   artworks_connection(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     after: String
     first: Int
@@ -6892,10 +7071,9 @@ type MarketingCollectionCategory {
 }
 
 type MarketingCollectionGroup {
-  internalID: ID!
   groupType: MarketingGroupTypes!
   name: String!
-  members: [String!]!
+  members: [MarketingCollection!]!
 }
 
 type MarketingCollectionQuery {
@@ -6938,6 +7116,13 @@ enum MarketingGroupTypes {
   ArtistSeries
   FeaturedCollections
   OtherCollections
+}
+
+type MarketingImage {
+  internalID: ID!
+  small: String!
+  medium: String!
+  large: String!
 }
 
 type Me implements Node {
@@ -7051,7 +7236,7 @@ type Me implements Node {
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
   notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
-    @deprecated(reason: "Prefer to use `followed_artists_artwork_groups`. [Will be removed in v2]")
+    @deprecated(reason: "Prefer to use `followsAndSaves`. [Will be removed in v2]")
   paddle_number: String
   recentlyViewedArtworkIds: [String]!
 
@@ -7323,7 +7508,7 @@ type Mutation {
 
   # Submits an order
   submitOrder(input: SubmitOrderInput!): SubmitOrderPayload
-  recordArtworkView(input: RecordArtworkViewInput): RecordArtworkViewPayload
+  recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   commerceAddInitialOfferToOrder(input: CommerceAddInitialOfferToOrderInput!): CommerceAddInitialOfferToOrderPayload
   commerceApproveOrder(input: CommerceApproveOrderInput!): CommerceApproveOrderPayload
   commerceBuyerAcceptOffer(input: CommerceBuyerAcceptOfferInput!): CommerceBuyerAcceptOfferPayload
@@ -8212,6 +8397,9 @@ type PageCursors {
 
 # Information about pagination in a connection.
 type PageInfo {
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+
   # When paginating forwards, are there more items?
   hasNextPage: Boolean!
 
@@ -8220,9 +8408,6 @@ type PageInfo {
 
   # When paginating backwards, the cursor to continue.
   startCursor: String
-
-  # When paginating forwards, the cursor to continue.
-  endCursor: String
 }
 
 type Partner implements Node {
@@ -8345,6 +8530,13 @@ type PartnerArtistEdge {
   is_use_default_biography: Boolean
   partner: Partner
   sortable_id: String
+}
+
+type PartnerArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 type PartnerCategory {
@@ -8476,25 +8668,35 @@ type PartnersAggregationResults {
 type PartnerShow implements Node {
   # A globally unique ID.
   id: ID!
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A slug ID.
   slug: ID!
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   cached: Int
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   artists: [Artist]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # The artworks featured in the show
   artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     all: Boolean
     page: Int = 1
@@ -8502,24 +8704,32 @@ type PartnerShow implements Node {
     # Number of artworks to return
     size: Int = 25
   ): [Artwork]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A connection of artworks featured in the show
   artworksConnection(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     after: String
     first: Int
     before: String
     last: Int
   ): ArtworkConnection
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   counts: PartnerShowCounts
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   cover_image: Image
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   created_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -8528,11 +8738,17 @@ type PartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   description: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   displayable: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   end_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -8541,17 +8757,27 @@ type PartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   events: [PartnerShowEventType]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A formatted description of the start to end dates
   exhibition_period: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   fair: Fair
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   href: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   images(
     # Number of images to return
     size: Int
@@ -8560,33 +8786,55 @@ type PartnerShow implements Node {
     default: Boolean
     page: Int
   ): [Image]
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # Flag showing if show has any location.
   has_location: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   is_displayable: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   is_fair_booth: Boolean
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   kind: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   location: Location
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   meta_image: Image
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # The exhibition title
   name: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   partner: Partner
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   press_release(format: Format): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   start_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -8595,18 +8843,26 @@ type PartnerShow implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   status: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 
   # A formatted update on upcoming status changes
   status_update(
     # Before this many days no update will be generated
     max_days: Int
   ): String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
   type: String
-    @deprecated(reason: "The `PartnerShow` type is deprecated in favor of the `Show` type. [Will be removed in v2]")
+    @deprecated(
+      reason: "The `PartnerShow` type has been deprecated. Prefer to use the `Show` type instead. [Will be removed in v2]"
+    )
 }
 
 type PartnerShowCounts {
@@ -9339,18 +9595,24 @@ type Query {
   ): [MarketingCollection!]!
   marketingCategories: [MarketingCollectionCategory!]!
   marketingCollection(slug: String!): MarketingCollection
+  marketingHubCollections: [MarketingCollection!]!
 }
 
 # Autogenerated input type of RecordArtworkView
 input RecordArtworkViewInput {
+  artwork_id: String!
+
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-  artwork_id: String!
 }
 
 # Autogenerated return type of RecordArtworkView
 type RecordArtworkViewPayload {
-  artwork_id: String!
+  # Id of viewed artwork
+  artworkId: String!
+
+  # Id of viewed artwork
+  artwork_id: String! @deprecated(reason: "Use artworkId")
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
@@ -9370,6 +9632,13 @@ type RejectOrderPayload {
 enum RelatedArtistsKind {
   MAIN
   CONTEMPORARY
+}
+
+type RelatedArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 input RequestCredentialsForAssetUploadInput {
@@ -9927,7 +10196,7 @@ interface Sellable {
   is_offerable: Boolean
   is_for_sale: Boolean
   is_sold: Boolean
-  price: String
+  price: String @deprecated(reason: "Prefer to use `sale_message`. [Will be removed in v2]")
   sale_message: String
 }
 
@@ -10128,7 +10397,7 @@ type Show implements Node {
   artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     all: Boolean
     page: Int = 1
@@ -10141,7 +10410,7 @@ type Show implements Node {
   artworks_connection(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-    for_sale: Boolean
+    for_sale: Boolean = false
     published: Boolean = true
     after: String
     first: Int
@@ -10327,6 +10596,13 @@ type Show implements Node {
 
   # A Connection of followed artists by current user for this show
   followedArtists(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
+}
+
+type ShowArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 # A connection to a list of items.

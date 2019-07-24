@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.12.5",
+  "version": "1.12.10",
   "native-code-version": 32,
   "description": "Artsy React(Native) components.",
   "engines": {
@@ -75,10 +75,10 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "dependencies": {
-    "@artsy/palette": "4.14.30",
+    "@artsy/palette": "4.14.36",
     "@mapbox/react-native-mapbox-gl": "l2succes/react-native-mapbox-gl#fix-gesture-recognizer",
     "@react-native-community/cameraroll": "1.0.5",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "mobx": "^5.13.0",
     "mobx-react": "^6.1.1",
     "moment": "2.24.0",
@@ -95,7 +95,7 @@
     "react-native-svg": "9.4.0",
     "react-relay": "5.0.0",
     "react-spring": "8.0.23",
-    "react-tracking": "5.7.0",
+    "react-tracking": "7.0.1",
     "relay-runtime": "5.0.0",
     "remove-markdown": "0.1.0",
     "simple-markdown": "0.4.4",
@@ -122,7 +122,7 @@
     "@types/react-native": "0.57.42",
     "@types/react-relay": "5.0.0",
     "@types/react-test-renderer": "16.8.1",
-    "@types/react-tracking": "5.0.0",
+    "@types/react-tracking": "7.0.1",
     "@types/relay-runtime": "5.0.0",
     "@types/styled-components": "4.0.3",
     "@types/styled-system": "3.0.1",

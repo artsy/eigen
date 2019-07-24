@@ -85,7 +85,7 @@ exports[`looks correct when rendered 1`] = `
         ]
       }
     >
-      SEND
+      Send
     </Text>
   </View>
 </View>
@@ -178,7 +178,7 @@ exports[`regarding the send button disables it when there is no text 1`] = `
         ]
       }
     >
-      SEND
+      Send
     </Text>
   </View>
 </View>

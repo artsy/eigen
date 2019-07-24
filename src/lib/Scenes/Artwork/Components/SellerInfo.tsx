@@ -9,13 +9,15 @@ interface SellerInfoProps {
 
 export class SellerInfo extends React.Component<SellerInfoProps> {
   render() {
-    const { partner } = this.props.artwork
+    const { partner, availability } = this.props.artwork
     const { name } = partner
+    const availabilityDisplayText = availability === "for sale" || availability === "sold" ? "Sold by" : "At"
+
     return (
       <Box>
         {name && (
           <Sans size="3t" color="black60">
-            {name}
+            {availabilityDisplayText} {name}
           </Sans>
         )}
       </Box>
@@ -26,6 +28,7 @@ export class SellerInfo extends React.Component<SellerInfoProps> {
 export const SellerInfoFragmentContainer = createFragmentContainer(SellerInfo, {
   artwork: graphql`
     fragment SellerInfo_artwork on Artwork {
+      availability
       partner {
         name
       }

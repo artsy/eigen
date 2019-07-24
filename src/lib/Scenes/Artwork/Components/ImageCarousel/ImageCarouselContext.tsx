@@ -1,6 +1,8 @@
+import { Schema } from "lib/utils/track"
 import { observable } from "mobx"
 import React, { useMemo, useRef } from "react"
 import { FlatList, View } from "react-native"
+import { useTracking } from "react-tracking"
 
 export interface ImageDescriptor {
   url: string
@@ -54,6 +56,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
     fullScreenState: "none" as FullScreenState,
     isZoomedCompletelyOut: true,
   })
+  const tracking = useTracking()
 
   return useMemo(
     () => ({
@@ -64,10 +67,17 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
       dispatch: (action: ImageCarouselAction) => {
         switch (action.type) {
           case "IMAGE_INDEX_CHANGED":
-            state.imageIndex = action.nextImageIndex
-            state.isZoomedCompletelyOut = true
-            if (state.fullScreenState !== "none") {
-              embeddedFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
+            if (state.imageIndex !== action.nextImageIndex) {
+              tracking.trackEvent({
+                action_name: Schema.ActionNames.ArtworkImageSwipe,
+                action_type: Schema.ActionTypes.Swipe,
+                context_module: Schema.ContextModules.ArtworkImage,
+              })
+              state.imageIndex = action.nextImageIndex
+              state.isZoomedCompletelyOut = true
+              if (state.fullScreenState !== "none") {
+                embeddedFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
+              }
             }
             break
           case "FULL_SCREEN_DISMISSED":

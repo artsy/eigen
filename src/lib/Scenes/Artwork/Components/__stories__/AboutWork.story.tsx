@@ -14,19 +14,19 @@ storiesOf("Artwork/Components").add("About this Work", () => {
     <Join separator={<Spacer mb={2} />}>
       <Flex>
         <Sans size="3t" weight="medium" color="purple100" mb={2}>
-          About this work (All info present)
+          About the work (All info present)
         </Sans>
         <AboutWork artwork={{ additional_information: additionalInformation, description, " $refType": null }} />
       </Flex>
       <Flex>
         <Sans size="3t" weight="medium" color="purple100" mb={2}>
-          About this work (Only additional_information present)
+          About the work (Only additional_information present)
         </Sans>
         <AboutWork artwork={{ additional_information: additionalInformation, description: null, " $refType": null }} />
       </Flex>
       <Flex>
         <Sans size="3t" weight="medium" color="purple100" mb={2}>
-          About this work (Only description present)
+          About the work (Only description present)
         </Sans>
         <AboutWork artwork={{ additional_information: null, description, " $refType": null }} />
       </Flex>

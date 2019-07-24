@@ -1,21 +1,18 @@
+import { Button } from "@artsy/palette"
+import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import { shallow } from "enzyme"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-
 import { NativeModules } from "react-native"
+import * as renderer from "react-test-renderer"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
+import { BidderPositionResult } from "../../types"
+import { BidResult } from "../BidResult"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   dismissModalViewController: jest.fn(),
   presentModalViewController: jest.fn(),
 }))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-
-import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
-import * as renderer from "react-test-renderer"
-import { BidGhostButton, Button } from "../../Components/Button"
-import { BidderPositionResult } from "../../types"
-import { BidResult } from "../BidResult"
-
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }
@@ -109,7 +106,7 @@ describe("BidResult component", () => {
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-      bidResult.root.findByType(BidGhostButton).instance.props.onPress()
+      bidResult.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
 
       expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
@@ -218,7 +215,7 @@ describe("BidResult component", () => {
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-      bidResult.root.findByType(BidGhostButton).instance.props.onPress()
+      bidResult.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
 
       expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(

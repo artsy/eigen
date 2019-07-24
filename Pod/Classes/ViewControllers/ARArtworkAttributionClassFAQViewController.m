@@ -11,4 +11,10 @@
                         moduleName:@"ArtworkAttributionClassFAQ"
                  initialProperties:@{}];
 }
+
+- (BOOL)shouldInjectSafeAreaInsets
+{
+    return YES;
+}
+
 @end

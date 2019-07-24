@@ -1,6 +1,7 @@
 import { Box, Flex, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -18,10 +19,19 @@ export interface ArtworkTombstoneState {
   showingMoreArtists: boolean
 }
 
+@track()
 export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, ArtworkTombstoneState> {
   state = {
     showingMoreArtists: false,
   }
+
+  @track(() => {
+    return {
+      action_name: Schema.ActionNames.ArtworkClassification,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.ArtworkTombstone,
+    } as any
+  })
   handleTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
@@ -44,7 +54,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           <Serif size="4t" weight="semibold">
             {"  "}·{"  "}
           </Serif>
-          <FollowArtistButton artist={artist} />
+          <FollowArtistButton artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
         </Text>
       </React.Fragment>
     )
@@ -106,14 +116,16 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Flex flexDirection="row" flexWrap="wrap">
-          <Serif italic color="black60" size="3t">
-            {artwork.title + addedComma}
-          </Serif>
-          {artwork.date && (
-            <Serif color="black60" size="3t">
-              {artwork.date}
+          <Serif size="3t">
+            <Serif italic color="black60" size="3t">
+              {artwork.title + addedComma}
             </Serif>
-          )}
+            {artwork.date && (
+              <Serif color="black60" size="3t">
+                {artwork.date}
+              </Serif>
+            )}
+          </Serif>
         </Flex>
         <Serif color="black60" size="3t">
           {artwork.medium}
@@ -127,11 +139,12 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           </Serif>
         )}
         {artwork.attribution_class && (
-          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleTap("/artwork-classifications")}>
-            <Serif color="black60" size="3t">
-              {artwork.attribution_class.shortDescription}
-            </Serif>
-          </Text>
+          <Serif color="black60" size="3t" mt={1}>
+            <TouchableWithoutFeedback onPress={() => this.handleTap("/artwork-classifications")}>
+              <Text style={{ textDecorationLine: "underline" }}>{artwork.attribution_class.shortDescription}</Text>
+            </TouchableWithoutFeedback>
+            .
+          </Serif>
         )}
       </Box>
     )

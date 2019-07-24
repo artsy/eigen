@@ -23,10 +23,11 @@ interface State {
   isExpanded: boolean
 }
 
+const basicRules = defaultRules(true)
 const markdownRules = {
-  ...defaultRules,
+  ...basicRules,
   paragraph: {
-    ...defaultRules.paragraph,
+    ...basicRules.paragraph,
     react: (node, output, state) => (
       <Serif size="3t" color="black100" key={state.key}>
         {output(node.content, state)}

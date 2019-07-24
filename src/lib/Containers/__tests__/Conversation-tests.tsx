@@ -22,7 +22,7 @@ jest.mock("NetInfo", () => {
 
 it("looks correct when rendered", () => {
   const conversation = shallow(<Conversation me={props as any} />).dive()
-  const instance = conversation.instance()
+  const instance = conversation.dive().instance()
 
   // Assumes decent connectivity
   instance.handleConnectivityChange(true)
@@ -32,7 +32,7 @@ it("looks correct when rendered", () => {
 
 it("displays a connectivity banner when network is down", () => {
   const conversation = shallow(<Conversation me={props as any} />).dive()
-  const instance = conversation.instance()
+  const instance = conversation.dive().instance()
 
   // Assumes decent connectivity
   instance.handleConnectivityChange(false)

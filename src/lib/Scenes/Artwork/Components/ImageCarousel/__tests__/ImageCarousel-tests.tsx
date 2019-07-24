@@ -2,11 +2,13 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { Animated, FlatList } from "react-native"
 import { graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { getMeasurements } from "../geometry"
 import { ImageCarouselFragmentContainer, PaginationDot } from "../ImageCarousel"
 import { embeddedCardBoundingBox } from "../ImageCarouselEmbedded"
 
 jest.unmock("react-relay")
+const trackEvent = jest.fn()
 
 const artworkFixture = {
   images: [
@@ -58,7 +60,18 @@ describe("ImageCarouselFragmentContainer", () => {
   }
   const getDotOpacity = dot => dot.find(Animated.View).props().style.opacity._value
   describe("with five images", () => {
-    jest.useFakeTimers()
+    beforeEach(() => {
+      jest.useFakeTimers()
+      ;(useTracking as jest.Mock).mockImplementation(() => {
+        return {
+          trackEvent,
+        }
+      })
+    })
+    afterEach(() => {
+      jest.clearAllMocks()
+      jest.useRealTimers()
+    })
     it("renders a flat list with five entries", async () => {
       const wrapper = await getWrapper()
       expect(wrapper.find(FlatList)).toHaveLength(1)

@@ -5,6 +5,7 @@ import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -15,7 +16,7 @@ import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/Ar
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
-import { OtherWorksFragmentContainer as OtherWorks } from "./Components/OtherWorks"
+import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { SafeAreaInsetsContext } from "./Components/SafeAreaInsetsContext"
 
@@ -24,6 +25,17 @@ interface Props {
   safeAreaInsets: SafeAreaInsets
 }
 
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ArtworkPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+  context_screen_owner_slug: props.artwork.slug,
+  context_screen_owner_id: props.artwork.internalID,
+  availability: props.artwork.availability,
+  acquireable: props.artwork.is_acquireable,
+  inquireable: props.artwork.is_inquireable,
+  offerable: props.artwork.is_offerable,
+  biddable: props.artwork.is_biddable,
+}))
 export class Artwork extends React.Component<Props> {
   shouldRenderDetails = () => {
     const {
@@ -68,16 +80,10 @@ export class Artwork extends React.Component<Props> {
   }
 
   shouldRenderOtherWorks = () => {
-    const {
-      artist: { artworks_connection },
-      partner: { artworksConnection },
-      layer,
-    } = this.props.artwork
-    if (
-      (artworks_connection && artworks_connection.edges && artworks_connection.edges.length) ||
-      (artworksConnection && artworksConnection.edges && artworksConnection.edges.length) ||
-      (layer && layer.artworksConnection && layer.artworksConnection.edges && layer.artworksConnection.edges.length)
-    ) {
+    const { contextGrids } = this.props.artwork
+    const gridsToShow = populatedGrids(contextGrids)
+
+    if (gridsToShow && gridsToShow.length > 0) {
       return true
     } else {
       return false
@@ -86,10 +92,7 @@ export class Artwork extends React.Component<Props> {
 
   sections = () => {
     const { artwork } = this.props
-    const {
-      artist: { biography_blurb },
-      context,
-    } = artwork
+    const { artist, context } = artwork
 
     const sections = []
 
@@ -108,7 +111,7 @@ export class Artwork extends React.Component<Props> {
       sections.push("history")
     }
 
-    if (biography_blurb) {
+    if (artist && artist.biography_blurb) {
       sections.push("aboutArtist")
     }
 
@@ -157,20 +160,20 @@ export class Artwork extends React.Component<Props> {
     return (
       <SafeAreaInsetsContext.Provider value={this.props.safeAreaInsets}>
         <Theme>
-          <Box pt={this.props.safeAreaInsets.top}>
-            <FlatList
-              data={this.sections()}
-              ItemSeparatorComponent={() => (
-                <Box px={2} mx={2} my={3}>
-                  <Separator />
-                </Box>
-              )}
-              keyExtractor={(item, index) => item.type + String(index)}
-              renderItem={item =>
-                item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
-              }
-            />
-          </Box>
+          <FlatList
+            data={this.sections()}
+            ItemSeparatorComponent={() => (
+              <Box px={2} mx={2} my={3}>
+                <Separator />
+              </Box>
+            )}
+            contentInset={{ bottom: 40 }}
+            style={{ paddingTop: this.props.safeAreaInsets.top }}
+            keyExtractor={(item, index) => item.type + String(index)}
+            renderItem={item =>
+              item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
+            }
+          />
         </Theme>
       </SafeAreaInsetsContext.Provider>
     )
@@ -186,26 +189,9 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       exhibition_history
       literature
 
-      layer(id: "main") {
-        artworksConnection(first: 6) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-
       partner {
         type
         id
-        artworksConnection(first: 6, for_sale: true, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
       }
 
       artist {
@@ -213,22 +199,15 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         biography_blurb {
           text
         }
-        artworks_connection(first: 6, sort: PUBLISHED_AT_DESC, exclude: $excludeArtworkIds) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
       }
 
-      # Partner Card
+      # For Partner Card
       sale {
         isBenefit
         isGalleryAuction
       }
 
-      # Details
+      # For Details
       category
       conditionDescription {
         details
@@ -253,8 +232,18 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         __typename
       }
 
+      # For analytics
+      slug
+      internalID
+      is_acquireable
+      is_offerable
+      is_biddable
+      is_inquireable
+      availability
+
       ...PartnerCard_artwork
       ...AboutWork_artwork
+      ...OtherWorks_artwork @relay(mask: false)
       ...OtherWorks_artwork
       ...AboutArtist_artwork
       ...ArtworkDetails_artwork
@@ -274,16 +263,13 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
     <QueryRenderer<ArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkQuery($artworkID: String!, $excludeArtworkIds: [String!]) {
+        query ArtworkQuery($artworkID: String!) {
           artwork(id: $artworkID) {
             ...Artwork_artwork
           }
         }
       `}
-      variables={{
-        artworkID: "richard-haas-times-square-looking-north-from-42nd-street",
-        excludeArtworkIds: [artworkID],
-      }}
+      variables={{ artworkID }}
       render={renderWithLoadProgress(ArtworkContainer, others)}
     />
   )

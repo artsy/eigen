@@ -16,6 +16,9 @@ export type ConfirmBid_sale_artwork = {
         readonly title: string | null;
         readonly date: string | null;
         readonly artist_names: string | null;
+        readonly image: {
+            readonly url: string | null;
+        } | null;
     } | null;
     readonly lot_label: string | null;
     readonly " $fragmentRefs": BidResult_sale_artwork$ref;
@@ -102,6 +105,30 @@ return {
           "name": "artist_names",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "image",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Image",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "url",
+              "args": [
+                {
+                  "kind": "Literal",
+                  "name": "version",
+                  "value": "small"
+                }
+              ],
+              "storageKey": "url(version:\"small\")"
+            }
+          ]
         }
       ]
     },
@@ -120,5 +147,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1b9a43f0c7c6b39496d6c12620502354';
+(node as any).hash = '40452e0f6179b4f0c772d5d60fd1ebf8';
 export default node;

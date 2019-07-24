@@ -1,7 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import { BidGhostButton } from "lib/Components/Bidding/Components/Button"
+import { Button } from "@artsy/palette"
 import { RegistrationResult, RegistrationStatus } from "../RegistrationResult"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -67,7 +67,7 @@ describe("Registration result component", () => {
     const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
     mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-    component.root.findByType(BidGhostButton).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
     jest.runAllTicks()
 
     expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()

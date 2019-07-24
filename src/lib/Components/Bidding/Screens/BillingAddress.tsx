@@ -1,4 +1,4 @@
-import { Sans, Serif } from "@artsy/palette"
+import { Button, Sans, Serif } from "@artsy/palette"
 import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
@@ -20,7 +20,6 @@ import { validatePresence } from "../Validators"
 
 import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
@@ -287,7 +286,9 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 )}
               </Flex>
 
-              <Button text="Add billing address" onPress={() => this.onSubmit()} />
+              <Button block width={100} onPress={() => this.onSubmit()}>
+                Add billing address
+              </Button>
             </Container>
           </ScrollView>
         </KeyboardAvoidingView>

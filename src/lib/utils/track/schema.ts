@@ -78,6 +78,7 @@ export interface PageView {
 export enum PageNames {
   ArtistPage = "Artist",
   ArtworkPage = "Artwork",
+  ArtworkClassificationsPage = "ArtworkClassifications",
   BidFlowMaxBidPage = "YourMaxBid",
   BidFlowConfirmBidPage = "ConfirmYourBid",
   BidFlowBillingAddressPage = "YourBillingAddress",
@@ -137,7 +138,7 @@ export enum ActionTypes {
    * User actions
    */
   Tap = "tap",
-
+  Swipe = "swipe",
   Session = "session",
 
   /**
@@ -161,9 +162,22 @@ export enum ActionNames {
   ArtistShows = "artistShows",
 
   /**
+   * Artwork Page Events
+   */
+  ArtworkImageSwipe = "artworkImageSwipe",
+  ArtworkSave = "artworkSave",
+  ArtworkUnsave = "artworkUnsave",
+  ArtworkClassification = "artworkClassification",
+  ConsignWithArtsy = "consignWithArtsy",
+  GridArtwork = "gridArtwork",
+  Share = "share",
+  ViewInRoom = "viewInRoom",
+  ReadMore = "readMore",
+  ShowMoreArtworksDetails = "showMoreArtworksDetails",
+
+  /**
    * City and Map Page Events
    */
-
   GetBMWArtGuide = "getBMWArtGuide",
   CityGuideSessionLength = "cityGuideSessionLength",
 
@@ -263,4 +277,31 @@ export enum ActionNames {
   ContextualArtist = "contextualArtist",
   ListArtist = "listArtist",
   ListGallery = "listGallery",
+}
+
+/**
+ * The component from which the action originates
+ */
+export enum ContextModules {
+  AboutTheArtist = "AboutTheArtist",
+  AboutTheWork = "AboutTheWork",
+  AboutTheWorkFromSpecialist = "AboutTheWorkFromSpecialist",
+  ArtistBiography = "ArtistBiography",
+  ArtistInsights = "ArtistInsights",
+  ArtworkActions = "ArtworkActions",
+  ArtworkDetails = "ArtworkDetails",
+  ArtworkExtraLinks = "ArtworkExtraLinks",
+  ArtworkHistory = "ArtworkHistory",
+  ArtworkImage = "ArtworkImage",
+  ArtworkTombstone = "ArtworkTombstone",
+  Bibliography = "Bibliography",
+  ExhibitionHistory = "ExhibitionHistory",
+  Provenance = "Provenance",
+}
+
+export enum Flow {
+  AboutTheArtist = "AboutTheArtist",
+  AboutTheWork = "AboutTheWork",
+  ArtworkDetails = "ArtworkDetails",
+  RecommendedArtworks = "RecommendedArtworks",
 }

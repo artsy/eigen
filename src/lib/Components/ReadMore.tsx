@@ -1,32 +1,38 @@
 import { Flex, Sans, Serif } from "@artsy/palette"
 import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
+import { Schema } from "lib/utils/track"
 import _ from "lodash"
 import React, { useState } from "react"
 import { Text } from "react-native"
+import { useTracking } from "react-tracking"
 import { LinkText } from "./Text/LinkText"
 
 interface Props {
   content: string
   maxChars: number
+  presentLinksModally?: boolean
+  contextModule?: string
+  trackingFlow?: string
 }
 
-const rules = {
-  ...defaultRules,
-  paragraph: {
-    ...defaultRules.paragraph,
-    react: (node, output, state) => {
-      return (
-        <Serif size="3t" color="black100" key={state.key}>
-          {output(node.content, state)}
-        </Serif>
-      )
-    },
-  },
-}
-
-export const ReadMore = React.memo(({ content, maxChars }: Props) => {
+export const ReadMore = React.memo(({ content, maxChars, presentLinksModally, trackingFlow, contextModule }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const tracking = useTracking()
+  const basicRules = defaultRules(presentLinksModally)
+  const rules = {
+    ...basicRules,
+    paragraph: {
+      ...basicRules.paragraph,
+      react: (node, output, state) => {
+        return (
+          <Serif size="3t" color="black100" key={state.key}>
+            {output(node.content, state)}
+          </Serif>
+        )
+      },
+    },
+  }
   const root = renderMarkdown(content, rules)
   // Removes the last empty space in the markdown array
   if (Array.isArray(root)) {
@@ -42,7 +48,21 @@ export const ReadMore = React.memo(({ content, maxChars }: Props) => {
     root
   ) : (
     <Flex>
-      <Text>{truncate({ root, maxChars, onExpand: () => setIsExpanded(true) })}</Text>
+      <Text>
+        {truncate({
+          root,
+          maxChars,
+          onExpand: () => {
+            tracking.trackEvent({
+              action_name: Schema.ActionNames.ReadMore,
+              action_type: Schema.ActionTypes.Tap,
+              context_module: contextModule ? contextModule : null,
+              flow: trackingFlow ? trackingFlow : null,
+            })
+            setIsExpanded(true)
+          },
+        })}
+      </Text>
     </Flex>
   )
 })

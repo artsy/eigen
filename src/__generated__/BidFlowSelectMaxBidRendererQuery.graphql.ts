@@ -49,6 +49,9 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
     title
     date
     artist_names
+    image {
+      url(version: "small")
+    }
     id
   }
   lot_label
@@ -239,6 +242,30 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "version",
+                        "value": "small"
+                      }
+                    ],
+                    "storageKey": "url(version:\"small\")"
+                  }
+                ]
+              },
               (v5/*: any*/)
             ]
           },
@@ -277,7 +304,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidFlowSelectMaxBidRendererQuery",
-    "id": "f62155080608fb9835de0c0925a87952",
+    "id": "8b9bf477e39ad48905e390c4a3019a46",
     "text": null,
     "metadata": {}
   }

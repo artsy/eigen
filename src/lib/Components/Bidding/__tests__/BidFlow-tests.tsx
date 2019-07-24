@@ -3,15 +3,17 @@ import "react-native"
 import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
+import { Button } from "@artsy/palette"
 import relay from "react-relay"
-import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { SelectMaxBid } from "../Screens/SelectMaxBid"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 
-jest.mock("../../../metaphysics", () => ({ metaphysics: jest.fn() }))
-import { metaphysics } from "../../../metaphysics"
+jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
+  bidderPositionQuery: jest.fn(),
+}))
+import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { Title } from "../Components/Title"
 
 jest.mock("tipsi-stripe", () => ({
@@ -22,11 +24,12 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { Theme } from "@artsy/palette"
+import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
-const mockphysics = metaphysics as jest.Mock<any>
+const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 let fakeNavigator: FakeNavigator
 let fakeRelay
 
@@ -55,20 +58,20 @@ it("allows bidders with a qualified credit card to bid", () => {
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
-  screen.root.findByType(Button).instance.props.onPress()
+  screen.root.findAllByType(Button)[0].instance.props.onPress()
 
   screen = fakeNavigator.nextStep()
 
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
-  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+  bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
   relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
     onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
     return null
   }) as any
 
   screen.root.findByType(Checkbox).instance.props.onPress()
-  screen.root.findByType(Button).instance.props.onPress()
+  screen.root.findAllByType(Button)[1].instance.props.onPress()
 
   jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
 
@@ -90,7 +93,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
-  screen.root.findByType(Button).instance.props.onPress()
+  screen.root.findAllByType(Button)[0].instance.props.onPress()
 
   screen = fakeNavigator.nextStep()
 
@@ -102,7 +105,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
     .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
     .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
     .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
-  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+  bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
   // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
   screen.root.findByProps({ nextScreen: true }).instance.setState({
@@ -117,7 +120,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   })
 
   screen.root.findByType(Checkbox).instance.props.onPress()
-  await screen.root.findByType(Button).instance.props.onPress()
+  await screen.root.findAllByType(Button)[1].instance.props.onPress()
 
   expect(stripe.createTokenWithCard).toHaveBeenCalledWith({
     ...creditCardFormParams,
@@ -182,6 +185,9 @@ const SaleArtwork = {
     title: "Meteor Shower",
     date: "2015",
     artist_names: "Makiko Kudo",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
+    },
   },
   sale: {
     id: "best-art-sale-in-town",
@@ -226,14 +232,12 @@ const mockRequestResponses = {
   },
   pollingForBid: {
     highestBidder: {
-      data: {
-        me: {
-          bidder_position: {
-            status: "WINNING",
-            position: {},
-          },
+      me: {
+        bidder_position: {
+          status: "WINNING",
+          position: {},
         },
       },
-    },
+    } as BidderPositionQueryResponse,
   },
 }

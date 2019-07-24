@@ -6,6 +6,11 @@ export const ArtworkFixture = {
   _id: "5b2b745e9c18db204fc32e11",
   __id: "QXJ0d29yazphYmJhcy1raWFyb3N0YW1pLXVudGl0bGVkLTc=",
   title: "Untitled",
+  is_acquireable: false,
+  is_offerable: false,
+  is_biddable: true,
+  is_inquireable: false,
+  slug: "andreas-rod-prinzknecht",
   href: "/artwork/andreas-rod-prinzknecht",
   availability: "for sale",
   sale: null,
@@ -30,6 +35,7 @@ export const ArtworkFixture = {
   context: {
     __typename: "ArtworkContextPartnerShow",
   },
+  contextGrids: [],
   dimensions: {
     in: "23 1/5 × 33 1/10 in",
     cm: "59 × 84 cm",

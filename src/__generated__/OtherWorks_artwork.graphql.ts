@@ -1,14 +1,23 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkContextArtist_artwork$ref } from "./ArtworkContextArtist_artwork.graphql";
+import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _OtherWorks_artwork$ref: unique symbol;
 export type OtherWorks_artwork$ref = typeof _OtherWorks_artwork$ref;
 export type OtherWorks_artwork = {
-    readonly context: {
+    readonly contextGrids: ReadonlyArray<{
         readonly __typename: string;
-    } | null;
-    readonly " $fragmentRefs": ArtworkContextArtist_artwork$ref;
+        readonly title: string | null;
+        readonly ctaTitle: string | null;
+        readonly ctaHref: string | null;
+        readonly artworks: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null> | null;
     readonly " $refType": OtherWorks_artwork$ref;
 };
 
@@ -24,11 +33,11 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "context",
+      "name": "contextGrids",
       "storageKey": null,
       "args": null,
       "concreteType": null,
-      "plural": false,
+      "plural": true,
       "selections": [
         {
           "kind": "ScalarField",
@@ -36,15 +45,75 @@ const node: ReaderFragment = {
           "name": "__typename",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "title",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "ctaTitle",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "ctaHref",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "artworks",
+          "storageKey": "artworks(first:6)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 6
+            }
+          ],
+          "concreteType": "ArtworkConnection",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ArtworkEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Artwork",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "GenericGrid_artworks",
+                      "args": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ArtworkContextArtist_artwork",
-      "args": null
     }
   ]
 };
-(node as any).hash = '45f8f813fecb6d063c68a7ca6b8f9615';
+(node as any).hash = '43a2354d58c7da231704615419bae77d';
 export default node;
