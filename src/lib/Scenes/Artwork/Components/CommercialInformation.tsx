@@ -20,7 +20,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     return (
       <Box>
         {artwork.availability && <ArtworkAvailability artwork={artwork} />}
-        {artwork.availability && showsSellerInfo && <Spacer mb={2} />}
+        {artwork.availability && showsSellerInfo && <Spacer mb={1} />}
         {showsSellerInfo && <SellerInfo artwork={artwork} />}
         {!!consignableArtistsCount && <Spacer mb={2} />}
         <ArtworkExtraLinks consignableArtistsCount={consignableArtistsCount} />
