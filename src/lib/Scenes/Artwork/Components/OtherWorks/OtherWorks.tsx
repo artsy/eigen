@@ -1,6 +1,7 @@
 import { Box, Join, Separator, Spacer } from "@artsy/palette"
 import { OtherWorks_artwork } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { Schema } from "lib/utils/track"
 import { filter } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -33,7 +34,11 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
             <React.Fragment key={`Grid-${index}`}>
               <Header title={grid.title} />
               <Spacer mb={3} />
-              <GenericGrid artworks={grid.artworks.edges.map(({ node }) => node)} />
+              <GenericGrid
+                trackingFlow={Schema.Flow.RecommendedArtworks}
+                contextModule={grid.__typename}
+                artworks={grid.artworks.edges.map(({ node }) => node)}
+              />
               <Box mt={2}>
                 <ContextGridCTA href={grid.ctaHref} label={grid.ctaTitle} />
               </Box>
@@ -47,6 +52,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
     artwork: graphql`
       fragment OtherWorks_artwork on Artwork {
         contextGrids {
+          __typename
           title
           ctaTitle
           ctaHref
