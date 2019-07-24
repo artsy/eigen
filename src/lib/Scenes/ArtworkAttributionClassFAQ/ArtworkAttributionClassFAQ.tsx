@@ -3,12 +3,14 @@ import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generate
 import { ArtworkAttributionClassFAQRendererQuery } from "__generated__/ArtworkAttributionClassFAQRendererQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface Props {
+  safeAreaInsets: SafeAreaInsets
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
 }
 
@@ -33,11 +35,12 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
         </React.Fragment>
       )
     })
+
     return (
       <Theme>
-        <Box px={2}>
-          <ScrollView>
-            <Spacer m={4} />
+        <ScrollView>
+          <Box pt={this.props.safeAreaInsets.top} pb={this.props.safeAreaInsets.top} px={2}>
+            <Spacer mt={3} />
             <Serif mb={2} size="8">
               Artwork classifications
             </Serif>
@@ -50,9 +53,8 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
                 OK
               </Button>
             </Box>
-            <Spacer m={2} />
-          </ScrollView>
-        </Box>
+          </Box>
+        </ScrollView>
       </Theme>
     )
   }
@@ -67,7 +69,7 @@ export const ArtworkAttributionClassFAQContainer = createFragmentContainer(Artwo
   `,
 })
 
-export const ArtworkAttributionClassFAQRenderer: React.SFC = () => {
+export const ArtworkAttributionClassFAQRenderer: React.SFC<{ safeAreaInsets: SafeAreaInsets }> = props => {
   return (
     <QueryRenderer<ArtworkAttributionClassFAQRendererQuery>
       environment={defaultEnvironment}
@@ -79,7 +81,7 @@ export const ArtworkAttributionClassFAQRenderer: React.SFC = () => {
         }
       `}
       variables={{}}
-      render={renderWithLoadProgress(ArtworkAttributionClassFAQContainer)}
+      render={renderWithLoadProgress(ArtworkAttributionClassFAQContainer, props)}
     />
   )
 }
