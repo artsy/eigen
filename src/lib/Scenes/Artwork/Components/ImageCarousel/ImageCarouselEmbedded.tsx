@@ -1,4 +1,4 @@
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import React, { useCallback, useContext, useMemo } from "react"
 import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { findClosestIndex, getMeasurements } from "./geometry"
@@ -8,13 +8,19 @@ import { ImageWithLoadingState } from "./ImageWithLoadingState"
 const windowWidth = Dimensions.get("window").width
 // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
 const cardHeight = windowWidth >= 375 ? 340 : 290
-export const baseCardBoundingBox = { width: windowWidth, height: cardHeight }
+export const embeddedCardBoundingBox = { width: windowWidth, height: cardHeight }
 
 // This is the main image caoursel visible on the root of the artwork page
-export const ImageCarouselBase = observer(() => {
-  const { images, baseFlatListRef, baseImageRefs, dispatch, state } = useContext(ImageCarouselContext)
+export const ImageCarouselEmbedded = observer(() => {
+  const {
+    images,
+    embeddedFlatListRef: embeddedFlatListRef,
+    embeddedImageRefs: embeddedImageRefs,
+    dispatch,
+    state,
+  } = useContext(ImageCarouselContext)
 
-  const measurements = useMemo(() => getMeasurements({ images, boundingBox: baseCardBoundingBox }), [])
+  const measurements = useMemo(() => getMeasurements({ images, boundingBox: embeddedCardBoundingBox }), [])
   const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [])
 
   // update the imageIndex on scroll
@@ -62,10 +68,10 @@ export const ImageCarouselBase = observer(() => {
     <FlatList<ImageDescriptor>
       data={images}
       horizontal
-      ref={baseFlatListRef}
+      ref={embeddedFlatListRef}
       showsHorizontalScrollIndicator={false}
       scrollEnabled={images.length > 1}
-      getItemLayout={(_, index) => ({ index, offset: offsets[index], length: baseCardBoundingBox.width })}
+      getItemLayout={(_, index) => ({ index, offset: offsets[index], length: embeddedCardBoundingBox.width })}
       snapToOffsets={offsets}
       keyExtractor={item => item.url}
       decelerationRate="fast"
@@ -81,7 +87,7 @@ export const ImageCarouselBase = observer(() => {
             height={styles.height}
             onPress={goFullScreen}
             ref={ref => {
-              baseImageRefs[index] = ref
+              embeddedImageRefs[index] = ref
             }}
             style={styles}
           />

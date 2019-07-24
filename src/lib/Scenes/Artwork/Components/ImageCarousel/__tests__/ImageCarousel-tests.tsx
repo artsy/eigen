@@ -4,7 +4,7 @@ import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { getMeasurements } from "../geometry"
 import { ImageCarouselFragmentContainer } from "../ImageCarousel"
-import { baseCardBoundingBox } from "../ImageCarouselBase"
+import { embeddedCardBoundingBox } from "../ImageCarouselEmbedded"
 
 jest.unmock("react-relay")
 
@@ -119,7 +119,7 @@ describe("ImageCarouselFragmentContainer", () => {
         false,
       ])
 
-      const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: baseCardBoundingBox })
+      const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: embeddedCardBoundingBox })
 
       wrapper
         .find(FlatList)

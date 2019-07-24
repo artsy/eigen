@@ -281,7 +281,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
         }
       `}
       variables={{
-        artworkID,
+        artworkID: "richard-haas-times-square-looking-north-from-42nd-street",
         excludeArtworkIds: [artworkID],
       }}
       render={renderWithLoadProgress(ArtworkContainer, others)}

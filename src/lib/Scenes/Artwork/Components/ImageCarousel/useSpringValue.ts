@@ -1,8 +1,19 @@
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Animated } from "react-native"
+import { useAnimatedValue } from "./useAnimatedValue"
 
-export const useSpringValue = (init: number, config: Partial<Animated.SpringAnimationConfig> = {}) => {
-  const value = useMemo(() => new Animated.Value(init), [])
+/**
+ * useSpringValue
+ *
+ * Returns a stable Animated.Value which animates between the values passed in as `currentValue`
+ * using Animated.spring
+ *
+ * It sets the `useNativeDriver` prop to `true` by default
+ * @param currentValue
+ * @param config
+ */
+export const useSpringValue = (currentValue: number, config: Partial<Animated.SpringAnimationConfig> = {}) => {
+  const value = useAnimatedValue(currentValue)
   const anim = useRef<Animated.CompositeAnimation>()
   useEffect(
     () => {
@@ -10,7 +21,7 @@ export const useSpringValue = (init: number, config: Partial<Animated.SpringAnim
         anim.current.stop()
       }
       anim.current = Animated.spring(value, {
-        toValue: init,
+        toValue: currentValue,
         useNativeDriver: true,
         ...config,
       })
@@ -18,7 +29,7 @@ export const useSpringValue = (init: number, config: Partial<Animated.SpringAnim
         anim.current = null
       })
     },
-    [init]
+    [currentValue]
   )
   return value
 }

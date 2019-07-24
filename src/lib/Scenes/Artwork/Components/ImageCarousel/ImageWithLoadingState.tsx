@@ -1,8 +1,9 @@
 import { color } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Spinner from "lib/Components/Spinner"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Animated, TouchableWithoutFeedback, View, ViewProps } from "react-native"
+import { useSpringValue } from "./useSpringValue"
 
 interface ImageWithLoadingStateProps {
   width: number
@@ -26,26 +27,13 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
   // this assumes the image will be on a white backdrop. This component will
   // need to be significantly refactored if it ever needs to be used with other
   // color backgrounds
-  const overlayOpacity = useMemo(() => new Animated.Value(1), [])
-  useEffect(
-    () => {
-      Animated.spring(overlayOpacity, {
-        toValue: isLoading ? 1 : 0,
-        useNativeDriver: true,
-      }).start()
-    },
-    [isLoading]
-  )
+  const overlayOpacity = useSpringValue(isLoading ? 1 : 0)
 
   // show a loading spinner only after a short delay, if the image is taking a while to load
-  const spinnerOpacity = useMemo(() => new Animated.Value(0), [])
+  const [showingSpinner, setShowingSpinner] = useState(false)
+  const spinnerOpacity = useSpringValue(showingSpinner ? 1 : 0)
   useEffect(() => {
-    setTimeout(() => {
-      Animated.spring(spinnerOpacity, {
-        toValue: 1,
-        useNativeDriver: true,
-      }).start()
-    }, 1000)
+    setTimeout(() => setShowingSpinner(true), 1000)
   }, [])
   const { width, height, imageURL, onPress } = props
   return (
@@ -78,24 +66,16 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
         >
           <Animated.View
             style={{
-              opacity: overlayOpacity,
-              backgroundColor: "white",
+              opacity: spinnerOpacity,
+              // give the image a subtle silhouette while the spinner is displaying
+              // to keep the balance of the page and set an appropriate user expectation
+              backgroundColor: color("black5"),
+              alignItems: "center",
+              justifyContent: "center",
               flex: 1,
             }}
           >
-            <Animated.View
-              style={{
-                opacity: spinnerOpacity,
-                // give the image a subtle silhouette while the spinner is displaying
-                // to keep the balance of the page and set an appropriate user expectation
-                backgroundColor: color("black5"),
-                alignItems: "center",
-                justifyContent: "center",
-                flex: 1,
-              }}
-            >
-              <Spinner />
-            </Animated.View>
+            <Spinner />
           </Animated.View>
         </Animated.View>
       </View>

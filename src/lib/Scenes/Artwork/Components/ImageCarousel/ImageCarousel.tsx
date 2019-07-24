@@ -1,14 +1,14 @@
 import { Flex, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView"
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import React, { useContext, useMemo } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
-import { baseCardBoundingBox, ImageCarouselBase } from "./ImageCarouselBase"
-import { ImageCarouselContext, useImageIndex, useNewImageCarouselContext } from "./ImageCarouselContext"
-import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
+import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
+import { embeddedCardBoundingBox, ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { useSpringValue } from "./useSpringValue"
 
 export interface ImageCarouselProps {
@@ -31,7 +31,7 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
   const images: ImageDescriptor[] = useMemo(
     () =>
       props.images.map(image => {
-        const { width, height } = fitInside(baseCardBoundingBox, image)
+        const { width, height } = fitInside(embeddedCardBoundingBox, image)
         return {
           width,
           height,
@@ -50,7 +50,7 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
   return (
     <ImageCarouselContext.Provider value={context}>
       <Flex>
-        <ImageCarouselBase />
+        <ImageCarouselEmbedded />
         {images.length > 1 && <PaginationDots />}
         {context.state.fullScreenState !== "none" && <ImageCarouselFullScreen />}
       </Flex>
@@ -73,8 +73,8 @@ function PaginationDots() {
 }
 
 export const PaginationDot = observer(({ diameter, index }: { diameter: number; index: number }) => {
-  const selected = useImageIndex() === index
-  const opacity = useSpringValue(selected ? 1 : 0.1)
+  const { state } = useContext(ImageCarouselContext)
+  const opacity = useSpringValue(state.imageIndex === index ? 1 : 0.1)
 
   return (
     <Animated.View
