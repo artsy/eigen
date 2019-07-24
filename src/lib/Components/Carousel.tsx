@@ -1,5 +1,5 @@
 import { Box, color, Flex } from "@artsy/palette"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { LayoutChangeEvent, ScrollView, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"

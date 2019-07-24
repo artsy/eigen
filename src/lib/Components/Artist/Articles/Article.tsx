@@ -5,7 +5,7 @@ import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProper
 
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import ImageView from "../../OpaqueImageView"
+import ImageView from "../../OpaqueImageView/OpaqueImageView"
 
 import { Article_article } from "__generated__/Article_article.graphql"
 

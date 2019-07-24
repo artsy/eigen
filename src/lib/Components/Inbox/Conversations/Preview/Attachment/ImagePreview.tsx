@@ -2,7 +2,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
 import { ImagePreview_attachment } from "__generated__/ImagePreview_attachment.graphql"

@@ -3,7 +3,7 @@ import styled from "styled-components/native"
 
 import { TouchableWithoutFeedback } from "react-native"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"

@@ -1,6 +1,6 @@
 import { Box, Button, color, Flex, Sans, Serif } from "@artsy/palette"
 import { EventMutation } from "__generated__/EventMutation.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "lib/Scenes/Map/types"

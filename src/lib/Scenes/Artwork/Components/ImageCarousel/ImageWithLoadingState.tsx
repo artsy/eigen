@@ -1,5 +1,5 @@
 import { color } from "@artsy/palette"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Spinner from "lib/Components/Spinner"
 import React, { useEffect, useState } from "react"
 import { Animated, TouchableWithoutFeedback, View, ViewProps } from "react-native"

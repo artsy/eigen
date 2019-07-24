@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { LayoutChangeEvent, ScrollView, TouchableHighlight, View, ViewProperties } from "react-native"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import OpaqueImageView from "../OpaqueImageView"
+import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 import Headline from "../Text/Headline"
 
 import { HeroUnits_hero_units } from "__generated__/HeroUnits_hero_units.graphql"

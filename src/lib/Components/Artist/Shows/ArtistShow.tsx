@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import OpaqueImageView from "../../OpaqueImageView"
+import OpaqueImageView from "../../OpaqueImageView/OpaqueImageView"
 import Metadata from "./Metadata"
 
 import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"

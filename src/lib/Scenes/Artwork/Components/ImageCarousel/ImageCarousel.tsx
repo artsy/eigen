@@ -1,6 +1,6 @@
 import { Flex, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
-import { createGeminiUrl } from "lib/Components/OpaqueImageView"
+import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { observer } from "mobx-react"
 import React, { useContext, useMemo } from "react"
 import { Animated } from "react-native"

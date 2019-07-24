@@ -17,7 +17,7 @@ import { useAnimatedValue } from "../useAnimatedValue"
 
 import { fitInside } from "../geometry"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"

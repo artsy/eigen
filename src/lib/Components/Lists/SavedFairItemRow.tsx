@@ -1,7 +1,7 @@
 import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
 import { Fairs_me } from "__generated__/Fairs_me.graphql"
 import { SavedFairItemRowMutation } from "__generated__/SavedFairItemRowMutation.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"

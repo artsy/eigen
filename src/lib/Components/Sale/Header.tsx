@@ -1,7 +1,7 @@
 import React from "react"
 import { Dimensions, StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import OpaqueImageView from "../OpaqueImageView"
+import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 import Headline from "../Text/Headline"
 
 import { Header_sale } from "__generated__/Header_sale.graphql"
