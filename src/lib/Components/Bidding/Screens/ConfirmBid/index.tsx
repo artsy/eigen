@@ -4,33 +4,37 @@ import React from "react"
 import { Image, NativeModules, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { PayloadError } from "relay-runtime"
 import stripe from "tipsi-stripe"
 
+import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
+import { BidInfoRow } from "lib/Components/Bidding/Components/BidInfoRow"
+import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
+import { Divider } from "lib/Components/Bidding/Components/Divider"
+import { PaymentInfo } from "lib/Components/Bidding/Components/PaymentInfo"
+import { Timer } from "lib/Components/Bidding/Components/Timer"
+import { Title } from "lib/Components/Bidding/Components/Title"
+import { Flex } from "lib/Components/Bidding/Elements/Flex"
+import { BidResultScreen } from "lib/Components/Bidding/Screens/BidResult"
+import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
+import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
+import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { metaphysics } from "../../../metaphysics"
-import { Schema, screenTrack, track } from "../../../utils/track"
+import { Schema, screenTrack, track } from "lib/utils/track"
 
-import { Flex } from "../Elements/Flex"
-
-import { LinkText } from "../../Text/LinkText"
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { BidInfoRow } from "../Components/BidInfoRow"
-import { Checkbox } from "../Components/Checkbox"
-import { Divider } from "../Components/Divider"
-import { PaymentInfo } from "../Components/PaymentInfo"
-import { Timer } from "../Components/Timer"
-import { Title } from "../Components/Title"
-import { Address, Bid, BidderPositionResult, PaymentCardTextFieldParams, StripeToken } from "../types"
-
-import { BidResultScreen } from "./BidResult"
-import { SelectMaxBidEdit } from "./SelectMaxBidEdit"
-
+import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import {
+  ConfirmBidCreateBidderPositionMutation,
+  ConfirmBidCreateBidderPositionMutationResponse,
+} from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
+
+type BidderPositionResult = ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]["result"]
 
 const Emission = NativeModules.Emission || {}
 
@@ -60,30 +64,6 @@ interface ConfirmBidState {
 }
 
 const MAX_POLL_ATTEMPTS = 20
-
-const queryForBidderPosition = (bidderPositionID: string) => {
-  return metaphysics({
-    query: `
-      query ConfirmBidBidderPositionQuery($bidderPositionID: String!) {
-        me {
-          bidder_position(id: $bidderPositionID) {
-            status
-            message_header
-            message_description_md
-            position {
-              internalID
-              suggested_next_bid {
-                cents
-                display
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: { bidderPositionID },
-  })
-}
 
 const resultForNetworkError = {
   message_header: "An error occurred",
@@ -290,7 +270,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
   }
 
-  verifyBidderPosition(results) {
+  verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutationResponse) {
     const { result } = results.createBidderPosition
 
     if (result.status === "SUCCESS") {
@@ -304,20 +284,20 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.BidFlowPlaceBid,
   })
-  bidPlacedSuccessfully(positionId) {
-    queryForBidderPosition(positionId)
+  bidPlacedSuccessfully(positionId: string) {
+    bidderPositionQuery(positionId)
       .then(this.checkBidderPosition.bind(this))
       .catch(error => this.presentErrorResult(error))
   }
 
-  checkBidderPosition(result) {
-    const { bidder_position } = result.data.me
+  checkBidderPosition(data: BidderPositionQueryResponse) {
+    const { bidder_position } = data.me
 
     if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
       setTimeout(
         () =>
-          queryForBidderPosition(bidder_position.position.internalID)
+          bidderPositionQuery(bidder_position.position.internalID)
             .then(this.checkBidderPosition.bind(this))
             .catch(error => this.presentErrorResult(error)),
         1000
@@ -377,7 +357,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
   }
 
-  presentErrorResult(error) {
+  presentErrorResult(error: Error | ReadonlyArray<PayloadError>) {
     console.error(error)
 
     this.props.navigator.push({
@@ -415,7 +395,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ isLoading: false })
   }
 
-  presentErrorModal(errors, mutationMessage) {
+  presentErrorModal(errors: Error | ReadonlyArray<PayloadError>, mutationMessage: string) {
     console.error("ConfirmBid.tsx", errors)
 
     const errorMessage =

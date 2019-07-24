@@ -14,9 +14,11 @@ import { BillingAddress } from "../BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "../ConfirmBid"
 import { CreditCardForm } from "../CreditCardForm"
 
-jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
-import { metaphysics } from "../../../../metaphysics"
-const mockphysics = metaphysics as jest.Mock<any>
+jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
+  bidderPositionQuery: jest.fn(),
+}))
+import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
@@ -32,6 +34,7 @@ jest.mock("tipsi-stripe", () => ({
 }))
 import stripe from "tipsi-stripe"
 
+import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
@@ -62,7 +65,7 @@ const mountConfirmBidComponent = props => {
 beforeEach(() => {
   nextStep = null // reset nextStep between tests
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
-  mockphysics.mockReset()
+  bidderPositionQueryMock.mockReset()
   mockPostNotificationName.mockReset()
   NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
 })
@@ -196,7 +199,7 @@ describe("when pressing bid button", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = jest.fn()
 
       findPlaceBidButton(component).props.onPress()
@@ -219,7 +222,7 @@ describe("when pressing bid button", () => {
         findPlaceBidButton(component).props.onPress()
 
         expect(relay.commitMutation).toHaveBeenCalled()
-        expect(mockphysics).not.toHaveBeenCalled()
+        expect(bidderPositionQueryMock).not.toHaveBeenCalled()
       })
 
       it("displays an error message on a network failure", () => {
@@ -320,7 +323,7 @@ describe("polling to verify bid position", () => {
         return null
       }) as any
       let requestCounter = 0 // On the fifth attempt, return highestBidder
-      mockphysics.mockImplementation(() => {
+      bidderPositionQueryMock.mockImplementation(() => {
         requestCounter++
         if (requestCounter > 5) {
           return Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
@@ -338,7 +341,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         expect.objectContaining({
-          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.data.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.me.bidder_position,
         })
       )
     })
@@ -347,7 +350,7 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      mockphysics.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
+      bidderPositionQueryMock.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
@@ -363,7 +366,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         expect.objectContaining({
-          bidderPositionResult: mockRequestResponses.pollingForBid.pending.data.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.pending.me.bidder_position,
         })
       )
     })
@@ -372,7 +375,7 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
@@ -384,7 +387,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         expect.objectContaining({
-          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.data.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.me.bidder_position,
         })
       )
     })
@@ -393,7 +396,7 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
+      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
@@ -405,7 +408,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         expect.objectContaining({
-          bidderPositionResult: mockRequestResponses.pollingForBid.outbid.data.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.outbid.me.bidder_position,
         })
       )
     })
@@ -414,7 +417,7 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
+      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
@@ -426,7 +429,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         expect.objectContaining({
-          bidderPositionResult: mockRequestResponses.pollingForBid.reserveNotMet.data.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.reserveNotMet.me.bidder_position,
         })
       )
     })
@@ -439,7 +442,7 @@ describe("polling to verify bid position", () => {
         refreshSaleArtwork: jest.fn(),
       })
       component.root.findByType(Checkbox).props.onPress()
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
+      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
         return null
@@ -461,7 +464,9 @@ describe("polling to verify bid position", () => {
         component: BidResultScreen,
         passProps: {
           bidderPositionResult: {
-            position: {},
+            position: {
+              internalID: "bidder-position-id-from-polling",
+            },
             status: "RESERVE_NOT_MET",
           },
           refreshBidderInfo: expect.anything(),
@@ -679,7 +684,7 @@ describe("ConfirmBid for unqualified user", () => {
     })
 
     it("commits two mutations, createCreditCard followed by createBidderPosition on a successful bid", () => {
-      mockphysics
+      bidderPositionQueryMock
         .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.pending))
         .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
@@ -725,14 +730,14 @@ describe("ConfirmBid for unqualified user", () => {
 
       jest.runOnlyPendingTimers()
 
-      expect(mockphysics.mock.calls.length).toEqual(2)
-      expect(mockphysics.mock.calls[0][0].variables).toEqual({ bidderPositionID: "bidder-position-id-from-mutation" })
-      expect(mockphysics.mock.calls[1][0].variables).toEqual({ bidderPositionID: "bidder-position-id-from-polling" })
+      expect(bidderPositionQueryMock.mock.calls.length).toEqual(2)
+      expect(bidderPositionQueryMock.mock.calls[0][0]).toEqual("bidder-position-id-from-mutation")
+      expect(bidderPositionQueryMock.mock.calls[1][0]).toEqual("bidder-position-id-from-polling")
     })
 
     it("displays an error message on polling failure", () => {
       console.error = jest.fn() // Silences component logging.
-      mockphysics.mockReturnValueOnce(Promise.reject({ message: "error" }))
+      bidderPositionQueryMock.mockReturnValueOnce(Promise.reject({ message: "error" }))
 
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
@@ -846,50 +851,47 @@ const mockRequestResponses = {
       },
     } as ConfirmBidCreateBidderPositionMutationResponse,
   },
-  // TODO: Add types for each mock response
   pollingForBid: {
     highestBidder: {
-      data: {
-        me: {
-          bidder_position: {
-            status: "WINNING",
-            position: {},
+      me: {
+        bidder_position: {
+          status: "WINNING",
+          position: {
+            internalID: "bidder-position-id-from-polling",
           },
         },
       },
-    },
+    } as BidderPositionQueryResponse,
     outbid: {
-      data: {
-        me: {
-          bidder_position: {
-            status: "OUTBID",
-            position: {},
+      me: {
+        bidder_position: {
+          status: "OUTBID",
+          position: {
+            internalID: "bidder-position-id-from-polling",
           },
         },
       },
-    },
+    } as BidderPositionQueryResponse,
     pending: {
-      data: {
-        me: {
-          bidder_position: {
-            position: {
-              internalID: "bidder-position-id-from-polling",
-            },
-            status: "PENDING",
+      me: {
+        bidder_position: {
+          position: {
+            internalID: "bidder-position-id-from-polling",
           },
+          status: "PENDING",
         },
       },
-    },
+    } as BidderPositionQueryResponse,
     reserveNotMet: {
-      data: {
-        me: {
-          bidder_position: {
-            position: {},
-            status: "RESERVE_NOT_MET",
+      me: {
+        bidder_position: {
+          position: {
+            internalID: "bidder-position-id-from-polling",
           },
+          status: "RESERVE_NOT_MET",
         },
       },
-    },
+    } as BidderPositionQueryResponse,
   },
 }
 

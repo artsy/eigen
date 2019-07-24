@@ -46,9 +46,9 @@ storiesOf("Bidding")
         sale_artwork={
           {
             internalID: "saleartwork12345",
-            sale: { id: "sale-id", live_start_at: "2018-08-13T18:00:00+00:00", end_at: null },
+            sale: { slug: "sale-id", live_start_at: "2018-08-13T18:00:00+00:00", end_at: null },
             artwork: {
-              id: "artwork-id",
+              slug: "artwork-id",
               title: "Morgan Hill (Prototype)",
               date: "1973",
               artist_names: "Lewis balts",
@@ -73,9 +73,9 @@ storiesOf("Bidding")
         sale_artwork={
           {
             internalID: "saleartwork12345",
-            sale: { id: "sale-id", live_start_at: "2018-08-11T01:00:00+00:00", end_at: null },
+            sale: { slug: "sale-id", live_start_at: "2018-08-11T01:00:00+00:00", end_at: null },
             artwork: {
-              id: "artwork-id",
+              slug: "artwork-id",
               title: "Morgan Hill (Prototype)",
               date: null,
               artist_names: "Lewis balts",
@@ -102,9 +102,13 @@ storiesOf("Bidding")
           title: "",
           passProps: {
             sale_artwork: {
-              sale: { id: "1", live_start_at: "2018-06-11T01:00:00+00:00", end_at: null },
+              sale: {
+                slug: "yuki-contemporary-art-march-19th",
+                live_start_at: "2018-06-11T01:00:00+00:00",
+                end_at: null,
+              },
               artwork: {
-                id: "1",
+                slug: "5d31fc20f4263400063cefcb",
                 title: "Morgan Hill (Prototype)",
                 date: "1973",
                 artist_names: "Lewis balts",
@@ -133,12 +137,12 @@ storiesOf("Bidding")
           passProps: {
             sale_artwork: {
               sale: {
-                id: "1",
+                slug: "1",
                 live_start_at: "2018-06-11T01:00:00+00:00",
                 end_at: null,
               },
               artwork: {
-                id: "1",
+                slug: "1",
                 title: "Morgan Hill (Prototype)",
                 date: "1973",
                 artist_names: "Lewis balts",
@@ -175,7 +179,7 @@ storiesOf("Bidding")
           title: "",
           passProps: {
             sale: {
-              id: "1",
+              slug: "1",
               live_start_at: "2029-06-11T01:00:00+00:00",
               end_at: null,
               name: "Phillips New Now",
@@ -197,7 +201,7 @@ storiesOf("Bidding")
           title: "",
           passProps: {
             sale: {
-              id: "1",
+              slug: "1",
               live_start_at: "2029-06-11T01:00:00+00:00",
               end_at: null,
               name: "Phillips New Now: Prints & Multiples from the estate of the esteemed Yuki Stockmeier",
