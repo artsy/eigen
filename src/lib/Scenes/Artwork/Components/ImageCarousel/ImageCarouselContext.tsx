@@ -25,15 +25,21 @@ export type ImageCarouselAction =
   | {
       type: "FULL_SCREEN_INITIAL_RENDER_COMPLETED"
     }
+  | {
+      type: "ZOOM_SCALE_CHANGED"
+      nextZoomScale: number
+    }
 
 export type FullScreenState = "none" | "doing first render" | "animating entry transition" | "entered"
 
+export interface ImageCarouselState {
+  imageIndex: number
+  fullScreenState: FullScreenState
+  isZoomedCompletelyOut: boolean
+}
+
 export interface ImageCarouselContext {
-  state: {
-    imageIndex: number
-    fullScreenState: FullScreenState
-    isZoomedCompletelyOut: boolean
-  }
+  state: Readonly<ImageCarouselState>
   images: ImageDescriptor[]
   embeddedImageRefs: View[]
   embeddedFlatListRef: React.RefObject<FlatList<any>>
@@ -59,6 +65,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
         switch (action.type) {
           case "IMAGE_INDEX_CHANGED":
             state.imageIndex = action.nextImageIndex
+            state.isZoomedCompletelyOut = true
             if (state.fullScreenState !== "none") {
               embeddedFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
             }
@@ -75,6 +82,8 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
           case "FULL_SCREEN_FINISHED_ENTERING":
             state.fullScreenState = "entered"
             break
+          case "ZOOM_SCALE_CHANGED":
+            state.isZoomedCompletelyOut = action.nextZoomScale <= 1
         }
       },
     }),

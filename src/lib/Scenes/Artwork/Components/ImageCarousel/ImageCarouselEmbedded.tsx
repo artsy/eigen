@@ -1,4 +1,4 @@
-import { observer } from "mobx-react-lite"
+import { observer } from "mobx-react"
 import React, { useCallback, useContext, useMemo } from "react"
 import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { findClosestIndex, getMeasurements } from "./geometry"

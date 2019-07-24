@@ -1,6 +1,6 @@
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
-import { observer } from "mobx-react-lite"
+import { observer } from "mobx-react"
 
 import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 
@@ -185,7 +185,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         onScroll={ev => {
           zoomScale.current = ev.nativeEvent.zoomScale
           if (state.imageIndex === index) {
-            state.isZoomedCompletelyOut = zoomScale.current <= 1
+            dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
           }
         }}
         scrollEventThrottle={100}

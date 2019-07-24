@@ -1,4 +1,4 @@
-import { useObserver } from "mobx-react-lite"
+import { useComputed } from "mobx-react-lite"
 import { useContext } from "react"
 import { ImageCarouselContext } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
@@ -10,7 +10,7 @@ import { useSpringValue } from "../useSpringValue"
  */
 export const useSpringFade = (fade: "in" | "out") => {
   const { state } = useContext(ImageCarouselContext)
-  const isFullScreenReady = useObserver(
+  const isFullScreenReady = useComputed(
     () => state.fullScreenState === "animating entry transition" || state.fullScreenState === "entered"
   )
   const [from, to] = fade === "in" ? [0, 1] : [1, 0]

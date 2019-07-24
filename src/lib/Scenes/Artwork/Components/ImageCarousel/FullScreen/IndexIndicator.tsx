@@ -1,5 +1,5 @@
 import { Sans } from "@artsy/palette"
-import { observer } from "mobx-react-lite"
+import { observer } from "mobx-react"
 import { useContext } from "react"
 import React from "react"
 import { Animated, View } from "react-native"

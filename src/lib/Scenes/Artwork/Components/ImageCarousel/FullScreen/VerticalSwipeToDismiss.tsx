@@ -1,4 +1,4 @@
-import { observer } from "mobx-react-lite"
+import { observer } from "mobx-react"
 import { useCallback, useContext, useMemo, useRef } from "react"
 import React from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"

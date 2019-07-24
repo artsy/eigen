@@ -80,7 +80,7 @@
     "@react-native-community/cameraroll": "1.0.5",
     "lodash": "4.17.11",
     "mobx": "^5.13.0",
-    "mobx-react-lite": "^1.4.1",
+    "mobx-react": "^6.1.1",
     "moment": "2.24.0",
     "moment-timezone": "0.5.25",
     "prop-types": "15.7.2",
