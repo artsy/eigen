@@ -262,7 +262,8 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
 }) => {
   return (
     <RetryErrorBoundary
-      render={() => {
+      render={isRetry => {
+        console.log({ isRetry })
         return (
           <QueryRenderer<ArtworkQuery>
             environment={defaultEnvironment}
@@ -275,6 +276,10 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
             `}
             variables={{
               artworkID,
+            }}
+            cacheConfig={{
+              // Bypass Relay cache on retries.
+              ...(isRetry && { force: true }),
             }}
             render={renderWithLoadProgress(ArtworkContainer, others)}
           />
