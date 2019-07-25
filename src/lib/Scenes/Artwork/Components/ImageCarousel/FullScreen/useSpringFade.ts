@@ -4,7 +4,7 @@ import { ImageCarouselContext } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
 
 /**
- * Hooks into the lifecycle of the fulls creen carousel to fade components in/out
+ * Hooks into the lifecycle of the full screen carousel to fade components in/out
  * once the full screen carousel is able to display its content.
  * @param fade either "in" or "out"
  */
