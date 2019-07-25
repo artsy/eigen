@@ -8,7 +8,7 @@ enum ErrorState {
 }
 
 interface Props {
-  render: (isRetry) => React.ReactNode
+  render: ({ isRetry: boolean }) => React.ReactNode
 }
 
 interface State {
@@ -30,11 +30,11 @@ export class RetryErrorBoundary extends React.Component<Props, State> {
   render() {
     const { render } = this.props
     const containers = {
-      [ErrorState.Okay]: () => render(false),
+      [ErrorState.Okay]: () => render({ isRetry: false }),
       [ErrorState.Error]: () => (
         <LoadFailureView style={{ flex: 1 }} onRetry={() => this.setState({ errorState: ErrorState.Retry })} />
       ),
-      [ErrorState.Retry]: () => render(true),
+      [ErrorState.Retry]: () => render({ isRetry: true }),
     }
     return containers[this.state.errorState]()
   }

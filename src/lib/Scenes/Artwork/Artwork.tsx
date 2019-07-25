@@ -259,7 +259,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
 }) => {
   return (
     <RetryErrorBoundary
-      render={isRetry => {
+      render={({ isRetry }) => {
         return (
           <QueryRenderer<ArtworkQuery>
             environment={defaultEnvironment}
