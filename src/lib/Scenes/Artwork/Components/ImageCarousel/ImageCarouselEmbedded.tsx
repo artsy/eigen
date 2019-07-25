@@ -46,6 +46,9 @@ export const ImageCarouselEmbedded = observer(() => {
       return
     }
 
+    // here we basically find out how long the press took and how far it travelled
+    // if either of those is above a certain threshold then we don't condiser it a 'tap'.
+
     const info = touchBank[indexOfSingleActiveTouch]
 
     const duration = info.currentTimeStamp - info.startTimeStamp
