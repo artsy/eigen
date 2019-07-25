@@ -6,7 +6,7 @@ import LoadFailureView from "../LoadFailureView"
 import { RetryErrorBoundary } from "../RetryErrorBoundary"
 
 beforeEach(() => {
-  console.log = jest.fn()
+  console.warn = jest.fn()
 })
 
 it("Renders the fallback view when the rendered component crashes", () => {

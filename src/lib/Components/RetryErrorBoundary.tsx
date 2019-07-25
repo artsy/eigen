@@ -19,7 +19,7 @@ interface State {
 /// the render prop with a parameter value of `true`.
 export class RetryErrorBoundary extends React.Component<Props, State> {
   static getDerivedStateFromError(error) {
-    console.log("[RetryErrorBoundary] Caught error: ", error)
+    console.warn("[RetryErrorBoundary] Caught error: ", error)
     return { errorState: ErrorState.Error }
   }
 
