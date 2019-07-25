@@ -157,9 +157,6 @@ export class Artwork extends React.Component<Props> {
   }
 
   render() {
-    console.log("[RetryErrorBoundary] Rendering Artwork page")
-    const a: any = {}
-    console.log(a.thing.thisshouldcrash)
     return (
       <Theme>
         <FlatList
@@ -263,7 +260,6 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
   return (
     <RetryErrorBoundary
       render={isRetry => {
-        console.log({ isRetry })
         return (
           <QueryRenderer<ArtworkQuery>
             environment={defaultEnvironment}
