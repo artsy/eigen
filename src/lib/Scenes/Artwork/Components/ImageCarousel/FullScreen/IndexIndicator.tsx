@@ -1,6 +1,6 @@
 import { Sans } from "@artsy/palette"
 import { observer } from "mobx-react"
-import { useContext } from "react"
+import { useContext, useMemo } from "react"
 import React from "react"
 import { Animated, View } from "react-native"
 import { boxShadow } from "styled-system"
@@ -18,7 +18,7 @@ export const IndexIndicator: React.FC = observer(() => {
 
   const entryOpacity = useSpringFade("in")
   const hideOpacity = useSpringValue(state.isZoomedCompletelyOut ? 1 : 0)
-  const opacity = Animated.multiply(entryOpacity, hideOpacity)
+  const opacity = useMemo(() => Animated.multiply(entryOpacity, hideOpacity), [])
 
   if (images.length === 1) {
     return null
