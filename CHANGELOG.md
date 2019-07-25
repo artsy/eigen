@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.12.11
+
 ### 1.12.10
 
 - Display an error message when polling fails on bidding - yuki24
