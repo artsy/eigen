@@ -8,7 +8,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ContextGridCTA } from "./ContextGridCTA"
 import { Header } from "./Header"
 
-export const populatedGrids = (grids: OtherWorks_artwork["contextGrids"]) => {
+export const populatedGrids = grids => {
   if (grids && grids.length > 0) {
     return filter(grids, grid => {
       return grid.artworks && grid.artworks.edges && grid.artworks.edges.length > 0
