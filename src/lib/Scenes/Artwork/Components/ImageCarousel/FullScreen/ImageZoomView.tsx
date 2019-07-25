@@ -91,9 +91,7 @@ function createTransform(
 
 export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> = observer(
   React.forwardRef(({ image, index }, ref) => {
-    const { state, embeddedImageRefs: embeddedImageRefs, dispatch } = useContext(ImageCarouselContext)
-
-    const imageWrapperRef = useRef<{ getNode(): View }>(null)
+    const { state, embeddedImageRefs, dispatch } = useContext(ImageCarouselContext)
 
     const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset>({
       scale: 1,
@@ -207,7 +205,6 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         <TouchableWithoutFeedback onPress={handleDoubleTapToZoom}>
           {/* wrapper to apply transform to underlying image */}
           <Animated.View
-            ref={imageWrapperRef}
             style={{
               width,
               height,
