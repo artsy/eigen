@@ -53,6 +53,7 @@ export const ImageCarouselFullScreen = observer(() => {
           })}
           onScroll={onScroll}
           onMomentumScrollEnd={() => {
+            // reset the zooms of all non-visible zoom views when the horizontal carousel comes to a stop
             for (let i = 0; i < images.length; i++) {
               if (i !== state.imageIndex && zoomViewRefs[i]) {
                 zoomViewRefs[i].resetZoom()
