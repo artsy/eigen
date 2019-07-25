@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders the fallback view when the rendered component crashes 1`] = `
+<ARLoadFailureView
+  onRetry={[Function]}
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+/>
+`;
