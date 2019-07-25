@@ -28,6 +28,7 @@
 - Fixes a persistent top border when integrated with Eigen - ash
 - Adds remaining Other Works Grids to the artwork view - sweir27
 - Adds tracking to Artwork page - kierangillen
+- Adds error-handling to Artwork page - ash
 
 ### 1.12.8
 
