@@ -230,6 +230,17 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         __typename
       }
 
+      # For OtherWorks grids
+      contextGrids {
+        artworks(first: 6) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+
       # For analytics
       slug
       internalID
@@ -241,7 +252,6 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
 
       ...PartnerCard_artwork
       ...AboutWork_artwork
-      ...OtherWorks_artwork @relay(mask: false)
       ...OtherWorks_artwork
       ...AboutArtist_artwork
       ...ArtworkDetails_artwork
