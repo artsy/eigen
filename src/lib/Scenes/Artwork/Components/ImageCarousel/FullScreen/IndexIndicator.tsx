@@ -3,9 +3,9 @@ import { observer } from "mobx-react"
 import { useContext, useMemo } from "react"
 import React from "react"
 import { Animated, View } from "react-native"
-import { boxShadow } from "styled-system"
 import { ImageCarouselContext } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
+import { boxShadow } from "./boxShadow"
 import { useSpringFade } from "./useSpringFade"
 
 /**

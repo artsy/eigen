@@ -85,7 +85,7 @@ export const ImageCarouselFullScreen = observer(() => {
  * fades in at the same time as the shared element transition
  * is playing
  */
-const WhiteUnderlay: React.FC = () => {
+const WhiteUnderlay: React.FC = observer(() => {
   const opacity = useSpringFade("in")
 
   return (
@@ -101,4 +101,4 @@ const WhiteUnderlay: React.FC = () => {
       }}
     />
   )
-}
+})

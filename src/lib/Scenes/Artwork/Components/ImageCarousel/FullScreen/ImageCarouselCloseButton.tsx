@@ -1,15 +1,16 @@
 import { CloseIcon } from "@artsy/palette"
+import { observer } from "mobx-react"
 import { useContext } from "react"
 import React from "react"
 import { Animated, TouchableOpacity, View } from "react-native"
-import { boxShadow } from "styled-system"
 import { SafeAreaInsetsContext } from "../../SafeAreaInsetsContext"
+import { boxShadow } from "./boxShadow"
 import { useSpringFade } from "./useSpringFade"
 
 // taken from https://github.com/artsy/eigen/blob/0831853cb574566415f3bd8b3908b26b61f61eec/Artsy/View_Controllers/Util/ARNavigationController.m#L125
 const CLOSE_BUTTON_MARGIN = 12
 
-export const ImageCarouselCloseButton: React.FC<{ onClose(): void }> = ({ onClose }) => {
+export const ImageCarouselCloseButton: React.FC<{ onClose(): void }> = observer(({ onClose }) => {
   const opacity = useSpringFade("in")
   const { top } = useContext(SafeAreaInsetsContext)
   return (
@@ -51,4 +52,4 @@ export const ImageCarouselCloseButton: React.FC<{ onClose(): void }> = ({ onClos
       </TouchableOpacity>
     </View>
   )
-}
+})
