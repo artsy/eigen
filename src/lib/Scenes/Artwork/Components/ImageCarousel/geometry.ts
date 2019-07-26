@@ -40,6 +40,8 @@ interface ImageMeasurements {
   cumulativeScrollOffset: number
 }
 
+const MIN_MARGIN = 20
+
 // given an input array of image sources, calculates the dimensions and positions of all the images on the carousel
 // rail. boundingBox is the maximum possible size that an image can occupy on the rail
 export function getMeasurements({ images, boundingBox }: { images: ReadonlyArray<Box>; boundingBox: Box }) {
@@ -51,6 +53,9 @@ export function getMeasurements({ images, boundingBox }: { images: ReadonlyArray
     // collapse adjacent margins to avoid excess white space between images
     const marginLeft = i === 0 ? marginHorizontal : Math.max(marginHorizontal - result[i - 1].marginRight, 0)
 
+    // make sure there's at least 20px between images
+    const paddingLeft = i === 0 ? 0 : Math.max(0, MIN_MARGIN - marginLeft)
+
     // calculate cumulative scroll offset taking collapsed margins into account
     const cumulativeScrollOffset =
       i === 0 ? 0 : result[i - 1].cumulativeScrollOffset + boundingBox.width - (marginHorizontal - marginLeft)
@@ -58,11 +63,11 @@ export function getMeasurements({ images, boundingBox }: { images: ReadonlyArray
     result.push({
       width,
       height,
-      marginLeft,
+      marginLeft: marginLeft + paddingLeft,
       marginRight: marginHorizontal,
       marginTop: marginVertical,
       marginBottom: marginVertical,
-      cumulativeScrollOffset,
+      cumulativeScrollOffset: cumulativeScrollOffset + paddingLeft,
     })
   }
 
