@@ -115,6 +115,8 @@
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
   [sectionData addCellData:self.jumpToArtwork];
+  [sectionData addCellData:self.jumpToArtworkWithInquireable];
+  [sectionData addCellData:self.jumpToArtworkWithBNMO];
   [sectionData addCellData:self.jumpToArtworkInAuction];
   [sectionData addCellData:self.jumpToArtworkWithMultipleImages];
   [sectionData addCellData:self.jumpToArtworkWithInstitutionPartner];
@@ -245,6 +247,21 @@
   }];
 }
 
+- (ARCellData *)jumpToArtworkWithBNMO
+{
+  return [self tappableCellDataWithTitle:@"Artwork With BNMO" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"alex-dordoy-5th-genome-test-partner-test-2"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToArtworkWithInquireable
+{
+  return [self tappableCellDataWithTitle:@"Artwork With Inquireable" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"ryan-hewett-la-femme-iv"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
 
 - (ARCellData *)jumpToArtworkInAuction
 {

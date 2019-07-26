@@ -256,8 +256,20 @@ fragment CommercialInformation_artwork on Artwork {
     is_closed: isClosed
     id
   }
-  ...ArtworkAvailability_artwork
-  ...SellerInfo_artwork
+  editionSets {
+    isAcquireable
+    isOfferable
+    saleMessage
+    id
+  }
+  saleMessage
+  shippingInfo
+  shippingOrigin
+  isAcquireable
+  isOfferable
+  isInquireable
+  ...CommercialButtons_artwork
+  ...CommercialEditionSetInformation_artwork
 }
 
 fragment ArtworkHistory_artwork on Artwork {
@@ -266,14 +278,25 @@ fragment ArtworkHistory_artwork on Artwork {
   literature
 }
 
-fragment ArtworkAvailability_artwork on Artwork {
-  availability
+fragment CommercialButtons_artwork on Artwork {
+  slug
+  internalID
+  isAcquireable
+  isOfferable
+  isBiddable
+  isInquireable
 }
 
-fragment SellerInfo_artwork on Artwork {
-  availability
-  partner {
-    name
+fragment CommercialEditionSetInformation_artwork on Artwork {
+  edition_sets {
+    is_acquireable
+    is_offerable
+    sale_message
+    edition_of
+    dimensions {
+      in
+      cm
+    }
     id
   }
 }
@@ -590,7 +613,68 @@ v22 = {
 v23 = [
   (v3/*: any*/),
   (v2/*: any*/)
-];
+],
+v24 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "isAcquireable",
+  "args": null,
+  "storageKey": null
+},
+<<<<<<< HEAD
+v25 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "isOfferable",
+  "args": null,
+  "storageKey": null
+},
+v26 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "saleMessage",
+=======
+<<<<<<< HEAD
+v23 = [
+=======
+v25 = [
+>>>>>>> Adds buttons to CommercialInformation
+  (v3/*: any*/),
+  (v2/*: any*/)
+],
+v26 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "dimensions",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "dimensions",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "in",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "cm",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+},
+v27 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "edition_of",
+>>>>>>> Begins adding edition set info
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -1268,6 +1352,7 @@ return {
             "args": null,
             "storageKey": null
           },
+<<<<<<< HEAD
           {
             "kind": "LinkedField",
             "alias": null,
@@ -1300,6 +1385,10 @@ return {
             "args": null,
             "storageKey": null
           },
+=======
+          (v26/*: any*/),
+          (v27/*: any*/),
+>>>>>>> Begins adding edition set info
           {
             "kind": "LinkedField",
             "alias": "attribution_class",
@@ -1350,6 +1439,59 @@ return {
                 "storageKey": null
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "editionSets",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "EditionSet",
+            "plural": true,
+            "selections": [
+              (v24/*: any*/),
+<<<<<<< HEAD
+              (v25/*: any*/),
+              (v26/*: any*/),
+              (v2/*: any*/)
+=======
+              (v21/*: any*/),
+              (v2/*: any*/),
+              (v27/*: any*/),
+              (v26/*: any*/)
+>>>>>>> Begins adding edition set info
+            ]
+          },
+          (v26/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "shippingInfo",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "shippingOrigin",
+            "args": null,
+            "storageKey": null
+          },
+          (v24/*: any*/),
+          (v25/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isInquireable",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isBiddable",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -1358,7 +1500,23 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "a6f5f725bb23b59d22444bdbf7f60e1a",
+<<<<<<< HEAD
+    "id": "9ce8d0ad29a305d366956e45058d8c7a",
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    "id": "27db75461dcc08024c2a5068470589cd",
+=======
+    "id": "8bb03b0e85505625059f1d7ef4273abb",
+>>>>>>> Adds buttons to CommercialInformation
+=======
+    "id": "94bfe93721ba57d9fa6b29c6ab255294",
+>>>>>>> Begins adding edition set
+=======
+    "id": "250d26ad2ed61b2690ebcb72ef0ccb9b",
+>>>>>>> Begins adding edition set info
+>>>>>>> Begins adding edition set info
     "text": null,
     "metadata": {}
   }

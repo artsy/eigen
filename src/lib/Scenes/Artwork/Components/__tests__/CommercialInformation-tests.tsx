@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { CommercialInformation } from "../CommercialInformation"
@@ -14,7 +14,7 @@ describe("CommercialInformation", () => {
         <CommercialInformation artwork={CommercialInformationArtwork} />
       </Theme>
     )
-    expect(component.text()).toContain("Sold")
+    expect(component.text()).toContain("Contact For Price")
     expect(component.text()).toContain("I'm a Gallery")
     expect(component.text()).toContain("Consign with Artsy.")
   })
@@ -32,7 +32,7 @@ describe("CommercialInformation", () => {
         <CommercialInformation artwork={CommercialInformationArtworkClosedAuction} />
       </Theme>
     )
-    expect(component.text()).toContain("Sold")
+    expect(component.text()).toContain("Contact For Price")
     expect(component.text()).not.toContain("I'm a Gallery")
     expect(component.text()).toContain("Consign with Artsy.")
   })
@@ -40,6 +40,15 @@ describe("CommercialInformation", () => {
   it("doesn't render information when the data is not present", () => {
     const CommercialInformationArtworkNoData = {
       availability: null,
+      price: "",
+      sale_message: "",
+      shippingInfo: "",
+      shippingOrigin: null,
+      is_acquireable: false,
+      is_offerable: false,
+      is_biddable: false,
+      is_inquireable: false,
+      edition_sets: [],
       sale: {
         is_auction: false,
         is_closed: false,
@@ -62,13 +71,65 @@ describe("CommercialInformation", () => {
         <CommercialInformation artwork={CommercialInformationArtworkNoData} />
       </Theme>
     )
-    expect(component.text()).not.toContain("Sold")
+    expect(component.text()).not.toContain("Contact For Price")
     expect(component.text()).not.toContain("I'm a Gallery")
     expect(component.text()).not.toContain("Consign with Artsy.")
+  })
+
+  it("renders seller info correctly for commercial works", () => {
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationArtwork} />
+      </Theme>
+    )
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .render()
+        .text()
+    ).toMatchInlineSnapshot(`"Contact For Price"`)
+  })
+  it("renders seller info correctly for non-commercial works", () => {
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationArtwork} />
+      </Theme>
+    )
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .render()
+        .text()
+    ).toMatchInlineSnapshot(`"Contact For Price"`)
+  })
+
+  it("renders artwork availability correctly", () => {
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationArtwork} />
+      </Theme>
+    )
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .render()
+        .text()
+    ).toMatchInlineSnapshot(`"Contact For Price"`)
   })
 })
 
 const CommercialInformationArtwork = {
+  is_acquireable: false,
+  is_offerable: false,
+  is_biddable: false,
+  is_inquireable: false,
+  edition_sets: [],
+  sale_message: "Contact For Price",
+  shippingInfo: "Shipping, tax, and service quoted by seller",
+  shippingOrigin: null,
   availability: "Sold",
   sale: {
     is_auction: false,
