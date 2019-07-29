@@ -93,9 +93,18 @@ function createTransform(
 }
 
 /**
- * TODO: describe what this is for, and why the forward ref thing is needed, prove link to description of FLIP
+ * ImageZoomView is responsible for providing the 'pinch-to-zoom' full screen image view.
+ * It is also responsible for animating the shared element transition on entry.
+ *
+ * It also provides one method `resetZoom` which can be used on a ref of an ImageZoomView
+ * The zoom on an ImageZoomView resets after paging to another image in full screen mode.
+ *
+ * The animation is achieved using the FLIP technique. Here's a great introduction to it
+ *
+ *  https://css-tricks.com/animating-layouts-with-the-flip-technique/
  */
 export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> = observer(
+  // need to do this ref forwarding to expose the `resetZoom` method to consumers
   React.forwardRef(({ image, index }, ref) => {
     const { state, embeddedImageRefs, dispatch } = useContext(ImageCarouselContext)
 
