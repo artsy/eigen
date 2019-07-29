@@ -27,7 +27,7 @@ query ShowEventSectionTestsQuery {
   }
 }
 
-fragment ShowEventSection_event on PartnerShowEventType {
+fragment ShowEventSection_event on ShowEventType {
   event_type
   description
   start_at
@@ -67,7 +67,7 @@ return {
             "name": "events",
             "storageKey": null,
             "args": null,
-            "concreteType": "PartnerShowEventType",
+            "concreteType": "ShowEventType",
             "plural": true,
             "selections": [
               {
@@ -101,7 +101,7 @@ return {
             "name": "events",
             "storageKey": null,
             "args": null,
-            "concreteType": "PartnerShowEventType",
+            "concreteType": "ShowEventType",
             "plural": true,
             "selections": [
               {
@@ -148,7 +148,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowEventSectionTestsQuery",
-    "id": "0fade73ca6307a9c176676070d42d489",
+    "id": "98b9e3592d440a1b461ec90b3f180bb5",
     "text": null,
     "metadata": {}
   }

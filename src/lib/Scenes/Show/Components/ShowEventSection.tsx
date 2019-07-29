@@ -58,7 +58,7 @@ const ShowEventSection: React.SFC<Props> = ({ event: { start_at, end_at, event_t
 
 export const ShowEventSectionContainer = createFragmentContainer(ShowEventSection, {
   event: graphql`
-    fragment ShowEventSection_event on PartnerShowEventType {
+    fragment ShowEventSection_event on ShowEventType {
       event_type
       description
       start_at

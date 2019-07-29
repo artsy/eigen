@@ -16,6 +16,8 @@
 
 ### Master
 
+- Update after dropping deprecations from MP v2 - alloy
+
 ### 1.12.11
 
 ### 1.12.10
