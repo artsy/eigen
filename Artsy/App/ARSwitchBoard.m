@@ -513,6 +513,50 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     return viewController;
 }
 
+- (UIViewController *)routeInternalURL:(NSURL *)url order:(Order *)order
+{
+    BOOL isTrustedHostForPredictableRouting = ([[ARRouter artsyHosts] containsObject:url.host] || url.host == nil);
+    if (isTrustedHostForPredictableRouting) {
+        // Use the internal JLRouter for the actual routing
+        id routedViewController = [self.routes routeURL:url withParameters:(order ? @{ @"order" : order } : @{})];
+        if (routedViewController) {
+            return routedViewController;
+        }
+    }
+
+    if ([ARRouter isPaymentRequestURL:url]) {
+        UIViewController *paymentRequestViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:paymentRequestViewController];
+    }
+
+    // We couldn't find one? Well, then we should present it as a martsy view
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+    viewController.order = order;
+    return viewController;
+}
+
+- (UIViewController *)routeInternalURL:(NSURL *)url inquiry:(Inquiry *)inquiry
+{
+    BOOL isTrustedHostForPredictableRouting = ([[ARRouter artsyHosts] containsObject:url.host] || url.host == nil);
+    if (isTrustedHostForPredictableRouting) {
+        // Use the internal JLRouter for the actual routing
+        id routedViewController = [self.routes routeURL:url withParameters:(inquiry ? @{ @"inquiry" : inquiry } : @{})];
+        if (routedViewController) {
+            return routedViewController;
+        }
+    }
+
+    if ([ARRouter isPaymentRequestURL:url]) {
+        UIViewController *paymentRequestViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:paymentRequestViewController];
+    }
+
+    // We couldn't find one? Well, then we should present it as a martsy view
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+    viewController.inquiry = inquiry;
+    return viewController;
+}
+
 - (NSURL *)resolveRelativeUrl:(NSString *)path
 {
     return [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];
