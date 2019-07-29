@@ -17,6 +17,7 @@
 ### Master
 
 - Update after dropping deprecations from MP v2 - alloy
+- Add full screen carousel support in artwork view - ds300
 
 ### 1.12.11
 
