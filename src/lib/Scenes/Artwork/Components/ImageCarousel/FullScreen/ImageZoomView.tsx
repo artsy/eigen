@@ -18,6 +18,7 @@ import { useAnimatedValue } from "../useAnimatedValue"
 import { fitInside } from "../geometry"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
 import React from "react"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
@@ -54,6 +55,8 @@ interface TransitionOffset {
 async function getTransitionOffset({ fromRef, toBox }: { fromRef: any; toBox: Box }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
 
+  fromBox.y += screenSafeAreaInsets.top
+
   const scale = fromBox.width / toBox.width
   const translateX = fromBox.x + fromBox.width / 2 - (toBox.x + toBox.width / 2)
   const translateY = fromBox.y + fromBox.height / 2 - (toBox.y + toBox.height / 2)
@@ -89,6 +92,9 @@ function createTransform(
   ]
 }
 
+/**
+ * TODO: describe what this is for, and why the forward ref thing is needed, prove link to description of FLIP
+ */
 export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> = observer(
   React.forwardRef(({ image, index }, ref) => {
     const { state, embeddedImageRefs, dispatch } = useContext(ImageCarouselContext)

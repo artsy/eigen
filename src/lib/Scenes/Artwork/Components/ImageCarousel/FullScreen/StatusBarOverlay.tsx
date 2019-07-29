@@ -1,8 +1,7 @@
+import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
 import { observer } from "mobx-react"
-import { useContext } from "react"
 import React from "react"
 import { Animated } from "react-native"
-import { SafeAreaInsetsContext } from "../../SafeAreaInsetsContext"
 import { useSpringFade } from "./useSpringFade"
 
 // used to mask the image during initial transition in case the user has scrolled down some
@@ -10,7 +9,7 @@ import { useSpringFade } from "./useSpringFade"
 // jarring pop where the area of the image that was behind the status bar becomes fully visible.
 export const StatusBarOverlay: React.FC = observer(() => {
   const opacity = useSpringFade("out")
-  const { top: height } = useContext(SafeAreaInsetsContext)
+  const { top: height } = screenSafeAreaInsets
   return (
     <Animated.View
       style={{

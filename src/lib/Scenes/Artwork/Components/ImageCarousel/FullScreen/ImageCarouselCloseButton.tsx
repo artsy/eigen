@@ -1,9 +1,8 @@
 import { CloseIcon } from "@artsy/palette"
+import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
 import { observer } from "mobx-react"
-import { useContext } from "react"
 import React from "react"
 import { Animated, TouchableOpacity, View } from "react-native"
-import { SafeAreaInsetsContext } from "../../SafeAreaInsetsContext"
 import { boxShadow } from "./boxShadow"
 import { useSpringFade } from "./useSpringFade"
 
@@ -12,13 +11,12 @@ const CLOSE_BUTTON_MARGIN = 12
 
 export const ImageCarouselCloseButton: React.FC<{ onClose(): void }> = observer(({ onClose }) => {
   const opacity = useSpringFade("in")
-  const { top } = useContext(SafeAreaInsetsContext)
   return (
     <View
       style={{
         position: "absolute",
         left: 0,
-        top,
+        top: screenSafeAreaInsets.top,
       }}
     >
       <TouchableOpacity onPress={onClose}>
