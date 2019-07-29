@@ -182,7 +182,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     })
 
-    // as a perf optimisation, when doing the 'zoom im' transition, we only render the
+    // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image
     // in place of the other images we just render a blank box
     if (state.fullScreenState !== "entered" && index !== state.imageIndex) {

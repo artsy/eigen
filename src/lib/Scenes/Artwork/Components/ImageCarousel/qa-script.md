@@ -25,7 +25,7 @@
   - [ ] I can tap the image to open full screen mode
   - [ ] I can swipe to the next image(s)
   - When swiping between images
-    - [ ] The pagination dots are emphasiezed appropriately
+    - [ ] The pagination dots are emphasized appropriately
     - [ ] The animation is smooth
     - [ ] I can tap on an image before the animation ends to open full screen mode
     - [ ] I can tap on an image a second after the animation ends to open full screen mode
