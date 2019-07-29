@@ -30,7 +30,7 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
-import { EventStatus, PartnerShowSorts } from "__generated__/CitySectionListQuery.graphql"
+import { EventStatus, ShowSorts } from "__generated__/CitySectionListQuery.graphql"
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
 import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
@@ -411,7 +411,7 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
     partnerType?: PartnerShowPartnerType
     status?: EventStatus
     dayThreshold?: number
-    sort?: PartnerShowSorts
+    sort?: ShowSorts
   } = { citySlug }
 
   switch (section) {
@@ -445,7 +445,7 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
           $partnerType: PartnerShowPartnerType
           $status: EventStatus
           $dayThreshold: Int
-          $sort: PartnerShowSorts
+          $sort: ShowSorts
         ) {
           city(slug: $citySlug) {
             ...CitySectionList_city

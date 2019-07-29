@@ -2,15 +2,15 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { CitySectionList_city$ref } from "./CitySectionList_city.graphql";
-export type EventStatus = "CLOSED" | "CLOSING_SOON" | "CURRENT" | "RUNNING" | "RUNNING_AND_UPCOMING" | "UPCOMING" | "closed" | "current" | "running" | "upcoming" | "%future added value";
+export type EventStatus = "CLOSED" | "CLOSING_SOON" | "CURRENT" | "RUNNING" | "RUNNING_AND_UPCOMING" | "UPCOMING" | "%future added value";
 export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
-export type PartnerShowSorts = "CREATED_AT_ASC" | "CREATED_AT_DESC" | "END_AT_ASC" | "END_AT_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "PUBLISH_AT_ASC" | "PUBLISH_AT_DESC" | "START_AT_ASC" | "START_AT_DESC" | "created_at_asc" | "created_at_desc" | "end_at_asc" | "end_at_desc" | "name_asc" | "name_desc" | "publish_at_asc" | "publish_at_desc" | "start_at_asc" | "start_at_desc" | "%future added value";
+export type ShowSorts = "END_AT_ASC" | "END_AT_DESC" | "FEATURED_ASC" | "FEATURED_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "SORTABLE_NAME_ASC" | "SORTABLE_NAME_DESC" | "START_AT_ASC" | "START_AT_DESC" | "UPDATED_AT_ASC" | "UPDATED_AT_DESC" | "%future added value";
 export type QueryRenderersCitySectionListQueryVariables = {
     readonly citySlug: string;
     readonly partnerType?: PartnerShowPartnerType | null;
     readonly status?: EventStatus | null;
     readonly dayThreshold?: number | null;
-    readonly sort?: PartnerShowSorts | null;
+    readonly sort?: ShowSorts | null;
 };
 export type QueryRenderersCitySectionListQueryResponse = {
     readonly city: {
@@ -30,7 +30,7 @@ query QueryRenderersCitySectionListQuery(
   $partnerType: PartnerShowPartnerType
   $status: EventStatus
   $dayThreshold: Int
-  $sort: PartnerShowSorts
+  $sort: ShowSorts
 ) {
   city(slug: $citySlug) {
     ...CitySectionList_city_2xWq6T
@@ -117,7 +117,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "sort",
-    "type": "PartnerShowSorts",
+    "type": "ShowSorts",
     "defaultValue": null
   }
 ],
@@ -473,11 +473,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCitySectionListQuery",
-    "id": "5f109d7b7c32b7aa6708811b88ed2e63",
+    "id": "d947116b1f3471e40e1431833fa53891",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'f07f6ad80ab324291f3478267765ff36';
+(node as any).hash = '29b6753f868977bf8e981a81bca35503';
 export default node;

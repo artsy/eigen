@@ -16,6 +16,10 @@
 
 ### Master
 
+- Update after dropping deprecations from MP v2 - alloy
+
+### 1.12.11
+
 ### 1.12.10
 
 - Display an error message when polling fails on bidding - yuki24
@@ -26,6 +30,7 @@
 - Fixes a persistent top border when integrated with Eigen - ash
 - Adds remaining Other Works Grids to the artwork view - sweir27
 - Adds tracking to Artwork page - kierangillen
+- Adds error-handling to Artwork page - ash
 
 ### 1.12.8
 

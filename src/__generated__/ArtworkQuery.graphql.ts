@@ -76,6 +76,16 @@ fragment Artwork_artwork on Artwork {
       id
     }
   }
+  contextGrids {
+    __typename
+    artworks(first: 6) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
   slug
   internalID
   is_acquireable
@@ -85,20 +95,6 @@ fragment Artwork_artwork on Artwork {
   availability
   ...PartnerCard_artwork
   ...AboutWork_artwork
-  contextGrids {
-    __typename
-    title
-    ctaTitle
-    ctaHref
-    artworks(first: 6) {
-      edges {
-        node {
-          ...GenericGrid_artworks
-          id
-        }
-      }
-    }
-  }
   ...OtherWorks_artwork
   ...AboutArtist_artwork
   ...ArtworkDetails_artwork
@@ -142,15 +138,6 @@ fragment PartnerCard_artwork on Artwork {
 fragment AboutWork_artwork on Artwork {
   additional_information
   description
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  slug
-  image {
-    aspect_ratio
-  }
-  ...ArtworkGridItem_artwork
 }
 
 fragment OtherWorks_artwork on Artwork {
@@ -360,6 +347,15 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
+fragment GenericGrid_artworks on Artwork {
+  id
+  slug
+  image {
+    aspect_ratio
+  }
+  ...ArtworkGridItem_artwork
+}
+
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -558,14 +554,14 @@ v17 = {
 v18 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_acquireable",
+  "name": "title",
   "args": null,
   "storageKey": null
 },
 v19 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_offerable",
+  "name": "date",
   "args": null,
   "storageKey": null
 },
@@ -579,14 +575,14 @@ v20 = {
 v21 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "title",
+  "name": "is_acquireable",
   "args": null,
   "storageKey": null
 },
 v22 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "date",
+  "name": "is_offerable",
   "args": null,
   "storageKey": null
 },
@@ -922,25 +918,6 @@ return {
               }
             ]
           },
-          (v4/*: any*/),
-          (v5/*: any*/),
-          (v18/*: any*/),
-          (v19/*: any*/),
-          (v20/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_inquireable",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "availability",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -950,22 +927,6 @@ return {
             "concreteType": null,
             "plural": true,
             "selections": [
-              (v13/*: any*/),
-              (v21/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "ctaTitle",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "ctaHref",
-                "args": null,
-                "storageKey": null
-              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -1032,8 +993,8 @@ return {
                               }
                             ]
                           },
-                          (v21/*: any*/),
-                          (v22/*: any*/),
+                          (v18/*: any*/),
+                          (v19/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -1049,8 +1010,8 @@ return {
                             "storageKey": null
                           },
                           (v20/*: any*/),
-                          (v18/*: any*/),
-                          (v19/*: any*/),
+                          (v21/*: any*/),
+                          (v22/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -1148,8 +1109,43 @@ return {
                     ]
                   }
                 ]
+              },
+              (v13/*: any*/),
+              (v18/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "ctaTitle",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "ctaHref",
+                "args": null,
+                "storageKey": null
               }
             ]
+          },
+          (v4/*: any*/),
+          (v5/*: any*/),
+          (v21/*: any*/),
+          (v22/*: any*/),
+          (v20/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_inquireable",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "availability",
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "LinkedField",
@@ -1225,7 +1221,7 @@ return {
               (v17/*: any*/)
             ]
           },
-          (v21/*: any*/),
+          (v18/*: any*/),
           (v6/*: any*/),
           {
             "kind": "ScalarField",
@@ -1256,7 +1252,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v22/*: any*/),
+          (v19/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1354,7 +1350,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "b88d4cd22f3e4464912039789130a5d1",
+    "id": "bd1bfeab968c4584215616e53f827746",
     "text": null,
     "metadata": {}
   }

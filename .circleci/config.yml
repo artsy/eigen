@@ -67,7 +67,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v9-pods-{{ checksum "Example/Pods/Pods.xcodeproj/project.pbxproj" }}
+            - v9-pods-{{ checksum "package.json" }}
 
       - run:
           name: Install CocoaPods Specs If Necessary

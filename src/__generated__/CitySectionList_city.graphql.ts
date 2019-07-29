@@ -121,7 +121,7 @@ return {
     {
       "kind": "LocalArgument",
       "name": "sort",
-      "type": "PartnerShowSorts",
+      "type": "ShowSorts",
       "defaultValue": "PARTNER_ASC"
     }
   ],
@@ -372,5 +372,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '39122443b6fd2e335109b598976ff0b2';
+(node as any).hash = 'ed4b794ae7a59dff979cc09d5c040f98';
 export default node;

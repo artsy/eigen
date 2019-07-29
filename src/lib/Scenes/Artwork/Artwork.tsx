@@ -1,6 +1,7 @@
 import { Box, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
+import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -227,6 +228,17 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         __typename
       }
 
+      # For OtherWorks grids
+      contextGrids {
+        artworks(first: 6) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+
       # For analytics
       slug
       internalID
@@ -238,7 +250,6 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
 
       ...PartnerCard_artwork
       ...AboutWork_artwork
-      ...OtherWorks_artwork @relay(mask: false)
       ...OtherWorks_artwork
       ...AboutArtist_artwork
       ...ArtworkDetails_artwork
@@ -255,17 +266,29 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
   ...others
 }) => {
   return (
-    <QueryRenderer<ArtworkQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query ArtworkQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            ...Artwork_artwork
-          }
-        }
-      `}
-      variables={{ artworkID }}
-      render={renderWithLoadProgress(ArtworkContainer, others)}
+    <RetryErrorBoundary
+      render={({ isRetry }) => {
+        return (
+          <QueryRenderer<ArtworkQuery>
+            environment={defaultEnvironment}
+            query={graphql`
+              query ArtworkQuery($artworkID: String!) {
+                artwork(id: $artworkID) {
+                  ...Artwork_artwork
+                }
+              }
+            `}
+            variables={{
+              artworkID,
+            }}
+            cacheConfig={{
+              // Bypass Relay cache on retries.
+              ...(isRetry && { force: true }),
+            }}
+            render={renderWithLoadProgress(ArtworkContainer, others)}
+          />
+        )
+      }}
     />
   )
 }

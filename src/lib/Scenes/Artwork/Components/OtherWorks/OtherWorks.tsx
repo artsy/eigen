@@ -1,4 +1,5 @@
 import { Box, Join, Separator, Spacer } from "@artsy/palette"
+import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { OtherWorks_artwork } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { Schema } from "lib/utils/track"
@@ -8,7 +9,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ContextGridCTA } from "./ContextGridCTA"
 import { Header } from "./Header"
 
-export const populatedGrids = (grids: OtherWorks_artwork["contextGrids"]) => {
+type OtherWorksGrid = OtherWorks_artwork["contextGrids"][number]
+type ArtworkGrid = Artwork_artwork["contextGrids"][number]
+type Grid = OtherWorksGrid | ArtworkGrid
+
+export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
   if (grids && grids.length > 0) {
     return filter(grids, grid => {
       return grid.artworks && grid.artworks.edges && grid.artworks.edges.length > 0
@@ -19,7 +24,7 @@ export const populatedGrids = (grids: OtherWorks_artwork["contextGrids"]) => {
 export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: OtherWorks_artwork }>(
   props => {
     const grids = props.artwork.contextGrids
-    const gridsToShow = populatedGrids(grids)
+    const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
     if (gridsToShow && gridsToShow.length > 0) {
       return (
