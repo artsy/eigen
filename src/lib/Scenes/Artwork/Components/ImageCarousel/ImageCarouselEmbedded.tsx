@@ -92,7 +92,7 @@ export const ImageCarouselEmbedded = observer(() => {
             ref={ref => {
               embeddedImageRefs[index] = ref
             }}
-            style={styles}
+            style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
           />
         )
       }}
