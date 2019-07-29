@@ -79,6 +79,7 @@ export const ImageCarouselEmbedded = observer(() => {
       keyExtractor={item => item.url}
       decelerationRate="fast"
       onScroll={onScroll}
+      scrollEventThrottle={50}
       onResponderRelease={onResponderRelease}
       initialNumToRender={2}
       renderItem={({ item, index }) => {
