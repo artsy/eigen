@@ -41,7 +41,6 @@ import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
-import { SafeAreaInsets } from "./types/SafeAreaInsets"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
