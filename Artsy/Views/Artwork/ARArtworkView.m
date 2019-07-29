@@ -46,7 +46,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     self.scrollEnabled = YES;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    self.backgroundColor = [UIColor blackColor];
+    self.backgroundColor = [UIColor whiteColor];
     self.stackView.backgroundColor = [UIColor whiteColor];
     self.stackView.bottomMarginHeight = 20;
 

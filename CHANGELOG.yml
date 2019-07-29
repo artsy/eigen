@@ -6,6 +6,7 @@ upcoming:
     - Cleans up unused lab options - ash
     - Removes concept of a lot's "current value" in favour of using the asking price - ash
     - Adds more granular lab options for testing new RN artwork view - ash
+    - Make status bar white on artwork views - ash + david
   user_facing:
     - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
     - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
@@ -51,7 +52,7 @@ releases:
     date: Apr 13, 2019
     emission_version: 1.9.5
     dev:
-      - 
+      -
     user_facing:
       - Fixes a crash when trying to submit a consignment - ash/alloy
 
@@ -115,14 +116,14 @@ releases:
       - Adds Local Discovery tab behind lab option - luc
 
   - version: 4.3.5
-    date: Jan 11, 2019 
+    date: Jan 11, 2019
     signed_of_by: Orta
     emission_version: 1.7.6
     dev:
       - Sends a user agent which includes the device model for Reaction SSR - orta
       - Skips running tests on beta deploys - ash
       - Updates Related Artworks grid item metadata styling - javamonn
-      
+
     user_facing:
       - Uses new search API for the app search - orta
       - AR feature allows tapping on the done state to hide the UI - orta

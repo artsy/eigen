@@ -82,11 +82,6 @@
     [self setViewControllers:@[ artworkVC ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
 - (BOOL)isValidArtworkIndex:(NSInteger)index
 {
     if (index < 0 || index >= self.artworks.count) {
