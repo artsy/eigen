@@ -48,6 +48,6 @@
           the image and pagination dot on the main carousel update to match.
     - After having zoomed in
       - [ ] I can still swipe between images
-      - [ ] If I swipe to a different image and then back again, the zoom level resets
+      - [ ] If I swipe to a different image, wait for the animation to finish, and then swipe back again, the zoom level resets
       - [ ] The image index fades back in when I zoom out
       - [ ] I can double tap to zoom out
