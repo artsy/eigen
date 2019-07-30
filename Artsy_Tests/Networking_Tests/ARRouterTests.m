@@ -109,15 +109,15 @@ describe(@"isWebURL", ^{
     });
 });
 
-describe(@"isPaymentRequestURL", ^{
+describe(@"isModalURL", ^{
     it(@"returns YES with a staging url", ^{
         NSURL *url = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
+        expect([ARRouter isModalURL:url]).to.beTruthy();
     });
 
     it(@"returns YES with a production url", ^{
         NSURL *url = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
+        expect([ARRouter isModalURL:url]).to.beTruthy();
     });
     
     it(@"returns that a url is a production payment request url", ^{
