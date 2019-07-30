@@ -11,13 +11,17 @@ import {
 } from "react-native"
 
 import colors from "lib/data/colors"
-import { createGeminiUrl } from "./createGeminiUrl";
+import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props {
   /** The URL from where to fetch the image. */
   imageURL?: string
 
-  disableGemini?: boolean
+  /**
+   * By default we fetch a resized version of the image from gemini
+   * Use this option to prevent that from happening.
+   */
+  useRawURL?: boolean
 
   /** The background colour for the image view */
   placeholderBackgroundColor?: string | number
@@ -84,10 +88,10 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   }
 
   imageURL() {
-    const { imageURL, disableGemini } = this.props
+    const { imageURL, useRawURL } = this.props
 
     if (imageURL) {
-      if (disableGemini) {
+      if (useRawURL) {
         return imageURL
       }
       return createGeminiUrl({
