@@ -127,6 +127,11 @@ describe(@"isModalURL", ^{
         NSURL *productionURL = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
         expect([ARRouter isProductionPaymentRequestURL:productionURL]).to.beTruthy();
     });
+
+    it(@"returns YES with a BNMO url", ^{
+        NSURL *url = [NSURL URLWithString:@"/orders/some-bnmo-order-id"];
+        expect([ARRouter isModalURL:url]).to.beTruthy();
+    });
 });
 
 describe(@"User-Agent", ^{
