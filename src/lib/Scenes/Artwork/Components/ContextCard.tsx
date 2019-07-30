@@ -201,7 +201,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
       internalID
       context {
         __typename
-        ... on ArtworkContextAuction {
+        ... on Sale {
           id
           name
           href
@@ -210,7 +210,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
             url
           }
         }
-        ... on ArtworkContextFair {
+        ... on Fair {
           id
           name
           href

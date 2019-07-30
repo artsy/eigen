@@ -123,27 +123,27 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextFollowedArtist",
+          "type": "HomePageFollowedArtistArtworkModule",
           "selections": (v1/*: any*/)
         },
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextRelatedArtist",
+          "type": "HomePageRelatedArtistArtworkModule",
           "selections": (v1/*: any*/)
         },
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextFair",
+          "type": "Fair",
           "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextGene",
+          "type": "Gene",
           "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextSale",
+          "type": "Sale",
           "selections": (v0/*: any*/)
         }
       ]
@@ -179,5 +179,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2d9a4662d25a7542dbe48112b76f7d19';
+(node as any).hash = 'c9f9b8dd50bf33dd58a6327d7537cb3b';
 export default node;

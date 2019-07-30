@@ -10,6 +10,7 @@ export type ArtworkActions_artwork = {
     readonly title: string | null;
     readonly href: string | null;
     readonly is_saved: boolean | null;
+    readonly is_hangable: boolean | null;
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
     } | null> | null;
@@ -73,6 +74,13 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_hangable",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "artists",
@@ -124,5 +132,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '2aec79a3ff555bec57c9bc2bfac60c4d';
+(node as any).hash = '181c0019b3249b09a6df830f442e5888';
 export default node;

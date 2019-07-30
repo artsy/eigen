@@ -46,26 +46,26 @@ fragment ArtworkCarousel_rail on HomePageArtworkModule {
   }
   context {
     __typename
-    ... on HomePageModuleContextFollowedArtist {
+    ... on HomePageFollowedArtistArtworkModule {
       artist {
         href
         id
       }
     }
-    ... on HomePageModuleContextRelatedArtist {
+    ... on HomePageRelatedArtistArtworkModule {
       artist {
         href
         id
       }
     }
-    ... on HomePageModuleContextFair {
+    ... on Fair {
       href
       id
     }
-    ... on HomePageModuleContextGene {
+    ... on Gene {
       href
     }
-    ... on HomePageModuleContextSale {
+    ... on Sale {
       href
     }
     ... on Node {
@@ -121,7 +121,7 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
   key
   followedArtistContext: context {
     __typename
-    ... on HomePageModuleContextFollowedArtist {
+    ... on HomePageFollowedArtistArtworkModule {
       artist {
         internalID
         slug
@@ -131,13 +131,13 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
     ... on Node {
       id
     }
-    ... on HomePageModuleContextFair {
+    ... on Fair {
       id
     }
   }
   relatedArtistContext: context {
     __typename
-    ... on HomePageModuleContextRelatedArtist {
+    ... on HomePageRelatedArtistArtworkModule {
       artist {
         internalID
         slug
@@ -151,7 +151,7 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
     ... on Node {
       id
     }
-    ... on HomePageModuleContextFair {
+    ... on Fair {
       id
     }
   }
@@ -412,7 +412,7 @@ return {
                   (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFollowedArtist",
+                    "type": "HomePageFollowedArtistArtworkModule",
                     "selections": [
                       (v6/*: any*/)
                     ]
@@ -432,7 +432,7 @@ return {
                   (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextRelatedArtist",
+                    "type": "HomePageRelatedArtistArtworkModule",
                     "selections": [
                       (v6/*: any*/),
                       {
@@ -487,27 +487,27 @@ return {
                   (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFollowedArtist",
+                    "type": "HomePageFollowedArtistArtworkModule",
                     "selections": (v10/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextRelatedArtist",
+                    "type": "HomePageRelatedArtistArtworkModule",
                     "selections": (v10/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFair",
+                    "type": "Fair",
                     "selections": (v11/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextGene",
+                    "type": "Gene",
                     "selections": (v11/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextSale",
+                    "type": "Sale",
                     "selections": (v11/*: any*/)
                   }
                 ]
@@ -812,7 +812,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersForYouQuery",
-    "id": "e6e8fad9c17d533402e9ce1a67822d3c",
+    "id": "79566e3d54bbff963931e4140879d22e",
     "text": null,
     "metadata": {}
   }

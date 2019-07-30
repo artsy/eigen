@@ -166,7 +166,7 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
       key
       # This aliasing selection of the context is done to work around a type generator bug, see below.
       followedArtistContext: context {
-        ... on HomePageModuleContextFollowedArtist {
+        ... on HomePageFollowedArtistArtworkModule {
           artist {
             internalID
             slug
@@ -174,7 +174,7 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
         }
       }
       relatedArtistContext: context {
-        ... on HomePageModuleContextRelatedArtist {
+        ... on HomePageRelatedArtistArtworkModule {
           artist {
             internalID
             slug

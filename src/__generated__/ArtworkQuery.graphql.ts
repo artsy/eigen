@@ -72,7 +72,7 @@ fragment Artwork_artwork on Artwork {
     ... on Node {
       id
     }
-    ... on ArtworkContextFair {
+    ... on Fair {
       id
     }
   }
@@ -197,7 +197,7 @@ fragment ContextCard_artwork on Artwork {
   internalID
   context {
     __typename
-    ... on ArtworkContextAuction {
+    ... on Sale {
       id
       name
       href
@@ -206,7 +206,7 @@ fragment ContextCard_artwork on Artwork {
         url
       }
     }
-    ... on ArtworkContextFair {
+    ... on Fair {
       id
       name
       href
@@ -285,6 +285,7 @@ fragment ArtworkActions_artwork on Artwork {
   title
   href
   is_saved
+  is_hangable
   artists {
     name
     id
@@ -892,7 +893,7 @@ return {
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "ArtworkContextFair",
+                "type": "Fair",
                 "selections": [
                   (v3/*: any*/),
                   (v6/*: any*/),
@@ -902,7 +903,7 @@ return {
               },
               {
                 "kind": "InlineFragment",
-                "type": "ArtworkContextAuction",
+                "type": "Sale",
                 "selections": [
                   (v3/*: any*/),
                   (v6/*: any*/),
@@ -1230,6 +1231,13 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_hangable",
+            "args": null,
+            "storageKey": null
+          },
           (v16/*: any*/),
           {
             "kind": "ScalarField",
@@ -1350,7 +1358,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "bd1bfeab968c4584215616e53f827746",
+    "id": "27db75461dcc08024c2a5068470589cd",
     "text": null,
     "metadata": {}
   }
