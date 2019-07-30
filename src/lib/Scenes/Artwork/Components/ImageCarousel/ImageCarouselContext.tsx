@@ -8,6 +8,17 @@ export interface ImageDescriptor {
   url: string
   width: number
   height: number
+  deep_zoom: {
+    Image: {
+      TileSize: number
+      Url: string
+      Format: string
+      Size: {
+        Width: number
+        Height: number
+      }
+    }
+  }
 }
 
 export type ImageCarouselAction =

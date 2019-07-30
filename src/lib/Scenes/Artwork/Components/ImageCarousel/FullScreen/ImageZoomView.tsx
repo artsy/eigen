@@ -20,6 +20,7 @@ import { fitInside } from "../geometry"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
 import React from "react"
+import { ImageDeepZoomView } from "./ImageDeepZoomView"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
 
@@ -234,6 +235,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
                 height,
               }}
             />
+            {state.fullScreenState !== "doing first render" &&
+              state.imageIndex === index && <ImageDeepZoomView image={image} width={width} height={height} />}
           </Animated.View>
         </TouchableWithoutFeedback>
       </ScrollView>

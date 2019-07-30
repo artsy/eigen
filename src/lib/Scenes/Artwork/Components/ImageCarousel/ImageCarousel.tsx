@@ -7,18 +7,12 @@ import { Animated } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
-import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
+import { ImageCarouselContext, ImageDescriptor, useNewImageCarouselContext } from "./ImageCarouselContext"
 import { embeddedCardBoundingBox, ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { useSpringValue } from "./useSpringValue"
 
 export interface ImageCarouselProps {
   images: ImageCarousel_images
-}
-
-export interface ImageDescriptor {
-  url: string
-  width: number
-  height: number
 }
 
 /**
@@ -40,6 +34,7 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
             width,
             height,
           }),
+          deep_zoom: image.deep_zoom,
         }
       }),
     [props.images]
@@ -96,6 +91,17 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
       image_url: imageURL
       width
       height
+      deepZoom {
+        Image {
+          TileSize
+          Url
+          Format
+          Size {
+            Width
+            Height
+          }
+        }
+      }
     }
   `,
 })

@@ -31,6 +31,17 @@ fragment ImageCarousel_images on Image {
   image_url: imageURL
   width
   height
+  deepZoom {
+    Image {
+      TileSize
+      Url
+      Format
+      Size {
+        Width
+        Height
+      }
+    }
+  }
 }
 */
 
@@ -123,6 +134,74 @@ return {
                 "name": "height",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "deepZoom",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "DeepZoom",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "Image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "DeepZoomImage",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "TileSize",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "Url",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "Format",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "Size",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "DeepZoomImageSize",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "Width",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "Height",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -140,7 +219,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ImageCarouselTestsQuery",
-    "id": "be152cf5dc01cc4ebb523a6f21c625c1",
+    "id": "db9bfbf10342ebb606f0efa9c75be493",
     "text": null,
     "metadata": {}
   }
