@@ -14,6 +14,7 @@ storiesOf("Artwork/Components").add("All Actions", () => {
         slug: "andread-rod-prinzknecht",
         href: "/artwork/andreas-rod-prinzknecht",
         is_saved: false,
+        is_hangable: true,
         artists: [
           {
             name: "Abbas Kiarostami",

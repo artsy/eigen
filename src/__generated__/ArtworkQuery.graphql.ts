@@ -285,6 +285,7 @@ fragment ArtworkActions_artwork on Artwork {
   title
   href
   is_saved
+  is_hangable
   artists {
     name
     id
@@ -1231,6 +1232,13 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_hangable",
+            "args": null,
+            "storageKey": null
+          },
           (v17/*: any*/),
           {
             "kind": "ScalarField",
@@ -1345,7 +1353,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "674ab5740c7a17c2ed049035bba24cdd",
+    "id": "8e28b59c1fd860304a18b9a4d18d3c46",
     "text": null,
     "metadata": {}
   }

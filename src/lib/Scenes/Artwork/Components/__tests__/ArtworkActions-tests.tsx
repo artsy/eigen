@@ -66,6 +66,31 @@ describe("ArtworkActions", () => {
           .text()
       ).toMatchInlineSnapshot(`"Share"`)
     })
+
+    it("does not show the View in Room option if the artwork is not hangable", () => {
+      const artworkActionsArtworkNotHangable = {
+        ...artworkActionsArtwork,
+        is_hangable: false,
+      }
+      const component = shallow(<ArtworkActions artwork={artworkActionsArtworkNotHangable} />)
+      expect(component.find(Sans).length).toEqual(2)
+
+      expect(
+        component
+          .find(Sans)
+          .at(0)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"Save"`)
+
+      expect(
+        component
+          .find(Sans)
+          .at(1)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"Share"`)
+    })
   })
 
   describe("without AR enabled", () => {
@@ -230,6 +255,7 @@ const artworkActionsArtwork = {
     url: "image.com/image",
   },
   is_saved: false,
+  is_hangable: true,
   heightCm: 10,
   widthCm: 10,
   " $refType": null,
