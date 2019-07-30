@@ -1,6 +1,7 @@
 import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
+import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
 import { CommercialInformation } from "../CommercialInformation"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -16,7 +17,7 @@ describe("CommercialInformation", () => {
     )
     expect(component.text()).toContain("Contact For Price")
     expect(component.text()).toContain("I'm a Gallery")
-    expect(component.text()).toContain("Consign with Artsy.")
+    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
 
   it("hides seller info for works from closed auctions", () => {
@@ -34,7 +35,7 @@ describe("CommercialInformation", () => {
     )
     expect(component.text()).toContain("Contact For Price")
     expect(component.text()).not.toContain("I'm a Gallery")
-    expect(component.text()).toContain("Consign with Artsy.")
+    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
 
   it("doesn't render information when the data is not present", () => {

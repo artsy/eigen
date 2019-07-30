@@ -62,9 +62,10 @@ export function metaphysicsExtensionsLoggerMiddleware() {
           // the future, because I bet it's ugly.
           if (stitchCount) {
             console.group("Stitched")
-            stitching.requests.forEach(element => {
-              console.log(element.requests)
-            })
+            // FIXME: This is erroring on staging
+            // stitching.requests.forEach(element => {
+            //   console.log(element.requests)
+            // })
             console.groupEnd()
           }
 

@@ -117,6 +117,7 @@
   [sectionData addCellData:self.jumpToArtwork];
   [sectionData addCellData:self.jumpToArtworkWithInquireable];
   [sectionData addCellData:self.jumpToArtworkWithBNMO];
+  [sectionData addCellData:self.jumpToArtworkWithBNMOWithEdition];
   [sectionData addCellData:self.jumpToArtworkInAuction];
   [sectionData addCellData:self.jumpToArtworkWithMultipleImages];
   [sectionData addCellData:self.jumpToArtworkWithInstitutionPartner];
@@ -250,7 +251,15 @@
 - (ARCellData *)jumpToArtworkWithBNMO
 {
   return [self tappableCellDataWithTitle:@"Artwork With BNMO" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"alex-dordoy-5th-genome-test-partner-test-2"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"anthony-caro-table-piece-ccii"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToArtworkWithBNMOWithEdition
+{
+  return [self tappableCellDataWithTitle:@"Artwork With BNMO Edition Sets" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"david-yarrow-genesis-1"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

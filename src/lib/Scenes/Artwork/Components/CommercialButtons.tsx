@@ -74,7 +74,7 @@ export class CommercialButtons extends React.Component<Props, State> {
               if (orderOrError.error) {
                 this.onMutationError(orderOrError.error)
               } else {
-                SwitchBoard.presentModalViewController(this, `/order/${orderOrError.order.internalID}`)
+                SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
               }
             })
           },
@@ -88,7 +88,6 @@ export class CommercialButtons extends React.Component<Props, State> {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
-    console.log("editionSetID????", editionSetID)
     if (isCommittingCreateOfferOrderMutation) {
       return
     }
@@ -131,7 +130,7 @@ export class CommercialButtons extends React.Component<Props, State> {
               if (orderOrError.error) {
                 this.onMutationError(orderOrError.error)
               } else {
-                SwitchBoard.presentModalViewController(this, `/order/${orderOrError.order.internalID}`)
+                SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
               }
             })
           },

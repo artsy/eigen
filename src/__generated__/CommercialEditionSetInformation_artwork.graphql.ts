@@ -1,19 +1,22 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { CommercialPartnerInformation_artwork$ref } from "./CommercialPartnerInformation_artwork.graphql";
 declare const _CommercialEditionSetInformation_artwork$ref: unique symbol;
 export type CommercialEditionSetInformation_artwork$ref = typeof _CommercialEditionSetInformation_artwork$ref;
 export type CommercialEditionSetInformation_artwork = {
-    readonly edition_sets: ReadonlyArray<{
-        readonly is_acquireable: boolean | null;
-        readonly is_offerable: boolean | null;
-        readonly sale_message: string | null;
-        readonly edition_of: string | null;
+    readonly editionSets: ReadonlyArray<{
+        readonly internalID: string;
+        readonly isAcquireable: boolean | null;
+        readonly isOfferable: boolean | null;
+        readonly saleMessage: string | null;
+        readonly editionOf: string | null;
         readonly dimensions: {
             readonly in: string | null;
             readonly cm: string | null;
         } | null;
     } | null> | null;
+    readonly " $fragmentRefs": CommercialPartnerInformation_artwork$ref;
     readonly " $refType": CommercialEditionSetInformation_artwork$ref;
 };
 
@@ -29,7 +32,7 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "edition_sets",
+      "name": "editionSets",
       "storageKey": null,
       "args": null,
       "concreteType": "EditionSet",
@@ -38,28 +41,35 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "is_acquireable",
+          "name": "internalID",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "is_offerable",
+          "name": "isAcquireable",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "sale_message",
+          "name": "isOfferable",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "edition_of",
+          "name": "saleMessage",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "editionOf",
           "args": null,
           "storageKey": null
         },
@@ -89,8 +99,13 @@ const node: ReaderFragment = {
           ]
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "CommercialPartnerInformation_artwork",
+      "args": null
     }
   ]
 };
-(node as any).hash = '6d43cbf0891ee0b8c3172c15e8adaed9';
+(node as any).hash = '94864ca7b73ee8a99f4d57f279c58106';
 export default node;

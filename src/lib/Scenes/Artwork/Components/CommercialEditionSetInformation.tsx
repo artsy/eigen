@@ -4,6 +4,7 @@ import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 type EditionSet = CommercialEditionSetInformation_artwork["editionSets"][0]
 
@@ -21,38 +22,44 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
     selectedEdition: this.props.artwork.editionSets[0],
   }
 
-  selectEdition = id => {
+  componentDidMount() {
+    this.props.setEditionSetId(this.state.selectedEdition.internalID)
+  }
+
+  selectEdition = internalID => {
     const { setEditionSetId, artwork } = this.props
     const editionSets = artwork.editionSets
     this.setState({
       selectedEdition: editionSets.find(edition => {
-        return edition.dimensions.in === id
+        return edition.internalID === internalID
       }),
     })
-    setEditionSetId(id)
+    setEditionSetId(internalID)
   }
 
   render() {
     const { artwork } = this.props
     const { selectedEdition } = this.state
+
     const editionSets = artwork.editionSets
-    if (!editionSets && editionSets.length) {
+
+    if (!editionSets || !editionSets.length) {
       return <></>
     }
+
     return (
       <Box>
         <Sans size="3" weight="medium">
-          Size
+          Edition size
         </Sans>
-        <Spacer mb={1} />
         <Flex flexDirection="row" alignContent="center">
           {editionSets.map(edition => {
-            const { dimensions } = edition
-            const selected = dimensions.in === selectedEdition.dimensions.in
+            const { internalID, dimensions } = edition
+            const selected = internalID === selectedEdition.internalID
             return (
-              <TouchableWithoutFeedback key={dimensions.in} onPress={() => this.selectEdition(dimensions.in)}>
-                <EditionSelector p={1} mr={1} selected={selected}>
-                  <Sans size="3t" color={selected ? "black100" : "black30"}>
+              <TouchableWithoutFeedback key={internalID} onPress={() => this.selectEdition(internalID)}>
+                <EditionSelector px={2} height={26} mt={1} mr={1} selected={selected}>
+                  <Sans size="2" weight="medium" color="black100">
                     {dimensions.in}
                   </Sans>
                 </EditionSelector>
@@ -71,12 +78,13 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         {!!selectedEdition.saleMessage && (
           <>
             <Spacer mb={2} />
-            <Sans size="4" color="black100">
+
+            <Sans size="4" weight="medium" color="black100">
               {selectedEdition.saleMessage}
             </Sans>
           </>
         )}
-        <Spacer mb={2} />
+        <CommercialPartnerInformation artwork={artwork} />
       </Box>
     )
   }
@@ -88,15 +96,19 @@ export const CommercialEditionSetInformationFragmentContainer = createFragmentCo
     artwork: graphql`
       fragment CommercialEditionSetInformation_artwork on Artwork {
         editionSets {
+          internalID
           isAcquireable
           isOfferable
           saleMessage
           editionOf
+
           dimensions {
             in
             cm
           }
         }
+
+        ...CommercialPartnerInformation_artwork
       }
     `,
   }
@@ -107,6 +119,8 @@ interface EditionSelectorProps {
 }
 
 const EditionSelector = styled(Box)<EditionSelectorProps>`
-  border-radius: 5px;
+  border-radius: 3;
+  align-items: center;
+  justify-content: center;
   border: ${props => (props.selected ? `2px solid ${color("black100")}` : `2px solid ${color("black30")}`)};
 `
