@@ -17,6 +17,7 @@
 ### Master
 
 - Update after dropping deprecations from MP v2 - alloy
+- Update after dropping duplicated types from MP v2 - zephraph
 
 ### 1.12.11
 

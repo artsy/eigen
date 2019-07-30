@@ -72,7 +72,7 @@ fragment Artwork_artwork on Artwork {
     ... on Node {
       id
     }
-    ... on ArtworkContextFair {
+    ... on Fair {
       id
     }
   }
@@ -197,7 +197,7 @@ fragment ContextCard_artwork on Artwork {
   internalID
   context {
     __typename
-    ... on ArtworkContextAuction {
+    ... on Sale {
       id
       name
       href
@@ -206,7 +206,7 @@ fragment ContextCard_artwork on Artwork {
         url
       }
     }
-    ... on ArtworkContextFair {
+    ... on Fair {
       id
       name
       href
@@ -893,7 +893,7 @@ return {
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "ArtworkContextFair",
+                "type": "Fair",
                 "selections": [
                   (v3/*: any*/),
                   (v6/*: any*/),
@@ -903,7 +903,7 @@ return {
               },
               {
                 "kind": "InlineFragment",
-                "type": "ArtworkContextAuction",
+                "type": "Sale",
                 "selections": [
                   (v3/*: any*/),
                   (v6/*: any*/),
@@ -1345,7 +1345,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "b6e71360f571068cbf8bd6b7547ae633",
+    "id": "674ab5740c7a17c2ed049035bba24cdd",
     "text": null,
     "metadata": {}
   }

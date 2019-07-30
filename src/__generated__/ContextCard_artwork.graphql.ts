@@ -21,7 +21,7 @@ export type ContextCard_artwork = {
             readonly url: string | null;
         } | null;
     } & ({
-        readonly __typename: "ArtworkContextAuction";
+        readonly __typename: "Sale";
         readonly id: string;
         readonly name: string | null;
         readonly href: string | null;
@@ -30,7 +30,7 @@ export type ContextCard_artwork = {
             readonly url: string | null;
         } | null;
     } | {
-        readonly __typename: "ArtworkContextFair";
+        readonly __typename: "Fair";
         readonly exhibition_period: string | null;
         readonly image: {
             readonly url: string | null;
@@ -147,7 +147,7 @@ return {
         },
         {
           "kind": "InlineFragment",
-          "type": "ArtworkContextAuction",
+          "type": "Sale",
           "selections": [
             (v0/*: any*/),
             (v3/*: any*/),
@@ -164,7 +164,7 @@ return {
         },
         {
           "kind": "InlineFragment",
-          "type": "ArtworkContextFair",
+          "type": "Fair",
           "selections": [
             (v0/*: any*/),
             (v3/*: any*/),
@@ -218,5 +218,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '165891be644fe2bb22c972512b0ab31c';
+(node as any).hash = 'c529ffbd1395a6331fdedfb67b7f8b17';
 export default node;

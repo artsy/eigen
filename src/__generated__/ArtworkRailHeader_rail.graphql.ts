@@ -64,7 +64,7 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextRelatedArtist",
+          "type": "HomePageRelatedArtistArtworkModule",
           "selections": [
             {
               "kind": "LinkedField",
@@ -115,5 +115,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd5b1f07a1d2dbba9edc5831e8c733ecf';
+(node as any).hash = 'a461fa657bd728cf13f1701d6c385f29';
 export default node;
