@@ -1,5 +1,5 @@
 import { color, Flex, Sans } from "@artsy/palette"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { map } from "lodash"

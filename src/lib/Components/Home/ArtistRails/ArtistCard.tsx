@@ -19,7 +19,7 @@ import Events from "lib/NativeModules/Events"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { Button } from "@artsy/palette"
-import ImageView from "lib/Components/OpaqueImageView"
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 

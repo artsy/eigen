@@ -7,7 +7,7 @@ import { PreviewText as P } from "../../Typography"
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import styled from "styled-components/native"

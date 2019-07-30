@@ -11,13 +11,17 @@ import {
 } from "react-native"
 
 import colors from "lib/data/colors"
-
-const GeminiHost = "d7hftxdivxxvm.cloudfront.net"
-const ImageQuality = 80
+import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props {
   /** The URL from where to fetch the image. */
   imageURL?: string
+
+  /**
+   * By default we fetch a resized version of the image from gemini
+   * Use this option to prevent that from happening.
+   */
+  useRawURL?: boolean
 
   /** The background colour for the image view */
   placeholderBackgroundColor?: string | number
@@ -37,12 +41,17 @@ interface Props {
 
   /** A callback that is called once the image is loaded. */
   onLoad?: () => void
+
+  /**
+   * Turn off the fade-in animation
+   */
+  noAnimation?: boolean
 }
 
 interface State {
   aspectRatio: number
-  width?: number | string
-  height?: number | string
+  width?: number
+  height?: number
 }
 
 export default class OpaqueImageView extends React.Component<Props, State> {
@@ -79,19 +88,22 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   }
 
   imageURL() {
-    const imageURL = this.props.imageURL
+    const { imageURL, useRawURL } = this.props
+
     if (imageURL) {
-      // Either scale or crop, based on if an aspect ratio is available.
-      const type = this.state.aspectRatio ? "fit" : "fill"
-      const width = String(this.state.width)
-      const height = String(this.state.height)
-      // tslint:disable-next-line:max-line-length
-      return `https://${GeminiHost}/?resize_to=${type}&width=${width}&height=${height}&quality=${ImageQuality}&src=${encodeURIComponent(
-        imageURL
-      )}`
-    } else {
-      return null
+      if (useRawURL) {
+        return imageURL
+      }
+      return createGeminiUrl({
+        imageURL,
+        width: this.state.width,
+        height: this.state.height,
+        // Either scale or crop, based on if an aspect ratio is available.
+        resizeMode: this.state.aspectRatio ? "fit" : "fill",
+      })
     }
+
+    return null
   }
 
   onLayout = (event: LayoutChangeEvent) => {

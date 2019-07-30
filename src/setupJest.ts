@@ -72,7 +72,7 @@ console.error = (message?: any) => {
 
 mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
 mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
-mockedModule("./lib/Components/OpaqueImageView.tsx", "AROpaqueImageView")
+mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
 mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
@@ -106,6 +106,12 @@ NativeModules.ARSwitchBoardModule = {
   presentModalViewController: jest.fn(),
   presentMediaPreviewController: jest.fn(),
   presentArtworksSet: jest.fn(),
+}
+NativeModules.RNStaticSafeAreaInsets = {
+  top: 20,
+  bottom: 0,
+  left: 0,
+  right: 0,
 }
 
 declare const process: any

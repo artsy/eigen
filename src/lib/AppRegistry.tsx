@@ -41,7 +41,6 @@ import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
-import { SafeAreaInsets } from "./types/SafeAreaInsets"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -79,7 +78,6 @@ const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
 
 interface ArtworkProps {
   artworkID: string
-  safeAreaInsets: SafeAreaInsets
 }
 
 const Artwork: React.SFC<ArtworkProps> = track<ArtworkProps>(props => {

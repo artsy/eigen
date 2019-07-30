@@ -320,7 +320,7 @@ fragment ArtworkTombstone_artwork on Artwork {
 }
 
 fragment ImageCarousel_images on Image {
-  url
+  image_url
   width
   height
 }
@@ -523,17 +523,16 @@ v14 = {
   "args": null,
   "storageKey": null
 },
-v15 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "url",
-  "args": null,
-  "storageKey": null
-},
-v16 = [
-  (v15/*: any*/)
+v15 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "url",
+    "args": null,
+    "storageKey": null
+  }
 ],
-v17 = {
+v16 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -541,9 +540,9 @@ v17 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": (v16/*: any*/)
+  "selections": (v15/*: any*/)
 },
-v18 = {
+v17 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "cover_image",
@@ -551,44 +550,44 @@ v18 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": (v16/*: any*/)
+  "selections": (v15/*: any*/)
 },
-v19 = {
+v18 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v20 = {
+v19 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v21 = {
+v20 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_biddable",
   "args": null,
   "storageKey": null
 },
-v22 = {
+v21 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_acquireable",
   "args": null,
   "storageKey": null
 },
-v23 = {
+v22 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_offerable",
   "args": null,
   "storageKey": null
 },
-v24 = [
+v23 = [
   (v3/*: any*/),
   (v2/*: any*/)
 ];
@@ -899,7 +898,7 @@ return {
                   (v3/*: any*/),
                   (v6/*: any*/),
                   (v14/*: any*/),
-                  (v17/*: any*/)
+                  (v16/*: any*/)
                 ]
               },
               {
@@ -915,7 +914,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v18/*: any*/)
+                  (v17/*: any*/)
                 ]
               }
             ]
@@ -995,8 +994,8 @@ return {
                               }
                             ]
                           },
+                          (v18/*: any*/),
                           (v19/*: any*/),
-                          (v20/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -1011,9 +1010,9 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          (v20/*: any*/),
                           (v21/*: any*/),
                           (v22/*: any*/),
-                          (v23/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -1093,7 +1092,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": (v24/*: any*/)
+                            "selections": (v23/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -1103,7 +1102,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v24/*: any*/)
+                            "selections": (v23/*: any*/)
                           },
                           (v6/*: any*/)
                         ]
@@ -1113,7 +1112,7 @@ return {
                 ]
               },
               (v13/*: any*/),
-              (v19/*: any*/),
+              (v18/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1132,9 +1131,9 @@ return {
           },
           (v4/*: any*/),
           (v5/*: any*/),
-          (v22/*: any*/),
-          (v23/*: any*/),
           (v21/*: any*/),
+          (v22/*: any*/),
+          (v20/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1187,7 +1186,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v17/*: any*/),
+              (v16/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1220,10 +1219,10 @@ return {
               (v5/*: any*/),
               (v14/*: any*/),
               (v8/*: any*/),
-              (v18/*: any*/)
+              (v17/*: any*/)
             ]
           },
-          (v19/*: any*/),
+          (v18/*: any*/),
           (v6/*: any*/),
           {
             "kind": "ScalarField",
@@ -1239,7 +1238,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v17/*: any*/),
+          (v16/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1261,7 +1260,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v20/*: any*/),
+          (v19/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1329,7 +1328,13 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              (v15/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "image_url",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1353,7 +1358,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "8e28b59c1fd860304a18b9a4d18d3c46",
+    "id": "27db75461dcc08024c2a5068470589cd",
     "text": null,
     "metadata": {}
   }

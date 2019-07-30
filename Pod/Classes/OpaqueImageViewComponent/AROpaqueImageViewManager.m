@@ -35,6 +35,8 @@ RCT_CUSTOM_VIEW_PROPERTY(imageURL, NSString, AROpaqueImageView)
   view.imageURL = [NSURL URLWithString:json];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(noAnimation, BOOL)
+
 - (UIView *)view;
 {
   return [AROpaqueImageViewComponent new];

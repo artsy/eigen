@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Serif from "lib/Components/Text/Serif"
 import fonts from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"

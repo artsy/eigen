@@ -22,7 +22,6 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 
 interface Props {
   artwork: Artwork_artwork
-  safeAreaInsets: SafeAreaInsets
 }
 
 @screenTrack<Props>(props => ({
@@ -167,7 +166,6 @@ export class Artwork extends React.Component<Props> {
             </Box>
           )}
           contentInset={{ bottom: 40 }}
-          style={{ paddingTop: this.props.safeAreaInsets.top }}
           keyExtractor={(item, index) => item.type + String(index)}
           renderItem={item =>
             item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>

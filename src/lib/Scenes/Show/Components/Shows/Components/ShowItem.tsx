@@ -1,6 +1,6 @@
 import { Flex, Sans, Serif } from "@artsy/palette"
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"

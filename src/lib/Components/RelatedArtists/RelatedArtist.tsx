@@ -6,7 +6,7 @@ import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View } from "rea
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import ImageView from "../OpaqueImageView"
+import ImageView from "../OpaqueImageView/OpaqueImageView"
 
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
 

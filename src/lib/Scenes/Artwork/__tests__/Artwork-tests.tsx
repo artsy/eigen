@@ -19,9 +19,7 @@ describe("Artwork", () => {
     jest.clearAllMocks()
   })
   it("renders a snapshot", () => {
-    const component = mount(
-      <Artwork artwork={ArtworkFixture} safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }} />
-    )
+    const component = mount(<Artwork artwork={ArtworkFixture} />)
     expect(component.find(ArtworkHeader).length).toEqual(1)
   })
 })

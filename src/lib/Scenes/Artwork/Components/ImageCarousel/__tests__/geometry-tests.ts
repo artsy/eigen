@@ -58,9 +58,9 @@ describe(getMeasurements, () => {
       {
         width: 10,
         height: 10,
-        cumulativeScrollOffset: 10,
+        cumulativeScrollOffset: 30,
         marginBottom: 0,
-        marginLeft: 0,
+        marginLeft: 20,
         marginRight: 0,
         marginTop: 0,
       },
@@ -95,8 +95,8 @@ describe(getMeasurements, () => {
       {
         width: 5,
         height: 10,
-        cumulativeScrollOffset: 7.5,
-        marginLeft: 0,
+        cumulativeScrollOffset: 27.5,
+        marginLeft: 20,
         marginRight: 2.5,
         marginBottom: 0,
         marginTop: 0,

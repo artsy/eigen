@@ -1,12 +1,12 @@
 import { mount } from "enzyme"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { ImageWithLoadingState } from "../ImageWithLoadingState"
 
 const imageURL = "https://image.com/image.jpg"
 const style = { width: 100, height: 300 }
 
-describe(ImageWithLoadingState, () => {
+describe("ImageWithLoadingState", () => {
   it("renders the image", () => {
     const wrapper = mount(<ImageWithLoadingState imageURL={imageURL} {...style} />)
     expect(wrapper.find(OpaqueImageView)).toHaveLength(1)

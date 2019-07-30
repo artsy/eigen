@@ -1,4 +1,4 @@
-import OpaqueImageView from "./OpaqueImageView"
+import OpaqueImageView from "./OpaqueImageView/OpaqueImageView"
 
 export default {
   OpaqueImageView,

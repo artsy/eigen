@@ -4,7 +4,7 @@ import styled from "styled-components/native"
 
 import { Dimensions, TouchableHighlight } from "react-native"
 
-import ImageView from "lib/Components/OpaqueImageView"
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 

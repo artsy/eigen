@@ -1,7 +1,7 @@
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { EntityList } from "lib/Components/EntityList"
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { uniq } from "lodash"

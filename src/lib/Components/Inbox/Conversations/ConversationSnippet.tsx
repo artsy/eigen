@@ -8,7 +8,7 @@ import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"

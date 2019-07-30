@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _ImageCarousel_images$ref: unique symbol;
 export type ImageCarousel_images$ref = typeof _ImageCarousel_images$ref;
 export type ImageCarousel_images = ReadonlyArray<{
-    readonly url: string | null;
+    readonly image_url: string | null;
     readonly width: number | null;
     readonly height: number | null;
     readonly " $refType": ImageCarousel_images$ref;
@@ -24,7 +24,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "url",
+      "name": "image_url",
       "args": null,
       "storageKey": null
     },
@@ -44,5 +44,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3894a91d6945fc184b9c7d3f5dad23a8';
+(node as any).hash = '97b0268fe452f433cd9fcc517148d095';
 export default node;
