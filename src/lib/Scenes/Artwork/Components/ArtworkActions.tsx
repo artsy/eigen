@@ -97,7 +97,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   render() {
     const {
-      artwork: { is_saved },
+      artwork: { is_saved, is_hangable },
     } = this.props
 
     return (
@@ -111,16 +111,17 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               </Sans>
             </UtilButton>
           </TouchableWithoutFeedback>
-          {Constants.AREnabled && (
-            <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-              <UtilButton pr={3}>
-                <Box mr={0.5}>
-                  <EyeOpenedIcon />
-                </Box>
-                <Sans size="3">View in Room</Sans>
-              </UtilButton>
-            </TouchableWithoutFeedback>
-          )}
+          {Constants.AREnabled &&
+            is_hangable && (
+              <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
+                <UtilButton pr={3}>
+                  <Box mr={0.5}>
+                    <EyeOpenedIcon />
+                  </Box>
+                  <Sans size="3">View in Room</Sans>
+                </UtilButton>
+              </TouchableWithoutFeedback>
+            )}
           <TouchableWithoutFeedback onPress={() => this.handleArtworkShare()}>
             <UtilButton>
               <Box mr={0.5}>
@@ -150,6 +151,7 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       title
       href
       is_saved
+      is_hangable
       artists {
         name
       }

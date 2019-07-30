@@ -34,3 +34,6 @@ storiesOf("Artwork/Screens")
       />
     )
   })
+  .add("With xvdvsts", () => {
+    return <ArtworkRenderer artworkID="anthony-caro-table-piece-ccii" safeAreaInsets={safeAreaInsets} />
+  })
