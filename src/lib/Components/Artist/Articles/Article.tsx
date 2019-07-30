@@ -3,9 +3,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import ImageView from "../../OpaqueImageView/OpaqueImageView"
 
 import { Article_article } from "__generated__/Article_article.graphql"
 
