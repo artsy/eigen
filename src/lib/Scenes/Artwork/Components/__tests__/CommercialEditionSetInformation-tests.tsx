@@ -5,13 +5,13 @@ import { TouchableWithoutFeedback } from "react-native"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 
 const artwork = {
-  edition_sets: [
+  editionSets: [
     {
       id: "RWRpdGlvblNldDo1YmJiOTc3N2NlMmZjMzAwMmMxNzkwMTM=",
       internalID: "5bbb9777ce2fc3002c179013",
-      is_acquireable: true,
-      is_offerable: true,
-      sale_message: "$1",
+      isAcquireable: true,
+      isOfferable: true,
+      saleMessage: "$1",
       edition_of: "",
       dimensions: {
         in: "2 × 2 in",
@@ -21,9 +21,9 @@ const artwork = {
     {
       id: "RWRpdGlvblNldDo1YmMwZWMwMDdlNjQzMDBhMzliMjNkYTQ=",
       internalID: "5bc0ec007e64300a39b23da4",
-      is_acquireable: true,
-      is_offerable: true,
-      sale_message: "$2",
+      isAcquireable: true,
+      isOfferable: true,
+      saleMessage: "$2",
       edition_of: "",
       dimensions: {
         in: "1 × 1 in",

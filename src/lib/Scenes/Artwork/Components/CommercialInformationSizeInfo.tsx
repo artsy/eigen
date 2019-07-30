@@ -11,16 +11,16 @@ export interface CommercialInformationSizeInfoProps {
 export class CommercialInformationSizeInfo extends React.Component<CommercialInformationSizeInfoProps> {
   render() {
     const {
-      piece: { dimensions, edition_of },
+      piece: { dimensions, editionOf },
     } = this.props
-    if (!(edition_of && edition_of.length) && !(dimensions && (dimensions.in || dimensions.cm))) {
+    if (!(editionOf && editionOf.length) && !(dimensions && (dimensions.in || dimensions.cm))) {
       return null
     }
     return (
       <Box color="black60">
         {dimensions.in && <Serif size="2">{dimensions.in}</Serif>}
         {dimensions.cm && <Serif size="2">{dimensions.cm}</Serif>}
-        {edition_of && <Serif size="2">{edition_of}</Serif>}
+        {editionOf && <Serif size="2">{editionOf}</Serif>}
       </Box>
     )
   }

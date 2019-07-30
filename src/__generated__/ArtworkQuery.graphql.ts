@@ -275,7 +275,6 @@ fragment CommercialButtons_artwork on Artwork {
   internalID
   isAcquireable
   isOfferable
-  isBiddable
   isInquireable
 }
 
@@ -1462,13 +1461,6 @@ return {
             "name": "isInquireable",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isBiddable",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -1477,7 +1469,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "56d1e770a0c4efd77b8a3f833fe8b730",
+    "id": "ed5e5b85a3eef769149350c85076ca33",
     "text": null,
     "metadata": {}
   }

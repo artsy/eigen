@@ -10,7 +10,7 @@ interface Props {
 export class CommercialPartnerInformation extends React.Component<Props> {
   render() {
     const { artwork } = this.props
-    const inClosedAuction = artwork.sale && artwork.sale.is_auction && artwork.sale.is_closed
+    const inClosedAuction = artwork.sale && artwork.sale.isAuction && artwork.sale.isClosed
     const showsSellerInfo = artwork.partner && artwork.partner.name && !inClosedAuction
     const availabilityDisplayText =
       artwork.availability &&

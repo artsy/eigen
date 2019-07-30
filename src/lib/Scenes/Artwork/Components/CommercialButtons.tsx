@@ -6,7 +6,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
-interface Props {
+export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
   relay: RelayProp
   editionSetID?: string
@@ -17,7 +17,7 @@ export interface State {
   isCommittingCreateOfferOrderMutation: boolean
 }
 
-export class CommercialButtons extends React.Component<Props, State> {
+export class CommercialButtons extends React.Component<CommercialButtonProps, State> {
   state = {
     isCommittingCreateOfferOrderMutation: false,
     isCommittingCreateOrderMutation: false,
@@ -25,14 +25,14 @@ export class CommercialButtons extends React.Component<Props, State> {
 
   onMutationError(error) {
     // FIXME: Handle error
-    console.error("src/lib/Scenes/Artwork/Components/CommercialButtons.tsx", error)
+    console.log("src/lib/Scenes/Artwork/Components/CommercialButtons.tsx", error)
   }
 
   handleCreateOrder() {
     const { relay, artwork, editionSetID } = this.props
-    const { isCommittingCreateOrderMutation } = this.state
+    const { isCommittingCreateOrderMutation, isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
-    if (isCommittingCreateOrderMutation) {
+    if (isCommittingCreateOrderMutation || isCommittingCreateOfferOrderMutation) {
       return
     }
     this.setState({ isCommittingCreateOrderMutation: true }, () => {
@@ -86,9 +86,9 @@ export class CommercialButtons extends React.Component<Props, State> {
 
   handleCreateOfferOrder() {
     const { relay, artwork, editionSetID } = this.props
-    const { isCommittingCreateOfferOrderMutation } = this.state
+    const { isCommittingCreateOfferOrderMutation, isCommittingCreateOrderMutation } = this.state
     const { internalID } = artwork
-    if (isCommittingCreateOfferOrderMutation) {
+    if (isCommittingCreateOfferOrderMutation || isCommittingCreateOrderMutation) {
       return
     }
     this.setState({ isCommittingCreateOfferOrderMutation: true }, () => {
@@ -219,7 +219,6 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       internalID
       isAcquireable
       isOfferable
-      isBiddable
       isInquireable
     }
   `,

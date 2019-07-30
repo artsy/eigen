@@ -8,7 +8,6 @@ export type CommercialButtons_artwork = {
     readonly internalID: string;
     readonly isAcquireable: boolean | null;
     readonly isOfferable: boolean | null;
-    readonly isBiddable: boolean | null;
     readonly isInquireable: boolean | null;
     readonly " $refType": CommercialButtons_artwork$ref;
 };
@@ -53,18 +52,11 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "isBiddable",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "isInquireable",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'da4f2cc65d735350f0a389a6f27e236e';
+(node as any).hash = '3c1313c5a1338640846398f9b4c553db';
 export default node;

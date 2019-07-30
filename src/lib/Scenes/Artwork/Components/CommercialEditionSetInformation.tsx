@@ -19,7 +19,10 @@ interface State {
 
 export class CommercialEditionSetInformation extends React.Component<Props, State> {
   state = {
-    selectedEdition: this.props.artwork.editionSets[0],
+    selectedEdition:
+      this.props.artwork && this.props.artwork.editionSets && this.props.artwork.editionSets.length
+        ? this.props.artwork.editionSets[0]
+        : null,
   }
 
   componentDidMount() {
