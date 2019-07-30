@@ -157,7 +157,7 @@ export default createFragmentContainer(ArtworkRailHeader, {
       title
       key
       context {
-        ... on HomePageModuleContextRelatedArtist {
+        ... on HomePageRelatedArtistArtworkModule {
           artist {
             slug
             internalID
