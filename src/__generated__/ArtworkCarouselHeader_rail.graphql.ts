@@ -105,7 +105,7 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextFollowedArtist",
+          "type": "HomePageFollowedArtistArtworkModule",
           "selections": [
             (v0/*: any*/)
           ]
@@ -123,7 +123,7 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextRelatedArtist",
+          "type": "HomePageRelatedArtistArtworkModule",
           "selections": [
             (v0/*: any*/),
             {
@@ -151,5 +151,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0fba008f8d8b6d76ae5096c7d258fb3f';
+(node as any).hash = '0d866ae9a1ed829bbc5e293129721ed2';
 export default node;

@@ -40,26 +40,26 @@ fragment ArtworkRail_rail_abFTe on HomePageArtworkModule {
   }
   context {
     __typename
-    ... on HomePageModuleContextFollowedArtist {
+    ... on HomePageFollowedArtistArtworkModule {
       artist {
         href
         id
       }
     }
-    ... on HomePageModuleContextRelatedArtist {
+    ... on HomePageRelatedArtistArtworkModule {
       artist {
         href
         id
       }
     }
-    ... on HomePageModuleContextFair {
+    ... on Fair {
       href
       id
     }
-    ... on HomePageModuleContextGene {
+    ... on Gene {
       href
     }
-    ... on HomePageModuleContextSale {
+    ... on Sale {
       href
     }
     ... on Node {
@@ -77,7 +77,7 @@ fragment ArtworkRailHeader_rail on HomePageArtworkModule {
   key
   context {
     __typename
-    ... on HomePageModuleContextRelatedArtist {
+    ... on HomePageRelatedArtistArtworkModule {
       artist {
         slug
         internalID
@@ -91,7 +91,7 @@ fragment ArtworkRailHeader_rail on HomePageArtworkModule {
     ... on Node {
       id
     }
-    ... on HomePageModuleContextFair {
+    ... on Fair {
       id
     }
   }
@@ -289,7 +289,7 @@ return {
                   (v3/*: any*/),
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextRelatedArtist",
+                    "type": "HomePageRelatedArtistArtworkModule",
                     "selections": [
                       {
                         "kind": "LinkedField",
@@ -326,12 +326,12 @@ return {
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFair",
+                    "type": "Fair",
                     "selections": (v8/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFollowedArtist",
+                    "type": "HomePageFollowedArtistArtworkModule",
                     "selections": [
                       {
                         "kind": "LinkedField",
@@ -350,12 +350,12 @@ return {
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextGene",
+                    "type": "Gene",
                     "selections": (v8/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextSale",
+                    "type": "Sale",
                     "selections": (v8/*: any*/)
                   }
                 ]
@@ -592,7 +592,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRailRefetchQuery",
-    "id": "bf4eed3b34999a4b6154240daabdf43a",
+    "id": "0df6938d3d7664a6fc9cecc844a85895",
     "text": null,
     "metadata": {}
   }

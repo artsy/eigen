@@ -278,23 +278,23 @@ export default createFragmentContainer(ArtworkCarousel, {
         price_range
       }
       context {
-        ... on HomePageModuleContextFollowedArtist {
+        ... on HomePageFollowedArtistArtworkModule {
           artist {
             href
           }
         }
-        ... on HomePageModuleContextRelatedArtist {
+        ... on HomePageRelatedArtistArtworkModule {
           artist {
             href
           }
         }
-        ... on HomePageModuleContextFair {
+        ... on Fair {
           href
         }
-        ... on HomePageModuleContextGene {
+        ... on Gene {
           href
         }
-        ... on HomePageModuleContextSale {
+        ... on Sale {
           href
         }
       }
