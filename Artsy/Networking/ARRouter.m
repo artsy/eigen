@@ -204,7 +204,7 @@ static NSString *hostFromString(NSString *string)
 
 + (BOOL)isModalURL:(NSURL *)url;
 {
-    if ([url.path hasPrefix:@"/order/"]){
+    if ([url.path hasPrefix:@"/orders/"]){
         return YES;
     } else {
         return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
