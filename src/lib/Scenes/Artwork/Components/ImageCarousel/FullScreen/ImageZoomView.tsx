@@ -183,8 +183,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     })
 
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
-    // current zoomable image
-    // in place of the other images we just render a blank box
+    // current zoomable image in place of the other images we just render a blank box
     if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
       return <View style={screenBoundingBox} />
     }
@@ -229,7 +228,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
             <OpaqueImageView
               noAnimation
               imageURL={image.url}
-              disableGemini
+              useRawURL
               style={{
                 width,
                 height,
