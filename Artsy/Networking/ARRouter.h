@@ -20,7 +20,7 @@
 + (BOOL)isWebURL:(NSURL *)url;
 + (BOOL)isTelURL:(NSURL *)url;
 
-+ (BOOL)isPaymentRequestURL:(NSURL *)url;
++ (BOOL)isModalURL:(NSURL *)url;
 + (BOOL)isProductionPaymentRequestURL:(NSURL *)url;
 
 + (BOOL)isInternalURL:(NSURL *)url;

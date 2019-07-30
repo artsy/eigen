@@ -202,9 +202,13 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
-+ (BOOL)isPaymentRequestURL:(NSURL *)url;
++ (BOOL)isModalURL:(NSURL *)url;
 {
-    return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
+    if ([url.path hasPrefix:@"/order/"]){
+        return YES;
+    } else {
+        return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
+    }
 }
 
 + (BOOL)isProductionPaymentRequestURL:(NSURL *)url;
