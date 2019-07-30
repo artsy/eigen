@@ -217,8 +217,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     }];
     
     [self.routes addRoute:@"/inquiry/:id" handler:JLRouteParams {
-        AREigenInquiryComponentViewController *viewController =
-        [[AREigenInquiryComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
+        AREigenInquiryComponentViewController *viewController = [[AREigenInquiryComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
         return [[ARNavigationController alloc] initWithRootViewController:viewController];
     }];
 
@@ -509,9 +508,12 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         }
     }
 
-    if ([ARRouter isModalURL:url]) {
+    if ([ARRouter isPaymentRequestURL:url]) {
         UIViewController *paymentRequestViewController = [[ARPaymentRequestWebViewController alloc] initWithURL:url];
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:paymentRequestViewController];
+    } else if ([ARRouter isBNMORequestURL:url]) {
+        ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     }
 
     // We couldn't find one? Well, then we should present it as a martsy view

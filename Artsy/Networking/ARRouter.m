@@ -202,13 +202,14 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
-+ (BOOL)isModalURL:(NSURL *)url;
++ (BOOL)isBNMORequestURL:(NSURL *)url;
 {
-    if ([url.path hasPrefix:@"/orders/"]){
-        return YES;
-    } else {
-        return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
-    }
+    return [url.path hasPrefix:@"/orders/"];
+}
+
++ (BOOL)isPaymentRequestURL:(NSURL *)url;
+{
+    return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
 }
 
 + (BOOL)isProductionPaymentRequestURL:(NSURL *)url;

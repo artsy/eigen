@@ -109,15 +109,15 @@ describe(@"isWebURL", ^{
     });
 });
 
-describe(@"isModalURL", ^{
+describe(@"isPaymentRequestURL", ^{
     it(@"returns YES with a staging url", ^{
         NSURL *url = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isModalURL:url]).to.beTruthy();
+        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
     });
 
     it(@"returns YES with a production url", ^{
         NSURL *url = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isModalURL:url]).to.beTruthy();
+        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
     });
     
     it(@"returns that a url is a production payment request url", ^{
@@ -127,10 +127,18 @@ describe(@"isModalURL", ^{
         NSURL *productionURL = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
         expect([ARRouter isProductionPaymentRequestURL:productionURL]).to.beTruthy();
     });
+});
 
-    it(@"returns YES with a BNMO url", ^{
+describe(@"isBNMORequestURL", ^{
+    it(@"returns YES with an orders URL", ^{
         NSURL *url = [NSURL URLWithString:@"/orders/some-bnmo-order-id"];
-        expect([ARRouter isModalURL:url]).to.beTruthy();
+        expect([ARRouter isBNMORequestURL:url]).to.beTruthy();
+    });
+
+    it(@"returns YES with an absolte orders URL", ^{
+        // Emission routes relative URLs, but let's make sure it works for absolute URLs, too.
+        NSURL *url = [NSURL URLWithString:@"https://artsy.net/orders/some-bnmo-order-id"];
+        expect([ARRouter isBNMORequestURL:url]).to.beTruthy();
     });
 });
 
