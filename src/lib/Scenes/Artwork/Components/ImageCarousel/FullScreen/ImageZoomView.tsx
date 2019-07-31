@@ -2,7 +2,16 @@ import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
 import { observer } from "mobx-react"
 
-import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
 import {
   Animated,
@@ -151,6 +160,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     // swipes to another image
     const scrollViewRef = useRef<ScrollView>()
     const zoomScale = useRef<number>(0)
+    const contentOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
@@ -167,21 +177,29 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     useImperativeHandle(ref, () => ({ resetZoom }), [])
 
     const handleDoubleTapToZoom = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
-      const { locationX, locationY } = ev.nativeEvent
+      const { pageX, pageY } = ev.nativeEvent
       if (zoomScale.current > 3) {
         resetZoom()
       } else {
         // zoom to tapped point
+        const tapX = (contentOffset.current.x + pageX) / zoomScale.current
+        const tapY = (contentOffset.current.y + pageY) / zoomScale.current
         const w = screenWidth / MAX_ZOOM_SCALE
         const h = screenHeight / MAX_ZOOM_SCALE
         scrollViewRef.current.scrollResponderZoomTo({
-          x: locationX - w / 2,
-          y: locationY - h / 2,
+          x: tapX - w / 2,
+          y: tapY - h / 2,
           width: w,
           height: h,
         })
       }
     })
+
+    useLayoutEffect(() => {
+      // trigger an onScroll event after mounting to initialize
+      // the contentOffset properly
+      resetZoom()
+    }, [])
 
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
@@ -197,6 +215,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         scrollEnabled={state.fullScreenState === "entered"}
         onScroll={ev => {
           zoomScale.current = ev.nativeEvent.zoomScale
+          contentOffset.current = { ...ev.nativeEvent.contentOffset }
           if (state.imageIndex === index) {
             dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
           }
