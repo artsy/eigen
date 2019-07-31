@@ -59,8 +59,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "saved_artworks",
+      "alias": "saved_artworks",
+      "name": "savedArtworks",
       "storageKey": null,
       "args": null,
       "concreteType": "Collection",
@@ -167,5 +167,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a9ba4ada9a48438f4c411afa6ba9900c';
+(node as any).hash = 'df89f49ecb19761ce6887eee5e83e62d';
 export default node;

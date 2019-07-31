@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
-    readonly profile_id?: string | null;
+    readonly profileID?: string | null;
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
@@ -35,7 +35,7 @@ mutation PartnerCardFollowMutation(
       id
       slug
       internalID
-      is_followed
+      is_followed: isFollowed
     }
   }
 }
@@ -98,8 +98,8 @@ v1 = [
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
+            "alias": "is_followed",
+            "name": "isFollowed",
             "args": null,
             "storageKey": null
           }
@@ -127,11 +127,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "PartnerCardFollowMutation",
-    "id": "c14aa2e02010de91f543807b8d6b13aa",
+    "id": "48248313b514d25fe6222fdd2cc25dab",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '832572f473b08c002a279c7000bbff16';
+(node as any).hash = 'a0a4c454804cc2315d016e42a33398fd';
 export default node;

@@ -40,7 +40,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
                 show {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                   id
                 }
               }
@@ -48,7 +48,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           `,
           variables: {
             input: {
-              partner_show_id: internalID,
+              partnerShowID: internalID,
               unfollow: is_followed,
             },
           },
@@ -206,7 +206,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           name
           href
           formattedStartDateTime
-          cover_image {
+          cover_image: coverImage {
             url
           }
         }
@@ -214,7 +214,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           id
           name
           href
-          exhibition_period
+          exhibition_period: exhibitionPeriod
           image {
             url
           }
@@ -226,9 +226,9 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
         href
         slug
         internalID
-        exhibition_period
-        is_followed
-        cover_image {
+        exhibition_period: exhibitionPeriod
+        is_followed: isFollowed
+        cover_image: coverImage {
           url
         }
       }

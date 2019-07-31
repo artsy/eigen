@@ -137,23 +137,22 @@ export default createPaginationContainer(
               slug
               internalID
               isStubShow
-              is_followed
-              start_at
-              end_at
+              is_followed: isFollowed
+              start_at: startAt
+              end_at: endAt
               status
               href
               type
               name
-              cover_image {
+              cover_image: coverImage {
                 url
               }
-              exhibition_period
+              exhibition_period: exhibitionPeriod
               partner {
                 ... on Partner {
                   name
                   type
                   profile {
-                    # This is only used for stubbed shows
                     image {
                       url(version: "square")
                     }

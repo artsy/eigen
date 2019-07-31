@@ -39,7 +39,7 @@ fragment FairBoothHeader_show on Show {
       profile {
         internalID
         slug
-        is_followed
+        is_followed: isFollowed
         id
       }
     }
@@ -195,8 +195,8 @@ return {
                       (v3/*: any*/),
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "is_followed",
+                        "alias": "is_followed",
+                        "name": "isFollowed",
                         "args": null,
                         "storageKey": null
                       },
@@ -259,7 +259,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothHeaderTestsQuery",
-    "id": "aba29590be075b5970172d972281d04b",
+    "id": "b1ee01f4e05a61ebeb1522bc54bcb701",
     "text": null,
     "metadata": {}
   }

@@ -184,7 +184,7 @@ export default createPaginationContainer(
           name
           initials
         }
-        initial_message
+        initial_message: initialMessage
         messages(first: $count, after: $after, sort: DESC) @connection(key: "Messages_messages", filters: []) {
           pageInfo {
             startCursor
@@ -196,8 +196,8 @@ export default createPaginationContainer(
             cursor
             node {
               id
-              impulse_id
-              is_from_user
+              impulse_id: impulseID
+              is_from_user: isFromUser
               body
               attachments {
                 internalID

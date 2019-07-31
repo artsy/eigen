@@ -20,7 +20,7 @@ export type FiltersTestsQuery = {
 /*
 query FiltersTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
-    filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
+    filteredArtworks(size: 0, medium: "*", priceRange: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
       ...Filters_filteredArtworks
       id
     }
@@ -65,7 +65,7 @@ v1 = [
   },
   {
     "kind": "Literal",
-    "name": "price_range",
+    "name": "priceRange",
     "value": "*-*"
   },
   {
@@ -103,7 +103,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "filteredArtworks",
-            "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
+            "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",priceRange:\"*-*\",size:0)",
             "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
@@ -137,7 +137,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "filteredArtworks",
-            "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
+            "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",priceRange:\"*-*\",size:0)",
             "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
@@ -197,11 +197,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FiltersTestsQuery",
-    "id": "cfff8141b6f7d0a2da1104ce3355d36d",
+    "id": "b478a3aad4b9ea11f9139b4c8a982185",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '498c50b425dfc69be09f5ed829194609';
+(node as any).hash = 'e318e38974eb410658681707b3444b16';
 export default node;

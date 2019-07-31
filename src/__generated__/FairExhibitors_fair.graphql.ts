@@ -45,8 +45,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "exhibitors_grouped_by_name",
+      "alias": "exhibitors_grouped_by_name",
+      "name": "exhibitorsGroupedByName",
       "storageKey": null,
       "args": null,
       "concreteType": "FairExhibitorsGroup",
@@ -78,15 +78,15 @@ return {
             (v0/*: any*/),
             {
               "kind": "ScalarField",
-              "alias": null,
-              "name": "profile_id",
+              "alias": "profile_id",
+              "name": "profileID",
               "args": null,
               "storageKey": null
             },
             {
               "kind": "ScalarField",
-              "alias": null,
-              "name": "partner_id",
+              "alias": "partner_id",
+              "name": "partnerID",
               "args": null,
               "storageKey": null
             }
@@ -97,5 +97,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'da638600f33a0a53d13c07de9e9a2519';
+(node as any).hash = '458e78f3e9b1b285493f2988839af57d';
 export default node;

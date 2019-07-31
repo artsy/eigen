@@ -56,7 +56,7 @@ export class ArtistListItem extends React.Component<Props, State> {
               followArtist(input: $input) {
                 artist {
                   id
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
@@ -64,7 +64,7 @@ export class ArtistListItem extends React.Component<Props, State> {
           variables: {
             input: {
               // FIXME: Should this be internalID?
-              artist_id: slug,
+              artistID: slug,
               unfollow: is_followed,
             },
           },
@@ -164,7 +164,7 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       name
       initials
       href
-      is_followed
+      is_followed: isFollowed
       nationality
       birthday
       deathday

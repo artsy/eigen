@@ -268,15 +268,15 @@ v7 = {
 },
 v8 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
+  "alias": "is_followed",
+  "name": "isFollowed",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "exhibition_period",
+  "alias": "exhibition_period",
+  "name": "exhibitionPeriod",
   "args": null,
   "storageKey": null
 },
@@ -289,8 +289,8 @@ v10 = {
 },
 v11 = {
   "kind": "LinkedField",
-  "alias": null,
-  "name": "cover_image",
+  "alias": "cover_image",
+  "name": "coverImage",
   "storageKey": null,
   "args": null,
   "concreteType": "Image",
@@ -320,15 +320,15 @@ v13 = {
 },
 v14 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "start_at",
+  "alias": "start_at",
+  "name": "startAt",
   "args": null,
   "storageKey": null
 },
 v15 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "end_at",
+  "alias": "end_at",
+  "name": "endAt",
   "args": null,
   "storageKey": null
 },
@@ -686,15 +686,15 @@ return {
                       "selections": [
                         {
                           "kind": "ScalarField",
-                          "alias": null,
-                          "name": "image_url",
+                          "alias": "image_url",
+                          "name": "imageURL",
                           "args": null,
                           "storageKey": null
                         },
                         {
                           "kind": "ScalarField",
-                          "alias": null,
-                          "name": "aspect_ratio",
+                          "alias": "aspect_ratio",
+                          "name": "aspectRatio",
                           "args": null,
                           "storageKey": null
                         },
@@ -768,5 +768,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1f5ad39a7b19c7e3576f37f42d305c86';
+(node as any).hash = '23d61f3fe31f6083439739b5b1d1c34e';
 export default node;

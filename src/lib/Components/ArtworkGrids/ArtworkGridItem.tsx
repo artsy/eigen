@@ -198,27 +198,27 @@ export default createFragmentContainer(Artwork, {
     fragment ArtworkGridItem_artwork on Artwork {
       title
       date
-      sale_message
-      is_in_auction
-      is_biddable
-      is_acquireable
-      is_offerable
+      sale_message: saleMessage
+      is_in_auction: isInAuction
+      is_biddable: isBiddable
+      is_acquireable: isAcquireable
+      is_offerable: isOfferable
       slug
       sale {
-        is_auction
-        is_live_open
-        is_open
-        is_closed
-        display_timely_at
+        is_auction: isAuction
+        is_live_open: isLiveOpen
+        is_open: isOpen
+        is_closed: isClosed
+        display_timely_at: displayTimelyAt
       }
-      sale_artwork {
-        current_bid {
+      sale_artwork: saleArtwork {
+        current_bid: currentBid {
           display
         }
       }
       image {
         url(version: "large")
-        aspect_ratio
+        aspect_ratio: aspectRatio
       }
       artists(shallow: true) {
         name

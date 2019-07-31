@@ -179,7 +179,7 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
             internalID
             slug
           }
-          based_on {
+          based_on: basedOn {
             name
           }
         }

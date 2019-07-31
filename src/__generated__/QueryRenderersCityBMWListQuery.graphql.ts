@@ -39,10 +39,10 @@ fragment CityBMWList_city on City {
           name
           status
           href
-          is_followed
+          is_followed: isFollowed
           isStubShow
-          exhibition_period
-          cover_image {
+          exhibition_period: exhibitionPeriod
+          cover_image: coverImage {
             url
           }
           location {
@@ -53,8 +53,8 @@ fragment CityBMWList_city on City {
             id
           }
           type
-          start_at
-          end_at
+          start_at: startAt
+          end_at: endAt
           partner {
             __typename
             ... on Partner {
@@ -265,8 +265,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_followed",
+                            "alias": "is_followed",
+                            "name": "isFollowed",
                             "args": null,
                             "storageKey": null
                           },
@@ -279,15 +279,15 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "exhibition_period",
+                            "alias": "exhibition_period",
+                            "name": "exhibitionPeriod",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "LinkedField",
-                            "alias": null,
-                            "name": "cover_image",
+                            "alias": "cover_image",
+                            "name": "coverImage",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "Image",
@@ -342,15 +342,15 @@ return {
                           (v6/*: any*/),
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "start_at",
+                            "alias": "start_at",
+                            "name": "startAt",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "end_at",
+                            "alias": "end_at",
+                            "name": "endAt",
                             "args": null,
                             "storageKey": null
                           },
@@ -471,7 +471,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCityBMWListQuery",
-    "id": "2f13a9de6772b02d0c274c6244513d22",
+    "id": "585e6a8e36df9c15234f587ed80afa2b",
     "text": null,
     "metadata": {}
   }

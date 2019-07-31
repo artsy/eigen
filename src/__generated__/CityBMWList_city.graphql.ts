@@ -196,8 +196,8 @@ return {
                     },
                     {
                       "kind": "ScalarField",
-                      "alias": null,
-                      "name": "is_followed",
+                      "alias": "is_followed",
+                      "name": "isFollowed",
                       "args": null,
                       "storageKey": null
                     },
@@ -210,15 +210,15 @@ return {
                     },
                     {
                       "kind": "ScalarField",
-                      "alias": null,
-                      "name": "exhibition_period",
+                      "alias": "exhibition_period",
+                      "name": "exhibitionPeriod",
                       "args": null,
                       "storageKey": null
                     },
                     {
                       "kind": "LinkedField",
-                      "alias": null,
-                      "name": "cover_image",
+                      "alias": "cover_image",
+                      "name": "coverImage",
                       "storageKey": null,
                       "args": null,
                       "concreteType": "Image",
@@ -272,15 +272,15 @@ return {
                     (v2/*: any*/),
                     {
                       "kind": "ScalarField",
-                      "alias": null,
-                      "name": "start_at",
+                      "alias": "start_at",
+                      "name": "startAt",
                       "args": null,
                       "storageKey": null
                     },
                     {
                       "kind": "ScalarField",
-                      "alias": null,
-                      "name": "end_at",
+                      "alias": "end_at",
+                      "name": "endAt",
                       "args": null,
                       "storageKey": null
                     },
@@ -388,5 +388,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd05b712720fdf7c6e92f21ffbc46d930';
+(node as any).hash = 'db966d28d8d3d06fb4899d2619b4246f';
 export default node;

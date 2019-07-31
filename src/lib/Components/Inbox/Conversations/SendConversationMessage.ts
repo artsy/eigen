@@ -38,8 +38,8 @@ export function sendConversationMessage(
         sendConversationMessage(input: $input) {
           messageEdge {
             node {
-              impulse_id
-              is_from_user
+              impulse_id: impulseID
+              is_from_user: isFromUser
               body
               id
               ...Message_message
@@ -53,9 +53,9 @@ export function sendConversationMessage(
       input: {
         id: conversation.internalID,
         from: conversation.from.email,
-        body_text: text,
+        bodyText: text,
         // Reply to the last message
-        reply_to_message_id: conversation.last_message_id,
+        replyToMessageID: conversation.last_message_id,
       },
     },
 

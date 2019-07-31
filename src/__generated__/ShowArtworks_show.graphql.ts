@@ -30,7 +30,7 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LocalArgument",
-      "name": "price_range",
+      "name": "priceRange",
       "type": "String",
       "defaultValue": "*-*"
     }
@@ -79,8 +79,8 @@ const node: ReaderFragment = {
         },
         {
           "kind": "Variable",
-          "name": "price_range",
-          "variableName": "price_range"
+          "name": "priceRange",
+          "variableName": "priceRange"
         },
         {
           "kind": "Literal",
@@ -100,5 +100,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6b5c7e25f445a823b7d56a75a287f2cd';
+(node as any).hash = '581dc671622b6cd80bd04fb3925c4e4e';
 export default node;

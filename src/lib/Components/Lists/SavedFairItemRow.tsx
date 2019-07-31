@@ -34,7 +34,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
               followProfile(input: $input) {
                 profile {
                   slug
-                  is_followed
+                  is_followed: isFollowed
                   id
                 }
               }
@@ -42,7 +42,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              profile_id: fairProfileID,
+              profileID: fairProfileID,
               unfollow: !this.state.isSaved,
             },
           },

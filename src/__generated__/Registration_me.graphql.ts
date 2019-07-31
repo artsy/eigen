@@ -19,12 +19,12 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "has_credit_cards",
+      "alias": "has_credit_cards",
+      "name": "hasCreditCards",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'b3bea4b4a77d36d250a717c700bcff51';
+(node as any).hash = '2ea235b47d0e263d35015619a60e1b14';
 export default node;

@@ -17,7 +17,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer<
           filter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_FOR_SALE] }
         ) {
         id
-        forSaleArtworks: artworks_connection(
+        forSaleArtworks: artworksConnection(
           first: $count
           after: $cursor
           filter: $filter
@@ -33,7 +33,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer<
               slug
               id
               image {
-                aspect_ratio
+                aspect_ratio: aspectRatio
               }
               ...ArtworkGridItem_artwork
             }

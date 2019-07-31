@@ -54,14 +54,14 @@ export class ShowHeader extends React.Component<Props, State> {
                 show {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
           `,
           variables: {
             input: {
-              partner_show_id: showID,
+              partnerShowID: showID,
               unfollow: isShowFollowed,
             },
           },
@@ -202,10 +202,10 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       internalID
       id
       name
-      press_release
-      is_followed
-      end_at
-      exhibition_period
+      press_release: pressRelease
+      is_followed: isFollowed
+      end_at: endAt
+      exhibition_period: exhibitionPeriod
       status
       isStubShow
       partner {
@@ -217,7 +217,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       }
       images {
         url
-        aspect_ratio
+        aspect_ratio: aspectRatio
       }
       followedArtists(first: 3) {
         edges {

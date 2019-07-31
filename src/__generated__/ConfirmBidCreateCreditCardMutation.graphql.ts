@@ -66,9 +66,9 @@ mutation ConfirmBidCreateCreditCardMutation(
           internalID
           brand
           name
-          last_digits
-          expiration_month
-          expiration_year
+          last_digits: lastDigits
+          expiration_month: expirationMonth
+          expiration_year: expirationYear
           id
         }
       }
@@ -123,22 +123,22 @@ v4 = {
 },
 v5 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "last_digits",
+  "alias": "last_digits",
+  "name": "lastDigits",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "expiration_month",
+  "alias": "expiration_month",
+  "name": "expirationMonth",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "expiration_year",
+  "alias": "expiration_year",
+  "name": "expirationYear",
   "args": null,
   "storageKey": null
 },
@@ -307,11 +307,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ConfirmBidCreateCreditCardMutation",
-    "id": "aa419921ad412f213d938fc394327ba4",
+    "id": "f489cab3e59f4336d6c66f8c43b94ff2",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '6578d680e66b5f8b07d85c13c640524d';
+(node as any).hash = 'a6a9a07d13745be99d002fadbe49643e';
 export default node;

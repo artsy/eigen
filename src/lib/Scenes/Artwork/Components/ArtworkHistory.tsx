@@ -48,7 +48,7 @@ export const ArtworkHistoryFragmentContainer = createFragmentContainer(ArtworkHi
   artwork: graphql`
     fragment ArtworkHistory_artwork on Artwork {
       provenance
-      exhibition_history
+      exhibition_history: exhibitionHistory
       literature
     }
   `,

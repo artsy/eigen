@@ -80,15 +80,15 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "address_2",
+      "alias": "address_2",
+      "name": "address2",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "postal_code",
+      "alias": "postal_code",
+      "name": "postalCode",
       "args": null,
       "storageKey": null
     },
@@ -126,8 +126,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "day_schedules",
+      "alias": "day_schedules",
+      "name": "daySchedules",
       "storageKey": null,
       "args": null,
       "concreteType": "DaySchedule",
@@ -135,22 +135,22 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "start_time",
+          "alias": "start_time",
+          "name": "startTime",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "end_time",
+          "alias": "end_time",
+          "name": "endTime",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "day_of_week",
+          "alias": "day_of_week",
+          "name": "dayOfWeek",
           "args": null,
           "storageKey": null
         }
@@ -213,5 +213,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '9249538f5a258e9b1a3c31a13e0b2029';
+(node as any).hash = 'f4911b776eb98bf925c62fde4c6bfaf8';
 export default node;

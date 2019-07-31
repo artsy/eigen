@@ -192,7 +192,7 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
       id
       slug
       image {
-        aspect_ratio
+        aspect_ratio: aspectRatio
       }
       ...ArtworkGridItem_artwork
     }

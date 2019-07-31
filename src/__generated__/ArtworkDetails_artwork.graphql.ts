@@ -124,13 +124,13 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "image_rights",
+      "alias": "image_rights",
+      "name": "imageRights",
       "args": null,
       "storageKey": null
     }
   ]
 };
 })();
-(node as any).hash = '2e44bcda520f3cff508e2fd41e1cb3f8';
+(node as any).hash = '444d9fce83537125cbea7116a0c8be96';
 export default node;

@@ -128,8 +128,8 @@ return {
             (v0/*: any*/),
             {
               "kind": "LinkedField",
-              "alias": null,
-              "name": "based_on",
+              "alias": "based_on",
+              "name": "basedOn",
               "storageKey": null,
               "args": null,
               "concreteType": "Artist",
@@ -151,5 +151,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0d866ae9a1ed829bbc5e293129721ed2';
+(node as any).hash = 'f0d828bdc62cc33269089e3012dbdb18';
 export default node;

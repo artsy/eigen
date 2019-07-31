@@ -55,9 +55,9 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "artworks_connection",
-      "storageKey": "artworks_connection(first:6)",
+      "alias": "artworks_connection",
+      "name": "artworksConnection",
+      "storageKey": "artworksConnection(first:6)",
       "args": [
         {
           "kind": "Literal",
@@ -99,5 +99,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '14bb5522666bedb6a664ca162a1ed1be';
+(node as any).hash = '667503651829a198e79105ef40a93c2c';
 export default node;

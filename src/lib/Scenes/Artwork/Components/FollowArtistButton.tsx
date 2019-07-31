@@ -32,7 +32,7 @@ export class FollowArtistButton extends React.Component<Props> {
           followArtist(input: $input) {
             artist {
               id
-              is_followed
+              is_followed: isFollowed
             }
           }
         }
@@ -40,7 +40,7 @@ export class FollowArtistButton extends React.Component<Props> {
       variables: {
         input: {
           // FIXME: Should this be slug or internalID?
-          artist_id: artist.slug,
+          artistID: artist.slug,
           unfollow: artist.is_followed,
         },
       },
@@ -73,7 +73,7 @@ export const FollowArtistButtonFragmentContainer = createFragmentContainer(Follo
       id
       slug
       internalID
-      is_followed
+      is_followed: isFollowed
     }
   `,
 })

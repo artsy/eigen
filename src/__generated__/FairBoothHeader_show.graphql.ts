@@ -130,8 +130,8 @@ return {
                 (v1/*: any*/),
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "is_followed",
+                  "alias": "is_followed",
+                  "name": "isFollowed",
                   "args": null,
                   "storageKey": null
                 }
@@ -187,5 +187,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7a94e2d3fdf87285d19a2d5e4004611d';
+(node as any).hash = '80db5d7f9fd47ae8d252d109923dd905';
 export default node;

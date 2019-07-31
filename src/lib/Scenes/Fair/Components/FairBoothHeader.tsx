@@ -81,14 +81,14 @@ export class FairBoothHeader extends React.Component<Props, State> {
                 profile {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
           `,
           variables: {
             input: {
-              profile_id: profileID,
+              profileID,
               unfollow: partnerFollowed,
             },
           },
@@ -175,7 +175,7 @@ export const FairBoothHeaderContainer = createFragmentContainer(FairBoothHeader,
           profile {
             internalID
             slug
-            is_followed
+            is_followed: isFollowed
           }
         }
       }

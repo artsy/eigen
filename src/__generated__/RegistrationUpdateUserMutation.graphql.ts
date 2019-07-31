@@ -6,20 +6,20 @@ export type UpdateMyProfileInput = {
     readonly email?: string | null;
     readonly phone?: string | null;
     readonly location?: EditableLocation | null;
-    readonly collector_level?: number | null;
-    readonly price_range_min?: number | null;
-    readonly price_range_max?: number | null;
+    readonly collectorLevel?: number | null;
+    readonly priceRangeMin?: number | null;
+    readonly priceRangeMax?: number | null;
     readonly clientMutationId?: string | null;
 };
 export type EditableLocation = {
     readonly address?: string | null;
-    readonly address_2?: string | null;
+    readonly address2?: string | null;
     readonly city?: string | null;
     readonly country?: string | null;
     readonly summary?: string | null;
-    readonly postal_code?: string | null;
+    readonly postalCode?: string | null;
     readonly state?: string | null;
-    readonly state_code?: string | null;
+    readonly stateCode?: string | null;
 };
 export type RegistrationUpdateUserMutationVariables = {
     readonly input: UpdateMyProfileInput;

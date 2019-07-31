@@ -25,7 +25,7 @@ export function updateConversation(
         updateConversation(input: $input) {
           conversation {
             internalID
-            from_last_viewed_message_id
+            from_last_viewed_message_id: fromLastViewedMessageID
           }
         }
       }

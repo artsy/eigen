@@ -236,22 +236,22 @@ return {
                         },
                         {
                           "kind": "ScalarField",
-                          "alias": null,
-                          "name": "is_followed",
+                          "alias": "is_followed",
+                          "name": "isFollowed",
                           "args": null,
                           "storageKey": null
                         },
                         {
                           "kind": "ScalarField",
-                          "alias": null,
-                          "name": "exhibition_period",
+                          "alias": "exhibition_period",
+                          "name": "exhibitionPeriod",
                           "args": null,
                           "storageKey": null
                         },
                         {
                           "kind": "LinkedField",
-                          "alias": null,
-                          "name": "cover_image",
+                          "alias": "cover_image",
+                          "name": "coverImage",
                           "storageKey": null,
                           "args": null,
                           "concreteType": "Image",
@@ -305,15 +305,15 @@ return {
                         (v1/*: any*/),
                         {
                           "kind": "ScalarField",
-                          "alias": null,
-                          "name": "start_at",
+                          "alias": "start_at",
+                          "name": "startAt",
                           "args": null,
                           "storageKey": null
                         },
                         {
                           "kind": "ScalarField",
-                          "alias": null,
-                          "name": "end_at",
+                          "alias": "end_at",
+                          "name": "endAt",
                           "args": null,
                           "storageKey": null
                         },
@@ -423,5 +423,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4c7ed904a47bdc40b031b778290f60b1';
+(node as any).hash = '68d2723ef987c3325a0d7127130ee1ba';
 export default node;

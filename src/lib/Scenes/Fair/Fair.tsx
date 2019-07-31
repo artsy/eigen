@@ -26,7 +26,6 @@ export const FairContainer = createFragmentContainer(Fair, {
       id
       slug
       ...FairDetail_fair
-
       organizer {
         website
       }

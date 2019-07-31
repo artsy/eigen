@@ -45,7 +45,7 @@ export const ShowArtworksPreviewContainer = createFragmentContainer(ShowArtworks
       counts {
         artworks
       }
-      artworks_connection(first: 6) {
+      artworks_connection: artworksConnection(first: 6) {
         edges {
           node {
             ...GenericGrid_artworks

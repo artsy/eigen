@@ -93,10 +93,10 @@ export default createPaginationContainer(
                 id
                 profile {
                   slug
-                  is_followed
+                  is_followed: isFollowed
                   id
                 }
-                exhibition_period
+                exhibition_period: exhibitionPeriod
                 name
                 counts {
                   partners
@@ -105,8 +105,8 @@ export default createPaginationContainer(
                 image {
                   url
                 }
-                start_at
-                end_at
+                start_at: startAt
+                end_at: endAt
               }
             }
           }

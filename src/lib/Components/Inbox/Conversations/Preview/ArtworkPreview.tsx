@@ -104,7 +104,7 @@ export default createFragmentContainer(ArtworkPreview, {
       slug
       internalID
       title
-      artist_names
+      artist_names: artistNames
       date
       image {
         url

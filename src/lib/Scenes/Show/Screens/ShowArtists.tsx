@@ -53,11 +53,11 @@ export const ShowArtistsContainer = createFragmentContainer(ShowArtists, {
     fragment ShowArtists_show on Show {
       internalID
       slug
-      artists_grouped_by_name {
+      artists_grouped_by_name: artistsGroupedByName {
         letter
         items {
           ...ArtistListItem_artist
-          sortable_id
+          sortable_id: sortableID
           href
         }
       }

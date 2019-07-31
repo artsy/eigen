@@ -108,29 +108,29 @@ return {
     (v2/*: any*/),
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "press_release",
+      "alias": "press_release",
+      "name": "pressRelease",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_followed",
+      "alias": "is_followed",
+      "name": "isFollowed",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "alias": "end_at",
+      "name": "endAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
+      "alias": "exhibition_period",
+      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     },
@@ -186,8 +186,8 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "aspect_ratio",
+          "alias": "aspect_ratio",
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
@@ -255,5 +255,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b26be9b0641676f77f6fd1ea417b8bc7';
+(node as any).hash = '865714e6eccaba3a3d12b4586b7b7a57';
 export default node;

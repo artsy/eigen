@@ -33,7 +33,7 @@ fragment CityFairList_city on City {
       node {
         internalID
         name
-        exhibition_period
+        exhibition_period: exhibitionPeriod
         counts {
           partners
         }
@@ -45,8 +45,8 @@ fragment CityFairList_city on City {
           id
         }
         image {
-          image_url
-          aspect_ratio
+          image_url: imageURL
+          aspect_ratio: aspectRatio
           url
         }
         profile {
@@ -61,8 +61,8 @@ fragment CityFairList_city on City {
           slug
           name
         }
-        start_at
-        end_at
+        start_at: startAt
+        end_at: endAt
         id
         __typename
       }
@@ -215,8 +215,8 @@ return {
                       (v5/*: any*/),
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "exhibition_period",
+                        "alias": "exhibition_period",
+                        "name": "exhibitionPeriod",
                         "args": null,
                         "storageKey": null
                       },
@@ -286,15 +286,15 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "image_url",
+                            "alias": "image_url",
+                            "name": "imageURL",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "aspect_ratio",
+                            "alias": "aspect_ratio",
+                            "name": "aspectRatio",
                             "args": null,
                             "storageKey": null
                           },
@@ -369,15 +369,15 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "start_at",
+                        "alias": "start_at",
+                        "name": "startAt",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "end_at",
+                        "alias": "end_at",
+                        "name": "endAt",
                         "args": null,
                         "storageKey": null
                       },
@@ -446,7 +446,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCityFairListQuery",
-    "id": "fdd8896c353a90d9a70ca428c94cd5d2",
+    "id": "47922dfed1f3fb3d1a0052eb63b07c25",
     "text": null,
     "metadata": {}
   }

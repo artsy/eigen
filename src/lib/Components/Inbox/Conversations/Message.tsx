@@ -207,21 +207,21 @@ export default createFragmentContainer(Message, {
   message: graphql`
     fragment Message_message on Message {
       body
-      created_at
-      is_from_user
+      created_at: createdAt
+      is_from_user: isFromUser
       from {
         name
         email
       }
       invoice {
-        payment_url
+        payment_url: paymentURL
         ...InvoicePreview_invoice
       }
       attachments {
         internalID
-        content_type
-        download_url
-        file_name
+        content_type: contentType
+        download_url: downloadURL
+        file_name: fileName
         ...ImagePreview_attachment
         ...PDFPreview_attachment
       }

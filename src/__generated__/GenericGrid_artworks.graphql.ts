@@ -50,8 +50,8 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "aspect_ratio",
+          "alias": "aspect_ratio",
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
@@ -64,5 +64,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ebd33ca00dc8288bfabcf4167a8663f9';
+(node as any).hash = 'b076e10dbd159cf8e14ceb376f904008';
 export default node;

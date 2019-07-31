@@ -30,7 +30,7 @@ fragment PartnerCard_artwork on Artwork {
     id
   }
   partner {
-    is_default_profile_public
+    is_default_profile_public: isDefaultProfilePublic
     type
     name
     slug
@@ -42,7 +42,7 @@ fragment PartnerCard_artwork on Artwork {
       id
       internalID
       slug
-      is_followed
+      is_followed: isFollowed
       icon {
         url(version: "square140")
       }
@@ -162,8 +162,8 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "is_default_profile_public",
+                "alias": "is_default_profile_public",
+                "name": "isDefaultProfilePublic",
                 "args": null,
                 "storageKey": null
               },
@@ -212,8 +212,8 @@ return {
                   (v2/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_followed",
+                    "alias": "is_followed",
+                    "name": "isFollowed",
                     "args": null,
                     "storageKey": null
                   },
@@ -272,7 +272,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerCardTestsErrorQuery",
-    "id": "921302273093e77da522020a709184eb",
+    "id": "60c3451afb9038d8cd7273e435f401e0",
     "text": null,
     "metadata": {}
   }

@@ -47,7 +47,7 @@ export const ArtworksPreviewContainer = createFragmentContainer(ArtworksPreview,
       slug
       id
       filteredArtworks(size: 0, aggregations: [TOTAL]) {
-        artworks_connection(first: 6) {
+        artworks_connection: artworksConnection(first: 6) {
           edges {
             node {
               ...GenericGrid_artworks

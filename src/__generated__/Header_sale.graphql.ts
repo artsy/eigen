@@ -29,8 +29,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "cover_image",
+      "alias": "cover_image",
+      "name": "coverImage",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
@@ -47,5 +47,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '5549dfcf5902994061a54baef12fe183';
+(node as any).hash = '78331b4e876349d38e226db91dece950';
 export default node;

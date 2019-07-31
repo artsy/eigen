@@ -79,14 +79,14 @@ export class FairBoothPreview extends React.Component<Props, State> {
                 profile {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
           `,
           variables: {
             input: {
-              profile_id: internalID,
+              profileID: internalID,
               unfollow: isFollowed,
             },
           },
@@ -176,7 +176,7 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
       slug
       internalID
       name
-      is_fair_booth
+      is_fair_booth: isFairBooth
       counts {
         artworks
       }
@@ -189,20 +189,20 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
           id
           profile {
             internalID
-            is_followed
+            is_followed: isFollowed
           }
         }
       }
       fair {
         name
       }
-      cover_image {
+      cover_image: coverImage {
         url
       }
       location {
         display
       }
-      artworks_connection(first: 4) {
+      artworks_connection: artworksConnection(first: 4) {
         edges {
           node {
             ...GenericGrid_artworks

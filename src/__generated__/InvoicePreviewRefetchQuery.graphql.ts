@@ -35,10 +35,10 @@ query InvoicePreviewRefetchQuery(
 }
 
 fragment InvoicePreview_invoice on Invoice {
-  payment_url
+  payment_url: paymentURL
   state
   total
-  lewitt_invoice_id
+  lewitt_invoice_id: lewittInvoiceID
 }
 */
 
@@ -139,8 +139,8 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "payment_url",
+                "alias": "payment_url",
+                "name": "paymentURL",
                 "args": null,
                 "storageKey": null
               },
@@ -160,8 +160,8 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "lewitt_invoice_id",
+                "alias": "lewitt_invoice_id",
+                "name": "lewittInvoiceID",
                 "args": null,
                 "storageKey": null
               },
@@ -176,7 +176,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InvoicePreviewRefetchQuery",
-    "id": "9abf17786f511440a509b78538b5a2a3",
+    "id": "bab08e6fa3ab2f1cb1ebad5f8d147be1",
     "text": null,
     "metadata": {}
   }

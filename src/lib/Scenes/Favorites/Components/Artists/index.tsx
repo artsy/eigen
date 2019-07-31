@@ -87,7 +87,7 @@ export default createPaginationContainer(
     me: graphql`
       fragment Artists_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        followed_artists_connection(first: $count, after: $cursor)
+        followed_artists_connection: followedArtistsConnection(first: $count, after: $cursor)
           @connection(key: "Artists_followed_artists_connection") {
           pageInfo {
             endCursor

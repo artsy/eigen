@@ -55,15 +55,15 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "formatted_artworks_count",
+      "alias": "formatted_artworks_count",
+      "name": "formattedArtworksCount",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "formatted_nationality_and_birthday",
+      "alias": "formatted_nationality_and_birthday",
+      "name": "formattedNationalityAndBirthday",
       "args": null,
       "storageKey": null
     },
@@ -93,5 +93,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '9045ccc353a1bd00f20d3e4a3df2a6a9';
+(node as any).hash = 'b658cceb13f604f2ab22caaaaacf499a';
 export default node;

@@ -92,8 +92,8 @@ return {
     (v2/*: any*/),
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_fair_booth",
+      "alias": "is_fair_booth",
+      "name": "isFairBooth",
       "args": null,
       "storageKey": null
     },
@@ -157,8 +157,8 @@ return {
                 (v1/*: any*/),
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "is_followed",
+                  "alias": "is_followed",
+                  "name": "isFollowed",
                   "args": null,
                   "storageKey": null
                 }
@@ -182,8 +182,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "cover_image",
+      "alias": "cover_image",
+      "name": "coverImage",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
@@ -218,9 +218,9 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "artworks_connection",
-      "storageKey": "artworks_connection(first:4)",
+      "alias": "artworks_connection",
+      "name": "artworksConnection",
+      "storageKey": "artworksConnection(first:4)",
       "args": [
         {
           "kind": "Literal",
@@ -263,5 +263,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f0b14d418bb3b9ea742e1429862bd06b';
+(node as any).hash = 'd988e671dc77ac7af119d88a7e4b2c47';
 export default node;

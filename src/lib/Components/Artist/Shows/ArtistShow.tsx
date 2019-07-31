@@ -47,8 +47,8 @@ export default createFragmentContainer(Show, {
     fragment ArtistShow_show on Show {
       slug
       href
-      is_fair_booth
-      cover_image {
+      is_fair_booth: isFairBooth
+      cover_image: coverImage {
         url(version: "large")
       }
       ...Metadata_show

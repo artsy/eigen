@@ -67,17 +67,13 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPr
     fragment ShowArtistsPreview_show on Show {
       internalID
       slug
-
-      # Comes from CMS
       artists {
         internalID
         slug
         href
         ...ArtistListItem_artist
       }
-
-      # Comes from stubbed data
-      artists_without_artworks {
+      artists_without_artworks: artistsWithoutArtworks {
         internalID
         slug
         href

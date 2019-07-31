@@ -28,7 +28,7 @@ query ImageCarouselTestsQuery {
 }
 
 fragment ImageCarousel_images on Image {
-  image_url
+  image_url: imageURL
   width
   height
 }
@@ -105,8 +105,8 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "image_url",
+                "alias": "image_url",
+                "name": "imageURL",
                 "args": null,
                 "storageKey": null
               },
@@ -140,7 +140,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ImageCarouselTestsQuery",
-    "id": "9a7de9808dc4a3a0e6878100830ac3a3",
+    "id": "be152cf5dc01cc4ebb523a6f21c625c1",
     "text": null,
     "metadata": {}
   }

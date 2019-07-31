@@ -93,8 +93,8 @@ const node: ReaderFragment = {
             },
             {
               "kind": "LinkedField",
-              "alias": null,
-              "name": "based_on",
+              "alias": "based_on",
+              "name": "basedOn",
               "storageKey": null,
               "args": null,
               "concreteType": "Artist",
@@ -115,5 +115,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a461fa657bd728cf13f1701d6c385f29';
+(node as any).hash = '06227a241ec67d23dfe0554183dc9ac1';
 export default node;

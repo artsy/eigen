@@ -29,8 +29,8 @@ fragment ArtworkActions_artwork on Artwork {
   slug
   title
   href
-  is_saved
-  is_hangable
+  is_saved: isSaved
+  is_hangable: isHangable
   artists {
     name
     id
@@ -130,15 +130,15 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_saved",
+            "alias": "is_saved",
+            "name": "isSaved",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_hangable",
+            "alias": "is_hangable",
+            "name": "isHangable",
             "args": null,
             "storageKey": null
           },
@@ -200,7 +200,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkActionsTestsQuery",
-    "id": "342907fe67129289b64d3bd6fdd41177",
+    "id": "3796eb0cb21ed4cd41bb584cbd47f2ac",
     "text": null,
     "metadata": {}
   }

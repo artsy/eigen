@@ -37,8 +37,8 @@ describe("ArtistsGroupedByName", () => {
             }
           }
         `}
-        mockResolvers={{
-          Artist: () => ArtistFixture,
+        mockData={{
+          artist: ArtistFixture,
         }}
       />
     )

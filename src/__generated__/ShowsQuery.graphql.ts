@@ -54,7 +54,7 @@ fragment ShowItemRow_show on Show {
   id
   slug
   internalID
-  is_followed
+  is_followed: isFollowed
   name
   isStubShow
   partner {
@@ -76,15 +76,15 @@ fragment ShowItemRow_show on Show {
     }
   }
   href
-  exhibition_period
+  exhibition_period: exhibitionPeriod
   status
-  cover_image {
+  cover_image: coverImage {
     url
-    aspect_ratio
+    aspect_ratio: aspectRatio
   }
-  is_fair_booth
-  start_at
-  end_at
+  is_fair_booth: isFairBooth
+  start_at: startAt
+  end_at: endAt
 }
 */
 
@@ -280,8 +280,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_followed",
+                            "alias": "is_followed",
+                            "name": "isFollowed",
                             "args": null,
                             "storageKey": null
                           },
@@ -358,8 +358,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "exhibition_period",
+                            "alias": "exhibition_period",
+                            "name": "exhibitionPeriod",
                             "args": null,
                             "storageKey": null
                           },
@@ -372,8 +372,8 @@ return {
                           },
                           {
                             "kind": "LinkedField",
-                            "alias": null,
-                            "name": "cover_image",
+                            "alias": "cover_image",
+                            "name": "coverImage",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "Image",
@@ -388,8 +388,8 @@ return {
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "aspect_ratio",
+                                "alias": "aspect_ratio",
+                                "name": "aspectRatio",
                                 "args": null,
                                 "storageKey": null
                               }
@@ -397,22 +397,22 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_fair_booth",
+                            "alias": "is_fair_booth",
+                            "name": "isFairBooth",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "start_at",
+                            "alias": "start_at",
+                            "name": "startAt",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "end_at",
+                            "alias": "end_at",
+                            "name": "endAt",
                             "args": null,
                             "storageKey": null
                           },
@@ -449,7 +449,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowsQuery",
-    "id": "b1d40053e6ed5ff3d319bfa8d396e8f8",
+    "id": "eac8181901f832d77f10d25ad167e432",
     "text": null,
     "metadata": {}
   }

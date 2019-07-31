@@ -59,7 +59,7 @@ export const FairArtworksContainer = createRefetchContainer(
       fragment FairArtworks_fair on Fair
         @argumentDefinitions(
           medium: { type: "String", defaultValue: "*" }
-          price_range: { type: "String", defaultValue: "*-*" }
+          priceRange: { type: "String", defaultValue: "*-*" }
         ) {
         id
         internalID
@@ -67,7 +67,7 @@ export const FairArtworksContainer = createRefetchContainer(
         artworks: filteredArtworks(
           size: 0
           medium: $medium
-          price_range: $price_range
+          priceRange: $priceRange
           aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
         ) {
           ...FilteredInfiniteScrollGrid_filteredArtworks
@@ -78,7 +78,7 @@ export const FairArtworksContainer = createRefetchContainer(
   graphql`
     query FairArtworksRefetchQuery($fairID: String!, $medium: String, $price_range: String) {
       fair(id: $fairID) {
-        ...FairArtworks_fair @arguments(medium: $medium, price_range: $price_range)
+        ...FairArtworks_fair @arguments(medium: $medium, priceRange: $price_range)
       }
     }
   `

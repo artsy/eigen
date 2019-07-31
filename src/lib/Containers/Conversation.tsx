@@ -185,9 +185,9 @@ export default createFragmentContainer(Conversation, {
         from {
           email
         }
-        last_message_id
+        last_message_id: lastMessageID
         ...Messages_conversation
-        initial_message
+        initial_message: initialMessage
         unread
       }
     }

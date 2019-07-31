@@ -47,9 +47,9 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         status
         isStubShow
         href
-        is_followed
-        exhibition_period
-        cover_image {
+        is_followed: isFollowed
+        exhibition_period: exhibitionPeriod
+        cover_image: coverImage {
           url
         }
         location {
@@ -60,8 +60,8 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           id
         }
         type
-        start_at
-        end_at
+        start_at: startAt
+        end_at: endAt
         partner {
           __typename
           ... on Partner {
@@ -90,9 +90,9 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           name
           status
           href
-          is_followed
-          exhibition_period
-          cover_image {
+          is_followed: isFollowed
+          exhibition_period: exhibitionPeriod
+          cover_image: coverImage {
             url
           }
           location {
@@ -103,8 +103,8 @@ fragment GlobalMap_viewer_3La17j on Viewer {
             id
           }
           type
-          start_at
-          end_at
+          start_at: startAt
+          end_at: endAt
           partner {
             __typename
             ... on Partner {
@@ -137,9 +137,9 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           name
           status
           href
-          is_followed
-          exhibition_period
-          cover_image {
+          is_followed: isFollowed
+          exhibition_period: exhibitionPeriod
+          cover_image: coverImage {
             url
           }
           location {
@@ -150,8 +150,8 @@ fragment GlobalMap_viewer_3La17j on Viewer {
             id
           }
           type
-          start_at
-          end_at
+          start_at: startAt
+          end_at: endAt
           partner {
             __typename
             ... on Partner {
@@ -179,7 +179,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         node {
           slug
           name
-          exhibition_period
+          exhibition_period: exhibitionPeriod
           counts {
             partners
           }
@@ -191,8 +191,8 @@ fragment GlobalMap_viewer_3La17j on Viewer {
             id
           }
           image {
-            image_url
-            aspect_ratio
+            image_url: imageURL
+            aspect_ratio: aspectRatio
             url
           }
           profile {
@@ -207,8 +207,8 @@ fragment GlobalMap_viewer_3La17j on Viewer {
             slug
             name
           }
-          start_at
-          end_at
+          start_at: startAt
+          end_at: endAt
           id
         }
       }
@@ -308,15 +308,15 @@ v8 = {
 },
 v9 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
+  "alias": "is_followed",
+  "name": "isFollowed",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "exhibition_period",
+  "alias": "exhibition_period",
+  "name": "exhibitionPeriod",
   "args": null,
   "storageKey": null
 },
@@ -329,8 +329,8 @@ v11 = {
 },
 v12 = {
   "kind": "LinkedField",
-  "alias": null,
-  "name": "cover_image",
+  "alias": "cover_image",
+  "name": "coverImage",
   "storageKey": null,
   "args": null,
   "concreteType": "Image",
@@ -361,15 +361,15 @@ v14 = {
 },
 v15 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "start_at",
+  "alias": "start_at",
+  "name": "startAt",
   "args": null,
   "storageKey": null
 },
 v16 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "end_at",
+  "alias": "end_at",
+  "name": "endAt",
   "args": null,
   "storageKey": null
 },
@@ -771,15 +771,15 @@ return {
                             "selections": [
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "image_url",
+                                "alias": "image_url",
+                                "name": "imageURL",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "aspect_ratio",
+                                "alias": "aspect_ratio",
+                                "name": "aspectRatio",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -858,7 +858,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GlobalMapTestsQuery",
-    "id": "418747dce4aaa1337ce575cc060a14a1",
+    "id": "cd23dc438c061157cd53c595fc979ff1",
     "text": null,
     "metadata": {}
   }

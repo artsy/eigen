@@ -50,12 +50,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           saveArtwork(input: $input) {
             artwork {
               id
-              is_saved
+              is_saved: isSaved
             }
           }
         }
       `,
-      variables: { input: { artwork_id: artwork.internalID, remove: artwork.is_saved } },
+      variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
       optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
     })
   }
@@ -150,8 +150,8 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       slug
       title
       href
-      is_saved
-      is_hangable
+      is_saved: isSaved
+      is_hangable: isHangable
       artists {
         name
       }

@@ -121,14 +121,14 @@ export class BidResult extends React.Component<BidResultProps> {
 export const BidResultScreen = createFragmentContainer(BidResult, {
   sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
-      minimum_next_bid {
+      minimum_next_bid: minimumNextBid {
         amount
         cents
         display
       }
       sale {
-        live_start_at
-        end_at
+        live_start_at: liveStartAt
+        end_at: endAt
         slug
       }
     }

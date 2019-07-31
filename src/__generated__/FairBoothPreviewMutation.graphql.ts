@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
-    readonly profile_id?: string | null;
+    readonly profileID?: string | null;
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
@@ -33,7 +33,7 @@ mutation FairBoothPreviewMutation(
     profile {
       slug
       internalID
-      is_followed
+      is_followed: isFollowed
       id
     }
   }
@@ -72,8 +72,8 @@ v3 = {
 },
 v4 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
+  "alias": "is_followed",
+  "name": "isFollowed",
   "args": null,
   "storageKey": null
 };
@@ -155,11 +155,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "FairBoothPreviewMutation",
-    "id": "bce709b95ad18d903af51997c516de6e",
+    "id": "09fc4312cc6d21e7b3584d6e01a1ab83",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b0cdcd55dd2a09f0aa31d15b2b28abc8';
+(node as any).hash = 'eb8f9bc1bcdd5031af92c3da49de2038';
 export default node;

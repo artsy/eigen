@@ -24,12 +24,12 @@ export type FairExhibitorsTestsQuery = {
 /*
 query FairExhibitorsTestsQuery {
   fair(id: "art-basel-in-miami-beach-2018") {
-    exhibitors_grouped_by_name {
+    exhibitors_grouped_by_name: exhibitorsGroupedByName {
       letter
       exhibitors {
         name
         slug
-        profile_id
+        profile_id: profileID
       }
     }
     id
@@ -47,8 +47,8 @@ var v0 = [
 ],
 v1 = {
   "kind": "LinkedField",
-  "alias": null,
-  "name": "exhibitors_grouped_by_name",
+  "alias": "exhibitors_grouped_by_name",
+  "name": "exhibitorsGroupedByName",
   "storageKey": null,
   "args": null,
   "concreteType": "FairExhibitorsGroup",
@@ -86,8 +86,8 @@ v1 = {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "profile_id",
+          "alias": "profile_id",
+          "name": "profileID",
           "args": null,
           "storageKey": null
         }
@@ -147,11 +147,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairExhibitorsTestsQuery",
-    "id": "e37ecc5d1a7041efe8eb037cd715f152",
+    "id": "e7f9de7dcd788f850b7cfa7601d233bd",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a3bb77d8029fbfd9a18048ba5ac24950';
+(node as any).hash = '02dbd95ae31b367685e9949b7339cd4b';
 export default node;

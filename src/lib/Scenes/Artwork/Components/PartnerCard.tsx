@@ -42,14 +42,14 @@ export class PartnerCard extends React.Component<Props, State> {
                   id
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
           `,
           variables: {
             input: {
-              profile_id: profileID,
+              profileID,
               unfollow: partnerFollowed,
             },
           },
@@ -136,7 +136,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         isGalleryAuction
       }
       partner {
-        is_default_profile_public
+        is_default_profile_public: isDefaultProfilePublic
         type
         name
         slug
@@ -148,7 +148,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
           id
           internalID
           slug
-          is_followed
+          is_followed: isFollowed
           icon {
             url(version: "square140")
           }

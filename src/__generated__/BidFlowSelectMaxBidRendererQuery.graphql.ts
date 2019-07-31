@@ -21,7 +21,7 @@ export type BidFlowSelectMaxBidRendererQuery = {
 query BidFlowSelectMaxBidRendererQuery(
   $saleArtworkID: String!
 ) {
-  sale_artwork(id: $saleArtworkID) {
+  sale_artwork: saleArtwork(id: $saleArtworkID) {
     ...SelectMaxBid_sale_artwork
     id
   }
@@ -40,33 +40,33 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
   internalID
   sale {
     slug
-    live_start_at
-    end_at
+    live_start_at: liveStartAt
+    end_at: endAt
     id
   }
   artwork {
     slug
     title
     date
-    artist_names
+    artist_names: artistNames
     image {
       url(version: "small")
     }
     id
   }
-  lot_label
+  lot_label: lotLabel
   ...BidResult_sale_artwork
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
-  minimum_next_bid {
+  minimum_next_bid: minimumNextBid {
     amount
     cents
     display
   }
   sale {
-    live_start_at
-    end_at
+    live_start_at: liveStartAt
+    end_at: endAt
     slug
     id
   }
@@ -128,8 +128,8 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": null,
-        "name": "sale_artwork",
+        "alias": "sale_artwork",
+        "name": "saleArtwork",
         "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "SaleArtwork",
@@ -151,8 +151,8 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": null,
-        "name": "sale_artwork",
+        "alias": "sale_artwork",
+        "name": "saleArtwork",
         "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "SaleArtwork",
@@ -196,15 +196,15 @@ return {
               (v4/*: any*/),
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "live_start_at",
+                "alias": "live_start_at",
+                "name": "liveStartAt",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
+                "alias": "end_at",
+                "name": "endAt",
                 "args": null,
                 "storageKey": null
               },
@@ -237,8 +237,8 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "artist_names",
+                "alias": "artist_names",
+                "name": "artistNames",
                 "args": null,
                 "storageKey": null
               },
@@ -271,15 +271,15 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "lot_label",
+            "alias": "lot_label",
+            "name": "lotLabel",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "minimum_next_bid",
+            "alias": "minimum_next_bid",
+            "name": "minimumNextBid",
             "storageKey": null,
             "args": null,
             "concreteType": "SaleArtworkMinimumNextBid",
@@ -304,11 +304,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidFlowSelectMaxBidRendererQuery",
-    "id": "8b9bf477e39ad48905e390c4a3019a46",
+    "id": "2d6558adda3961dfc01bc3be32bc6015",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'dcde3e88d982c125ae7d58799e69d88e';
+(node as any).hash = 'bb3f05e201a50fcab9d18b53fa032442';
 export default node;

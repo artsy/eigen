@@ -53,8 +53,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
+      "alias": "exhibition_period",
+      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     },
@@ -105,8 +105,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "press_release",
+      "alias": "press_release",
+      "name": "pressRelease",
       "args": null,
       "storageKey": null
     },
@@ -128,5 +128,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1121b20814570aaecd0d64799b6e8dd6';
+(node as any).hash = '8c89cd8e513cef411fec9d3f3f2197be';
 export default node;

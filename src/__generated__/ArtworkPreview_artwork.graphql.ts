@@ -47,8 +47,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "artist_names",
+      "alias": "artist_names",
+      "name": "artistNames",
       "args": null,
       "storageKey": null
     },
@@ -79,5 +79,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6169160f6c19d379f500731f63adc613';
+(node as any).hash = '4be6e7424e97c581d57dde4403757896';
 export default node;

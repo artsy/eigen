@@ -153,32 +153,32 @@ class ActiveBid extends React.Component<Props, State> {
 export default createFragmentContainer(ActiveBid, {
   bid: graphql`
     fragment ActiveBid_bid on LotStanding {
-      is_leading_bidder
+      is_leading_bidder: isLeadingBidder
       sale {
         href
-        is_live_open
+        is_live_open: isLiveOpen
       }
-      most_recent_bid {
+      most_recent_bid: mostRecentBid {
         id
-        max_bid {
+        max_bid: maxBid {
           display
         }
-        sale_artwork {
+        sale_artwork: saleArtwork {
           artwork {
             href
             image {
               url
             }
-            artist_names
+            artist_names: artistNames
           }
           counts {
-            bidder_positions
+            bidder_positions: bidderPositions
           }
-          highest_bid {
+          highest_bid: highestBid {
             display
           }
-          lot_label
-          reserve_status
+          lot_label: lotLabel
+          reserve_status: reserveStatus
         }
       }
     }

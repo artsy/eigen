@@ -163,11 +163,11 @@ export default createFragmentContainer(Artist, {
     fragment Artist_artist on Artist {
       internalID
       slug
-      has_metadata
+      has_metadata: hasMetadata
       counts {
         artworks
-        partner_shows
-        related_artists
+        partner_shows: partnerShows
+        related_artists: relatedArtists
         articles
       }
       ...Header_artist

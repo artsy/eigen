@@ -23,8 +23,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "payment_url",
+      "alias": "payment_url",
+      "name": "paymentURL",
       "args": null,
       "storageKey": null
     },
@@ -44,12 +44,12 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "lewitt_invoice_id",
+      "alias": "lewitt_invoice_id",
+      "name": "lewittInvoiceID",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = '56513ea1e11975c64fc4c4ee843b52f8';
+(node as any).hash = '2e572e458745d1a8926482b66629d10d';
 export default node;

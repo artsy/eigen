@@ -308,7 +308,7 @@ export default createRefetchContainer(
         key
         params {
           medium
-          price_range
+          price_range: priceRange
         }
         context {
           ... on HomePageFollowedArtistArtworkModule {

@@ -30,7 +30,7 @@ query QueryRenderersBidFlowQuery(
   $saleID: String!
 ) {
   artwork(id: $artworkID) {
-    sale_artwork(sale_id: $saleID) {
+    sale_artwork: saleArtwork(saleID: $saleID) {
       ...BidFlow_sale_artwork
       id
     }
@@ -55,9 +55,9 @@ fragment SelectMaxBid_me on Me {
 }
 
 fragment ConfirmBid_me on Me {
-  has_qualified_credit_cards
-  bidders(sale_id: $saleID) {
-    qualified_for_bidding
+  has_qualified_credit_cards: hasQualifiedCreditCards
+  bidders(saleID: $saleID) {
+    qualified_for_bidding: qualifiedForBidding
     id
   }
 }
@@ -75,33 +75,33 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
   internalID
   sale {
     slug
-    live_start_at
-    end_at
+    live_start_at: liveStartAt
+    end_at: endAt
     id
   }
   artwork {
     slug
     title
     date
-    artist_names
+    artist_names: artistNames
     image {
       url(version: "small")
     }
     id
   }
-  lot_label
+  lot_label: lotLabel
   ...BidResult_sale_artwork
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
-  minimum_next_bid {
+  minimum_next_bid: minimumNextBid {
     amount
     cents
     display
   }
   sale {
-    live_start_at
-    end_at
+    live_start_at: liveStartAt
+    end_at: endAt
     slug
     id
   }
@@ -133,7 +133,7 @@ v1 = [
 v2 = [
   {
     "kind": "Variable",
-    "name": "sale_id",
+    "name": "saleID",
     "variableName": "saleID"
   }
 ],
@@ -185,8 +185,8 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "sale_artwork",
+            "alias": "sale_artwork",
+            "name": "saleArtwork",
             "storageKey": null,
             "args": (v2/*: any*/),
             "concreteType": "SaleArtwork",
@@ -235,8 +235,8 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "sale_artwork",
+            "alias": "sale_artwork",
+            "name": "saleArtwork",
             "storageKey": null,
             "args": (v2/*: any*/),
             "concreteType": "SaleArtwork",
@@ -280,15 +280,15 @@ return {
                   (v5/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "live_start_at",
+                    "alias": "live_start_at",
+                    "name": "liveStartAt",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "end_at",
+                    "alias": "end_at",
+                    "name": "endAt",
                     "args": null,
                     "storageKey": null
                   },
@@ -321,8 +321,8 @@ return {
                   },
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "artist_names",
+                    "alias": "artist_names",
+                    "name": "artistNames",
                     "args": null,
                     "storageKey": null
                   },
@@ -355,15 +355,15 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "lot_label",
+                "alias": "lot_label",
+                "name": "lotLabel",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "minimum_next_bid",
+                "alias": "minimum_next_bid",
+                "name": "minimumNextBid",
                 "storageKey": null,
                 "args": null,
                 "concreteType": "SaleArtworkMinimumNextBid",
@@ -397,8 +397,8 @@ return {
         "selections": [
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "has_qualified_credit_cards",
+            "alias": "has_qualified_credit_cards",
+            "name": "hasQualifiedCreditCards",
             "args": null,
             "storageKey": null
           },
@@ -413,8 +413,8 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "qualified_for_bidding",
+                "alias": "qualified_for_bidding",
+                "name": "qualifiedForBidding",
                 "args": null,
                 "storageKey": null
               },
@@ -429,11 +429,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersBidFlowQuery",
-    "id": "5d26329cb874d2e52788cd10d14cbaf0",
+    "id": "c4da5c7318a758d6fcc4757466f88f6e",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2d8c3fea75a28bde19b0f42c870bd574';
+(node as any).hash = '3ec3ffc863425fc2bd60a4aed520770d';
 export default node;

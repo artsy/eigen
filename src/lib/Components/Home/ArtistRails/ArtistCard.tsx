@@ -216,8 +216,8 @@ const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       internalID
       href
       name
-      formatted_artworks_count
-      formatted_nationality_and_birthday
+      formatted_artworks_count: formattedArtworksCount
+      formatted_nationality_and_birthday: formattedNationalityAndBirthday
       image {
         url(version: "large")
       }

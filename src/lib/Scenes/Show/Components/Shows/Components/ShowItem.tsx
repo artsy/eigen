@@ -82,11 +82,11 @@ export const ShowItemContainer = createFragmentContainer(ShowItem, {
       internalID
       slug
       name
-      exhibition_period
-      end_at
+      exhibition_period: exhibitionPeriod
+      end_at: endAt
       images {
         url
-        aspect_ratio
+        aspect_ratio: aspectRatio
       }
       partner {
         ... on Partner {

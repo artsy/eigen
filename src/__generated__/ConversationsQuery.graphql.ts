@@ -38,7 +38,7 @@ fragment Conversations_me_1G22uz on Me {
     edges {
       node {
         internalID
-        last_message
+        last_message: lastMessage
         ...ConversationSnippet_conversation
         id
         __typename
@@ -54,8 +54,8 @@ fragment ConversationSnippet_conversation on Conversation {
     name
     id
   }
-  last_message
-  last_message_at
+  last_message: lastMessage
+  last_message_at: lastMessageAt
   unread
   items {
     item {
@@ -63,7 +63,7 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Artwork {
         date
         title
-        artist_names
+        artist_names: artistNames
         image {
           url
         }
@@ -74,7 +74,7 @@ fragment ConversationSnippet_conversation on Conversation {
           id
         }
         name
-        cover_image {
+        cover_image: coverImage {
           url
         }
       }
@@ -260,8 +260,8 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "last_message",
+                        "alias": "last_message",
+                        "name": "lastMessage",
                         "args": null,
                         "storageKey": null
                       },
@@ -277,8 +277,8 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "last_message_at",
+                        "alias": "last_message_at",
+                        "name": "lastMessageAt",
                         "args": null,
                         "storageKey": null
                       },
@@ -329,8 +329,8 @@ return {
                                   },
                                   {
                                     "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "artist_names",
+                                    "alias": "artist_names",
+                                    "name": "artistNames",
                                     "args": null,
                                     "storageKey": null
                                   },
@@ -363,8 +363,8 @@ return {
                                   (v2/*: any*/),
                                   {
                                     "kind": "LinkedField",
-                                    "alias": null,
-                                    "name": "cover_image",
+                                    "alias": "cover_image",
+                                    "name": "coverImage",
                                     "storageKey": null,
                                     "args": null,
                                     "concreteType": "Image",
@@ -409,7 +409,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationsQuery",
-    "id": "06dca04568aa221eb693f50b9a962628",
+    "id": "ee17444221cb89fda92c8efd865c239e",
     "text": null,
     "metadata": {}
   }

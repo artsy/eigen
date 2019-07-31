@@ -73,14 +73,14 @@ export class Event extends React.Component<Props, State> {
                   show {
                     slug
                     internalID
-                    is_followed
+                    is_followed: isFollowed
                   }
                 }
               }
             `,
             variables: {
               input: {
-                partner_show_id: showID,
+                partnerShowID: showID,
                 unfollow: isShowFollowed,
               },
             },

@@ -37,11 +37,11 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
         name
       }
       artists {
-        is_consignable
+        is_consignable: isConsignable
       }
       sale {
-        is_auction
-        is_closed
+        is_auction: isAuction
+        is_closed: isClosed
       }
       ...ArtworkAvailability_artwork
       ...SellerInfo_artwork

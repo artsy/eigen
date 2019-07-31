@@ -32,13 +32,13 @@ query BidderPositionQuery(
   $bidderPositionID: String!
 ) {
   me {
-    bidder_position(id: $bidderPositionID) {
+    bidder_position: bidderPosition(id: $bidderPositionID) {
       status
-      message_header
-      message_description_md
+      message_header: messageHeader
+      message_description_md: messageDescriptionMD
       position {
         internalID
-        suggested_next_bid {
+        suggested_next_bid: suggestedNextBid {
           cents
           display
         }
@@ -75,15 +75,15 @@ v2 = {
 },
 v3 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "message_header",
+  "alias": "message_header",
+  "name": "messageHeader",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "message_description_md",
+  "alias": "message_description_md",
+  "name": "messageDescriptionMD",
   "args": null,
   "storageKey": null
 },
@@ -96,8 +96,8 @@ v5 = {
 },
 v6 = {
   "kind": "LinkedField",
-  "alias": null,
-  "name": "suggested_next_bid",
+  "alias": "suggested_next_bid",
+  "name": "suggestedNextBid",
   "storageKey": null,
   "args": null,
   "concreteType": "BidderPositionSuggestedNextBid",
@@ -146,8 +146,8 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "bidder_position",
+            "alias": "bidder_position",
+            "name": "bidderPosition",
             "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "BidderPositionResult",
@@ -191,8 +191,8 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "bidder_position",
+            "alias": "bidder_position",
+            "name": "bidderPosition",
             "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "BidderPositionResult",
@@ -225,11 +225,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidderPositionQuery",
-    "id": "98603de89d8987e353250349ddb56622",
+    "id": "dab411c27ae5496a83799e2909ef0d29",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '73d51ddc650a8f1a9de4b01ac6b762eb';
+(node as any).hash = '6089ac2a12e9fe3d68fdc3531aedbf62';
 export default node;

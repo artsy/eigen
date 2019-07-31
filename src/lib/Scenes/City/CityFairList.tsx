@@ -99,7 +99,7 @@ export default createPaginationContainer(
             node {
               internalID
               name
-              exhibition_period
+              exhibition_period: exhibitionPeriod
               counts {
                 partners
               }
@@ -110,8 +110,8 @@ export default createPaginationContainer(
                 }
               }
               image {
-                image_url
-                aspect_ratio
+                image_url: imageURL
+                aspect_ratio: aspectRatio
                 url
               }
               profile {
@@ -126,8 +126,8 @@ export default createPaginationContainer(
                 slug
                 name
               }
-              start_at
-              end_at
+              start_at: startAt
+              end_at: endAt
             }
           }
         }

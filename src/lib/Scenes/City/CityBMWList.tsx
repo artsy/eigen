@@ -90,10 +90,10 @@ export default createPaginationContainer(
                 name
                 status
                 href
-                is_followed
+                is_followed: isFollowed
                 isStubShow
-                exhibition_period
-                cover_image {
+                exhibition_period: exhibitionPeriod
+                cover_image: coverImage {
                   url
                 }
                 location {
@@ -103,14 +103,13 @@ export default createPaginationContainer(
                   }
                 }
                 type
-                start_at
-                end_at
+                start_at: startAt
+                end_at: endAt
                 partner {
                   ... on Partner {
                     name
                     type
                     profile {
-                      # This is only used for stubbed shows
                       image {
                         url(version: "square")
                       }

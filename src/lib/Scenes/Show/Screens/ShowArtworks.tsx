@@ -56,7 +56,7 @@ export const ShowArtworksContainer = createRefetchContainer(
       fragment ShowArtworks_show on Show
         @argumentDefinitions(
           medium: { type: "String", defaultValue: "*" }
-          price_range: { type: "String", defaultValue: "*-*" }
+          priceRange: { type: "String", defaultValue: "*-*" }
         ) {
         id
         slug
@@ -64,7 +64,7 @@ export const ShowArtworksContainer = createRefetchContainer(
         filteredArtworks(
           size: 0
           medium: $medium
-          price_range: $price_range
+          priceRange: $priceRange
           aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
         ) {
           ...FilteredInfiniteScrollGrid_filteredArtworks
@@ -75,7 +75,7 @@ export const ShowArtworksContainer = createRefetchContainer(
   graphql`
     query ShowArtworksRefetchQuery($showID: String!, $medium: String, $price_range: String) {
       show(id: $showID) {
-        ...ShowArtworks_show @arguments(medium: $medium, price_range: $price_range)
+        ...ShowArtworks_show @arguments(medium: $medium, priceRange: $price_range)
       }
     }
   `

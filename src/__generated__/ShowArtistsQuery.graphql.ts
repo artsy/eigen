@@ -30,11 +30,11 @@ query ShowArtistsQuery(
 fragment ShowArtists_show on Show {
   internalID
   slug
-  artists_grouped_by_name {
+  artists_grouped_by_name: artistsGroupedByName {
     letter
     items {
       ...ArtistListItem_artist
-      sortable_id
+      sortable_id: sortableID
       href
       id
     }
@@ -48,7 +48,7 @@ fragment ArtistListItem_artist on Artist {
   name
   initials
   href
-  is_followed
+  is_followed: isFollowed
   nationality
   birthday
   deathday
@@ -140,8 +140,8 @@ return {
           (v3/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "artists_grouped_by_name",
+            "alias": "artists_grouped_by_name",
+            "name": "artistsGroupedByName",
             "storageKey": null,
             "args": null,
             "concreteType": "ArtistGroup",
@@ -189,8 +189,8 @@ return {
                   },
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_followed",
+                    "alias": "is_followed",
+                    "name": "isFollowed",
                     "args": null,
                     "storageKey": null
                   },
@@ -235,8 +235,8 @@ return {
                   },
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "sortable_id",
+                    "alias": "sortable_id",
+                    "name": "sortableID",
                     "args": null,
                     "storageKey": null
                   }
@@ -252,7 +252,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsQuery",
-    "id": "ff46d403774960d77e62c19354dc53b4",
+    "id": "eb939376879908647ec03922d6f8a30a",
     "text": null,
     "metadata": {}
   }

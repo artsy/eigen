@@ -5,8 +5,8 @@ import { Message_message$ref } from "./Message_message.graphql";
 export type SendConversationMessageMutationInput = {
     readonly id: string;
     readonly from: string;
-    readonly body_text: string;
-    readonly reply_to_message_id: string;
+    readonly bodyText: string;
+    readonly replyToMessageID: string;
     readonly clientMutationId?: string | null;
 };
 export type SendConversationMessageMutationVariables = {
@@ -39,8 +39,8 @@ mutation SendConversationMessageMutation(
   sendConversationMessage(input: $input) {
     messageEdge {
       node {
-        impulse_id
-        is_from_user
+        impulse_id: impulseID
+        is_from_user: isFromUser
         body
         id
         ...Message_message
@@ -51,22 +51,22 @@ mutation SendConversationMessageMutation(
 
 fragment Message_message on Message {
   body
-  created_at
-  is_from_user
+  created_at: createdAt
+  is_from_user: isFromUser
   from {
     name
     email
   }
   invoice {
-    payment_url
+    payment_url: paymentURL
     ...InvoicePreview_invoice
     id
   }
   attachments {
     internalID
-    content_type
-    download_url
-    file_name
+    content_type: contentType
+    download_url: downloadURL
+    file_name: fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
     id
@@ -74,19 +74,19 @@ fragment Message_message on Message {
 }
 
 fragment InvoicePreview_invoice on Invoice {
-  payment_url
+  payment_url: paymentURL
   state
   total
-  lewitt_invoice_id
+  lewitt_invoice_id: lewittInvoiceID
 }
 
 fragment ImagePreview_attachment on Attachment {
-  download_url
+  download_url: downloadURL
   ...AttachmentPreview_attachment
 }
 
 fragment PDFPreview_attachment on Attachment {
-  file_name
+  file_name: fileName
   ...AttachmentPreview_attachment
 }
 
@@ -113,15 +113,15 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "impulse_id",
+  "alias": "impulse_id",
+  "name": "impulseID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "is_from_user",
+  "alias": "is_from_user",
+  "name": "isFromUser",
   "args": null,
   "storageKey": null
 },
@@ -230,8 +230,8 @@ return {
                   (v5/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "created_at",
+                    "alias": "created_at",
+                    "name": "createdAt",
                     "args": null,
                     "storageKey": null
                   },
@@ -271,8 +271,8 @@ return {
                     "selections": [
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "payment_url",
+                        "alias": "payment_url",
+                        "name": "paymentURL",
                         "args": null,
                         "storageKey": null
                       },
@@ -292,8 +292,8 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "lewitt_invoice_id",
+                        "alias": "lewitt_invoice_id",
+                        "name": "lewittInvoiceID",
                         "args": null,
                         "storageKey": null
                       },
@@ -318,22 +318,22 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "content_type",
+                        "alias": "content_type",
+                        "name": "contentType",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "download_url",
+                        "alias": "download_url",
+                        "name": "downloadURL",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "file_name",
+                        "alias": "file_name",
+                        "name": "fileName",
                         "args": null,
                         "storageKey": null
                       },
@@ -351,11 +351,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "ab9b24ccfe96fe819d228819b948b34f",
+    "id": "9a77342cc7cc7d86cdc13f792857a8f2",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '73b32c449f481fc4adcb493b0ad329eb';
+(node as any).hash = 'de9c31165ba6aff10f299db16ec743b0';
 export default node;

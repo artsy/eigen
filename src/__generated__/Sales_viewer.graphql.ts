@@ -28,11 +28,11 @@ const node: ReaderFragment = {
       "kind": "LinkedField",
       "alias": null,
       "name": "sales",
-      "storageKey": "sales(is_auction:true,live:true,size:100,sort:\"TIMELY_AT_NAME_ASC\")",
+      "storageKey": "sales(isAuction:true,live:true,size:100,sort:\"TIMELY_AT_NAME_ASC\")",
       "args": [
         {
           "kind": "Literal",
-          "name": "is_auction",
+          "name": "isAuction",
           "value": true
         },
         {
@@ -63,8 +63,8 @@ const node: ReaderFragment = {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "live_start_at",
+          "alias": "live_start_at",
+          "name": "liveStartAt",
           "args": null,
           "storageKey": null
         },
@@ -82,5 +82,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '25e30e3a3dcbcda3c87d9765bdde71a5';
+(node as any).hash = 'a01648c39d9b071f8463953ec6f8bad9';
 export default node;

@@ -46,9 +46,9 @@ fragment CitySavedList_viewer_1G22uz on Viewer {
             isStubShow
             status
             href
-            is_followed
-            exhibition_period
-            cover_image {
+            is_followed: isFollowed
+            exhibition_period: exhibitionPeriod
+            cover_image: coverImage {
               url
             }
             location {
@@ -59,8 +59,8 @@ fragment CitySavedList_viewer_1G22uz on Viewer {
               id
             }
             type
-            start_at
-            end_at
+            start_at: startAt
+            end_at: endAt
             partner {
               __typename
               ... on Partner {
@@ -320,22 +320,22 @@ return {
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "is_followed",
+                                "alias": "is_followed",
+                                "name": "isFollowed",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "exhibition_period",
+                                "alias": "exhibition_period",
+                                "name": "exhibitionPeriod",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "LinkedField",
-                                "alias": null,
-                                "name": "cover_image",
+                                "alias": "cover_image",
+                                "name": "coverImage",
                                 "storageKey": null,
                                 "args": null,
                                 "concreteType": "Image",
@@ -390,15 +390,15 @@ return {
                               (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "start_at",
+                                "alias": "start_at",
+                                "name": "startAt",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "end_at",
+                                "alias": "end_at",
+                                "name": "endAt",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -522,7 +522,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySavedListQuery",
-    "id": "ad0a2c0fe2b16e5d6732676badf30e3a",
+    "id": "773a5c3605da0d5402b1fd37cf15bb58",
     "text": null,
     "metadata": {}
   }

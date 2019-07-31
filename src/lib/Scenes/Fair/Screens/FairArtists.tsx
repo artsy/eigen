@@ -106,7 +106,7 @@ export const FairArtistsContainer = createPaginationContainer(
             cursor
             node {
               ...ArtistListItem_artist
-              sortable_id
+              sortable_id: sortableID
               href
               internalID
               slug

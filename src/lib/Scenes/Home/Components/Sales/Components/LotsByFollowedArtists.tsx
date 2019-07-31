@@ -68,12 +68,12 @@ export default createPaginationContainer(
     viewer: graphql`
       fragment LotsByFollowedArtists_viewer on Viewer
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        sale_artworks: sale_artworks(
+        sale_artworks: saleArtworks(
           first: $count
           after: $cursor
-          live_sale: true
-          is_auction: true
-          include_artworks_by_followed_artists: true
+          liveSale: true
+          isAuction: true
+          includeArtworksByFollowedArtists: true
         ) @connection(key: "LotsByFollowedArtists_sale_artworks") {
           pageInfo {
             endCursor

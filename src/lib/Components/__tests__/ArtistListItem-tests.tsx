@@ -23,8 +23,8 @@ describe("ArtistListItem", () => {
             }
           }
         `}
-        mockResolvers={{
-          Artist: () => ArtistFixture,
+        mockData={{
+          artist: ArtistFixture,
         }}
       />
     )

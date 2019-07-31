@@ -159,7 +159,7 @@ export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
     fragment MoreInfo_show on Show {
       internalID
       slug
-      exhibition_period
+      exhibition_period: exhibitionPeriod
       pressReleaseUrl
       openingReceptionText
       partner {
@@ -168,7 +168,7 @@ export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
           type
         }
       }
-      press_release
+      press_release: pressRelease
       events {
         ...ShowEventSection_event
       }

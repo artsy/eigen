@@ -77,12 +77,12 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(Article, {
   article: graphql`
     fragment Article_article on Article {
-      thumbnail_title
+      thumbnail_title: thumbnailTitle
       href
       author {
         name
       }
-      thumbnail_image {
+      thumbnail_image: thumbnailImage {
         url(version: "large")
       }
     }

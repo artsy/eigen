@@ -98,7 +98,7 @@ export default createFragmentContainer(FairsRail, {
         profile {
           slug
         }
-        mobile_image {
+        mobile_image: mobileImage {
           internalID
           url
         }

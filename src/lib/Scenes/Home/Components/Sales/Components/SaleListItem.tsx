@@ -126,17 +126,17 @@ export default createFragmentContainer(SaleListItem, {
       slug
       name
       href
-      is_open
-      is_live_open
-      live_url_if_open
-      start_at
-      end_at
-      registration_ends_at
-      live_start_at
-      display_timely_at
-      cover_image {
+      is_open: isOpen
+      is_live_open: isLiveOpen
+      live_url_if_open: liveURLIfOpen
+      start_at: startAt
+      end_at: endAt
+      registration_ends_at: registrationEndsAt
+      live_start_at: liveStartAt
+      display_timely_at: displayTimelyAt
+      cover_image: coverImage {
         url(version: "large")
-        aspect_ratio
+        aspect_ratio: aspectRatio
       }
     }
   `,

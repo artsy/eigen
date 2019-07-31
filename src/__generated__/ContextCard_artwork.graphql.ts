@@ -104,8 +104,8 @@ v5 = [
 ],
 v6 = {
   "kind": "LinkedField",
-  "alias": null,
-  "name": "cover_image",
+  "alias": "cover_image",
+  "name": "coverImage",
   "storageKey": null,
   "args": null,
   "concreteType": "Image",
@@ -114,8 +114,8 @@ v6 = {
 },
 v7 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "exhibition_period",
+  "alias": "exhibition_period",
+  "name": "exhibitionPeriod",
   "args": null,
   "storageKey": null
 };
@@ -207,8 +207,8 @@ return {
         (v7/*: any*/),
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_followed",
+          "alias": "is_followed",
+          "name": "isFollowed",
           "args": null,
           "storageKey": null
         },
@@ -218,5 +218,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c529ffbd1395a6331fdedfb67b7f8b17';
+(node as any).hash = '39e23fd27aad0a661f2476a735821cd9';
 export default node;

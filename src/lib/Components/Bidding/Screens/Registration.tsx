@@ -199,9 +199,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                     internalID
                     brand
                     name
-                    last_digits
-                    expiration_month
-                    expiration_year
+                    last_digits: lastDigits
+                    expiration_month: expirationMonth
+                    expiration_year: expirationYear
                   }
                 }
                 ... on CreditCardMutationFailure {
@@ -234,13 +234,13 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           createBidder(input: $input) {
             bidder {
               internalID
-              qualified_for_bidding
+              qualified_for_bidding: qualifiedForBidding
             }
           }
         }
       `,
       // FIXME: Should this be slug or internalID?
-      variables: { input: { sale_id: this.props.sale.slug } },
+      variables: { input: { saleID: this.props.sale.slug } },
     })
   }
 
@@ -360,16 +360,16 @@ export const RegistrationScreen = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
       slug
-      end_at
-      is_preview
-      live_start_at
+      end_at: endAt
+      is_preview: isPreview
+      live_start_at: liveStartAt
       name
-      start_at
+      start_at: startAt
     }
   `,
   me: graphql`
     fragment Registration_me on Me {
-      has_credit_cards
+      has_credit_cards: hasCreditCards
     }
   `,
 })

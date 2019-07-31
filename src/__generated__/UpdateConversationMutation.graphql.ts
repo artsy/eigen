@@ -31,7 +31,7 @@ mutation UpdateConversationMutation(
   updateConversation(input: $input) {
     conversation {
       internalID
-      from_last_viewed_message_id
+      from_last_viewed_message_id: fromLastViewedMessageID
       id
     }
   }
@@ -63,8 +63,8 @@ v2 = {
 },
 v3 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "from_last_viewed_message_id",
+  "alias": "from_last_viewed_message_id",
+  "name": "fromLastViewedMessageID",
   "args": null,
   "storageKey": null
 };
@@ -144,11 +144,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "UpdateConversationMutation",
-    "id": "8b1b8891d85d2351a27f9b0c2f6a502b",
+    "id": "7b6a7cadd05092bf22e9f9cba84e0a23",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '626412cd0663f305e8f508f8aeb9c553';
+(node as any).hash = '81599675babd532c54fc6eb4de8b3371';
 export default node;

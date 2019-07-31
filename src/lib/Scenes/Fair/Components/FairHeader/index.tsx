@@ -169,7 +169,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
         artists
         partners
       }
-      followed_content {
+      followed_content: followedContent {
         artists {
           name
           href
@@ -181,7 +181,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           name
         }
       }
-      partner_names: shows_connection(first: 2) {
+      partner_names: showsConnection(first: 2) {
         edges {
           node {
             slug
@@ -207,13 +207,11 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           }
         }
       }
-
       image {
-        image_url
-        aspect_ratio
+        image_url: imageURL
+        aspect_ratio: aspectRatio
         url
       }
-
       profile {
         icon {
           internalID
@@ -225,12 +223,11 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
         id
         slug
         name
-        is_followed
+        is_followed: isFollowed
       }
-
-      start_at
-      end_at
-      exhibition_period
+      start_at: startAt
+      end_at: endAt
+      exhibition_period: exhibitionPeriod
     }
   `,
 })

@@ -54,64 +54,64 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_open",
+      "alias": "is_open",
+      "name": "isOpen",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_live_open",
+      "alias": "is_live_open",
+      "name": "isLiveOpen",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "live_url_if_open",
+      "alias": "live_url_if_open",
+      "name": "liveURLIfOpen",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "start_at",
+      "alias": "start_at",
+      "name": "startAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "alias": "end_at",
+      "name": "endAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "registration_ends_at",
+      "alias": "registration_ends_at",
+      "name": "registrationEndsAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "live_start_at",
+      "alias": "live_start_at",
+      "name": "liveStartAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "display_timely_at",
+      "alias": "display_timely_at",
+      "name": "displayTimelyAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "cover_image",
+      "alias": "cover_image",
+      "name": "coverImage",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
@@ -132,8 +132,8 @@ const node: ReaderFragment = {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "aspect_ratio",
+          "alias": "aspect_ratio",
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
@@ -141,5 +141,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '80fa6146cf17eac529794171261a0c8d';
+(node as any).hash = 'e069a0350693c90a17cbde4410b0c918';
 export default node;

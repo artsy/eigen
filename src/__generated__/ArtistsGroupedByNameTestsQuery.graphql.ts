@@ -30,7 +30,7 @@ fragment ArtistListItem_artist on Artist {
   name
   initials
   href
-  is_followed
+  is_followed: isFollowed
   nationality
   birthday
   deathday
@@ -133,8 +133,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
+            "alias": "is_followed",
+            "name": "isFollowed",
             "args": null,
             "storageKey": null
           },
@@ -184,7 +184,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistsGroupedByNameTestsQuery",
-    "id": "cf1414a2cb2975fd7059dc57fe18deff",
+    "id": "ba1091e35407c87ac76b2bfecb788de7",
     "text": null,
     "metadata": {}
   }

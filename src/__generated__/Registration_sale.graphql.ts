@@ -31,22 +31,22 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "alias": "end_at",
+      "name": "endAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_preview",
+      "alias": "is_preview",
+      "name": "isPreview",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "live_start_at",
+      "alias": "live_start_at",
+      "name": "liveStartAt",
       "args": null,
       "storageKey": null
     },
@@ -59,12 +59,12 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "start_at",
+      "alias": "start_at",
+      "name": "startAt",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = '09f732c342c6b61f33997cffc139e617';
+(node as any).hash = 'ee874611434f57e7bd676bc60ed9565b';
 export default node;

@@ -81,7 +81,7 @@ export default createFragmentContainer(RelatedArtist, {
       href
       name
       counts {
-        for_sale_artworks
+        for_sale_artworks: forSaleArtworks
         artworks
       }
       image {

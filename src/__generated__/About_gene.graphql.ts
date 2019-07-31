@@ -24,8 +24,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "trending_artists",
+      "alias": "trending_artists",
+      "name": "trendingArtists",
       "storageKey": null,
       "args": null,
       "concreteType": "Artist",
@@ -45,5 +45,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f49aab34dd4e87ee0079aac465f2313a';
+(node as any).hash = '09c3e04568ab6b702258dcaf97a58477';
 export default node;
