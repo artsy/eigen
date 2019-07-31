@@ -93,7 +93,7 @@ export const PaginationDot = observer(({ diameter, index }: { diameter: number; 
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
   images: graphql`
     fragment ImageCarousel_images on Image @relay(plural: true) {
-      image_url
+      image_url: imageURL
       width
       height
     }

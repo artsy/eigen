@@ -45,12 +45,13 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   handleArtworkSave() {
     const { artwork, relay } = this.props
     commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
+      // TODO: Inputs to the mutation might have changed case of the keys!
       mutation: graphql`
         mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
           saveArtwork(input: $input) {
             artwork {
               id
-              is_saved
+              is_saved: isSaved
             }
           }
         }
@@ -150,8 +151,8 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       slug
       title
       href
-      is_saved
-      is_hangable
+      is_saved: isSaved
+      is_hangable: isHangable
       artists {
         name
       }

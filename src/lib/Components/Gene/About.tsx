@@ -54,7 +54,7 @@ export default createFragmentContainer(About, {
   gene: graphql`
     fragment About_gene on Gene {
       ...Biography_gene
-      trending_artists {
+      trending_artists: trendingArtists {
         ...RelatedArtists_artists
       }
     }

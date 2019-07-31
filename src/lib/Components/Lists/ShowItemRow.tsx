@@ -73,13 +73,14 @@ export class ShowItemRow extends React.Component<Props, State> {
         () => {
           return commitMutation<ShowItemRowMutation>(this.props.relay.environment, {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
+            // TODO: Inputs to the mutation might have changed case of the keys!
             mutation: graphql`
               mutation ShowItemRowMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
                     slug
                     internalID
-                    is_followed
+                    is_followed: isFollowed
                   }
                 }
               }
@@ -178,15 +179,13 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
       id
       slug
       internalID
-      is_followed
+      is_followed: isFollowed
       name
       isStubShow
       partner {
         ... on Partner {
           name
-
           profile {
-            # This is only used for stubbed shows
             image {
               url(version: "square")
             }
@@ -194,15 +193,15 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
         }
       }
       href
-      exhibition_period
+      exhibition_period: exhibitionPeriod
       status
-      cover_image {
+      cover_image: coverImage {
         url
-        aspect_ratio
+        aspect_ratio: aspectRatio
       }
-      is_fair_booth
-      start_at
-      end_at
+      is_fair_booth: isFairBooth
+      start_at: startAt
+      end_at: endAt
     }
   `,
 })

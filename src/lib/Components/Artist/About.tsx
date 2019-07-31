@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
 export default createFragmentContainer(About, {
   artist: graphql`
     fragment About_artist on Artist {
-      has_metadata
-      is_display_auction_link
+      has_metadata: hasMetadata
+      is_display_auction_link: isDisplayAuctionLink
       slug
       ...Biography_artist
       related_artists: artists(size: 16) {

@@ -81,8 +81,8 @@ export default createFragmentContainer(Metadata, {
     fragment Metadata_show on Show {
       kind
       name
-      exhibition_period
-      status_update
+      exhibition_period: exhibitionPeriod
+      status_update: statusUpdate
       status
       partner {
         ... on Partner {

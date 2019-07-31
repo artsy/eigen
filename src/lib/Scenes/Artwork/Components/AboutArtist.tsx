@@ -54,7 +54,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
     fragment AboutArtist_artwork on Artwork {
       artists {
         id
-        biography_blurb {
+        biography_blurb: biographyBlurb {
           text
         }
         ...ArtistListItem_artist

@@ -25,7 +25,7 @@ const BidFlowMaxBidStoryRenderer: React.SFC<any> = ({ saleArtworkID }) => (
     environment={createEnvironment() as any}
     query={graphql`
       query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
-        sale_artwork(id: $saleArtworkID) {
+        sale_artwork: saleArtwork(id: $saleArtworkID) {
           ...SelectMaxBid_sale_artwork
         }
       }

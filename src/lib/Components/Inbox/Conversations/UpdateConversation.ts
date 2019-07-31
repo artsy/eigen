@@ -20,12 +20,13 @@ export function updateConversation(
     },
     onCompleted,
     onError,
+    // TODO: Inputs to the mutation might have changed case of the keys!
     mutation: graphql`
       mutation UpdateConversationMutation($input: UpdateConversationMutationInput!) {
         updateConversation(input: $input) {
           conversation {
             internalID
-            from_last_viewed_message_id
+            from_last_viewed_message_id: fromLastViewedMessageID
           }
         }
       }

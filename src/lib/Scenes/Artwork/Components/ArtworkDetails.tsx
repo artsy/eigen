@@ -114,7 +114,7 @@ export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDe
       series
       publisher
       manufacturer
-      image_rights
+      image_rights: imageRights
     }
   `,
 })

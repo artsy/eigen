@@ -130,13 +130,13 @@ const FairExhibitorsFragmentContainer = createFragmentContainer(FairExhibitors, 
     fragment FairExhibitors_fair on Fair {
       slug
       internalID
-      exhibitors_grouped_by_name {
+      exhibitors_grouped_by_name: exhibitorsGroupedByName {
         letter
         exhibitors {
           name
           slug
-          profile_id
-          partner_id
+          profile_id: profileID
+          partner_id: partnerID
         }
       }
     }

@@ -180,17 +180,17 @@ export const LocationMapContainer = createFragmentContainer(LocationMap, {
       internalID
       city
       address
-      address_2
-      postal_code
+      address_2: address2
+      postal_code: postalCode
       summary
       coordinates {
         lat
         lng
       }
-      day_schedules {
-        start_time
-        end_time
-        day_of_week
+      day_schedules: daySchedules {
+        start_time: startTime
+        end_time: endTime
+        day_of_week: dayOfWeek
       }
       openingHours {
         ... on OpeningHoursArray {

@@ -145,6 +145,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         onError: error => {
           this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
         },
+        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation RegistrationUpdateUserMutation($input: UpdateMyProfileInput!) {
             updateMyUserProfile(input: $input) {
@@ -190,6 +191,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           }
         },
         onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
+        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -199,9 +201,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                     internalID
                     brand
                     name
-                    last_digits
-                    expiration_month
-                    expiration_year
+                    last_digits: lastDigits
+                    expiration_month: expirationMonth
+                    expiration_year: expirationYear
                   }
                 }
                 ... on CreditCardMutationFailure {
@@ -229,12 +231,13 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       onError: error => {
         this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
       },
+      // TODO: Inputs to the mutation might have changed case of the keys!
       mutation: graphql`
         mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
           createBidder(input: $input) {
             bidder {
               internalID
-              qualified_for_bidding
+              qualified_for_bidding: qualifiedForBidding
             }
           }
         }
@@ -360,16 +363,16 @@ export const RegistrationScreen = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
       slug
-      end_at
-      is_preview
-      live_start_at
+      end_at: endAt
+      is_preview: isPreview
+      live_start_at: liveStartAt
       name
-      start_at
+      start_at: startAt
     }
   `,
   me: graphql`
     fragment Registration_me on Me {
-      has_credit_cards
+      has_credit_cards: hasCreditCards
     }
   `,
 })

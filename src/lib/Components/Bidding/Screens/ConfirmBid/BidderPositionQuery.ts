@@ -8,13 +8,13 @@ export const bidderPositionQuery = (bidderPositionID: string) => {
     graphql`
       query BidderPositionQuery($bidderPositionID: String!) {
         me {
-          bidder_position(id: $bidderPositionID) {
+          bidder_position: bidderPosition(id: $bidderPositionID) {
             status
-            message_header
-            message_description_md
+            message_header: messageHeader
+            message_description_md: messageDescriptionMD
             position {
               internalID
-              suggested_next_bid {
+              suggested_next_bid: suggestedNextBid {
                 cents
                 display
               }

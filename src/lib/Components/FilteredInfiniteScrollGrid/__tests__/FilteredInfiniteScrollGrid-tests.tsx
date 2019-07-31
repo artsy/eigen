@@ -25,7 +25,7 @@ describe("FilteredInfiniteScrollGrid", () => {
         query={graphql`
           query FilteredInfiniteScrollGridTestsQuery {
             show(id: "anderson-fine-art-gallery-flickinger-collection") {
-              filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
+              filteredArtworks(size: 0, medium: "*", priceRange: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
                 ...FilteredInfiniteScrollGrid_filteredArtworks
               }
             }

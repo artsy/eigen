@@ -35,6 +35,7 @@ export class PartnerCard extends React.Component<Props, State> {
         commitMutation<PartnerCardFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
           onError: e => console.log("errors", e),
+          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation PartnerCardFollowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
@@ -42,7 +43,7 @@ export class PartnerCard extends React.Component<Props, State> {
                   id
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
@@ -136,7 +137,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         isGalleryAuction
       }
       partner {
-        is_default_profile_public
+        is_default_profile_public: isDefaultProfilePublic
         type
         name
         slug
@@ -148,7 +149,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
           id
           internalID
           slug
-          is_followed
+          is_followed: isFollowed
           icon {
             url(version: "square140")
           }

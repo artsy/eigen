@@ -29,12 +29,13 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
     this.setState({ isSaved: !this.state.isSaved }, () => {
       if (fairProfileID) {
         return commitMutation<SavedFairItemRowMutation>(this.props.relay.environment, {
+          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation SavedFairItemRowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
                   slug
-                  is_followed
+                  is_followed: isFollowed
                   id
                 }
               }

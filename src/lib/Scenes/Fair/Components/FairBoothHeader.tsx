@@ -75,13 +75,14 @@ export class FairBoothHeader extends React.Component<Props, State> {
             })
             this.trackFollowPartner(partnerSlug, partnerID)
           },
+          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation FairBoothHeaderMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
@@ -175,7 +176,7 @@ export const FairBoothHeaderContainer = createFragmentContainer(FairBoothHeader,
           profile {
             internalID
             slug
-            is_followed
+            is_followed: isFollowed
           }
         }
       }

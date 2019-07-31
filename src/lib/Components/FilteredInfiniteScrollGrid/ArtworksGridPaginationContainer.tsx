@@ -13,7 +13,7 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<
       fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
-        artworks: artworks_connection(first: $count, after: $cursor)
+        artworks: artworksConnection(first: $count, after: $cursor)
           @connection(key: "ArtworksGridPaginationContainer_artworks") {
           pageInfo {
             hasNextPage
@@ -25,7 +25,7 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<
               slug
               id
               image {
-                aspect_ratio
+                aspect_ratio: aspectRatio
               }
               ...ArtworkGridItem_artwork
             }

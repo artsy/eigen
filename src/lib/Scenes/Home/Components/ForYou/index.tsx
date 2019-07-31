@@ -123,9 +123,9 @@ export default createRefetchContainer(
   {
     forYou: graphql`
       fragment ForYou_forYou on HomePage {
-        artwork_modules(
-          max_rails: -1
-          max_followed_gene_rails: -1
+        artwork_modules: artworkModules(
+          maxRails: -1
+          maxFollowedGeneRails: -1
           order: [
             ACTIVE_BIDS
             RECENTLY_VIEWED_WORKS
@@ -144,11 +144,11 @@ export default createRefetchContainer(
           id
           ...ArtworkCarousel_rail
         }
-        artist_modules {
+        artist_modules: artistModules {
           id
           ...ArtistRail_rail
         }
-        fairs_module {
+        fairs_module: fairsModule {
           ...FairsRail_fairs_module
         }
       }
@@ -156,7 +156,7 @@ export default createRefetchContainer(
   },
   graphql`
     query ForYouRefetchQuery {
-      forYou: home_page {
+      forYou: homePage {
         ...ForYou_forYou
       }
     }

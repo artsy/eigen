@@ -810,9 +810,9 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             status
             isStubShow
             href
-            is_followed
-            exhibition_period
-            cover_image {
+            is_followed: isFollowed
+            exhibition_period: exhibitionPeriod
+            cover_image: coverImage {
               url
             }
             location {
@@ -822,8 +822,8 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
               }
             }
             type
-            start_at
-            end_at
+            start_at: startAt
+            end_at: endAt
             partner {
               ... on Partner {
                 name
@@ -851,9 +851,9 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
               name
               status
               href
-              is_followed
-              exhibition_period
-              cover_image {
+              is_followed: isFollowed
+              exhibition_period: exhibitionPeriod
+              cover_image: coverImage {
                 url
               }
               location {
@@ -863,14 +863,13 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
                 }
               }
               type
-              start_at
-              end_at
+              start_at: startAt
+              end_at: endAt
               partner {
                 ... on Partner {
                   name
                   type
                   profile {
-                    # This is only used for stubbed shows
                     image {
                       url(version: "square")
                     }
@@ -880,7 +879,6 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             }
           }
         }
-
         shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
           edges {
             node {
@@ -891,9 +889,9 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
               name
               status
               href
-              is_followed
-              exhibition_period
-              cover_image {
+              is_followed: isFollowed
+              exhibition_period: exhibitionPeriod
+              cover_image: coverImage {
                 url
               }
               location {
@@ -903,14 +901,13 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
                 }
               }
               type
-              start_at
-              end_at
+              start_at: startAt
+              end_at: endAt
               partner {
                 ... on Partner {
                   name
                   type
                   profile {
-                    # This is only used for stubbed shows
                     image {
                       url(version: "square")
                     }
@@ -920,30 +917,26 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             }
           }
         }
-
         fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
               slug
               name
-              exhibition_period
+              exhibition_period: exhibitionPeriod
               counts {
                 partners
               }
-
               location {
                 coordinates {
                   lat
                   lng
                 }
               }
-
               image {
-                image_url
-                aspect_ratio
+                image_url: imageURL
+                aspect_ratio: aspectRatio
                 url
               }
-
               profile {
                 icon {
                   internalID
@@ -956,9 +949,8 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
                 slug
                 name
               }
-
-              start_at
-              end_at
+              start_at: startAt
+              end_at: endAt
             }
           }
         }

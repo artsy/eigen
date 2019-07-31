@@ -86,7 +86,7 @@ export default createPaginationContainer(
     me: graphql`
       fragment Categories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        followed_genes(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
+        followed_genes: followedGenes(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
           pageInfo {
             endCursor
             hasNextPage

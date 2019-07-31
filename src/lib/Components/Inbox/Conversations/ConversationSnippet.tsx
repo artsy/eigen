@@ -181,8 +181,8 @@ export default createFragmentContainer(ConversationSnippet, {
       to {
         name
       }
-      last_message
-      last_message_at
+      last_message: lastMessage
+      last_message_at: lastMessageAt
       unread
       items {
         item {
@@ -190,7 +190,7 @@ export default createFragmentContainer(ConversationSnippet, {
           ... on Artwork {
             date
             title
-            artist_names
+            artist_names: artistNames
             image {
               url
             }
@@ -200,7 +200,7 @@ export default createFragmentContainer(ConversationSnippet, {
               name
             }
             name
-            cover_image {
+            cover_image: coverImage {
               url
             }
           }

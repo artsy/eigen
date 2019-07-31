@@ -94,10 +94,10 @@ export default createRefetchContainer(
   {
     viewer: graphql`
       fragment Sales_viewer on Viewer {
-        sales(live: true, is_auction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {
+        sales(live: true, isAuction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {
           ...SaleListItem_sale
           href
-          live_start_at
+          live_start_at: liveStartAt
         }
         ...LotsByFollowedArtists_viewer
       }

@@ -239,7 +239,7 @@ export default createFragmentContainer(Inquiry, {
     fragment Inquiry_artwork on Artwork {
       slug
       internalID
-      contact_message
+      contact_message: contactMessage
       partner {
         name
       }

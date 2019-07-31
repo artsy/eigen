@@ -222,14 +222,12 @@ export const DetailContainer = createFragmentContainer(Detail, {
           }
         }
       }
-
       # These artists don't show up in artists count alas
       # and so we need to request them back here to verify if we
       # should show the artists section at all
-      artists_without_artworks {
+      artists_without_artworks: artistsWithoutArtworks {
         slug
       }
-
       counts {
         artworks
         artists

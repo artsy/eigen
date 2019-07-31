@@ -49,7 +49,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
 export const AboutWorkFragmentContainer = createFragmentContainer(AboutWork, {
   artwork: graphql`
     fragment AboutWork_artwork on Artwork {
-      additional_information
+      additional_information: additionalInformation
       description
     }
   `,

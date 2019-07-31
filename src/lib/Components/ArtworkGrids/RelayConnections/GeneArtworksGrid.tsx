@@ -17,7 +17,7 @@ const GeneArtworksGrid = createPaginationContainer<
           sort: { type: "String" }
         ) {
         id
-        artworks: artworks_connection(first: $count, after: $cursor, sort: $sort)
+        artworks: artworksConnection(first: $count, after: $cursor, sort: $sort)
           @connection(key: "GeneArtworksGrid_artworks") {
           pageInfo {
             hasNextPage
@@ -29,7 +29,7 @@ const GeneArtworksGrid = createPaginationContainer<
               slug
               id
               image {
-                aspect_ratio
+                aspect_ratio: aspectRatio
               }
               ...ArtworkGridItem_artwork
             }

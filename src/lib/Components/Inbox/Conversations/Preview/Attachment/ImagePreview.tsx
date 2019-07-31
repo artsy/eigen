@@ -25,7 +25,7 @@ export const ImagePreview: React.SFC<Props> = ({ attachment, onSelected }) => (
 export default createFragmentContainer(ImagePreview, {
   attachment: graphql`
     fragment ImagePreview_attachment on Attachment {
-      download_url
+      download_url: downloadURL
       ...AttachmentPreview_attachment
     }
   `,

@@ -114,7 +114,7 @@ export const MaxBidScreen = createRefetchContainer(
   },
   graphql`
     query SelectMaxBidRefetchQuery($saleArtworkID: String!) {
-      sale_artwork(id: $saleArtworkID) {
+      sale_artwork: saleArtwork(id: $saleArtworkID) {
         ...SelectMaxBid_sale_artwork
       }
     }

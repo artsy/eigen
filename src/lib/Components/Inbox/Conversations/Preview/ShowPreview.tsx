@@ -92,7 +92,7 @@ export default createFragmentContainer(ShowPreview, {
       slug
       internalID
       name
-      cover_image {
+      cover_image: coverImage {
         url
       }
       fair {

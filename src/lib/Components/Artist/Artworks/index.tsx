@@ -121,7 +121,7 @@ export default createFragmentContainer(Artworks, {
     fragment Artworks_artist on Artist {
       counts {
         artworks
-        for_sale_artworks
+        for_sale_artworks: forSaleArtworks
       }
       ...ArtistForSaleArtworksGrid_artist
       ...ArtistNotForSaleArtworksGrid_artist

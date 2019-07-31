@@ -17,12 +17,12 @@ it("renders properly", async () => {
       query={graphql`
         query FairExhibitorsTestsQuery {
           fair(id: "art-basel-in-miami-beach-2018") {
-            exhibitors_grouped_by_name {
+            exhibitors_grouped_by_name: exhibitorsGroupedByName {
               letter
               exhibitors {
                 name
                 slug
-                profile_id
+                profile_id: profileID
               }
             }
           }

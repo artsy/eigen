@@ -162,7 +162,7 @@ export default createFragmentContainer(ArtworkRailHeader, {
             slug
             internalID
           }
-          based_on {
+          based_on: basedOn {
             name
           }
         }

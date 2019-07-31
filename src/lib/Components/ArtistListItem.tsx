@@ -51,12 +51,13 @@ export class ArtistListItem extends React.Component<Props, State> {
       () => {
         commitMutation<ArtistListItemFollowArtistMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
+          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
                 artist {
                   id
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
@@ -164,7 +165,7 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       name
       initials
       href
-      is_followed
+      is_followed: isFollowed
       nationality
       birthday
       deathday

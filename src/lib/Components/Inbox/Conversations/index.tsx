@@ -123,7 +123,7 @@ export default createPaginationContainer(
           edges {
             node {
               internalID
-              last_message
+              last_message: lastMessage
               ...ConversationSnippet_conversation
             }
           }

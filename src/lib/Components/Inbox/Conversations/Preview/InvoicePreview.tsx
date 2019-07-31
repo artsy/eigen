@@ -177,10 +177,10 @@ export default createRefetchContainer(
   {
     invoice: graphql`
       fragment InvoicePreview_invoice on Invoice {
-        payment_url
+        payment_url: paymentURL
         state
         total
-        lewitt_invoice_id
+        lewitt_invoice_id: lewittInvoiceID
       }
     `,
   },

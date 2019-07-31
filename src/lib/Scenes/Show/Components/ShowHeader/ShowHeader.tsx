@@ -48,13 +48,14 @@ export class ShowHeader extends React.Component<Props, State> {
       () => {
         commitMutation<ShowHeaderFollowShowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
+          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
                 show {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
@@ -202,10 +203,10 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       internalID
       id
       name
-      press_release
-      is_followed
-      end_at
-      exhibition_period
+      press_release: pressRelease
+      is_followed: isFollowed
+      end_at: endAt
+      exhibition_period: exhibitionPeriod
       status
       isStubShow
       partner {
@@ -217,7 +218,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       }
       images {
         url
-        aspect_ratio
+        aspect_ratio: aspectRatio
       }
       followedArtists(first: 3) {
         edges {

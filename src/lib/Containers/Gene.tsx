@@ -350,21 +350,19 @@ export default createRefetchContainer(
         @argumentDefinitions(
           sort: { type: "String", defaultValue: "-partner_updated_at" }
           medium: { type: "String", defaultValue: "*" }
-          price_range: { type: "String", defaultValue: "*-*" }
+          priceRange: { type: "String", defaultValue: "*-*" }
         ) {
         id
         internalID
-
         ...Header_gene
         ...About_gene
-
-        filtered_artworks(
+        filtered_artworks: filteredArtworks(
           size: 0
           medium: $medium
-          price_range: $price_range
+          priceRange: $price_range
           sort: $sort
           aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
-          for_sale: true
+          forSale: true
         ) {
           counts {
             total
@@ -385,7 +383,7 @@ export default createRefetchContainer(
   graphql`
     query GeneRefetchQuery($geneID: String!, $sort: String, $medium: String, $price_range: String) {
       gene(id: $geneID) {
-        ...Gene_gene @arguments(sort: $sort, medium: $medium, price_range: $price_range)
+        ...Gene_gene @arguments(sort: $sort, medium: $medium, priceRange: $price_range)
       }
     }
   `

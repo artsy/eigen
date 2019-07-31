@@ -96,8 +96,8 @@ export default createFragmentContainer(HeroUnits, {
       href
       title
       heading
-      narrow_image_url: background_image_url(version: NARROW)
-      wide_image_url: background_image_url(version: WIDE)
+      narrow_image_url: backgroundImageURL(version: NARROW)
+      wide_image_url: backgroundImageURL(version: WIDE)
     }
   `,
 })

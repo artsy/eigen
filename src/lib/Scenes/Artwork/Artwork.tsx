@@ -179,31 +179,25 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      additional_information
+      additional_information: additionalInformation
       description
       provenance
-      exhibition_history
+      exhibition_history: exhibitionHistory
       literature
-
       partner {
         type
         id
       }
-
       artist {
         name
-        biography_blurb {
+        biography_blurb: biographyBlurb {
           text
         }
       }
-
-      # For Partner Card
       sale {
         isBenefit
         isGalleryAuction
       }
-
-      # For Details
       category
       conditionDescription {
         details
@@ -221,14 +215,10 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       series
       publisher
       manufacturer
-      image_rights
-
-      # For ContextCard
+      image_rights: imageRights
       context {
         __typename
       }
-
-      # For OtherWorks grids
       contextGrids {
         artworks(first: 6) {
           edges {
@@ -238,16 +228,13 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
           }
         }
       }
-
-      # For analytics
       slug
       internalID
-      is_acquireable
-      is_offerable
-      is_biddable
-      is_inquireable
+      is_acquireable: isAcquireable
+      is_offerable: isOfferable
+      is_biddable: isBiddable
+      is_inquireable: isInquireable
       availability
-
       ...PartnerCard_artwork
       ...AboutWork_artwork
       ...OtherWorks_artwork

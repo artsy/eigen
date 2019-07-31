@@ -34,13 +34,14 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
       () => {
         commitMutation<ContextCardFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(show),
+          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation ContextCardFollowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
                 show {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                   id
                 }
               }
@@ -206,7 +207,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           name
           href
           formattedStartDateTime
-          cover_image {
+          cover_image: coverImage {
             url
           }
         }
@@ -214,7 +215,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           id
           name
           href
-          exhibition_period
+          exhibition_period: exhibitionPeriod
           image {
             url
           }
@@ -226,9 +227,9 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
         href
         slug
         internalID
-        exhibition_period
-        is_followed
-        cover_image {
+        exhibition_period: exhibitionPeriod
+        is_followed: isFollowed
+        cover_image: coverImage {
           url
         }
       }

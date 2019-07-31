@@ -73,13 +73,14 @@ export class FairBoothPreview extends React.Component<Props, State> {
             })
             this.trackFollowPartner(partnerSlug, partnerID)
           },
+          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation FairBoothPreviewMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
                   slug
                   internalID
-                  is_followed
+                  is_followed: isFollowed
                 }
               }
             }
@@ -176,7 +177,7 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
       slug
       internalID
       name
-      is_fair_booth
+      is_fair_booth: isFairBooth
       counts {
         artworks
       }
@@ -189,20 +190,20 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
           id
           profile {
             internalID
-            is_followed
+            is_followed: isFollowed
           }
         }
       }
       fair {
         name
       }
-      cover_image {
+      cover_image: coverImage {
         url
       }
       location {
         display
       }
-      artworks_connection(first: 4) {
+      artworks_connection: artworksConnection(first: 4) {
         edges {
           node {
             ...GenericGrid_artworks

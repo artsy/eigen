@@ -160,6 +160,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           }
         },
         onError: errors => this.presentErrorResult(errors),
+        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation ConfirmBidUpdateUserMutation($input: UpdateMyProfileInput!) {
             updateMyUserProfile(input: $input) {
@@ -206,6 +207,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           }
         },
         onError: errors => this.presentErrorResult(errors),
+        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation ConfirmBidCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -215,9 +217,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     internalID
                     brand
                     name
-                    last_digits
-                    expiration_month
-                    expiration_year
+                    last_digits: lastDigits
+                    expiration_month: expirationMonth
+                    expiration_year: expirationYear
                   }
                 }
                 ... on CreditCardMutationFailure {
@@ -241,16 +243,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       onCompleted: (results, errors) =>
         isEmpty(errors) ? this.verifyBidderPosition(results) : this.presentErrorResult(errors),
       onError: this.presentErrorResult.bind(this),
+      // TODO: Inputs to the mutation might have changed case of the keys!
       mutation: graphql`
         mutation ConfirmBidCreateBidderPositionMutation($input: BidderPositionInput!) {
           createBidderPosition(input: $input) {
             result {
               status
-              message_header
-              message_description_md
+              message_header: messageHeader
+              message_description_md: messageDescriptionMD
               position {
                 internalID
-                suggested_next_bid {
+                suggested_next_bid: suggestedNextBid {
                   cents
                   display
                 }
@@ -536,27 +539,27 @@ export const ConfirmBidScreen = createRefetchContainer(
         internalID
         sale {
           slug
-          live_start_at
-          end_at
+          live_start_at: liveStartAt
+          end_at: endAt
         }
         artwork {
           slug
           title
           date
-          artist_names
+          artist_names: artistNames
           image {
             url(version: "small")
           }
         }
-        lot_label
+        lot_label: lotLabel
         ...BidResult_sale_artwork
       }
     `,
     me: graphql`
       fragment ConfirmBid_me on Me {
-        has_qualified_credit_cards
-        bidders(sale_id: $saleID) {
-          qualified_for_bidding
+        has_qualified_credit_cards: hasQualifiedCreditCards
+        bidders(saleID: $saleID) {
+          qualified_for_bidding: qualifiedForBidding
         }
       }
     `,
@@ -564,9 +567,9 @@ export const ConfirmBidScreen = createRefetchContainer(
   graphql`
     query ConfirmBidRefetchQuery($saleID: String!) {
       me {
-        has_qualified_credit_cards
-        bidders(sale_id: $saleID) {
-          qualified_for_bidding
+        has_qualified_credit_cards: hasQualifiedCreditCards
+        bidders(saleID: $saleID) {
+          qualified_for_bidding: qualifiedForBidding
         }
       }
     }

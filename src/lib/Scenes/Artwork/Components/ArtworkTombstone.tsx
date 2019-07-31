@@ -157,7 +157,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       title
       medium
       date
-      cultural_maker
+      cultural_maker: culturalMaker
       artists {
         name
         href
@@ -167,8 +167,8 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
         in
         cm
       }
-      edition_of
-      attribution_class {
+      edition_of: editionOf
+      attribution_class: attributionClass {
         shortDescription
       }
     }

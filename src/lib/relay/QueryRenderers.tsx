@@ -116,7 +116,7 @@ export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, ar
       query={graphql`
         query QueryRenderersBidFlowQuery($artworkID: String!, $saleID: String!) {
           artwork(id: $artworkID) {
-            sale_artwork(sale_id: $saleID) {
+            sale_artwork: saleArtwork(saleID: $saleID) {
               ...BidFlow_sale_artwork
             }
           }
@@ -181,7 +181,7 @@ export const ForYouRenderer: React.SFC<RendererProps> = ({ render }) => {
       environment={environment}
       query={graphql`
         query QueryRenderersForYouQuery {
-          forYou: home_page {
+          forYou: homePage {
             ...ForYou_forYou
           }
         }
@@ -205,7 +205,7 @@ export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, med
       query={graphql`
         query QueryRenderersGeneQuery($geneID: String!, $medium: String, $price_range: String) {
           gene(id: $geneID) {
-            ...Gene_gene @arguments(medium: $medium, price_range: $price_range)
+            ...Gene_gene @arguments(medium: $medium, priceRange: $price_range)
           }
         }
       `}

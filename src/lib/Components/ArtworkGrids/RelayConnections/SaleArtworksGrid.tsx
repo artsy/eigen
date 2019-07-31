@@ -16,7 +16,7 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
       fragment SaleArtworksGrid_sale on Sale
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
-        saleArtworks: sale_artworks_connection(first: $count, after: $cursor)
+        saleArtworks: saleArtworksConnection(first: $count, after: $cursor)
           @connection(key: "SaleArtworksGrid_saleArtworks") {
           pageInfo {
             hasNextPage
@@ -29,7 +29,7 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
                 id
                 slug
                 image {
-                  aspect_ratio
+                  aspect_ratio: aspectRatio
                 }
                 ...ArtworkGridItem_artwork
               }
