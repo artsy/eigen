@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type SaveArtworkInput = {
-    readonly artwork_id?: string | null;
+    readonly artworkID?: string | null;
     readonly remove?: boolean | null;
     readonly clientMutationId?: string | null;
 };
@@ -31,7 +31,7 @@ mutation ArtworkActionsSaveMutation(
   saveArtwork(input: $input) {
     artwork {
       id
-      is_saved
+      is_saved: isSaved
     }
   }
 }
@@ -80,8 +80,8 @@ v1 = [
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_saved",
+            "alias": "is_saved",
+            "name": "isSaved",
             "args": null,
             "storageKey": null
           }
@@ -109,11 +109,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ArtworkActionsSaveMutation",
-    "id": "f93f6c5ec3145c030b7daeda516c2e51",
+    "id": "5177deeca0d7ff411ca8c5807f3e8618",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2ea3cdbe03d067692ef9de28f40e8e0f';
+(node as any).hash = '6d2defeccf752edd1928ff070c2a253f';
 export default node;

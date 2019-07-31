@@ -24,7 +24,7 @@ query FavoriteArtistsQuery {
 }
 
 fragment Artists_me on Me {
-  followed_artists_connection(first: 10) {
+  followed_artists_connection: followedArtistsConnection(first: 10) {
     pageInfo {
       endCursor
       hasNextPage
@@ -107,9 +107,9 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "followed_artists_connection",
-            "storageKey": "followed_artists_connection(first:10)",
+            "alias": "followed_artists_connection",
+            "name": "followedArtistsConnection",
+            "storageKey": "followedArtistsConnection(first:10)",
             "args": (v0/*: any*/),
             "concreteType": "FollowArtistConnection",
             "plural": false,
@@ -231,8 +231,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": null,
-            "name": "followed_artists_connection",
+            "alias": "followed_artists_connection",
+            "name": "followedArtistsConnection",
             "args": (v0/*: any*/),
             "handle": "connection",
             "key": "Artists_followed_artists_connection",
@@ -246,7 +246,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtistsQuery",
-    "id": "f455dbc0361464d79e63657c3b733f5d",
+    "id": "4efd4a262e109242830cc01880c2313d",
     "text": null,
     "metadata": {}
   }

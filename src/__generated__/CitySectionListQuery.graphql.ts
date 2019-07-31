@@ -54,17 +54,17 @@ fragment CitySectionList_city_3BpxDU on City {
         slug
         internalID
         isStubShow
-        is_followed
-        start_at
-        end_at
+        is_followed: isFollowed
+        start_at: startAt
+        end_at: endAt
         status
         href
         type
         name
-        cover_image {
+        cover_image: coverImage {
           url
         }
-        exhibition_period
+        exhibition_period: exhibitionPeriod
         partner {
           __typename
           ... on Partner {
@@ -346,22 +346,22 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "is_followed",
+                        "alias": "is_followed",
+                        "name": "isFollowed",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "start_at",
+                        "alias": "start_at",
+                        "name": "startAt",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "end_at",
+                        "alias": "end_at",
+                        "name": "endAt",
                         "args": null,
                         "storageKey": null
                       },
@@ -383,8 +383,8 @@ return {
                       (v6/*: any*/),
                       {
                         "kind": "LinkedField",
-                        "alias": null,
-                        "name": "cover_image",
+                        "alias": "cover_image",
+                        "name": "coverImage",
                         "storageKey": null,
                         "args": null,
                         "concreteType": "Image",
@@ -401,8 +401,8 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "exhibition_period",
+                        "alias": "exhibition_period",
+                        "name": "exhibitionPeriod",
                         "args": null,
                         "storageKey": null
                       },
@@ -499,7 +499,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySectionListQuery",
-    "id": "45ac967b1690b5e96c900ac6a63c230b",
+    "id": "2ba321e70f65e71cd7421809e6dafcdc",
     "text": null,
     "metadata": {}
   }

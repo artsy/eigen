@@ -101,8 +101,8 @@ return {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "additional_information",
+      "alias": "additional_information",
+      "name": "additionalInformation",
       "args": null,
       "storageKey": null
     },
@@ -122,8 +122,8 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_history",
+      "alias": "exhibition_history",
+      "name": "exhibitionHistory",
       "args": null,
       "storageKey": null
     },
@@ -171,8 +171,8 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "biography_blurb",
+          "alias": "biography_blurb",
+          "name": "biographyBlurb",
           "storageKey": null,
           "args": null,
           "concreteType": "ArtistBlurb",
@@ -291,8 +291,8 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "image_rights",
+      "alias": "image_rights",
+      "name": "imageRights",
       "args": null,
       "storageKey": null
     },
@@ -381,29 +381,29 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_acquireable",
+      "alias": "is_acquireable",
+      "name": "isAcquireable",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_offerable",
+      "alias": "is_offerable",
+      "name": "isOfferable",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_biddable",
+      "alias": "is_biddable",
+      "name": "isBiddable",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_inquireable",
+      "alias": "is_inquireable",
+      "name": "isInquireable",
       "args": null,
       "storageKey": null
     },
@@ -462,5 +462,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'feabe4b49c5aefe30033f449a6c74fc1';
+(node as any).hash = '7829df9ceeb99a0be4b6848ae9065864';
 export default node;

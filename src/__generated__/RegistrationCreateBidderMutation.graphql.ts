@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateBidderInput = {
-    readonly sale_id: string;
+    readonly saleID: string;
     readonly clientMutationId?: string | null;
 };
 export type RegistrationCreateBidderMutationVariables = {
@@ -30,7 +30,7 @@ mutation RegistrationCreateBidderMutation(
   createBidder(input: $input) {
     bidder {
       internalID
-      qualified_for_bidding
+      qualified_for_bidding: qualifiedForBidding
       id
     }
   }
@@ -62,8 +62,8 @@ v2 = {
 },
 v3 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "qualified_for_bidding",
+  "alias": "qualified_for_bidding",
+  "name": "qualifiedForBidding",
   "args": null,
   "storageKey": null
 };
@@ -143,11 +143,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "RegistrationCreateBidderMutation",
-    "id": "69d40b5b15c7778008cfb5bb845c53dd",
+    "id": "77382fd385a089ff35904fa26513c733",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3021c683a42e9818aceb538819dc714b';
+(node as any).hash = 'bcadd34deaab431f3a6f68cd7bac7ecf';
 export default node;

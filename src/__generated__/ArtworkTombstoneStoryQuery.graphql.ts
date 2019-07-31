@@ -27,7 +27,7 @@ fragment ArtworkTombstone_artwork on Artwork {
   title
   medium
   date
-  cultural_maker
+  cultural_maker: culturalMaker
   artists {
     name
     href
@@ -38,8 +38,8 @@ fragment ArtworkTombstone_artwork on Artwork {
     in
     cm
   }
-  edition_of
-  attribution_class {
+  edition_of: editionOf
+  attribution_class: attributionClass {
     shortDescription
     id
   }
@@ -49,7 +49,7 @@ fragment FollowArtistButton_artist on Artist {
   id
   slug
   internalID
-  is_followed
+  is_followed: isFollowed
 }
 */
 
@@ -132,8 +132,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "cultural_maker",
+            "alias": "cultural_maker",
+            "name": "culturalMaker",
             "args": null,
             "storageKey": null
           },
@@ -177,8 +177,8 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "is_followed",
+                "alias": "is_followed",
+                "name": "isFollowed",
                 "args": null,
                 "storageKey": null
               }
@@ -211,15 +211,15 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "edition_of",
+            "alias": "edition_of",
+            "name": "editionOf",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "attribution_class",
+            "alias": "attribution_class",
+            "name": "attributionClass",
             "storageKey": null,
             "args": null,
             "concreteType": "AttributionClass",
@@ -243,7 +243,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTombstoneStoryQuery",
-    "id": "54599ef5ef2c7c3536a7ef14134edc10",
+    "id": "21fe5de37b0090fbce07b014946a7a88",
     "text": null,
     "metadata": {}
   }

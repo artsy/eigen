@@ -28,8 +28,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "minimum_next_bid",
+      "alias": "minimum_next_bid",
+      "name": "minimumNextBid",
       "storageKey": null,
       "args": null,
       "concreteType": "SaleArtworkMinimumNextBid",
@@ -69,15 +69,15 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "live_start_at",
+          "alias": "live_start_at",
+          "name": "liveStartAt",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "end_at",
+          "alias": "end_at",
+          "name": "endAt",
           "args": null,
           "storageKey": null
         },
@@ -92,5 +92,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '9fdf32ca52ce9d45e2f6f425f27f5d87';
+(node as any).hash = 'ee847f087f9e4c73c05790583a54b77a';
 export default node;

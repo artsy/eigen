@@ -143,8 +143,8 @@ return {
                 (v2/*: any*/),
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "exhibition_period",
+                  "alias": "exhibition_period",
+                  "name": "exhibitionPeriod",
                   "args": null,
                   "storageKey": null
                 },
@@ -213,15 +213,15 @@ return {
                   "selections": [
                     {
                       "kind": "ScalarField",
-                      "alias": null,
-                      "name": "image_url",
+                      "alias": "image_url",
+                      "name": "imageURL",
                       "args": null,
                       "storageKey": null
                     },
                     {
                       "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspect_ratio",
+                      "alias": "aspect_ratio",
+                      "name": "aspectRatio",
                       "args": null,
                       "storageKey": null
                     },
@@ -302,15 +302,15 @@ return {
                 },
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "start_at",
+                  "alias": "start_at",
+                  "name": "startAt",
                   "args": null,
                   "storageKey": null
                 },
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "end_at",
+                  "alias": "end_at",
+                  "name": "endAt",
                   "args": null,
                   "storageKey": null
                 },
@@ -362,5 +362,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b76fad505f2a5b06df60c65b3c35cd5b';
+(node as any).hash = '689506dc29450e89f6db71ff31fb9732';
 export default node;

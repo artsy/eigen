@@ -46,15 +46,15 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "created_at",
+      "alias": "created_at",
+      "name": "createdAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_from_user",
+      "alias": "is_from_user",
+      "name": "isFromUser",
       "args": null,
       "storageKey": null
     },
@@ -94,8 +94,8 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "payment_url",
+          "alias": "payment_url",
+          "name": "paymentURL",
           "args": null,
           "storageKey": null
         },
@@ -124,22 +124,22 @@ const node: ReaderFragment = {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "content_type",
+          "alias": "content_type",
+          "name": "contentType",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "download_url",
+          "alias": "download_url",
+          "name": "downloadURL",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "file_name",
+          "alias": "file_name",
+          "name": "fileName",
           "args": null,
           "storageKey": null
         },
@@ -157,5 +157,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b71af3f6aaf72a70554f326dc5a84f78';
+(node as any).hash = 'b8137043d166ef958187233ef500f3c4';
 export default node;

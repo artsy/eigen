@@ -59,21 +59,21 @@ const node: ReaderFragment = {
       "kind": "LinkedField",
       "alias": "sale_artworks",
       "name": "__LotsByFollowedArtists_sale_artworks_connection",
-      "storageKey": "__LotsByFollowedArtists_sale_artworks_connection(include_artworks_by_followed_artists:true,is_auction:true,live_sale:true)",
+      "storageKey": "__LotsByFollowedArtists_sale_artworks_connection(includeArtworksByFollowedArtists:true,isAuction:true,liveSale:true)",
       "args": [
         {
           "kind": "Literal",
-          "name": "include_artworks_by_followed_artists",
+          "name": "includeArtworksByFollowedArtists",
           "value": true
         },
         {
           "kind": "Literal",
-          "name": "is_auction",
+          "name": "isAuction",
           "value": true
         },
         {
           "kind": "Literal",
-          "name": "live_sale",
+          "name": "liveSale",
           "value": true
         }
       ],
@@ -161,5 +161,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'dcdc4bfa65bbc0cf27b7a438c8c3a5b7';
+(node as any).hash = '046c7328063420ca7565986e1aa9caff';
 export default node;

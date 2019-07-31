@@ -63,9 +63,14 @@ return {
     },
     {
       "kind": "LocalArgument",
-      "name": "price_range",
+      "name": "priceRange",
       "type": "String",
       "defaultValue": "*-*"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "price_range",
+      "type": "String"
     }
   ],
   "selections": [
@@ -79,8 +84,8 @@ return {
     (v0/*: any*/),
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "filtered_artworks",
+      "alias": "filtered_artworks",
+      "name": "filteredArtworks",
       "storageKey": null,
       "args": [
         {
@@ -94,7 +99,7 @@ return {
         },
         {
           "kind": "Literal",
-          "name": "for_sale",
+          "name": "forSale",
           "value": true
         },
         {
@@ -104,7 +109,7 @@ return {
         },
         {
           "kind": "Variable",
-          "name": "price_range",
+          "name": "priceRange",
           "variableName": "price_range"
         },
         {
@@ -201,5 +206,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '662d8691f155b24b01fb77a4c0cbaa62';
+(node as any).hash = '19a8feb763c444519cb3daad41ebb2de';
 export default node;

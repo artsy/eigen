@@ -66,8 +66,8 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_consignable",
+          "alias": "is_consignable",
+          "name": "isConsignable",
           "args": null,
           "storageKey": null
         }
@@ -84,15 +84,15 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_auction",
+          "alias": "is_auction",
+          "name": "isAuction",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_closed",
+          "alias": "is_closed",
+          "name": "isClosed",
           "args": null,
           "storageKey": null
         }
@@ -110,5 +110,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f60b5ce3297be1b59d06a04d747f28cd';
+(node as any).hash = 'e28168f24f0f1d74af8b4e5d67a302b9';
 export default node;

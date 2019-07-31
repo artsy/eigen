@@ -115,8 +115,8 @@ const node: ReaderFragment = {
                 },
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "last_message",
+                  "alias": "last_message",
+                  "name": "lastMessage",
                   "args": null,
                   "storageKey": null
                 },
@@ -147,5 +147,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4d6f13fc9a85f0c82d90bc6cb81c7d31';
+(node as any).hash = '93527cb3d95213deee786e78642fdac8';
 export default node;

@@ -62,8 +62,8 @@ return {
     (v0/*: any*/),
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "cover_image",
+      "alias": "cover_image",
+      "name": "coverImage",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
@@ -107,5 +107,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '071a6c33b3828877546120c2ce2fca8d';
+(node as any).hash = '913664f2b5ed820cd0a1831028e31c44';
 export default node;

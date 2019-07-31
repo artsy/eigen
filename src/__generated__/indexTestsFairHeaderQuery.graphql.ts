@@ -32,7 +32,7 @@ fragment FairHeader_fair on Fair {
     artists
     partners
   }
-  followed_content {
+  followed_content: followedContent {
     artists {
       name
       href
@@ -46,7 +46,7 @@ fragment FairHeader_fair on Fair {
       id
     }
   }
-  partner_names: shows_connection(first: 2) {
+  partner_names: showsConnection(first: 2) {
     edges {
       node {
         slug
@@ -83,8 +83,8 @@ fragment FairHeader_fair on Fair {
     }
   }
   image {
-    image_url
-    aspect_ratio
+    image_url: imageURL
+    aspect_ratio: aspectRatio
     url
   }
   profile {
@@ -98,11 +98,11 @@ fragment FairHeader_fair on Fair {
     id
     slug
     name
-    is_followed
+    is_followed: isFollowed
   }
-  start_at
-  end_at
-  exhibition_period
+  start_at: startAt
+  end_at: endAt
+  exhibition_period: exhibitionPeriod
 }
 */
 
@@ -234,8 +234,8 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "followed_content",
+            "alias": "followed_content",
+            "name": "followedContent",
             "storageKey": null,
             "args": null,
             "concreteType": "FollowedContent",
@@ -270,8 +270,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "partner_names",
-            "name": "shows_connection",
-            "storageKey": "shows_connection(first:2)",
+            "name": "showsConnection",
+            "storageKey": "showsConnection(first:2)",
             "args": [
               {
                 "kind": "Literal",
@@ -397,15 +397,15 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "image_url",
+                "alias": "image_url",
+                "name": "imageURL",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "aspect_ratio",
+                "alias": "aspect_ratio",
+                "name": "aspectRatio",
                 "args": null,
                 "storageKey": null
               },
@@ -472,8 +472,8 @@ return {
               (v3/*: any*/),
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "is_followed",
+                "alias": "is_followed",
+                "name": "isFollowed",
                 "args": null,
                 "storageKey": null
               }
@@ -481,22 +481,22 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "start_at",
+            "alias": "start_at",
+            "name": "startAt",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "end_at",
+            "alias": "end_at",
+            "name": "endAt",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "exhibition_period",
+            "alias": "exhibition_period",
+            "name": "exhibitionPeriod",
             "args": null,
             "storageKey": null
           },
@@ -508,7 +508,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairHeaderQuery",
-    "id": "8df986e29eb23b9ca97e12e6f1e2a00a",
+    "id": "39bcdd26ffc093fbb271c92644494f27",
     "text": null,
     "metadata": {}
   }

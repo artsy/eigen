@@ -98,8 +98,8 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "price_range",
+          "alias": "price_range",
+          "name": "priceRange",
           "args": null,
           "storageKey": null
         }
@@ -165,5 +165,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c07fd54d9c7ffbc91fdab480eaa578d5';
+(node as any).hash = 'df44d0903ef86d6a5611d7dca5fe5747';
 export default node;

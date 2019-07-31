@@ -40,9 +40,9 @@ fragment Conversation_me on Me {
       email
       id
     }
-    last_message_id
+    last_message_id: lastMessageID
     ...Messages_conversation
-    initial_message
+    initial_message: initialMessage
     unread
   }
 }
@@ -61,7 +61,7 @@ fragment Messages_conversation on Conversation {
     initials
     id
   }
-  initial_message
+  initial_message: initialMessage
   messages(first: 10, sort: DESC) {
     pageInfo {
       startCursor
@@ -73,8 +73,8 @@ fragment Messages_conversation on Conversation {
       cursor
       node {
         id
-        impulse_id
-        is_from_user
+        impulse_id: impulseID
+        is_from_user: isFromUser
         body
         attachments {
           internalID
@@ -111,22 +111,22 @@ fragment Messages_conversation on Conversation {
 
 fragment Message_message on Message {
   body
-  created_at
-  is_from_user
+  created_at: createdAt
+  is_from_user: isFromUser
   from {
     name
     email
   }
   invoice {
-    payment_url
+    payment_url: paymentURL
     ...InvoicePreview_invoice
     id
   }
   attachments {
     internalID
-    content_type
-    download_url
-    file_name
+    content_type: contentType
+    download_url: downloadURL
+    file_name: fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
     id
@@ -137,7 +137,7 @@ fragment ArtworkPreview_artwork on Artwork {
   slug
   internalID
   title
-  artist_names
+  artist_names: artistNames
   date
   image {
     url
@@ -148,7 +148,7 @@ fragment ShowPreview_show on Show {
   slug
   internalID
   name
-  cover_image {
+  cover_image: coverImage {
     url
   }
   fair {
@@ -170,19 +170,19 @@ fragment ShowPreview_show on Show {
 }
 
 fragment InvoicePreview_invoice on Invoice {
-  payment_url
+  payment_url: paymentURL
   state
   total
-  lewitt_invoice_id
+  lewitt_invoice_id: lewittInvoiceID
 }
 
 fragment ImagePreview_attachment on Attachment {
-  download_url
+  download_url: downloadURL
   ...AttachmentPreview_attachment
 }
 
 fragment PDFPreview_attachment on Attachment {
-  file_name
+  file_name: fileName
   ...AttachmentPreview_attachment
 }
 
@@ -366,15 +366,15 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "last_message_id",
+                "alias": "last_message_id",
+                "name": "lastMessageID",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "initial_message",
+                "alias": "initial_message",
+                "name": "initialMessage",
                 "args": null,
                 "storageKey": null
               },
@@ -454,15 +454,15 @@ return {
                           (v2/*: any*/),
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "impulse_id",
+                            "alias": "impulse_id",
+                            "name": "impulseID",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_from_user",
+                            "alias": "is_from_user",
+                            "name": "isFromUser",
                             "args": null,
                             "storageKey": null
                           },
@@ -486,22 +486,22 @@ return {
                               (v2/*: any*/),
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "content_type",
+                                "alias": "content_type",
+                                "name": "contentType",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "download_url",
+                                "alias": "download_url",
+                                "name": "downloadURL",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "file_name",
+                                "alias": "file_name",
+                                "name": "fileName",
                                 "args": null,
                                 "storageKey": null
                               }
@@ -509,8 +509,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "created_at",
+                            "alias": "created_at",
+                            "name": "createdAt",
                             "args": null,
                             "storageKey": null
                           },
@@ -538,8 +538,8 @@ return {
                             "selections": [
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "payment_url",
+                                "alias": "payment_url",
+                                "name": "paymentURL",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -559,8 +559,8 @@ return {
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "lewitt_invoice_id",
+                                "alias": "lewitt_invoice_id",
+                                "name": "lewittInvoiceID",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -619,8 +619,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "artist_names",
+                            "alias": "artist_names",
+                            "name": "artistNames",
                             "args": null,
                             "storageKey": null
                           },
@@ -666,8 +666,8 @@ return {
                           (v3/*: any*/),
                           {
                             "kind": "LinkedField",
-                            "alias": null,
-                            "name": "cover_image",
+                            "alias": "cover_image",
+                            "name": "coverImage",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "Image",
@@ -730,7 +730,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersConversationQuery",
-    "id": "51e2b70ceb88ca77bfe689f10f491e17",
+    "id": "366245e39b08b4de65d668b72cf8eb9d",
     "text": null,
     "metadata": {}
   }

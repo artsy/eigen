@@ -26,8 +26,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "thumbnail_title",
+      "alias": "thumbnail_title",
+      "name": "thumbnailTitle",
       "args": null,
       "storageKey": null
     },
@@ -58,8 +58,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "thumbnail_image",
+      "alias": "thumbnail_image",
+      "name": "thumbnailImage",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
@@ -82,5 +82,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0c88898acb243d600094f137ff15cde0';
+(node as any).hash = '8f81ba8bc61dfd95e6f0931566199b1e';
 export default node;

@@ -55,7 +55,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": "narrow_image_url",
-      "name": "background_image_url",
+      "name": "backgroundImageURL",
       "args": [
         {
           "kind": "Literal",
@@ -63,12 +63,12 @@ const node: ReaderFragment = {
           "value": "NARROW"
         }
       ],
-      "storageKey": "background_image_url(version:\"NARROW\")"
+      "storageKey": "backgroundImageURL(version:\"NARROW\")"
     },
     {
       "kind": "ScalarField",
       "alias": "wide_image_url",
-      "name": "background_image_url",
+      "name": "backgroundImageURL",
       "args": [
         {
           "kind": "Literal",
@@ -76,9 +76,9 @@ const node: ReaderFragment = {
           "value": "WIDE"
         }
       ],
-      "storageKey": "background_image_url(version:\"WIDE\")"
+      "storageKey": "backgroundImageURL(version:\"WIDE\")"
     }
   ]
 };
-(node as any).hash = '4ae7914d80f5d917a4d55d6d7a224fab';
+(node as any).hash = '90bba728424a5ef6818b6650fcda3f76';
 export default node;

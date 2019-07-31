@@ -30,13 +30,13 @@ query FairExhibitorsQuery(
 fragment FairExhibitors_fair on Fair {
   slug
   internalID
-  exhibitors_grouped_by_name {
+  exhibitors_grouped_by_name: exhibitorsGroupedByName {
     letter
     exhibitors {
       name
       slug
-      profile_id
-      partner_id
+      profile_id: profileID
+      partner_id: partnerID
     }
   }
 }
@@ -116,8 +116,8 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "exhibitors_grouped_by_name",
+            "alias": "exhibitors_grouped_by_name",
+            "name": "exhibitorsGroupedByName",
             "storageKey": null,
             "args": null,
             "concreteType": "FairExhibitorsGroup",
@@ -149,15 +149,15 @@ return {
                   (v2/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "profile_id",
+                    "alias": "profile_id",
+                    "name": "profileID",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "partner_id",
+                    "alias": "partner_id",
+                    "name": "partnerID",
                     "args": null,
                     "storageKey": null
                   }
@@ -179,7 +179,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairExhibitorsQuery",
-    "id": "244410ee810923f6fe93fcf8b15a4a98",
+    "id": "97ecbd272f32e08e96c01515dd329505",
     "text": null,
     "metadata": {}
   }

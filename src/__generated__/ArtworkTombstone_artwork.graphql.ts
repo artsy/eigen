@@ -57,8 +57,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "cultural_maker",
+      "alias": "cultural_maker",
+      "name": "culturalMaker",
       "args": null,
       "storageKey": null
     },
@@ -119,15 +119,15 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "edition_of",
+      "alias": "edition_of",
+      "name": "editionOf",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "attribution_class",
+      "alias": "attribution_class",
+      "name": "attributionClass",
       "storageKey": null,
       "args": null,
       "concreteType": "AttributionClass",
@@ -144,5 +144,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '978421a6b15e6519bafb06dd33dd77e3';
+(node as any).hash = '19a31ace2733b8edffc8205a45dbe1ee';
 export default node;

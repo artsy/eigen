@@ -66,8 +66,8 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "mobile_image",
+          "alias": "mobile_image",
+          "name": "mobileImage",
           "storageKey": null,
           "args": null,
           "concreteType": "Image",
@@ -94,5 +94,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '45d895ffb382bc512a9e19b51cc5d51c';
+(node as any).hash = 'ddd85fc8061a3eaeaea33ae46f408748';
 export default node;

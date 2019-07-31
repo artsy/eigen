@@ -100,8 +100,8 @@ return {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_default_profile_public",
+          "alias": "is_default_profile_public",
+          "name": "isDefaultProfilePublic",
           "args": null,
           "storageKey": null
         },
@@ -150,8 +150,8 @@ return {
             (v0/*: any*/),
             {
               "kind": "ScalarField",
-              "alias": null,
-              "name": "is_followed",
+              "alias": "is_followed",
+              "name": "isFollowed",
               "args": null,
               "storageKey": null
             },
@@ -204,5 +204,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '35d281c80ad0006c6889a20fa7ba8efa';
+(node as any).hash = '5bb4d3858878280364e20e02f381df01';
 export default node;

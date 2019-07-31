@@ -76,8 +76,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "artists_without_artworks",
+      "alias": "artists_without_artworks",
+      "name": "artistsWithoutArtworks",
       "storageKey": null,
       "args": null,
       "concreteType": "Artist",
@@ -87,5 +87,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3aa4e315953e40cb75e11949dd1e1b39';
+(node as any).hash = '7ac828504e3df14ef979014e1e08b843';
 export default node;

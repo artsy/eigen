@@ -173,8 +173,8 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "initial_message",
+      "alias": "initial_message",
+      "name": "initialMessage",
       "args": null,
       "storageKey": null
     },
@@ -254,15 +254,15 @@ return {
                 (v0/*: any*/),
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "impulse_id",
+                  "alias": "impulse_id",
+                  "name": "impulseID",
                   "args": null,
                   "storageKey": null
                 },
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "is_from_user",
+                  "alias": "is_from_user",
+                  "name": "isFromUser",
                   "args": null,
                   "storageKey": null
                 },
@@ -363,5 +363,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '84319c45becafc41c50bc51f3d909ca0';
+(node as any).hash = 'ecb2d6daa828b6f1c8b326a8a3cc775f';
 export default node;

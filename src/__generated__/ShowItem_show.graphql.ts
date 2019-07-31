@@ -59,15 +59,15 @@ return {
     (v0/*: any*/),
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
+      "alias": "exhibition_period",
+      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "alias": "end_at",
+      "name": "endAt",
       "args": null,
       "storageKey": null
     },
@@ -89,8 +89,8 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "aspect_ratio",
+          "alias": "aspect_ratio",
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
@@ -117,5 +117,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c24cd3b368beaacb0e6da64cc1f773b2';
+(node as any).hash = '61249cbfc1dc3fc184951041d3c358c1';
 export default node;

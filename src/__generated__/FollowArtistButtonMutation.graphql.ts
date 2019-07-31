@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
-    readonly artist_id?: string | null;
+    readonly artistID?: string | null;
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
@@ -31,7 +31,7 @@ mutation FollowArtistButtonMutation(
   followArtist(input: $input) {
     artist {
       id
-      is_followed
+      is_followed: isFollowed
     }
   }
 }
@@ -80,8 +80,8 @@ v1 = [
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
+            "alias": "is_followed",
+            "name": "isFollowed",
             "args": null,
             "storageKey": null
           }
@@ -109,11 +109,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "FollowArtistButtonMutation",
-    "id": "0e1932218dd1ee38e2f1390ecd3c9908",
+    "id": "7e259ce40d6cc7ef866f7905023fb82f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a53a243d72f2e800251c2bce22970818';
+(node as any).hash = '7250e3e343b7c9d57f8828ce57754a7c';
 export default node;

@@ -46,8 +46,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "has_metadata",
+      "alias": "has_metadata",
+      "name": "hasMetadata",
       "args": null,
       "storageKey": null
     },
@@ -69,15 +69,15 @@ const node: ReaderFragment = {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "partner_shows",
+          "alias": "partner_shows",
+          "name": "partnerShows",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "related_artists",
+          "alias": "related_artists",
+          "name": "relatedArtists",
           "args": null,
           "storageKey": null
         },
@@ -112,5 +112,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd300dcdd349b1b94568b9d331ff72cd2';
+(node as any).hash = 'f2549700a51ece10bf3a4ebc5336c666';
 export default node;

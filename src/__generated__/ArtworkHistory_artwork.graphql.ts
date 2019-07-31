@@ -28,8 +28,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_history",
+      "alias": "exhibition_history",
+      "name": "exhibitionHistory",
       "args": null,
       "storageKey": null
     },
@@ -42,5 +42,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ee3b6163a6da45b7a622613984be0d6b';
+(node as any).hash = 'b561cdd312ffb04041aa29c255b52d2b';
 export default node;

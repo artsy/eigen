@@ -82,8 +82,8 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_followed",
+      "alias": "is_followed",
+      "name": "isFollowed",
       "args": null,
       "storageKey": null
     },
@@ -157,8 +157,8 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
+      "alias": "exhibition_period",
+      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     },
@@ -171,8 +171,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "cover_image",
+      "alias": "cover_image",
+      "name": "coverImage",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
@@ -187,8 +187,8 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "aspect_ratio",
+          "alias": "aspect_ratio",
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
@@ -196,27 +196,27 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_fair_booth",
+      "alias": "is_fair_booth",
+      "name": "isFairBooth",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "start_at",
+      "alias": "start_at",
+      "name": "startAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "alias": "end_at",
+      "name": "endAt",
       "args": null,
       "storageKey": null
     }
   ]
 };
 })();
-(node as any).hash = '29f3e211c276bba931b7a9a18efd07e1';
+(node as any).hash = 'f3460269adffd20b7426b11ac9a20101';
 export default node;

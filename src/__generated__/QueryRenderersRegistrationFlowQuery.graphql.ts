@@ -46,16 +46,16 @@ fragment RegistrationFlow_me on Me {
 }
 
 fragment Registration_me on Me {
-  has_credit_cards
+  has_credit_cards: hasCreditCards
 }
 
 fragment Registration_sale on Sale {
   slug
-  end_at
-  is_preview
-  live_start_at
+  end_at: endAt
+  is_preview: isPreview
+  live_start_at: liveStartAt
   name
-  start_at
+  start_at: startAt
 }
 */
 
@@ -157,29 +157,29 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "end_at",
+            "alias": "end_at",
+            "name": "endAt",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_preview",
+            "alias": "is_preview",
+            "name": "isPreview",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "live_start_at",
+            "alias": "live_start_at",
+            "name": "liveStartAt",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "start_at",
+            "alias": "start_at",
+            "name": "startAt",
             "args": null,
             "storageKey": null
           },
@@ -197,8 +197,8 @@ return {
         "selections": [
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "has_credit_cards",
+            "alias": "has_credit_cards",
+            "name": "hasCreditCards",
             "args": null,
             "storageKey": null
           },
@@ -210,7 +210,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersRegistrationFlowQuery",
-    "id": "fdfb305426103845aca7fa528f290969",
+    "id": "2f122dcbf2ba168b4064dbda946e403c",
     "text": null,
     "metadata": {}
   }

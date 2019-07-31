@@ -21,8 +21,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "download_url",
+      "alias": "download_url",
+      "name": "downloadURL",
       "args": null,
       "storageKey": null
     },
@@ -33,5 +33,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1c4f00856bbc0864503563b67da5d524';
+(node as any).hash = '110bdc586576e57275188aca67e46613';
 export default node;

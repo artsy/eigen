@@ -41,8 +41,8 @@ const node: ReaderFragment = {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "for_sale_artworks",
+          "alias": "for_sale_artworks",
+          "name": "forSaleArtworks",
           "args": null,
           "storageKey": null
         }
@@ -60,5 +60,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'aacec13b07a0e12d6ed4f1b6fbd616ae';
+(node as any).hash = '514384b94d84db0ae79f6560249e55f3';
 export default node;

@@ -22,8 +22,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "event_type",
+      "alias": "event_type",
+      "name": "eventType",
       "args": null,
       "storageKey": null
     },
@@ -36,19 +36,19 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "start_at",
+      "alias": "start_at",
+      "name": "startAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "alias": "end_at",
+      "name": "endAt",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = '6539ecec157d06c85f44813b23d33ddc';
+(node as any).hash = '0b3e65592f0bb739551d5dfb9c3ebf55';
 export default node;

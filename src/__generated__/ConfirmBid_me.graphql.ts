@@ -28,8 +28,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "has_qualified_credit_cards",
+      "alias": "has_qualified_credit_cards",
+      "name": "hasQualifiedCreditCards",
       "args": null,
       "storageKey": null
     },
@@ -41,7 +41,7 @@ const node: ReaderFragment = {
       "args": [
         {
           "kind": "Variable",
-          "name": "sale_id",
+          "name": "saleID",
           "variableName": "saleID"
         }
       ],
@@ -50,8 +50,8 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "qualified_for_bidding",
+          "alias": "qualified_for_bidding",
+          "name": "qualifiedForBidding",
           "args": null,
           "storageKey": null
         }
@@ -59,5 +59,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1b89429657eeb192da84170bb8629c15';
+(node as any).hash = '0286e30226bf7c9a94564705a699336f';
 export default node;

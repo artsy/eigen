@@ -31,10 +31,10 @@ fragment Fairs_me on Me {
           id
           profile {
             slug
-            is_followed
+            is_followed: isFollowed
             id
           }
-          exhibition_period
+          exhibition_period: exhibitionPeriod
           name
           counts {
             partners
@@ -43,8 +43,8 @@ fragment Fairs_me on Me {
           image {
             url
           }
-          start_at
-          end_at
+          start_at: startAt
+          end_at: endAt
           __typename
         }
         cursor
@@ -174,8 +174,8 @@ return {
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": null,
-                                "name": "is_followed",
+                                "alias": "is_followed",
+                                "name": "isFollowed",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -184,8 +184,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "exhibition_period",
+                            "alias": "exhibition_period",
+                            "name": "exhibitionPeriod",
                             "args": null,
                             "storageKey": null
                           },
@@ -241,15 +241,15 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "start_at",
+                            "alias": "start_at",
+                            "name": "startAt",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "end_at",
+                            "alias": "end_at",
+                            "name": "endAt",
                             "args": null,
                             "storageKey": null
                           },
@@ -317,7 +317,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteFairsQuery",
-    "id": "e68a46d9c9ae3b088bed5db8b261d16d",
+    "id": "ff957984c320110ac6e4dd6e6c95a2ac",
     "text": null,
     "metadata": {}
   }

@@ -21,8 +21,8 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "file_name",
+      "alias": "file_name",
+      "name": "fileName",
       "args": null,
       "storageKey": null
     },
@@ -33,5 +33,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '812b3b97609acbb604557bdaefbac873';
+(node as any).hash = '989ac15593b7291bc13ef16c11bce59f';
 export default node;

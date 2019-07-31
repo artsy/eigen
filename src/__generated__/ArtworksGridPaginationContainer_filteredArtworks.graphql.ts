@@ -146,8 +146,8 @@ return {
                   "selections": [
                     {
                       "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspect_ratio",
+                      "alias": "aspect_ratio",
+                      "name": "aspectRatio",
                       "args": null,
                       "storageKey": null
                     }
@@ -181,5 +181,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'cecb3cb04038e1c73cd53d0fc5ecfbba';
+(node as any).hash = '73cfc68cb98be7d2592949410aad509d';
 export default node;

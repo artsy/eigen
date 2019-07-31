@@ -43,12 +43,12 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_followed",
+      "alias": "is_followed",
+      "name": "isFollowed",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'eee7f655b41839900361749e24f62a7e';
+(node as any).hash = '6a89e893f21a7504ee59138e10dcdc8e';
 export default node;

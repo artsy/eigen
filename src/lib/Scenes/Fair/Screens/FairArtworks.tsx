@@ -67,7 +67,7 @@ export const FairArtworksContainer = createRefetchContainer(
         artworks: filteredArtworks(
           size: 0
           medium: $medium
-          priceRange: $price_range
+          priceRange: $priceRange
           aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
         ) {
           ...FilteredInfiniteScrollGrid_filteredArtworks

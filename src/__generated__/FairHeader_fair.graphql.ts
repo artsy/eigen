@@ -163,8 +163,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "followed_content",
+      "alias": "followed_content",
+      "name": "followedContent",
       "storageKey": null,
       "args": null,
       "concreteType": "FollowedContent",
@@ -198,8 +198,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": "partner_names",
-      "name": "shows_connection",
-      "storageKey": "shows_connection(first:2)",
+      "name": "showsConnection",
+      "storageKey": "showsConnection(first:2)",
       "args": [
         {
           "kind": "Literal",
@@ -315,15 +315,15 @@ return {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "image_url",
+          "alias": "image_url",
+          "name": "imageURL",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "aspect_ratio",
+          "alias": "aspect_ratio",
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         },
@@ -396,8 +396,8 @@ return {
         (v2/*: any*/),
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_followed",
+          "alias": "is_followed",
+          "name": "isFollowed",
           "args": null,
           "storageKey": null
         }
@@ -405,27 +405,27 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "start_at",
+      "alias": "start_at",
+      "name": "startAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "alias": "end_at",
+      "name": "endAt",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
+      "alias": "exhibition_period",
+      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     }
   ]
 };
 })();
-(node as any).hash = '7a2031253ae46bbe0f1631820af278e5';
+(node as any).hash = '6fd2bf1a89e58ebb5a9df161ad3c178c';
 export default node;

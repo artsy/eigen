@@ -101,15 +101,15 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "last_message",
+      "alias": "last_message",
+      "name": "lastMessage",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "last_message_at",
+      "alias": "last_message_at",
+      "name": "lastMessageAt",
       "args": null,
       "storageKey": null
     },
@@ -165,8 +165,8 @@ return {
                 },
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "artist_names",
+                  "alias": "artist_names",
+                  "name": "artistNames",
                   "args": null,
                   "storageKey": null
                 },
@@ -199,8 +199,8 @@ return {
                 (v0/*: any*/),
                 {
                   "kind": "LinkedField",
-                  "alias": null,
-                  "name": "cover_image",
+                  "alias": "cover_image",
+                  "name": "coverImage",
                   "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
@@ -216,5 +216,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b7288fd5e5b265c114eca8c054883e80';
+(node as any).hash = 'ac3f7de52b8ab5b35e443600bfc0039f';
 export default node;

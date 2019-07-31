@@ -36,7 +36,7 @@ fragment FairArtists_fair on Fair {
       cursor
       node {
         ...ArtistListItem_artist
-        sortable_id
+        sortable_id: sortableID
         href
         internalID
         slug
@@ -54,7 +54,7 @@ fragment ArtistListItem_artist on Artist {
   name
   initials
   href
-  is_followed
+  is_followed: isFollowed
   nationality
   birthday
   deathday
@@ -235,8 +235,8 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "is_followed",
+                        "alias": "is_followed",
+                        "name": "isFollowed",
                         "args": null,
                         "storageKey": null
                       },
@@ -281,8 +281,8 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "sortable_id",
+                        "alias": "sortable_id",
+                        "name": "sortableID",
                         "args": null,
                         "storageKey": null
                       },
@@ -316,7 +316,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtistsTestsQuery",
-    "id": "a196e6e9b86f4d646a57db06b5866684",
+    "id": "62ea2baced9f4d9b9389a1b90d3d13c4",
     "text": null,
     "metadata": {}
   }

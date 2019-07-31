@@ -42,8 +42,8 @@ const node: ReaderFragment = {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "biography_blurb",
+          "alias": "biography_blurb",
+          "name": "biographyBlurb",
           "storageKey": null,
           "args": null,
           "concreteType": "ArtistBlurb",
@@ -67,5 +67,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ca1343bb3e39632c24cb5f8e6bb25abe';
+(node as any).hash = '7192b5741db2f031a7916f7289488406';
 export default node;

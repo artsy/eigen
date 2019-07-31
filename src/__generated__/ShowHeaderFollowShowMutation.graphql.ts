@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowShowInput = {
-    readonly partner_show_id?: string | null;
+    readonly partnerShowID?: string | null;
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
@@ -33,7 +33,7 @@ mutation ShowHeaderFollowShowMutation(
     show {
       slug
       internalID
-      is_followed
+      is_followed: isFollowed
       id
     }
   }
@@ -72,8 +72,8 @@ v3 = {
 },
 v4 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
+  "alias": "is_followed",
+  "name": "isFollowed",
   "args": null,
   "storageKey": null
 };
@@ -155,11 +155,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ShowHeaderFollowShowMutation",
-    "id": "6bf70fc52a6ba2736b953151ecab82da",
+    "id": "d6dcea734ed2c6dc355355d8a3a1c833",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4e804a5a76945793f8490463e1e21900';
+(node as any).hash = 'c6d7386195fa69df1834a4f120251101';
 export default node;

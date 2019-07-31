@@ -24,8 +24,8 @@ query ActiveBidsQuery {
 }
 
 fragment ActiveBids_me on Me {
-  lot_standings(live: true) {
-    most_recent_bid {
+  lot_standings: lotStandings(live: true) {
+    most_recent_bid: mostRecentBid {
       id
     }
     ...ActiveBid_bid
@@ -33,34 +33,34 @@ fragment ActiveBids_me on Me {
 }
 
 fragment ActiveBid_bid on LotStanding {
-  is_leading_bidder
+  is_leading_bidder: isLeadingBidder
   sale {
     href
-    is_live_open
+    is_live_open: isLiveOpen
     id
   }
-  most_recent_bid {
+  most_recent_bid: mostRecentBid {
     id
-    max_bid {
+    max_bid: maxBid {
       display
     }
-    sale_artwork {
+    sale_artwork: saleArtwork {
       artwork {
         href
         image {
           url
         }
-        artist_names
+        artist_names: artistNames
         id
       }
       counts {
-        bidder_positions
+        bidder_positions: bidderPositions
       }
-      highest_bid {
+      highest_bid: highestBid {
         display
       }
-      lot_label
-      reserve_status
+      lot_label: lotLabel
+      reserve_status: reserveStatus
       id
     }
   }
@@ -134,9 +134,9 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "lot_standings",
-            "storageKey": "lot_standings(live:true)",
+            "alias": "lot_standings",
+            "name": "lotStandings",
+            "storageKey": "lotStandings(live:true)",
             "args": [
               {
                 "kind": "Literal",
@@ -149,8 +149,8 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "most_recent_bid",
+                "alias": "most_recent_bid",
+                "name": "mostRecentBid",
                 "storageKey": null,
                 "args": null,
                 "concreteType": "BidderPosition",
@@ -159,8 +159,8 @@ return {
                   (v0/*: any*/),
                   {
                     "kind": "LinkedField",
-                    "alias": null,
-                    "name": "max_bid",
+                    "alias": "max_bid",
+                    "name": "maxBid",
                     "storageKey": null,
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
@@ -169,8 +169,8 @@ return {
                   },
                   {
                     "kind": "LinkedField",
-                    "alias": null,
-                    "name": "sale_artwork",
+                    "alias": "sale_artwork",
+                    "name": "saleArtwork",
                     "storageKey": null,
                     "args": null,
                     "concreteType": "SaleArtwork",
@@ -206,8 +206,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "artist_names",
+                            "alias": "artist_names",
+                            "name": "artistNames",
                             "args": null,
                             "storageKey": null
                           },
@@ -225,8 +225,8 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "bidder_positions",
+                            "alias": "bidder_positions",
+                            "name": "bidderPositions",
                             "args": null,
                             "storageKey": null
                           }
@@ -234,8 +234,8 @@ return {
                       },
                       {
                         "kind": "LinkedField",
-                        "alias": null,
-                        "name": "highest_bid",
+                        "alias": "highest_bid",
+                        "name": "highestBid",
                         "storageKey": null,
                         "args": null,
                         "concreteType": "SaleArtworkHighestBid",
@@ -244,15 +244,15 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "lot_label",
+                        "alias": "lot_label",
+                        "name": "lotLabel",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "reserve_status",
+                        "alias": "reserve_status",
+                        "name": "reserveStatus",
                         "args": null,
                         "storageKey": null
                       },
@@ -263,8 +263,8 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "is_leading_bidder",
+                "alias": "is_leading_bidder",
+                "name": "isLeadingBidder",
                 "args": null,
                 "storageKey": null
               },
@@ -280,8 +280,8 @@ return {
                   (v2/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_live_open",
+                    "alias": "is_live_open",
+                    "name": "isLiveOpen",
                     "args": null,
                     "storageKey": null
                   },
@@ -298,7 +298,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ActiveBidsQuery",
-    "id": "e7c59985f4cb21d8d87cda489c5dc09a",
+    "id": "16fa1baef49a1f0c2f60b6c31d15ebf1",
     "text": null,
     "metadata": {}
   }

@@ -26,8 +26,8 @@ query InboxQuery {
 }
 
 fragment Inbox_me on Me {
-  lot_standings(live: true) {
-    most_recent_bid {
+  lot_standings: lotStandings(live: true) {
+    most_recent_bid: mostRecentBid {
       id
     }
   }
@@ -52,7 +52,7 @@ fragment Conversations_me on Me {
     edges {
       node {
         internalID
-        last_message
+        last_message: lastMessage
         ...ConversationSnippet_conversation
         id
         __typename
@@ -63,8 +63,8 @@ fragment Conversations_me on Me {
 }
 
 fragment ActiveBids_me on Me {
-  lot_standings(live: true) {
-    most_recent_bid {
+  lot_standings: lotStandings(live: true) {
+    most_recent_bid: mostRecentBid {
       id
     }
     ...ActiveBid_bid
@@ -72,34 +72,34 @@ fragment ActiveBids_me on Me {
 }
 
 fragment ActiveBid_bid on LotStanding {
-  is_leading_bidder
+  is_leading_bidder: isLeadingBidder
   sale {
     href
-    is_live_open
+    is_live_open: isLiveOpen
     id
   }
-  most_recent_bid {
+  most_recent_bid: mostRecentBid {
     id
-    max_bid {
+    max_bid: maxBid {
       display
     }
-    sale_artwork {
+    sale_artwork: saleArtwork {
       artwork {
         href
         image {
           url
         }
-        artist_names
+        artist_names: artistNames
         id
       }
       counts {
-        bidder_positions
+        bidder_positions: bidderPositions
       }
-      highest_bid {
+      highest_bid: highestBid {
         display
       }
-      lot_label
-      reserve_status
+      lot_label: lotLabel
+      reserve_status: reserveStatus
       id
     }
   }
@@ -111,8 +111,8 @@ fragment ConversationSnippet_conversation on Conversation {
     name
     id
   }
-  last_message
-  last_message_at
+  last_message: lastMessage
+  last_message_at: lastMessageAt
   unread
   items {
     item {
@@ -120,7 +120,7 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Artwork {
         date
         title
-        artist_names
+        artist_names: artistNames
         image {
           url
         }
@@ -131,7 +131,7 @@ fragment ConversationSnippet_conversation on Conversation {
           id
         }
         name
-        cover_image {
+        cover_image: coverImage {
           url
         }
       }
@@ -196,8 +196,8 @@ v5 = {
 },
 v6 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "artist_names",
+  "alias": "artist_names",
+  "name": "artistNames",
   "args": null,
   "storageKey": null
 },
@@ -281,9 +281,9 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "lot_standings",
-            "storageKey": "lot_standings(live:true)",
+            "alias": "lot_standings",
+            "name": "lotStandings",
+            "storageKey": "lotStandings(live:true)",
             "args": [
               {
                 "kind": "Literal",
@@ -296,8 +296,8 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "most_recent_bid",
+                "alias": "most_recent_bid",
+                "name": "mostRecentBid",
                 "storageKey": null,
                 "args": null,
                 "concreteType": "BidderPosition",
@@ -306,8 +306,8 @@ return {
                   (v1/*: any*/),
                   {
                     "kind": "LinkedField",
-                    "alias": null,
-                    "name": "max_bid",
+                    "alias": "max_bid",
+                    "name": "maxBid",
                     "storageKey": null,
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
@@ -316,8 +316,8 @@ return {
                   },
                   {
                     "kind": "LinkedField",
-                    "alias": null,
-                    "name": "sale_artwork",
+                    "alias": "sale_artwork",
+                    "name": "saleArtwork",
                     "storageKey": null,
                     "args": null,
                     "concreteType": "SaleArtwork",
@@ -349,8 +349,8 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": null,
-                            "name": "bidder_positions",
+                            "alias": "bidder_positions",
+                            "name": "bidderPositions",
                             "args": null,
                             "storageKey": null
                           }
@@ -358,8 +358,8 @@ return {
                       },
                       {
                         "kind": "LinkedField",
-                        "alias": null,
-                        "name": "highest_bid",
+                        "alias": "highest_bid",
+                        "name": "highestBid",
                         "storageKey": null,
                         "args": null,
                         "concreteType": "SaleArtworkHighestBid",
@@ -368,15 +368,15 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "lot_label",
+                        "alias": "lot_label",
+                        "name": "lotLabel",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "reserve_status",
+                        "alias": "reserve_status",
+                        "name": "reserveStatus",
                         "args": null,
                         "storageKey": null
                       },
@@ -387,8 +387,8 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "is_leading_bidder",
+                "alias": "is_leading_bidder",
+                "name": "isLeadingBidder",
                 "args": null,
                 "storageKey": null
               },
@@ -404,8 +404,8 @@ return {
                   (v3/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_live_open",
+                    "alias": "is_live_open",
+                    "name": "isLiveOpen",
                     "args": null,
                     "storageKey": null
                   },
@@ -510,8 +510,8 @@ return {
                       (v7/*: any*/),
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "last_message",
+                        "alias": "last_message",
+                        "name": "lastMessage",
                         "args": null,
                         "storageKey": null
                       },
@@ -527,8 +527,8 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
-                        "name": "last_message_at",
+                        "alias": "last_message_at",
+                        "name": "lastMessageAt",
                         "args": null,
                         "storageKey": null
                       },
@@ -598,8 +598,8 @@ return {
                                   (v9/*: any*/),
                                   {
                                     "kind": "LinkedField",
-                                    "alias": null,
-                                    "name": "cover_image",
+                                    "alias": "cover_image",
+                                    "name": "coverImage",
                                     "storageKey": null,
                                     "args": null,
                                     "concreteType": "Image",
@@ -644,7 +644,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxQuery",
-    "id": "42a0391a536e15ef9c8b580831ca2ba4",
+    "id": "99d99eefe0fdac715aba0015d31ba3a2",
     "text": null,
     "metadata": {}
   }

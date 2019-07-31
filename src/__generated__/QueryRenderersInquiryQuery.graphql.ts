@@ -30,7 +30,7 @@ query QueryRenderersInquiryQuery(
 fragment Inquiry_artwork on Artwork {
   slug
   internalID
-  contact_message
+  contact_message: contactMessage
   partner {
     name
     id
@@ -42,7 +42,7 @@ fragment ArtworkPreview_artwork on Artwork {
   slug
   internalID
   title
-  artist_names
+  artist_names: artistNames
   date
   image {
     url
@@ -130,8 +130,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "contact_message",
+            "alias": "contact_message",
+            "name": "contactMessage",
             "args": null,
             "storageKey": null
           },
@@ -163,8 +163,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "artist_names",
+            "alias": "artist_names",
+            "name": "artistNames",
             "args": null,
             "storageKey": null
           },
@@ -201,7 +201,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersInquiryQuery",
-    "id": "eba213bc228f513291ce20df01dc5945",
+    "id": "3007a6190dbcdcedd305cda5048bdf59",
     "text": null,
     "metadata": {}
   }

@@ -25,9 +25,9 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "lot_standings",
-      "storageKey": "lot_standings(live:true)",
+      "alias": "lot_standings",
+      "name": "lotStandings",
+      "storageKey": "lotStandings(live:true)",
       "args": [
         {
           "kind": "Literal",
@@ -40,8 +40,8 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "most_recent_bid",
+          "alias": "most_recent_bid",
+          "name": "mostRecentBid",
           "storageKey": null,
           "args": null,
           "concreteType": "BidderPosition",
@@ -65,5 +65,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '177e8644ddfa2c74520c46ff2adb0eb5';
+(node as any).hash = 'c3631fca7fb83f55a6d2695da1956e88';
 export default node;

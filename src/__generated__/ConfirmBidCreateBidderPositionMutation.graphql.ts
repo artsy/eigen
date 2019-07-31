@@ -2,9 +2,9 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type BidderPositionInput = {
-    readonly sale_id: string;
-    readonly artwork_id: string;
-    readonly max_bid_amount_cents: number;
+    readonly saleID: string;
+    readonly artworkID: string;
+    readonly maxBidAmountCents: number;
     readonly clientMutationId?: string | null;
 };
 export type ConfirmBidCreateBidderPositionMutationVariables = {
@@ -40,11 +40,11 @@ mutation ConfirmBidCreateBidderPositionMutation(
   createBidderPosition(input: $input) {
     result {
       status
-      message_header
-      message_description_md
+      message_header: messageHeader
+      message_description_md: messageDescriptionMD
       position {
         internalID
-        suggested_next_bid {
+        suggested_next_bid: suggestedNextBid {
           cents
           display
         }
@@ -80,15 +80,15 @@ v2 = {
 },
 v3 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "message_header",
+  "alias": "message_header",
+  "name": "messageHeader",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "message_description_md",
+  "alias": "message_description_md",
+  "name": "messageDescriptionMD",
   "args": null,
   "storageKey": null
 },
@@ -101,8 +101,8 @@ v5 = {
 },
 v6 = {
   "kind": "LinkedField",
-  "alias": null,
-  "name": "suggested_next_bid",
+  "alias": "suggested_next_bid",
+  "name": "suggestedNextBid",
   "storageKey": null,
   "args": null,
   "concreteType": "BidderPositionSuggestedNextBid",
@@ -228,11 +228,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ConfirmBidCreateBidderPositionMutation",
-    "id": "de837d86f37e7aab09140b5a4256ad5a",
+    "id": "5f83a293e2149669ee69cff774a0dca8",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '724885bd176c9253f1967c80ad82385b';
+(node as any).hash = '003cf3f6fb78a218c5e89f8dc099a4ab';
 export default node;

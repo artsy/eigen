@@ -112,15 +112,15 @@ const node: ReaderFragment = {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "last_message_id",
+          "alias": "last_message_id",
+          "name": "lastMessageID",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "initial_message",
+          "alias": "initial_message",
+          "name": "initialMessage",
           "args": null,
           "storageKey": null
         },
@@ -140,5 +140,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd0cd5c7682c62fffd430a7e1e2ffec3e';
+(node as any).hash = '74b9d6ee6f9fad3edc49b42533d4a50e';
 export default node;

@@ -24,9 +24,9 @@ query ConfirmBidRefetchQuery(
   $saleID: String!
 ) {
   me {
-    has_qualified_credit_cards
-    bidders(sale_id: $saleID) {
-      qualified_for_bidding
+    has_qualified_credit_cards: hasQualifiedCreditCards
+    bidders(saleID: $saleID) {
+      qualified_for_bidding: qualifiedForBidding
       id
     }
     id
@@ -45,22 +45,22 @@ var v0 = [
 ],
 v1 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "has_qualified_credit_cards",
+  "alias": "has_qualified_credit_cards",
+  "name": "hasQualifiedCreditCards",
   "args": null,
   "storageKey": null
 },
 v2 = [
   {
     "kind": "Variable",
-    "name": "sale_id",
+    "name": "saleID",
     "variableName": "saleID"
   }
 ],
 v3 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "qualified_for_bidding",
+  "alias": "qualified_for_bidding",
+  "name": "qualifiedForBidding",
   "args": null,
   "storageKey": null
 },
@@ -142,11 +142,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConfirmBidRefetchQuery",
-    "id": "8f1e3d1de99a2269877ab7b892fcf518",
+    "id": "5a4cf26f4fd23009e67008c634e06a57",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '12cc69f9d8252cdd1c762eea37e5ae8f';
+(node as any).hash = 'd51babc8a4e214e0ab945cdf1587144f';
 export default node;

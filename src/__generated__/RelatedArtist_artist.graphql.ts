@@ -50,8 +50,8 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "for_sale_artworks",
+          "alias": "for_sale_artworks",
+          "name": "forSaleArtworks",
           "args": null,
           "storageKey": null
         },
@@ -90,5 +90,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a4682903b6829420f1e04aa9d112c254';
+(node as any).hash = 'd1df65fb9240d9d6b3d34e133d35ef0b';
 export default node;

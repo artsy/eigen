@@ -28,10 +28,10 @@ query ShowEventSectionTestsQuery {
 }
 
 fragment ShowEventSection_event on ShowEventType {
-  event_type
+  event_type: eventType
   description
-  start_at
-  end_at
+  start_at: startAt
+  end_at: endAt
 }
 */
 
@@ -106,8 +106,8 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "event_type",
+                "alias": "event_type",
+                "name": "eventType",
                 "args": null,
                 "storageKey": null
               },
@@ -120,15 +120,15 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "start_at",
+                "alias": "start_at",
+                "name": "startAt",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
+                "alias": "end_at",
+                "name": "endAt",
                 "args": null,
                 "storageKey": null
               }
@@ -148,7 +148,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowEventSectionTestsQuery",
-    "id": "98b9e3592d440a1b461ec90b3f180bb5",
+    "id": "2e4ea89cbe5286eb16a06f7f471945d8",
     "text": null,
     "metadata": {}
   }

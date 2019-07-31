@@ -54,15 +54,15 @@ return {
     (v0/*: any*/),
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
+      "alias": "exhibition_period",
+      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "status_update",
+      "alias": "status_update",
+      "name": "statusUpdate",
       "args": null,
       "storageKey": null
     },
@@ -115,5 +115,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7a1aff9fd89ca9c7c28187415479d529';
+(node as any).hash = '87e26f99d1fce5212d9e1e429ce4eb8a';
 export default node;

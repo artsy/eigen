@@ -26,7 +26,7 @@ query MoreInfoTestsQuery {
 fragment MoreInfo_show on Show {
   internalID
   slug
-  exhibition_period
+  exhibition_period: exhibitionPeriod
   pressReleaseUrl
   openingReceptionText
   partner {
@@ -42,17 +42,17 @@ fragment MoreInfo_show on Show {
       id
     }
   }
-  press_release
+  press_release: pressRelease
   events {
     ...ShowEventSection_event
   }
 }
 
 fragment ShowEventSection_event on ShowEventType {
-  event_type
+  event_type: eventType
   description
-  start_at
-  end_at
+  start_at: startAt
+  end_at: endAt
 }
 */
 
@@ -128,8 +128,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "exhibition_period",
+            "alias": "exhibition_period",
+            "name": "exhibitionPeriod",
             "args": null,
             "storageKey": null
           },
@@ -188,8 +188,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "press_release",
+            "alias": "press_release",
+            "name": "pressRelease",
             "args": null,
             "storageKey": null
           },
@@ -204,8 +204,8 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "event_type",
+                "alias": "event_type",
+                "name": "eventType",
                 "args": null,
                 "storageKey": null
               },
@@ -218,15 +218,15 @@ return {
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "start_at",
+                "alias": "start_at",
+                "name": "startAt",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
+                "alias": "end_at",
+                "name": "endAt",
                 "args": null,
                 "storageKey": null
               }
@@ -240,7 +240,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MoreInfoTestsQuery",
-    "id": "f11b0d5088ce7daaa9a53edfcf9250f4",
+    "id": "ccf4c6a1f56249c3b3ebaec8d757c541",
     "text": null,
     "metadata": {}
   }

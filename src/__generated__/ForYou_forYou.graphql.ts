@@ -40,9 +40,9 @@ return {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "artwork_modules",
-      "storageKey": "artwork_modules(exclude:[\"FOLLOWED_ARTISTS\"],max_followed_gene_rails:-1,max_rails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
+      "alias": "artwork_modules",
+      "name": "artworkModules",
+      "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
       "args": [
         {
           "kind": "Literal",
@@ -53,12 +53,12 @@ return {
         },
         {
           "kind": "Literal",
-          "name": "max_followed_gene_rails",
+          "name": "maxFollowedGeneRails",
           "value": -1
         },
         {
           "kind": "Literal",
-          "name": "max_rails",
+          "name": "maxRails",
           "value": -1
         },
         {
@@ -92,8 +92,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "artist_modules",
+      "alias": "artist_modules",
+      "name": "artistModules",
       "storageKey": null,
       "args": null,
       "concreteType": "HomePageArtistModule",
@@ -109,8 +109,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "fairs_module",
+      "alias": "fairs_module",
+      "name": "fairsModule",
       "storageKey": null,
       "args": null,
       "concreteType": "HomePageFairsModule",
@@ -126,5 +126,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '47730faf316efe83b924ff6a730ec53a';
+(node as any).hash = 'b9a9ff5a72a7c5ec937a3dda72678564';
 export default node;

@@ -43,8 +43,8 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "artists_grouped_by_name",
+      "alias": "artists_grouped_by_name",
+      "name": "artistsGroupedByName",
       "storageKey": null,
       "args": null,
       "concreteType": "ArtistGroup",
@@ -68,8 +68,8 @@ const node: ReaderFragment = {
           "selections": [
             {
               "kind": "ScalarField",
-              "alias": null,
-              "name": "sortable_id",
+              "alias": "sortable_id",
+              "name": "sortableID",
               "args": null,
               "storageKey": null
             },
@@ -91,5 +91,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '600227054ab1393a0e5bd7983296e334';
+(node as any).hash = '62430770dd1bfd850da2d9639f102d4b';
 export default node;

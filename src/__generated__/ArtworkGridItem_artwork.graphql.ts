@@ -73,36 +73,36 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "sale_message",
+      "alias": "sale_message",
+      "name": "saleMessage",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_in_auction",
+      "alias": "is_in_auction",
+      "name": "isInAuction",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_biddable",
+      "alias": "is_biddable",
+      "name": "isBiddable",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_acquireable",
+      "alias": "is_acquireable",
+      "name": "isAcquireable",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_offerable",
+      "alias": "is_offerable",
+      "name": "isOfferable",
       "args": null,
       "storageKey": null
     },
@@ -124,36 +124,36 @@ return {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_auction",
+          "alias": "is_auction",
+          "name": "isAuction",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_live_open",
+          "alias": "is_live_open",
+          "name": "isLiveOpen",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_open",
+          "alias": "is_open",
+          "name": "isOpen",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "is_closed",
+          "alias": "is_closed",
+          "name": "isClosed",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "display_timely_at",
+          "alias": "display_timely_at",
+          "name": "displayTimelyAt",
           "args": null,
           "storageKey": null
         }
@@ -161,8 +161,8 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "sale_artwork",
+      "alias": "sale_artwork",
+      "name": "saleArtwork",
       "storageKey": null,
       "args": null,
       "concreteType": "SaleArtwork",
@@ -170,8 +170,8 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "current_bid",
+          "alias": "current_bid",
+          "name": "currentBid",
           "storageKey": null,
           "args": null,
           "concreteType": "SaleArtworkCurrentBid",
@@ -212,8 +212,8 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "aspect_ratio",
+          "alias": "aspect_ratio",
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
@@ -255,5 +255,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1da73ad6063e8fde4bf218f2adf01c6c';
+(node as any).hash = 'abd0e65d56c6630565d9dd9067f1d11a';
 export default node;

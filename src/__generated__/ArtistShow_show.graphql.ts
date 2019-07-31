@@ -40,15 +40,15 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "is_fair_booth",
+      "alias": "is_fair_booth",
+      "name": "isFairBooth",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "cover_image",
+      "alias": "cover_image",
+      "name": "coverImage",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
@@ -76,5 +76,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '376118a70fac0f1543df56b788ffc408';
+(node as any).hash = '2a49838cef4b2200cd2db113bc018c68';
 export default node;

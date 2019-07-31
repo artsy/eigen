@@ -61,15 +61,15 @@ return {
         (v0/*: any*/),
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "live_start_at",
+          "alias": "live_start_at",
+          "name": "liveStartAt",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "end_at",
+          "alias": "end_at",
+          "name": "endAt",
           "args": null,
           "storageKey": null
         }
@@ -101,8 +101,8 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "artist_names",
+          "alias": "artist_names",
+          "name": "artistNames",
           "args": null,
           "storageKey": null
         },
@@ -134,8 +134,8 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "lot_label",
+      "alias": "lot_label",
+      "name": "lotLabel",
       "args": null,
       "storageKey": null
     },
@@ -147,5 +147,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '40452e0f6179b4f0c772d5d60fd1ebf8';
+(node as any).hash = '26b5726ebac448f15bdcfd1fdd7cded7';
 export default node;

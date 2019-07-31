@@ -33,7 +33,7 @@ fragment ShowArtistsPreview_show on Show {
     ...ArtistListItem_artist
     id
   }
-  artists_without_artworks {
+  artists_without_artworks: artistsWithoutArtworks {
     internalID
     slug
     href
@@ -49,7 +49,7 @@ fragment ArtistListItem_artist on Artist {
   name
   initials
   href
-  is_followed
+  is_followed: isFollowed
   nationality
   birthday
   deathday
@@ -115,8 +115,8 @@ v4 = [
   },
   {
     "kind": "ScalarField",
-    "alias": null,
-    "name": "is_followed",
+    "alias": "is_followed",
+    "name": "isFollowed",
     "args": null,
     "storageKey": null
   },
@@ -215,8 +215,8 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "artists_without_artworks",
+            "alias": "artists_without_artworks",
+            "name": "artistsWithoutArtworks",
             "storageKey": null,
             "args": null,
             "concreteType": "Artist",
@@ -231,7 +231,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsPreviewTestsQuery",
-    "id": "31b500f956732656601b862bf5481a68",
+    "id": "f4acabe7dae883e06da7566c70b66a98",
     "text": null,
     "metadata": {}
   }

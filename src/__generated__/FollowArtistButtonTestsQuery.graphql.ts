@@ -27,7 +27,7 @@ fragment FollowArtistButton_artist on Artist {
   id
   slug
   internalID
-  is_followed
+  is_followed: isFollowed
 }
 */
 
@@ -103,8 +103,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
+            "alias": "is_followed",
+            "name": "isFollowed",
             "args": null,
             "storageKey": null
           }
@@ -115,7 +115,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FollowArtistButtonTestsQuery",
-    "id": "69f8520647ce924353d52f3488632476",
+    "id": "fd193e93b0118d71e98014c6426956a7",
     "text": null,
     "metadata": {}
   }
