@@ -28,8 +28,8 @@ describe("ShowEventSection", () => {
             }
           }
         `}
-        mockResolvers={{
-          Show: () => ShowFixture,
+        mockData={{
+          show: ShowFixture,
         }}
       />
     )

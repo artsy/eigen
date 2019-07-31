@@ -3,6 +3,8 @@ export const ArtistFixture = {
   id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
   name: "Pablo Picasso",
   is_followed: false,
+  initials: "P. P.",
+  href: "/artist/pablo-picasso",
   nationality: "Spanish",
   birthday: "1881",
   deathday: "1973",
