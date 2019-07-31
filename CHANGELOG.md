@@ -16,6 +16,7 @@
 
 ### Master
 
+- Update after renaming fields/args from snake_case to camelCase in MP v2 - alloy
 - Update after dropping deprecations from MP v2 - alloy
 - Add full screen carousel support in artwork view - ds300
 - Update after dropping duplicated types from MP v2 - zephraph
