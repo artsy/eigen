@@ -26,6 +26,7 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARPaymentRequestWebViewController.h"
 #import "ARSerifNavigationViewController.h"
+#import "AREigenInquiryComponentViewController.h"
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
@@ -213,6 +214,11 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     // something like ARShowRoute on Echo. See discussion in https://github.com/artsy/eigen/pull/2782
     [self.routes addRoute:@"/show/:id/artworks" handler:JLRouteParams {
         return [[ARShowArtworksComponentViewController alloc] initWithShowID:parameters[@"id"]];
+    }];
+    
+    [self.routes addRoute:@"/inquiry/:id" handler:JLRouteParams {
+        AREigenInquiryComponentViewController *viewController = [[AREigenInquiryComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
+        return [[ARNavigationController alloc] initWithRootViewController:viewController];
     }];
 
     [self.routes addRoute:@"/show/:id/artists" handler:JLRouteParams {
@@ -505,6 +511,9 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     if ([ARRouter isPaymentRequestURL:url]) {
         UIViewController *paymentRequestViewController = [[ARPaymentRequestWebViewController alloc] initWithURL:url];
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:paymentRequestViewController];
+    } else if ([ARRouter isBNMORequestURL:url]) {
+        ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     }
 
     // We couldn't find one? Well, then we should present it as a martsy view

@@ -22,6 +22,7 @@
 
 + (BOOL)isPaymentRequestURL:(NSURL *)url;
 + (BOOL)isProductionPaymentRequestURL:(NSURL *)url;
++ (BOOL)isBNMORequestURL:(NSURL *)url;
 
 + (BOOL)isInternalURL:(NSURL *)url;
 

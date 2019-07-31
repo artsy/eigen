@@ -14,11 +14,13 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARPaymentRequestWebViewController.h"
+#import "AREigenInquiryComponentViewController.h"
 #import "ARProfileViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
 
+#import <Emission/ARInquiryComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
@@ -268,6 +270,33 @@ describe(@"ARSwitchboard", ^{
                 id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
                 expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
             }];
+        });
+
+        describe(@"BNMO URLs", ^{
+            it(@"routes as a modal", ^{
+                id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/orders/some-order-id"] fair:nil];
+                expect(subject).to.beKindOf(ARSerifNavigationViewController.class);
+            });
+
+            it(@"routes as an internal web view", ^{
+                id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/orders/some-order-id"] fair:nil];
+                id topViewController = [subject topViewController];
+                expect(topViewController).to.beKindOf(ARInternalMobileWebViewController.class);
+                expect([[topViewController initialURL] path]).to.equal(@"/orders/some-order-id");
+            });
+        });
+
+        describe(@"inquiry URLs", ^{
+            it(@"routes as a modal", ^{
+                id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/inquiry/some-artwork-id"] fair:nil];
+                expect(subject).to.beKindOf(ARNavigationController.class);
+            });
+
+            it(@"routes as an inquiry component view controller", ^{
+                id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/inquiry/some-artwork-id"] fair:nil];
+                expect([subject topViewController]).to.beKindOf(AREigenInquiryComponentViewController.class);
+                expect([(AREigenInquiryComponentViewController *)[subject topViewController] artworkID]).to.equal(@"some-artwork-id");
+            });
         });
 
         it(@"routes shows", ^{

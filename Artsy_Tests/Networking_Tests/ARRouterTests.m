@@ -129,6 +129,19 @@ describe(@"isPaymentRequestURL", ^{
     });
 });
 
+describe(@"isBNMORequestURL", ^{
+    it(@"returns YES with an orders URL", ^{
+        NSURL *url = [NSURL URLWithString:@"/orders/some-bnmo-order-id"];
+        expect([ARRouter isBNMORequestURL:url]).to.beTruthy();
+    });
+
+    it(@"returns YES with an absolte orders URL", ^{
+        // Emission routes relative URLs, but let's make sure it works for absolute URLs, too.
+        NSURL *url = [NSURL URLWithString:@"https://artsy.net/orders/some-bnmo-order-id"];
+        expect([ARRouter isBNMORequestURL:url]).to.beTruthy();
+    });
+});
+
 describe(@"User-Agent", ^{
     __block NSString *userAgent = [[NSUserDefaults standardUserDefaults] valueForKey:@"UserAgent"];
 

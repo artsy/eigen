@@ -202,6 +202,11 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
++ (BOOL)isBNMORequestURL:(NSURL *)url;
+{
+    return [url.path hasPrefix:@"/orders/"];
+}
+
 + (BOOL)isPaymentRequestURL:(NSURL *)url;
 {
     return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
