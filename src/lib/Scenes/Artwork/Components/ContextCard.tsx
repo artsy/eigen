@@ -34,7 +34,6 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
       () => {
         commitMutation<ContextCardFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(show),
-          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation ContextCardFollowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
@@ -49,7 +48,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           `,
           variables: {
             input: {
-              partner_show_id: internalID,
+              partnerShowID: internalID,
               unfollow: is_followed,
             },
           },

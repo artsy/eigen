@@ -20,7 +20,6 @@ export function updateConversation(
     },
     onCompleted,
     onError,
-    // TODO: Inputs to the mutation might have changed case of the keys!
     mutation: graphql`
       mutation UpdateConversationMutation($input: UpdateConversationMutationInput!) {
         updateConversation(input: $input) {

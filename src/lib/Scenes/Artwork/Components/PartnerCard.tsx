@@ -35,7 +35,6 @@ export class PartnerCard extends React.Component<Props, State> {
         commitMutation<PartnerCardFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
           onError: e => console.log("errors", e),
-          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation PartnerCardFollowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
@@ -50,7 +49,7 @@ export class PartnerCard extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              profile_id: profileID,
+              profileID,
               unfollow: partnerFollowed,
             },
           },

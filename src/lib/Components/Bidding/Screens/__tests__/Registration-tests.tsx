@@ -185,7 +185,7 @@ describe("when pressing register button", () => {
       expect.objectContaining({
         variables: {
           input: {
-            sale_id: sale.slug,
+            saleID: sale.slug,
           },
         },
       })

@@ -73,7 +73,6 @@ export class FairBoothPreview extends React.Component<Props, State> {
             })
             this.trackFollowPartner(partnerSlug, partnerID)
           },
-          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation FairBoothPreviewMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
@@ -87,7 +86,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              profile_id: internalID,
+              profileID: internalID,
               unfollow: isFollowed,
             },
           },

@@ -48,7 +48,6 @@ export class ShowHeader extends React.Component<Props, State> {
       () => {
         commitMutation<ShowHeaderFollowShowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
-          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
@@ -62,7 +61,7 @@ export class ShowHeader extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              partner_show_id: showID,
+              partnerShowID: showID,
               unfollow: isShowFollowed,
             },
           },

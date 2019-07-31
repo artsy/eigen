@@ -27,7 +27,6 @@ export class FollowArtistButton extends React.Component<Props> {
   handleFollowArtist() {
     const { artist, relay } = this.props
     commitMutation<FollowArtistButtonMutation>(relay.environment, {
-      // TODO: Inputs to the mutation might have changed case of the keys!
       mutation: graphql`
         mutation FollowArtistButtonMutation($input: FollowArtistInput!) {
           followArtist(input: $input) {
@@ -41,7 +40,7 @@ export class FollowArtistButton extends React.Component<Props> {
       variables: {
         input: {
           // FIXME: Should this be slug or internalID?
-          artist_id: artist.slug,
+          artistID: artist.slug,
           unfollow: artist.is_followed,
         },
       },

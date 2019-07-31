@@ -51,7 +51,6 @@ export class ArtistListItem extends React.Component<Props, State> {
       () => {
         commitMutation<ArtistListItemFollowArtistMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
-          // TODO: Inputs to the mutation might have changed case of the keys!
           mutation: graphql`
             mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
@@ -65,7 +64,7 @@ export class ArtistListItem extends React.Component<Props, State> {
           variables: {
             input: {
               // FIXME: Should this be internalID?
-              artist_id: slug,
+              artistID: slug,
               unfollow: is_followed,
             },
           },

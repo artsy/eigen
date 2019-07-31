@@ -45,7 +45,6 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   handleArtworkSave() {
     const { artwork, relay } = this.props
     commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
-      // TODO: Inputs to the mutation might have changed case of the keys!
       mutation: graphql`
         mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
           saveArtwork(input: $input) {
@@ -56,7 +55,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           }
         }
       `,
-      variables: { input: { artwork_id: artwork.internalID, remove: artwork.is_saved } },
+      variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
       optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
     })
   }

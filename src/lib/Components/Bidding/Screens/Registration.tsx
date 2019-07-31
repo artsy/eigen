@@ -145,7 +145,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         onError: error => {
           this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
         },
-        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation RegistrationUpdateUserMutation($input: UpdateMyProfileInput!) {
             updateMyUserProfile(input: $input) {
@@ -191,7 +190,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           }
         },
         onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
-        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -231,7 +229,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       onError: error => {
         this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
       },
-      // TODO: Inputs to the mutation might have changed case of the keys!
       mutation: graphql`
         mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
           createBidder(input: $input) {
@@ -243,7 +240,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         }
       `,
       // FIXME: Should this be slug or internalID?
-      variables: { input: { sale_id: this.props.sale.slug } },
+      variables: { input: { saleID: this.props.sale.slug } },
     })
   }
 

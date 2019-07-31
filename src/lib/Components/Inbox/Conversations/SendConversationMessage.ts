@@ -33,7 +33,6 @@ export function sendConversationMessage(
 
     // TODO: See if we can extract the field selections into a fragment and share it with the normal pagination fragment.
     //      Also looks like we can get rid of the `body` selection.
-    // TODO: Inputs to the mutation might have changed case of the keys!
     mutation: graphql`
       mutation SendConversationMessageMutation($input: SendConversationMessageMutationInput!) {
         sendConversationMessage(input: $input) {
@@ -54,9 +53,9 @@ export function sendConversationMessage(
       input: {
         id: conversation.internalID,
         from: conversation.from.email,
-        body_text: text,
+        bodyText: text,
         // Reply to the last message
-        reply_to_message_id: conversation.last_message_id,
+        replyToMessageID: conversation.last_message_id,
       },
     },
 

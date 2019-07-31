@@ -160,7 +160,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           }
         },
         onError: errors => this.presentErrorResult(errors),
-        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation ConfirmBidUpdateUserMutation($input: UpdateMyProfileInput!) {
             updateMyUserProfile(input: $input) {
@@ -207,7 +206,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           }
         },
         onError: errors => this.presentErrorResult(errors),
-        // TODO: Inputs to the mutation might have changed case of the keys!
         mutation: graphql`
           mutation ConfirmBidCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -243,7 +241,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       onCompleted: (results, errors) =>
         isEmpty(errors) ? this.verifyBidderPosition(results) : this.presentErrorResult(errors),
       onError: this.presentErrorResult.bind(this),
-      // TODO: Inputs to the mutation might have changed case of the keys!
       mutation: graphql`
         mutation ConfirmBidCreateBidderPositionMutation($input: BidderPositionInput!) {
           createBidderPosition(input: $input) {
@@ -264,10 +261,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
-          // FIXME: Should this be internal id?
-          sale_id: this.props.sale_artwork.sale.slug,
-          artwork_id: this.props.sale_artwork.artwork.slug,
-          max_bid_amount_cents: this.selectedBid().cents,
+          saleID: this.props.sale_artwork.sale.slug,
+          artworkID: this.props.sale_artwork.artwork.slug,
+          maxBidAmountCents: this.selectedBid().cents,
         },
       },
     })

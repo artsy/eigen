@@ -720,9 +720,9 @@ describe("ConfirmBid for unqualified user", () => {
         expect.objectContaining({
           variables: {
             input: {
-              sale_id: saleArtwork.sale.slug,
-              artwork_id: saleArtwork.artwork.slug,
-              max_bid_amount_cents: 450000,
+              saleID: saleArtwork.sale.slug,
+              artworkID: saleArtwork.artwork.slug,
+              maxBidAmountCents: 450000,
             },
           },
         })
