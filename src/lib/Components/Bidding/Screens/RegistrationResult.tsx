@@ -38,9 +38,9 @@ const registrationCompleteMessage = {
 const registrationPendingMessage = {
   title: "Registration pending",
   description:
-    "You will receive an email from an Artsy specialist once your registration has been confirmed.\n" +
+    "Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email specialist@artsy.net with any questions.\n" +
     "\n" +
-    "In the meantime, you can still view works and watch lots that you’re interested in.",
+    "In the meantime, you can still view works and watch lots you’re interested in.\n",
 }
 
 const registrationErrorMessage = {
@@ -112,7 +112,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
             </Flex>
           </View>
           <Button variant="secondaryOutline" onPress={this.exitBidFlow} block width={100}>
-            Continue
+            {status === RegistrationStatus.RegistrationStatusPending ? "View works in this sale" : "Continue"}
           </Button>
         </Container>
       </BiddingThemeProvider>

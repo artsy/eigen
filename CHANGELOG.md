@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fix copy on registration pending view - yuki24
+
 ### 1.12.12
 
 - Remove patch to surpress `__id` errors from graphql-js - alloy

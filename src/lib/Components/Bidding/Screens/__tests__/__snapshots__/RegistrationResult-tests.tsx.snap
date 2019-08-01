@@ -983,7 +983,7 @@ exports[`Registration result component renders registration pending properly 1`]
           }
           textAlign="center"
         >
-          You will receive an email from an Artsy specialist once your registration has been confirmed.
+          Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email specialist@artsy.net with any questions.
         </Text>
         <Text />
         <Text
@@ -1005,7 +1005,7 @@ exports[`Registration result component renders registration pending properly 1`]
           }
           textAlign="center"
         >
-          In the meantime, you can still view works and watch lots that you’re interested in.
+          In the meantime, you can still view works and watch lots you’re interested in.
         </Text>
         <Text />
       </View>
@@ -1315,7 +1315,7 @@ exports[`Registration result component renders registration pending properly 1`]
             ]
           }
         >
-          Continue
+          View works in this sale
         </Text>
       </View>
       <Text
@@ -1336,7 +1336,7 @@ exports[`Registration result component renders registration pending properly 1`]
           ]
         }
       >
-        Continue
+        View works in this sale
       </Text>
     </View>
   </View>
