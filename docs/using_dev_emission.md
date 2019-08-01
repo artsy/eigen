@@ -12,7 +12,7 @@ This kills the app, open Eigen back up and you should see the green status bar i
 some Emission dynamically.
 
 Because both Eigen and React Native use the shake gesture, the React Native shake gesture is disabled
-but you can trigger it via the Eigen admin menu. 
+but you can trigger it via the Eigen admin menu.
 
 ## Running Objective-C Changes from Emission in Eigen
 

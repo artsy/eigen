@@ -22,7 +22,7 @@ Once it's all downloaded, it will show up in the dropdown in the top left corner
 
 #### To run test in Xcode
 
-Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI. 
+Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI.
 
 #### Command line
 
@@ -41,7 +41,7 @@ We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/master/d
 
 ### Connecting a device
 
-Xcode will prompt you to join a team, then to enable the device for development. When If you have to choose a team, choose *Art.sY Inc.*.
+Xcode will prompt you to join a team, then to enable the device for development. When If you have to choose a team, choose _Art.sY Inc._.
 
 ### Reading more
 

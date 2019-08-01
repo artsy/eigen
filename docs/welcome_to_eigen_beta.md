@@ -18,7 +18,7 @@ _For Developers:_ You can verify who is on the [Artsy Beta here](https://itunesc
 
 ## What is Testflight.app?
 
-Testflight is like an App store for your beta invites, you are sent an invite in an email and it will connect your iOS device to our betas. To get started click the big "Start Testing" button. It will take you to the App Store to download the app. You can log in with your normal iTunes account.  I'd recommend turning on push notifications.
+Testflight is like an App store for your beta invites, you are sent an invite in an email and it will connect your iOS device to our betas. To get started click the big "Start Testing" button. It will take you to the App Store to download the app. You can log in with your normal iTunes account. I'd recommend turning on push notifications.
 
 ## What happens with Artsy betas?
 
