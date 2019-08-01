@@ -17,7 +17,7 @@ afterEach(() => {
   SwitchBoardMock.presentModalViewController.mockReset()
 })
 
-let artwork = {
+const defaultArtwork = {
   slug: "abbas-kiarostami-untitled-7",
   internalID: "5b2b745e9c18db204fc32e11",
   isAcquireable: false,
@@ -44,14 +44,13 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
 }
 
 describe("CommercialButtons", () => {
-  artwork = {
-    slug: "abbas-kiarostami-untitled-7",
-    internalID: "5b2b745e9c18db204fc32e11",
-    isAcquireable: false,
-    isOfferable: false,
-    isInquireable: true,
-  }
   it("renders button for Contact Gallery button if isInquireable", () => {
+    const artwork = {
+      ...defaultArtwork,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: true,
+    }
     const component = mount(
       <CommercialButtons
         relay={{ environment: {} } as RelayProp}
@@ -62,9 +61,8 @@ describe("CommercialButtons", () => {
   })
 
   it("renders Make Offer button if isOfferable", () => {
-    artwork = {
-      slug: "abbas-kiarostami-untitled-7",
-      internalID: "5b2b745e9c18db204fc32e11",
+    const artwork = {
+      ...defaultArtwork,
       isAcquireable: false,
       isOfferable: false,
       isInquireable: true,
@@ -79,9 +77,8 @@ describe("CommercialButtons", () => {
   })
 
   it("renders Buy Now button if isAcquireable", () => {
-    artwork = {
-      slug: "abbas-kiarostami-untitled-7",
-      internalID: "5b2b745e9c18db204fc32e11",
+    const artwork = {
+      ...defaultArtwork,
       isAcquireable: true,
       isOfferable: false,
       isInquireable: false,
@@ -96,9 +93,8 @@ describe("CommercialButtons", () => {
   })
 
   it("renders both Buy Now and Make Offer buttons when isOfferable and isAcquireable", () => {
-    artwork = {
-      slug: "abbas-kiarostami-untitled-7",
-      internalID: "5b2b745e9c18db204fc32e11",
+    const artwork = {
+      ...defaultArtwork,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
@@ -124,9 +120,8 @@ describe("CommercialButtons", () => {
   })
 
   it("commits the Buy Now mutation", async () => {
-    artwork = {
-      slug: "abbas-kiarostami-untitled-7",
-      internalID: "5b2b745e9c18db204fc32e11",
+    const artwork = {
+      ...defaultArtwork,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
@@ -150,9 +145,8 @@ describe("CommercialButtons", () => {
   })
 
   it("commits the Make Offer mutation", async () => {
-    artwork = {
-      slug: "abbas-kiarostami-untitled-7",
-      internalID: "5b2b745e9c18db204fc32e11",
+    const artwork = {
+      ...defaultArtwork,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
