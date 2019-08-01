@@ -42,8 +42,8 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
             mutation CommercialButtonsOrderMutation($input: CommerceCreateOrderWithArtworkInput!) {
               commerceCreateOrderWithArtwork(input: $input) {
                 orderOrError {
+                  __typename
                   ... on CommerceOrderWithMutationSuccess {
-                    __typename
                     order {
                       internalID
                       mode
@@ -98,8 +98,8 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
             mutation CommercialButtonsOfferOrderMutation($input: CreateOfferOrderWithArtworkInput!) {
               ecommerceCreateOfferOrderWithArtwork(input: $input) {
                 orderOrError {
+                  __typename
                   ... on OrderWithMutationSuccess {
-                    __typename
                     order {
                       internalID
                       mode

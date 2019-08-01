@@ -14,7 +14,7 @@ interface Props {
 }
 
 interface State {
-  selectedEdition: EditionSet
+  selectedEdition: EditionSet | null
 }
 
 export class CommercialEditionSetInformation extends React.Component<Props, State> {
@@ -26,7 +26,10 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
   }
 
   componentDidMount() {
-    this.props.setEditionSetId(this.state.selectedEdition.internalID)
+    const { selectedEdition } = this.state
+    if (selectedEdition && selectedEdition.internalID) {
+      this.props.setEditionSetId(selectedEdition.internalID)
+    }
   }
 
   selectEdition = internalID => {
