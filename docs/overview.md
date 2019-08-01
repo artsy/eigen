@@ -1,6 +1,8 @@
 Overview of Eigen
 ==========
 
+**Note**: this document applies to the native code in Eigen _only_. New components are built in Emission.
+
 #### App wide View Controller Hierarchy
 
 There are two navigation controllers used in the app. There is one that is presented during onboarding, and one used throughout the app. 

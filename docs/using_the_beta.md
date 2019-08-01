@@ -8,7 +8,12 @@ _Thirdly:_ You can offer feedback in the app by taking a screenshot, this will b
 
 ### The admin menu
 
-The menu is comprised of four parts:
+You can access the admin menu in two ways:
+
+- If logged in as an admin, shake your device.
+- Otherwise, go to Safari and type `artsy:///admin` into the address bar (note the triple-slash).
+
+The admin menu is comprised of four parts:
 
 * Useful actions, for example switching between staging and production
 * Lab settings, which are toggles for specific features within Eigen

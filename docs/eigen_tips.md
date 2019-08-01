@@ -26,4 +26,6 @@ Run `git update-index --assume-unchanged "Artsy/Classes/View Controllers/ARTopMe
 Use the offline mode for extra party/speed
 ------------------------------------------
 
+(**Note**: these haven't been tested for Metaphysics API calls, which are most of our API calls these days. The docs are included here for posterity when working with native code only.)
+
 Dustin left us with the amazing `NSVCRURLConnection`, which allows you to save an entire HTTP session for either working offline, or for getting back _faster_ http requests. Load the debug menu and hit the "Start" option to make it record, then go save when you're done and it will have it copied.

@@ -21,6 +21,6 @@ If it doesn't compile out-right:
 
 Does it crash on launch? 
 
-* Might need to add new settings to [the `AREmissionConfiguration` object](https://github.com/artsy/emission/blob/master/Pod/Classes/Core/AREmission.h) in Eigen's side. Ideally these should get raised by compiler warnings, but you never know.
-
-* A native module may have new exposed callbacks which are required to be set up on launch.
+- Sometimes the simulator will crash after you've run unit tests in it. Uninstall the app from the simulator to fix the crash.
+- Might need to add new settings to [the `AREmissionConfiguration` object](https://github.com/artsy/emission/blob/master/Pod/Classes/Core/AREmission.h) in Eigen's side. Ideally these should get raised by compiler warnings, but you never know.
+- A native module may have new exposed callbacks which are required to be set up on launch.

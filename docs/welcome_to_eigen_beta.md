@@ -2,25 +2,9 @@
 
 #### Artsy Beta Sign-up
 
-To get started, click here: [artsy-eigen-beta-boarding.herokuapp.com](http://artsy-eigen-beta-boarding.herokuapp.com) ( ideally open it in another window, so you can read this too.)
-
-This will re-direct you to this Artsy login, where you should log in with your `[me]@artsymail.com` account.
-
-<p align="center">
-  <img src="screenshots/artsy-oauth.png" />
-</p>
-
-Signing in to this gives us a chance to ensure that we are auto-adding Admins to the betas. Once you've logged in, it will ask you for your name / email. You do not need to sign up with your personal email, as long as you can access your artsy email from your iOS device, you are fine.
-
-<p align="center">
-  <img src="screenshots/sign-up-testflight.png" />
-</p>
+To get started, ask in any Slack channel "where is the eigen beta?" and Slack will respond with a invitation link to TestFlight.
 
 With that done, you should see this:
-
-<p align="center">
-  <img src="screenshots/success.png" />
-</p>
 
 Which should _eventually_ send an email invite, this will not be instant, and could be a few days away when we make our next beta. Which is when you'll get the email.
 
@@ -38,14 +22,7 @@ Testflight is like an App store for your beta invites, you are sent an invite in
 
 ## What happens with Artsy betas?
 
-The Artsy beta will replace your current version of the Artsy app. If you have two copies of the Artsy app, you can remove the one called "Artsy β", it's not going to see any updates from here on in.
-
-<p align="center">
-  <img src="screenshots/artsy-icon.jpg"/>
-</p>
-
-The main difference you'll see is that now the Artsy app is rocking a beautiful yellow circle. Our release notes are shown on inside Testflight, they tend to be very technical as we make more user facing release notes towards the end of the release cycle for an app. Don't worry if you don't understand them all.
-
+The Artsy beta will replace your current version of the Artsy app.
 
 ## OK, what now?
 
