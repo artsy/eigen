@@ -1,4 +1,5 @@
-patch-package
+diff --git a/node_modules/graphql/error/printError.js b/node_modules/graphql/error/printError.js
+index 3d6283f..e9b635e 100644
 --- a/node_modules/graphql/error/printError.js
 +++ b/node_modules/graphql/error/printError.js
 @@ -53,7 +53,7 @@ function highlightSourceAtLocation(source, location) {
@@ -10,6 +11,8 @@ patch-package
    return outputLines.filter(Boolean).join('\n');
  }
  
+diff --git a/node_modules/graphql/error/printError.mjs b/node_modules/graphql/error/printError.mjs
+index 6aef1d9..2604b94 100644
 --- a/node_modules/graphql/error/printError.mjs
 +++ b/node_modules/graphql/error/printError.mjs
 @@ -47,7 +47,7 @@ function highlightSourceAtLocation(source, location) {
@@ -21,33 +24,3 @@ patch-package
    return outputLines.filter(Boolean).join('\n');
  }
  
---- a/node_modules/graphql/utilities/assertValidName.js
-+++ b/node_modules/graphql/utilities/assertValidName.js
-@@ -41,9 +41,9 @@ function assertValidName(name) {
-  */
- function isValidNameError(name, node) {
-   !(typeof name === 'string') ? (0, _invariant2.default)(0, 'Expected string') : void 0;
--  if (name.length > 1 && name[0] === '_' && name[1] === '_') {
--    return new _GraphQLError.GraphQLError('Name "' + name + '" must not begin with "__", which is reserved by ' + 'GraphQL introspection.', node);
--  }
-+  // if (name.length > 1 && name[0] === '_' && name[1] === '_') {
-+  //   return new _GraphQLError.GraphQLError('Name "' + name + '" must not begin with "__", which is reserved by ' + 'GraphQL introspection.', node);
-+  // }x
-   if (!NAME_RX.test(name)) {
-     return new _GraphQLError.GraphQLError('Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but "' + name + '" does not.', node);
-   }
---- a/node_modules/graphql/utilities/assertValidName.mjs
-+++ b/node_modules/graphql/utilities/assertValidName.mjs
-@@ -29,9 +29,9 @@ export function assertValidName(name) {
-  */
- export function isValidNameError(name, node) {
-   !(typeof name === 'string') ? invariant(0, 'Expected string') : void 0;
--  if (name.length > 1 && name[0] === '_' && name[1] === '_') {
--    return new GraphQLError('Name "' + name + '" must not begin with "__", which is reserved by ' + 'GraphQL introspection.', node);
--  }
-+  // if (name.length > 1 && name[0] === '_' && name[1] === '_') {
-+  //   return new GraphQLError('Name "' + name + '" must not begin with "__", which is reserved by ' + 'GraphQL introspection.', node);
-+  // }
-   if (!NAME_RX.test(name)) {
-     return new GraphQLError('Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but "' + name + '" does not.', node);
-   }

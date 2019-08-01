@@ -16,6 +16,7 @@
 
 ### Master
 
+- Remove patch to surpress `__id` errors from graphql-js - alloy
 - Fix shadow and performance warning on ArtistCard - alloy
 - Update after renaming fields/args from snake_case to camelCase in MP v2 - alloy
 - Update after dropping deprecations from MP v2 - alloy
