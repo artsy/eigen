@@ -159,6 +159,7 @@ const styles = StyleSheet.create<Styles>({
     height: 310,
   },
   touchableContainer: {
+    backgroundColor: "#FFFFFF",
     width: 220,
     height: 280,
     marginLeft: 16,
