@@ -15,7 +15,7 @@ export type CommercialButtonsOfferOrderMutationVariables = {
 export type CommercialButtonsOfferOrderMutationResponse = {
     readonly ecommerceCreateOfferOrderWithArtwork: {
         readonly orderOrError: ({
-            readonly __typename: "OrderWithMutationSuccess";
+            readonly __typename: string;
             readonly order?: {
                 readonly internalID: string;
                 readonly mode: OrderModeEnum | null;
@@ -32,6 +32,7 @@ export type CommercialButtonsOfferOrderMutationResponse = {
                 readonly mode: OrderModeEnum | null;
             } | null;
         } | {
+            readonly __typename: "OrderWithMutationFailure";
             readonly error: {
                 readonly type: string;
                 readonly code: string;
@@ -59,7 +60,6 @@ mutation CommercialButtonsOfferOrderMutation(
     orderOrError {
       __typename
       ... on OrderWithMutationSuccess {
-        __typename
         order {
           __typename
           internalID
@@ -181,11 +181,11 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
+              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "OrderWithMutationSuccess",
                 "selections": [
-                  (v2/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -236,7 +236,6 @@ return {
                 "kind": "InlineFragment",
                 "type": "OrderWithMutationSuccess",
                 "selections": [
-                  (v2/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -270,11 +269,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "CommercialButtonsOfferOrderMutation",
-    "id": "cde0a534ee404cbc6338594c1e6f37e4",
+    "id": "c558da8ddbc73235cb40c37497a54242",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '48854383f86a1f9ea779437963501d29';
+(node as any).hash = '9aeb88b356d76b9dbbe9ebf3b61cbf1e';
 export default node;

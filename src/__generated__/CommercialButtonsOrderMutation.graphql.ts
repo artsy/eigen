@@ -14,7 +14,7 @@ export type CommercialButtonsOrderMutationVariables = {
 export type CommercialButtonsOrderMutationResponse = {
     readonly commerceCreateOrderWithArtwork: {
         readonly orderOrError: {
-            readonly __typename: "CommerceOrderWithMutationSuccess";
+            readonly __typename: string;
             readonly order?: {
                 readonly internalID: string;
                 readonly mode: CommerceOrderModeEnum | null;
@@ -31,6 +31,7 @@ export type CommercialButtonsOrderMutationResponse = {
                 readonly mode: CommerceOrderModeEnum | null;
             };
         } | {
+            readonly __typename: "CommerceOrderWithMutationFailure";
             readonly error: {
                 readonly type: string;
                 readonly code: string;
@@ -58,7 +59,6 @@ mutation CommercialButtonsOrderMutation(
     orderOrError {
       __typename
       ... on CommerceOrderWithMutationSuccess {
-        __typename
         order {
           __typename
           internalID
@@ -179,11 +179,11 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
+              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "CommerceOrderWithMutationSuccess",
                 "selections": [
-                  (v2/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -234,7 +234,6 @@ return {
                 "kind": "InlineFragment",
                 "type": "CommerceOrderWithMutationSuccess",
                 "selections": [
-                  (v2/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -261,11 +260,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "CommercialButtonsOrderMutation",
-    "id": "329c0997e56e770c918102a79b17e573",
+    "id": "1c5a434bbd025089a619958784349e15",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a5856c95739131d85d407e3ec294599e';
+(node as any).hash = 'd600aad265298011a8b91a42ea1b529e';
 export default node;
