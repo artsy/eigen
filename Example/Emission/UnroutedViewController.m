@@ -36,8 +36,8 @@
   }
 
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
-  NSURL *url = [NSURL URLWithString: useStaging ? @"https://staging.artsy.net" : @"https://artsy.net"];
-  return [NSURL URLWithString:route relativeToURL:url];
+  NSURL *baseUrl = [NSURL URLWithString: useStaging ? @"https://staging.artsy.net" : @"https://artsy.net"];
+  return [[NSURL URLWithString:route relativeToURL:baseUrl] absoluteURL];
 }
 
 - (void)loadURL:(NSURL *)URL;

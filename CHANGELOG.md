@@ -23,6 +23,7 @@
 - Add full screen carousel support in artwork view - ds300
 - Update after dropping duplicated types from MP v2 - zephraph
 - Updates textContentType for inputs on BillingAddress component - ash
+- Adds commercial order buttons to CommercialInformation - kierangillen
 
 ### 1.12.11
 
