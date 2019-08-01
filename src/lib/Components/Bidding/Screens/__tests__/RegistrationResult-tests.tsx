@@ -10,6 +10,9 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { Linking } from "react-native"
+
+import { LinkText } from "lib/Components/Text/LinkText"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { Icon20 } from "../../Components/Icon"
 
@@ -55,6 +58,19 @@ describe("Registration result component", () => {
       )
       .toJSON()
     expect(component).toMatchSnapshot()
+  })
+
+  it("renders registration error and mailto link properly", async () => {
+    Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
+    Linking.openURL = jest.fn()
+
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
+      </BiddingThemeProvider>
+    )
+    await component.root.findByType(LinkText).props.onPress()
+    expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net")
   })
 
   it("dismisses the controller when the continue button is pressed", () => {
