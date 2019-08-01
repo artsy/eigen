@@ -19,6 +19,7 @@ exports[`renders correctly 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       Object {
+        "backgroundColor": "#FFFFFF",
         "borderColor": "#F3F3F3",
         "borderWidth": 1,
         "height": 280,
