@@ -2,16 +2,7 @@ import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
 import { observer } from "mobx-react"
 
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 
 import {
   Animated,
@@ -29,11 +20,9 @@ import { fitInside } from "../geometry"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
 import React from "react"
-import { ImageDeepZoomView } from "./ImageDeepZoomView"
+import { calculateMaxZoomViewScale, ImageDeepZoomView } from "./ImageDeepZoomView"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
-
-const MAX_ZOOM_SCALE = 4
 
 export interface ImageZoomView {
   resetZoom(): void
@@ -127,13 +116,14 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const transition = useAnimatedValue(0)
     const transform = useMemo(() => createTransform(transition, imageTransitionOffset), [imageTransitionOffset])
 
+    const { width, height, marginHorizontal, marginVertical } = fitInside(screenBoundingBox, image)
+
     useEffect(() => {
       // animate image transition on mount
       if (state.fullScreenState !== "entered" && state.imageIndex === index) {
-        const { marginHorizontal, marginVertical, ...dimensions } = fitInside(screenBoundingBox, image)
         getTransitionOffset({
           fromRef: embeddedImageRefs[state.imageIndex],
-          toBox: { ...dimensions, x: marginHorizontal, y: marginVertical },
+          toBox: { width, height, x: marginHorizontal, y: marginVertical },
         })
           .then(setImageTransitionOffset)
           .then(() => {
@@ -154,13 +144,11 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     }, [])
 
-    const { width, height } = fitInside(screenBoundingBox, image)
-
     // we need to be able to reset the scroll view zoom level when the user
     // swipes to another image
     const scrollViewRef = useRef<ScrollView>()
-    const zoomScale = useRef<number>(0)
-    const contentOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+    const zoomScale = useRef<number>(1)
+    const contentOffset = useRef<{ x: number; y: number }>({ x: -marginHorizontal, y: -marginVertical })
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
@@ -173,6 +161,9 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     }, [])
 
+    const maxZoomScale = calculateMaxZoomViewScale({ width, height }, image.deepZoom.Image.Size)
+    console.log({ maxZoomScale })
+
     // expose resetZoom so that when the user swipes, the off-screen zoom levels can be reset
     useImperativeHandle(ref, () => ({ resetZoom }), [])
 
@@ -184,8 +175,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         // zoom to tapped point
         const tapX = (contentOffset.current.x + pageX) / zoomScale.current
         const tapY = (contentOffset.current.y + pageY) / zoomScale.current
-        const w = screenWidth / MAX_ZOOM_SCALE
-        const h = screenHeight / MAX_ZOOM_SCALE
+        const w = screenWidth / maxZoomScale
+        const h = screenHeight / maxZoomScale
         scrollViewRef.current.scrollResponderZoomTo({
           x: tapX - w / 2,
           y: tapY - h / 2,
@@ -195,11 +186,21 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     })
 
-    useLayoutEffect(() => {
-      // trigger an onScroll event after mounting to initialize
-      // the contentOffset properly
-      resetZoom()
-    }, [])
+    useEffect(
+      () => {
+        // hack to get a sane starting contentOffset our ScrollView gives some _whack_ values occasionally
+        // for it's first onScroll before the user has actually done any scrolling
+        contentOffset.current = { x: -marginHorizontal, y: -marginVertical }
+      },
+      [state.fullScreenState]
+    )
+
+    const [viewPort, setViewPort] = useState({
+      x: contentOffset.current.x / zoomScale.current,
+      y: contentOffset.current.y / zoomScale.current,
+      width: screenWidth / zoomScale.current,
+      height: screenHeight / zoomScale.current,
+    })
 
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
@@ -214,8 +215,15 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         // disable accidental scrolling before the image has finished entering
         scrollEnabled={state.fullScreenState === "entered"}
         onScroll={ev => {
-          zoomScale.current = ev.nativeEvent.zoomScale
+          console.log("tha zoom scale be lik", ev.nativeEvent.zoomScale)
+          zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
           contentOffset.current = { ...ev.nativeEvent.contentOffset }
+          setViewPort({
+            x: ev.nativeEvent.contentOffset.x / zoomScale.current,
+            y: ev.nativeEvent.contentOffset.y / zoomScale.current,
+            width: screenWidth / zoomScale.current,
+            height: screenHeight / zoomScale.current,
+          })
           if (state.imageIndex === index) {
             dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
           }
@@ -224,7 +232,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         bounces={false}
         overScrollMode="never"
         minimumZoomScale={1}
-        maximumZoomScale={MAX_ZOOM_SCALE}
+        maximumZoomScale={maxZoomScale}
         centerContent
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -255,7 +263,9 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
               }}
             />
             {state.fullScreenState !== "doing first render" &&
-              state.imageIndex === index && <ImageDeepZoomView image={image} width={width} height={height} />}
+              state.imageIndex === index && (
+                <ImageDeepZoomView image={image} width={width} height={height} viewPort={viewPort} />
+              )}
           </Animated.View>
         </TouchableWithoutFeedback>
       </ScrollView>
