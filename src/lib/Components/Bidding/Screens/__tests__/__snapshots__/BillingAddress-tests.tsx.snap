@@ -154,6 +154,7 @@ exports[`renders properly 1`] = `
                 },
               ]
             }
+            textContentType="name"
             underlineColorAndroid="transparent"
           />
         </View>
@@ -222,6 +223,7 @@ exports[`renders properly 1`] = `
                 },
               ]
             }
+            textContentType="streetAddressLine1"
             underlineColorAndroid="transparent"
           />
         </View>
@@ -290,6 +292,7 @@ exports[`renders properly 1`] = `
                 },
               ]
             }
+            textContentType="streetAddressLine2"
             underlineColorAndroid="transparent"
           />
         </View>
@@ -358,6 +361,7 @@ exports[`renders properly 1`] = `
                 },
               ]
             }
+            textContentType="addressCity"
             underlineColorAndroid="transparent"
           />
         </View>
@@ -426,6 +430,7 @@ exports[`renders properly 1`] = `
                 },
               ]
             }
+            textContentType="addressState"
             underlineColorAndroid="transparent"
           />
         </View>
@@ -494,6 +499,7 @@ exports[`renders properly 1`] = `
                 },
               ]
             }
+            textContentType="postalCode"
             underlineColorAndroid="transparent"
           />
         </View>
@@ -562,6 +568,7 @@ exports[`renders properly 1`] = `
                 },
               ]
             }
+            textContentType="telephoneNumber"
             underlineColorAndroid="transparent"
           />
         </View>

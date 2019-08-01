@@ -21,7 +21,7 @@ import { validatePresence } from "../Validators"
 import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
-import { Input } from "../Components/Input"
+import { Input, InputProps } from "../Components/Input"
 import { Title } from "../Components/Title"
 import { Address, Country } from "../types"
 
@@ -35,15 +35,19 @@ interface StyledInputInterface {
   }
 }
 
-const StyledInput = ({ label, error, onLayout, ...props }) => (
+interface StyledInputProps extends InputProps {
+  label: string
+  errorMessage?: string
+}
+const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => (
   <Flex mb={4} onLayout={onLayout}>
     <Serif size="3" mb={2}>
       {label}
     </Serif>
-    <Input mb={3} error={Boolean(error)} {...props} />
-    {!!error && (
+    <Input mb={3} error={Boolean(errorMessage)} {...props} />
+    {!!errorMessage && (
       <Sans size="2" color="red100">
-        {error}
+        {errorMessage}
       </Sans>
     )}
   </Flex>
@@ -197,6 +201,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Full name"
                 placeholder="Add your full name"
                 autoFocus={true}
+                textContentType="name"
                 onSubmitEditing={() => this.addressLine1.root.focus()}
                 onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.fullNameLayout) })}
@@ -206,6 +211,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("addressLine1")}
                 label="Address line 1"
                 placeholder="Add your street address"
+                textContentType="streetAddressLine1"
                 onSubmitEditing={() => this.addressLine2.root.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine1Layout) })}
@@ -215,6 +221,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("addressLine2")}
                 label="Address line 2 (optional)"
                 placeholder="Add your apt, floor, suite, etc."
+                textContentType="streetAddressLine2"
                 onSubmitEditing={() => this.city.root.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine2Layout) })}
@@ -224,6 +231,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("city")}
                 label="City"
                 placeholder="Add your city"
+                textContentType="addressCity"
                 onSubmitEditing={() => this.stateProvinceRegion.root.focus()}
                 onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.cityLayout) })}
@@ -233,6 +241,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("state")}
                 label="State, Province, or Region"
                 placeholder="Add state, province, or region"
+                textContentType="addressState"
                 onSubmitEditing={() => this.postalCode.root.focus()}
                 inputRef={el => (this.stateProvinceRegion = el)}
                 onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
@@ -248,6 +257,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("postalCode")}
                 label="Postal code"
                 placeholder="Add your postal code"
+                textContentType="postalCode"
                 onSubmitEditing={() => this.phoneNumber.root.focus()}
                 onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.postalCodeLayout) })}
@@ -257,6 +267,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("phoneNumber")}
                 label="Phone"
                 placeholder="Add your phone number"
+                textContentType="telephoneNumber"
                 onSubmitEditing={() => this.presentSelectCountry()}
                 onLayout={({ nativeEvent }) => (this.phoneNumberLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.phoneNumberLayout) })}
@@ -296,10 +307,10 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     )
   }
 
-  private defaultPropsForInput(field: string) {
+  private defaultPropsForInput(field: string): Partial<StyledInputProps> {
     return {
       autoCapitalize: "words",
-      error: this.state.errors[field],
+      errorMessage: this.state.errors[field],
       inputRef: el => (this[field] = el),
       onBlur: () => this.validateField(field),
       onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
