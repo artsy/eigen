@@ -20,9 +20,9 @@ interface State {
 
 export const formatTombstoneText = (nationality: string, birthday: string, deathday: string) => {
   if (nationality && birthday && deathday) {
-    return nationality + ", " + birthday + "-" + deathday
+    return nationality.trim() + ", " + birthday + "-" + deathday
   } else if (nationality && birthday) {
-    return nationality + ", b. " + birthday
+    return nationality.trim() + ", b. " + birthday
   } else if (nationality) {
     return nationality
   } else if (birthday && deathday) {
