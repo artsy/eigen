@@ -983,7 +983,20 @@ exports[`Registration result component renders registration pending properly 1`]
           }
           textAlign="center"
         >
-          Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email specialist@artsy.net with any questions.
+          Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email 
+          <Text
+            onPress={[Function]}
+            style={
+              Array [
+                Object {
+                  "textDecorationLine": "underline",
+                },
+              ]
+            }
+          >
+            specialist@artsy.net
+          </Text>
+           with any questions.
         </Text>
         <Text />
         <Text

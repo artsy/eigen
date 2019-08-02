@@ -38,9 +38,9 @@ const registrationCompleteMessage = {
 const registrationPendingMessage = {
   title: "Registration pending",
   description:
-    "Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email specialist@artsy.net with any questions.\n" +
+    "Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email [specialist@artsy.net](mailto:support@artsy.net) with any questions.\n" +
     "\n" +
-    "In the meantime, you can still view works and watch lots you’re interested in.\n",
+    "In the meantime, you can still view works and watch lots you’re interested in.",
 }
 
 const registrationErrorMessage = {
