@@ -95,17 +95,17 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
       if (relay && relay.environment) {
         commitMutation<CommercialButtonsOfferOrderMutation>(relay.environment, {
           mutation: graphql`
-            mutation CommercialButtonsOfferOrderMutation($input: CreateOfferOrderWithArtworkInput!) {
-              ecommerceCreateOfferOrderWithArtwork(input: $input) {
+            mutation CommercialButtonsOfferOrderMutation($input: CommerceCreateOfferOrderWithArtworkInput!) {
+              commerceCreateOfferOrderWithArtwork(input: $input) {
                 orderOrError {
                   __typename
-                  ... on OrderWithMutationSuccess {
+                  ... on CommerceOrderWithMutationSuccess {
                     order {
                       internalID
                       mode
                     }
                   }
-                  ... on OrderWithMutationFailure {
+                  ... on CommerceOrderWithMutationFailure {
                     error {
                       type
                       code
@@ -125,7 +125,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
           onCompleted: data => {
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => {
               const {
-                ecommerceCreateOfferOrderWithArtwork: { orderOrError },
+                commerceCreateOfferOrderWithArtwork: { orderOrError },
               } = data
               if (orderOrError.error) {
                 this.onMutationError(orderOrError.error)
