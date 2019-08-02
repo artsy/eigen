@@ -244,7 +244,8 @@ fragment ArtworkHeader_artwork on Artwork {
 fragment CommercialInformation_artwork on Artwork {
   availability
   artists {
-    is_consignable: isConsignable
+    isConsignable
+    name
     id
   }
   editionSets {
@@ -1276,7 +1277,7 @@ return {
               (v14/*: any*/),
               {
                 "kind": "ScalarField",
-                "alias": "is_consignable",
+                "alias": null,
                 "name": "isConsignable",
                 "args": null,
                 "storageKey": null
@@ -1469,7 +1470,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "ed5e5b85a3eef769149350c85076ca33",
+    "id": "df910d195656ec2672524b6928a9dd56",
     "text": null,
     "metadata": {}
   }

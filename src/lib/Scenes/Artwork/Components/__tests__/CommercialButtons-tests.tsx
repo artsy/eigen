@@ -38,7 +38,7 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
     mockData: { artwork: mockArtworkData },
     mockMutationResults: {
       commerceCreateOrderWithArtwork: mockOrderMutationResults,
-      ecommerceCreateOfferOrderWithArtwork: mockOfferMutationResults,
+      commerceCreateOfferOrderWithArtwork: mockOfferMutationResults,
     },
   })
 }
@@ -156,7 +156,10 @@ describe("CommercialButtons", () => {
       mockArtworkData: artwork,
       mockOrderMutationResults: {},
       mockOfferMutationResults: {
-        orderOrError: { order: { internalID: "makeOfferID", __typename: "OfferOrder", mode: "OFFER" } },
+        orderOrError: {
+          __typename: "CommerceOrderWithMutationSuccess",
+          order: { internalID: "makeOfferID", __typename: "CommerceOfferOrder", mode: "OFFER" },
+        },
       },
     })
 

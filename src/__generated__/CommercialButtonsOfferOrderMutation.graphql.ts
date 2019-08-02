@@ -1,48 +1,48 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type OrderModeEnum = "BUY" | "OFFER" | "%future added value";
-export type CreateOfferOrderWithArtworkInput = {
+export type CommerceOrderModeEnum = "BUY" | "OFFER" | "%future added value";
+export type CommerceCreateOfferOrderWithArtworkInput = {
     readonly artworkId: string;
-    readonly editionSetId?: string | null;
-    readonly quantity?: number | null;
-    readonly findActiveOrCreate?: boolean | null;
     readonly clientMutationId?: string | null;
+    readonly editionSetId?: string | null;
+    readonly findActiveOrCreate?: boolean | null;
+    readonly quantity?: number | null;
 };
 export type CommercialButtonsOfferOrderMutationVariables = {
-    readonly input: CreateOfferOrderWithArtworkInput;
+    readonly input: CommerceCreateOfferOrderWithArtworkInput;
 };
 export type CommercialButtonsOfferOrderMutationResponse = {
-    readonly ecommerceCreateOfferOrderWithArtwork: {
-        readonly orderOrError: ({
+    readonly commerceCreateOfferOrderWithArtwork: {
+        readonly orderOrError: {
             readonly __typename: string;
             readonly order?: {
                 readonly internalID: string;
-                readonly mode: OrderModeEnum | null;
-            } | null;
+                readonly mode: CommerceOrderModeEnum | null;
+            };
             readonly error?: {
                 readonly type: string;
                 readonly code: string;
                 readonly data: string | null;
-            } | null;
+            };
         } & ({
-            readonly __typename: "OrderWithMutationSuccess";
+            readonly __typename: "CommerceOrderWithMutationSuccess";
             readonly order: {
                 readonly internalID: string;
-                readonly mode: OrderModeEnum | null;
-            } | null;
+                readonly mode: CommerceOrderModeEnum | null;
+            };
         } | {
-            readonly __typename: "OrderWithMutationFailure";
+            readonly __typename: "CommerceOrderWithMutationFailure";
             readonly error: {
                 readonly type: string;
                 readonly code: string;
                 readonly data: string | null;
-            } | null;
+            };
         } | {
             /*This will never be '% other', but we need some
             value in case none of the concrete values match.*/
             readonly __typename: "%other";
-        })) | null;
+        });
     } | null;
 };
 export type CommercialButtonsOfferOrderMutation = {
@@ -54,20 +54,19 @@ export type CommercialButtonsOfferOrderMutation = {
 
 /*
 mutation CommercialButtonsOfferOrderMutation(
-  $input: CreateOfferOrderWithArtworkInput!
+  $input: CommerceCreateOfferOrderWithArtworkInput!
 ) {
-  ecommerceCreateOfferOrderWithArtwork(input: $input) {
+  commerceCreateOfferOrderWithArtwork(input: $input) {
     orderOrError {
       __typename
-      ... on OrderWithMutationSuccess {
+      ... on CommerceOrderWithMutationSuccess {
         order {
           __typename
           internalID
           mode
-          id
         }
       }
-      ... on OrderWithMutationFailure {
+      ... on CommerceOrderWithMutationFailure {
         error {
           type
           code
@@ -84,7 +83,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "input",
-    "type": "CreateOfferOrderWithArtworkInput!",
+    "type": "CommerceCreateOfferOrderWithArtworkInput!",
     "defaultValue": null
   }
 ],
@@ -118,7 +117,7 @@ v4 = {
 },
 v5 = {
   "kind": "InlineFragment",
-  "type": "OrderWithMutationFailure",
+  "type": "CommerceOrderWithMutationFailure",
   "selections": [
     {
       "kind": "LinkedField",
@@ -126,7 +125,7 @@ v5 = {
       "name": "error",
       "storageKey": null,
       "args": null,
-      "concreteType": "EcommerceError",
+      "concreteType": "CommerceApplicationError",
       "plural": false,
       "selections": [
         {
@@ -166,10 +165,10 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "ecommerceCreateOfferOrderWithArtwork",
+        "name": "commerceCreateOfferOrderWithArtwork",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateOfferOrderWithArtworkPayload",
+        "concreteType": "CommerceCreateOfferOrderWithArtworkPayload",
         "plural": false,
         "selections": [
           {
@@ -184,7 +183,7 @@ return {
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "OrderWithMutationSuccess",
+                "type": "CommerceOrderWithMutationSuccess",
                 "selections": [
                   {
                     "kind": "LinkedField",
@@ -216,10 +215,10 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "ecommerceCreateOfferOrderWithArtwork",
+        "name": "commerceCreateOfferOrderWithArtwork",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateOfferOrderWithArtworkPayload",
+        "concreteType": "CommerceCreateOfferOrderWithArtworkPayload",
         "plural": false,
         "selections": [
           {
@@ -234,7 +233,7 @@ return {
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "OrderWithMutationSuccess",
+                "type": "CommerceOrderWithMutationSuccess",
                 "selections": [
                   {
                     "kind": "LinkedField",
@@ -247,14 +246,7 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v3/*: any*/),
-                      (v4/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "id",
-                        "args": null,
-                        "storageKey": null
-                      }
+                      (v4/*: any*/)
                     ]
                   }
                 ]
@@ -269,11 +261,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "CommercialButtonsOfferOrderMutation",
-    "id": "c558da8ddbc73235cb40c37497a54242",
+    "id": "8cfb809712a89b6b6a53dfd23e6bfeb6",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '9aeb88b356d76b9dbbe9ebf3b61cbf1e';
+(node as any).hash = '7547795206a1797344ed205e04ab47f5';
 export default node;

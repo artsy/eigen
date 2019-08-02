@@ -1,4 +1,4 @@
-import { Box, Flex, Serif } from "@artsy/palette"
+import { Box, Flex, Serif, Spacer } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
@@ -115,6 +115,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             artwork.cultural_maker &&
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
+        <Spacer mb={0.5} />
         <Flex flexDirection="row" flexWrap="wrap">
           <Serif size="3t">
             <Serif italic color="black60" size="3t">

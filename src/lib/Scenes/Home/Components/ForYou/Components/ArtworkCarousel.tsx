@@ -1,3 +1,4 @@
+import { Box, Button, Theme } from "@artsy/palette"
 import { omit } from "lodash"
 import React, { Component } from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -8,8 +9,6 @@ import {
   ImageURISource,
   LayoutAnimation,
   StyleSheet,
-  Text,
-  TextStyle,
   TouchableHighlight,
   View,
   ViewProperties,
@@ -20,7 +19,6 @@ import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Separator from "lib/Components/Separator"
 import Spinner from "lib/Components/Spinner"
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ArtworkCarouselHeader from "./ArtworkCarouselHeader"
 
@@ -169,9 +167,11 @@ export class ArtworkCarousel extends Component<Props, State> {
 
     if (this.hasAdditionalContent()) {
       return (
-        <TouchableHighlight style={styles.viewAllButton} onPress={this.handleViewAll} underlayColor={"gray"}>
-          <Text style={styles.viewAllText}>VIEW ALL</Text>
-        </TouchableHighlight>
+        <Box my={3}>
+          <Button width={100} block onPress={this.handleViewAll}>
+            View all
+          </Button>
+        </Box>
       )
     }
 
@@ -216,10 +216,12 @@ export class ArtworkCarousel extends Component<Props, State> {
     }
 
     return (
-      <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
-        <ArtworkCarouselHeader rail={this.props.rail as any} handleViewAll={this.handleViewAll} />
-        <View style={this.railStyle()}>{this.renderModuleResults()}</View>
-      </View>
+      <Theme>
+        <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
+          <ArtworkCarouselHeader rail={this.props.rail as any} handleViewAll={this.handleViewAll} />
+          <View style={this.railStyle()}>{this.renderModuleResults()}</View>
+        </View>
+      </Theme>
     )
   }
 }
@@ -228,8 +230,6 @@ interface Styles {
   container: ViewStyle
   gridContainer: ViewStyle
   expansionButton: ViewStyle
-  viewAllButton: ViewStyle
-  viewAllText: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -249,21 +249,6 @@ const styles = StyleSheet.create<Styles>({
     alignSelf: "center",
     top: -20,
     justifyContent: "center",
-  },
-  viewAllButton: {
-    width: 240,
-    height: 40,
-    backgroundColor: "black",
-    alignSelf: "center",
-    justifyContent: "center",
-    marginBottom: 30,
-    marginTop: 30,
-  },
-  viewAllText: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 14,
-    fontFamily: fonts["avant-garde-regular"],
   },
 })
 

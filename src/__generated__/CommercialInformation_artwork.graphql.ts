@@ -9,7 +9,8 @@ export type CommercialInformation_artwork$ref = typeof _CommercialInformation_ar
 export type CommercialInformation_artwork = {
     readonly availability: string | null;
     readonly artists: ReadonlyArray<{
-        readonly is_consignable: boolean | null;
+        readonly isConsignable: boolean | null;
+        readonly name: string | null;
     } | null> | null;
     readonly editionSets: ReadonlyArray<{
         readonly isAcquireable: boolean | null;
@@ -75,8 +76,15 @@ return {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": "is_consignable",
+          "alias": null,
           "name": "isConsignable",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
           "args": null,
           "storageKey": null
         }
@@ -138,5 +146,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '01bfe36d22efbf16af9449537fdeb623';
+(node as any).hash = '83b5769837fc412de226dfda25c47ca7';
 export default node;
