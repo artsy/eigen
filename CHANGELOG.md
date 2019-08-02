@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.12.13
+
 - Fix copy on registration pending view - yuki24
 
 ### 1.12.12
