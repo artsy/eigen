@@ -1,4 +1,6 @@
-# How to run on device in Emission
+# How to run the Emission test app on device
+
+(**Note**: these instructions are for running the _Emission_ app on-device. To run _Eigen_ on device linked to Emission, [check out the Eigen docs](https://github.com/artsy/eigen/blob/master/docs/getting_started.md).)
 
 So, you have something that can only really be tested on real hardware. Lucky you.
 

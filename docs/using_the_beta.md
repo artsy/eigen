@@ -20,9 +20,7 @@ _( Note: this section in particular will get out of date quickly, best use your 
 
 The menu lets you do a few things:
 
-* The first section is about your current settings: Production vs Staging, and what version of the app are you running.
-* Storybooks Browser: Shows all of the Components, with their different states.
-* Code Review: You can run the code from any active Pull Request, this lets you see work exactly as it's happening.
-* AppHub: Any accepted code from Code Review goes into AppHub where you can choose to work with it. ( _Note: currently you cannot run stories from AppHub )
-* View Controllers: Jump off points to specific parts of the app. These are used when we want to do final tests for integration with the Artsy iOS app.
-
+- The first section is about your current settings: Production vs Staging, and what version of the app are you running.
+- Storybooks Browser: Shows all of the Components, with their different states.
+- Code Review: You can run the code from any active Pull Request, this lets you see work exactly as it's happening.
+- View Controllers: Jump off points to specific parts of the app. These are used when we want to do final tests for integration with the Artsy iOS app.

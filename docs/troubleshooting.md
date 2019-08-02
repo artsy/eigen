@@ -15,26 +15,6 @@ make sure you are on proper node version and then do a
 yarn install
 ```
 
-- Failed `make artsy` with
-
-```
-  [!] CocoaPods could not find compatible versions for pod "Artsy+UIFonts":
-    In snapshot (Podfile.lock):
-      Artsy+UIFonts (= 3.2.0, >= 1.1.0, >= 3.0.0)
-
-    In Podfile:
-      Artsy+UIFonts
-
-      Emission (from `../`) was resolved to 1.8.3, which depends on
-        Artsy+UIFonts (>= 3.0.0)
-```
-
-you need to clone Artsy UI Fonts in your Emission root folder:
-
-```
-git clone https://github.com/artsy/Artsy-UIFonts.git
-```
-
 - Issue with installing `tipsi-stripe`
 
 ```
