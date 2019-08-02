@@ -40,13 +40,13 @@ describe("ArtworkConsignLink", () => {
       )
       expect(component.text()).toContain("Consign with Artsy.")
     })
-    it("doesn't show consign link if no artists are consignable", () => {
+    it("doesn't render component if no artists are consignable", () => {
       const component = mount(
         <Theme>
           <ArtworkConsignLink consignableArtistsCount={0} artistName={null} />
         </Theme>
       )
-      expect(component.text()).not.toContain("Consign with Artsy.")
+      expect(component).toEqual({})
     })
   })
 

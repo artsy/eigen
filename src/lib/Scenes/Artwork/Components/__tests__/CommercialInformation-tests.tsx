@@ -108,7 +108,7 @@ describe("CommercialInformation", () => {
         .at(3)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"Want to sell a work by ? Consign with Artsy."`)
+    ).toMatchInlineSnapshot(`"Want to sell a work by Santa Claus? Consign with Artsy."`)
   })
 
   it("when edition set is selected it's internalID is passed to CommercialButtons for mutation", () => {
