@@ -3,7 +3,7 @@ import { CommercialInformation_artwork } from "__generated__/CommercialInformati
 import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ArtworkConsignLink } from "./ArtworkConsignLink"
+import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -71,7 +71,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
           {!!consignableArtistsCount && (
             <>
               <Spacer mb={2} />
-              <ArtworkConsignLink consignableArtistsCount={consignableArtistsCount} artistName={artistName} />
+              <ArtworkExtraLinks consignableArtistsCount={consignableArtistsCount} artistName={artistName} />
             </>
           )}
         </Box>

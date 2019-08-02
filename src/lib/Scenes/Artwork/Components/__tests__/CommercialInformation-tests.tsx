@@ -2,7 +2,7 @@ import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { ArtworkConsignLink } from "../ArtworkConsignLink"
+import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
 import { CommercialButtons } from "../CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformation } from "../CommercialInformation"
@@ -20,7 +20,7 @@ describe("CommercialInformation", () => {
     )
     expect(component.text()).toContain("Contact for price")
     expect(component.text()).toContain("I'm a Gallery")
-    expect(component.find(ArtworkConsignLink).text()).toContain("Consign with Artsy.")
+    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
 
   it("hides seller info for works from closed auctions", () => {
@@ -38,7 +38,7 @@ describe("CommercialInformation", () => {
     )
     expect(component.text()).toContain("Contact for price")
     expect(component.text()).not.toContain("I'm a Gallery")
-    expect(component.find(ArtworkConsignLink).text()).toContain("Consign with Artsy.")
+    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
 
   it("doesn't render information when the data is not present", () => {

@@ -5,13 +5,13 @@ import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Text } from "react-native"
 
-interface ArtworkConsignLinkProps {
+interface ArtworkExtraLinksProps {
   consignableArtistsCount: number
   artistName: string | null
 }
 
 @track()
-export class ArtworkConsignLink extends React.Component<ArtworkConsignLinkProps> {
+export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   handleTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
@@ -20,7 +20,7 @@ export class ArtworkConsignLink extends React.Component<ArtworkConsignLinkProps>
     return {
       action_name: Schema.ActionNames.ConsignWithArtsy,
       action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkConsignLink,
+      context_module: Schema.ContextModules.ArtworkExtraLinks,
     } as any
   })
   handleConsignmentsTap() {
