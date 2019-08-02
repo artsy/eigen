@@ -3,7 +3,7 @@ import { CommercialInformation_artwork } from "__generated__/CommercialInformati
 import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
+import { ArtworkConsignLink } from "./ArtworkConsignLink"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -23,11 +23,12 @@ export class CommercialInformation extends React.Component<CommercialInformation
 
   renderSingleEditionWork = () => {
     const { artwork } = this.props
+    const saleMessage = artwork.saleMessage === "Contact For Price" ? "Contact for price" : artwork.saleMessage
 
     return (
       <Box>
         <Sans size="4t" weight="medium">
-          {artwork.saleMessage ? artwork.saleMessage : capitalize(artwork.availability)}
+          {saleMessage ? saleMessage : capitalize(artwork.availability)}
         </Sans>
         <CommercialPartnerInformation artwork={artwork} />
       </Box>
@@ -53,7 +54,8 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { editionSetID } = this.state
     const { isAcquireable, isOfferable, isInquireable } = artwork
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
-    const consignableArtistsCount = artwork.artists.filter(artist => artist.is_consignable).length
+    const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
+    const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
     return (
       <>
         {artwork.editionSets && artwork.editionSets.length > 1
@@ -69,7 +71,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
           {!!consignableArtistsCount && (
             <>
               <Spacer mb={2} />
-              <ArtworkExtraLinks consignableArtistsCount={consignableArtistsCount} />
+              <ArtworkConsignLink consignableArtistsCount={consignableArtistsCount} artistName={artistName} />
             </>
           )}
         </Box>
@@ -83,7 +85,8 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
     fragment CommercialInformation_artwork on Artwork {
       availability
       artists {
-        is_consignable: isConsignable
+        isConsignable
+        name
       }
 
       editionSets {

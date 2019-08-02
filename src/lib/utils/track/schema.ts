@@ -290,7 +290,7 @@ export enum ContextModules {
   ArtistInsights = "ArtistInsights",
   ArtworkActions = "ArtworkActions",
   ArtworkDetails = "ArtworkDetails",
-  ArtworkExtraLinks = "ArtworkExtraLinks",
+  ArtworkConsignLink = "ArtworkConsignLink",
   ArtworkHistory = "ArtworkHistory",
   ArtworkImage = "ArtworkImage",
   ArtworkTombstone = "ArtworkTombstone",

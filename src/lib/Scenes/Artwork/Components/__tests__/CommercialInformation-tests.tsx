@@ -2,7 +2,7 @@ import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
+import { ArtworkConsignLink } from "../ArtworkConsignLink"
 import { CommercialButtons } from "../CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformation } from "../CommercialInformation"
@@ -18,9 +18,9 @@ describe("CommercialInformation", () => {
         <CommercialInformation artwork={CommercialInformationArtwork} />
       </Theme>
     )
-    expect(component.text()).toContain("Contact For Price")
+    expect(component.text()).toContain("Contact for price")
     expect(component.text()).toContain("I'm a Gallery")
-    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
+    expect(component.find(ArtworkConsignLink).text()).toContain("Consign with Artsy.")
   })
 
   it("hides seller info for works from closed auctions", () => {
@@ -36,9 +36,9 @@ describe("CommercialInformation", () => {
         <CommercialInformation artwork={CommercialInformationArtworkClosedAuction} />
       </Theme>
     )
-    expect(component.text()).toContain("Contact For Price")
+    expect(component.text()).toContain("Contact for price")
     expect(component.text()).not.toContain("I'm a Gallery")
-    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
+    expect(component.find(ArtworkConsignLink).text()).toContain("Consign with Artsy.")
   })
 
   it("doesn't render information when the data is not present", () => {
@@ -63,7 +63,8 @@ describe("CommercialInformation", () => {
       },
       artists: [
         {
-          is_consignable: false,
+          isConsignable: false,
+          name: "",
           " $fragmentRefs": null,
         },
       ],
@@ -75,7 +76,7 @@ describe("CommercialInformation", () => {
         <CommercialInformation artwork={CommercialInformationArtworkNoData} />
       </Theme>
     )
-    expect(component.text()).not.toContain("Contact For Price")
+    expect(component.text()).not.toContain("Contact for price")
     expect(component.text()).not.toContain("I'm a Gallery")
     expect(component.text()).not.toContain("Consign with Artsy.")
   })
@@ -107,7 +108,7 @@ describe("CommercialInformation", () => {
         .at(3)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"Want to sell a work by this artist? Consign with Artsy."`)
+    ).toMatchInlineSnapshot(`"Want to sell a work by ? Consign with Artsy."`)
   })
 
   it("when edition set is selected it's internalID is passed to CommercialButtons for mutation", () => {
@@ -183,7 +184,8 @@ const CommercialInformationArtwork = {
   },
   artists: [
     {
-      is_consignable: true,
+      isConsignable: true,
+      name: "Santa Claus",
       " $fragmentRefs": null,
     },
   ],

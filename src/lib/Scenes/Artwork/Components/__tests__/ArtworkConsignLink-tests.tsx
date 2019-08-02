@@ -2,7 +2,7 @@ import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { Text } from "react-native"
-import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
+import { ArtworkConsignLink } from "../ArtworkConsignLink"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
@@ -10,11 +10,11 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-describe("ArtworkExtraLinks", () => {
+describe("ArtworkConsignLink", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
     const component = mount(
       <Theme>
-        <ArtworkExtraLinks consignableArtistsCount={3} />
+        <ArtworkConsignLink consignableArtistsCount={3} artistName={null} />
       </Theme>
     )
     const consignmentsLink = component.find(Text).at(1)
@@ -27,7 +27,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows plural link text", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks consignableArtistsCount={3} />
+          <ArtworkConsignLink consignableArtistsCount={3} artistName={null} />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by these artists?")
@@ -35,7 +35,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link if at least 1 artist is consignable", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks consignableArtistsCount={3} />
+          <ArtworkConsignLink consignableArtistsCount={3} artistName={null} />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -43,7 +43,7 @@ describe("ArtworkExtraLinks", () => {
     it("doesn't show consign link if no artists are consignable", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks consignableArtistsCount={0} />
+          <ArtworkConsignLink consignableArtistsCount={0} artistName={null} />
         </Theme>
       )
       expect(component.text()).not.toContain("Consign with Artsy.")
@@ -54,16 +54,16 @@ describe("ArtworkExtraLinks", () => {
     it("shows singular link text", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks consignableArtistsCount={1} />
+          <ArtworkConsignLink consignableArtistsCount={1} artistName="Santa Claus" />
         </Theme>
       )
-      expect(component.text()).toContain("Want to sell a work by this artist?")
+      expect(component.text()).toContain("Want to sell a work by Santa Claus?")
     })
 
     it("shows consign link", () => {
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks consignableArtistsCount={1} />
+          <ArtworkConsignLink consignableArtistsCount={1} artistName="Santa Claus" />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
