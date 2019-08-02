@@ -8,7 +8,7 @@ export interface ImageDescriptor {
   url: string
   width: number
   height: number
-  deep_zoom: {
+  deepZoom: {
     Image: {
       TileSize: number
       Url: string

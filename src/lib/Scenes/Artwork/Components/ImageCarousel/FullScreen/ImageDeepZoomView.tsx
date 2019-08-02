@@ -1,6 +1,7 @@
 import React, { useCallback, useImperativeHandle, useMemo, useState } from "react"
-import { Image, View } from "react-native"
+import { Animated, Image, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
+import { screenBoundingBox } from "./screen"
 
 interface Tile {
   setShowing: (showing: boolean) => void
@@ -140,19 +141,25 @@ export interface ImageDeepZoomViewProps {
   width: number
   height: number
   viewPort: Rect
+  $zoomScale: Animated.Value
+  $contentOffsetX: Animated.Value
+  $contentOffsetY: Animated.Value
 }
 
 const colors = ["#FFA719", "#FFCC00", "#99CCFF", "#488CBA"]
 
 export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   image: {
-    deep_zoom: {
+    deepZoom: {
       Image: { Format, Size, TileSize, Url },
     },
   },
   width,
   height,
   viewPort,
+  $zoomScale,
+  $contentOffsetX,
+  $contentOffsetY,
 }) => {
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(Size), [Size])
@@ -186,6 +193,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
         const levelScale = levels[level].width / width
         const actualTileSize = TileSize / levelScale
 
+        const levelTiles: JSX.Element[] = []
         console.log("doing rows and cols for level", level)
         for (let row = minRow; row <= maxRow; row++) {
           for (let col = minCol; col <= maxCol; col++) {
@@ -193,10 +201,10 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
             console.log({ url })
             const tileTop = row * actualTileSize
             const tileLeft = col * actualTileSize
-            const tileWidth = col < numCols - 1 ? actualTileSize : (levels[level].width % TileSize) / levelScale
-            const tileHeight = row < numRows - 1 ? actualTileSize : (levels[level].height % TileSize) / levelScale
+            const tileWidth = col < numCols - 1 ? TileSize : levels[level].width % TileSize
+            const tileHeight = row < numRows - 1 ? TileSize : levels[level].height % TileSize
 
-            result.push(
+            levelTiles.push(
               <Tile
                 key={url}
                 url={url}
@@ -210,6 +218,25 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
             )
           }
         }
+
+        result.push(
+          <Animated.View
+            key={`level-${level}`}
+            style={{
+              ...levels[level],
+              transform: [
+                {
+                  translateX: $contentOffsetX.interpolate({
+                    inputRange: [],
+                    outputRange: [],
+                  }),
+                },
+              ],
+            }}
+          >
+            {levelTiles}
+          </Animated.View>
+        )
       }
 
       return result
@@ -217,7 +244,19 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
     [viewPort]
   )
 
-  return <View style={{ position: "absolute", width, height, top: 0, left: 0 }}>{tiles}</View>
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={{
+        position: "absolute",
+        ...screenBoundingBox,
+        top: 0,
+        left: 0,
+        opacity: $zoomScale.interpolate({ inputRange: [1, 5], outputRange: [0, 0.1] }),
+        backgroundColor: "red",
+      }}
+    />
+  )
 }
 
 interface Box {

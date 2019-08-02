@@ -34,7 +34,7 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
             width,
             height,
           }),
-          deep_zoom: image.deep_zoom,
+          deepZoom: image.deepZoom,
         }
       }),
     [props.images]

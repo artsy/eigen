@@ -6,6 +6,7 @@ import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRe
 
 import {
   Animated,
+  NativeScrollEvent,
   NativeSyntheticEvent,
   NativeTouchEvent,
   ScrollView,
@@ -146,13 +147,13 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
 
     // we need to be able to reset the scroll view zoom level when the user
     // swipes to another image
-    const scrollViewRef = useRef<ScrollView>()
+    const scrollViewRef = useRef<{ getNode(): ScrollView }>()
     const zoomScale = useRef<number>(1)
     const contentOffset = useRef<{ x: number; y: number }>({ x: -marginHorizontal, y: -marginVertical })
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
-        scrollViewRef.current.scrollResponderZoomTo({
+        scrollViewRef.current.getNode().scrollResponderZoomTo({
           x: 0,
           y: 0,
           width: screenWidth,
@@ -177,7 +178,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         const tapY = (contentOffset.current.y + pageY) / zoomScale.current
         const w = screenWidth / maxZoomScale
         const h = screenHeight / maxZoomScale
-        scrollViewRef.current.scrollResponderZoomTo({
+        scrollViewRef.current.getNode().scrollResponderZoomTo({
           x: tapX - w / 2,
           y: tapY - h / 2,
           width: w,
@@ -202,73 +203,94 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       height: screenHeight / zoomScale.current,
     })
 
+    const $contentOffsetX = useAnimatedValue(-marginHorizontal)
+    const $contentOffsetY = useAnimatedValue(-marginVertical)
+    const $zoomScale = useAnimatedValue(1)
+
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
     if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
       return <View style={screenBoundingBox} />
     }
 
+    const onScroll = useCallback((ev: NativeSyntheticEvent<NativeScrollEvent>) => {
+      console.log("tha zoom scale be lik", ev.nativeEvent.zoomScale)
+      zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
+      contentOffset.current = { ...ev.nativeEvent.contentOffset }
+      console.log("contentOffset", contentOffset.current)
+      setViewPort({
+        x: ev.nativeEvent.contentOffset.x / zoomScale.current,
+        y: ev.nativeEvent.contentOffset.y / zoomScale.current,
+        width: screenWidth / zoomScale.current,
+        height: screenHeight / zoomScale.current,
+      })
+      if (state.imageIndex === index) {
+        dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
+      }
+    }, [])
+
     return (
-      // scroll view to allow pinch-to-zoom behaviour
-      <ScrollView
-        ref={scrollViewRef}
-        // disable accidental scrolling before the image has finished entering
-        scrollEnabled={state.fullScreenState === "entered"}
-        onScroll={ev => {
-          console.log("tha zoom scale be lik", ev.nativeEvent.zoomScale)
-          zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
-          contentOffset.current = { ...ev.nativeEvent.contentOffset }
-          setViewPort({
-            x: ev.nativeEvent.contentOffset.x / zoomScale.current,
-            y: ev.nativeEvent.contentOffset.y / zoomScale.current,
-            width: screenWidth / zoomScale.current,
-            height: screenHeight / zoomScale.current,
-          })
-          if (state.imageIndex === index) {
-            dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
-          }
-        }}
-        scrollEventThrottle={100}
-        bounces={false}
-        overScrollMode="never"
-        minimumZoomScale={1}
-        maximumZoomScale={maxZoomScale}
-        centerContent
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        style={[
-          {
-            height: screenBoundingBox.height,
-            // hide this scroll view until the image is ready to start its transition in.
-            opacity: state.fullScreenState !== "doing first render" ? 1 : 0,
-          },
-        ]}
-      >
-        <TouchableWithoutFeedback onPress={handleDoubleTapToZoom}>
-          {/* wrapper to apply transform to underlying image */}
-          <Animated.View
-            style={{
-              width,
-              height,
-              transform,
-            }}
-          >
-            <OpaqueImageView
-              noAnimation
-              imageURL={image.url}
-              useRawURL
+      <>
+        <Animated.ScrollView
+          ref={scrollViewRef}
+          scrollEnabled={state.fullScreenState === "entered"}
+          onScroll={Animated.event(
+            [{ nativeEvent: { zoomScale: $zoomScale, contentOffset: { x: $contentOffsetX, y: $contentOffsetY } } }],
+            {
+              useNativeDriver: true,
+              listener: onScroll,
+            }
+          )}
+          scrollEventThrottle={100}
+          bounces={false}
+          overScrollMode="never"
+          minimumZoomScale={1}
+          maximumZoomScale={maxZoomScale}
+          centerContent
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={[
+            {
+              ...screenBoundingBox,
+              // hide this scroll view until the image is ready to start its transition in.
+              opacity: state.fullScreenState !== "doing first render" ? 1 : 0,
+            },
+          ]}
+        >
+          <TouchableWithoutFeedback onPress={handleDoubleTapToZoom}>
+            {/* wrapper to apply transform to underlying image */}
+            <Animated.View
               style={{
                 width,
                 height,
+                transform,
               }}
+            >
+              <OpaqueImageView
+                noAnimation
+                imageURL={image.url}
+                useRawURL
+                style={{
+                  width,
+                  height,
+                }}
+              />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+        </Animated.ScrollView>
+        {state.fullScreenState !== "doing first render" &&
+          state.imageIndex === index && (
+            <ImageDeepZoomView
+              image={image}
+              width={width}
+              height={height}
+              viewPort={viewPort}
+              $zoomScale={$zoomScale}
+              $contentOffsetX={$contentOffsetX}
+              $contentOffsetY={$contentOffsetY}
             />
-            {state.fullScreenState !== "doing first render" &&
-              state.imageIndex === index && (
-                <ImageDeepZoomView image={image} width={width} height={height} viewPort={viewPort} />
-              )}
-          </Animated.View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+          )}
+      </>
     )
   })
 )
