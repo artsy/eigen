@@ -198,8 +198,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": "partner_names",
-      "name": "showsConnection",
-      "storageKey": "showsConnection(first:2)",
+      "name": "shows",
+      "storageKey": "shows(first:2)",
       "args": [
         {
           "kind": "Literal",
@@ -427,5 +427,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6fd2bf1a89e58ebb5a9df161ad3c178c';
+(node as any).hash = '2f0a9998dc15249d916e4e50f9cc6fda';
 export default node;

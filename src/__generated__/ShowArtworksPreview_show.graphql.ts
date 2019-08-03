@@ -9,7 +9,7 @@ export type ShowArtworksPreview_show = {
     readonly counts: {
         readonly artworks: number | null;
     } | null;
-    readonly artworks_connection: {
+    readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly " $fragmentRefs": GenericGrid_artworks$ref;
@@ -55,9 +55,9 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": "artworks_connection",
-      "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:6)",
+      "alias": null,
+      "name": "artworks",
+      "storageKey": "artworks(first:6)",
       "args": [
         {
           "kind": "Literal",
@@ -99,5 +99,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '667503651829a198e79105ef40a93c2c';
+(node as any).hash = 'e3638a4c2f04f199de9dd63b72e3d5f6';
 export default node;

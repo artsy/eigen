@@ -65,28 +65,48 @@ fragment About_artist on Artist {
     ...RelatedArtists_artists
     id
   }
-  articles {
-    ...Articles_articles
-    id
+  articles(first: 10) {
+    edges {
+      node {
+        ...Articles_articles
+        id
+      }
+    }
   }
 }
 
 fragment Shows_artist on Artist {
-  current_shows: shows(status: "running") {
-    ...VariableSizeShowsList_shows
-    id
+  currentShows: shows(status: "running", first: 10) {
+    edges {
+      node {
+        ...VariableSizeShowsList_shows
+        id
+      }
+    }
   }
-  upcoming_shows: shows(status: "upcoming") {
-    ...VariableSizeShowsList_shows
-    id
+  upcomingShows: shows(status: "upcoming", first: 10) {
+    edges {
+      node {
+        ...VariableSizeShowsList_shows
+        id
+      }
+    }
   }
-  past_small_shows: shows(status: "closed", size: 20) @skip(if: $isPad) {
-    ...SmallList_shows
-    id
+  pastSmallShows: shows(status: "closed", first: 20) @skip(if: $isPad) {
+    edges {
+      node {
+        ...SmallList_shows
+        id
+      }
+    }
   }
-  past_large_shows: shows(status: "closed", size: 20) @include(if: $isPad) {
-    ...VariableSizeShowsList_shows
-    id
+  pastLargeShows: shows(status: "closed", first: 20) @include(if: $isPad) {
+    edges {
+      node {
+        ...VariableSizeShowsList_shows
+        id
+      }
+    }
   }
 }
 
@@ -101,7 +121,7 @@ fragment Artworks_artist on Artist {
 
 fragment ArtistForSaleArtworksGrid_artist on Artist {
   id
-  forSaleArtworks: artworksConnection(first: 10, filter: [IS_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
+  forSaleArtworks: artworks(first: 10, filter: [IS_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
     pageInfo {
       hasNextPage
       startCursor
@@ -124,7 +144,7 @@ fragment ArtistForSaleArtworksGrid_artist on Artist {
 
 fragment ArtistNotForSaleArtworksGrid_artist on Artist {
   id
-  notForSaleArtworks: artworksConnection(first: 10, filter: [IS_NOT_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
+  notForSaleArtworks: artworks(first: 10, filter: [IS_NOT_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
     pageInfo {
       hasNextPage
       startCursor
@@ -347,18 +367,23 @@ v8 = {
 v9 = [
   (v8/*: any*/)
 ],
-v10 = [
+v10 = {
+  "kind": "Literal",
+  "name": "first",
+  "value": 10
+},
+v11 = [
   (v5/*: any*/),
   (v6/*: any*/)
 ],
-v11 = {
+v12 = {
   "kind": "ScalarField",
   "alias": "is_fair_booth",
   "name": "isFairBooth",
   "args": null,
   "storageKey": null
 },
-v12 = {
+v13 = {
   "kind": "LinkedField",
   "alias": "cover_image",
   "name": "coverImage",
@@ -368,45 +393,45 @@ v12 = {
   "plural": false,
   "selections": (v9/*: any*/)
 },
-v13 = {
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "kind",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v15 = {
   "kind": "ScalarField",
   "alias": "exhibition_period",
   "name": "exhibitionPeriod",
   "args": null,
   "storageKey": null
 },
-v15 = {
+v16 = {
   "kind": "ScalarField",
   "alias": "status_update",
   "name": "statusUpdate",
   "args": null,
   "storageKey": null
 },
-v16 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "status",
   "args": null,
   "storageKey": null
 },
-v17 = {
+v18 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v18 = [
+v19 = [
   (v5/*: any*/)
 ],
-v19 = {
+v20 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -415,21 +440,21 @@ v19 = {
   "concreteType": null,
   "plural": false,
   "selections": [
-    (v17/*: any*/),
+    (v18/*: any*/),
     (v6/*: any*/),
     {
       "kind": "InlineFragment",
       "type": "Partner",
-      "selections": (v18/*: any*/)
+      "selections": (v19/*: any*/)
     },
     {
       "kind": "InlineFragment",
       "type": "ExternalPartner",
-      "selections": (v18/*: any*/)
+      "selections": (v19/*: any*/)
     }
   ]
 },
-v20 = {
+v21 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -448,25 +473,42 @@ v20 = {
     (v6/*: any*/)
   ]
 },
-v21 = [
-  (v6/*: any*/),
-  (v2/*: any*/),
-  (v7/*: any*/),
-  (v11/*: any*/),
-  (v12/*: any*/),
-  (v13/*: any*/),
-  (v5/*: any*/),
-  (v14/*: any*/),
-  (v15/*: any*/),
-  (v16/*: any*/),
-  (v19/*: any*/),
-  (v20/*: any*/)
+v22 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ShowEdge",
+    "plural": true,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Show",
+        "plural": false,
+        "selections": [
+          (v6/*: any*/),
+          (v2/*: any*/),
+          (v7/*: any*/),
+          (v12/*: any*/),
+          (v13/*: any*/),
+          (v14/*: any*/),
+          (v5/*: any*/),
+          (v15/*: any*/),
+          (v16/*: any*/),
+          (v17/*: any*/),
+          (v20/*: any*/),
+          (v21/*: any*/)
+        ]
+      }
+    ]
+  }
 ],
-v22 = {
-  "kind": "Literal",
-  "name": "first",
-  "value": 10
-},
 v23 = {
   "kind": "Literal",
   "name": "sort",
@@ -480,7 +522,7 @@ v24 = [
       "IS_FOR_SALE"
     ]
   },
-  (v22/*: any*/),
+  (v10/*: any*/),
   (v23/*: any*/)
 ],
 v25 = [
@@ -695,7 +737,7 @@ v25 = [
             ],
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v10/*: any*/)
+            "selections": (v11/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -705,10 +747,10 @@ v25 = [
             "args": null,
             "concreteType": "Partner",
             "plural": false,
-            "selections": (v10/*: any*/)
+            "selections": (v11/*: any*/)
           },
           (v7/*: any*/),
-          (v17/*: any*/)
+          (v18/*: any*/)
         ]
       },
       {
@@ -733,13 +775,13 @@ v27 = [
       "IS_NOT_FOR_SALE"
     ]
   },
-  (v22/*: any*/),
+  (v10/*: any*/),
   (v23/*: any*/)
 ],
 v28 = [
   {
     "kind": "Literal",
-    "name": "size",
+    "name": "first",
     "value": 20
   },
   {
@@ -928,80 +970,106 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "articles",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Article",
-            "plural": true,
+            "storageKey": "articles(first:10)",
+            "args": [
+              (v10/*: any*/)
+            ],
+            "concreteType": "ArticleConnection",
+            "plural": false,
             "selections": [
-              (v6/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": "thumbnail_title",
-                "name": "thumbnailTitle",
-                "args": null,
-                "storageKey": null
-              },
-              (v7/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "author",
+                "name": "edges",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "Author",
-                "plural": false,
-                "selections": (v10/*: any*/)
-              },
-              {
-                "kind": "LinkedField",
-                "alias": "thumbnail_image",
-                "name": "thumbnailImage",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": (v9/*: any*/)
+                "concreteType": "ArticleEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Article",
+                    "plural": false,
+                    "selections": [
+                      (v6/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": "thumbnail_title",
+                        "name": "thumbnailTitle",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v7/*: any*/),
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "author",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Author",
+                        "plural": false,
+                        "selections": (v11/*: any*/)
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": "thumbnail_image",
+                        "name": "thumbnailImage",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": (v9/*: any*/)
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
           {
             "kind": "LinkedField",
-            "alias": "current_shows",
+            "alias": "currentShows",
             "name": "shows",
-            "storageKey": "shows(status:\"running\")",
+            "storageKey": "shows(first:10,status:\"running\")",
             "args": [
+              (v10/*: any*/),
               {
                 "kind": "Literal",
                 "name": "status",
                 "value": "running"
               }
             ],
-            "concreteType": "Show",
-            "plural": true,
-            "selections": (v21/*: any*/)
+            "concreteType": "ShowConnection",
+            "plural": false,
+            "selections": (v22/*: any*/)
           },
           {
             "kind": "LinkedField",
-            "alias": "upcoming_shows",
+            "alias": "upcomingShows",
             "name": "shows",
-            "storageKey": "shows(status:\"upcoming\")",
+            "storageKey": "shows(first:10,status:\"upcoming\")",
             "args": [
+              (v10/*: any*/),
               {
                 "kind": "Literal",
                 "name": "status",
                 "value": "upcoming"
               }
             ],
-            "concreteType": "Show",
-            "plural": true,
-            "selections": (v21/*: any*/)
+            "concreteType": "ShowConnection",
+            "plural": false,
+            "selections": (v22/*: any*/)
           },
           (v6/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "forSaleArtworks",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(filter:[\"IS_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "name": "artworks",
+            "storageKey": "artworks(filter:[\"IS_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
             "args": (v24/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
@@ -1010,7 +1078,7 @@ return {
           {
             "kind": "LinkedHandle",
             "alias": "forSaleArtworks",
-            "name": "artworksConnection",
+            "name": "artworks",
             "args": (v24/*: any*/),
             "handle": "connection",
             "key": "ArtistForSaleArtworksGrid_forSaleArtworks",
@@ -1019,8 +1087,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "notForSaleArtworks",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(filter:[\"IS_NOT_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "name": "artworks",
+            "storageKey": "artworks(filter:[\"IS_NOT_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
             "args": (v27/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
@@ -1029,7 +1097,7 @@ return {
           {
             "kind": "LinkedHandle",
             "alias": "notForSaleArtworks",
-            "name": "artworksConnection",
+            "name": "artworks",
             "args": (v27/*: any*/),
             "handle": "connection",
             "key": "ArtistNotForSaleArtworksGrid_notForSaleArtworks",
@@ -1042,25 +1110,47 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": "past_small_shows",
+                "alias": "pastSmallShows",
                 "name": "shows",
-                "storageKey": "shows(size:20,status:\"closed\")",
+                "storageKey": "shows(first:20,status:\"closed\")",
                 "args": (v28/*: any*/),
-                "concreteType": "Show",
-                "plural": true,
+                "concreteType": "ShowConnection",
+                "plural": false,
                 "selections": [
-                  (v2/*: any*/),
-                  (v7/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/),
-                  (v13/*: any*/),
-                  (v5/*: any*/),
-                  (v14/*: any*/),
-                  (v15/*: any*/),
-                  (v16/*: any*/),
-                  (v19/*: any*/),
-                  (v20/*: any*/),
-                  (v6/*: any*/)
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "edges",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ShowEdge",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Show",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v7/*: any*/),
+                          (v12/*: any*/),
+                          (v13/*: any*/),
+                          (v14/*: any*/),
+                          (v5/*: any*/),
+                          (v15/*: any*/),
+                          (v16/*: any*/),
+                          (v17/*: any*/),
+                          (v20/*: any*/),
+                          (v21/*: any*/),
+                          (v6/*: any*/)
+                        ]
+                      }
+                    ]
+                  }
                 ]
               }
             ]
@@ -1072,13 +1162,13 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": "past_large_shows",
+                "alias": "pastLargeShows",
                 "name": "shows",
-                "storageKey": "shows(size:20,status:\"closed\")",
+                "storageKey": "shows(first:20,status:\"closed\")",
                 "args": (v28/*: any*/),
-                "concreteType": "Show",
-                "plural": true,
-                "selections": (v21/*: any*/)
+                "concreteType": "ShowConnection",
+                "plural": false,
+                "selections": (v22/*: any*/)
               }
             ]
           }
@@ -1089,7 +1179,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersArtistQuery",
-    "id": "5e10b96daf50c4dcda2a65d2d16ffc29",
+    "id": "91ff4c7bfb12cbd4087f4e864e5871d0",
     "text": null,
     "metadata": {}
   }

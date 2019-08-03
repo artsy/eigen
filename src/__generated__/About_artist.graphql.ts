@@ -13,9 +13,13 @@ export type About_artist = {
     readonly related_artists: ReadonlyArray<{
         readonly " $fragmentRefs": RelatedArtists_artists$ref;
     } | null> | null;
-    readonly articles: ReadonlyArray<{
-        readonly " $fragmentRefs": Articles_articles$ref;
-    } | null> | null;
+    readonly articles: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": Articles_articles$ref;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": Biography_artist$ref;
     readonly " $refType": About_artist$ref;
 };
@@ -76,15 +80,43 @@ const node: ReaderFragment = {
       "kind": "LinkedField",
       "alias": null,
       "name": "articles",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Article",
-      "plural": true,
+      "storageKey": "articles(first:10)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 10
+        }
+      ],
+      "concreteType": "ArticleConnection",
+      "plural": false,
       "selections": [
         {
-          "kind": "FragmentSpread",
-          "name": "Articles_articles",
-          "args": null
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArticleEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Article",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "FragmentSpread",
+                  "name": "Articles_articles",
+                  "args": null
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -95,5 +127,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '52925bffae34b179a7b0bf2dc545829c';
+(node as any).hash = '76a7033bdf555c25fc3dc26178de20d3';
 export default node;

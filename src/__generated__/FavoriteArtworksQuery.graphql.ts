@@ -24,8 +24,8 @@ query FavoriteArtworksQuery {
 }
 
 fragment Artworks_me on Me {
-  saved_artworks: savedArtworks {
-    artworks_connection: artworksConnection(private: true, first: 10, after: "") {
+  savedArtworks {
+    artworks(private: true, first: 10, after: "") {
       pageInfo {
         startCursor
         endCursor
@@ -171,7 +171,7 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": "saved_artworks",
+            "alias": null,
             "name": "savedArtworks",
             "storageKey": null,
             "args": null,
@@ -180,9 +180,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": "artworks_connection",
-                "name": "artworksConnection",
-                "storageKey": "artworksConnection(after:\"\",first:10,private:true)",
+                "alias": null,
+                "name": "artworks",
+                "storageKey": "artworks(after:\"\",first:10,private:true)",
                 "args": (v0/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
@@ -464,11 +464,11 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": "artworks_connection",
-                "name": "artworksConnection",
+                "alias": null,
+                "name": "artworks",
                 "args": (v0/*: any*/),
                 "handle": "connection",
-                "key": "GenericGrid_artworks_connection",
+                "key": "GenericGrid_artworks",
                 "filters": [
                   "private"
                 ]
@@ -484,7 +484,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "86676b37ddf018ef38fcd781449d5b87",
+    "id": "d0ae250408d8827386c85446384182ec",
     "text": null,
     "metadata": {}
   }

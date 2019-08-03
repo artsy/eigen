@@ -46,7 +46,7 @@ fragment FairHeader_fair on Fair {
       id
     }
   }
-  partner_names: showsConnection(first: 2) {
+  partner_names: shows(first: 2) {
     edges {
       node {
         slug
@@ -270,8 +270,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "partner_names",
-            "name": "showsConnection",
-            "storageKey": "showsConnection(first:2)",
+            "name": "shows",
+            "storageKey": "shows(first:2)",
             "args": [
               {
                 "kind": "Literal",
@@ -508,7 +508,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairHeaderQuery",
-    "id": "39bcdd26ffc093fbb271c92644494f27",
+    "id": "ebbe87181a2757155c53c52a887f3811",
     "text": null,
     "metadata": {}
   }

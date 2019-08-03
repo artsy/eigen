@@ -52,7 +52,7 @@ fragment FairDetail_fair on Fair {
     activationText
     pressReleaseUrl
   }
-  shows: showsConnection(first: 5) {
+  shows(first: 5) {
     pageInfo {
       hasNextPage
       startCursor
@@ -63,7 +63,7 @@ fragment FairDetail_fair on Fair {
       node {
         slug
         internalID
-        artworks_connection: artworksConnection(first: 4) {
+        artworks(first: 4) {
           edges {
             node {
               slug
@@ -102,7 +102,7 @@ fragment FairHeader_fair on Fair {
       id
     }
   }
-  partner_names: showsConnection(first: 2) {
+  partner_names: shows(first: 2) {
     edges {
       node {
         slug
@@ -232,7 +232,7 @@ fragment FairBoothPreview_show on Show {
     display
     id
   }
-  artworks_connection: artworksConnection(first: 4) {
+  artworks(first: 4) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -507,8 +507,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "partner_names",
-            "name": "showsConnection",
-            "storageKey": "showsConnection(first:2)",
+            "name": "shows",
+            "storageKey": "shows(first:2)",
             "args": [
               {
                 "kind": "Literal",
@@ -936,9 +936,9 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "shows",
-            "name": "showsConnection",
-            "storageKey": "showsConnection(first:5)",
+            "alias": null,
+            "name": "shows",
+            "storageKey": "shows(first:5)",
             "args": (v12/*: any*/),
             "concreteType": "ShowConnection",
             "plural": false,
@@ -1004,9 +1004,9 @@ return {
                       (v2/*: any*/),
                       {
                         "kind": "LinkedField",
-                        "alias": "artworks_connection",
-                        "name": "artworksConnection",
-                        "storageKey": "artworksConnection(first:4)",
+                        "alias": null,
+                        "name": "artworks",
+                        "storageKey": "artworks(first:4)",
                         "args": [
                           {
                             "kind": "Literal",
@@ -1323,8 +1323,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": "shows",
-            "name": "showsConnection",
+            "alias": null,
+            "name": "shows",
             "args": (v12/*: any*/),
             "handle": "connection",
             "key": "Fair_shows",
@@ -1338,7 +1338,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairDetailTestsQuery",
-    "id": "508fc0daa12abb3258bcccc27d6b5811",
+    "id": "64b3d5e45067d4f907523fac3816ab35",
     "text": null,
     "metadata": {}
   }

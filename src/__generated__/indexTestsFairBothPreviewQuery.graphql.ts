@@ -63,7 +63,7 @@ fragment FairBoothPreview_show on Show {
     display
     id
   }
-  artworks_connection: artworksConnection(first: 4) {
+  artworks(first: 4) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -336,9 +336,9 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "artworks_connection",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:4)",
+            "alias": null,
+            "name": "artworks",
+            "storageKey": "artworks(first:4)",
             "args": [
               {
                 "kind": "Literal",
@@ -561,7 +561,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairBothPreviewQuery",
-    "id": "c4f24a2b95bd408a1435bc0188402387",
+    "id": "41a831aa036752af02a8def53b4c8211",
     "text": null,
     "metadata": {}
   }
