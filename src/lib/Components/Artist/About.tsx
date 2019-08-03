@@ -83,8 +83,12 @@ export default createFragmentContainer(About, {
       related_artists: artists(size: 16) {
         ...RelatedArtists_artists
       }
-      articles {
-        ...Articles_articles
+      articles(first: 10) {
+        edges {
+          node {
+            ...Articles_articles
+          }
+        }
       }
     }
   `,

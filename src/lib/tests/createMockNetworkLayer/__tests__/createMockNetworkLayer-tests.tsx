@@ -84,10 +84,18 @@ describe("createMockNetworkLayer", () => {
         query createMockNetworkLayerTestsAliasQuery {
           artist(id: "banksy") {
             forSaleArtworks: artworks(filter: IS_FOR_SALE) {
-              id
+              edges {
+                node {
+                  id
+                }
+              }
             }
             notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {
-              id
+              edges {
+                node {
+                  id
+                }
+              }
             }
           }
         }

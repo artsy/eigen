@@ -92,9 +92,9 @@ export default createPaginationContainer(
     me: graphql`
       fragment Artworks_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
-        saved_artworks: savedArtworks {
-          artworks_connection: artworksConnection(private: true, first: $count, after: $cursor)
-            @connection(key: "GenericGrid_artworks_connection") {
+        # TODO: This should move into followsAndSaves
+        savedArtworks {
+          artworks(private: true, first: $count, after: $cursor) @connection(key: "GenericGrid_artworks") {
             pageInfo {
               startCursor
               endCursor

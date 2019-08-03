@@ -222,8 +222,12 @@ const WorksForYouContainer = createPaginationContainer(
               url
             }
           }
-          artworks(sort: PUBLISHED_AT_DESC, size: 6) {
-            ...GenericGrid_artworks
+          artworks(sort: PUBLISHED_AT_DESC, first: 6) {
+            edges {
+              node {
+                ...GenericGrid_artworks
+              }
+            }
           }
         }
       }

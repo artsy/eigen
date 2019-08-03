@@ -17,12 +17,8 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer<
           filter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_NOT_FOR_SALE] }
         ) {
         id
-        notForSaleArtworks: artworksConnection(
-          first: $count
-          after: $cursor
-          filter: $filter
-          sort: PARTNER_UPDATED_AT_DESC
-        ) @connection(key: "ArtistNotForSaleArtworksGrid_notForSaleArtworks") {
+        notForSaleArtworks: artworks(first: $count, after: $cursor, filter: $filter, sort: PARTNER_UPDATED_AT_DESC)
+          @connection(key: "ArtistNotForSaleArtworksGrid_notForSaleArtworks") {
           pageInfo {
             hasNextPage
             startCursor

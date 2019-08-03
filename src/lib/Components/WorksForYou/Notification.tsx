@@ -103,11 +103,15 @@ export default createFragmentContainer(Notification, {
     fragment Notification_notification on FollowedArtistsArtworksGroup {
       summary
       artists
-      artworks {
-        artists(shallow: true) {
-          href
+      artworks(first: 10) {
+        edges {
+          node {
+            artists(shallow: true) {
+              href
+            }
+            ...GenericGrid_artworks
+          }
         }
-        ...GenericGrid_artworks
       }
       image {
         resized(height: 80, width: 80) {

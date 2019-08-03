@@ -16,8 +16,7 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
       fragment SaleArtworksGrid_sale on Sale
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
-        saleArtworks: saleArtworksConnection(first: $count, after: $cursor)
-          @connection(key: "SaleArtworksGrid_saleArtworks") {
+        saleArtworks: saleArtworks(first: $count, after: $cursor) @connection(key: "SaleArtworksGrid_saleArtworks") {
           pageInfo {
             hasNextPage
             startCursor
