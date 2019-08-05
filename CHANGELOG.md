@@ -19,6 +19,7 @@
 ### 1.12.13
 
 - Fix copy on registration pending view - yuki24
+- Fixes issue with mailto: links not opening - sweir27
 
 ### 1.12.12
 

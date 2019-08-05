@@ -1,5 +1,5 @@
 import React from "react"
-import { Text } from "react-native"
+import { Linking, Text } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { Theme } from "@artsy/palette"
@@ -56,7 +56,10 @@ describe("Markdown", () => {
     expect(SwitchBoardMock.presentModalViewController).toHaveBeenCalledWith(anything(), "http://www.artsy.net")
   })
 
-  it("renders mailto links as LinkText", () => {
+  it("renders mailto links as LinkText", async () => {
+    Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
+    Linking.openURL = jest.fn()
+
     const markdown = renderer.create(
       <Theme>
         <Markdown>
@@ -72,9 +75,8 @@ describe("Markdown", () => {
     expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
     expect(markdown.root.findAllByType(LinkText)[0].props.children[0]).toMatch("support@artsy.net")
 
-    markdown.root.findAllByType(LinkText)[0].props.onPress()
-
-    expect(SwitchBoardMock.presentModalViewController).toHaveBeenCalledWith(anything(), "mailto:support@artsy.net")
+    await markdown.root.findAllByType(LinkText)[0].props.onPress()
+    expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net")
   })
 
   it("accepts a rules prop", () => {
