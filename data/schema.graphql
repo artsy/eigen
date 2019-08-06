@@ -547,11 +547,6 @@ type Artist implements Node & Searchable {
     before: String
     last: Int
   ): ArticleConnection
-  artists(
-    # The number of Artists to return
-    size: Int
-    excludeArtistsWithoutArtworks: Boolean = true
-  ): [Artist]
   artworks(
     # List of artwork IDs to exclude from the response.
     exclude: [String]
@@ -3994,6 +3989,14 @@ type FollowsAndSaves {
 
   # A Connection of followed artists by current user
   artists(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+  artworks(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    private: Boolean = false
+    sort: CollectionSorts
+  ): SavedArtworksConnection
 
   # A list of the current user’s currently followed shows
   shows(
@@ -4014,6 +4017,9 @@ type FollowsAndSaves {
 
   # A list of the current user’s currently followed fair profiles
   fairs(after: String, first: Int, before: String, last: Int): FollowedFairConnection
+
+  # A list of the current user’s inquiry requests
+  genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
 }
 
 input FollowShowInput {
@@ -4782,9 +4788,6 @@ type Me implements Node {
   # A list of the current user’s credit cards
   creditCards(after: String, first: Int, before: String, last: Int): CreditCardConnection
   email: String
-
-  # A list of the current user’s inquiry requests
-  followedGenes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
   followsAndSaves: FollowsAndSaves
   hasCreditCards: Boolean
   hasQualifiedCreditCards: Boolean
@@ -4841,7 +4844,6 @@ type Me implements Node {
     size: Int
     sort: SaleSorts
   ): [SaleRegistration]
-  savedArtworks: Collection
 
   # A list of the current user’s suggested artists, based on a single artist
   suggestedArtists(
@@ -6393,6 +6395,30 @@ input SaveArtworkInput {
 type SaveArtworkPayload {
   artwork: Artwork
   clientMutationId: String
+}
+
+# A connection to a list of items.
+type SavedArtworksConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SavedArtworksEdge]
+  pageCursors: PageCursors
+  totalCount: Int
+  description: String!
+  default: Boolean!
+  name: String!
+  private: Boolean!
+}
+
+# An edge in a connection.
+type SavedArtworksEdge {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 # An object that may be searched for
