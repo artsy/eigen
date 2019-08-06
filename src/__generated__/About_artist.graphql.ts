@@ -10,9 +10,15 @@ export type About_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
     readonly slug: string;
-    readonly related_artists: ReadonlyArray<{
-        readonly " $fragmentRefs": RelatedArtists_artists$ref;
-    } | null> | null;
+    readonly related: {
+        readonly artists: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly " $fragmentRefs": RelatedArtists_artists$ref;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly articles: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -56,23 +62,56 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": "related_artists",
-      "name": "artists",
-      "storageKey": "artists(size:16)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 16
-        }
-      ],
-      "concreteType": "Artist",
-      "plural": true,
+      "alias": null,
+      "name": "related",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ArtistRelatedData",
+      "plural": false,
       "selections": [
         {
-          "kind": "FragmentSpread",
-          "name": "RelatedArtists_artists",
-          "args": null
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "artists",
+          "storageKey": "artists(first:16)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 16
+            }
+          ],
+          "concreteType": "ArtistConnection",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ArtistEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Artist",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "RelatedArtists_artists",
+                      "args": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -127,5 +166,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '76a7033bdf555c25fc3dc26178de20d3';
+(node as any).hash = '76ccaea3eb75f8ddcc7f84dc991a1a7b';
 export default node;

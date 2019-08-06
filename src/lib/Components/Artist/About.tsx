@@ -50,10 +50,10 @@ class About extends React.Component<Props> {
   }
 
   articles() {
-    if (this.props.artist.articles.length) {
+    if (this.props.artist.articles.edges.length) {
       return (
         <View>
-          <Articles articles={this.props.artist.articles as any} />
+          <Articles articles={this.props.artist.articles.edges.map(({ node }) => node)} />
           <Separator style={styles.sectionSeparator} />
         </View>
       )
@@ -61,8 +61,8 @@ class About extends React.Component<Props> {
   }
 
   relatedArtists() {
-    return this.props.artist.related_artists.length ? (
-      <RelatedArtists artists={this.props.artist.related_artists as any} />
+    return this.props.artist.related.artists.edges.length ? (
+      <RelatedArtists artists={this.props.artist.related.artists.edges.map(({ node }) => node)} />
     ) : null
   }
 }
@@ -80,8 +80,14 @@ export default createFragmentContainer(About, {
       is_display_auction_link: isDisplayAuctionLink
       slug
       ...Biography_artist
-      related_artists: artists(size: 16) {
-        ...RelatedArtists_artists
+      related {
+        artists(first: 16) {
+          edges {
+            node {
+              ...RelatedArtists_artists
+            }
+          }
+        }
       }
       articles(first: 10) {
         edges {

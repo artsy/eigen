@@ -5,7 +5,7 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _Artworks_me$ref: unique symbol;
 export type Artworks_me$ref = typeof _Artworks_me$ref;
 export type Artworks_me = {
-    readonly savedArtworks: {
+    readonly followsAndSaves: {
         readonly artworks: {
             readonly pageInfo: {
                 readonly startCursor: string | null;
@@ -36,7 +36,7 @@ const node: ReaderFragment = {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "savedArtworks",
+          "followsAndSaves",
           "artworks"
         ]
       }
@@ -60,10 +60,10 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "savedArtworks",
+      "name": "followsAndSaves",
       "storageKey": null,
       "args": null,
-      "concreteType": "Collection",
+      "concreteType": "FollowsAndSaves",
       "plural": false,
       "selections": [
         {
@@ -78,7 +78,7 @@ const node: ReaderFragment = {
               "value": true
             }
           ],
-          "concreteType": "ArtworkConnection",
+          "concreteType": "SavedArtworksConnection",
           "plural": false,
           "selections": [
             {
@@ -126,7 +126,7 @@ const node: ReaderFragment = {
               "name": "edges",
               "storageKey": null,
               "args": null,
-              "concreteType": "ArtworkEdge",
+              "concreteType": "SavedArtworksEdge",
               "plural": true,
               "selections": [
                 {
@@ -167,5 +167,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'dbd30d6c12429e5cdae118d9ee03d9bf';
+(node as any).hash = 'f19fee7c9c14e9ddbed93b400812f727';
 export default node;

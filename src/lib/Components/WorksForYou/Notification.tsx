@@ -28,7 +28,7 @@ export class Notification extends React.Component<Props> {
     const notification = this.props.notification
 
     // artwork-less notifications are rare but possible and very unsightly
-    if (!notification.artworks.length) {
+    if (!notification.artworks.edges.length) {
       return null
     }
 
@@ -46,7 +46,7 @@ export class Notification extends React.Component<Props> {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
-          <GenericGrid artworks={notification.artworks as any} />
+          <GenericGrid artworks={notification.artworks.edges.map(({ node }) => node)} />
         </View>
       </View>
     )

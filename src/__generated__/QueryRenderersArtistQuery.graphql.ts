@@ -61,9 +61,15 @@ fragment About_artist on Artist {
   is_display_auction_link: isDisplayAuctionLink
   slug
   ...Biography_artist
-  related_artists: artists(size: 16) {
-    ...RelatedArtists_artists
-    id
+  related {
+    artists(first: 16) {
+      edges {
+        node {
+          ...RelatedArtists_artists
+          id
+        }
+      }
+    }
   }
   articles(first: 10) {
     edges {
@@ -925,44 +931,77 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "related_artists",
-            "name": "artists",
-            "storageKey": "artists(size:16)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "size",
-                "value": 16
-              }
-            ],
-            "concreteType": "Artist",
-            "plural": true,
+            "alias": null,
+            "name": "related",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtistRelatedData",
+            "plural": false,
             "selections": [
-              (v6/*: any*/),
-              (v7/*: any*/),
-              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtistCounts",
+                "name": "artists",
+                "storageKey": "artists(first:16)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 16
+                  }
+                ],
+                "concreteType": "ArtistConnection",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
-                  (v3/*: any*/)
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "edges",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ArtistEdge",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": [
+                          (v6/*: any*/),
+                          (v7/*: any*/),
+                          (v5/*: any*/),
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "counts",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "ArtistCounts",
+                            "plural": false,
+                            "selections": [
+                              (v4/*: any*/),
+                              (v3/*: any*/)
+                            ]
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": (v9/*: any*/)
+                          }
+                        ]
+                      }
+                    ]
+                  }
                 ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "image",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": (v9/*: any*/)
               }
             ]
           },
@@ -1179,7 +1218,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersArtistQuery",
-    "id": "91ff4c7bfb12cbd4087f4e864e5871d0",
+    "id": "9f30f7525b1ce4eca76d14e6cc16ba5c",
     "text": null,
     "metadata": {}
   }

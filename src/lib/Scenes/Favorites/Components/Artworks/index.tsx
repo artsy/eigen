@@ -61,7 +61,7 @@ export class SavedWorks extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
+    const artworks = this.props.me.followsAndSaves.artworks.edges.map(edge => edge.node)
 
     if (artworks.length === 0) {
       return (
@@ -93,7 +93,7 @@ export default createPaginationContainer(
       fragment Artworks_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         # TODO: This should move into followsAndSaves
-        savedArtworks {
+        followsAndSaves {
           artworks(private: true, first: $count, after: $cursor) @connection(key: "GenericGrid_artworks") {
             pageInfo {
               startCursor
@@ -114,7 +114,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.saved_artworks.artworks_connection
+      return props.me && props.me.followsAndSaves.artworks
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

@@ -18,8 +18,8 @@ export class ShowArtworksPreview extends React.Component<Props> {
     if (!show) {
       return null
     }
-    const { artworks_connection, counts } = show
-    const artworks = artworks_connection.edges.map(({ node }) => node)
+    const { counts } = show
+    const artworks = show.artworks.edges.map(({ node }) => node)
     return (
       <>
         {!!title && (

@@ -24,7 +24,7 @@ query FavoriteArtworksQuery {
 }
 
 fragment Artworks_me on Me {
-  savedArtworks {
+  followsAndSaves {
     artworks(private: true, first: 10, after: "") {
       pageInfo {
         startCursor
@@ -41,7 +41,6 @@ fragment Artworks_me on Me {
         cursor
       }
     }
-    id
   }
 }
 
@@ -172,10 +171,10 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "savedArtworks",
+            "name": "followsAndSaves",
             "storageKey": null,
             "args": null,
-            "concreteType": "Collection",
+            "concreteType": "FollowsAndSaves",
             "plural": false,
             "selections": [
               {
@@ -184,7 +183,7 @@ return {
                 "name": "artworks",
                 "storageKey": "artworks(after:\"\",first:10,private:true)",
                 "args": (v0/*: any*/),
-                "concreteType": "ArtworkConnection",
+                "concreteType": "SavedArtworksConnection",
                 "plural": false,
                 "selections": [
                   {
@@ -232,7 +231,7 @@ return {
                     "name": "edges",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "ArtworkEdge",
+                    "concreteType": "SavedArtworksEdge",
                     "plural": true,
                     "selections": [
                       {
@@ -472,8 +471,7 @@ return {
                 "filters": [
                   "private"
                 ]
-              },
-              (v1/*: any*/)
+              }
             ]
           },
           (v1/*: any*/)
@@ -484,7 +482,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "d0ae250408d8827386c85446384182ec",
+    "id": "de3160155e3512b084a8e46aa7485335",
     "text": null,
     "metadata": {}
   }

@@ -138,7 +138,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
   render() {
     const {
       show: {
-        artworks_connection,
+        artworks,
         cover_image,
         location,
         partner: { name: partnerName, profile },
@@ -158,7 +158,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
           url={cover_image && cover_image.url}
           onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
         />
-        <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
+        <Box mt={1}>{<GenericGrid artworks={artworks.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>
           <CaretButton
             text={artworkCount > 1 ? `View all ${artworkCount} works` : `View 1 work`}

@@ -77,7 +77,7 @@ export class WorksForYou extends React.Component<Props, State> {
     return {
       // This is just some unique ID, don’t rely on MP being able to retrieve a notification by this ID.
       id: `notification-${artist.slug}`,
-      message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : " Work Added"),
+      message: artist.artworks.edges.length + (artist.artworks.edges.length > 1 ? " Works Added" : " Work Added"),
       artists: artist.name,
       artworks: artist.artworks,
       image: {

@@ -113,7 +113,7 @@ export class FairDetail extends React.Component<Props, State> {
       })
 
       fair.shows.edges.forEach(showData => {
-        const showArtworks = showData.node.artworks_connection
+        const showArtworks = showData.node.artworks
         if (showArtworks && showArtworks.edges.length) {
           sections.push({
             type: "booth",

@@ -30,26 +30,28 @@ query CategoriesMeQuery(
 }
 
 fragment Categories_me_1G22uz on Me {
-  followed_genes: followedGenes(first: $count, after: $cursor) {
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    edges {
-      node {
-        gene {
-          slug
-          id
-          name
-          href
-          image {
-            url
-          }
-        }
-        id
-        __typename
+  followsAndSaves {
+    genes(first: $count, after: $cursor) {
+      pageInfo {
+        endCursor
+        hasNextPage
       }
-      cursor
+      edges {
+        node {
+          gene {
+            slug
+            id
+            name
+            href
+            image {
+              url
+            }
+          }
+          id
+          __typename
+        }
+        cursor
+      }
     }
   }
 }
@@ -143,136 +145,147 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": "followed_genes",
-            "name": "followedGenes",
+            "alias": null,
+            "name": "followsAndSaves",
             "storageKey": null,
-            "args": (v1/*: any*/),
-            "concreteType": "FollowGeneConnection",
+            "args": null,
+            "concreteType": "FollowsAndSaves",
             "plural": false,
             "selections": [
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "pageInfo",
+                "name": "genes",
                 "storageKey": null,
-                "args": null,
-                "concreteType": "PageInfo",
+                "args": (v1/*: any*/),
+                "concreteType": "FollowGeneConnection",
                 "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "endCursor",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hasNextPage",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "FollowGeneEdge",
-                "plural": true,
                 "selections": [
                   {
                     "kind": "LinkedField",
                     "alias": null,
-                    "name": "node",
+                    "name": "pageInfo",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "FollowGene",
+                    "concreteType": "PageInfo",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "LinkedField",
+                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "gene",
-                        "storageKey": null,
+                        "name": "endCursor",
                         "args": null,
-                        "concreteType": "Gene",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "slug",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          (v2/*: any*/),
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "name",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "href",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "image",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "url",
-                                "args": null,
-                                "storageKey": null
-                              }
-                            ]
-                          }
-                        ]
+                        "storageKey": null
                       },
-                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "__typename",
+                        "name": "hasNextPage",
                         "args": null,
                         "storageKey": null
                       }
                     ]
                   },
                   {
-                    "kind": "ScalarField",
+                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "cursor",
+                    "name": "edges",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "FollowGeneEdge",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FollowGene",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "gene",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Gene",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "slug",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v2/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "name",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "href",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "image",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Image",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "url",
+                                    "args": null,
+                                    "storageKey": null
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          (v2/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "__typename",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "cursor",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ]
+              },
+              {
+                "kind": "LinkedHandle",
+                "alias": null,
+                "name": "genes",
+                "args": (v1/*: any*/),
+                "handle": "connection",
+                "key": "Categories_followed_genes",
+                "filters": null
               }
             ]
-          },
-          {
-            "kind": "LinkedHandle",
-            "alias": "followed_genes",
-            "name": "followedGenes",
-            "args": (v1/*: any*/),
-            "handle": "connection",
-            "key": "Categories_followed_genes",
-            "filters": null
           },
           (v2/*: any*/)
         ]
@@ -282,7 +295,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CategoriesMeQuery",
-    "id": "76bf274c066e92b49e71039da30e01d9",
+    "id": "38917447982264a854df46fc80171eb1",
     "text": null,
     "metadata": {}
   }
