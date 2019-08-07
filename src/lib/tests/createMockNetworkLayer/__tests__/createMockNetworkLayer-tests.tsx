@@ -74,8 +74,8 @@ describe("createMockNetworkLayer", () => {
       {
         mockData: {
           artist: {
-            forSaleArtworks: [{ id: "for-sale-work" }],
-            notForSaleArtworks: [{ id: "no-for-sale-work" }],
+            forSaleArtworks: { edges: [{ node: { id: "for-sale-work" } }] },
+            notForSaleArtworks: { edges: [{ node: { id: "no-for-sale-work" } }] },
             id: "id",
           },
         },
@@ -101,7 +101,7 @@ describe("createMockNetworkLayer", () => {
         }
       `
     )
-    expect(data.artist.forSaleArtworks).toEqual([{ id: "for-sale-work" }])
-    expect(data.artist.notForSaleArtworks).toEqual([{ id: "no-for-sale-work" }])
+    expect(data.artist.forSaleArtworks).toEqual({ edges: [{ node: { id: "for-sale-work" } }] })
+    expect(data.artist.notForSaleArtworks).toEqual({ edges: [{ node: { id: "no-for-sale-work" } }] })
   })
 })
