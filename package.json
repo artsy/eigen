@@ -104,7 +104,7 @@
     "tipsi-stripe": "7.5.0"
   },
   "devDependencies": {
-    "@artsy/auto-config": "^1.0.1",
+    "@artsy/auto-config": "1.0.1",
     "@babel/core": "7.1.2",
     "@babel/plugin-proposal-class-properties": "7.4.0",
     "@babel/plugin-proposal-decorators": "7.4.0",
