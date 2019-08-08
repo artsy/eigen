@@ -1,4 +1,5 @@
 version: 2
+
 jobs:
   build-and-test:
     # Specify the Xcode version to use
@@ -101,8 +102,41 @@ jobs:
           path: /tmp/xcode_test_raw.log
           prefix: tests
 
+  deploy:
+    macos:
+      xcode: "10.1.0"
+
+    environment:
+      # For caching gems, relative to current directory
+      BUNDLE_PATH: vendor/bundle
+      BUNDLER_VERSION: 2.0.2
+
+    steps:
+      - run:
+          name: Install Bundler 2.0.2
+          command: gem update --system && gem install bundler -v 2.0.2
+      - run:
+          name: Bundle install
+          command: cd Example ; yarn ci:skip-native-if-possible || bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - run:
+          name: Install Yarn Dependencies
+          command: yarn install --ignore-engines
+      - run:
+          name: Deploy via auto-release
+          command: yarn release
+
 workflows:
   version: 2
   build-test:
     jobs:
       - build-and-test
+      - deploy:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only:
+                - master
