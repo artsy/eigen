@@ -1,5 +1,4 @@
-version: 2.0
-
+version: 2
 jobs:
   build-and-test:
     # Specify the Xcode version to use
@@ -102,99 +101,8 @@ jobs:
           path: /tmp/xcode_test_raw.log
           prefix: tests
 
-  deploy:
-    macos:
-      xcode: "10.1.0"
-
-    shell: /bin/bash --login -eo pipefail
-
-    environment:
-      # WARNING: These env vars are passed to PRs on forks.
-      # WARNING: DO NOT PUT SENSITIVE INFORMATION HERE.
-      ArtsyAPIClientSecret: "-"
-      ArtsyAPIClientKey: "-"
-      StripePublishableKey: "-"
-      MapBoxAPIClientKey: "-"
-
-      # For caching gems, relative to current directory
-      BUNDLE_PATH: vendor/bundle
-      BUNDLER_VERSION: 2.0.2
-
-    steps:
-      - checkout
-
-      - run:
-          name: Install Bundler 2.0.2
-          command: gem update --system && gem install bundler -v 2.0.2
-
-      - restore_cache:
-          keys:
-            - v3-gems-{{ checksum "Example/Gemfile.lock" }}
-            # Fall back to using the latest cache if no exact match is found.
-            - v3-gems-
-
-      - run:
-          name: Bundle install
-          command: cd Example ; yarn ci:skip-native-if-possible || bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-
-      - save_cache:
-          key: v3-gems-{{ checksum "Example/Gemfile.lock" }}
-          paths:
-            - Example/vendor/bundle
-
-      - restore_cache:
-          keys:
-            - v2-yarn-{{ checksum "yarn.lock" }}
-            # Fall back to using the latest cache if no exact match is found.
-            - v2-yarn-
-
-      - run:
-          name: Install Yarn Dependencies
-          command: yarn install --ignore-engines
-
-      - save_cache:
-          key: v2-yarn-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
-      - run: |
-          echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-          echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-      - run: |
-          node -v
-      - run: |
-          nvm install v10.13
-          node -v
-          nvm alias default v10.13
-
-      - restore_cache:
-          keys:
-            - v9-pods-{{ checksum "package.json" }}
-
-      - run:
-          name: Deploy via auto-release
-          command: yarn release
-
-      - save_cache:
-          key: v9-pods-{{ checksum "package.json" }}
-          paths:
-            - Example/Pods
-
 workflows:
   version: 2
   build-test:
     jobs:
-      - build-and-test:
-          filters:
-            branches:
-              ignore:
-                - master
-      - deploy:
-          context: github
-          filters:
-            branches:
-              only:
-                - master
+      - build-and-test
