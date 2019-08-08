@@ -103,8 +103,8 @@ jobs:
           prefix: tests
 
   deploy:
-    docker:
-      - image: artsy/hokusai:0.5
+    macos:
+      xcode: "10.1.0"
 
     shell: /bin/bash --login -eo pipefail
 
@@ -126,15 +126,18 @@ jobs:
       - run:
           name: Install Bundler 2.0.2
           command: gem update --system && gem install bundler -v 2.0.2
+
       - run:
           name: Bundle install
           command: cd Example ; yarn ci:skip-native-if-possible || bundle check || bundle install
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
+
       - run:
           name: Install Yarn Dependencies
           command: yarn install --ignore-engines
+
       - run:
           name: Deploy via auto-release
           command: yarn release
