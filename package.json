@@ -127,7 +127,7 @@
     "@types/styled-components": "4.0.3",
     "@types/styled-system": "3.0.1",
     "@types/supercluster": "5.0.0",
-    "auto": "^7.2.3",
+    "auto": "7.2.3",
     "awesome-typescript-loader": "3.4.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "24.5.0",
