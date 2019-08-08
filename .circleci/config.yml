@@ -150,8 +150,6 @@ workflows:
               ignore:
                 - master
       - deploy:
-          requires:
-            - build-and-test
           filters:
             branches:
               only:
