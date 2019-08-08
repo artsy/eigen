@@ -160,6 +160,16 @@ jobs:
           paths:
             - node_modules
 
+      - run: |
+          echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+          echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+      - run: |
+          node -v
+      - run: |
+          nvm install v10.13
+          node -v
+          nvm alias default v10.13
+
       - restore_cache:
           keys:
             - v9-pods-{{ checksum "package.json" }}
