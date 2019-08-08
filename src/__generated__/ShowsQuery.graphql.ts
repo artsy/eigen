@@ -31,7 +31,7 @@ query ShowsQuery(
 
 fragment Shows_me_1G22uz on Me {
   followsAndSaves {
-    shows(first: $count, after: $cursor) {
+    shows: showsConnection(first: $count, after: $cursor) {
       pageInfo {
         startCursor
         endCursor
@@ -199,8 +199,8 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "shows",
+                "alias": "shows",
+                "name": "showsConnection",
                 "storageKey": null,
                 "args": (v1/*: any*/),
                 "concreteType": "FollowedShowConnection",
@@ -432,8 +432,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "shows",
+                "alias": "shows",
+                "name": "showsConnection",
                 "args": (v1/*: any*/),
                 "handle": "connection",
                 "key": "SavedShows_shows",
@@ -449,7 +449,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowsQuery",
-    "id": "eac8181901f832d77f10d25ad167e432",
+    "id": "d13130a7081378f93f0668ff3fa60453",
     "text": null,
     "metadata": {}
   }

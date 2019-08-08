@@ -10,12 +10,22 @@ export type About_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
     readonly slug: string;
-    readonly related_artists: ReadonlyArray<{
-        readonly " $fragmentRefs": RelatedArtists_artists$ref;
-    } | null> | null;
-    readonly articles: ReadonlyArray<{
-        readonly " $fragmentRefs": Articles_articles$ref;
-    } | null> | null;
+    readonly related: {
+        readonly artists: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly " $fragmentRefs": RelatedArtists_artists$ref;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
+    readonly articles: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": Articles_articles$ref;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": Biography_artist$ref;
     readonly " $refType": About_artist$ref;
 };
@@ -52,39 +62,100 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": "related_artists",
-      "name": "artists",
-      "storageKey": "artists(size:16)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 16
-        }
-      ],
-      "concreteType": "Artist",
-      "plural": true,
+      "alias": null,
+      "name": "related",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ArtistRelatedData",
+      "plural": false,
       "selections": [
         {
-          "kind": "FragmentSpread",
-          "name": "RelatedArtists_artists",
-          "args": null
+          "kind": "LinkedField",
+          "alias": "artists",
+          "name": "artistsConnection",
+          "storageKey": "artistsConnection(first:16)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 16
+            }
+          ],
+          "concreteType": "ArtistConnection",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ArtistEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Artist",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "RelatedArtists_artists",
+                      "args": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "articles",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Article",
-      "plural": true,
+      "alias": "articles",
+      "name": "articlesConnection",
+      "storageKey": "articlesConnection(first:10)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 10
+        }
+      ],
+      "concreteType": "ArticleConnection",
+      "plural": false,
       "selections": [
         {
-          "kind": "FragmentSpread",
-          "name": "Articles_articles",
-          "args": null
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArticleEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Article",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "FragmentSpread",
+                  "name": "Articles_articles",
+                  "args": null
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -95,5 +166,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '52925bffae34b179a7b0bf2dc545829c';
+(node as any).hash = 'ddfe77976e34d105920684396fcbd0d5';
 export default node;

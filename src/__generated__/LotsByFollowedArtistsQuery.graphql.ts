@@ -29,7 +29,7 @@ query LotsByFollowedArtistsQuery(
 }
 
 fragment LotsByFollowedArtists_viewer_1G22uz on Viewer {
-  sale_artworks: saleArtworks(first: $count, after: $cursor, liveSale: true, isAuction: true, includeArtworksByFollowedArtists: true) {
+  sale_artworks: saleArtworksConnection(first: $count, after: $cursor, liveSale: true, isAuction: true, includeArtworksByFollowedArtists: true) {
     pageInfo {
       endCursor
       hasNextPage
@@ -210,7 +210,7 @@ return {
           {
             "kind": "LinkedField",
             "alias": "sale_artworks",
-            "name": "saleArtworks",
+            "name": "saleArtworksConnection",
             "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "SaleArtworksConnection",
@@ -492,7 +492,7 @@ return {
           {
             "kind": "LinkedHandle",
             "alias": "sale_artworks",
-            "name": "saleArtworks",
+            "name": "saleArtworksConnection",
             "args": (v1/*: any*/),
             "handle": "connection",
             "key": "LotsByFollowedArtists_sale_artworks",
@@ -509,7 +509,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "LotsByFollowedArtistsQuery",
-    "id": "562c09adb1eef430a19328fde7d17e61",
+    "id": "a21429416142758fb98cd17ae6c61717",
     "text": null,
     "metadata": {}
   }

@@ -94,7 +94,7 @@ export default createRefetchContainer(
             id
           }
         }
-        conversations_existence_check: conversations(first: 1) {
+        conversations_existence_check: conversationsConnection(first: 1) {
           edges {
             node {
               internalID

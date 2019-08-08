@@ -80,7 +80,7 @@ export default createPaginationContainer(
         name
         slug
         sponsoredContent {
-          shows(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC)
+          shows: showsConnection(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC)
             @connection(key: "CityBMWList_shows") {
             edges {
               node {

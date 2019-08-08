@@ -77,7 +77,7 @@ export class WorksForYou extends React.Component<Props, State> {
     return {
       // This is just some unique ID, don’t rely on MP being able to retrieve a notification by this ID.
       id: `notification-${artist.slug}`,
-      message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : " Work Added"),
+      message: artist.artworks.edges.length + (artist.artworks.edges.length > 1 ? " Works Added" : " Work Added"),
       artists: artist.name,
       artworks: artist.artworks,
       image: {
@@ -198,7 +198,7 @@ const WorksForYouContainer = createPaginationContainer(
         ) {
         me {
           followsAndSaves {
-            notifications: bundledArtworksByArtist(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
+            notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
               @connection(key: "WorksForYou_notifications") {
               pageInfo {
                 hasNextPage
@@ -222,8 +222,12 @@ const WorksForYouContainer = createPaginationContainer(
               url
             }
           }
-          artworks(sort: PUBLISHED_AT_DESC, size: 6) {
-            ...GenericGrid_artworks
+          artworks: artworksConnection(sort: PUBLISHED_AT_DESC, first: 6) {
+            edges {
+              node {
+                ...GenericGrid_artworks
+              }
+            }
           }
         }
       }

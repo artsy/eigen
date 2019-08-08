@@ -95,7 +95,7 @@ export default createPaginationContainer(
       fragment Shows_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
-          shows(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
+          shows: showsConnection(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
             pageInfo {
               startCursor
               endCursor

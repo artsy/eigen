@@ -71,7 +71,7 @@ fragment FairDetail_fair_1G22uz on Fair {
       node {
         slug
         internalID
-        artworks_connection: artworksConnection(first: 4) {
+        artworks: artworksConnection(first: 4) {
           edges {
             node {
               slug
@@ -135,7 +135,7 @@ fragment FairHeader_fair on Fair {
       }
     }
   }
-  artists_names: artists(first: 3) {
+  artists_names: artistsConnection(first: 3) {
     edges {
       node {
         name
@@ -240,7 +240,7 @@ fragment FairBoothPreview_show on Show {
     display
     id
   }
-  artworks_connection: artworksConnection(first: 4) {
+  artworks: artworksConnection(first: 4) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -626,8 +626,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "artists_names",
-            "name": "artists",
-            "storageKey": "artists(first:3)",
+            "name": "artistsConnection",
+            "storageKey": "artistsConnection(first:3)",
             "args": [
               {
                 "kind": "Literal",
@@ -1048,7 +1048,7 @@ return {
                       (v3/*: any*/),
                       {
                         "kind": "LinkedField",
-                        "alias": "artworks_connection",
+                        "alias": "artworks",
                         "name": "artworksConnection",
                         "storageKey": "artworksConnection(first:4)",
                         "args": [
@@ -1382,7 +1382,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairDetailShowsQuery",
-    "id": "8a2db95847358900aaf07943c23e1a90",
+    "id": "02fa370b7f84f13fe092962b51b6eef3",
     "text": null,
     "metadata": {}
   }

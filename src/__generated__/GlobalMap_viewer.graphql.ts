@@ -546,9 +546,9 @@ return {
             },
             {
               "kind": "LinkedField",
-              "alias": null,
-              "name": "shows",
-              "storageKey": "shows(first:1,sort:\"START_AT_ASC\")",
+              "alias": "shows",
+              "name": "showsConnection",
+              "storageKey": "showsConnection(first:1,sort:\"START_AT_ASC\")",
               "args": [
                 {
                   "kind": "Literal",
@@ -574,7 +574,7 @@ return {
         {
           "kind": "LinkedField",
           "alias": "upcomingShows",
-          "name": "shows",
+          "name": "showsConnection",
           "storageKey": null,
           "args": [
             {
@@ -597,8 +597,8 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "shows",
+          "alias": "shows",
+          "name": "showsConnection",
           "storageKey": null,
           "args": [
             (v17/*: any*/),
@@ -620,8 +620,8 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "fairs",
+          "alias": "fairs",
+          "name": "fairsConnection",
           "storageKey": null,
           "args": [
             (v17/*: any*/),
@@ -768,5 +768,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '23d61f3fe31f6083439739b5b1d1c34e';
+(node as any).hash = 'ce85a08e405b5672139ec9bb90c1459c';
 export default node;

@@ -46,7 +46,7 @@ export type FairBoothPreview_show = {
     readonly location: {
         readonly display: string | null;
     } | null;
-    readonly artworks_connection: {
+    readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly " $fragmentRefs": GenericGrid_artworks$ref;
@@ -218,7 +218,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "artworks_connection",
+      "alias": "artworks",
       "name": "artworksConnection",
       "storageKey": "artworksConnection(first:4)",
       "args": [
@@ -263,5 +263,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd988e671dc77ac7af119d88a7e4b2c47';
+(node as any).hash = 'e7b099c3d4951e2459d0b8527811ce38';
 export default node;

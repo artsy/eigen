@@ -114,7 +114,7 @@ fragment ShowHeader_show on Show {
     url
     aspect_ratio: aspectRatio
   }
-  followedArtists(first: 3) {
+  followedArtists: followedArtistsConnection(first: 3) {
     edges {
       node {
         artist {
@@ -141,7 +141,7 @@ fragment ShowArtworksPreview_show on Show {
   counts {
     artworks
   }
-  artworks_connection: artworksConnection(first: 6) {
+  artworks: artworksConnection(first: 6) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -171,7 +171,7 @@ fragment ShowArtistsPreview_show on Show {
 }
 
 fragment Shows_show on Show {
-  nearbyShows(first: 20) {
+  nearbyShows: nearbyShowsConnection(first: 20) {
     edges {
       node {
         id
@@ -566,9 +566,9 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "followedArtists",
-            "storageKey": "followedArtists(first:3)",
+            "alias": "followedArtists",
+            "name": "followedArtistsConnection",
+            "storageKey": "followedArtistsConnection(first:3)",
             "args": [
               {
                 "kind": "Literal",
@@ -668,7 +668,7 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "artworks_connection",
+            "alias": "artworks",
             "name": "artworksConnection",
             "storageKey": "artworksConnection(first:6)",
             "args": [
@@ -909,9 +909,9 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "nearbyShows",
-            "storageKey": "nearbyShows(first:20)",
+            "alias": "nearbyShows",
+            "name": "nearbyShowsConnection",
+            "storageKey": "nearbyShowsConnection(first:20)",
             "args": [
               {
                 "kind": "Literal",
@@ -1147,7 +1147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowQuery",
-    "id": "cd296cfd5393299fcadeffae7c96f8cc",
+    "id": "3b8e52a67363880aef0885d22d1706f1",
     "text": null,
     "metadata": {}
   }

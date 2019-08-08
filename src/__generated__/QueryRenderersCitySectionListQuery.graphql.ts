@@ -39,7 +39,7 @@ query QueryRenderersCitySectionListQuery(
 
 fragment CitySectionList_city_2xWq6T on City {
   name
-  shows(includeStubShows: true, first: 20, sort: $sort, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
+  shows: showsConnection(includeStubShows: true, first: 20, sort: $sort, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
     pageInfo {
       endCursor
       hasNextPage
@@ -246,8 +246,8 @@ return {
           (v6/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "shows",
+            "alias": "shows",
+            "name": "showsConnection",
             "storageKey": null,
             "args": (v7/*: any*/),
             "concreteType": "ShowConnection",
@@ -453,8 +453,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": null,
-            "name": "shows",
+            "alias": "shows",
+            "name": "showsConnection",
             "args": (v7/*: any*/),
             "handle": "connection",
             "key": "CitySectionList_shows",
@@ -473,7 +473,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCitySectionListQuery",
-    "id": "d9524298d10ccf61fbf6be9bf89da153",
+    "id": "d63c1f2ea07ae174fa360a2f02ab6e5b",
     "text": null,
     "metadata": {}
   }

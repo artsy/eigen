@@ -5,8 +5,8 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _Artworks_me$ref: unique symbol;
 export type Artworks_me$ref = typeof _Artworks_me$ref;
 export type Artworks_me = {
-    readonly saved_artworks: {
-        readonly artworks_connection: {
+    readonly followsAndSaves: {
+        readonly artworks: {
             readonly pageInfo: {
                 readonly startCursor: string | null;
                 readonly endCursor: string | null;
@@ -36,8 +36,8 @@ const node: ReaderFragment = {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "saved_artworks",
-          "artworks_connection"
+          "followsAndSaves",
+          "artworks"
         ]
       }
     ]
@@ -59,18 +59,18 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": "saved_artworks",
-      "name": "savedArtworks",
+      "alias": null,
+      "name": "followsAndSaves",
       "storageKey": null,
       "args": null,
-      "concreteType": "Collection",
+      "concreteType": "FollowsAndSaves",
       "plural": false,
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": "artworks_connection",
-          "name": "__GenericGrid_artworks_connection_connection",
-          "storageKey": "__GenericGrid_artworks_connection_connection(private:true)",
+          "alias": "artworks",
+          "name": "__GenericGrid_artworks_connection",
+          "storageKey": "__GenericGrid_artworks_connection(private:true)",
           "args": [
             {
               "kind": "Literal",
@@ -78,7 +78,7 @@ const node: ReaderFragment = {
               "value": true
             }
           ],
-          "concreteType": "ArtworkConnection",
+          "concreteType": "SavedArtworksConnection",
           "plural": false,
           "selections": [
             {
@@ -126,7 +126,7 @@ const node: ReaderFragment = {
               "name": "edges",
               "storageKey": null,
               "args": null,
-              "concreteType": "ArtworkEdge",
+              "concreteType": "SavedArtworksEdge",
               "plural": true,
               "selections": [
                 {
@@ -167,5 +167,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'df89f49ecb19761ce6887eee5e83e62d';
+(node as any).hash = '4d797ec09ebaf5e8fffc5ef40126af4a';
 export default node;

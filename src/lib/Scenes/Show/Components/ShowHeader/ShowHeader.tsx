@@ -219,7 +219,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
         url
         aspect_ratio: aspectRatio
       }
-      followedArtists(first: 3) {
+      followedArtists: followedArtistsConnection(first: 3) {
         edges {
           node {
             artist {

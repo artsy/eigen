@@ -71,7 +71,7 @@ fragment FairHeader_fair on Fair {
       }
     }
   }
-  artists_names: artists(first: 3) {
+  artists_names: artistsConnection(first: 3) {
     edges {
       node {
         name
@@ -351,8 +351,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "artists_names",
-            "name": "artists",
-            "storageKey": "artists(first:3)",
+            "name": "artistsConnection",
+            "storageKey": "artistsConnection(first:3)",
             "args": [
               {
                 "kind": "Literal",
@@ -508,7 +508,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairHeaderQuery",
-    "id": "39bcdd26ffc093fbb271c92644494f27",
+    "id": "7a93170ffd8d9e8140b4aa5e4512ba56",
     "text": null,
     "metadata": {}
   }

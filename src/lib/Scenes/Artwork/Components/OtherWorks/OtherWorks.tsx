@@ -61,7 +61,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
           title
           ctaTitle
           ctaHref
-          artworks(first: 6) {
+          artworks: artworksConnection(first: 6) {
             edges {
               node {
                 ...GenericGrid_artworks

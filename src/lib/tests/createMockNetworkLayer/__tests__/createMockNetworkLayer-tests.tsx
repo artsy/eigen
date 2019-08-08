@@ -74,8 +74,8 @@ describe("createMockNetworkLayer", () => {
       {
         mockData: {
           artist: {
-            forSaleArtworks: [{ id: "for-sale-work" }],
-            notForSaleArtworks: [{ id: "no-for-sale-work" }],
+            forSaleArtworks: { edges: [{ node: { id: "for-sale-work" } }] },
+            notForSaleArtworks: { edges: [{ node: { id: "no-for-sale-work" } }] },
             id: "id",
           },
         },
@@ -83,17 +83,25 @@ describe("createMockNetworkLayer", () => {
       graphql`
         query createMockNetworkLayerTestsAliasQuery {
           artist(id: "banksy") {
-            forSaleArtworks: artworks(filter: IS_FOR_SALE) {
-              id
+            forSaleArtworks: artworksConnection(filter: IS_FOR_SALE) {
+              edges {
+                node {
+                  id
+                }
+              }
             }
-            notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {
-              id
+            notForSaleArtworks: artworksConnection(filter: IS_NOT_FOR_SALE) {
+              edges {
+                node {
+                  id
+                }
+              }
             }
           }
         }
       `
     )
-    expect(data.artist.forSaleArtworks).toEqual([{ id: "for-sale-work" }])
-    expect(data.artist.notForSaleArtworks).toEqual([{ id: "no-for-sale-work" }])
+    expect(data.artist.forSaleArtworks).toEqual({ edges: [{ node: { id: "for-sale-work" } }] })
+    expect(data.artist.notForSaleArtworks).toEqual({ edges: [{ node: { id: "no-for-sale-work" } }] })
   })
 })

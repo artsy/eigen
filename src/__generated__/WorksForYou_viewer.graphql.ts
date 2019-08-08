@@ -31,9 +31,13 @@ export type WorksForYou_viewer = {
                 readonly url: string | null;
             } | null;
         } | null;
-        readonly artworks: ReadonlyArray<{
-            readonly " $fragmentRefs": GenericGrid_artworks$ref;
-        } | null> | null;
+        readonly artworks: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                } | null;
+            } | null> | null;
+        } | null;
     } | null;
     readonly " $refType": WorksForYou_viewer$ref;
 };
@@ -277,24 +281,46 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "artworks",
-          "storageKey": "artworks(size:6,sort:\"PUBLISHED_AT_DESC\")",
+          "alias": "artworks",
+          "name": "artworksConnection",
+          "storageKey": "artworksConnection(first:6,sort:\"PUBLISHED_AT_DESC\")",
           "args": [
             {
               "kind": "Literal",
-              "name": "size",
+              "name": "first",
               "value": 6
             },
             (v0/*: any*/)
           ],
-          "concreteType": "Artwork",
-          "plural": true,
+          "concreteType": "ArtworkConnection",
+          "plural": false,
           "selections": [
             {
-              "kind": "FragmentSpread",
-              "name": "GenericGrid_artworks",
-              "args": null
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ArtworkEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Artwork",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "GenericGrid_artworks",
+                      "args": null
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -303,5 +329,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'fe8148e075e2f9b960f68fa513fc1103';
+(node as any).hash = '930f61ae297bb8bf4869c3e9593933de';
 export default node;

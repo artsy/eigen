@@ -54,7 +54,7 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows: any[] = this.props.me.followed_artists_connection.edges.map(e => e.node.artist)
+    const rows: any[] = this.props.me.followsAndSaves.artists.edges.map(e => e.node.artist)
 
     if (rows.length === 0) {
       return (
@@ -87,21 +87,22 @@ export default createPaginationContainer(
     me: graphql`
       fragment Artists_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        followed_artists_connection: followedArtistsConnection(first: $count, after: $cursor)
-          @connection(key: "Artists_followed_artists_connection") {
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
-          edges {
-            node {
-              artist {
-                slug
-                id
-                name
-                href
-                image {
-                  url
+        followsAndSaves {
+          artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
+            edges {
+              node {
+                artist {
+                  slug
+                  id
+                  name
+                  href
+                  image {
+                    url
+                  }
                 }
               }
             }
@@ -113,7 +114,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.followed_artists_connection
+      return props.me && props.me.followsAndSaves.artists
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

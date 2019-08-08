@@ -197,7 +197,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           }
         }
       }
-      artists_names: artists(first: 3) {
+      artists_names: artistsConnection(first: 3) {
         edges {
           node {
             name

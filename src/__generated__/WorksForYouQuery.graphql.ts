@@ -31,7 +31,7 @@ query WorksForYouQuery(
 fragment WorksForYou_viewer_1G22uz on Viewer {
   me {
     followsAndSaves {
-      notifications: bundledArtworksByArtist(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor) {
+      notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor) {
         pageInfo {
           hasNextPage
           endCursor
@@ -57,9 +57,13 @@ fragment WorksForYou_viewer_1G22uz on Viewer {
         url
       }
     }
-    artworks(sort: PUBLISHED_AT_DESC, size: 6) {
-      ...GenericGrid_artworks
-      id
+    artworks: artworksConnection(sort: PUBLISHED_AT_DESC, first: 6) {
+      edges {
+        node {
+          ...GenericGrid_artworks
+          id
+        }
+      }
     }
     id
   }
@@ -68,13 +72,17 @@ fragment WorksForYou_viewer_1G22uz on Viewer {
 fragment Notification_notification on FollowedArtistsArtworksGroup {
   summary
   artists
-  artworks {
-    artists(shallow: true) {
-      href
-      id
+  artworks: artworksConnection(first: 10) {
+    edges {
+      node {
+        artists(shallow: true) {
+          href
+          id
+        }
+        ...GenericGrid_artworks
+        id
+      }
     }
-    ...GenericGrid_artworks
-    id
   }
   image {
     resized(height: 80, width: 80) {
@@ -483,7 +491,7 @@ return {
                   {
                     "kind": "LinkedField",
                     "alias": "notifications",
-                    "name": "bundledArtworksByArtist",
+                    "name": "bundledArtworksByArtistConnection",
                     "storageKey": null,
                     "args": (v2/*: any*/),
                     "concreteType": "FollowedArtistsArtworksGroupConnection",
@@ -549,41 +557,69 @@ return {
                               },
                               {
                                 "kind": "LinkedField",
-                                "alias": null,
-                                "name": "artworks",
-                                "storageKey": null,
-                                "args": null,
-                                "concreteType": "Artwork",
-                                "plural": true,
+                                "alias": "artworks",
+                                "name": "artworksConnection",
+                                "storageKey": "artworksConnection(first:10)",
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "first",
+                                    "value": 10
+                                  }
+                                ],
+                                "concreteType": "ArtworkConnection",
+                                "plural": false,
                                 "selections": [
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
-                                    "name": "artists",
-                                    "storageKey": "artists(shallow:true)",
-                                    "args": (v4/*: any*/),
-                                    "concreteType": "Artist",
+                                    "name": "edges",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "ArtworkEdge",
                                     "plural": true,
                                     "selections": [
-                                      (v5/*: any*/),
-                                      (v3/*: any*/),
-                                      (v6/*: any*/)
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
+                                        "name": "node",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "Artwork",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "LinkedField",
+                                            "alias": null,
+                                            "name": "artists",
+                                            "storageKey": "artists(shallow:true)",
+                                            "args": (v4/*: any*/),
+                                            "concreteType": "Artist",
+                                            "plural": true,
+                                            "selections": [
+                                              (v5/*: any*/),
+                                              (v3/*: any*/),
+                                              (v6/*: any*/)
+                                            ]
+                                          },
+                                          (v3/*: any*/),
+                                          (v7/*: any*/),
+                                          (v8/*: any*/),
+                                          (v9/*: any*/),
+                                          (v10/*: any*/),
+                                          (v11/*: any*/),
+                                          (v12/*: any*/),
+                                          (v13/*: any*/),
+                                          (v14/*: any*/),
+                                          (v15/*: any*/),
+                                          (v16/*: any*/),
+                                          (v17/*: any*/),
+                                          (v19/*: any*/),
+                                          (v5/*: any*/)
+                                        ]
+                                      }
                                     ]
-                                  },
-                                  (v3/*: any*/),
-                                  (v7/*: any*/),
-                                  (v8/*: any*/),
-                                  (v9/*: any*/),
-                                  (v10/*: any*/),
-                                  (v11/*: any*/),
-                                  (v12/*: any*/),
-                                  (v13/*: any*/),
-                                  (v14/*: any*/),
-                                  (v15/*: any*/),
-                                  (v16/*: any*/),
-                                  (v17/*: any*/),
-                                  (v19/*: any*/),
-                                  (v5/*: any*/)
+                                  }
                                 ]
                               },
                               (v20/*: any*/),
@@ -610,7 +646,7 @@ return {
                   {
                     "kind": "LinkedHandle",
                     "alias": "notifications",
-                    "name": "bundledArtworksByArtist",
+                    "name": "bundledArtworksByArtistConnection",
                     "args": (v2/*: any*/),
                     "handle": "connection",
                     "key": "WorksForYou_notifications",
@@ -644,44 +680,66 @@ return {
               (v20/*: any*/),
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artworks",
-                "storageKey": "artworks(size:6,sort:\"PUBLISHED_AT_DESC\")",
+                "alias": "artworks",
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(first:6,sort:\"PUBLISHED_AT_DESC\")",
                 "args": [
                   {
                     "kind": "Literal",
-                    "name": "size",
+                    "name": "first",
                     "value": 6
                   },
                   (v1/*: any*/)
                 ],
-                "concreteType": "Artwork",
-                "plural": true,
+                "concreteType": "ArtworkConnection",
+                "plural": false,
                 "selections": [
-                  (v3/*: any*/),
-                  (v7/*: any*/),
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  (v10/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/),
-                  (v13/*: any*/),
-                  (v14/*: any*/),
-                  (v15/*: any*/),
-                  (v16/*: any*/),
-                  (v17/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
-                    "name": "artists",
-                    "storageKey": "artists(shallow:true)",
-                    "args": (v4/*: any*/),
-                    "concreteType": "Artist",
+                    "name": "edges",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ArtworkEdge",
                     "plural": true,
-                    "selections": (v18/*: any*/)
-                  },
-                  (v19/*: any*/),
-                  (v5/*: any*/)
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artwork",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/),
+                          (v7/*: any*/),
+                          (v8/*: any*/),
+                          (v9/*: any*/),
+                          (v10/*: any*/),
+                          (v11/*: any*/),
+                          (v12/*: any*/),
+                          (v13/*: any*/),
+                          (v14/*: any*/),
+                          (v15/*: any*/),
+                          (v16/*: any*/),
+                          (v17/*: any*/),
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "artists",
+                            "storageKey": "artists(shallow:true)",
+                            "args": (v4/*: any*/),
+                            "concreteType": "Artist",
+                            "plural": true,
+                            "selections": (v18/*: any*/)
+                          },
+                          (v19/*: any*/),
+                          (v5/*: any*/)
+                        ]
+                      }
+                    ]
+                  }
                 ]
               },
               (v3/*: any*/)
@@ -694,7 +752,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouQuery",
-    "id": "a6c4fb891ae825fcc74410553b406bda",
+    "id": "2b6ee6a41e42a425916794543fc795f1",
     "text": null,
     "metadata": {}
   }

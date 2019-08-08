@@ -63,7 +63,7 @@ fragment FairDetail_fair on Fair {
       node {
         slug
         internalID
-        artworks_connection: artworksConnection(first: 4) {
+        artworks: artworksConnection(first: 4) {
           edges {
             node {
               slug
@@ -127,7 +127,7 @@ fragment FairHeader_fair on Fair {
       }
     }
   }
-  artists_names: artists(first: 3) {
+  artists_names: artistsConnection(first: 3) {
     edges {
       node {
         name
@@ -232,7 +232,7 @@ fragment FairBoothPreview_show on Show {
     display
     id
   }
-  artworks_connection: artworksConnection(first: 4) {
+  artworks: artworksConnection(first: 4) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -582,8 +582,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "artists_names",
-            "name": "artists",
-            "storageKey": "artists(first:3)",
+            "name": "artistsConnection",
+            "storageKey": "artistsConnection(first:3)",
             "args": [
               {
                 "kind": "Literal",
@@ -1004,7 +1004,7 @@ return {
                       (v2/*: any*/),
                       {
                         "kind": "LinkedField",
-                        "alias": "artworks_connection",
+                        "alias": "artworks",
                         "name": "artworksConnection",
                         "storageKey": "artworksConnection(first:4)",
                         "args": [
@@ -1338,7 +1338,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairDetailTestsQuery",
-    "id": "508fc0daa12abb3258bcccc27d6b5811",
+    "id": "c55da51c2f8b353a0e0a7f0d4253f608",
     "text": null,
     "metadata": {}
   }
