@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@artsy/auto-config@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.1.tgz#781aaaf026d2d06520005ced032ebca284935e8c"
+  integrity sha512-S6tw+x7CmTQQutt2Xqla4Y+3/Wr4RVjaZ5WYmv2V4D0ZUc/lk5UQKpI9akxlgOd5tMUcqBDPRGK6SF5pGNYP8g==
+
 "@artsy/palette@4.14.46":
   version "4.14.46"
   resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-4.14.46.tgz#be6018404e2d5c70d22e3e01ee6abf2fdca2d626"

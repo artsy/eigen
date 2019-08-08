@@ -5,12 +5,6 @@ const path = require("path")
 const spawnSync = require("child_process").spawnSync
 const chalk = require("chalk")
 
-const versionChange = process.argv[2]
-if (!versionChange) {
-  console.log("Usage: $ npm run release -- [patch|minor|major]")
-  process.exit(1)
-}
-
 function sh(command, canFail = false) {
   console.log("$ " + command)
   const task = spawnSync(command, { shell: true })
@@ -19,6 +13,7 @@ function sh(command, canFail = false) {
     console.error(chalk.red(String(task.stderr)))
     throw new Error("[!] " + command)
   }
+  return task.stdout.toString().trim()
 }
 
 function publishPodspec(podspec) {
@@ -62,25 +57,17 @@ sh("npm run bundle")
 sh("cd Example && bundle exec pod install && cd ..")
 sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
+sh("yarn run auto changelog")
+
+const versionBump = sh("yarn run auto version")
+
 console.log(chalk.green("=> Creating version bump commit and tag."))
-sh("npm version " + versionChange)
-
-console.log(chalk.green("=> Updating Changelog"))
-const changelog = fs.readFileSync("CHANGELOG.md", "utf8")
-const newCHANGELOG = changelog.replace(
-  "### Master",
-  `### Master
-
-### ${JSON.parse(fs.readFileSync("package.json", "utf8")).version}
-`
-)
-fs.writeFileSync("CHANGELOG.md", newCHANGELOG, "utf8")
-sh("yarn prettier --write CHANGELOG.md")
-sh("git add CHANGELOG.md")
-sh("git commit -m 'Updated CHANGELOG for new release'")
+sh("npm version " + versionBump)
 
 sh("git push")
 sh("git push --tags")
+
+sh("yarn run auto release")
 
 console.log(chalk.green("=> Pushing Podspec"))
 publishPodspec("Emission.podspec")
