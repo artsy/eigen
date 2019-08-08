@@ -134,9 +134,20 @@ jobs:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
 
+      - restore_cache:
+          keys:
+            - v2-yarn-{{ checksum "yarn.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v2-yarn-
+
       - run:
           name: Install Yarn Dependencies
           command: yarn install --ignore-engines
+
+      - save_cache:
+          key: v2-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
       - run:
           name: Deploy via auto-release

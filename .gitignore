@@ -37,6 +37,7 @@ node_modules
 npm-debug.log
 Artsy-UIFonts/*
 Example/Pods/*
+Example/vendor/*
 Example/compile_commands.json
 Example/Emission/Configuration.h
 .vscode/launchReactNative.js
