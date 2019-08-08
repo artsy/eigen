@@ -59,7 +59,7 @@ sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 sh("yarn run auto changelog")
 
 console.log(chalk.green("=> Creating version bump commit and tag."))
-sh("npm version $(npx auto version)")
+sh("nvm use 10.13 && npm version $(npx auto version)")
 
 sh("git push")
 sh("git push --tags")
