@@ -94,7 +94,8 @@ export default createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         # TODO: This should move into followsAndSaves
         followsAndSaves {
-          artworks(private: true, first: $count, after: $cursor) @connection(key: "GenericGrid_artworks") {
+          artworks: artworksConnection(private: true, first: $count, after: $cursor)
+            @connection(key: "GenericGrid_artworks") {
             pageInfo {
               startCursor
               endCursor

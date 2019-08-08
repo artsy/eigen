@@ -87,7 +87,7 @@ export default createPaginationContainer(
       fragment Fairs_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         followsAndSaves {
-          fairs(first: $count, after: $cursor) @connection(key: "SavedFairs_fairs") {
+          fairs: fairsConnection(first: $count, after: $cursor) @connection(key: "SavedFairs_fairs") {
             edges {
               node {
                 id

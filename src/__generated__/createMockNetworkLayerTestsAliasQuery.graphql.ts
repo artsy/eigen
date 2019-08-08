@@ -30,14 +30,14 @@ export type createMockNetworkLayerTestsAliasQuery = {
 /*
 query createMockNetworkLayerTestsAliasQuery {
   artist(id: "banksy") {
-    forSaleArtworks: artworks(filter: IS_FOR_SALE) {
+    forSaleArtworks: artworksConnection(filter: IS_FOR_SALE) {
       edges {
         node {
           id
         }
       }
     }
-    notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {
+    notForSaleArtworks: artworksConnection(filter: IS_NOT_FOR_SALE) {
       edges {
         node {
           id
@@ -92,8 +92,8 @@ v2 = [
 v3 = {
   "kind": "LinkedField",
   "alias": "forSaleArtworks",
-  "name": "artworks",
-  "storageKey": "artworks(filter:\"IS_FOR_SALE\")",
+  "name": "artworksConnection",
+  "storageKey": "artworksConnection(filter:\"IS_FOR_SALE\")",
   "args": [
     {
       "kind": "Literal",
@@ -108,8 +108,8 @@ v3 = {
 v4 = {
   "kind": "LinkedField",
   "alias": "notForSaleArtworks",
-  "name": "artworks",
-  "storageKey": "artworks(filter:\"IS_NOT_FOR_SALE\")",
+  "name": "artworksConnection",
+  "storageKey": "artworksConnection(filter:\"IS_NOT_FOR_SALE\")",
   "args": [
     {
       "kind": "Literal",
@@ -169,11 +169,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "createMockNetworkLayerTestsAliasQuery",
-    "id": "0329e60456f2dd2a1207bb7cfa5d2b20",
+    "id": "f5ef215bce437df51c4fb3e13abae0e5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '63ad4b4241778aca74deb46bf22ad539';
+(node as any).hash = 'b02bf9fa416501b4198a21a849e2d25f';
 export default node;

@@ -31,7 +31,7 @@ query ArtistsMeQuery(
 
 fragment Artists_me_1G22uz on Me {
   followsAndSaves {
-    artists(first: $count, after: $cursor) {
+    artists: artistsConnection(first: $count, after: $cursor) {
       pageInfo {
         endCursor
         hasNextPage
@@ -154,8 +154,8 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artists",
+                "alias": "artists",
+                "name": "artistsConnection",
                 "storageKey": null,
                 "args": (v1/*: any*/),
                 "concreteType": "FollowArtistConnection",
@@ -278,8 +278,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "artists",
+                "alias": "artists",
+                "name": "artistsConnection",
                 "args": (v1/*: any*/),
                 "handle": "connection",
                 "key": "Artists_artists",
@@ -295,7 +295,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistsMeQuery",
-    "id": "872fe355e912c09a02c737a80cb3a8a0",
+    "id": "c31e339940fd7dcf22e3e120670d26fb",
     "text": null,
     "metadata": {}
   }

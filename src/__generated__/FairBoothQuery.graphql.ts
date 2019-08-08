@@ -79,7 +79,7 @@ fragment ShowArtworksPreview_show on Show {
   counts {
     artworks
   }
-  artworks(first: 6) {
+  artworks: artworksConnection(first: 6) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -686,9 +686,9 @@ return {
           (v5/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "artworks",
-            "storageKey": "artworks(first:6)",
+            "alias": "artworks",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(first:6)",
             "args": [
               {
                 "kind": "Literal",
@@ -978,7 +978,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothQuery",
-    "id": "970c8f7b112a3d118b064d3874e855a8",
+    "id": "8ab97174c1bec9ad34d207122541dd9f",
     "text": null,
     "metadata": {}
   }

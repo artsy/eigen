@@ -93,7 +93,7 @@ export default createPaginationContainer(
       fragment CityFairList_city on City
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         slug
-        fairs(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
+        fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
           @connection(key: "CityFairList_fairs") {
           edges {
             node {

@@ -81,7 +81,7 @@ export default createFragmentContainer(About, {
       slug
       ...Biography_artist
       related {
-        artists(first: 16) {
+        artists: artistsConnection(first: 16) {
           edges {
             node {
               ...RelatedArtists_artists
@@ -89,7 +89,7 @@ export default createFragmentContainer(About, {
           }
         }
       }
-      articles(first: 10) {
+      articles: articlesConnection(first: 10) {
         edges {
           node {
             ...Articles_articles

@@ -202,7 +202,7 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
       location {
         display
       }
-      artworks(first: 4) {
+      artworks: artworksConnection(first: 4) {
         edges {
           node {
             ...GenericGrid_artworks

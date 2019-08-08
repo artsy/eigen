@@ -71,9 +71,9 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "artists",
-          "storageKey": "artists(first:16)",
+          "alias": "artists",
+          "name": "artistsConnection",
+          "storageKey": "artistsConnection(first:16)",
           "args": [
             {
               "kind": "Literal",
@@ -117,9 +117,9 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "articles",
-      "storageKey": "articles(first:10)",
+      "alias": "articles",
+      "name": "articlesConnection",
+      "storageKey": "articlesConnection(first:10)",
       "args": [
         {
           "kind": "Literal",
@@ -166,5 +166,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '76ccaea3eb75f8ddcc7f84dc991a1a7b';
+(node as any).hash = 'ddfe77976e34d105920684396fcbd0d5';
 export default node;

@@ -26,7 +26,7 @@ query FairArtistsTestsQuery {
 fragment FairArtists_fair on Fair {
   slug
   internalID
-  artists(first: 10) {
+  artists: artistsConnection(first: 10) {
     pageInfo {
       hasNextPage
       startCursor
@@ -145,9 +145,9 @@ return {
           (v2/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "artists",
-            "storageKey": "artists(first:10)",
+            "alias": "artists",
+            "name": "artistsConnection",
+            "storageKey": "artistsConnection(first:10)",
             "args": (v3/*: any*/),
             "concreteType": "ArtistConnection",
             "plural": false,
@@ -301,8 +301,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": null,
-            "name": "artists",
+            "alias": "artists",
+            "name": "artistsConnection",
             "args": (v3/*: any*/),
             "handle": "connection",
             "key": "Fair_artists",
@@ -316,7 +316,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtistsTestsQuery",
-    "id": "62ea2baced9f4d9b9389a1b90d3d13c4",
+    "id": "62cb3fe189067bbdf1ccc7c2d0ffcf57",
     "text": null,
     "metadata": {}
   }

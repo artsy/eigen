@@ -31,7 +31,7 @@ query ArtworksQuery(
 
 fragment Artworks_me_1G22uz on Me {
   followsAndSaves {
-    artworks(private: true, first: $count, after: $cursor) {
+    artworks: artworksConnection(private: true, first: $count, after: $cursor) {
       pageInfo {
         startCursor
         endCursor
@@ -210,8 +210,8 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artworks",
+                "alias": "artworks",
+                "name": "artworksConnection",
                 "storageKey": null,
                 "args": (v1/*: any*/),
                 "concreteType": "SavedArtworksConnection",
@@ -494,8 +494,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "artworks",
+                "alias": "artworks",
+                "name": "artworksConnection",
                 "args": (v1/*: any*/),
                 "handle": "connection",
                 "key": "GenericGrid_artworks",
@@ -513,7 +513,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksQuery",
-    "id": "d61e06195268356118cca8dddd86285f",
+    "id": "214cddfbf797555cfca5305331f75127",
     "text": null,
     "metadata": {}
   }

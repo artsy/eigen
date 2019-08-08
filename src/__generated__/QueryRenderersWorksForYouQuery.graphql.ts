@@ -29,7 +29,7 @@ query QueryRenderersWorksForYouQuery(
 fragment WorksForYou_viewer_2hRnfI on Viewer {
   me {
     followsAndSaves {
-      notifications: bundledArtworksByArtist(sort: PUBLISHED_AT_DESC, first: 10) {
+      notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: 10) {
         pageInfo {
           hasNextPage
           endCursor
@@ -55,7 +55,7 @@ fragment WorksForYou_viewer_2hRnfI on Viewer {
         url
       }
     }
-    artworks(sort: PUBLISHED_AT_DESC, first: 6) {
+    artworks: artworksConnection(sort: PUBLISHED_AT_DESC, first: 6) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -70,7 +70,7 @@ fragment WorksForYou_viewer_2hRnfI on Viewer {
 fragment Notification_notification on FollowedArtistsArtworksGroup {
   summary
   artists
-  artworks(first: 10) {
+  artworks: artworksConnection(first: 10) {
     edges {
       node {
         artists(shallow: true) {
@@ -474,8 +474,8 @@ return {
                   {
                     "kind": "LinkedField",
                     "alias": "notifications",
-                    "name": "bundledArtworksByArtist",
-                    "storageKey": "bundledArtworksByArtist(first:10,sort:\"PUBLISHED_AT_DESC\")",
+                    "name": "bundledArtworksByArtistConnection",
+                    "storageKey": "bundledArtworksByArtistConnection(first:10,sort:\"PUBLISHED_AT_DESC\")",
                     "args": (v3/*: any*/),
                     "concreteType": "FollowedArtistsArtworksGroupConnection",
                     "plural": false,
@@ -540,9 +540,9 @@ return {
                               },
                               {
                                 "kind": "LinkedField",
-                                "alias": null,
-                                "name": "artworks",
-                                "storageKey": "artworks(first:10)",
+                                "alias": "artworks",
+                                "name": "artworksConnection",
+                                "storageKey": "artworksConnection(first:10)",
                                 "args": [
                                   (v1/*: any*/)
                                 ],
@@ -625,7 +625,7 @@ return {
                   {
                     "kind": "LinkedHandle",
                     "alias": "notifications",
-                    "name": "bundledArtworksByArtist",
+                    "name": "bundledArtworksByArtistConnection",
                     "args": (v3/*: any*/),
                     "handle": "connection",
                     "key": "WorksForYou_notifications",
@@ -659,9 +659,9 @@ return {
               (v21/*: any*/),
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artworks",
-                "storageKey": "artworks(first:6,sort:\"PUBLISHED_AT_DESC\")",
+                "alias": "artworks",
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(first:6,sort:\"PUBLISHED_AT_DESC\")",
                 "args": [
                   {
                     "kind": "Literal",
@@ -731,7 +731,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersWorksForYouQuery",
-    "id": "aafa34c7340daf05a737489801d91f82",
+    "id": "49364aa27c20f08f6d3f8729a639f268",
     "text": null,
     "metadata": {}
   }

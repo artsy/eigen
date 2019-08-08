@@ -25,7 +25,7 @@ query FavoriteArtworksQuery {
 
 fragment Artworks_me on Me {
   followsAndSaves {
-    artworks(private: true, first: 10, after: "") {
+    artworks: artworksConnection(private: true, first: 10, after: "") {
       pageInfo {
         startCursor
         endCursor
@@ -179,9 +179,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artworks",
-                "storageKey": "artworks(after:\"\",first:10,private:true)",
+                "alias": "artworks",
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(after:\"\",first:10,private:true)",
                 "args": (v0/*: any*/),
                 "concreteType": "SavedArtworksConnection",
                 "plural": false,
@@ -463,8 +463,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "artworks",
+                "alias": "artworks",
+                "name": "artworksConnection",
                 "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "GenericGrid_artworks",
@@ -482,7 +482,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "de3160155e3512b084a8e46aa7485335",
+    "id": "e928bb2c7379715a89aaf2ce42f9cb66",
     "text": null,
     "metadata": {}
   }

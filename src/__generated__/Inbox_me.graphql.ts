@@ -69,8 +69,8 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": "conversations_existence_check",
-      "name": "conversations",
-      "storageKey": "conversations(first:1)",
+      "name": "conversationsConnection",
+      "storageKey": "conversationsConnection(first:1)",
       "args": [
         {
           "kind": "Literal",
@@ -124,5 +124,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'fe3aafbe4ec7bfd5de49c9408cf29cca';
+(node as any).hash = 'fc3a51501e74ad6cd70d9cb1a4fa9f85';
 export default node;

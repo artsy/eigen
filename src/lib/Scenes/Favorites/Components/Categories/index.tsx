@@ -87,7 +87,7 @@ export default createPaginationContainer(
       fragment Categories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
-          genes(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
+          genes: genesConnection(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
             pageInfo {
               endCursor
               hasNextPage

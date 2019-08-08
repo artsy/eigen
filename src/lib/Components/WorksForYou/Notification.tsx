@@ -103,7 +103,7 @@ export default createFragmentContainer(Notification, {
     fragment Notification_notification on FollowedArtistsArtworksGroup {
       summary
       artists
-      artworks(first: 10) {
+      artworks: artworksConnection(first: 10) {
         edges {
           node {
             artists(shallow: true) {

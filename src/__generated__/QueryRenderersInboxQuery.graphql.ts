@@ -29,7 +29,7 @@ fragment Inbox_me on Me {
       id
     }
   }
-  conversations_existence_check: conversations(first: 1) {
+  conversations_existence_check: conversationsConnection(first: 1) {
     edges {
       node {
         internalID
@@ -42,7 +42,7 @@ fragment Inbox_me on Me {
 }
 
 fragment Conversations_me on Me {
-  conversations(first: 10, after: "") {
+  conversations: conversationsConnection(first: 10, after: "") {
     pageInfo {
       endCursor
       hasNextPage
@@ -407,8 +407,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "conversations_existence_check",
-            "name": "conversations",
-            "storageKey": "conversations(first:1)",
+            "name": "conversationsConnection",
+            "storageKey": "conversationsConnection(first:1)",
             "args": [
               {
                 "kind": "Literal",
@@ -447,9 +447,9 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "conversations",
-            "storageKey": "conversations(after:\"\",first:10)",
+            "alias": "conversations",
+            "name": "conversationsConnection",
+            "storageKey": "conversationsConnection(after:\"\",first:10)",
             "args": (v7/*: any*/),
             "concreteType": "ConversationConnection",
             "plural": false,
@@ -619,8 +619,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": null,
-            "name": "conversations",
+            "alias": "conversations",
+            "name": "conversationsConnection",
             "args": (v7/*: any*/),
             "handle": "connection",
             "key": "Conversations_conversations",
@@ -634,7 +634,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersInboxQuery",
-    "id": "9dacd5f4c4922d9c9cc8735ae388f0cb",
+    "id": "6ac07550f58c7a8a2c827a60ebf10545",
     "text": null,
     "metadata": {}
   }

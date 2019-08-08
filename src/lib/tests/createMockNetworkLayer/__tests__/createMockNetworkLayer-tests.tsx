@@ -83,14 +83,14 @@ describe("createMockNetworkLayer", () => {
       graphql`
         query createMockNetworkLayerTestsAliasQuery {
           artist(id: "banksy") {
-            forSaleArtworks: artworks(filter: IS_FOR_SALE) {
+            forSaleArtworks: artworksConnection(filter: IS_FOR_SALE) {
               edges {
                 node {
                   id
                 }
               }
             }
-            notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {
+            notForSaleArtworks: artworksConnection(filter: IS_NOT_FOR_SALE) {
               edges {
                 node {
                   id

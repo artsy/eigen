@@ -62,7 +62,7 @@ fragment About_artist on Artist {
   slug
   ...Biography_artist
   related {
-    artists(first: 16) {
+    artists: artistsConnection(first: 16) {
       edges {
         node {
           ...RelatedArtists_artists
@@ -71,7 +71,7 @@ fragment About_artist on Artist {
       }
     }
   }
-  articles(first: 10) {
+  articles: articlesConnection(first: 10) {
     edges {
       node {
         ...Articles_articles
@@ -82,7 +82,7 @@ fragment About_artist on Artist {
 }
 
 fragment Shows_artist on Artist {
-  currentShows: shows(status: "running", first: 10) {
+  currentShows: showsConnection(status: "running", first: 10) {
     edges {
       node {
         ...VariableSizeShowsList_shows
@@ -90,7 +90,7 @@ fragment Shows_artist on Artist {
       }
     }
   }
-  upcomingShows: shows(status: "upcoming", first: 10) {
+  upcomingShows: showsConnection(status: "upcoming", first: 10) {
     edges {
       node {
         ...VariableSizeShowsList_shows
@@ -98,7 +98,7 @@ fragment Shows_artist on Artist {
       }
     }
   }
-  pastSmallShows: shows(status: "closed", first: 20) @skip(if: $isPad) {
+  pastSmallShows: showsConnection(status: "closed", first: 20) @skip(if: $isPad) {
     edges {
       node {
         ...SmallList_shows
@@ -106,7 +106,7 @@ fragment Shows_artist on Artist {
       }
     }
   }
-  pastLargeShows: shows(status: "closed", first: 20) @include(if: $isPad) {
+  pastLargeShows: showsConnection(status: "closed", first: 20) @include(if: $isPad) {
     edges {
       node {
         ...VariableSizeShowsList_shows
@@ -127,7 +127,7 @@ fragment Artworks_artist on Artist {
 
 fragment ArtistForSaleArtworksGrid_artist on Artist {
   id
-  forSaleArtworks: artworks(first: 10, filter: [IS_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
+  forSaleArtworks: artworksConnection(first: 10, filter: [IS_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
     pageInfo {
       hasNextPage
       startCursor
@@ -150,7 +150,7 @@ fragment ArtistForSaleArtworksGrid_artist on Artist {
 
 fragment ArtistNotForSaleArtworksGrid_artist on Artist {
   id
-  notForSaleArtworks: artworks(first: 10, filter: [IS_NOT_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
+  notForSaleArtworks: artworksConnection(first: 10, filter: [IS_NOT_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
     pageInfo {
       hasNextPage
       startCursor
@@ -940,9 +940,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artists",
-                "storageKey": "artists(first:16)",
+                "alias": "artists",
+                "name": "artistsConnection",
+                "storageKey": "artistsConnection(first:16)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -1007,9 +1007,9 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "articles",
-            "storageKey": "articles(first:10)",
+            "alias": "articles",
+            "name": "articlesConnection",
+            "storageKey": "articlesConnection(first:10)",
             "args": [
               (v10/*: any*/)
             ],
@@ -1072,8 +1072,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "currentShows",
-            "name": "shows",
-            "storageKey": "shows(first:10,status:\"running\")",
+            "name": "showsConnection",
+            "storageKey": "showsConnection(first:10,status:\"running\")",
             "args": [
               (v10/*: any*/),
               {
@@ -1089,8 +1089,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "upcomingShows",
-            "name": "shows",
-            "storageKey": "shows(first:10,status:\"upcoming\")",
+            "name": "showsConnection",
+            "storageKey": "showsConnection(first:10,status:\"upcoming\")",
             "args": [
               (v10/*: any*/),
               {
@@ -1107,8 +1107,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "forSaleArtworks",
-            "name": "artworks",
-            "storageKey": "artworks(filter:[\"IS_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(filter:[\"IS_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
             "args": (v24/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
@@ -1117,7 +1117,7 @@ return {
           {
             "kind": "LinkedHandle",
             "alias": "forSaleArtworks",
-            "name": "artworks",
+            "name": "artworksConnection",
             "args": (v24/*: any*/),
             "handle": "connection",
             "key": "ArtistForSaleArtworksGrid_forSaleArtworks",
@@ -1126,8 +1126,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "notForSaleArtworks",
-            "name": "artworks",
-            "storageKey": "artworks(filter:[\"IS_NOT_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(filter:[\"IS_NOT_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
             "args": (v27/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
@@ -1136,7 +1136,7 @@ return {
           {
             "kind": "LinkedHandle",
             "alias": "notForSaleArtworks",
-            "name": "artworks",
+            "name": "artworksConnection",
             "args": (v27/*: any*/),
             "handle": "connection",
             "key": "ArtistNotForSaleArtworksGrid_notForSaleArtworks",
@@ -1150,8 +1150,8 @@ return {
               {
                 "kind": "LinkedField",
                 "alias": "pastSmallShows",
-                "name": "shows",
-                "storageKey": "shows(first:20,status:\"closed\")",
+                "name": "showsConnection",
+                "storageKey": "showsConnection(first:20,status:\"closed\")",
                 "args": (v28/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
@@ -1202,8 +1202,8 @@ return {
               {
                 "kind": "LinkedField",
                 "alias": "pastLargeShows",
-                "name": "shows",
-                "storageKey": "shows(first:20,status:\"closed\")",
+                "name": "showsConnection",
+                "storageKey": "showsConnection(first:20,status:\"closed\")",
                 "args": (v28/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
@@ -1218,7 +1218,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistQuery",
-    "id": "7826bdd517f115b70bad2cd855095351",
+    "id": "e0fe6a760e7ebcf43bed49f1dfc17f43",
     "text": null,
     "metadata": {}
   }

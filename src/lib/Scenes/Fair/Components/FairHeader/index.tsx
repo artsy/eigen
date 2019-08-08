@@ -181,7 +181,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           name
         }
       }
-      partner_names: shows(first: 2) {
+      partner_names: showsConnection(first: 2) {
         edges {
           node {
             slug
@@ -197,7 +197,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           }
         }
       }
-      artists_names: artists(first: 3) {
+      artists_names: artistsConnection(first: 3) {
         edges {
           node {
             name

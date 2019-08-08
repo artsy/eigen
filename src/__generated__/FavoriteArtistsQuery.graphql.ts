@@ -25,7 +25,7 @@ query FavoriteArtistsQuery {
 
 fragment Artists_me on Me {
   followsAndSaves {
-    artists(first: 10) {
+    artists: artistsConnection(first: 10) {
       pageInfo {
         endCursor
         hasNextPage
@@ -118,9 +118,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artists",
-                "storageKey": "artists(first:10)",
+                "alias": "artists",
+                "name": "artistsConnection",
+                "storageKey": "artistsConnection(first:10)",
                 "args": (v0/*: any*/),
                 "concreteType": "FollowArtistConnection",
                 "plural": false,
@@ -242,8 +242,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "artists",
+                "alias": "artists",
+                "name": "artistsConnection",
                 "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "Artists_artists",
@@ -259,7 +259,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtistsQuery",
-    "id": "522fd8455a25a46d676d9098d2ad8b24",
+    "id": "350e55b3cbaf6eae547ff4030aa3a319",
     "text": null,
     "metadata": {}
   }

@@ -25,7 +25,7 @@ query FavoriteCategoriesQuery {
 
 fragment Categories_me on Me {
   followsAndSaves {
-    genes(first: 10) {
+    genes: genesConnection(first: 10) {
       pageInfo {
         endCursor
         hasNextPage
@@ -118,9 +118,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "genes",
-                "storageKey": "genes(first:10)",
+                "alias": "genes",
+                "name": "genesConnection",
+                "storageKey": "genesConnection(first:10)",
                 "args": (v0/*: any*/),
                 "concreteType": "FollowGeneConnection",
                 "plural": false,
@@ -242,8 +242,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "genes",
+                "alias": "genes",
+                "name": "genesConnection",
                 "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "Categories_followed_genes",
@@ -259,7 +259,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteCategoriesQuery",
-    "id": "882faaed4ea12b9d011cb9831c713415",
+    "id": "f312805c2a946c3fcded0303eeacdafe",
     "text": null,
     "metadata": {}
   }

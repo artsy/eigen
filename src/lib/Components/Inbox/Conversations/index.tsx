@@ -115,7 +115,8 @@ export default createPaginationContainer(
     me: graphql`
       fragment Conversations_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
-        conversations(first: $count, after: $cursor) @connection(key: "Conversations_conversations") {
+        conversations: conversationsConnection(first: $count, after: $cursor)
+          @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage

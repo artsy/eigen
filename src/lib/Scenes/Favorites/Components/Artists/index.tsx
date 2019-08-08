@@ -88,7 +88,7 @@ export default createPaginationContainer(
       fragment Artists_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
-          artists(first: $count, after: $cursor) @connection(key: "Artists_artists") {
+          artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
             pageInfo {
               endCursor
               hasNextPage

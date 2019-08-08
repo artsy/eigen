@@ -78,7 +78,7 @@ fragment Artwork_artwork on Artwork {
   }
   contextGrids {
     __typename
-    artworks(first: 6) {
+    artworks: artworksConnection(first: 6) {
       edges {
         node {
           id
@@ -146,7 +146,7 @@ fragment OtherWorks_artwork on Artwork {
     title
     ctaTitle
     ctaHref
-    artworks(first: 6) {
+    artworks: artworksConnection(first: 6) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -1006,9 +1006,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artworks",
-                "storageKey": "artworks(first:6)",
+                "alias": "artworks",
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(first:6)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -1470,7 +1470,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "df910d195656ec2672524b6928a9dd56",
+    "id": "628e4d2bfab3cc3ca71776f6b9848354",
     "text": null,
     "metadata": {}
   }

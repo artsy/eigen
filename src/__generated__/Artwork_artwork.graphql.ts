@@ -325,9 +325,9 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "artworks",
-          "storageKey": "artworks(first:6)",
+          "alias": "artworks",
+          "name": "artworksConnection",
+          "storageKey": "artworksConnection(first:6)",
           "args": [
             {
               "kind": "Literal",
@@ -462,5 +462,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7829df9ceeb99a0be4b6848ae9065864';
+(node as any).hash = '2d23334d100995d69da598d55cd6818c';
 export default node;

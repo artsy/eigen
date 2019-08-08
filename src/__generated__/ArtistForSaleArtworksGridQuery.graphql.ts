@@ -45,7 +45,7 @@ query ArtistForSaleArtworksGridQuery(
 
 fragment ArtistForSaleArtworksGrid_artist_3KQYpM on Artist {
   id
-  forSaleArtworks: artworks(first: $count, after: $cursor, filter: $filter, sort: PARTNER_UPDATED_AT_DESC) {
+  forSaleArtworks: artworksConnection(first: $count, after: $cursor, filter: $filter, sort: PARTNER_UPDATED_AT_DESC) {
     pageInfo {
       hasNextPage
       startCursor
@@ -254,7 +254,7 @@ return {
               {
                 "kind": "LinkedField",
                 "alias": "forSaleArtworks",
-                "name": "artworks",
+                "name": "artworksConnection",
                 "storageKey": null,
                 "args": (v5/*: any*/),
                 "concreteType": "ArtworkConnection",
@@ -525,7 +525,7 @@ return {
               {
                 "kind": "LinkedHandle",
                 "alias": "forSaleArtworks",
-                "name": "artworks",
+                "name": "artworksConnection",
                 "args": (v5/*: any*/),
                 "handle": "connection",
                 "key": "ArtistForSaleArtworksGrid_forSaleArtworks",
@@ -543,7 +543,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistForSaleArtworksGridQuery",
-    "id": "02c8362c18301cf18a2bbf6900435948",
+    "id": "2a521020c2707ee1159a3b28bb9d43b9",
     "text": null,
     "metadata": {}
   }

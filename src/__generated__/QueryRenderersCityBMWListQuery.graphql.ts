@@ -30,7 +30,7 @@ fragment CityBMWList_city on City {
   name
   slug
   sponsoredContent {
-    shows(first: 20, status: RUNNING, after: "", sort: PARTNER_ASC) {
+    shows: showsConnection(first: 20, status: RUNNING, after: "", sort: PARTNER_ASC) {
       edges {
         node {
           slug
@@ -214,9 +214,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "shows",
-                "storageKey": "shows(after:\"\",first:20,sort:\"PARTNER_ASC\",status:\"RUNNING\")",
+                "alias": "shows",
+                "name": "showsConnection",
+                "storageKey": "showsConnection(after:\"\",first:20,sort:\"PARTNER_ASC\",status:\"RUNNING\")",
                 "args": (v4/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
@@ -452,8 +452,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "shows",
+                "alias": "shows",
+                "name": "showsConnection",
                 "args": (v4/*: any*/),
                 "handle": "connection",
                 "key": "CityBMWList_shows",
@@ -471,7 +471,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCityBMWListQuery",
-    "id": "585e6a8e36df9c15234f587ed80afa2b",
+    "id": "154ce9c7c4d8db71cd98361081b6bc14",
     "text": null,
     "metadata": {}
   }

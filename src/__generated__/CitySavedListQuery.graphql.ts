@@ -36,7 +36,7 @@ fragment CitySavedList_viewer_1G22uz on Viewer {
   }
   me {
     followsAndSaves {
-      shows(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor) {
+      shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor) {
         edges {
           node {
             slug
@@ -256,8 +256,8 @@ return {
                 "selections": [
                   {
                     "kind": "LinkedField",
-                    "alias": null,
-                    "name": "shows",
+                    "alias": "shows",
+                    "name": "showsConnection",
                     "storageKey": null,
                     "args": (v2/*: any*/),
                     "concreteType": "FollowedShowConnection",
@@ -500,8 +500,8 @@ return {
                   },
                   {
                     "kind": "LinkedHandle",
-                    "alias": null,
-                    "name": "shows",
+                    "alias": "shows",
+                    "name": "showsConnection",
                     "args": (v2/*: any*/),
                     "handle": "connection",
                     "key": "CitySavedList_shows",
@@ -522,7 +522,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySavedListQuery",
-    "id": "773a5c3605da0d5402b1fd37cf15bb58",
+    "id": "33e53796d4194ab12f166befe5806c4b",
     "text": null,
     "metadata": {}
   }

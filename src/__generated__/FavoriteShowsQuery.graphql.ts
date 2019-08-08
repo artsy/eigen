@@ -25,7 +25,7 @@ query FavoriteShowsQuery {
 
 fragment Shows_me on Me {
   followsAndSaves {
-    shows(first: 10) {
+    shows: showsConnection(first: 10) {
       pageInfo {
         startCursor
         endCursor
@@ -163,9 +163,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "shows",
-                "storageKey": "shows(first:10)",
+                "alias": "shows",
+                "name": "showsConnection",
+                "storageKey": "showsConnection(first:10)",
                 "args": (v0/*: any*/),
                 "concreteType": "FollowedShowConnection",
                 "plural": false,
@@ -396,8 +396,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "shows",
+                "alias": "shows",
+                "name": "showsConnection",
                 "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "SavedShows_shows",
@@ -413,7 +413,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteShowsQuery",
-    "id": "b7a514532a60d135db60e266daa0645e",
+    "id": "b11c8a798c8d8923250dfea87cb9987f",
     "text": null,
     "metadata": {}
   }

@@ -198,7 +198,7 @@ const WorksForYouContainer = createPaginationContainer(
         ) {
         me {
           followsAndSaves {
-            notifications: bundledArtworksByArtist(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
+            notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
               @connection(key: "WorksForYou_notifications") {
               pageInfo {
                 hasNextPage
@@ -222,7 +222,7 @@ const WorksForYouContainer = createPaginationContainer(
               url
             }
           }
-          artworks(sort: PUBLISHED_AT_DESC, first: 6) {
+          artworks: artworksConnection(sort: PUBLISHED_AT_DESC, first: 6) {
             edges {
               node {
                 ...GenericGrid_artworks

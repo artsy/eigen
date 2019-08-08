@@ -102,8 +102,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": "currentShows",
-      "name": "shows",
-      "storageKey": "shows(first:10,status:\"running\")",
+      "name": "showsConnection",
+      "storageKey": "showsConnection(first:10,status:\"running\")",
       "args": [
         (v0/*: any*/),
         {
@@ -119,8 +119,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": "upcomingShows",
-      "name": "shows",
-      "storageKey": "shows(first:10,status:\"upcoming\")",
+      "name": "showsConnection",
+      "storageKey": "showsConnection(first:10,status:\"upcoming\")",
       "args": [
         (v0/*: any*/),
         {
@@ -141,8 +141,8 @@ return {
         {
           "kind": "LinkedField",
           "alias": "pastSmallShows",
-          "name": "shows",
-          "storageKey": "shows(first:20,status:\"closed\")",
+          "name": "showsConnection",
+          "storageKey": "showsConnection(first:20,status:\"closed\")",
           "args": (v2/*: any*/),
           "concreteType": "ShowConnection",
           "plural": false,
@@ -186,8 +186,8 @@ return {
         {
           "kind": "LinkedField",
           "alias": "pastLargeShows",
-          "name": "shows",
-          "storageKey": "shows(first:20,status:\"closed\")",
+          "name": "showsConnection",
+          "storageKey": "showsConnection(first:20,status:\"closed\")",
           "args": (v2/*: any*/),
           "concreteType": "ShowConnection",
           "plural": false,
@@ -198,5 +198,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3a8da4519b0a019d3e331f1d04133aa2';
+(node as any).hash = '21beda31cfe5fcb85d3015382a0dd69d';
 export default node;

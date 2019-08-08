@@ -831,11 +831,11 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
               }
             }
           }
-          shows(first: 1, sort: START_AT_ASC) {
+          shows: showsConnection(first: 1, sort: START_AT_ASC) {
             totalCount
           }
         }
-        upcomingShows: shows(
+        upcomingShows: showsConnection(
           includeStubShows: true
           status: UPCOMING
           dayThreshold: 14
@@ -879,7 +879,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             }
           }
         }
-        shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
+        shows: showsConnection(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
           edges {
             node {
               slug
@@ -917,7 +917,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             }
           }
         }
-        fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
+        fairs: fairsConnection(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
               slug

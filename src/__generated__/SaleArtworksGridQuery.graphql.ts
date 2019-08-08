@@ -42,7 +42,7 @@ query SaleArtworksGridQuery(
 
 fragment SaleArtworksGrid_sale_1G22uz on Sale {
   id
-  saleArtworks: saleArtworks(first: $count, after: $cursor) {
+  saleArtworks: saleArtworksConnection(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       startCursor
@@ -236,7 +236,7 @@ return {
               {
                 "kind": "LinkedField",
                 "alias": "saleArtworks",
-                "name": "saleArtworks",
+                "name": "saleArtworksConnection",
                 "storageKey": null,
                 "args": (v4/*: any*/),
                 "concreteType": "SaleArtworkConnection",
@@ -519,7 +519,7 @@ return {
               {
                 "kind": "LinkedHandle",
                 "alias": "saleArtworks",
-                "name": "saleArtworks",
+                "name": "saleArtworksConnection",
                 "args": (v4/*: any*/),
                 "handle": "connection",
                 "key": "SaleArtworksGrid_saleArtworks",
@@ -534,7 +534,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworksGridQuery",
-    "id": "828628ea5475e609710a49a74248435b",
+    "id": "6755a74707875bd6c43624d3b892188b",
     "text": null,
     "metadata": {}
   }

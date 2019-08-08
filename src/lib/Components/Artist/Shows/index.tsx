@@ -91,28 +91,28 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(Shows, {
   artist: graphql`
     fragment Shows_artist on Artist {
-      currentShows: shows(status: "running", first: 10) {
+      currentShows: showsConnection(status: "running", first: 10) {
         edges {
           node {
             ...VariableSizeShowsList_shows
           }
         }
       }
-      upcomingShows: shows(status: "upcoming", first: 10) {
+      upcomingShows: showsConnection(status: "upcoming", first: 10) {
         edges {
           node {
             ...VariableSizeShowsList_shows
           }
         }
       }
-      pastSmallShows: shows(status: "closed", first: 20) @skip(if: $isPad) {
+      pastSmallShows: showsConnection(status: "closed", first: 20) @skip(if: $isPad) {
         edges {
           node {
             ...SmallList_shows
           }
         }
       }
-      pastLargeShows: shows(status: "closed", first: 20) @include(if: $isPad) {
+      pastLargeShows: showsConnection(status: "closed", first: 20) @include(if: $isPad) {
         edges {
           node {
             ...VariableSizeShowsList_shows

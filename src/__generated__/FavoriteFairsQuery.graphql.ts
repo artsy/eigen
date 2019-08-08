@@ -25,7 +25,7 @@ query FavoriteFairsQuery {
 
 fragment Fairs_me on Me {
   followsAndSaves {
-    fairs(first: 10, after: "") {
+    fairs: fairsConnection(first: 10, after: "") {
       edges {
         node {
           id
@@ -130,9 +130,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "fairs",
-                "storageKey": "fairs(after:\"\",first:10)",
+                "alias": "fairs",
+                "name": "fairsConnection",
+                "storageKey": "fairsConnection(after:\"\",first:10)",
                 "args": (v0/*: any*/),
                 "concreteType": "FollowedFairConnection",
                 "plural": false,
@@ -300,8 +300,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "fairs",
+                "alias": "fairs",
+                "name": "fairsConnection",
                 "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "SavedFairs_fairs",
@@ -317,7 +317,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteFairsQuery",
-    "id": "ff957984c320110ac6e4dd6e6c95a2ac",
+    "id": "ec5271410da1859f9c565ee5b9f750e4",
     "text": null,
     "metadata": {}
   }

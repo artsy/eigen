@@ -220,7 +220,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
         __typename
       }
       contextGrids {
-        artworks(first: 6) {
+        artworks: artworksConnection(first: 6) {
           edges {
             node {
               id

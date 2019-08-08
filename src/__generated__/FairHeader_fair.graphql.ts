@@ -198,8 +198,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": "partner_names",
-      "name": "shows",
-      "storageKey": "shows(first:2)",
+      "name": "showsConnection",
+      "storageKey": "showsConnection(first:2)",
       "args": [
         {
           "kind": "Literal",
@@ -269,8 +269,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": "artists_names",
-      "name": "artists",
-      "storageKey": "artists(first:3)",
+      "name": "artistsConnection",
+      "storageKey": "artistsConnection(first:3)",
       "args": [
         {
           "kind": "Literal",
@@ -427,5 +427,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2f0a9998dc15249d916e4e50f9cc6fda';
+(node as any).hash = '16fe58134d4f45dbd19d24fc64d1ce7c';
 export default node;

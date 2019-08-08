@@ -281,9 +281,9 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "artworks",
-          "storageKey": "artworks(first:6,sort:\"PUBLISHED_AT_DESC\")",
+          "alias": "artworks",
+          "name": "artworksConnection",
+          "storageKey": "artworksConnection(first:6,sort:\"PUBLISHED_AT_DESC\")",
           "args": [
             {
               "kind": "Literal",
@@ -329,5 +329,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2b4684d0846524193789f756a75c871d';
+(node as any).hash = '930f61ae297bb8bf4869c3e9593933de';
 export default node;

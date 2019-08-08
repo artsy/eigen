@@ -285,7 +285,7 @@ export const FairDetailContainer = createPaginationContainer(
           activationText
           pressReleaseUrl
         }
-        shows(first: $count, after: $cursor) @connection(key: "Fair_shows") {
+        shows: showsConnection(first: $count, after: $cursor) @connection(key: "Fair_shows") {
           pageInfo {
             hasNextPage
             startCursor
@@ -296,7 +296,7 @@ export const FairDetailContainer = createPaginationContainer(
             node {
               slug
               internalID
-              artworks(first: 4) {
+              artworks: artworksConnection(first: 4) {
                 edges {
                   node {
                     slug

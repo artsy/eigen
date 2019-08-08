@@ -31,7 +31,7 @@ query CategoriesMeQuery(
 
 fragment Categories_me_1G22uz on Me {
   followsAndSaves {
-    genes(first: $count, after: $cursor) {
+    genes: genesConnection(first: $count, after: $cursor) {
       pageInfo {
         endCursor
         hasNextPage
@@ -154,8 +154,8 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "genes",
+                "alias": "genes",
+                "name": "genesConnection",
                 "storageKey": null,
                 "args": (v1/*: any*/),
                 "concreteType": "FollowGeneConnection",
@@ -278,8 +278,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "genes",
+                "alias": "genes",
+                "name": "genesConnection",
                 "args": (v1/*: any*/),
                 "handle": "connection",
                 "key": "Categories_followed_genes",
@@ -295,7 +295,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CategoriesMeQuery",
-    "id": "38917447982264a854df46fc80171eb1",
+    "id": "33cdc78670ae63eb8ad546f7a1432172",
     "text": null,
     "metadata": {}
   }

@@ -68,7 +68,7 @@ fragment FairDetail_fair on Fair {
     activationText
     pressReleaseUrl
   }
-  shows(first: 5) {
+  shows: showsConnection(first: 5) {
     pageInfo {
       hasNextPage
       startCursor
@@ -79,7 +79,7 @@ fragment FairDetail_fair on Fair {
       node {
         slug
         internalID
-        artworks(first: 4) {
+        artworks: artworksConnection(first: 4) {
           edges {
             node {
               slug
@@ -118,7 +118,7 @@ fragment FairHeader_fair on Fair {
       id
     }
   }
-  partner_names: shows(first: 2) {
+  partner_names: showsConnection(first: 2) {
     edges {
       node {
         slug
@@ -143,7 +143,7 @@ fragment FairHeader_fair on Fair {
       }
     }
   }
-  artists_names: artists(first: 3) {
+  artists_names: artistsConnection(first: 3) {
     edges {
       node {
         name
@@ -248,7 +248,7 @@ fragment FairBoothPreview_show on Show {
     display
     id
   }
-  artworks(first: 4) {
+  artworks: artworksConnection(first: 4) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -532,8 +532,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "partner_names",
-            "name": "shows",
-            "storageKey": "shows(first:2)",
+            "name": "showsConnection",
+            "storageKey": "showsConnection(first:2)",
             "args": [
               {
                 "kind": "Literal",
@@ -607,8 +607,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "artists_names",
-            "name": "artists",
-            "storageKey": "artists(first:3)",
+            "name": "artistsConnection",
+            "storageKey": "artistsConnection(first:3)",
             "args": [
               {
                 "kind": "Literal",
@@ -961,9 +961,9 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "shows",
-            "storageKey": "shows(first:5)",
+            "alias": "shows",
+            "name": "showsConnection",
+            "storageKey": "showsConnection(first:5)",
             "args": (v13/*: any*/),
             "concreteType": "ShowConnection",
             "plural": false,
@@ -1029,9 +1029,9 @@ return {
                       (v4/*: any*/),
                       {
                         "kind": "LinkedField",
-                        "alias": null,
-                        "name": "artworks",
-                        "storageKey": "artworks(first:4)",
+                        "alias": "artworks",
+                        "name": "artworksConnection",
+                        "storageKey": "artworksConnection(first:4)",
                         "args": [
                           {
                             "kind": "Literal",
@@ -1348,8 +1348,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": null,
-            "name": "shows",
+            "alias": "shows",
+            "name": "showsConnection",
             "args": (v13/*: any*/),
             "handle": "connection",
             "key": "Fair_shows",
@@ -1362,7 +1362,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersFairQuery",
-    "id": "ece803e0dc20bc00da90aabaa3373da9",
+    "id": "57ee6236b4901300f0ee6bc5b63ef1a1",
     "text": null,
     "metadata": {}
   }
