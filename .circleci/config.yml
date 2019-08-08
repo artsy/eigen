@@ -1,9 +1,10 @@
 version: 2.0
 
-setup_environment: &setup_environment
-  macos:
+jobs:
+  build-and-test:
     # Specify the Xcode version to use
-    xcode: "10.1.0"
+    macos:
+      xcode: "10.1.0"
 
     shell: /bin/bash --login -eo pipefail
 
@@ -18,10 +19,6 @@ setup_environment: &setup_environment
       # For caching gems, relative to current directory
       BUNDLE_PATH: vendor/bundle
       BUNDLER_VERSION: 2.0.2
-
-jobs:
-  build-and-test:
-    <<: *setup_environment
 
     steps:
       - run:
@@ -106,7 +103,22 @@ jobs:
           prefix: tests
 
   deploy:
-    <<: *setup_environment
+    macos:
+      xcode: "10.1.0"
+
+    shell: /bin/bash --login -eo pipefail
+
+    environment:
+      # WARNING: These env vars are passed to PRs on forks.
+      # WARNING: DO NOT PUT SENSITIVE INFORMATION HERE.
+      ArtsyAPIClientSecret: "-"
+      ArtsyAPIClientKey: "-"
+      StripePublishableKey: "-"
+      MapBoxAPIClientKey: "-"
+
+      # For caching gems, relative to current directory
+      BUNDLE_PATH: vendor/bundle
+      BUNDLER_VERSION: 2.0.2
 
     steps:
       - checkout
