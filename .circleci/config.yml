@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.0
 
 orbs:
   hokusai: artsy/hokusai@0.6.0
@@ -144,7 +144,11 @@ workflows:
   version: 2
   build-test:
     jobs:
-      - build-and-test
+      - build-and-test:
+          filters:
+            branches:
+              ignore:
+                - master
       - deploy:
           requires:
             - build-and-test
