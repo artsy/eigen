@@ -55,6 +55,7 @@ sh("npm run relay")
 sh("npm run bundle")
 sh("cd Example")
 sh("curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf ;")
+sh("bundle exec pod install")
 sh("cd ..")
 sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
