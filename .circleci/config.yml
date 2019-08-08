@@ -79,7 +79,7 @@ jobs:
           command: yarn ci:skip-native-if-possible || { cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod install ; }
 
       - save_cache:
-          key: v9-pods-{{ checksum "Example/Pods/Pods.xcodeproj/project.pbxproj" }}
+          key: v9-pods-{{ checksum "package.json" }}
           paths:
             - Example/Pods
 
@@ -105,6 +105,8 @@ jobs:
   deploy:
     macos:
       xcode: "10.1.0"
+
+    shell: /bin/bash --login -eo pipefail
 
     environment:
       # For caching gems, relative to current directory
