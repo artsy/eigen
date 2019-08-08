@@ -13,7 +13,6 @@ function sh(command, canFail = false) {
     console.error(chalk.red(String(task.stderr)))
     throw new Error("[!] " + command)
   }
-  return task.stdout.toString().trim()
 }
 
 function publishPodspec(podspec) {
@@ -59,10 +58,8 @@ sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
 sh("yarn run auto changelog")
 
-const versionBump = sh("yarn run auto version")
-
 console.log(chalk.green("=> Creating version bump commit and tag."))
-sh("npm version " + versionBump)
+sh("npm version $(npx auto version)")
 
 sh("git push")
 sh("git push --tags")
