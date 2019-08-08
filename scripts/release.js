@@ -53,9 +53,8 @@ sh("npm --version")
 console.log(chalk.green("=> Creating release bundle."))
 sh("npm run relay")
 sh("npm run bundle")
-sh(
-  "cd Example && curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf ; && bundle exec pod install"
-)
+sh("cd Example && curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf")
+sh("cd Example && bundle exec pod install")
 sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
 sh("yarn run auto changelog")
