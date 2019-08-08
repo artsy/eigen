@@ -103,9 +103,8 @@ jobs:
           prefix: tests
 
   deploy:
-    executor:
-      docker:
-        - image: artsy/hokusai:0.5
+    docker:
+      - image: artsy/hokusai:0.5
 
     shell: /bin/bash --login -eo pipefail
 
