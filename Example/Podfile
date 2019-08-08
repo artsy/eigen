@@ -20,7 +20,7 @@ unless RbConfig::CONFIG["RUBY_PROGRAM_VERSION"] == expected_ruby_version
 end
 
 source 'https://github.com/artsy/Specs.git'
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 inhibit_all_warnings!
 platform :ios, '10.0'
