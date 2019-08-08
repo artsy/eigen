@@ -1,4 +1,8 @@
-version: 2
+version: 2.1
+
+orbs:
+  hokusai: artsy/hokusai@0.6.0
+  yarn: artsy/yarn@0.2.0
 
 jobs:
   build-and-test:
@@ -103,12 +107,18 @@ jobs:
           prefix: tests
 
   deploy:
-    macos:
-      xcode: "10.1.0"
+    executor: hokusai/deploy
 
     shell: /bin/bash --login -eo pipefail
 
     environment:
+      # WARNING: These env vars are passed to PRs on forks.
+      # WARNING: DO NOT PUT SENSITIVE INFORMATION HERE.
+      ArtsyAPIClientSecret: "-"
+      ArtsyAPIClientKey: "-"
+      StripePublishableKey: "-"
+      MapBoxAPIClientKey: "-"
+
       # For caching gems, relative to current directory
       BUNDLE_PATH: vendor/bundle
       BUNDLER_VERSION: 2.0.2
@@ -125,9 +135,7 @@ jobs:
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
-      - run:
-          name: Install Yarn Dependencies
-          command: yarn install --ignore-engines
+      - yarn/setup
       - run:
           name: Deploy via auto-release
           command: yarn release
