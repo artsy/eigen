@@ -7,7 +7,7 @@ const chalk = require("chalk")
 
 function sh(command, canFail = false) {
   console.log("$ " + command)
-  const task = spawnSync(command, { shell: true })
+  const task = spawnSync(command, { shell: true, stdio: "inherit" })
   if (!canFail && task.status != 0) {
     console.log(String(task.stdout))
     console.error(chalk.red(String(task.stderr)))
