@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react"
 import { Animated, Image, View } from "react-native"
 import { fitInside } from "../geometry"
 import { ImageDescriptor } from "../ImageCarouselContext"
-import { screenBoundingBox } from "./screen"
+import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 
 interface Tile {
   setShowing: (showing: boolean) => void
@@ -221,10 +221,34 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
             style={{
               position: "absolute",
               ...levels[level],
+              borderWidth: 1,
+              borderColor: "red",
               transform: [
+                // center on screen first
                 {
-                  translateY: Animated.add(marginVertical, Animated.multiply($contentOffsetY, -1)),
+                  translateX: screenWidth / 2 - levels[level].width / 2,
                 },
+                {
+                  translateY: screenHeight / 2 - levels[level].height / 2,
+                },
+                // apply content offset before scaling
+                {
+                  translateX: Animated.multiply(
+                    Animated.subtract($contentOffsetX, Animated.multiply(marginHorizontal, $zoomScale)),
+                    -1
+                  ),
+                },
+                {
+                  translateY: Animated.multiply(
+                    Animated.subtract($contentOffsetY, Animated.multiply(marginVertical, $zoomScale)),
+                    -1
+                  ),
+                },
+                // apply scale to place directly over existing image
+                {
+                  scale: Animated.divide($zoomScale, levelScale),
+                },
+                // sync translation with scroll view
               ],
             }}
           >
@@ -272,36 +296,4 @@ interface TileDistanceRecord {
   visible: boolean
   // absolute positioning details
   readonly rect: Rect
-}
-
-function updateDistances(viewPort: Rect, tileLoadQueue: TileDistanceRecord[]) {
-  const viewPortCenter = getCenter(viewPort)
-  for (const tileProximityRecord of tileLoadQueue) {
-    const tileCenter = getCenter(tileProximityRecord.rect)
-    // my man pythagoras ◿
-    tileProximityRecord.distance = Math.sqrt(
-      Math.pow(tileCenter.x - viewPortCenter.x, 2) + Math.pow(tileCenter.y - viewPortCenter.y, 2)
-    )
-    tileProximityRecord.visible = rectanglesOverlap(viewPort, tileProximityRecord.rect)
-  }
-}
-
-function tileDistanceRecordComparator(a: TileDistanceRecord, b: TileDistanceRecord) {
-  return a.distance - b.distance
-}
-
-function rectanglesOverlap(a: Rect, b: Rect) {
-  const bRight = b.x + b.width
-  const aRight = a.x + a.width
-  const bBottom = b.y + b.height
-  const aBottom = a.y + a.height
-  const horizontalOverlap = a.x < bRight && aRight > b.x
-  const verticalOverlap = a.y < bBottom && aBottom > b.y
-  return horizontalOverlap && verticalOverlap
-}
-
-function getCenter(rect: Rect) {
-  const x = rect.x + rect.width / 2
-  const y = rect.y + rect.height / 2
-  return { x, y }
 }
