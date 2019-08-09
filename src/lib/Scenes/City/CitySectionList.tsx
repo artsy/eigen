@@ -118,7 +118,7 @@ export default createPaginationContainer(
           sort: { type: "ShowSorts", defaultValue: "PARTNER_ASC" }
         ) {
         name
-        shows(
+        shows: showsConnection(
           includeStubShows: true
           first: $count
           sort: $sort

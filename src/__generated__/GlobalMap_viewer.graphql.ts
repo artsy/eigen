@@ -151,6 +151,7 @@ export type GlobalMap_viewer = {
         readonly fairs: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
+                    readonly id: string;
                     readonly slug: string;
                     readonly name: string | null;
                     readonly exhibition_period: string | null;
@@ -546,9 +547,9 @@ return {
             },
             {
               "kind": "LinkedField",
-              "alias": null,
-              "name": "shows",
-              "storageKey": "shows(first:1,sort:\"START_AT_ASC\")",
+              "alias": "shows",
+              "name": "showsConnection",
+              "storageKey": "showsConnection(first:1,sort:\"START_AT_ASC\")",
               "args": [
                 {
                   "kind": "Literal",
@@ -574,7 +575,7 @@ return {
         {
           "kind": "LinkedField",
           "alias": "upcomingShows",
-          "name": "shows",
+          "name": "showsConnection",
           "storageKey": null,
           "args": [
             {
@@ -597,8 +598,8 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "shows",
+          "alias": "shows",
+          "name": "showsConnection",
           "storageKey": null,
           "args": [
             (v17/*: any*/),
@@ -620,8 +621,8 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "fairs",
+          "alias": "fairs",
+          "name": "fairsConnection",
           "storageKey": null,
           "args": [
             (v17/*: any*/),
@@ -653,6 +654,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
+                    (v4/*: any*/),
                     (v1/*: any*/),
                     (v0/*: any*/),
                     (v9/*: any*/),
@@ -768,5 +770,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '23d61f3fe31f6083439739b5b1d1c34e';
+(node as any).hash = '7d24d12a8e10b27bf6528932b2abe624';
 export default node;

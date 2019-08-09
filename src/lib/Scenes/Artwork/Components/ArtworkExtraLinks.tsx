@@ -1,4 +1,4 @@
-import { Box, Sans } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema, track } from "lib/utils/track"
@@ -7,6 +7,7 @@ import { Text } from "react-native"
 
 interface ArtworkExtraLinksProps {
   consignableArtistsCount: number
+  artistName: string | null
 }
 
 @track()
@@ -26,10 +27,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
   }
 
-  renderConsignmentsLine(artistsCount) {
+  renderConsignmentsLine(artistsCount, artistName) {
     return (
       <Sans size="2" color="black60">
-        Want to sell a work by {artistsCount === 1 ? "this artist" : "these artists"}?{" "}
+        Want to sell a work by {artistsCount === 1 ? artistName : "these artists"}?{" "}
         <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConsignmentsTap()}>
           Consign with Artsy.
         </Text>
@@ -38,8 +39,8 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   render() {
-    const { consignableArtistsCount } = this.props
+    const { consignableArtistsCount, artistName } = this.props
 
-    return <Box>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount)}</Box>
+    return <>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount, artistName)}</>
   }
 }

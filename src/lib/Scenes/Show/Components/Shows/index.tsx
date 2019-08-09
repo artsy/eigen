@@ -32,7 +32,7 @@ export const Shows: React.SFC<Props> = ({ show }) => {
 export const ShowsContainer = createFragmentContainer(Shows, {
   show: graphql`
     fragment Shows_show on Show {
-      nearbyShows(first: 20) {
+      nearbyShows: nearbyShowsConnection(first: 20) {
         edges {
           node {
             id

@@ -51,7 +51,7 @@ fragment SaleListItem_sale on Sale {
 }
 
 fragment LotsByFollowedArtists_viewer on Viewer {
-  sale_artworks: saleArtworks(first: 10, liveSale: true, isAuction: true, includeArtworksByFollowedArtists: true) {
+  sale_artworks: saleArtworksConnection(first: 10, liveSale: true, isAuction: true, includeArtworksByFollowedArtists: true) {
     pageInfo {
       endCursor
       hasNextPage
@@ -342,8 +342,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": "sale_artworks",
-            "name": "saleArtworks",
-            "storageKey": "saleArtworks(first:10,includeArtworksByFollowedArtists:true,isAuction:true,liveSale:true)",
+            "name": "saleArtworksConnection",
+            "storageKey": "saleArtworksConnection(first:10,includeArtworksByFollowedArtists:true,isAuction:true,liveSale:true)",
             "args": (v10/*: any*/),
             "concreteType": "SaleArtworksConnection",
             "plural": false,
@@ -576,7 +576,7 @@ return {
           {
             "kind": "LinkedHandle",
             "alias": "sale_artworks",
-            "name": "saleArtworks",
+            "name": "saleArtworksConnection",
             "args": (v10/*: any*/),
             "handle": "connection",
             "key": "LotsByFollowedArtists_sale_artworks",
@@ -593,7 +593,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SalesRendererQuery",
-    "id": "05f44230a567f1d033bd51c590f7c627",
+    "id": "d8cb181ba6afb6ce1ab27a7a8c5612d1",
     "text": null,
     "metadata": {}
   }

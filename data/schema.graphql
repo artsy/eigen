@@ -15,23 +15,6 @@ type AddAssetToConsignmentSubmissionPayload {
   clientMutationId: String
 }
 
-input AddInitialOfferToOrderInput {
-  # ID of order
-  orderId: ID!
-
-  # Offer price
-  offerPrice: MoneyInput
-
-  # Offer note
-  note: String
-  clientMutationId: String
-}
-
-type AddInitialOfferToOrderPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 # One item in an aggregation
 type AggregationCount {
   # A globally unique ID.
@@ -488,17 +471,6 @@ type AnalyticsVisitorsByReferral {
   value: Int!
 }
 
-input ApproveOrderInput {
-  # Order ID
-  orderId: String!
-  clientMutationId: String
-}
-
-type ApproveOrderPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 type Article implements Node {
   # A globally unique ID.
   id: ID!
@@ -575,21 +547,6 @@ type Artist implements Node & Searchable {
     before: String
     last: Int
   ): ArticleConnection
-  articles(sort: ArticleSorts, limit: Int, inEditorialFeed: Boolean): [Article]
-  artists(
-    # The number of Artists to return
-    size: Int
-    excludeArtistsWithoutArtworks: Boolean = true
-  ): [Artist]
-  artworks(
-    # The number of Artworks to return
-    size: Int
-    page: Int
-    sort: ArtworkSorts
-    published: Boolean = true
-    filter: [ArtistArtworksFilters]
-    exclude: [String]
-  ): [Artwork]
   artworksConnection(
     # List of artwork IDs to exclude from the response.
     exclude: [String]
@@ -601,7 +558,7 @@ type Artist implements Node & Searchable {
     before: String
     last: Int
   ): ArtworkConnection
-  auctionResults(
+  auctionResultsConnection(
     sort: AuctionResultSorts
 
     # When true, will only return records for allowed artists.
@@ -640,50 +597,6 @@ type Artist implements Node & Searchable {
     size: Int = 5
   ): [Show]
 
-  # Artworks Elastic Search results
-  filteredArtworks(
-    acquireable: Boolean
-    offerable: Boolean
-    aggregationPartnerCities: [String]
-    aggregations: [ArtworkAggregation]
-    artistID: String
-    artistIDs: [String]
-    atAuction: Boolean
-    attributionClass: [String]
-    color: String
-    dimensionRange: String
-    extraAggregationGeneIDs: [String]
-    includeArtworksByFollowedArtists: Boolean
-    includeMediumFilterInAggregation: Boolean
-    inquireableOnly: Boolean
-    forSale: Boolean
-    geneID: String
-    geneIDs: [String]
-    height: String
-    width: String
-
-    # When true, will only return `marketable` works (not nude or provocative).
-    marketable: Boolean
-
-    # A string from the list of allocations, or * to denote all mediums
-    medium: String
-    period: String
-    periods: [String]
-    majorPeriods: [String]
-    partnerID: ID
-    partnerCities: [String]
-    priceRange: String
-    page: Int
-    saleID: ID
-    size: Int
-    sort: String
-    tagID: String
-    keyword: String
-
-    # When true, will only return exact keyword match
-    keywordMatchExact: Boolean
-  ): FilterArtworks
-
   # A string showing the total number of works and those for sale
   formattedArtworksCount: String
 
@@ -712,7 +625,7 @@ type Artist implements Node & Searchable {
   meta: ArtistMeta
   nationality: String
   name: String
-  partners(
+  partnersConnection(
     representedBy: Boolean
     partnerCategory: [String]
     after: String
@@ -733,19 +646,6 @@ type Artist implements Node & Searchable {
     size: Int
     sort: SaleSorts
   ): [Sale]
-  shows(
-    active: Boolean
-    atAFair: Boolean
-    isReference: Boolean
-
-    # The number of PartnerShows to return
-    size: Int
-    soloShow: Boolean
-    status: String
-    topTier: Boolean
-    visibleToPublic: Boolean
-    sort: ShowSorts
-  ): [Show]
   showsConnection(
     active: Boolean
     atAFair: Boolean
@@ -769,14 +669,13 @@ type Artist implements Node & Searchable {
   statuses: ArtistStatuses
   highlights: ArtistHighlights
   years: String
-  marketingCollections(size: Int): [MarketingCollection]
 }
 
 type ArtistArtworkGrid implements ArtworkContextGrid {
   title: String
   ctaTitle: String
   ctaHref: String
-  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 enum ArtistArtworksFilters {
@@ -861,7 +760,7 @@ type ArtistGroup {
 }
 
 type ArtistHighlights {
-  partners(
+  partnersConnection(
     representedBy: Boolean
     partnerCategory: [String]
     displayOnPartnerProfile: Boolean
@@ -890,7 +789,7 @@ type ArtistMeta {
 
 type ArtistRelatedData {
   genes(after: String, first: Int, before: String, last: Int): GeneConnection
-  artists(
+  artistsConnection(
     excludeArtistsWithoutArtworks: Boolean = true
     minForsaleArtworks: Int
     kind: RelatedArtistsKind
@@ -901,7 +800,7 @@ type ArtistRelatedData {
   ): ArtistConnection
 
   # A list of the current user’s suggested artists, based on a single artist
-  suggested(
+  suggestedConnection(
     # The slug or ID of an artist
     artistID: String
 
@@ -1118,7 +1017,7 @@ enum ArtworkAggregation {
 }
 
 # A connection to a list of items.
-type ArtworkConnection {
+type ArtworkConnection implements ArtworkConnectionInterface {
   # Information to aid in pagination.
   pageInfo: PageInfo!
 
@@ -1128,6 +1027,11 @@ type ArtworkConnection {
   totalCount: Int
 }
 
+interface ArtworkConnectionInterface {
+  pageInfo: PageInfo!
+  edges: [ArtworkEdgeInterface]
+}
+
 union ArtworkContext = Fair | Sale | Show
 
 # A specific grid.
@@ -1135,15 +1039,20 @@ interface ArtworkContextGrid {
   title: String
   ctaTitle: String
   ctaHref: String
-  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 # An edge in a connection.
-type ArtworkEdge {
+type ArtworkEdge implements ArtworkEdgeInterface {
   # The item at the end of the edge
   node: Artwork
 
   # A cursor for use in pagination
+  cursor: String!
+}
+
+interface ArtworkEdgeInterface {
+  node: Artwork
   cursor: String!
 }
 
@@ -1194,7 +1103,6 @@ type ArtworkLayer {
 
   # A type-specific ID.
   internalID: ID!
-  artworks: [Artwork]
 
   # A connection of artworks from a Layer.
   artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
@@ -1314,7 +1222,7 @@ type AuctionArtworkGrid implements ArtworkContextGrid {
   title: String
   ctaTitle: String
   ctaHref: String
-  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 # In centimeters.
@@ -1535,48 +1443,6 @@ type BidIncrementsFormatted {
   display: String
 }
 
-input buyerAcceptOfferInput {
-  # Offer ID
-  offerId: String!
-  clientMutationId: String
-}
-
-type buyerAcceptOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input buyerCounterOfferInput {
-  # The ID of the offer to counter
-  offerId: String!
-
-  # Offer price
-  offerPrice: MoneyInput
-
-  # Offer note
-  note: String
-  clientMutationId: String
-}
-
-type buyerCounterOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input buyerRejectOfferInput {
-  # Offer ID
-  offerId: String!
-
-  # Reason for rejecting offer
-  rejectReason: CancelReasonType
-  clientMutationId: String
-}
-
-type buyerRejectOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 type BuyersPremium {
   # A globally unique ID.
   id: ID!
@@ -1601,219 +1467,11 @@ type BuyersPremium {
   percent: Float
 }
 
-type BuyOrder implements Order {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # Order Mode
-  mode: OrderModeEnum
-
-  # Currency code of this order
-  currencyCode: String
-
-  # State of the order
-  state: String
-
-  # Reason for current state
-  stateReason: String
-
-  # Uniq user-friendly code of the order
-  code: String
-
-  # Order Requested Fulfillment
-  requestedFulfillment: RequestedFulfillment
-
-  # Item total in cents
-  itemsTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  itemsTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Total list price in cents
-  totalListPriceCents: Int
-
-  # A formatted price with various currency formatting options.
-  totalListPrice(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Shipping total in cents
-  shippingTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  shippingTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Tax total in cents
-  taxTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  taxTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Transaction fee in cents
-  transactionFeeCents: Int
-
-  # A formatted price with various currency formatting options.
-  transactionFee(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Commission fee in cents
-  commissionFeeCents: Int
-
-  # A formatted price with various currency formatting options.
-  commissionFee(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Partner commission rate used to calculate commission fee
-  commissionRate: Float
-
-  # Partner commission rate formatted into percentage
-  displayCommissionRate: String
-
-  # Buyer total in cents
-  buyerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  buyerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Seller total in cents
-  sellerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  sellerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # List of order line items
-  lineItems: OrderLineItemConnection
-
-  # Seller of this order
-  seller: OrderParty
-
-  # Buyer of this order
-  buyer: OrderParty
-
-  # Credit card on this order
-  creditCard: CreditCard
-
-  # Whether or not the last attempt to charge the buyer failed
-  lastTransactionFailed: Boolean
-  lastApprovedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  lastSubmittedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  updatedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  stateUpdatedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  stateExpiresAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-
-  # Buyer phone number
-  buyerPhoneNumber: String
-}
-
-enum CancelReasonType {
-  BUYER_REJECTED
-  SELLER_LAPSED
-  SELLER_REJECTED
-  SELLER_REJECTED_OFFER_TOO_LOW
-  SELLER_REJECTED_SHIPPING_UNAVAILABLE
-  SELLER_REJECTED_ARTWORK_UNAVAILABLE
-  SELLER_REJECTED_OTHER
-}
-
 type City {
   slug: String
   name: String
   coordinates: LatLng
-  shows(
+  showsConnection(
     sort: ShowSorts
 
     # Filter shows by chronological event status
@@ -1832,7 +1490,14 @@ type City {
     before: String
     last: Int
   ): ShowConnection
-  fairs(sort: FairSorts, status: EventStatus, after: String, first: Int, before: String, last: Int): FairConnection
+  fairsConnection(
+    sort: FairSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FairConnection
   sponsoredContent: CitySponsoredContent
 }
 
@@ -1840,7 +1505,14 @@ type CitySponsoredContent {
   introText: String
   artGuideUrl: String
   featuredShows: [Show]
-  shows(sort: ShowSorts, status: EventStatus, after: String, first: Int, before: String, last: Int): ShowConnection
+  showsConnection(
+    sort: ShowSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
 }
 
 type Collection implements Node {
@@ -3208,17 +2880,6 @@ type CommerceUser {
   id: String!
 }
 
-input ConfirmPickupInput {
-  # Order ID
-  orderId: String!
-  clientMutationId: String
-}
-
-type ConfirmPickupPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 # A work to be consigned to the user
 type ConsignmentSubmission {
   # An optional type-specific ID.
@@ -3457,45 +3118,6 @@ input CreateGeminiEntryForAssetInput {
 
 type CreateGeminiEntryForAssetPayload {
   asset: GeminiEntry
-  clientMutationId: String
-}
-
-input CreateOfferOrderWithArtworkInput {
-  # BSON ID of artwork
-  artworkId: String!
-
-  # ID of artwork's edition set
-  editionSetId: String
-
-  # quantity of artwork
-  quantity: Int
-
-  # When set to true, we will not reuse existing pending/submitted order.
-  # Otherwise if current user has pending/submitted orders on same artwork/edition
-  # with same quantity, we will return that
-  findActiveOrCreate: Boolean
-  clientMutationId: String
-}
-
-type CreateOfferOrderWithArtworkPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input CreateOrderWithArtworkInput {
-  # BSON ID of artwork
-  artworkId: String!
-
-  # ID of artwork's edition set
-  editionSetId: String
-
-  # quantity of artwork
-  quantity: Int
-  clientMutationId: String
-}
-
-type CreateOrderWithArtworkPayload {
-  orderOrError: OrderOrFailureUnionType
   clientMutationId: String
 }
 
@@ -3764,17 +3386,6 @@ type dimensions {
   cm: String
 }
 
-type EcommerceError {
-  # The error message
-  type: String!
-
-  # The error message
-  code: String!
-
-  # A data object in JSON format providing additional context about the error.
-  data: String
-}
-
 input EditableLocation {
   # First line of an address
   address: String
@@ -3840,6 +3451,57 @@ type EndSalePayload {
   clientMutationId: String
 }
 
+interface EntityWithFilterArtworksConnectionInterface {
+  # A globally unique ID.
+  id: ID!
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+}
+
 enum EventStatus {
   # End date is in the past
   CLOSED
@@ -3874,7 +3536,7 @@ type ExternalPartner {
   name: String
 }
 
-type Fair {
+type Fair implements EntityWithFilterArtworksConnectionInterface {
   # A globally unique ID.
   id: ID!
 
@@ -3885,7 +3547,7 @@ type Fair {
   internalID: ID!
   about: String
   followedContent: FollowedContent
-  artists(
+  artistsConnection(
     # Sorts for artists in a fair
     sort: FairArtistSorts
     after: String
@@ -3957,7 +3619,7 @@ type Fair {
   exhibitorsGroupedByName: [FairExhibitorsGroup]
 
   # Artworks Elastic Search results
-  filteredArtworks(
+  filterArtworksConnection(
     acquireable: Boolean
     offerable: Boolean
     aggregationPartnerCities: [String]
@@ -3998,7 +3660,11 @@ type Fair {
 
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
-  ): FilterArtworks
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
   sponsoredContent: FairSponsoredContent
 }
 
@@ -4110,13 +3776,19 @@ type Feedback {
   message: String!
 }
 
-type FilterArtworks implements Node {
+# A connection to a list of items.
+type FilterArtworksConnection implements Node & ArtworkConnectionInterface {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FilterArtworksEdge]
+
   # The ID of the object.
   id: ID!
 
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
-  artworksConnection(sort: String, after: String, first: Int, before: String, last: Int): ArtworkConnection
   counts: FilterArtworksCounts
 
   # Artwork results.
@@ -4140,6 +3812,15 @@ type FilterArtworksCounts {
   ): FormattedNumber
 }
 
+# An edge in a connection.
+type FilterArtworksEdge implements ArtworkEdgeInterface {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 type FilterPartners {
   aggregations: [PartnersAggregationResults]
   hits: [Partner]
@@ -4157,20 +3838,6 @@ type FilterSaleArtworksCounts {
     format: String
     label: String
   ): FormattedNumber
-}
-
-input FixFailedPaymentInput {
-  # Offer ID
-  offerId: ID!
-
-  # Credit card ID
-  creditCardId: String!
-  clientMutationId: String
-}
-
-type FixFailedPaymentPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
 }
 
 type FollowArtist {
@@ -4238,9 +3905,6 @@ type FollowedArtistsArtworksGroup implements Node {
   # A globally unique ID.
   id: ID!
   href: String
-
-  # List of artworks in this group.
-  artworks: [Artwork]
   artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
   artists: String
   summary: String
@@ -4363,7 +4027,7 @@ type FollowProfilePayload {
 
 type FollowsAndSaves {
   # A list of published artworks by followed artists (grouped by date and artists).
-  bundledArtworksByArtist(
+  bundledArtworksByArtistConnection(
     sort: ArtworkSorts
     forSale: Boolean
     after: String
@@ -4372,8 +4036,19 @@ type FollowsAndSaves {
     last: Int
   ): FollowedArtistsArtworksGroupConnection
 
+  # A Connection of followed artists by current user
+  artistsConnection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+  artworksConnection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    private: Boolean = false
+    sort: CollectionSorts
+  ): SavedArtworksConnection
+
   # A list of the current user’s currently followed shows
-  shows(
+  showsConnection(
     status: EventStatus
 
     # Number of days which will be used to filter upcoming and closing soon shows
@@ -4390,7 +4065,10 @@ type FollowsAndSaves {
   ): FollowedShowConnection
 
   # A list of the current user’s currently followed fair profiles
-  fairs(after: String, first: Int, before: String, last: Int): FollowedFairConnection
+  fairsConnection(after: String, first: Int, before: String, last: Int): FollowedFairConnection
+
+  # A list of the current user’s inquiry requests
+  genesConnection(after: String, first: Int, before: String, last: Int): FollowGeneConnection
 }
 
 input FollowShowInput {
@@ -4418,31 +4096,6 @@ type FormattedDaySchedules {
 # a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
 
-input FulfillmentInputType {
-  # Courier of the fulfiller
-  courier: String!
-
-  # Courier's Tracking ID of this fulfillment
-  trackingId: String
-
-  # Estimated delivery in YY-MM-DD format
-  estimatedDelivery: String
-}
-
-input FulfillOrderAtOnceInput {
-  # ID of the order
-  orderId: String!
-
-  # Fulfillment information of this order
-  fulfillment: FulfillmentInputType!
-  clientMutationId: String
-}
-
-type FulfillOrderAtOncePayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 # An entry from gemini
 type GeminiEntry {
   # The token that represents the gemini entry.
@@ -4459,9 +4112,10 @@ type Gene implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   cached: Int
-  artists: [Artist]
   artistsConnection(after: String, first: Int, before: String, last: Int): ArtistConnection
-  artworksConnection(
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
     acquireable: Boolean
     offerable: Boolean
     aggregationPartnerCities: [String]
@@ -4506,53 +4160,9 @@ type Gene implements Node {
     first: Int
     before: String
     last: Int
-  ): GeneArtworksConnection
+  ): FilterArtworksConnection
   description: String
   displayName: String
-
-  # Artworks Elastic Search results
-  filteredArtworks(
-    acquireable: Boolean
-    offerable: Boolean
-    aggregationPartnerCities: [String]
-    aggregations: [ArtworkAggregation]
-    artistID: String
-    artistIDs: [String]
-    atAuction: Boolean
-    attributionClass: [String]
-    color: String
-    dimensionRange: String
-    extraAggregationGeneIDs: [String]
-    includeArtworksByFollowedArtists: Boolean
-    includeMediumFilterInAggregation: Boolean
-    inquireableOnly: Boolean
-    forSale: Boolean
-    geneID: String
-    geneIDs: [String]
-    height: String
-    width: String
-
-    # When true, will only return `marketable` works (not nude or provocative).
-    marketable: Boolean
-
-    # A string from the list of allocations, or * to denote all mediums
-    medium: String
-    period: String
-    periods: [String]
-    majorPeriods: [String]
-    partnerID: ID
-    partnerCities: [String]
-    priceRange: String
-    page: Int
-    saleID: ID
-    size: Int
-    sort: String
-    tagID: String
-    keyword: String
-
-    # When true, will only return exact keyword match
-    keywordMatchExact: Boolean
-  ): FilterArtworks
   href: String
   image: Image
   isPublished: Boolean
@@ -4570,28 +4180,6 @@ type Gene implements Node {
     last: Int
   ): GeneConnection
   trendingArtists(sample: Int): [Artist]
-}
-
-# A connection to a list of items.
-type GeneArtworksConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [GeneArtworksEdge]
-
-  # Returns aggregation counts for the given filter query.
-  aggregations: [ArtworksAggregationResults]
-  counts: FilterArtworksCounts
-}
-
-# An edge in a connection.
-type GeneArtworksEdge {
-  # The item at the end of the edge
-  node: Artwork
-
-  # A cursor for use in pagination
-  cursor: String!
 }
 
 # A connection to a list of items.
@@ -5023,42 +4611,6 @@ type MarketingCollection {
   # CollectionGroups of this collection
   linkedCollections: [MarketingCollectionGroup!]!
   relatedCollections: [MarketingCollection!]!
-  artworks(
-    acquireable: Boolean
-    offerable: Boolean
-    aggregation_partner_cities: [String]
-    aggregations: [ArtworkAggregation]
-    artist_id: String
-    artist_ids: [String]
-    at_auction: Boolean
-    attribution_class: [String]
-    color: String
-    dimension_range: String
-    extra_aggregation_gene_ids: [String]
-    include_artworks_by_followed_artists: Boolean
-    include_medium_filter_in_aggregation: Boolean
-    inquireable_only: Boolean
-    for_sale: Boolean
-    gene_id: String
-    gene_ids: [String]
-    height: String
-    width: String
-
-    # A string from the list of allocations, or * to denote all mediums
-    medium: String
-    period: String
-    periods: [String]
-    major_periods: [String]
-    partner_id: ID
-    partner_cities: [String]
-    price_range: String
-    page: Int
-    sale_id: ID
-    size: Int
-    sort: String
-    tag_id: String
-    keyword: String
-  ): FilterArtworks
 }
 
 type MarketingCollectionCategory {
@@ -5129,7 +4681,7 @@ type Me implements Node {
   internalID: ID!
 
   # A list of the current user’s consignment submissions
-  consignmentSubmissions(
+  consignmentSubmissionsConnection(
     after: String
     first: Int
     before: String
@@ -5174,7 +4726,7 @@ type Me implements Node {
   ): Conversation
 
   # Conversations, usually between a user and partner.
-  conversations(after: String, first: Int, before: String, last: Int): ConversationConnection
+  conversationsConnection(after: String, first: Int, before: String, last: Int): ConversationConnection
   createdAt(
     format: String
 
@@ -5185,15 +4737,6 @@ type Me implements Node {
   # A list of the current user’s credit cards
   creditCards(after: String, first: Int, before: String, last: Int): CreditCardConnection
   email: String
-
-  # A list of the current user’s artist follows
-  followArtists(page: Int, size: Int): FollowArtists
-
-  # A Connection of followed artists by current user
-  followedArtistsConnection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
-
-  # A list of the current user’s inquiry requests
-  followedGenes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
   followsAndSaves: FollowsAndSaves
   hasCreditCards: Boolean
   hasQualifiedCreditCards: Boolean
@@ -5231,7 +4774,7 @@ type Me implements Node {
   recentlyViewedArtworkIds: [String]!
 
   # A list of the current user’s recently viewed artworks.
-  recentlyViewedArtworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  recentlyViewedArtworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
   saleRegistrations(
     # Limit by auction.
     isAuction: Boolean = true
@@ -5250,7 +4793,6 @@ type Me implements Node {
     size: Int
     sort: SaleSorts
   ): [SaleRegistration]
-  savedArtworks: Collection
 
   # A list of the current user’s suggested artists, based on a single artist
   suggestedArtists(
@@ -5344,14 +4886,6 @@ type Metaphysics {
   environment: String!
 }
 
-input MoneyInput {
-  # amount in dollars or major unit
-  amount: Float!
-
-  # The ISO-4217 alphabetic currency code, as per https://en.wikipedia.org/wiki/ISO_4217
-  currencyCode: String!
-}
-
 type Mutation {
   # Create a bidder
   createBidder(input: CreateBidderInput!): CreateBidderPayload
@@ -5414,63 +4948,6 @@ type Mutation {
 
   # Attach an gemini asset to a consignment submission
   addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
-
-  # Creates an order with an artwork
-  ecommerceCreateOrderWithArtwork(input: CreateOrderWithArtworkInput!): CreateOrderWithArtworkPayload
-
-  # Creates an order with an artwork
-  ecommerceCreateOfferOrderWithArtwork(input: CreateOfferOrderWithArtworkInput!): CreateOfferOrderWithArtworkPayload
-
-  # Sets shipping information for an order
-  ecommerceSetOrderShipping(input: SetOrderShippingInput!): SetOrderShippingPayload
-
-  # Sets payment information on an order
-  ecommerceSetOrderPayment(input: SetOrderPaymentInput!): SetOrderPaymentPayload
-
-  # Approves an order with payment
-  ecommerceApproveOrder(input: ApproveOrderInput!): ApproveOrderPayload
-
-  # Buyer accepts a submitted offer from seller
-  ecommerceBuyerAcceptOffer(input: buyerAcceptOfferInput!): buyerAcceptOfferPayload
-
-  # Approves an order with payment
-  ecommerceSellerAcceptOffer(input: sellerAcceptOfferInput!): sellerAcceptOfferPayload
-
-  # Buyer counters sellers offer
-  ecommerceBuyerCounterOffer(input: buyerCounterOfferInput!): buyerCounterOfferPayload
-
-  # Submit pending offer
-  ecommerceSubmitPendingOffer(input: submitPendingOfferInput!): submitPendingOfferPayload
-
-  # Seller counters buyers offer
-  ecommerceSellerCounterOffer(input: sellerCounterOfferInput!): sellerCounterOfferPayload
-
-  # Buyer rejects a submitted offer from seller
-  ecommerceBuyerRejectOffer(input: buyerRejectOfferInput!): buyerRejectOfferPayload
-
-  # Rejects an offer
-  ecommerceSellerRejectOffer(input: sellerRejectOfferInput!): sellerRejectOfferPayload
-
-  # Confirms pickup for an ecommerce order
-  ecommerceConfirmPickup(input: ConfirmPickupInput!): ConfirmPickupPayload
-
-  # Fulfills an Order with one fulfillment by setting this fulfillment to all line items of this order
-  ecommerceFulfillOrderAtOnce(input: FulfillOrderAtOnceInput!): FulfillOrderAtOncePayload
-
-  # Rejects an order
-  ecommerceRejectOrder(input: RejectOrderInput!): RejectOrderPayload
-
-  # Submits an order
-  ecommerceSubmitOrder(input: SubmitOrderInput!): SubmitOrderPayload
-
-  # Adds an offer to a pending order
-  ecommerceAddInitialOfferToOrder(input: AddInitialOfferToOrderInput!): AddInitialOfferToOrderPayload
-
-  # Submits an order with an offer
-  ecommerceSubmitOrderWithOffer(input: SubmitOrderWithOfferInput!): SubmitOrderWithOfferPayload
-
-  # Fix the failed payment on an offer order
-  ecommerceFixFailedPayment(input: FixFailedPaymentInput!): FixFailedPaymentPayload
   recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   commerceAddInitialOfferToOrder(input: CommerceAddInitialOfferToOrderInput!): CommerceAddInitialOfferToOrderPayload
   commerceApproveOrder(input: CommerceApproveOrderInput!): CommerceApproveOrderPayload
@@ -5510,334 +4987,6 @@ interface Node {
   id: ID!
 }
 
-type Offer {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-
-  # Id of the user who created the order
-  creatorId: String
-
-  # Creator of this order
-  creator: User
-
-  # The type of the party who made the offer
-  from: OrderParty
-
-  # the order participant who created the offer
-  fromParticipant: OrderParticipantEnum
-
-  # Offer amount in cents
-  amountCents: Int
-
-  # A formatted price with various currency formatting options.
-  amount(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Shipping total based on this offer in cents
-  shippingTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  shippingTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Tax total based on this offer in cents
-  taxTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  taxTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # The order on which the offer was made
-  order: Order
-
-  # Total of amount, shipping and tax in cents
-  buyerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  buyerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # The order on which the offer was made
-  respondsTo: Offer
-  submittedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-
-  # Offer note
-  note: String
-
-  # Currency code of this order
-  currencyCode: String
-}
-
-# A connection to a list of items.
-type OfferConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [OfferEdge]
-}
-
-# An edge in a connection.
-type OfferEdge {
-  # The item at the end of the edge
-  node: Offer
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-type OfferOrder implements Order {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # Order Mode
-  mode: OrderModeEnum
-
-  # Currency code of this order
-  currencyCode: String
-
-  # State of the order
-  state: String
-
-  # Reason for current state
-  stateReason: String
-
-  # Uniq user-friendly code of the order
-  code: String
-
-  # Order Requested Fulfillment
-  requestedFulfillment: RequestedFulfillment
-
-  # Item total in cents
-  itemsTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  itemsTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Total list price in cents
-  totalListPriceCents: Int
-
-  # A formatted price with various currency formatting options.
-  totalListPrice(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Shipping total in cents
-  shippingTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  shippingTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Tax total in cents
-  taxTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  taxTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Transaction fee in cents
-  transactionFeeCents: Int
-
-  # A formatted price with various currency formatting options.
-  transactionFee(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Commission fee in cents
-  commissionFeeCents: Int
-
-  # A formatted price with various currency formatting options.
-  commissionFee(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Partner commission rate used to calculate commission fee
-  commissionRate: Float
-
-  # Partner commission rate formatted into percentage
-  displayCommissionRate: String
-
-  # Buyer total in cents
-  buyerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  buyerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Seller total in cents
-  sellerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  sellerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # List of order line items
-  lineItems: OrderLineItemConnection
-
-  # Seller of this order
-  seller: OrderParty
-
-  # Buyer of this order
-  buyer: OrderParty
-
-  # Credit card on this order
-  creditCard: CreditCard
-
-  # Whether or not the last attempt to charge the buyer failed
-  lastTransactionFailed: Boolean
-  lastApprovedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  lastSubmittedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  updatedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  stateUpdatedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  stateExpiresAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-
-  # Buyer phone number
-  buyerPhoneNumber: String
-
-  # Current User's latest offer
-  myLastOffer: Offer
-
-  # Waiting for one participants response
-  awaitingResponseFrom: OrderParticipantEnum
-
-  # Latest offer
-  lastOffer: Offer
-
-  # List of submitted offers made on this order so far
-  offers: OfferConnection
-}
-
 type OpeningHoursArray {
   schedules: [FormattedDaySchedules]
 }
@@ -5847,225 +4996,6 @@ type OpeningHoursText {
 }
 
 union OpeningHoursUnion = OpeningHoursArray | OpeningHoursText
-
-interface Order {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # Order Mode
-  mode: OrderModeEnum
-
-  # Currency code of this order
-  currencyCode: String
-
-  # State of the order
-  state: String
-
-  # Reason for current state
-  stateReason: String
-
-  # Uniq user-friendly code of the order
-  code: String
-
-  # Order Requested Fulfillment
-  requestedFulfillment: RequestedFulfillment
-
-  # Item total in cents
-  itemsTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  itemsTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Total list price in cents
-  totalListPriceCents: Int
-
-  # A formatted price with various currency formatting options.
-  totalListPrice(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Shipping total in cents
-  shippingTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  shippingTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Tax total in cents
-  taxTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  taxTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Transaction fee in cents
-  transactionFeeCents: Int
-
-  # A formatted price with various currency formatting options.
-  transactionFee(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Commission fee in cents
-  commissionFeeCents: Int
-
-  # A formatted price with various currency formatting options.
-  commissionFee(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Partner commission rate used to calculate commission fee
-  commissionRate: Float
-
-  # Partner commission rate formatted into percentage
-  displayCommissionRate: String
-
-  # Buyer total in cents
-  buyerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  buyerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Seller total in cents
-  sellerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  sellerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # List of order line items
-  lineItems: OrderLineItemConnection
-
-  # Seller of this order
-  seller: OrderParty
-
-  # Buyer of this order
-  buyer: OrderParty
-
-  # Credit card on this order
-  creditCard: CreditCard
-
-  # Whether or not the last attempt to charge the buyer failed
-  lastTransactionFailed: Boolean
-  lastApprovedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  lastSubmittedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  updatedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  stateUpdatedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  stateExpiresAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-
-  # Buyer phone number
-  buyerPhoneNumber: String
-}
-
-# A connection to a list of items.
-type OrderConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [OrderEdge]
-  totalCount: Int
-  totalPages: Int
-  pageCursors: PageCursors
-}
-
-# An edge in a connection.
-type OrderEdge {
-  # The item at the end of the edge
-  node: Order
-
-  # A cursor for use in pagination
-  cursor: String!
-}
 
 type OrderedSet {
   # A globally unique ID.
@@ -6083,174 +5013,7 @@ type OrderedSet {
 
 union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene
 
-type OrderFulfillment {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # Fulfillment Courier
-  courier: String
-
-  # Courier's tracking id
-  trackingId: String
-  estimatedDelivery(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-}
-
-# A connection to a list of items.
-type OrderFulfillmentConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [OrderFulfillmentEdge]
-}
-
-# An edge in a connection.
-type OrderFulfillmentEdge {
-  # The item at the end of the edge
-  node: OrderFulfillment
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-enum OrderFulfillmentType {
-  SHIP
-  PICKUP
-}
-
-type OrderLineItem {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # Artwork that is being ordered
-  artwork: Artwork
-
-  # Artwork version that is being ordered
-  artworkVersion: ArtworkVersion
-
-  # ID of the selected Edition set from the artwork
-  editionSetId: String
-
-  # A formatted price with various currency formatting options.
-  price(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # Unit list price in cents
-  listPriceCents: Int
-
-  # A formatted price with various currency formatting options.
-  listPrice(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-  updatedAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
-    timezone: String
-  ): String
-
-  # Quantity of items in this line item
-  quantity: Int
-
-  # List of order line items
-  fulfillments: OrderFulfillmentConnection
-}
-
-# A connection to a list of items.
-type OrderLineItemConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [OrderLineItemEdge]
-}
-
-# An edge in a connection.
-type OrderLineItemEdge {
-  # The item at the end of the edge
-  node: OrderLineItem
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-enum OrderModeEnum {
-  # Order initiated by Buy
-  BUY
-
-  # Order initiated by Offer
-  OFFER
-}
-
-union OrderOrFailureUnionType = OrderWithMutationSuccess | OrderWithMutationFailure
-
-enum OrderParticipantEnum {
-  # Participant on the buyer side
-  BUYER
-
-  # Participant on the seller side
-  SELLER
-}
-
 union OrderParty = Partner | User
-
-enum OrdersSortMethodType {
-  # Sort by the timestamp the order was last updated in ascending order
-  UPDATED_AT_ASC
-
-  # Sort by the timestamp the order was last updated in descending order
-  UPDATED_AT_DESC
-
-  # Sort by the timestamp the state of order was last updated in ascending order
-  STATE_UPDATED_AT_ASC
-
-  # Sort by the timestamp the state of order was last updated in descending order
-  STATE_UPDATED_AT_DESC
-
-  # Sort by the timestamp the state of the order expires at in ascending order
-  STATE_EXPIRES_AT_ASC
-
-  # Sort by the timestamp the state of the order expires at in a descending order
-  STATE_EXPIRES_AT_DESC
-}
-
-type OrderWithMutationFailure {
-  error: EcommerceError
-}
-
-type OrderWithMutationSuccess {
-  order: Order
-}
 
 type organizer {
   # A globally unique ID.
@@ -6309,7 +5072,6 @@ type Partner implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   cached: Int
-  artworks(forSale: Boolean, sort: ArtworkSorts, exclude: [String], size: Int): [Artwork]
 
   # A connection of artworks from a Partner.
   artworksConnection(
@@ -6406,7 +5168,7 @@ type PartnerArtworkGrid implements ArtworkContextGrid {
   title: String
   ctaTitle: String
   ctaHref: String
-  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 type PartnerCategory {
@@ -6558,11 +5320,6 @@ enum PartnersSortType {
 }
 
 union PartnerTypes = Partner | ExternalPartner
-
-type Pickup {
-  # It will always be PICKUP
-  fulfillmentType: String
-}
 
 type PopularArtists {
   artists: [Artist]
@@ -6748,7 +5505,7 @@ type Query {
   ): FilterPartners
 
   # Artworks Elastic Search results
-  filterArtworks(
+  filterArtworksConnection(
     acquireable: Boolean
     offerable: Boolean
     aggregationPartnerCities: [String]
@@ -6789,7 +5546,11 @@ type Query {
 
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
-  ): FilterArtworks
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -6941,7 +5702,7 @@ type Query {
   ): SaleArtwork
 
   # Sale Artworks search results
-  saleArtworks(
+  saleArtworksConnection(
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     includeArtworksByFollowedArtists: Boolean
@@ -6980,7 +5741,7 @@ type Query {
   ): [Sale]
 
   # Global search
-  search(
+  searchConnection(
     # Search query to perform. Required.
     query: String!
 
@@ -7052,24 +5813,6 @@ type Query {
     # Number of results to return
     size: Int
   ): PopularArtists
-
-  # Returns a single Order
-  ecommerceOrder(id: String!): Order
-
-  # Returns list of orders
-  ecommerceOrders(
-    buyerId: String
-    buyerType: String
-    sellerId: String
-    sellerType: String
-    mode: OrderModeEnum
-    state: String
-    sort: OrdersSortMethodType
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): OrderConnection
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
@@ -7166,17 +5909,6 @@ type RecordArtworkViewPayload {
   clientMutationId: String
 }
 
-input RejectOrderInput {
-  # Order ID
-  orderId: String!
-  clientMutationId: String
-}
-
-type RejectOrderPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 enum RelatedArtistsKind {
   MAIN
   CONTEMPORARY
@@ -7186,7 +5918,7 @@ type RelatedArtworkGrid implements ArtworkContextGrid {
   title: String
   ctaTitle: String
   ctaHref: String
-  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 input RequestCredentialsForAssetUploadInput {
@@ -7202,8 +5934,6 @@ type RequestCredentialsForAssetUploadPayload {
   asset: Credentials
   clientMutationId: String
 }
-
-union RequestedFulfillment = Ship | Pickup
 
 type ResizedImageUrl {
   factor: Float
@@ -7251,14 +5981,6 @@ type Sale implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   cached: Int
-  artworks(
-    page: Int = 1
-    size: Int = 25
-    all: Boolean = false
-
-    # List of artwork IDs to exclude from the response (irrespective of size)
-    exclude: [String]
-  ): [Artwork]
 
   # Returns a connection of artworks for a sale.
   artworksConnection(
@@ -7337,7 +6059,6 @@ type Sale implements Node {
   # A registration for this sale or null
   registrationStatus: Bidder
   requireBidderApproval: Boolean
-  saleArtworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   saleArtworksConnection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   saleType: String
   startAt(
@@ -7629,6 +6350,30 @@ type SaveArtworkPayload {
   clientMutationId: String
 }
 
+# A connection to a list of items.
+type SavedArtworksConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SavedArtworksEdge]
+  pageCursors: PageCursors
+  totalCount: Int
+  description: String!
+  default: Boolean!
+  name: String!
+  private: Boolean!
+}
+
+# An edge in a connection.
+type SavedArtworksEdge {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 # An object that may be searched for
 interface Searchable {
   displayLabel: String
@@ -7722,48 +6467,6 @@ interface Sellable {
   saleMessage: String
 }
 
-input sellerAcceptOfferInput {
-  # Offer ID
-  offerId: String!
-  clientMutationId: String
-}
-
-type sellerAcceptOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input sellerCounterOfferInput {
-  # The ID of the offer to counter
-  offerId: String!
-
-  # Offer price
-  offerPrice: MoneyInput
-
-  # Offer note
-  note: String
-  clientMutationId: String
-}
-
-type sellerCounterOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input sellerRejectOfferInput {
-  # Offer ID
-  offerId: String!
-
-  # Reason for rejecting offer
-  rejectReason: CancelReasonType
-  clientMutationId: String
-}
-
-type sellerRejectOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 input SendConversationMessageMutationInput {
   # The id of the conversation to be updated
   id: String!
@@ -7818,90 +6521,7 @@ type Services {
   metaphysics: Metaphysics!
 }
 
-input SetOrderPaymentInput {
-  # Order ID
-  orderId: String!
-
-  # Gravity Credit Card Id
-  creditCardId: String!
-  clientMutationId: String
-}
-
-type SetOrderPaymentPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input SetOrderShippingInput {
-  # Id of the Order
-  orderId: ID
-
-  # Fulfillment Type of this Order
-  fulfillmentType: OrderFulfillmentType
-
-  # Shipping information
-  shipping: ShippingInputField
-  clientMutationId: String
-}
-
-type SetOrderShippingPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-type Ship {
-  # Name for the shipping information
-  name: String
-
-  # Shipping address line 1
-  addressLine1: String
-
-  # Shipping address line 2
-  addressLine2: String
-
-  # Shipping city
-  city: String
-
-  # Shipping region
-  region: String
-
-  # Shipping country
-  country: String!
-
-  # Shipping postal code
-  postalCode: String
-
-  # Shipping phone number
-  phoneNumber: String
-}
-
-input ShippingInputField {
-  # Name for the shipping information
-  name: String
-
-  # Shipping address line 1
-  addressLine1: String
-
-  # Shipping address line 2
-  addressLine2: String
-
-  # Shipping city
-  city: String
-
-  # Shipping region
-  region: String
-
-  # Shipping country
-  country: String
-
-  # Shipping postal code
-  postalCode: String
-
-  # Shipping phone number
-  phoneNumber: String
-}
-
-type Show implements Node {
+type Show implements Node & EntityWithFilterArtworksConnectionInterface {
   # A globally unique ID.
   id: ID!
 
@@ -7961,7 +6581,7 @@ type Show implements Node {
   fair: Fair
 
   # Artworks Elastic Search results
-  filteredArtworks(
+  filterArtworksConnection(
     acquireable: Boolean
     offerable: Boolean
     aggregationPartnerCities: [String]
@@ -8002,7 +6622,11 @@ type Show implements Node {
 
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
-  ): FilterArtworks
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
 
   # A path to the show on Artsy
   href: String
@@ -8051,7 +6675,7 @@ type Show implements Node {
   name: String
 
   # Shows that are near (~75km) from this show
-  nearbyShows(
+  nearbyShowsConnection(
     sort: ShowSorts
 
     # By default show only current shows
@@ -8098,14 +6722,14 @@ type Show implements Node {
   type: String
 
   # A Connection of followed artists by current user for this show
-  followedArtists(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
+  followedArtistsConnection(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
 }
 
 type ShowArtworkGrid implements ArtworkContextGrid {
   title: String
   ctaTitle: String
   ctaHref: String
-  artworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
 }
 
 # A connection to a list of items.
@@ -8250,39 +6874,6 @@ enum SubmissionStateAggregation {
   REJECTED
 }
 
-input SubmitOrderInput {
-  # Order ID
-  orderId: String!
-  clientMutationId: String
-}
-
-type SubmitOrderPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input SubmitOrderWithOfferInput {
-  # Offer ID
-  offerId: String!
-  clientMutationId: String
-}
-
-type SubmitOrderWithOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
-input submitPendingOfferInput {
-  # The ID of the pending offer you want to submit
-  offerId: String!
-  clientMutationId: String
-}
-
-type submitPendingOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 type System {
   # Gravity system time, necessary for synchronizing device clocks.
   time: SystemTime
@@ -8318,50 +6909,6 @@ type Tag implements Node {
   href: String
   image: Image
   count: Int
-
-  # Artworks Elastic Search results
-  filteredArtworks(
-    acquireable: Boolean
-    offerable: Boolean
-    aggregationPartnerCities: [String]
-    aggregations: [ArtworkAggregation]
-    artistID: String
-    artistIDs: [String]
-    atAuction: Boolean
-    attributionClass: [String]
-    color: String
-    dimensionRange: String
-    extraAggregationGeneIDs: [String]
-    includeArtworksByFollowedArtists: Boolean
-    includeMediumFilterInAggregation: Boolean
-    inquireableOnly: Boolean
-    forSale: Boolean
-    geneID: String
-    geneIDs: [String]
-    height: String
-    width: String
-
-    # When true, will only return `marketable` works (not nude or provocative).
-    marketable: Boolean
-
-    # A string from the list of allocations, or * to denote all mediums
-    medium: String
-    period: String
-    periods: [String]
-    majorPeriods: [String]
-    partnerID: ID
-    partnerCities: [String]
-    priceRange: String
-    page: Int
-    saleID: ID
-    size: Int
-    sort: String
-    tagID: String
-    keyword: String
-
-    # When true, will only return exact keyword match
-    keywordMatchExact: Boolean
-  ): FilterArtworks
 }
 
 type TrendingArtists {
@@ -8723,7 +7270,7 @@ type Viewer {
   ): FilterPartners
 
   # Artworks Elastic Search results
-  filterArtworks(
+  filterArtworksConnection(
     acquireable: Boolean
     offerable: Boolean
     aggregationPartnerCities: [String]
@@ -8764,7 +7311,11 @@ type Viewer {
 
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
-  ): FilterArtworks
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -8916,7 +7467,7 @@ type Viewer {
   ): SaleArtwork
 
   # Sale Artworks search results
-  saleArtworks(
+  saleArtworksConnection(
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     includeArtworksByFollowedArtists: Boolean
@@ -8955,7 +7506,7 @@ type Viewer {
   ): [Sale]
 
   # Global search
-  search(
+  searchConnection(
     # Search query to perform. Required.
     query: String!
 

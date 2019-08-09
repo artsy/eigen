@@ -28,7 +28,7 @@ fragment ShowArtworksPreview_show on Show {
   counts {
     artworks
   }
-  artworks_connection: artworksConnection(first: 6) {
+  artworks: artworksConnection(first: 6) {
     edges {
       node {
         ...GenericGrid_artworks
@@ -173,7 +173,7 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "artworks_connection",
+            "alias": "artworks",
             "name": "artworksConnection",
             "storageKey": "artworksConnection(first:6)",
             "args": [
@@ -415,7 +415,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksPreviewTestsQuery",
-    "id": "298dec237956f45a0eb8f0b1aca4b4d0",
+    "id": "264f7bdab64c1a3472de8bf33b0fd698",
     "text": null,
     "metadata": {}
   }

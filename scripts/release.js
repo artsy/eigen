@@ -70,7 +70,6 @@ const changelog = fs.readFileSync("CHANGELOG.md", "utf8")
 const newCHANGELOG = changelog.replace(
   "### Master",
   `### Master
-
 ### ${JSON.parse(fs.readFileSync("package.json", "utf8")).version}
 `
 )

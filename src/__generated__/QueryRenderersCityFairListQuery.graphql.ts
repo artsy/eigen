@@ -28,7 +28,7 @@ query QueryRenderersCityFairListQuery(
 
 fragment CityFairList_city on City {
   slug
-  fairs(first: 20, after: "", status: CURRENT, sort: START_AT_ASC) {
+  fairs: fairsConnection(first: 20, after: "", status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
         internalID
@@ -186,9 +186,9 @@ return {
           (v2/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "fairs",
-            "storageKey": "fairs(after:\"\",first:20,sort:\"START_AT_ASC\",status:\"CURRENT\")",
+            "alias": "fairs",
+            "name": "fairsConnection",
+            "storageKey": "fairsConnection(after:\"\",first:20,sort:\"START_AT_ASC\",status:\"CURRENT\")",
             "args": (v3/*: any*/),
             "concreteType": "FairConnection",
             "plural": false,
@@ -429,8 +429,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": null,
-            "name": "fairs",
+            "alias": "fairs",
+            "name": "fairsConnection",
             "args": (v3/*: any*/),
             "handle": "connection",
             "key": "CityFairList_fairs",
@@ -446,7 +446,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCityFairListQuery",
-    "id": "47922dfed1f3fb3d1a0052eb63b07c25",
+    "id": "7666b9950428a8696037134e848d383d",
     "text": null,
     "metadata": {}
   }

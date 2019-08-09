@@ -42,7 +42,7 @@ export type FairDetail_fair = {
             readonly node: {
                 readonly slug: string;
                 readonly internalID: string;
-                readonly artworks_connection: {
+                readonly artworks: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
                             readonly slug: string;
@@ -309,7 +309,7 @@ return {
                 (v1/*: any*/),
                 {
                   "kind": "LinkedField",
-                  "alias": "artworks_connection",
+                  "alias": "artworks",
                   "name": "artworksConnection",
                   "storageKey": "artworksConnection(first:4)",
                   "args": [
@@ -373,5 +373,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd1bd918011ad10b6dc1c6976027a23f3';
+(node as any).hash = 'a7053c6bb6bbbeae6c79922e0984a2c2';
 export default node;

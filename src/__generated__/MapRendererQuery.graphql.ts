@@ -76,11 +76,11 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           }
         }
       }
-      shows(first: 1, sort: START_AT_ASC) {
+      shows: showsConnection(first: 1, sort: START_AT_ASC) {
         totalCount
       }
     }
-    upcomingShows: shows(includeStubShows: true, status: UPCOMING, dayThreshold: 14, first: $maxInt, sort: START_AT_ASC) {
+    upcomingShows: showsConnection(includeStubShows: true, status: UPCOMING, dayThreshold: 14, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
           slug
@@ -127,7 +127,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         }
       }
     }
-    shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
+    shows: showsConnection(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
       edges {
         node {
           slug
@@ -174,9 +174,10 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         }
       }
     }
-    fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
+    fairs: fairsConnection(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
       edges {
         node {
+          id
           slug
           name
           exhibition_period: exhibitionPeriod
@@ -209,7 +210,6 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           }
           start_at: startAt
           end_at: endAt
-          id
         }
       }
     }
@@ -631,9 +631,9 @@ return {
                   },
                   {
                     "kind": "LinkedField",
-                    "alias": null,
-                    "name": "shows",
-                    "storageKey": "shows(first:1,sort:\"START_AT_ASC\")",
+                    "alias": "shows",
+                    "name": "showsConnection",
+                    "storageKey": "showsConnection(first:1,sort:\"START_AT_ASC\")",
                     "args": [
                       {
                         "kind": "Literal",
@@ -659,7 +659,7 @@ return {
               {
                 "kind": "LinkedField",
                 "alias": "upcomingShows",
-                "name": "shows",
+                "name": "showsConnection",
                 "storageKey": null,
                 "args": [
                   {
@@ -682,8 +682,8 @@ return {
               },
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "shows",
+                "alias": "shows",
+                "name": "showsConnection",
                 "storageKey": null,
                 "args": [
                   (v19/*: any*/),
@@ -705,8 +705,8 @@ return {
               },
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "fairs",
+                "alias": "fairs",
+                "name": "fairsConnection",
                 "storageKey": null,
                 "args": [
                   (v19/*: any*/),
@@ -738,6 +738,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
+                          (v5/*: any*/),
                           (v2/*: any*/),
                           (v1/*: any*/),
                           (v10/*: any*/),
@@ -841,8 +842,7 @@ return {
                             ]
                           },
                           (v15/*: any*/),
-                          (v16/*: any*/),
-                          (v5/*: any*/)
+                          (v16/*: any*/)
                         ]
                       }
                     ]
@@ -858,7 +858,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MapRendererQuery",
-    "id": "bebd00987187a8cecce02099bcee017b",
+    "id": "ace9e3fc564a62b45627ec2ea2bbe2e1",
     "text": null,
     "metadata": {}
   }

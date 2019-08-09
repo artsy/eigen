@@ -53,7 +53,7 @@ export class Categories extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows: any[] = this.props.me.followed_genes.edges.map(edge => edge.node.gene)
+    const rows: any[] = this.props.me.followsAndSaves.genes.edges.map(edge => edge.node.gene)
 
     if (rows.length === 0) {
       return (
@@ -86,20 +86,22 @@ export default createPaginationContainer(
     me: graphql`
       fragment Categories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        followed_genes: followedGenes(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
-          edges {
-            node {
-              gene {
-                slug
-                id
-                name
-                href
-                image {
-                  url
+        followsAndSaves {
+          genes: genesConnection(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
+            edges {
+              node {
+                gene {
+                  slug
+                  id
+                  name
+                  href
+                  image {
+                    url
+                  }
                 }
               }
             }
@@ -111,7 +113,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.followed_genes
+      return props.me && props.me.followsAndSaves.genes
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

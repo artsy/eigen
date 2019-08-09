@@ -3,7 +3,7 @@ import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import _ from "lodash"
 import React from "react"
-import { Text, View } from "react-native"
+import { Linking, Text, View } from "react-native"
 import SimpleMarkdown from "simple-markdown"
 
 // Rules for rendering parsed markdown. Currently only handles links and text. Add rules similar to
@@ -19,7 +19,17 @@ export function defaultRules(modal: boolean = false) {
         state.withinText = true
         let element
         const openUrl = url => {
-          if (modal) {
+          if (node.target.startsWith("mailto:")) {
+            Linking.canOpenURL(url)
+              .then(supported => {
+                if (!supported) {
+                  console.log("Unable to handle URL: " + url)
+                } else {
+                  return Linking.openURL(url)
+                }
+              })
+              .catch(err => console.error("An error occurred", err))
+          } else if (modal) {
             SwitchBoard.presentModalViewController(element, url)
           } else {
             SwitchBoard.presentNavigationViewController(element, url)

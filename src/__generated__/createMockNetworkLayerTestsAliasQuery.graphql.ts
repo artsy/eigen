@@ -4,12 +4,20 @@ import { ConcreteRequest } from "relay-runtime";
 export type createMockNetworkLayerTestsAliasQueryVariables = {};
 export type createMockNetworkLayerTestsAliasQueryResponse = {
     readonly artist: {
-        readonly forSaleArtworks: ReadonlyArray<{
-            readonly id: string;
-        } | null> | null;
-        readonly notForSaleArtworks: ReadonlyArray<{
-            readonly id: string;
-        } | null> | null;
+        readonly forSaleArtworks: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly id: string;
+                } | null;
+            } | null> | null;
+        } | null;
+        readonly notForSaleArtworks: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly id: string;
+                } | null;
+            } | null> | null;
+        } | null;
     } | null;
 };
 export type createMockNetworkLayerTestsAliasQuery = {
@@ -22,11 +30,19 @@ export type createMockNetworkLayerTestsAliasQuery = {
 /*
 query createMockNetworkLayerTestsAliasQuery {
   artist(id: "banksy") {
-    forSaleArtworks: artworks(filter: IS_FOR_SALE) {
-      id
+    forSaleArtworks: artworksConnection(filter: IS_FOR_SALE) {
+      edges {
+        node {
+          id
+        }
+      }
     }
-    notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {
-      id
+    notForSaleArtworks: artworksConnection(filter: IS_NOT_FOR_SALE) {
+      edges {
+        node {
+          id
+        }
+      }
     }
     id
   }
@@ -49,13 +65,35 @@ v1 = {
   "storageKey": null
 },
 v2 = [
-  (v1/*: any*/)
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ArtworkEdge",
+    "plural": true,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Artwork",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/)
+        ]
+      }
+    ]
+  }
 ],
 v3 = {
   "kind": "LinkedField",
   "alias": "forSaleArtworks",
-  "name": "artworks",
-  "storageKey": "artworks(filter:\"IS_FOR_SALE\")",
+  "name": "artworksConnection",
+  "storageKey": "artworksConnection(filter:\"IS_FOR_SALE\")",
   "args": [
     {
       "kind": "Literal",
@@ -63,15 +101,15 @@ v3 = {
       "value": "IS_FOR_SALE"
     }
   ],
-  "concreteType": "Artwork",
-  "plural": true,
+  "concreteType": "ArtworkConnection",
+  "plural": false,
   "selections": (v2/*: any*/)
 },
 v4 = {
   "kind": "LinkedField",
   "alias": "notForSaleArtworks",
-  "name": "artworks",
-  "storageKey": "artworks(filter:\"IS_NOT_FOR_SALE\")",
+  "name": "artworksConnection",
+  "storageKey": "artworksConnection(filter:\"IS_NOT_FOR_SALE\")",
   "args": [
     {
       "kind": "Literal",
@@ -79,8 +117,8 @@ v4 = {
       "value": "IS_NOT_FOR_SALE"
     }
   ],
-  "concreteType": "Artwork",
-  "plural": true,
+  "concreteType": "ArtworkConnection",
+  "plural": false,
   "selections": (v2/*: any*/)
 };
 return {
@@ -131,11 +169,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "createMockNetworkLayerTestsAliasQuery",
-    "id": "271418402f851ef8625420d5b6d2642e",
+    "id": "f5ef215bce437df51c4fb3e13abae0e5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd71064778be9a9526b5a559c23006b2c';
+(node as any).hash = 'b02bf9fa416501b4198a21a849e2d25f';
 export default node;

@@ -1,13 +1,23 @@
 import { ArtistNotForSaleArtworksGrid_artist } from "__generated__/ArtistNotForSaleArtworksGrid_artist.graphql"
-import InfiniteScrollArtworksGrid, {
+import {
+  InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
-} from "lib/Components/ArtworkGrids/InfiniteScrollGrid"
-import { createPaginationContainer, graphql } from "react-relay"
+} from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import React from "react"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-const ArtistNotForSaleArtworksGrid = createPaginationContainer<
-  { artist: ArtistNotForSaleArtworksGrid_artist } & InfiniteScrollGridProps
->(
-  InfiniteScrollArtworksGrid as any,
+interface Props extends InfiniteScrollGridProps {
+  artist: ArtistNotForSaleArtworksGrid_artist
+  relay: RelayPaginationProp
+  children: never
+}
+
+const ArtistNotForSaleArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
+  <InfiniteScrollArtworksGrid connection={artist.notForSaleArtworks} loadMore={relay.loadMore} {...props} />
+)
+
+export const ArtistNotForSaleArtworksGridContainer = createPaginationContainer(
+  ArtistNotForSaleArtworksGrid,
   {
     artist: graphql`
       fragment ArtistNotForSaleArtworksGrid_artist on Artist
@@ -23,21 +33,12 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer<
           filter: $filter
           sort: PARTNER_UPDATED_AT_DESC
         ) @connection(key: "ArtistNotForSaleArtworksGrid_notForSaleArtworks") {
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
           edges {
             node {
-              slug
               id
-              image {
-                aspect_ratio: aspectRatio
-              }
-              ...ArtworkGridItem_artwork
             }
           }
+          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
@@ -77,5 +78,3 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer<
     `,
   }
 )
-
-export default ArtistNotForSaleArtworksGrid

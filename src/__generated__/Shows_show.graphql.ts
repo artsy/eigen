@@ -27,9 +27,9 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "nearbyShows",
-      "storageKey": "nearbyShows(first:20)",
+      "alias": "nearbyShows",
+      "name": "nearbyShowsConnection",
+      "storageKey": "nearbyShowsConnection(first:20)",
       "args": [
         {
           "kind": "Literal",
@@ -78,5 +78,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '070ccc80cd85f303be399d74c690fbcb';
+(node as any).hash = 'db0e2a398e2cae8f10c5f68acf339624';
 export default node;

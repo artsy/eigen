@@ -1,16 +1,14 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FilteredInfiniteScrollGrid_filteredArtworks$ref } from "./FilteredInfiniteScrollGrid_filteredArtworks.graphql";
+import { FilteredInfiniteScrollGrid_entity$ref } from "./FilteredInfiniteScrollGrid_entity.graphql";
 declare const _ShowArtworks_show$ref: unique symbol;
 export type ShowArtworks_show$ref = typeof _ShowArtworks_show$ref;
 export type ShowArtworks_show = {
     readonly id: string;
     readonly slug: string;
     readonly internalID: string;
-    readonly filteredArtworks: {
-        readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
-    } | null;
+    readonly " $fragmentRefs": FilteredInfiniteScrollGrid_entity$ref;
     readonly " $refType": ShowArtworks_show$ref;
 };
 
@@ -21,20 +19,7 @@ const node: ReaderFragment = {
   "name": "ShowArtworks_show",
   "type": "Show",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "medium",
-      "type": "String",
-      "defaultValue": "*"
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "priceRange",
-      "type": "String",
-      "defaultValue": "*-*"
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     {
       "kind": "ScalarField",
@@ -58,47 +43,11 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "filteredArtworks",
-      "storageKey": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "aggregations",
-          "value": [
-            "MEDIUM",
-            "PRICE_RANGE",
-            "TOTAL"
-          ]
-        },
-        {
-          "kind": "Variable",
-          "name": "medium",
-          "variableName": "medium"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "priceRange"
-        },
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 0
-        }
-      ],
-      "concreteType": "FilterArtworks",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "FragmentSpread",
-          "name": "FilteredInfiniteScrollGrid_filteredArtworks",
-          "args": null
-        }
-      ]
+      "kind": "FragmentSpread",
+      "name": "FilteredInfiniteScrollGrid_entity",
+      "args": null
     }
   ]
 };
-(node as any).hash = '581dc671622b6cd80bd04fb3925c4e4e';
+(node as any).hash = 'd18ae5be25656a4cea38614cf43825e9';
 export default node;

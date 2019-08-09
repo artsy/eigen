@@ -96,7 +96,7 @@ export const FairArtistsContainer = createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         slug
         internalID
-        artists(first: $count, after: $cursor) @connection(key: "Fair_artists") {
+        artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Fair_artists") {
           pageInfo {
             hasNextPage
             startCursor

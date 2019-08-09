@@ -24,8 +24,8 @@ query FavoriteArtworksQuery {
 }
 
 fragment Artworks_me on Me {
-  saved_artworks: savedArtworks {
-    artworks_connection: artworksConnection(private: true, first: 10, after: "") {
+  followsAndSaves {
+    artworks: artworksConnection(private: true, first: 10, after: "") {
       pageInfo {
         startCursor
         endCursor
@@ -41,7 +41,6 @@ fragment Artworks_me on Me {
         cursor
       }
     }
-    id
   }
 }
 
@@ -171,20 +170,20 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": "saved_artworks",
-            "name": "savedArtworks",
+            "alias": null,
+            "name": "followsAndSaves",
             "storageKey": null,
             "args": null,
-            "concreteType": "Collection",
+            "concreteType": "FollowsAndSaves",
             "plural": false,
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": "artworks_connection",
+                "alias": "artworks",
                 "name": "artworksConnection",
                 "storageKey": "artworksConnection(after:\"\",first:10,private:true)",
                 "args": (v0/*: any*/),
-                "concreteType": "ArtworkConnection",
+                "concreteType": "SavedArtworksConnection",
                 "plural": false,
                 "selections": [
                   {
@@ -232,7 +231,7 @@ return {
                     "name": "edges",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "ArtworkEdge",
+                    "concreteType": "SavedArtworksEdge",
                     "plural": true,
                     "selections": [
                       {
@@ -464,16 +463,15 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": "artworks_connection",
+                "alias": "artworks",
                 "name": "artworksConnection",
                 "args": (v0/*: any*/),
                 "handle": "connection",
-                "key": "GenericGrid_artworks_connection",
+                "key": "GenericGrid_artworks",
                 "filters": [
                   "private"
                 ]
-              },
-              (v1/*: any*/)
+              }
             ]
           },
           (v1/*: any*/)
@@ -484,7 +482,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "86676b37ddf018ef38fcd781449d5b87",
+    "id": "e928bb2c7379715a89aaf2ce42f9cb66",
     "text": null,
     "metadata": {}
   }

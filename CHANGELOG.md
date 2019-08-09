@@ -14,11 +14,19 @@
 
 -->
 
-### Master
+### 1.12.15
+
+- Replace usage of legacy filter artwork fields with new connection - alloy
+
+### 1.12.14
+
+(A release that went out in the process of automating releases.)
 
 ### 1.12.13
 
+- Drop non-connection paginated lists - alloy
 - Fix copy on registration pending view - yuki24
+- Fixes issue with mailto: links not opening - sweir27
 
 ### 1.12.12
 

@@ -4,24 +4,26 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Artists_me$ref: unique symbol;
 export type Artists_me$ref = typeof _Artists_me$ref;
 export type Artists_me = {
-    readonly followed_artists_connection: {
-        readonly pageInfo: {
-            readonly endCursor: string | null;
-            readonly hasNextPage: boolean;
-        };
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly artist: {
-                    readonly slug: string;
-                    readonly id: string;
-                    readonly name: string | null;
-                    readonly href: string | null;
-                    readonly image: {
-                        readonly url: string | null;
+    readonly followsAndSaves: {
+        readonly artists: {
+            readonly pageInfo: {
+                readonly endCursor: string | null;
+                readonly hasNextPage: boolean;
+            };
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly artist: {
+                        readonly slug: string;
+                        readonly id: string;
+                        readonly name: string | null;
+                        readonly href: string | null;
+                        readonly image: {
+                            readonly url: string | null;
+                        } | null;
                     } | null;
                 } | null;
-            } | null;
-        } | null> | null;
+            } | null> | null;
+        } | null;
     } | null;
     readonly " $refType": Artists_me$ref;
 };
@@ -39,7 +41,8 @@ const node: ReaderFragment = {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "followed_artists_connection"
+          "followsAndSaves",
+          "artists"
         ]
       }
     ]
@@ -61,128 +64,139 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": "followed_artists_connection",
-      "name": "__Artists_followed_artists_connection_connection",
+      "alias": null,
+      "name": "followsAndSaves",
       "storageKey": null,
       "args": null,
-      "concreteType": "FollowArtistConnection",
+      "concreteType": "FollowsAndSaves",
       "plural": false,
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": null,
-          "name": "pageInfo",
+          "alias": "artists",
+          "name": "__Artists_artists_connection",
           "storageKey": null,
           "args": null,
-          "concreteType": "PageInfo",
+          "concreteType": "FollowArtistConnection",
           "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "endCursor",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "hasNextPage",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "edges",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "FollowArtistEdge",
-          "plural": true,
           "selections": [
             {
               "kind": "LinkedField",
               "alias": null,
-              "name": "node",
+              "name": "pageInfo",
               "storageKey": null,
               "args": null,
-              "concreteType": "FollowArtist",
+              "concreteType": "PageInfo",
               "plural": false,
               "selections": [
                 {
-                  "kind": "LinkedField",
+                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "artist",
-                  "storageKey": null,
+                  "name": "endCursor",
                   "args": null,
-                  "concreteType": "Artist",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "slug",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "id",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "name",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "href",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "LinkedField",
-                      "alias": null,
-                      "name": "image",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "Image",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "url",
-                          "args": null,
-                          "storageKey": null
-                        }
-                      ]
-                    }
-                  ]
+                  "storageKey": null
                 },
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
+                  "name": "hasNextPage",
                   "args": null,
                   "storageKey": null
                 }
               ]
             },
             {
-              "kind": "ScalarField",
+              "kind": "LinkedField",
               "alias": null,
-              "name": "cursor",
+              "name": "edges",
+              "storageKey": null,
               "args": null,
-              "storageKey": null
+              "concreteType": "FollowArtistEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "FollowArtist",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "artist",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "Artist",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "slug",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "id",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "name",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "href",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "LinkedField",
+                          "alias": null,
+                          "name": "image",
+                          "storageKey": null,
+                          "args": null,
+                          "concreteType": "Image",
+                          "plural": false,
+                          "selections": [
+                            {
+                              "kind": "ScalarField",
+                              "alias": null,
+                              "name": "url",
+                              "args": null,
+                              "storageKey": null
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "__typename",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "cursor",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
             }
           ]
         }
@@ -190,5 +204,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b79a59b4e2c902e81ba5be9869d129f9';
+(node as any).hash = 'd0ea909bb37218abe30ea31f63b234c0';
 export default node;

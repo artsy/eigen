@@ -30,7 +30,7 @@ query ConversationsQuery(
 }
 
 fragment Conversations_me_1G22uz on Me {
-  conversations(first: $count, after: $cursor) {
+  conversations: conversationsConnection(first: $count, after: $cursor) {
     pageInfo {
       endCursor
       hasNextPage
@@ -201,8 +201,8 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "conversations",
+            "alias": "conversations",
+            "name": "conversationsConnection",
             "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "ConversationConnection",
@@ -394,8 +394,8 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": null,
-            "name": "conversations",
+            "alias": "conversations",
+            "name": "conversationsConnection",
             "args": (v1/*: any*/),
             "handle": "connection",
             "key": "Conversations_conversations",
@@ -409,7 +409,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationsQuery",
-    "id": "ee17444221cb89fda92c8efd865c239e",
+    "id": "386aa36282a025b6c65fc9a129b345b6",
     "text": null,
     "metadata": {}
   }

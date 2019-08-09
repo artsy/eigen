@@ -32,7 +32,7 @@ const notification = () => {
     artists: "Jean-Michel Basquiat",
     date: "Mar 16",
     summary: "1 Work Added",
-    artworks: [{ title: "Anti-Product Postcard" }],
+    artworks: { edges: [{ title: "Anti-Product Postcard" }] },
     status: "UNREAD",
     image: {
       resized: {

@@ -24,8 +24,8 @@ class Shows extends React.Component<Props> {
   }
 
   pastShows() {
-    const pastShows = this.props.artist.past_large_shows || this.props.artist.past_small_shows
-    if (pastShows.length) {
+    const pastShows = this.props.artist.pastLargeShows || this.props.artist.pastSmallShows
+    if (pastShows.edges.length) {
       return (
         <View>
           <Separator style={{ marginBottom: 20 }} />
@@ -40,16 +40,28 @@ class Shows extends React.Component<Props> {
 
   pastShowsList() {
     // TODO: Use `this.props.relay.getVariables().isPad` when this gets merged: https://github.com/facebook/relay/pull/1868
-    if (this.props.artist.past_large_shows) {
-      return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_large_shows as any} />
+    if (this.props.artist.pastLargeShows) {
+      return (
+        <VariableSizeShowsList
+          showSize={"medium"}
+          shows={this.props.artist.pastLargeShows.edges.map(({ node }) => node)}
+        />
+      )
     } else {
-      return <SmallList shows={this.props.artist.past_small_shows} style={{ marginTop: -8, marginBottom: 50 }} />
+      return (
+        <SmallList
+          shows={this.props.artist.pastSmallShows.edges.map(({ node }) => node)}
+          style={{ marginTop: -8, marginBottom: 50 }}
+        />
+      )
     }
   }
 
   currentAndUpcomingList() {
-    if (this.props.artist.current_shows.length || this.props.artist.upcoming_shows.length) {
-      const shows = [].concat.apply([], [this.props.artist.current_shows, this.props.artist.upcoming_shows])
+    const currentShows = this.props.artist.currentShows.edges.map(({ node }) => node)
+    const upcomingShows = this.props.artist.upcomingShows.edges.map(({ node }) => node)
+    if (currentShows.length || upcomingShows.length) {
+      const shows = [...currentShows, ...upcomingShows]
       return (
         <View style={{ marginBottom: 20 }}>
           <SerifText style={styles.title}>Current & Upcoming Shows</SerifText>
@@ -79,17 +91,33 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(Shows, {
   artist: graphql`
     fragment Shows_artist on Artist {
-      current_shows: shows(status: "running") {
-        ...VariableSizeShowsList_shows
+      currentShows: showsConnection(status: "running", first: 10) {
+        edges {
+          node {
+            ...VariableSizeShowsList_shows
+          }
+        }
       }
-      upcoming_shows: shows(status: "upcoming") {
-        ...VariableSizeShowsList_shows
+      upcomingShows: showsConnection(status: "upcoming", first: 10) {
+        edges {
+          node {
+            ...VariableSizeShowsList_shows
+          }
+        }
       }
-      past_small_shows: shows(status: "closed", size: 20) @skip(if: $isPad) {
-        ...SmallList_shows
+      pastSmallShows: showsConnection(status: "closed", first: 20) @skip(if: $isPad) {
+        edges {
+          node {
+            ...SmallList_shows
+          }
+        }
       }
-      past_large_shows: shows(status: "closed", size: 20) @include(if: $isPad) {
-        ...VariableSizeShowsList_shows
+      pastLargeShows: showsConnection(status: "closed", first: 20) @include(if: $isPad) {
+        edges {
+          node {
+            ...VariableSizeShowsList_shows
+          }
+        }
       }
     }
   `,

@@ -20,8 +20,8 @@ export class ArtworksPreview extends React.Component<Props> {
     if (!fair) {
       return null
     }
-    const artworks = fair.filteredArtworks.artworks_connection.edges.map(({ node }) => node)
-    const counts = fair.filteredArtworks.counts
+    const artworks = fair.filterArtworksConnection.edges.map(({ node }) => node)
+    const counts = fair.filterArtworksConnection.counts
     return (
       <>
         <Serif size="6" mt={2} mb={3}>
@@ -46,16 +46,14 @@ export const ArtworksPreviewContainer = createFragmentContainer(ArtworksPreview,
     fragment ArtworksPreview_fair on Fair {
       slug
       id
-      filteredArtworks(size: 0, aggregations: [TOTAL]) {
-        artworks_connection: artworksConnection(first: 6) {
-          edges {
-            node {
-              ...GenericGrid_artworks
-            }
-          }
-        }
+      filterArtworksConnection(first: 6, aggregations: [TOTAL]) {
         counts {
           total
+        }
+        edges {
+          node {
+            ...GenericGrid_artworks
+          }
         }
       }
     }

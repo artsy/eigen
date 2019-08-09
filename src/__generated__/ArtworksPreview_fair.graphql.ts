@@ -7,17 +7,15 @@ export type ArtworksPreview_fair$ref = typeof _ArtworksPreview_fair$ref;
 export type ArtworksPreview_fair = {
     readonly slug: string;
     readonly id: string;
-    readonly filteredArtworks: {
-        readonly artworks_connection: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly " $fragmentRefs": GenericGrid_artworks$ref;
-                } | null;
-            } | null> | null;
-        } | null;
+    readonly filterArtworksConnection: {
         readonly counts: {
             readonly total: any | null;
         } | null;
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": GenericGrid_artworks$ref;
+            } | null;
+        } | null> | null;
     } | null;
     readonly " $refType": ArtworksPreview_fair$ref;
 };
@@ -48,8 +46,8 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "filteredArtworks",
-      "storageKey": "filteredArtworks(aggregations:[\"TOTAL\"],size:0)",
+      "name": "filterArtworksConnection",
+      "storageKey": "filterArtworksConnection(aggregations:[\"TOTAL\"],first:6)",
       "args": [
         {
           "kind": "Literal",
@@ -60,57 +58,13 @@ const node: ReaderFragment = {
         },
         {
           "kind": "Literal",
-          "name": "size",
-          "value": 0
+          "name": "first",
+          "value": 6
         }
       ],
-      "concreteType": "FilterArtworks",
+      "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": "artworks_connection",
-          "name": "artworksConnection",
-          "storageKey": "artworksConnection(first:6)",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 6
-            }
-          ],
-          "concreteType": "ArtworkConnection",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "edges",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "ArtworkEdge",
-              "plural": true,
-              "selections": [
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "node",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Artwork",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "FragmentSpread",
-                      "name": "GenericGrid_artworks",
-                      "args": null
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -128,10 +82,37 @@ const node: ReaderFragment = {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "FilterArtworksEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artwork",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "FragmentSpread",
+                  "name": "GenericGrid_artworks",
+                  "args": null
+                }
+              ]
+            }
+          ]
         }
       ]
     }
   ]
 };
-(node as any).hash = '8f7180fa9f625aac1ee83a8cf171aaa2';
+(node as any).hash = '6963d5e69b61da0d5471d321ce3e16fb';
 export default node;

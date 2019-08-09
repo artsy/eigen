@@ -113,7 +113,7 @@ export class FairDetail extends React.Component<Props, State> {
       })
 
       fair.shows.edges.forEach(showData => {
-        const showArtworks = showData.node.artworks_connection
+        const showArtworks = showData.node.artworks
         if (showArtworks && showArtworks.edges.length) {
           sections.push({
             type: "booth",
@@ -296,7 +296,7 @@ export const FairDetailContainer = createPaginationContainer(
             node {
               slug
               internalID
-              artworks_connection: artworksConnection(first: 4) {
+              artworks: artworksConnection(first: 4) {
                 edges {
                   node {
                     slug

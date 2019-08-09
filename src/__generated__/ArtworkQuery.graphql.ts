@@ -78,7 +78,7 @@ fragment Artwork_artwork on Artwork {
   }
   contextGrids {
     __typename
-    artworks(first: 6) {
+    artworks: artworksConnection(first: 6) {
       edges {
         node {
           id
@@ -146,7 +146,7 @@ fragment OtherWorks_artwork on Artwork {
     title
     ctaTitle
     ctaHref
-    artworks(first: 6) {
+    artworks: artworksConnection(first: 6) {
       edges {
         node {
           ...GenericGrid_artworks
@@ -244,7 +244,8 @@ fragment ArtworkHeader_artwork on Artwork {
 fragment CommercialInformation_artwork on Artwork {
   availability
   artists {
-    is_consignable: isConsignable
+    isConsignable
+    name
     id
   }
   editionSets {
@@ -1016,9 +1017,9 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "artworks",
-                "storageKey": "artworks(first:6)",
+                "alias": "artworks",
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(first:6)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -1287,7 +1288,7 @@ return {
               (v14/*: any*/),
               {
                 "kind": "ScalarField",
-                "alias": "is_consignable",
+                "alias": null,
                 "name": "isConsignable",
                 "args": null,
                 "storageKey": null
@@ -1548,7 +1549,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "138eaab6cf355b288aae7caeda446ed0",
+    "id": "5ef0cf3723546c50697c4ddc2c3ac020",
     "text": null,
     "metadata": {}
   }

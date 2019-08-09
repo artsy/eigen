@@ -31,7 +31,7 @@ query FairsQuery(
 
 fragment Fairs_me_1G22uz on Me {
   followsAndSaves {
-    fairs(first: $count, after: $cursor) {
+    fairs: fairsConnection(first: $count, after: $cursor) {
       edges {
         node {
           id
@@ -161,8 +161,8 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "fairs",
+                "alias": "fairs",
+                "name": "fairsConnection",
                 "storageKey": null,
                 "args": (v1/*: any*/),
                 "concreteType": "FollowedFairConnection",
@@ -331,8 +331,8 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": null,
-                "name": "fairs",
+                "alias": "fairs",
+                "name": "fairsConnection",
                 "args": (v1/*: any*/),
                 "handle": "connection",
                 "key": "SavedFairs_fairs",
@@ -348,7 +348,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairsQuery",
-    "id": "068b340df45dd57fed89a7134dea48d4",
+    "id": "090c7f1bfb0cfe1e52990e3e331735e0",
     "text": null,
     "metadata": {}
   }

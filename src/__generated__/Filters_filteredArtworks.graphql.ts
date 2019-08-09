@@ -20,7 +20,7 @@ export type Filters_filteredArtworks = {
 const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Filters_filteredArtworks",
-  "type": "FilterArtworks",
+  "type": "FilterArtworksConnection",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
@@ -69,5 +69,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '199a4eea5e06fcd883978178f0d60e5f';
+(node as any).hash = '6e8ed7c5b8cf97462ea16a7393e48a22';
 export default node;

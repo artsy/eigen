@@ -2,8 +2,8 @@ import React, { Component } from "react"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
-import ArtistForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistForSaleArtworksGrid"
-import ArtistNotForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistNotForSaleArtworksGrid"
+import { ArtistForSaleArtworksGridContainer as ArtistForSaleArtworksGrid } from "../../ArtworkGrids/RelayConnections/ArtistForSaleArtworksGrid"
+import { ArtistNotForSaleArtworksGridContainer as ArtistNotForSaleArtworksGrid } from "../../ArtworkGrids/RelayConnections/ArtistNotForSaleArtworksGrid"
 
 import Separator from "lib/Components/Separator"
 import SerifText from "lib/Components/Text/Serif"

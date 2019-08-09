@@ -6,35 +6,78 @@ import { VariableSizeShowsList_shows$ref } from "./VariableSizeShowsList_shows.g
 declare const _Shows_artist$ref: unique symbol;
 export type Shows_artist$ref = typeof _Shows_artist$ref;
 export type Shows_artist = {
-    readonly current_shows: ReadonlyArray<{
-        readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
-    } | null> | null;
-    readonly upcoming_shows: ReadonlyArray<{
-        readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
-    } | null> | null;
-    readonly past_small_shows?: ReadonlyArray<{
-        readonly " $fragmentRefs": SmallList_shows$ref;
-    } | null> | null;
-    readonly past_large_shows?: ReadonlyArray<{
-        readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
-    } | null> | null;
+    readonly currentShows: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly upcomingShows: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly pastSmallShows?: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": SmallList_shows$ref;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly pastLargeShows?: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": Shows_artist$ref;
 };
 
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "kind": "FragmentSpread",
-    "name": "VariableSizeShowsList_shows",
-    "args": null
-  }
-],
+var v0 = {
+  "kind": "Literal",
+  "name": "first",
+  "value": 10
+},
 v1 = [
   {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ShowEdge",
+    "plural": true,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Show",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "VariableSizeShowsList_shows",
+            "args": null
+          }
+        ]
+      }
+    ]
+  }
+],
+v2 = [
+  {
     "kind": "Literal",
-    "name": "size",
+    "name": "first",
     "value": 20
   },
   {
@@ -58,35 +101,37 @@ return {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": "current_shows",
-      "name": "shows",
-      "storageKey": "shows(status:\"running\")",
+      "alias": "currentShows",
+      "name": "showsConnection",
+      "storageKey": "showsConnection(first:10,status:\"running\")",
       "args": [
+        (v0/*: any*/),
         {
           "kind": "Literal",
           "name": "status",
           "value": "running"
         }
       ],
-      "concreteType": "Show",
-      "plural": true,
-      "selections": (v0/*: any*/)
+      "concreteType": "ShowConnection",
+      "plural": false,
+      "selections": (v1/*: any*/)
     },
     {
       "kind": "LinkedField",
-      "alias": "upcoming_shows",
-      "name": "shows",
-      "storageKey": "shows(status:\"upcoming\")",
+      "alias": "upcomingShows",
+      "name": "showsConnection",
+      "storageKey": "showsConnection(first:10,status:\"upcoming\")",
       "args": [
+        (v0/*: any*/),
         {
           "kind": "Literal",
           "name": "status",
           "value": "upcoming"
         }
       ],
-      "concreteType": "Show",
-      "plural": true,
-      "selections": (v0/*: any*/)
+      "concreteType": "ShowConnection",
+      "plural": false,
+      "selections": (v1/*: any*/)
     },
     {
       "kind": "Condition",
@@ -95,17 +140,39 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": "past_small_shows",
-          "name": "shows",
-          "storageKey": "shows(size:20,status:\"closed\")",
-          "args": (v1/*: any*/),
-          "concreteType": "Show",
-          "plural": true,
+          "alias": "pastSmallShows",
+          "name": "showsConnection",
+          "storageKey": "showsConnection(first:20,status:\"closed\")",
+          "args": (v2/*: any*/),
+          "concreteType": "ShowConnection",
+          "plural": false,
           "selections": [
             {
-              "kind": "FragmentSpread",
-              "name": "SmallList_shows",
-              "args": null
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ShowEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Show",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "SmallList_shows",
+                      "args": null
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -118,18 +185,18 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": "past_large_shows",
-          "name": "shows",
-          "storageKey": "shows(size:20,status:\"closed\")",
-          "args": (v1/*: any*/),
-          "concreteType": "Show",
-          "plural": true,
-          "selections": (v0/*: any*/)
+          "alias": "pastLargeShows",
+          "name": "showsConnection",
+          "storageKey": "showsConnection(first:20,status:\"closed\")",
+          "args": (v2/*: any*/),
+          "concreteType": "ShowConnection",
+          "plural": false,
+          "selections": (v1/*: any*/)
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '6c7706fbdfb4655eeadb86dc3ab2b413';
+(node as any).hash = '21beda31cfe5fcb85d3015382a0dd69d';
 export default node;
