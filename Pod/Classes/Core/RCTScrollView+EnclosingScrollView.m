@@ -89,7 +89,7 @@
       [mutableBody addEntriesFromDictionary:userData];
       body = [mutableBody copy];
     }
-    
+
     _body = body;
   }
   return self;
@@ -111,7 +111,7 @@
   // TODO: contentOffset.x -= originOffset.x;
   contentOffset.x = scrollView.contentOffset.x;
   contentOffset.y -= originOffset.y;
-  
+
   return [[RCTDescendantScrollEvent alloc] initWithEventName:self.eventName
                                                     reactTag:reactTag
                                      scrollViewContentOffset:contentOffset
@@ -121,7 +121,7 @@
                                     enclosingScrollViewFrame:enclosingScrollView.frame
                                                     userData:[self valueForKey:@"_userData"]
                                                coalescingKey:coalescingKey];
-    
+
 }
 
 @end
@@ -164,6 +164,9 @@
                                                       scrollViewZoomScale:self.scrollView.zoomScale
                                                                  userData:userData
                                                             coalescingKey:coalescingKey];
+
+        // static int transforms = 0;
+        // NSLog(@"eventses %d", transforms++);
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 
   // TODO: This doesn’t coalesce, which is something that’s done by the event dispatcher

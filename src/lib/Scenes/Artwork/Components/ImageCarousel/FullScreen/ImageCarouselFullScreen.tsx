@@ -35,43 +35,13 @@ export const ImageCarouselFullScreen = observer(() => {
     // on unmount we use it's built-in fade transition
     <Modal transparent animated={false} animationType="fade">
       <WhiteUnderlay />
-      <VerticalSwipeToDismiss onClose={onClose}>
-        <FlatList<ImageDescriptor>
-          data={images}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled={images.length > 1 && state.fullScreenState === "entered"}
-          snapToInterval={screenBoundingBox.width}
-          keyExtractor={item => item.url}
-          decelerationRate="fast"
-          initialScrollIndex={initialScrollIndex}
-          getItemLayout={(_, index) => ({
-            index,
-            offset: index * screenWidth,
-            length: screenWidth,
-          })}
-          onScroll={onScroll}
-          onMomentumScrollEnd={() => {
-            // reset the zooms of all non-visible zoom views when the horizontal carousel comes to a stop
-            for (let i = 0; i < images.length; i++) {
-              if (i !== state.imageIndex && zoomViewRefs[i]) {
-                zoomViewRefs[i].resetZoom()
-              }
-            }
-          }}
-          renderItem={({ item, index }) => {
-            return (
-              <ImageZoomView
-                image={item}
-                index={index}
-                ref={ref => {
-                  zoomViewRefs[index] = ref
-                }}
-              />
-            )
-          }}
-        />
-      </VerticalSwipeToDismiss>
+      <ImageZoomView
+        image={images[0]}
+        index={0}
+        ref={ref => {
+          zoomViewRefs[0] = ref
+        }}
+      />
       <StatusBarOverlay />
       <ImageCarouselCloseButton onClose={onClose} />
       <IndexIndicator />

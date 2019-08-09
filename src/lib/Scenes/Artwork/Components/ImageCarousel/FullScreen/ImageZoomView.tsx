@@ -234,13 +234,9 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         <Animated.ScrollView
           ref={scrollViewRef}
           scrollEnabled={state.fullScreenState === "entered"}
-          onScroll={Animated.event(
-            [{ nativeEvent: { zoomScale: $zoomScale, contentOffset: { x: $contentOffsetX, y: $contentOffsetY } } }],
-            {
-              useNativeDriver: true,
-              listener: onScroll,
-            }
-          )}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: $contentOffsetY } } }], {
+            useNativeDriver: true,
+          })}
           scrollEventThrottle={100}
           bounces={false}
           overScrollMode="never"
@@ -294,3 +290,13 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     )
   })
 )
+
+function convert(val: string | number): string | number {
+  return typeof val === "string" ? Number(val) : String(val)
+}
+
+function convert2<T>(val: string | number): string | number {
+  return typeof val === "string" ? Number(val) : String(val)
+}
+
+convert("hello")

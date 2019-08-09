@@ -266,7 +266,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
               }
             `}
             variables={{
-              artworkID: "nasa-milky-way",
+              artworkID: "nasa-lunar-orbiter-48",
             }}
             cacheConfig={{
               // Bypass Relay cache on retries.

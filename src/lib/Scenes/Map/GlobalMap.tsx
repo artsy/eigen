@@ -474,10 +474,13 @@ export class GlobalMap extends React.Component<Props, State> {
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
       if (item.type === "Show") {
+        console.log("show")
         return this.shows[item.id]
       } else if (item.type === "Fair") {
+        console.log("fair")
         return this.fairs[item.id]
       }
+      console.log("neither")
       return item
     })
 
