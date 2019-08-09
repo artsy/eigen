@@ -6,9 +6,8 @@ import * as _ from "lodash"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { RelayRefetchProp } from "react-relay"
-import { createRefetchContainer, graphql } from "react-relay"
-import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneArtworksGrid"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import About from "../Components/Gene/About"
 import Header from "../Components/Gene/Header"
 import Separator from "../Components/Separator"
@@ -30,7 +29,7 @@ interface Props extends ViewProperties {
   medium: string
   price_range: string
   gene: Gene_gene
-  relay: RelayRefetchProp
+  relay: RelayPaginationProp
 }
 
 interface State {
@@ -107,15 +106,7 @@ export class Gene extends React.Component<Props, State> {
       case TABS.ABOUT:
         return <About gene={this.props.gene} />
       case TABS.WORKS:
-        return (
-          <GeneArtworksGrid
-            filtered_artworks={this.props.gene.filtered_artworks}
-            medium={this.state.selectedMedium}
-            priceRange={this.state.selectedPriceRange}
-            sort={this.state.sort}
-            mapPropsToArtworksConnection={props => props.filtered_artworks.artworks}
-          />
-        )
+        return <InfiniteScrollArtworksGrid connection={this.props.gene.artworks} loadMore={this.props.relay.loadMore} />
     }
   }
 
@@ -175,14 +166,14 @@ export class Gene extends React.Component<Props, State> {
       sort: "-partner_updated_at",
       selectedMedium: this.props.medium || "*",
       selectedPrice: this.props.price_range || "*-*",
-      aggregations: this.props.gene.filtered_artworks.aggregations,
+      aggregations: this.props.gene.artworks.aggregations,
     }
 
     const currentSettings = {
       sort: this.state.sort,
       selectedMedium: this.state.selectedMedium,
       selectedPrice: this.state.selectedPriceRange,
-      aggregations: this.props.gene.filtered_artworks.aggregations,
+      aggregations: this.props.gene.artworks.aggregations,
     }
 
     // We're returning the promise so that it's easier
@@ -195,7 +186,7 @@ export class Gene extends React.Component<Props, State> {
           sort: newSettings.sort,
         })
 
-        this.props.relay.refetch({
+        this.props.relay.refetchConnection(10, undefined, {
           medium: newSettings.medium,
           price_range: newSettings.selectedPrice,
           sort: newSettings.sort,
@@ -275,7 +266,7 @@ export class Gene extends React.Component<Props, State> {
   /** The summary string of the current refine settings */
   artworkQuerySummaryString = () => {
     const items: string[] = []
-    const works = this.props.gene.filtered_artworks.counts.total.toLocaleString()
+    const works = this.props.gene.artworks.counts.total.toLocaleString()
     items.push(`${works} works`)
 
     if (this.state.selectedMedium !== "*") {
@@ -342,12 +333,14 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createRefetchContainer(
+export default createPaginationContainer(
   Gene,
   {
     gene: graphql`
       fragment Gene_gene on Gene
         @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String", defaultValue: "" }
           sort: { type: "String", defaultValue: "-partner_updated_at" }
           medium: { type: "String", defaultValue: "*" }
           priceRange: { type: "String", defaultValue: "*-*" }
@@ -356,14 +349,15 @@ export default createRefetchContainer(
         internalID
         ...Header_gene
         ...About_gene
-        filtered_artworks: filteredArtworks(
-          size: 0
+        artworks: filterArtworksConnection(
+          first: $count
+          after: $cursor
           medium: $medium
           priceRange: $price_range
           sort: $sort
           aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
           forSale: true
-        ) {
+        ) @connection(key: "Gene_artworks") {
           counts {
             total
           }
@@ -375,16 +369,45 @@ export default createRefetchContainer(
               count
             }
           }
-          ...GeneArtworksGrid_filtered_artworks @arguments(sort: $sort)
+          # TODO: Just to satisfy relay-compiler
+          edges {
+            node {
+              id
+            }
+          }
+          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
   },
-  graphql`
-    query GeneRefetchQuery($geneID: String!, $sort: String, $medium: String, $price_range: String) {
-      gene(id: $geneID) {
-        ...Gene_gene @arguments(sort: $sort, medium: $medium, priceRange: $price_range)
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.gene.artworks
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
       }
-    }
-  `
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        id: props.gene.id,
+        count,
+        cursor,
+      }
+    },
+    query: graphql`
+      query GeneQuery($id: ID!, $count: Int!, $cursor: String, $sort: String, $medium: String, $price_range: String) {
+        node(id: $id) {
+          ... on Gene {
+            ...Gene_gene
+              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $price_range)
+          }
+        }
+      }
+    `,
+  }
 )

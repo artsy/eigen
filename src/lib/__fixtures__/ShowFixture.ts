@@ -395,7 +395,7 @@ export const ShowFixture = {
       },
     },
   ],
-  artworks_connection: {
+  artworksConnection: {
     edges: [
       {
         node: {

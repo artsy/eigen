@@ -5,12 +5,11 @@ import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrol
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   show: ShowArtworks_show
-  relay: RelayRefetchProp
 }
 
 interface State {
@@ -25,61 +24,30 @@ interface State {
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   context_screen_owner_slug: props.show.slug,
   context_screen_owner_id: props.show.internalID,
+  owner_id: props.show.internalID,
+  owner_slug: props.show.slug,
+  owner_type: "Show",
 }))
 export class ShowArtworks extends React.Component<Props, State> {
-  handleRefetch = params => {
-    this.props.relay.refetch({
-      ...params,
-    })
-  }
-
   render() {
-    const { show } = this.props
     return (
       <Theme>
-        <FilteredInfiniteScrollGrid
-          id={show.internalID}
-          slug={show.slug}
-          type={"Show"}
-          filteredArtworks={show.filteredArtworks}
-          onRefetch={this.handleRefetch}
-        />
+        <FilteredInfiniteScrollGrid entity={this.props.show} />
       </Theme>
     )
   }
 }
 
-export const ShowArtworksContainer = createRefetchContainer(
-  ShowArtworks,
-  {
-    show: graphql`
-      fragment ShowArtworks_show on Show
-        @argumentDefinitions(
-          medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String", defaultValue: "*-*" }
-        ) {
-        id
-        slug
-        internalID
-        filteredArtworks(
-          size: 0
-          medium: $medium
-          priceRange: $priceRange
-          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
-        ) {
-          ...FilteredInfiniteScrollGrid_filteredArtworks
-        }
-      }
-    `,
-  },
-  graphql`
-    query ShowArtworksRefetchQuery($showID: String!, $medium: String, $price_range: String) {
-      show(id: $showID) {
-        ...ShowArtworks_show @arguments(medium: $medium, priceRange: $price_range)
-      }
+export const ShowArtworksContainer = createFragmentContainer(ShowArtworks, {
+  show: graphql`
+    fragment ShowArtworks_show on Show {
+      id
+      slug
+      internalID
+      ...FilteredInfiniteScrollGrid_entity
     }
-  `
-)
+  `,
+})
 
 export const ShowArtworksRenderer: React.SFC<{ showID: string }> = ({ showID }) => {
   return (

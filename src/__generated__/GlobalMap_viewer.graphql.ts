@@ -151,6 +151,7 @@ export type GlobalMap_viewer = {
         readonly fairs: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
+                    readonly id: string;
                     readonly slug: string;
                     readonly name: string | null;
                     readonly exhibition_period: string | null;
@@ -653,6 +654,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
+                    (v4/*: any*/),
                     (v1/*: any*/),
                     (v0/*: any*/),
                     (v9/*: any*/),
@@ -768,5 +770,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ce85a08e405b5672139ec9bb90c1459c';
+(node as any).hash = '7d24d12a8e10b27bf6528932b2abe624';
 export default node;
