@@ -1,13 +1,22 @@
 import { ArtistForSaleArtworksGrid_artist } from "__generated__/ArtistForSaleArtworksGrid_artist.graphql"
-import InfiniteScrollArtworksGrid, {
+import {
+  InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
-} from "lib/Components/ArtworkGrids/InfiniteScrollGrid"
-import { createPaginationContainer, graphql } from "react-relay"
+} from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import React from "react"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-const ArtistForSaleArtworksGrid = createPaginationContainer<
-  { artist: ArtistForSaleArtworksGrid_artist } & InfiniteScrollGridProps
->(
-  InfiniteScrollArtworksGrid as any,
+interface Props extends InfiniteScrollGridProps {
+  artist: ArtistForSaleArtworksGrid_artist
+  relay: RelayPaginationProp
+}
+
+const ArtistForSaleArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
+  <InfiniteScrollArtworksGrid connection={artist.forSaleArtworks} loadMore={relay.loadMore} {...props} />
+)
+
+export const ArtistForSaleArtworksGridContainer = createPaginationContainer(
+  ArtistForSaleArtworksGrid,
   {
     artist: graphql`
       fragment ArtistForSaleArtworksGrid_artist on Artist
@@ -23,21 +32,13 @@ const ArtistForSaleArtworksGrid = createPaginationContainer<
           filter: $filter
           sort: PARTNER_UPDATED_AT_DESC
         ) @connection(key: "ArtistForSaleArtworksGrid_forSaleArtworks") {
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
+          # TODO: Just here to satisfy the relay compiler, can we get rid of this need?
           edges {
             node {
-              slug
               id
-              image {
-                aspect_ratio: aspectRatio
-              }
-              ...ArtworkGridItem_artwork
             }
           }
+          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
@@ -72,5 +73,3 @@ const ArtistForSaleArtworksGrid = createPaginationContainer<
     `,
   }
 )
-
-export default ArtistForSaleArtworksGrid

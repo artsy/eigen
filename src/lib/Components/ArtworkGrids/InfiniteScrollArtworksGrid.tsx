@@ -8,7 +8,7 @@
 
 import React from "react"
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
-import { RelayPaginationProp } from "react-relay"
+import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Spinner from "../Spinner"
 import Artwork from "./ArtworkGridItem"
@@ -19,6 +19,8 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Box, space } from "@artsy/palette"
+import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { graphql } from "relay-runtime"
 
 /**
  * TODO:
@@ -28,23 +30,6 @@ import { Box, space } from "@artsy/palette"
  *   - see ARMasonryCollectionViewLayout for details on how to deal with last works sticking out
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
-
-interface Artwork {
-  id: string
-  slug: string
-  image: {
-    aspect_ratio: number | null
-  } | null
-}
-
-type Artworks = Artwork[]
-
-interface ArtworksConnection {
-  pageInfo: { hasNextPage: boolean }
-  edges: Array<{
-    node: Artwork
-  }>
-}
 
 export interface Props {
   /** The direction for the grid, currently only 'column' is supported . */
@@ -59,32 +44,8 @@ export interface Props {
   /** The per-item margin */
   itemMargin?: number
 
-  /** The artist in question */
-  artist?: any
-
-  /** The gene in question */
-  gene?: any
-
-  mapPropsToArtworksConnection: (props: any) => ArtworksConnection
-
-  mapConnectionNodeToArtwork?: (node: any) => Artwork
-
-  /** Filter for artist artworks */
-  filter?: any
-
-  /** Medium for filter artworks */
-  medium?: string
-
-  /** Price range for filter artworks */
-  priceRange?: any
-
-  /** Sort for filter artworks */
-  sort?: any
-
-  /** Relay */
-  relay?: RelayPaginationProp
-
   /** A callback that is called once all artworks have been queried. */
+  // TODO: Should not be necessary now that we have a loadMore callback
   onComplete?: () => void
 
   /** A component to render at the top of all items */
@@ -94,13 +55,18 @@ export interface Props {
   shouldAddPadding?: boolean
 }
 
+interface PrivateProps {
+  connection: InfiniteScrollArtworksGrid_connection
+  loadMore: RelayPaginationProp["loadMore"]
+}
+
 interface State {
   sectionDimension: number
   completed: boolean
   fetchingNextPage: boolean
 }
 
-class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
+class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, State> {
   static defaultProps = {
     sectionDirection: "column",
     sectionCount: Dimensions.get("window").width > 700 ? 3 : 2,
@@ -115,8 +81,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     fetchingNextPage: false,
   }
 
-  artworksConnection(): ArtworksConnection {
-    return this.props.mapPropsToArtworksConnection(this.props)
+  artworksConnection() {
+    return this.props.connection
   }
 
   fetchNextPage = () => {
@@ -124,7 +90,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.loadMore(PAGE_SIZE, error => {
+    this.props.loadMore(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
@@ -194,12 +160,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   }
 
   sectionedArtworks() {
-    const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
-    const nodeMapper = this.props.mapConnectionNodeToArtwork ? this.props.mapConnectionNodeToArtwork : node => node
-    const artworks: Artworks = this.artworksConnection()
-      ? this.artworksConnection().edges.map(({ node }) => nodeMapper(node))
-      : []
+    const artworks = this.artworksConnection() ? this.artworksConnection().edges.map(({ node }) => node) : []
+    const sectionedArtworks: Array<typeof artworks> = []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
@@ -226,7 +189,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
           section.push(artwork)
 
           // Keep track of total section aspect ratio
-          const aspectRatio = artwork.image.aspect_ratio || 1 // Ensure we never divide by null/0
+          const aspectRatio = artwork.image.aspectRatio || 1 // Ensure we never divide by null/0
           // Invert the aspect ratio so that a lower value means a shorter section.
           sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
@@ -250,7 +213,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         const artwork = sectionedArtworks[i][j]
         artworkComponents.push(
           <Artwork
-            artwork={artwork as any}
+            artwork={artwork}
             key={"artwork-" + j + "-" + artwork.id}
             onPress={this.tappedOnArtwork.bind(this)}
           />
@@ -330,4 +293,24 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default InfiniteScrollArtworksGrid
+export const InfiniteScrollArtworksGridContainer = createFragmentContainer(InfiniteScrollArtworksGrid, {
+  connection: graphql`
+    fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          slug
+          id
+          image {
+            aspectRatio
+          }
+          ...ArtworkGridItem_artwork
+        }
+      }
+    }
+  `,
+})

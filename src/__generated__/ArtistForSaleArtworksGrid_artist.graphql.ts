@@ -1,27 +1,18 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
+import { InfiniteScrollArtworksGrid_connection$ref } from "./InfiniteScrollArtworksGrid_connection.graphql";
 declare const _ArtistForSaleArtworksGrid_artist$ref: unique symbol;
 export type ArtistForSaleArtworksGrid_artist$ref = typeof _ArtistForSaleArtworksGrid_artist$ref;
 export type ArtistForSaleArtworksGrid_artist = {
     readonly id: string;
     readonly forSaleArtworks: {
-        readonly pageInfo: {
-            readonly hasNextPage: boolean;
-            readonly startCursor: string | null;
-            readonly endCursor: string | null;
-        };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly slug: string;
                 readonly id: string;
-                readonly image: {
-                    readonly aspect_ratio: number;
-                } | null;
-                readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
             } | null;
         } | null> | null;
+        readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
     } | null;
     readonly " $refType": ArtistForSaleArtworksGrid_artist$ref;
 };
@@ -99,38 +90,6 @@ return {
         {
           "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "PageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "hasNextPage",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "startCursor",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "endCursor",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
           "name": "edges",
           "storageKey": null,
           "args": null,
@@ -146,43 +105,13 @@ return {
               "concreteType": "Artwork",
               "plural": false,
               "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "slug",
-                  "args": null,
-                  "storageKey": null
-                },
                 (v0/*: any*/),
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": "aspect_ratio",
-                      "name": "aspectRatio",
-                      "args": null,
-                      "storageKey": null
-                    }
-                  ]
-                },
                 {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ArtworkGridItem_artwork",
-                  "args": null
                 }
               ]
             },
@@ -194,11 +123,41 @@ return {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "InfiniteScrollArtworksGrid_connection",
+          "args": null
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '0a6ae3d4d65df041832fa8ff6ddd0dae';
+(node as any).hash = 'b094fe013531ce6c76f3384fe4b385e6';
 export default node;

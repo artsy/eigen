@@ -177,6 +177,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
     fairs: fairsConnection(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
       edges {
         node {
+          id
           slug
           name
           exhibition_period: exhibitionPeriod
@@ -209,7 +210,6 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           }
           start_at: startAt
           end_at: endAt
-          id
         }
       }
     }
@@ -738,6 +738,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
+                          (v5/*: any*/),
                           (v2/*: any*/),
                           (v1/*: any*/),
                           (v10/*: any*/),
@@ -841,8 +842,7 @@ return {
                             ]
                           },
                           (v15/*: any*/),
-                          (v16/*: any*/),
-                          (v5/*: any*/)
+                          (v16/*: any*/)
                         ]
                       }
                     ]
@@ -858,7 +858,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MapRendererQuery",
-    "id": "81dcb410d6e8326a204f43e0c2f29ddc",
+    "id": "ace9e3fc564a62b45627ec2ea2bbe2e1",
     "text": null,
     "metadata": {}
   }

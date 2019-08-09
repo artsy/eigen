@@ -1,16 +1,14 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FilteredInfiniteScrollGrid_filteredArtworks$ref } from "./FilteredInfiniteScrollGrid_filteredArtworks.graphql";
+import { FilteredInfiniteScrollGrid_entity$ref } from "./FilteredInfiniteScrollGrid_entity.graphql";
 declare const _FairArtworks_fair$ref: unique symbol;
 export type FairArtworks_fair$ref = typeof _FairArtworks_fair$ref;
 export type FairArtworks_fair = {
     readonly id: string;
     readonly internalID: string;
     readonly slug: string;
-    readonly artworks: {
-        readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
-    } | null;
+    readonly " $fragmentRefs": FilteredInfiniteScrollGrid_entity$ref;
     readonly " $refType": FairArtworks_fair$ref;
 };
 
@@ -58,47 +56,11 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
-      "alias": "artworks",
-      "name": "filteredArtworks",
-      "storageKey": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "aggregations",
-          "value": [
-            "MEDIUM",
-            "PRICE_RANGE",
-            "TOTAL"
-          ]
-        },
-        {
-          "kind": "Variable",
-          "name": "medium",
-          "variableName": "medium"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "priceRange"
-        },
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 0
-        }
-      ],
-      "concreteType": "FilterArtworks",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "FragmentSpread",
-          "name": "FilteredInfiniteScrollGrid_filteredArtworks",
-          "args": null
-        }
-      ]
+      "kind": "FragmentSpread",
+      "name": "FilteredInfiniteScrollGrid_entity",
+      "args": null
     }
   ]
 };
-(node as any).hash = '402258a893aac01717e9797f3bc8f22c';
+(node as any).hash = '71c589ff3f298e3fa56d4c9df7a59a5c';
 export default node;

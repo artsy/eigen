@@ -1,5 +1,4 @@
 import { Box, color, Sans, space } from "@artsy/palette"
-import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
@@ -25,7 +24,7 @@ const Background = styled(Box)`
 
 interface ShowCardProps {
   relay: RelayProp
-  shows: ShowItemRow_show[]
+  shows: Array<Show | Fair>
   onSaveStarted?: () => void
   onSaveEnded?: () => void
 }

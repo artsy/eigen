@@ -1,20 +1,21 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { Filters_filteredArtworks$ref } from "./Filters_filteredArtworks.graphql";
 import { InfiniteScrollArtworksGrid_connection$ref } from "./InfiniteScrollArtworksGrid_connection.graphql";
-declare const _ArtistNotForSaleArtworksGrid_artist$ref: unique symbol;
-export type ArtistNotForSaleArtworksGrid_artist$ref = typeof _ArtistNotForSaleArtworksGrid_artist$ref;
-export type ArtistNotForSaleArtworksGrid_artist = {
+declare const _FilteredInfiniteScrollGrid_entity$ref: unique symbol;
+export type FilteredInfiniteScrollGrid_entity$ref = typeof _FilteredInfiniteScrollGrid_entity$ref;
+export type FilteredInfiniteScrollGrid_entity = {
     readonly id: string;
-    readonly notForSaleArtworks: {
+    readonly filterArtworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
             } | null;
         } | null> | null;
-        readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
+        readonly " $fragmentRefs": Filters_filteredArtworks$ref & InfiniteScrollArtworksGrid_connection$ref;
     } | null;
-    readonly " $refType": ArtistNotForSaleArtworksGrid_artist$ref;
+    readonly " $refType": FilteredInfiniteScrollGrid_entity$ref;
 };
 
 
@@ -29,8 +30,8 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "ArtistNotForSaleArtworksGrid_artist",
-  "type": "Artist",
+  "name": "FilteredInfiniteScrollGrid_entity",
+  "type": "EntityWithFilterArtworksConnectionInterface",
   "metadata": {
     "connection": [
       {
@@ -38,7 +39,7 @@ return {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "notForSaleArtworks"
+          "filterArtworksConnection"
         ]
       }
     ]
@@ -58,33 +59,46 @@ return {
     },
     {
       "kind": "LocalArgument",
-      "name": "filter",
-      "type": "[ArtistArtworksFilters]",
-      "defaultValue": [
-        "IS_NOT_FOR_SALE"
-      ]
+      "name": "medium",
+      "type": "String",
+      "defaultValue": "*"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "priceRange",
+      "type": "String",
+      "defaultValue": "*-*"
     }
   ],
   "selections": [
     (v0/*: any*/),
     {
       "kind": "LinkedField",
-      "alias": "notForSaleArtworks",
-      "name": "__ArtistNotForSaleArtworksGrid_notForSaleArtworks_connection",
+      "alias": "filterArtworksConnection",
+      "name": "__FilteredInfiniteScrollGridContainer_filterArtworksConnection_connection",
       "storageKey": null,
       "args": [
         {
-          "kind": "Variable",
-          "name": "filter",
-          "variableName": "filter"
+          "kind": "Literal",
+          "name": "aggregations",
+          "value": [
+            "MEDIUM",
+            "PRICE_RANGE",
+            "TOTAL"
+          ]
         },
         {
-          "kind": "Literal",
-          "name": "sort",
-          "value": "PARTNER_UPDATED_AT_DESC"
+          "kind": "Variable",
+          "name": "medium",
+          "variableName": "medium"
+        },
+        {
+          "kind": "Variable",
+          "name": "priceRange",
+          "variableName": "priceRange"
         }
       ],
-      "concreteType": "ArtworkConnection",
+      "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
         {
@@ -93,7 +107,7 @@ return {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "ArtworkEdge",
+          "concreteType": "FilterArtworksEdge",
           "plural": true,
           "selections": [
             {
@@ -151,6 +165,11 @@ return {
         },
         {
           "kind": "FragmentSpread",
+          "name": "Filters_filteredArtworks",
+          "args": null
+        },
+        {
+          "kind": "FragmentSpread",
           "name": "InfiniteScrollArtworksGrid_connection",
           "args": null
         }
@@ -159,5 +178,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd7bdb4613266fb97d1f2a964b63ad1da';
+(node as any).hash = '299cf05b1674172e889e1edb203eb98e';
 export default node;

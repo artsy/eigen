@@ -18,6 +18,7 @@
 
 ### 1.12.13
 
+- Replace usage of legacy filter artwork fields with new connection - alloy
 - Drop non-connection paginated lists - alloy
 - Fix copy on registration pending view - yuki24
 - Fixes issue with mailto: links not opening - sweir27

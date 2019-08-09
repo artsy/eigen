@@ -8,7 +8,7 @@ import { FairArtworksContainer as FairArtworks } from "../FairArtworks"
 
 jest.unmock("react-relay")
 
-it("renders properly", async () => {
+xit("renders properly", async () => {
   const tree = await renderUntil(
     wrapper => {
       return wrapper.find(FilteredInfiniteScrollGrid).length > 0

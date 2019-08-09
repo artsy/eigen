@@ -2,15 +2,15 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { About_gene$ref } from "./About_gene.graphql";
-import { GeneArtworksGrid_filtered_artworks$ref } from "./GeneArtworksGrid_filtered_artworks.graphql";
 import { Header_gene$ref } from "./Header_gene.graphql";
+import { InfiniteScrollArtworksGrid_connection$ref } from "./InfiniteScrollArtworksGrid_connection.graphql";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 declare const _Gene_gene$ref: unique symbol;
 export type Gene_gene$ref = typeof _Gene_gene$ref;
 export type Gene_gene = {
     readonly id: string;
     readonly internalID: string;
-    readonly filtered_artworks: {
+    readonly artworks: {
         readonly counts: {
             readonly total: any | null;
         } | null;
@@ -22,7 +22,12 @@ export type Gene_gene = {
                 readonly count: number | null;
             } | null> | null;
         } | null> | null;
-        readonly " $fragmentRefs": GeneArtworksGrid_filtered_artworks$ref;
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+            } | null;
+        } | null> | null;
+        readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
     } | null;
     readonly " $fragmentRefs": Header_gene$ref & About_gene$ref;
     readonly " $refType": Gene_gene$ref;
@@ -34,21 +39,46 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v1 = {
-  "kind": "Variable",
-  "name": "sort",
-  "variableName": "sort"
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Fragment",
   "name": "Gene_gene",
   "type": "Gene",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "artworks"
+        ]
+      }
+    ]
+  },
   "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "count",
+      "type": "Int",
+      "defaultValue": 10
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "cursor",
+      "type": "String",
+      "defaultValue": ""
+    },
     {
       "kind": "LocalArgument",
       "name": "sort",
@@ -74,18 +104,12 @@ return {
     }
   ],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
-      "alias": "filtered_artworks",
-      "name": "filteredArtworks",
+      "alias": "artworks",
+      "name": "__Gene_artworks_connection",
       "storageKey": null,
       "args": [
         {
@@ -113,13 +137,12 @@ return {
           "variableName": "price_range"
         },
         {
-          "kind": "Literal",
-          "name": "size",
-          "value": 0
-        },
-        (v1/*: any*/)
+          "kind": "Variable",
+          "name": "sort",
+          "variableName": "sort"
+        }
       ],
-      "concreteType": "FilterArtworks",
+      "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
         {
@@ -165,7 +188,7 @@ return {
               "concreteType": "AggregationCount",
               "plural": true,
               "selections": [
-                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -185,11 +208,71 @@ return {
           ]
         },
         {
-          "kind": "FragmentSpread",
-          "name": "GeneArtworksGrid_filtered_artworks",
-          "args": [
-            (v1/*: any*/)
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "FilterArtworksEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artwork",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }
           ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "InfiniteScrollArtworksGrid_connection",
+          "args": null
         }
       ]
     },
@@ -206,5 +289,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '19a8feb763c444519cb3daad41ebb2de';
+(node as any).hash = 'c903ebd45686de924ddffae188d74a2b';
 export default node;

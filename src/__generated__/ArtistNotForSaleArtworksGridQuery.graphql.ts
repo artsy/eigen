@@ -46,22 +46,36 @@ query ArtistNotForSaleArtworksGridQuery(
 fragment ArtistNotForSaleArtworksGrid_artist_3KQYpM on Artist {
   id
   notForSaleArtworks: artworksConnection(first: $count, after: $cursor, filter: $filter, sort: PARTNER_UPDATED_AT_DESC) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
     edges {
       node {
-        slug
         id
-        image {
-          aspect_ratio: aspectRatio
-        }
-        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
     }
   }
 }
@@ -263,38 +277,6 @@ return {
                   {
                     "kind": "LinkedField",
                     "alias": null,
-                    "name": "pageInfo",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "PageInfo",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "hasNextPage",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "startCursor",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "endCursor",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
                     "name": "edges",
                     "storageKey": null,
                     "args": null,
@@ -310,6 +292,7 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -317,7 +300,6 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v4/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -329,7 +311,7 @@ return {
                             "selections": [
                               {
                                 "kind": "ScalarField",
-                                "alias": "aspect_ratio",
+                                "alias": null,
                                 "name": "aspectRatio",
                                 "args": null,
                                 "storageKey": null
@@ -346,6 +328,13 @@ return {
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": "aspect_ratio",
+                                "name": "aspectRatio",
+                                "args": null,
+                                "storageKey": null
                               }
                             ]
                           },
@@ -519,6 +508,38 @@ return {
                         "storageKey": null
                       }
                     ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "pageInfo",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasNextPage",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "startCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ]
               },
@@ -543,7 +564,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistNotForSaleArtworksGridQuery",
-    "id": "3a4082d41dcfca29b77d3414a422cfc0",
+    "id": "5cb541a5a50a51d218b914b75d53119f",
     "text": null,
     "metadata": {}
   }

@@ -128,22 +128,17 @@ fragment Artworks_artist on Artist {
 fragment ArtistForSaleArtworksGrid_artist on Artist {
   id
   forSaleArtworks: artworksConnection(first: 10, filter: [IS_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
     edges {
       node {
-        slug
         id
-        image {
-          aspect_ratio: aspectRatio
-        }
-        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -151,22 +146,36 @@ fragment ArtistForSaleArtworksGrid_artist on Artist {
 fragment ArtistNotForSaleArtworksGrid_artist on Artist {
   id
   notForSaleArtworks: artworksConnection(first: 10, filter: [IS_NOT_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
     edges {
       node {
-        slug
         id
-        image {
-          aspect_ratio: aspectRatio
-        }
-        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
     }
   }
 }
@@ -535,38 +544,6 @@ v25 = [
   {
     "kind": "LinkedField",
     "alias": null,
-    "name": "pageInfo",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "PageInfo",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "hasNextPage",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "startCursor",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "endCursor",
-        "args": null,
-        "storageKey": null
-      }
-    ]
-  },
-  {
-    "kind": "LinkedField",
-    "alias": null,
     "name": "edges",
     "storageKey": null,
     "args": null,
@@ -582,8 +559,8 @@ v25 = [
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
           (v6/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -595,12 +572,19 @@ v25 = [
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": "aspect_ratio",
+                "alias": null,
                 "name": "aspectRatio",
                 "args": null,
                 "storageKey": null
               },
-              (v8/*: any*/)
+              (v8/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": "aspect_ratio",
+                "name": "aspectRatio",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           {
@@ -763,6 +747,38 @@ v25 = [
         "kind": "ScalarField",
         "alias": null,
         "name": "cursor",
+        "args": null,
+        "storageKey": null
+      }
+    ]
+  },
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "pageInfo",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "PageInfo",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "hasNextPage",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "startCursor",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "endCursor",
         "args": null,
         "storageKey": null
       }
@@ -1218,7 +1234,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersArtistQuery",
-    "id": "4aafcf549caa6a27b0dc7b701848f060",
+    "id": "15571cb183f5bec1bd9e739f73808b58",
     "text": null,
     "metadata": {}
   }

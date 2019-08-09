@@ -372,7 +372,6 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        // FIXME: Should this be slug?
         this.shows[node.slug] = node
       })
 
@@ -381,7 +380,6 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        // FIXME: Should this be slug?
         this.fairs[node.slug] = {
           ...node,
           type: "Fair",
@@ -432,7 +430,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const lat = item.location.coordinates.lat
     const lng = item.location.coordinates.lng
-    // FIXME: Should this be slug? Looks like maybe it's internalID or id
     const id = item.slug
 
     if (type === "Fair") {
@@ -474,9 +471,9 @@ export class GlobalMap extends React.Component<Props, State> {
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
       if (item.type === "Show") {
-        return this.shows[item.id]
+        return this.shows[item.slug]
       } else if (item.type === "Fair") {
-        return this.fairs[item.id]
+        return this.fairs[item.slug]
       }
       return item
     })
@@ -507,7 +504,7 @@ export class GlobalMap extends React.Component<Props, State> {
             <Theme>
               {!!hasShows && (
                 <ShowCard
-                  shows={updatedShows as any}
+                  shows={updatedShows}
                   relay={this.props.relay}
                   onSaveStarted={() => {
                     this.setState({ isSavingShow: true })
@@ -920,6 +917,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         fairs: fairsConnection(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
+              id
               slug
               name
               exhibition_period: exhibitionPeriod
