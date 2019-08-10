@@ -690,7 +690,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
     const {
       payload: {
-        properties: { id, cluster, type },
+        properties: { slug, cluster, type },
         geometry: { coordinates },
       },
     } = nativeEvent
@@ -706,10 +706,10 @@ export class GlobalMap extends React.Component<Props, State> {
     // maps pins and cards will remain the same for now.
     if (!cluster) {
       if (type === "Show") {
-        activeShows = [this.shows[id]]
+        activeShows = [this.shows[slug]]
         this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
       } else if (type === "Fair") {
-        activeShows = [this.fairs[id]]
+        activeShows = [this.fairs[slug]]
         this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
       }
     }
