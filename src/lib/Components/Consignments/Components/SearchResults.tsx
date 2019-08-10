@@ -44,7 +44,7 @@ const UnknownName = styled.Text`
 `
 
 export interface SearchQueryProps<T> extends TextInputProps {
-  results: T[] | null
+  results: ReadonlyArray<T> | null
   query: string
   placeholder: string
   noResultsMessage: string

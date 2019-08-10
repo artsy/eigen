@@ -1,4 +1,4 @@
-import Artist from "../Artist"
+import Artist from "../ConsignmentsArtist"
 
 const emptyProps = { navigator: {} as any, route: {} as any }
 

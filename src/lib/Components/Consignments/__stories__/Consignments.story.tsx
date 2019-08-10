@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
 import Nav from "../index"
-import Artist from "../Screens/Artist"
+import Artist from "../Screens/ConsignmentsArtist"
 import Edition from "../Screens/Edition"
 
 import Confirmation, { SubmissionTypes } from "../Screens/Confirmation"

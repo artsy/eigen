@@ -14,6 +14,10 @@
 
 -->
 
+### Master
+
+- Fix consignments artist search and make it use relay - alloy
+
 ### 1.12.15
 
 - Replace usage of legacy filter artwork fields with new connection - alloy
