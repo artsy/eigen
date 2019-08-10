@@ -81,10 +81,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     fetchingNextPage: false,
   }
 
-  artworksConnection() {
-    return this.props.connection
-  }
-
   fetchNextPage = () => {
     if (this.state.fetchingNextPage || this.state.completed) {
       return
@@ -96,28 +92,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
         console.error("InfiniteScrollGrid.tsx", error.message)
       }
       this.setState({ fetchingNextPage: false })
-      if (!this.artworksConnection().pageInfo.hasNextPage) {
+      if (!this.props.connection.pageInfo.hasNextPage) {
         if (this.props.onComplete) {
           this.props.onComplete()
         }
         this.setState({ completed: true })
       }
     })
-    // this.props.relay.setVariables(
-    //   {
-    //     totalSize: this.props.relay.variables.totalSize + PageSize,
-    //   },
-    //   readyState => {
-    //     if (readyState.done) {
-    //       this.setState({ fetchingNextPage: false })
-    //       // TODO: This uses the old queryKey, please refactor to use mapPropsToArtworksConnection
-    //       if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
-    //         this.props.onComplete()
-    //         this.setState({ completed: true })
-    //       }
-    //     }
-    //   }
-    // )
   }
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
@@ -140,7 +121,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   tappedOnArtwork = (artworkID: string) => {
-    const artworks = this.artworksConnection() ? this.artworksConnection().edges : []
+    const artworks = this.props.connection.edges
     const allArtworkIDs = artworks.map(a => a.node.slug)
     const index = allArtworkIDs.indexOf(artworkID)
     SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
@@ -161,7 +142,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   sectionedArtworks() {
     const sectionRatioSums: number[] = []
-    const artworks = this.artworksConnection() ? this.artworksConnection().edges.map(({ node }) => node) : []
+    const artworks = this.props.connection.edges.map(({ node }) => node)
     const sectionedArtworks: Array<typeof artworks> = []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
@@ -204,7 +185,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       height: this.props.itemMargin,
     }
 
-    const artworks = this.artworksConnection() ? this.artworksConnection().edges : []
+    const artworks = this.props.connection.edges
     const sectionedArtworks = this.sectionedArtworks()
     const sections: JSX.Element[] = []
     for (let i = 0; i < this.props.sectionCount; i++) {
