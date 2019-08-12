@@ -2545,6 +2545,11 @@ interface CommerceOrder {
   ): String
 }
 
+# Order Action data
+type CommerceOrderActionData {
+  clientSecret: String!
+}
+
 # Fields to sort by
 enum CommerceOrderConnectionSortEnum {
   # Sort by the timestamp the state of the order expires at in ascending order
@@ -2607,7 +2612,10 @@ enum CommerceOrderModeEnum {
 }
 
 # Represents either a resolved Order or a potential failure
-union CommerceOrderOrFailureUnion = CommerceOrderWithMutationFailure | CommerceOrderWithMutationSuccess
+union CommerceOrderOrFailureUnion =
+    CommerceOrderRequiresAction
+  | CommerceOrderWithMutationFailure
+  | CommerceOrderWithMutationSuccess
 
 enum CommerceOrderParticipantEnum {
   # Participant on the buyer side
@@ -2619,6 +2627,12 @@ enum CommerceOrderParticipantEnum {
 
 # Represents either a partner or a user
 union CommerceOrderPartyUnion = CommercePartner | CommerceUser
+
+# Data reflecting actions required
+type CommerceOrderRequiresAction {
+  # Data related to action needed
+  actionData: CommerceOrderActionData!
+}
 
 enum CommerceOrderStateEnum {
   # order is abandoned by buyer and never submitted

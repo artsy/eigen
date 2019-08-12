@@ -251,7 +251,7 @@
 - (ARCellData *)jumpToArtworkWithBNMO
 {
   return [self tappableCellDataWithTitle:@"Artwork With BNMO" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"anthony-caro-table-piece-ccii"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"josh-reames-columbo-ii"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

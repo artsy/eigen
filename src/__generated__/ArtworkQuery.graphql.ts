@@ -277,6 +277,8 @@ fragment CommercialButtons_artwork on Artwork {
   isAcquireable
   isOfferable
   isInquireable
+  ...BuyNowButton_artwork
+  ...MakeOfferButton_artwork
 }
 
 fragment CommercialPartnerInformation_artwork on Artwork {
@@ -308,6 +310,14 @@ fragment CommercialEditionSetInformation_artwork on Artwork {
     id
   }
   ...CommercialPartnerInformation_artwork
+}
+
+fragment BuyNowButton_artwork on Artwork {
+  internalID
+}
+
+fragment MakeOfferButton_artwork on Artwork {
+  internalID
 }
 
 fragment ArtworkActions_artwork on Artwork {
@@ -1470,7 +1480,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "628e4d2bfab3cc3ca71776f6b9848354",
+    "id": "1d1b52edb24e07dbe1e74a7be1c5f792",
     "text": null,
     "metadata": {}
   }

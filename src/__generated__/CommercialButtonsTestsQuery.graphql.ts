@@ -29,6 +29,16 @@ fragment CommercialButtons_artwork on Artwork {
   isAcquireable
   isOfferable
   isInquireable
+  ...BuyNowButton_artwork
+  ...MakeOfferButton_artwork
+}
+
+fragment BuyNowButton_artwork on Artwork {
+  internalID
+}
+
+fragment MakeOfferButton_artwork on Artwork {
+  internalID
 }
 */
 
@@ -130,7 +140,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsQuery",
-    "id": "98d4b0dfdb36a1e5cf8a56378b6cb0c6",
+    "id": "684c1d42157f7529b679b5135f36d766",
     "text": null,
     "metadata": {}
   }
