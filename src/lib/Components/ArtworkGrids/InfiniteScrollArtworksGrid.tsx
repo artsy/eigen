@@ -13,7 +13,6 @@ import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 import Spinner from "../Spinner"
 import Artwork from "./ArtworkGridItem"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { PAGE_SIZE } from "lib/data/constants"
@@ -120,13 +119,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     // tslint:enable:no-console
   }
 
-  tappedOnArtwork = (artworkID: string) => {
-    const artworks = this.props.connection.edges
-    const allArtworkIDs = artworks.map(a => a.node.slug)
-    const index = allArtworkIDs.indexOf(artworkID)
-    SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
-  }
-
   onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
     const { shouldAddPadding } = this.props
@@ -192,13 +184,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
-        artworkComponents.push(
-          <Artwork
-            artwork={artwork}
-            key={"artwork-" + j + "-" + artwork.id}
-            onPress={this.tappedOnArtwork.bind(this)}
-          />
-        )
+        artworkComponents.push(<Artwork artwork={artwork} key={"artwork-" + j + "-" + artwork.id} />)
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(
