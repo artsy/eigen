@@ -497,6 +497,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [[ARGraphQLQueryCache new] clearAll];
     }];
 
+    BOOL usingStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
 
     [labsSectionData addCellDataFromArray:@[
         crashCellData,
@@ -505,10 +506,10 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateNotificationTokenPasteboardCopy],
         [self requestNotificationsAlert],
 #endif
-        [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
-        [self editableTextCellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault],
-        [self editableTextCellDataWithName:@"Metaphysics" defaultKey:ARStagingMetaphysicsURLDefault],
-        [self editableTextCellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault],
+        [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault enabled:usingStaging],
+        [self editableTextCellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault enabled:usingStaging],
+        [self editableTextCellDataWithName:@"Metaphysics" defaultKey:ARStagingMetaphysicsURLDefault enabled:usingStaging],
+        [self editableTextCellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault enabled:usingStaging],
     ]];
     return labsSectionData;
 }

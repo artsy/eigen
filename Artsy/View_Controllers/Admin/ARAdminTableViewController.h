@@ -21,6 +21,8 @@ extern NSString *const ARTwoLabelCell;
 
 /// Easy NSUserDefault toggle
 - (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key;
+/// Same as the above function, but allows you to disable the setting alert prompt.
+- (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key enabled:(BOOL)enabled;
 
 /// Metadata about the app version etc
 - (NSString *)titleForApp;
