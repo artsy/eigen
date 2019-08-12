@@ -3,7 +3,6 @@
 #import "Artist.h"
 #import "Artwork.h"
 #import "ArtsyAPI+Search.h"
-#import "ARArtworkSetViewController.h"
 #import "ARParallaxEffect.h"
 #import "ARSearchViewController+Private.h"
 #import "Fair.h"

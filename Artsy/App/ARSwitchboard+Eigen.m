@@ -4,7 +4,7 @@
 
 // View Controllers
 #import "ARAdminSettingsViewController.h"
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
@@ -58,29 +58,15 @@
 #pragma mark -
 #pragma mark Artworks
 
-- (ARArtworkSetViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair
+- (ARArtworkViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair
 {
-    return [[ARArtworkSetViewController alloc] initWithArtwork:artwork fair:fair];
+    return [[ARArtworkViewController alloc] initWithArtwork:artwork fair:fair];
 }
 
-- (ARArtworkSetViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair
+- (ARArtworkViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair
 {
-    return [[ARArtworkSetViewController alloc] initWithArtworkID:artworkID fair:fair];
+    return [[ARArtworkViewController alloc] initWithArtwork:[[Artwork alloc] initWithArtworkID:artworkID] fair:fair];
 }
-
-- (ARArtworkSetViewController *)loadArtworkSet:(NSArray *)artworkSet inFair:(Fair *)fair atIndex:(NSInteger)index
-{
-    return [[ARArtworkSetViewController alloc] initWithArtworkSet:artworkSet fair:fair atIndex:index];
-}
-
-- (ARArtworkSetViewController *)loadArtworkIDSet:(NSArray *)artworkIDSet inFair:(Fair *)fair atIndex:(NSInteger)index
-{
-    NSArray *artworks = [artworkIDSet map:^id(id artworkID) {
-        return [[Artwork alloc] initWithArtworkID:artworkID];
-    }];
-    return [[ARArtworkSetViewController alloc] initWithArtworkSet:artworks fair:fair atIndex:index];
-}
-
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {

@@ -18,8 +18,8 @@
 #import "ArtsyAPI+Pages.h"
 
 #import "ARSaleArtworkItemWidthDependentModule.h"
-#import "ARArtworkSetViewController.h"
-//#import "Fair.h" // Required by the switchboard's loadArtworkWithID(inFair:) function, even if we just pass nil in as a fair.
+#import "ARArtworkViewController.h"
+#import "Fair.h" // Required by the ARArtworkViewController's (artwork: fair:) initializer, even if we just pass nil in as a fair.
 
 #import "ARSwitchBoard.h"
 #import "ARSwitchBoard+Eigen.h"

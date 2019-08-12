@@ -65,11 +65,7 @@
     ARSwitchBoard *switchBoard = ARSwitchBoard.sharedInstance;
 
     if ([object isKindOfClass:Artwork.class]) {
-        NSArray *items = self.modelVC.items;
-
-        // TODO: Check for Fair context?
-        NSInteger index = [items indexOfObject:object];
-        viewController = [switchBoard loadArtworkSet:items inFair:nil atIndex:index];
+        viewController = [switchBoard loadArtwork:object inFair:nil];
 
     } else if ([object isKindOfClass:Artist.class]) {
         viewController = [switchBoard loadArtistWithID:[object artistID]];

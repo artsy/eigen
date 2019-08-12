@@ -189,8 +189,7 @@ extension AuctionViewController {
             isCompact: isCompactSize,
             lotStandingTappedClosure: { [weak self] index in
                 guard let lotStanding = self?.saleViewModel?.lotStanding(at: index) else { return }
-                guard let artworkViewController = ARArtworkSetViewController(artwork: lotStanding.saleArtwork.artwork) else { return }
-                
+                let artworkViewController = ARArtworkViewController(artwork: lotStanding.saleArtwork.artwork, fair: nil)
                 self?.navigationController?.pushViewController(artworkViewController, animated: true)
             },
             isFinalHeaderElement: !self.buyNowSegmentWillBeShown
@@ -392,9 +391,11 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
 fileprivate typealias EmbeddedModelCallbacks = AuctionViewController
 extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, didTapItemAt index: UInt) {
-        let artworks = saleArtworksViewController.items.map { Artwork(artworkID: $0.artworkID) }
-        let viewController = ARArtworkSetViewController(artworkSet: artworks, at: Int(index))
-        navigationController?.pushViewController(viewController!, animated: allowAnimations)
+        guard let saleArtwork = controller.items?[Int(index)] as? SaleArtworkViewModel else {
+            return
+        }
+        let viewController = ARArtworkViewController(artwork: Artwork(artworkID: saleArtwork.artworkID), fair: nil)
+        navigationController?.pushViewController(viewController, animated: allowAnimations)
     }
 
     func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, shouldPresent viewController: UIViewController!) {

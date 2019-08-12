@@ -3,7 +3,7 @@
 #import "Artwork.h"
 #import "ARSystemTime.h"
 #import "ARSwitchBoard+Eigen.h"
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "UIViewController+FullScreenLoading.h"
@@ -188,7 +188,7 @@
 /// Useful for artworks that are lots in auctions, to reload when the auction event begins or ends.
 - (void)reloadUI
 {
-    ARArtworkSetViewController *newViewController = [[ARSwitchBoard sharedInstance] loadArtwork:self.artwork inFair:self.artwork.fair];
+    ARArtworkViewController *newViewController = [[ARSwitchBoard sharedInstance] loadArtwork:self.artwork inFair:self.artwork.fair];
     // We need to fetch this upfront and cache in a local variable, since `self.navigationController` will be nil once we pop.
     UINavigationController *navigationController = self.navigationController;
     [navigationController popViewControllerAnimated:NO];
