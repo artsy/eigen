@@ -4,6 +4,7 @@ import { CommercialButtonsOfferOrderMutation } from "__generated__/CommercialBut
 import { CommercialButtonsOrderMutation } from "__generated__/CommercialButtonsOrderMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
+import { ActionSheetIOS } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface CommercialButtonProps {
@@ -23,8 +24,25 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
     isCommittingCreateOrderMutation: false,
   }
 
-  onMutationError(error) {
-    // FIXME: Handle error
+  onMutationError(orderType: string, error) {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ["Cancel", "Retry"],
+        title: "Sorry, we couldn't process the request.",
+        message: "Please try again or contact orders@artsy.net for help.",
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        // Retry callback
+        if (buttonIndex === 1) {
+          if (orderType === "order") {
+            this.handleCreateOrder()
+          } else if (orderType === "offer") {
+            this.handleCreateOfferOrder()
+          }
+        }
+      }
+    )
     console.log("src/lib/Scenes/Artwork/Components/CommercialButtons.tsx", error)
   }
 
@@ -72,13 +90,14 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
                 commerceCreateOrderWithArtwork: { orderOrError },
               } = data
               if (orderOrError.error) {
-                this.onMutationError(orderOrError.error)
+                this.onMutationError("order", orderOrError.error)
               } else {
                 SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
               }
             })
           },
-          onError: this.onMutationError,
+          onError: error =>
+            this.setState({ isCommittingCreateOrderMutation: false }, () => this.onMutationError("order", error)),
         })
       }
     })
@@ -128,13 +147,14 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
                 commerceCreateOfferOrderWithArtwork: { orderOrError },
               } = data
               if (orderOrError.error) {
-                this.onMutationError(orderOrError.error)
+                this.onMutationError("offer", orderOrError.error)
               } else {
                 SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
               }
             })
           },
-          onError: this.onMutationError,
+          onError: error =>
+            this.setState({ isCommittingCreateOfferOrderMutation: false }, () => this.onMutationError("order", error)),
         })
       }
     })
