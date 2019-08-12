@@ -5,6 +5,9 @@
 #import "ARSpinner.h"
 #import "AROptions.h"
 #import "UIViewController+SimpleChildren.h"
+#import "ARTopMenuViewController.h"
+#import "UIDevice-Hardware.h"
+#import "ARViewInRoomViewController.h"
 
 #import <Emission/ARArtworkComponentViewController.h>
 
@@ -125,6 +128,26 @@
 - (CGPoint)imageViewOffset;
 {
     return self.legacyViewController.imageViewOffset;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)newSize withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:newSize withTransitionCoordinator:coordinator];
+    BOOL landscape = newSize.width > newSize.height;
+
+    BOOL isTopViewController = self.navigationController.topViewController == self;
+    BOOL isShowingModalViewController = [ARTopMenuViewController sharedController].presentedViewController != nil;
+    BOOL canShowInRoom = self.artwork.canViewInRoom;
+
+    if (![UIDevice isPad] && canShowInRoom && !isShowingModalViewController && isTopViewController) {
+        if (landscape) {
+            ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
+            viewInRoomVC.popOnRotation = YES;
+            viewInRoomVC.rotationDelegate = self;
+
+            [self.navigationController pushViewController:viewInRoomVC animated:YES];
+        }
+    }
 }
 
 @end
