@@ -4,7 +4,7 @@ import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
-import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons"
+import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 

@@ -17,6 +17,10 @@
 
 - Fix consignments artist search and make it use relay - alloy
 
+### Master
+
+- Adds Commercial Bid Buttons - kierangillen
+
 ### 1.12.16
 
 - Fix clicking on single pin in City Guide map - alloy

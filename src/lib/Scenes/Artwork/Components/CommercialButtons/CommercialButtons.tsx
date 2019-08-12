@@ -3,6 +3,7 @@ import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwo
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 import { BuyNowButtonFragmentContainer as BuyNowButton } from "./BuyNowButton"
 import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOfferButton"
 
@@ -17,11 +18,17 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     SwitchBoard.presentModalViewController(this, `/inquiry/${this.props.artwork.slug}`)
   }
 
+  handleBid = () => {
+    SwitchBoard.presentModalViewController(this, `/bid/${this.props.artwork.slug}`)
+  }
+
   renderButtons = () => {
     const { artwork } = this.props
-    const { isAcquireable, isOfferable, isInquireable } = artwork
+    const { isAcquireable, isOfferable, isInquireable, isBiddable } = artwork
 
-    if (isOfferable && isAcquireable) {
+    if (isBiddable && artwork.sale && !artwork.sale.isClosed) {
+      return <BidButton artwork={artwork} />
+    } else if (isOfferable && isAcquireable) {
       return (
         <>
           <BuyNowButton artwork={artwork} editionSetID={this.props.editionSetID} />
@@ -57,8 +64,14 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       isAcquireable
       isOfferable
       isInquireable
+      isBiddable
+
+      sale {
+        isClosed
+      }
 
       ...BuyNowButton_artwork
+      ...BidButton_artwork
       ...MakeOfferButton_artwork
     }
   `,

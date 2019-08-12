@@ -1,6 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { BidButton_artwork$ref } from "./BidButton_artwork.graphql";
 import { BuyNowButton_artwork$ref } from "./BuyNowButton_artwork.graphql";
 import { MakeOfferButton_artwork$ref } from "./MakeOfferButton_artwork.graphql";
 declare const _CommercialButtons_artwork$ref: unique symbol;
@@ -11,7 +12,11 @@ export type CommercialButtons_artwork = {
     readonly isAcquireable: boolean | null;
     readonly isOfferable: boolean | null;
     readonly isInquireable: boolean | null;
-    readonly " $fragmentRefs": BuyNowButton_artwork$ref & MakeOfferButton_artwork$ref;
+    readonly isBiddable: boolean | null;
+    readonly sale: {
+        readonly isClosed: boolean | null;
+    } | null;
+    readonly " $fragmentRefs": BuyNowButton_artwork$ref & BidButton_artwork$ref & MakeOfferButton_artwork$ref;
     readonly " $refType": CommercialButtons_artwork$ref;
 };
 
@@ -60,8 +65,38 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isBiddable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "sale",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isClosed",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "BuyNowButton_artwork",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "BidButton_artwork",
       "args": null
     },
     {
@@ -71,5 +106,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8ea2e8146ceb23b9b0febf3d3094ea8a';
+(node as any).hash = '2bc5ac5d89e4888e681135d87f2cfe6d';
 export default node;
