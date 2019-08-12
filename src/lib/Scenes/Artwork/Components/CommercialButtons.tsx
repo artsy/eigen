@@ -4,7 +4,7 @@ import { CommercialButtonsOfferOrderMutation } from "__generated__/CommercialBut
 import { CommercialButtonsOrderMutation } from "__generated__/CommercialButtonsOrderMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { ActionSheetIOS } from "react-native"
+import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface CommercialButtonProps {
@@ -25,24 +25,22 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
   }
 
   onMutationError(orderType: "offer" | "order", error) {
-    ActionSheetIOS.showActionSheetWithOptions(
+    Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
       {
-        options: ["Cancel", "Retry"],
-        title: "Sorry, we couldn't process the request.",
-        message: "Please try again or contact orders@artsy.net for help.",
-        cancelButtonIndex: 0,
+        text: "Cancel",
+        style: "cancel",
       },
-      buttonIndex => {
-        // Retry callback
-        if (buttonIndex === 1) {
+      {
+        text: "Retry",
+        onPress: () => {
           if (orderType === "order") {
             this.handleCreateOrder()
           } else if (orderType === "offer") {
             this.handleCreateOfferOrder()
           }
-        }
-      }
-    )
+        },
+      },
+    ])
     console.log("src/lib/Scenes/Artwork/Components/CommercialButtons.tsx", error)
   }
 
@@ -85,16 +83,17 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
             },
           },
           onCompleted: data => {
-            this.setState({ isCommittingCreateOrderMutation: false }, () => {
-              const {
-                commerceCreateOrderWithArtwork: { orderOrError },
-              } = data
-              if (orderOrError.error) {
-                this.onMutationError("order", orderOrError.error)
-              } else {
-                SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
-              }
-            })
+            this.setState({ isCommittingCreateOrderMutation: false }, () => this.onMutationError("order", "test"))
+            // this.setState({ isCommittingCreateOrderMutation: false }, () => {
+            //   const {
+            //     commerceCreateOrderWithArtwork: { orderOrError },
+            //   } = data
+            //   if (orderOrError.error) {
+            //     this.onMutationError("order", orderOrError.error)
+            //   } else {
+            //     SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
+            //   }
+            // })
           },
           onError: error =>
             this.setState({ isCommittingCreateOrderMutation: false }, () => this.onMutationError("order", error)),
