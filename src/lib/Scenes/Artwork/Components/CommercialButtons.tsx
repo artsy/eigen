@@ -24,7 +24,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
     isCommittingCreateOrderMutation: false,
   }
 
-  onMutationError(orderType: string, error) {
+  onMutationError(orderType: "offer" | "order", error) {
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: ["Cancel", "Retry"],
