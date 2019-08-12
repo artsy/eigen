@@ -14,7 +14,7 @@
 
 -->
 
-### 1.12.15
+### 1.12.16
 
 - Replace usage of legacy filter artwork fields with new connection - alloy
 - Removes artwork set functionality - ash
