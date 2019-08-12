@@ -252,11 +252,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         }
     };
 
-    emission.switchBoardModule.presentArtworkSet = ^(UIViewController * _Nonnull fromViewController, NSArray<NSString *> * _Nonnull artworkIDs, NSNumber * _Nonnull index) {
-        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtworkIDSet:artworkIDs inFair:nil atIndex:index.integerValue];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-    };
-
 #pragma mark - Native Module: Events/Analytics
 
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {

@@ -2,7 +2,7 @@
 #import "AREmbeddedModelsViewController.h"
 #import "ARPartnerShowFeedItem.h"
 #import "ARTheme+HeightAdditions.h"
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "PartnerShow.h"
 #import "ARSeparatorViews.h"
 #import "AROptions.h"
@@ -217,7 +217,7 @@ static CGFloat ARPartnerShowCellSideMargin;
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
-    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.artworkThumbnailsVC.items inFair:nil atIndex:index];
+    ARArtworkViewController *viewController = [ARSwitchBoard.sharedInstance loadArtwork:self.artworkThumbnailsVC.items[index] inFair:nil];
     [self.delegate modernPartnerShowTableViewCell:self shouldShowViewController:viewController];
 }
 

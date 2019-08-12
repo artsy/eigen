@@ -1,7 +1,7 @@
 #import "ARAuctionWebViewController.h"
 #import "ARSwitchBoard.h"
 #import "ARSwitchboard+Eigen.h"
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "ARArtworkViewController.h"
 
 #import <OCMock/OCObserverMockObject.h>

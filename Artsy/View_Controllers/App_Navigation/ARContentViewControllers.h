@@ -1,4 +1,4 @@
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "ARAdminSettingsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARExternalWebBrowserViewController.h"

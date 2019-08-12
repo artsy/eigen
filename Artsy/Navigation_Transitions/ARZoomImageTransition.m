@@ -3,7 +3,7 @@
 
 #import "ARZoomImageTransition.h"
 #import "ARZoomArtworkImageViewController.h"
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "ARArtworkViewController.h"
 #import "ARDispatchManager.h"
 
@@ -17,10 +17,10 @@
 
 - (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    ARArtworkSetViewController *artworkController = (id)fromVC;
+    ARArtworkViewController *artworkController = (id)fromVC;
     ARZoomArtworkImageViewController *zoomController = (id)toVC;
 
-    NSAssert([artworkController isKindOfClass:[ARArtworkSetViewController class]], @"FromVC is not an ArtworkVC");
+    NSAssert([artworkController isKindOfClass:[ARArtworkViewController class]], @"FromVC is not an ArtworkVC");
     NSAssert([zoomController isKindOfClass:[ARZoomArtworkImageViewController class]], @"ToVC is not a ViewInRoomVC");
 
     // Add the controllers, the zoom controller is clear, so adding it will show nothing
@@ -28,7 +28,7 @@
     [transitionContext.containerView addSubview:zoomController.view];
     zoomController.view.frame = [transitionContext containerView].bounds;
 
-    UIImageView *originalArtworkImageView = (id)artworkController.currentArtworkViewController.imageView;
+    UIImageView *originalArtworkImageView = (id)artworkController.imageView;
 
     CGRect endFrame = [transitionContext containerView].bounds;
     CGRect originalPositionFrame = [originalArtworkImageView convertRect:originalArtworkImageView.bounds toView:transitionContext.containerView];
@@ -68,10 +68,10 @@
 
 - (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    ARArtworkSetViewController *artworkController = (id)toVC;
+    ARArtworkViewController *artworkController = (id)toVC;
     ARZoomArtworkImageViewController *zoomController = (id)fromVC;
 
-    NSAssert([artworkController isKindOfClass:[ARArtworkSetViewController class]], @"ToVC is not an ArtworkVC");
+    NSAssert([artworkController isKindOfClass:[ARArtworkViewController class]], @"ToVC is not an ArtworkVC");
     NSAssert([zoomController isKindOfClass:[ARZoomArtworkImageViewController class]], @"FromVC is not a ViewInRoomVC");
 
     // Add the controllers, the zoom controller is clear, so adding it will show nothing
@@ -90,7 +90,7 @@
         zoomController.view.frame = [transitionContext containerView].bounds;
 
         // Get the position to move the zoom view into
-        UIView *originalArtworkImageView = artworkController.currentArtworkViewController.imageView;
+        UIView *originalArtworkImageView = artworkController.imageView;
 
         CGRect originalPositionFrame = [originalArtworkImageView convertRect:originalArtworkImageView.bounds toView:transitionContext.containerView];
 

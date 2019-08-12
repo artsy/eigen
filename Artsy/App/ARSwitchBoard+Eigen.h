@@ -3,7 +3,7 @@
 
 // View Controller forward declarations
 
-@class ARArtworkSetViewController,
+@class ARArtworkViewController,
     ARFairArtistViewController,
     ARArtworkInfoViewController,
     ARAuctionArtworkResultsViewController,
@@ -31,10 +31,8 @@
 #pragma mark - Artworks
 
 /// Provide a simple API to load an ArtworkVC from a lot of different inputs
-- (ARArtworkSetViewController *)loadArtworkSet:(NSArray *)artworkSet inFair:(Fair *)fair atIndex:(NSInteger)index;
-- (ARArtworkSetViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair;
-- (ARArtworkSetViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair;
-- (ARArtworkSetViewController *)loadArtworkIDSet:(NSArray *)artworkIDSet inFair:(Fair *)fair atIndex:(NSInteger)index;
+- (ARArtworkViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair;
+- (ARArtworkViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair;
 
 - (ARArtworkInfoViewController *)loadMoreInfoForArtwork:(Artwork *)artwork;
 

@@ -2,7 +2,7 @@
 
 #import "Artwork.h"
 #import "ARViewInRoomViewController.h"
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "ARFeedImageLoader.h"
 #import "ARArtworkViewController.h"
 
@@ -16,10 +16,10 @@
 
 - (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    ARArtworkSetViewController *artworkController = (id)fromVC;
+    ARArtworkViewController *artworkController = (id)fromVC;
     ARViewInRoomViewController *virController = (id)toVC;
 
-    NSAssert([artworkController isKindOfClass:[ARArtworkSetViewController class]], @"FromVC is not an ArtworkVC");
+    NSAssert([artworkController isKindOfClass:[ARArtworkViewController class]], @"FromVC is not an ArtworkVC");
     NSAssert([virController isKindOfClass:[ARViewInRoomViewController class]], @"ToVC is not a ViewInRoomVC");
 
     // The Push plan:
@@ -28,13 +28,13 @@
     //  Add the VIRVC behind the artwork at 0 alpha
     //  Simultaneously fade in the VIR and move the artwork to the VIR's correct position
 
-    UIView *originalArtworkImageView = artworkController.currentArtworkViewController.imageView;
-    Artwork *artwork = artworkController.currentArtworkViewController.artwork;
+    UIView *originalArtworkImageView = artworkController.imageView;
+    Artwork *artwork = artworkController.artwork;
     CGRect endFrame = [transitionContext containerView].bounds;
 
     // Take into account the scrolling on the artwork view
     CGRect originalPositionFrame = originalArtworkImageView.frame;
-    originalPositionFrame.origin.y -= artworkController.currentArtworkViewController.imageViewOffset.y;
+    originalPositionFrame.origin.y -= artworkController.imageViewOffset.y;
 
     // Create a new UIImageView that sits on the container View
     // grab its image from either the imageView or the ZoomImage's background image
@@ -92,10 +92,10 @@
 
 - (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    ARArtworkSetViewController *artworkController = (id)toVC;
+    ARArtworkViewController *artworkController = (id)toVC;
     ARViewInRoomViewController *virController = (id)fromVC;
 
-    NSAssert([artworkController isKindOfClass:[ARArtworkSetViewController class]], @"FromVC is not an ArtworkVC");
+    NSAssert([artworkController isKindOfClass:[ARArtworkViewController class]], @"FromVC is not an ArtworkVC");
     NSAssert([virController isKindOfClass:[ARViewInRoomViewController class]], @"ToVC is not a ViewInRoomVC");
 
     // The Pop plan:
@@ -104,13 +104,13 @@
     //  Add the ArtworkView behind the VIRView at 0 alpha
     //  Simultaneously fade out the VIR and move the artwork to the Artwork View's correct position
 
-    UIView *originalArtworkImageView = artworkController.currentArtworkViewController.imageView;
+    UIView *originalArtworkImageView = artworkController.imageView;
     UIImageView *originalVIRImageView = virController.artworkImageView;
-    Artwork *artwork = artworkController.currentArtworkViewController.artwork;
+    Artwork *artwork = artworkController.artwork;
 
     // Take into account the scrolling on the artwork view
     CGRect originalPositionFrame = originalArtworkImageView.frame;
-    originalPositionFrame.origin.y -= artworkController.currentArtworkViewController.imageViewOffset.y;
+    originalPositionFrame.origin.y -= artworkController.imageViewOffset.y;
 
     // Create a new UIImageView that sits on the container View
     // grab its image from either the imageView or the ZoomImage's background image

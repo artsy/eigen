@@ -4,7 +4,7 @@
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ORStackView+ArtsyViews.h"
-#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 #import "PartnerShow.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
@@ -303,9 +303,7 @@
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
-    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:controller.items
-                                                                                       inFair:self.fair
-                                                                                      atIndex:index];
+    ARArtworkViewController *viewController = [ARSwitchBoard.sharedInstance loadArtwork:controller.items[index] inFair:self.fair];
     [self.parentViewController relatedArtworksView:self shouldShowViewController:viewController];
 }
 
