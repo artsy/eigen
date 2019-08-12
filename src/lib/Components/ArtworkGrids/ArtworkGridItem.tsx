@@ -28,10 +28,6 @@ const Badge = styled.View`
 
 interface Props {
   artwork: ArtworkGridItem_artwork
-  // Passes the Artwork ID back up to another component
-  // ideally, this would be used to send an array of Artworks
-  // through to Eigen where this item is the default selected one.
-  //
   // If it's not provided, then it will push just the one artwork
   // to the switchboard.
   onPress?: (artworkID: string) => void
