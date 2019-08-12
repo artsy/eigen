@@ -83,17 +83,16 @@ export class CommercialButtons extends React.Component<CommercialButtonProps, St
             },
           },
           onCompleted: data => {
-            this.setState({ isCommittingCreateOrderMutation: false }, () => this.onMutationError("order", "test"))
-            // this.setState({ isCommittingCreateOrderMutation: false }, () => {
-            //   const {
-            //     commerceCreateOrderWithArtwork: { orderOrError },
-            //   } = data
-            //   if (orderOrError.error) {
-            //     this.onMutationError("order", orderOrError.error)
-            //   } else {
-            //     SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
-            //   }
-            // })
+            this.setState({ isCommittingCreateOrderMutation: false }, () => {
+              const {
+                commerceCreateOrderWithArtwork: { orderOrError },
+              } = data
+              if (orderOrError.error) {
+                this.onMutationError("order", orderOrError.error)
+              } else {
+                SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
+              }
+            })
           },
           onError: error =>
             this.setState({ isCommittingCreateOrderMutation: false }, () => this.onMutationError("order", error)),
