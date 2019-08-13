@@ -6,6 +6,8 @@ import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRe
 
 import {
   Animated,
+  findNodeHandle,
+  NativeModules,
   NativeScrollEvent,
   NativeSyntheticEvent,
   NativeTouchEvent,
@@ -13,6 +15,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
+
+import { throttle } from "lodash"
+
+const { EnclosingScrollViewOptOut } = NativeModules
 
 import { useAnimatedValue } from "../useAnimatedValue"
 
@@ -145,6 +151,11 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     }, [])
 
+    useEffect(() => {
+      const tag = findNodeHandle(scrollViewRef.current.getNode())
+      EnclosingScrollViewOptOut.optOutOfParentScrollEvents(tag)
+    }, [])
+
     // we need to be able to reset the scroll view zoom level when the user
     // swipes to another image
     const scrollViewRef = useRef<{ getNode(): ScrollView }>()
@@ -163,7 +174,6 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     }, [])
 
     const maxZoomScale = calculateMaxZoomViewScale({ width, height }, image.deepZoom.Image.Size)
-    console.log({ maxZoomScale })
 
     // expose resetZoom so that when the user swipes, the off-screen zoom levels can be reset
     useImperativeHandle(ref, () => ({ resetZoom }), [])
@@ -196,12 +206,14 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       [state.fullScreenState]
     )
 
-    const [viewPort, setViewPort] = useState({
+    const [viewPort, _setViewPort] = useState({
       x: contentOffset.current.x / zoomScale.current,
       y: contentOffset.current.y / zoomScale.current,
       width: screenWidth / zoomScale.current,
       height: screenHeight / zoomScale.current,
     })
+
+    const setViewPort = useMemo(() => throttle(_setViewPort, 50), [])
 
     const $contentOffsetX = useAnimatedValue(-marginHorizontal)
     const $contentOffsetY = useAnimatedValue(-marginVertical)
@@ -214,10 +226,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     }
 
     const onScroll = useCallback((ev: NativeSyntheticEvent<NativeScrollEvent>) => {
-      console.log("tha zoom scale be lik", ev.nativeEvent.zoomScale)
       zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
       contentOffset.current = { ...ev.nativeEvent.contentOffset }
-      console.log("contentOffset", contentOffset.current)
       setViewPort({
         x: ev.nativeEvent.contentOffset.x / zoomScale.current,
         y: ev.nativeEvent.contentOffset.y / zoomScale.current,
@@ -241,8 +251,9 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
               listener: onScroll,
             }
           )}
-          scrollEventThrottle={16}
+          scrollEventThrottle={0.0000001}
           bounces={false}
+          bouncesZoom={false}
           overScrollMode="never"
           minimumZoomScale={1}
           maximumZoomScale={maxZoomScale}

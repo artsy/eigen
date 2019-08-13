@@ -17,6 +17,7 @@
 #import <React/RCTScrollView.h>
 #import <React/RCTComponent.h>
 #import <React/UIView+React.h>
+#import <objc/runtime.h>
 
 @interface RCTScrollEvent : NSObject <RCTEvent>
 - (instancetype)initWithEventName:(NSString *)eventName
@@ -126,8 +127,31 @@
 
 @end
 
+@interface RCTScrollView (RCTEnclosingScrollView)
+- (void)optOutOfParentScrollEvents;
+@end
+
+void* optOutAssociatedPointer = &optOutAssociatedPointer;
 
 @implementation RCTScrollView (RCTEnclosingScrollView)
+
+// Provide the ability to opt out of scroll event propagation from parents to children.
+// The child opts out of receiving them.
+
+- (BOOL)optingOut
+{
+  return [objc_getAssociatedObject(self, optOutAssociatedPointer) boolValue];
+}
+
+- (void)setOptingOut:(BOOL)optingOut
+{
+  objc_setAssociatedObject(self, optOutAssociatedPointer, @(optingOut), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)optOutOfParentScrollEvents
+{
+  self.optingOut = YES;
+}
 
 // Override method, because we want to send the generated event through the notification center.
 // Everything but the last line of the method are exactly as the original, except with a bunch of KVC shenanigans.
@@ -186,6 +210,10 @@
     return;
   }
 
+  if (self.optingOut) {
+    return;
+  }
+
   // TODO: This is even more of a hack than all the rest of the change!!!
   //       The enclosing scroll view *must* have a throttle amount set or
   //       it won’t send more scroll move events.
@@ -208,6 +236,7 @@
                       relativeFromEnclosingScrollView:enclosingScrollView.scrollView
                                              reactTag:self.reactTag
                                         coalescingKey:coalescingKey];
+
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 }
 

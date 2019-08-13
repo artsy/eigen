@@ -286,14 +286,3 @@ interface Rect extends Box {
   readonly x: number
   readonly y: number
 }
-
-interface TileDistanceRecord {
-  // index into the original tiles/tileRefs arrays so we can grab a ref
-  // and make the tile load
-  readonly tileIndex: number
-  // these change over time based on the view port
-  distance: number
-  visible: boolean
-  // absolute positioning details
-  readonly rect: Rect
-}
