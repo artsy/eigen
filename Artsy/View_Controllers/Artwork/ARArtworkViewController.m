@@ -112,16 +112,6 @@
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
-- (NSInteger)index;
-{
-    return self.legacyViewController.index;
-}
-
-- (void)setIndex:(NSInteger)index;
-{
-    self.legacyViewController.index = index;
-}
-
 - (UIImageView *)imageView;
 {
     return self.legacyViewController.imageView;
