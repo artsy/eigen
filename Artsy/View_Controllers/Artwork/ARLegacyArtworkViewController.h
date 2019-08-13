@@ -13,9 +13,6 @@
 @property (nonatomic, strong, readonly) Artwork *artwork;
 @property (nonatomic, strong, readonly) Fair *fair;
 
-/// The index in the current set of artworks
-@property (nonatomic, assign) NSInteger index;
-
 /// Echo config. Useful for unit testing.
 @property (nonatomic, strong, readonly) ArtsyEcho *echo;
 

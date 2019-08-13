@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, readonly) Artwork *artwork;
 @property (strong, nonatomic, readonly, nullable) Fair *fair;
 
-- (instancetype)initWithArtwork:(Artwork *)artwork fair:(nullable Fair *)fair NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(nullable Fair *)fair;
 
 - (UIImageView *)imageView;
 - (void)setHasFinishedScrolling;
