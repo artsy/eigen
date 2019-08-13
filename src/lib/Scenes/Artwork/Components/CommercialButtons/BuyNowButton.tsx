@@ -9,6 +9,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 export interface BuyNowButtonProps {
   artwork: BuyNowButton_artwork
   relay: RelayProp
+  // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
 }
 

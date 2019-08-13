@@ -10,16 +10,13 @@ import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOffer
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
   relay: RelayProp
+  // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
 }
 
 export class CommercialButtons extends React.Component<CommercialButtonProps> {
   handleInquiry = () => {
-    SwitchBoard.presentModalViewController(this, `/inquiry/${this.props.artwork.slug}`)
-  }
-
-  handleBid = () => {
-    SwitchBoard.presentModalViewController(this, `/bid/${this.props.artwork.slug}`)
+    SwitchBoard.presentNavigationViewController(this, `/inquiry/${this.props.artwork.slug}`)
   }
 
   renderButtons = () => {

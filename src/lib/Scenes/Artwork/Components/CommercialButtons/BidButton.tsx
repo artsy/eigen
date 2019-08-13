@@ -4,7 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
-export const PREDICTION_URL = "https://live-staging.artsy.net"
+export const PREDICTION_URL = "https://live.artsy.net"
 
 export interface BidButtonProps {
   artwork: BidButton_artwork
@@ -17,25 +17,26 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 
   handleBid = () => {
-    SwitchBoard.presentModalViewController(this, `/bid/${this.props.artwork.slug}`)
+    const { sale } = this.props.artwork
+    SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${this.props.artwork.slug}`)
   }
 
   redirectToRegister = () => {
     const { sale } = this.props.artwork
-    SwitchBoard.presentModalViewController(this, `/auction-registration/${sale.slug}`)
+    SwitchBoard.presentNavigationViewController(this, `/auction-registration/${sale.slug}`)
   }
 
   redirectToLiveBidding = () => {
     const { slug } = this.props.artwork.sale
     const liveUrl = `${PREDICTION_URL}/${slug}`
-    SwitchBoard.presentModalViewController(this, liveUrl)
+    SwitchBoard.presentNavigationViewController(this, liveUrl)
   }
 
   redirectToBid = (firstIncrement: number) => {
     const { slug, sale } = this.props.artwork
     const bid = firstIncrement
 
-    SwitchBoard.presentModalViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
+    SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
   }
 
   render() {
@@ -79,10 +80,6 @@ export class BidButton extends React.Component<BidButtonProps> {
         </>
       )
     } else if (artwork.sale.isLiveOpen) {
-      console.log(
-        "artwork.sale.isRegistrationClosed && registeredToBid ????: ",
-        artwork.sale.isRegistrationClosed && registeredToBid
-      )
       return (
         <>
           {artwork.sale.isRegistrationClosed &&
