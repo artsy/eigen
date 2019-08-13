@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Artist from "../Artist"
+import Artist from "../ConsignmentsArtist"
 import Edition from "../Edition"
 import Location from "../Location"
 import Metadata from "../Metadata"

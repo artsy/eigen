@@ -1,18 +1,14 @@
 import React from "react"
+import { Dimensions, Route, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
+import { fetchQuery, graphql } from "react-relay"
 
+import { ConsignmentsArtistQuery, ConsignmentsArtistQueryResponse } from "__generated__/ConsignmentsArtistQuery.graphql"
+import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 import { SearchResults } from "../Components/SearchResults"
-
 import { ArtistResult, ConsignmentSetup } from "../index"
-
-import { Dimensions, Route, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
-import metaphysics from "../../../metaphysics"
-
-interface ArtistSearchResponse {
-  match_artist: ArtistResult[]
-}
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
@@ -23,7 +19,7 @@ interface Props extends ConsignmentSetup, ViewProperties {
 interface State {
   query: string
   searching: boolean
-  results: ArtistResult[] | null
+  results: ConsignmentsArtistQueryResponse["matchArtist"] | null
 }
 
 export default class Artist extends React.Component<Props, State> {
@@ -50,19 +46,25 @@ export default class Artist extends React.Component<Props, State> {
     this.searchForQuery(text)
   }
 
+  // TODO: Add throttling
   searchForQuery = async (query: string) => {
-    const results = await metaphysics<ArtistSearchResponse>(`
-      {
-        match_artist(term: "${query}") {
-          internalID
-          name
-          image {
-            url
+    const results = await fetchQuery<ConsignmentsArtistQuery>(
+      environment,
+      graphql`
+        query ConsignmentsArtistQuery($query: String!) {
+          matchArtist(term: $query) {
+            internalID
+            name
+            image {
+              url
+            }
           }
         }
-      }
-    `)
-    this.setState({ results: results.match_artist, searching: false })
+      `,
+      { query },
+      { force: true }
+    )
+    this.setState({ results: results.matchArtist, searching: false })
   }
 
   render() {

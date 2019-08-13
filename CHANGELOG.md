@@ -13,6 +13,9 @@
 //   * Major dev tool updates
 
 -->
+### Master
+
+- Fix consignments artist search and make it use relay - alloy
 
 ### 1.12.16
 
