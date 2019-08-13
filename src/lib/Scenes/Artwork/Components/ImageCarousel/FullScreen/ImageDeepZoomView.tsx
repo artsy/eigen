@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react"
 import { Animated, Image, View } from "react-native"
-import { fitInside } from "../geometry"
 import { ImageDescriptor } from "../ImageCarouselContext"
-import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
+import { useSpringValue } from "../useSpringValue"
+import { screenBoundingBox } from "./screen"
 
 interface Tile {
   setShowing: (showing: boolean) => void
@@ -19,30 +19,29 @@ interface TileProps {
 }
 
 const Tile: React.FC<TileProps> = ({ url, top, left, width, height, level, color }) => {
-  const [showing, setShowing] = useState(true)
   const [loaded, setLoaded] = useState(false)
+  const opacity = useSpringValue(loaded ? 1 : 0)
   return (
-    <View
+    <Animated.View
       style={{
         position: "absolute",
         top,
         left,
         width,
         height,
+        opacity,
       }}
     >
-      {showing && (
-        <Image
-          onLoad={() => {
-            setLoaded(true)
-          }}
-          source={{
-            uri: url,
-          }}
-          style={{ width, height }}
-        />
-      )}
-    </View>
+      <Image
+        onLoad={() => {
+          setLoaded(true)
+        }}
+        source={{
+          uri: url,
+        }}
+        style={{ width, height }}
+      />
+    </Animated.View>
   )
 }
 
@@ -213,7 +212,17 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
 
         const levelScale = levels[level].width / width
 
-        const { marginHorizontal, marginVertical } = fitInside(screenBoundingBox, levels[level])
+        const $scale = Animated.divide($zoomScale, levelScale)
+        const $baseImageTop = Animated.multiply($contentOffsetY, -1)
+        const $baseImageHeight = Animated.multiply(height, $zoomScale)
+        const $baseImageCenterY = Animated.add($baseImageTop, Animated.divide($baseImageHeight, 2))
+
+        const $baseImageLeft = Animated.multiply($contentOffsetX, -1)
+        const $baseImageWidth = Animated.multiply(width, $zoomScale)
+        const $baseImageCenterX = Animated.add($baseImageLeft, Animated.divide($baseImageWidth, 2))
+
+        const $levelPreScaleTop = Animated.subtract($baseImageCenterY, levels[level].height / 2)
+        const $levelPreScaleLeft = Animated.subtract($baseImageCenterX, levels[level].width / 2)
 
         result.push(
           <Animated.View
@@ -221,34 +230,18 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
             style={{
               position: "absolute",
               ...levels[level],
-              borderWidth: 1,
-              borderColor: "red",
               transform: [
-                // center on screen first
+                // position centered over base image
                 {
-                  translateX: screenWidth / 2 - levels[level].width / 2,
+                  translateX: $levelPreScaleLeft,
                 },
                 {
-                  translateY: screenHeight / 2 - levels[level].height / 2,
+                  translateY: $levelPreScaleTop,
                 },
-                // apply content offset before scaling
+                // scale it down
                 {
-                  translateX: Animated.multiply(
-                    Animated.subtract($contentOffsetX, Animated.multiply(marginHorizontal, $zoomScale)),
-                    -1
-                  ),
+                  scale: $scale,
                 },
-                {
-                  translateY: Animated.multiply(
-                    Animated.subtract($contentOffsetY, Animated.multiply(marginVertical, $zoomScale)),
-                    -1
-                  ),
-                },
-                // apply scale to place directly over existing image
-                {
-                  scale: Animated.divide($zoomScale, levelScale),
-                },
-                // sync translation with scroll view
               ],
             }}
           >
