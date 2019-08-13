@@ -105,6 +105,11 @@ NSString *const ARTwoLabelCell = @"ARTwoLabelCell";
 
 - (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key
 {
+    return [self editableTextCellDataWithName:name defaultKey:key enabled:YES];
+}
+
+- (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key enabled:(BOOL)enabled
+{
     ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARTwoLabelCell];
     cell.height = 60;
 
@@ -116,26 +121,38 @@ NSString *const ARTwoLabelCell = @"ARTwoLabelCell";
         tableViewCell.detailTextLabel.text = value;
     }];
 
-    [cell setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:name message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    if (enabled) {
+        [cell setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+            UIAlertController *controller = [UIAlertController alertControllerWithTitle:name message:@"" preferredStyle:UIAlertControllerStyleAlert];
 
-        [controller addAction:[UIAlertAction actionWithTitle:@"Save + Restart" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            UITextField *theTextField = [controller textFields].firstObject;
-            [defaults setObject:theTextField.text forKey:key];
-            [defaults synchronize];
-            exit(0);
-        }]];
+            [controller addAction:[UIAlertAction actionWithTitle:@"Save + Restart" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                UITextField *theTextField = [controller textFields].firstObject;
+                [defaults setObject:theTextField.text forKey:key];
+                [defaults synchronize];
+                exit(0);
+            }]];
 
-        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }]];
+            [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            }]];
 
-        [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = value;
+            [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.text = value;
+            }];
+
+            [self presentViewController:controller animated:YES completion:nil];
         }];
+    } else {
+        [cell setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+            UIAlertController *controller = [UIAlertController alertControllerWithTitle:name message:@"Not editable when in Production. Switch to Staging (above) and then edit these values manually." preferredStyle:UIAlertControllerStyleAlert];
 
-        [self presentViewController:controller animated:YES completion:nil];
-    }];
+            [controller addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            }]];
+
+            [self presentViewController:controller animated:YES completion:nil];
+        }];
+    }
     return cell;
 }
 
