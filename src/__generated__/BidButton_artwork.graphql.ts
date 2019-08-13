@@ -6,7 +6,8 @@ export type BidButton_artwork$ref = typeof _BidButton_artwork$ref;
 export type BidButton_artwork = {
     readonly slug: string;
     readonly sale: {
-        readonly id: string;
+        readonly slug: string;
+        readonly internalID: string;
         readonly registrationStatus: {
             readonly qualifiedForBidding: boolean | null;
         } | null;
@@ -38,6 +39,13 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "cents",
   "args": null,
   "storageKey": null
@@ -49,13 +57,7 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -65,10 +67,11 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "id",
+          "name": "internalID",
           "args": null,
           "storageKey": null
         },
@@ -160,7 +163,7 @@ return {
               "concreteType": "BidderPositionMaxBid",
               "plural": false,
               "selections": [
-                (v0/*: any*/)
+                (v1/*: any*/)
               ]
             }
           ]
@@ -185,7 +188,7 @@ return {
           "concreteType": "BidIncrementsFormatted",
           "plural": true,
           "selections": [
-            (v0/*: any*/),
+            (v1/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -200,5 +203,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7f6ba64013551f2c361a46f96a8ad4e6';
+(node as any).hash = '1c08add1bf088f42a66a138df9979dd0';
 export default node;

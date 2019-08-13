@@ -56,6 +56,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
     const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
+
     return (
       <>
         {artwork.editionSets && artwork.editionSets.length > 1

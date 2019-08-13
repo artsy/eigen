@@ -278,6 +278,7 @@ fragment CommercialButtons_artwork on Artwork {
   isOfferable
   isInquireable
   isBiddable
+  isInAuction
   sale {
     isClosed
     id
@@ -325,7 +326,8 @@ fragment BuyNowButton_artwork on Artwork {
 fragment BidButton_artwork on Artwork {
   slug
   sale {
-    id
+    slug
+    internalID
     registrationStatus {
       qualifiedForBidding
       id
@@ -335,6 +337,7 @@ fragment BidButton_artwork on Artwork {
     isLiveOpen
     isClosed
     isRegistrationClosed
+    id
   }
   myLotStanding(live: true) {
     mostRecentBid {
@@ -926,6 +929,8 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              (v4/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -1573,6 +1578,13 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isInAuction",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "myLotStanding",
@@ -1645,7 +1657,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "5877a62793253ff61d1b25e8ef97991e",
+    "id": "a994a3953844fd902fd8afc334103fef",
     "text": null,
     "metadata": {}
   }

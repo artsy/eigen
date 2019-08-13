@@ -275,7 +275,7 @@
 - (ARCellData *)jumpToArtworkInAuction
 {
   return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"andy-warhol-mao-one-plate-3"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"marina-donati-insects"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

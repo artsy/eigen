@@ -30,6 +30,7 @@ fragment CommercialButtons_artwork on Artwork {
   isOfferable
   isInquireable
   isBiddable
+  isInAuction
   sale {
     isClosed
     id
@@ -46,7 +47,8 @@ fragment BuyNowButton_artwork on Artwork {
 fragment BidButton_artwork on Artwork {
   slug
   sale {
-    id
+    slug
+    internalID
     registrationStatus {
       qualifiedForBidding
       id
@@ -56,6 +58,7 @@ fragment BidButton_artwork on Artwork {
     isLiveOpen
     isClosed
     isRegistrationClosed
+    id
   }
   myLotStanding(live: true) {
     mostRecentBid {
@@ -90,11 +93,25 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "cents",
@@ -142,20 +159,8 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "slug",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -185,6 +190,13 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isInAuction",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "sale",
@@ -200,7 +212,9 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              (v3/*: any*/),
               (v1/*: any*/),
+              (v2/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -217,7 +231,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v1/*: any*/)
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -283,10 +297,10 @@ return {
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/)
+                      (v4/*: any*/)
                     ]
                   },
-                  (v1/*: any*/)
+                  (v3/*: any*/)
                 ]
               }
             ]
@@ -309,7 +323,7 @@ return {
                 "concreteType": "BidIncrementsFormatted",
                 "plural": true,
                 "selections": [
-                  (v2/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -319,10 +333,10 @@ return {
                   }
                 ]
               },
-              (v1/*: any*/)
+              (v3/*: any*/)
             ]
           },
-          (v1/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -330,7 +344,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsMutationQuery",
-    "id": "541211e5e5b47f6f41dd3546b0eac470",
+    "id": "39774dd5dbef164ed97f324b7c1fe01c",
     "text": null,
     "metadata": {}
   }

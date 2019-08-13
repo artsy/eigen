@@ -14,6 +14,7 @@ export const ArtworkFixture = {
   isOfferable: false,
   isBiddable: false,
   isInquireable: false,
+  isInAuction: false,
   sale: null,
   myLotStanding: null,
   saleArtwork: null,

@@ -4,6 +4,8 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
+export const PREDICTION_URL = "https://live-staging.artsy.net"
+
 export interface BidButtonProps {
   artwork: BidButton_artwork
   relay: RelayProp
@@ -20,19 +22,20 @@ export class BidButton extends React.Component<BidButtonProps> {
 
   redirectToRegister = () => {
     const { sale } = this.props.artwork
-    SwitchBoard.presentModalViewController(this, `/auction-registration/${sale.id}`)
+    SwitchBoard.presentModalViewController(this, `/auction-registration/${sale.slug}`)
   }
 
   redirectToLiveBidding = () => {
-    // FIXME: live bidding URL
-    return null
+    const { slug } = this.props.artwork.sale
+    const liveUrl = `${PREDICTION_URL}/${slug}`
+    SwitchBoard.presentModalViewController(this, liveUrl)
   }
 
   redirectToBid = (firstIncrement: number) => {
     const { slug, sale } = this.props.artwork
     const bid = firstIncrement
 
-    SwitchBoard.presentModalViewController(this, `/auction/${sale.id}/bid/${slug}?bid=${bid}`)
+    SwitchBoard.presentModalViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
   }
 
   render() {
@@ -57,19 +60,19 @@ export class BidButton extends React.Component<BidButtonProps> {
       return (
         <>
           {!registrationAttempted && (
-            <Button width={100} size="large" mt={1} onClick={() => this.redirectToRegister()}>
+            <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
               Register to bid
             </Button>
           )}
           {registrationAttempted &&
             !registeredToBid && (
-              <Button width={100} size="large" mt={1} disabled>
+              <Button width={100} block size="large" mt={1} disabled>
                 Registration pending
               </Button>
             )}
           {registrationAttempted &&
             registeredToBid && (
-              <Button width={100} size="large" mt={1} disabled>
+              <Button width={100} block size="large" mt={1} disabled>
                 Registration complete
               </Button>
             )}
@@ -84,26 +87,23 @@ export class BidButton extends React.Component<BidButtonProps> {
                 Registration closed
               </Sans>
             )}
-          <Button width={100} size="large" onClick={() => this.redirectToLiveBidding()}>
-            {artwork.sale.isRegistrationClosed && !registeredToBid ? "Watch live bidding" : "Enter live bidding"}
+          <Button width={100} block size="large" onPress={() => this.redirectToLiveBidding()}>
+            {artwork.sale.isRegistrationClosed && registeredToBid ? "Enter live bidding" : "Watch live bidding"}
           </Button>
         </>
       )
-    } else if (artwork.sale.isOpen) {
-      if (registrationAttempted && !registeredToBid) {
-        return (
-          <Button width={100} size="large" disabled>
-            Registration pending
-          </Button>
-        )
-      }
-      if (artwork.sale.isRegistrationClosed && !registeredToBid) {
-        return (
-          <Button width={100} size="large" disabled>
-            Registration closed
-          </Button>
-        )
-      }
+    } else if (registrationAttempted && !registeredToBid) {
+      return (
+        <Button width={100} block size="large" disabled>
+          Registration pending
+        </Button>
+      )
+    } else if (artwork.sale.isRegistrationClosed && !registeredToBid) {
+      return (
+        <Button width={100} block size="large" disabled>
+          Registration closed
+        </Button>
+      )
     } else {
       const myLastMaxBid = hasMyBids && myLotStanding.mostRecentBid.maxBid.cents
       const increments = artwork.saleArtwork.increments.filter(increment => increment.cents > (myLastMaxBid || 0))
@@ -111,7 +111,7 @@ export class BidButton extends React.Component<BidButtonProps> {
       const incrementCents = firstIncrement && firstIncrement.cents
 
       return (
-        <Button width={100} size="large" onClick={() => this.redirectToBid(incrementCents)}>
+        <Button width={100} size="large" block onPress={() => this.redirectToBid(incrementCents)}>
           {hasMyBids ? "Increase max bid" : "Bid"}
         </Button>
       )
@@ -124,7 +124,8 @@ export const BidButtonFragmentContainer = createFragmentContainer(BidButton, {
     fragment BidButton_artwork on Artwork {
       slug
       sale {
-        id
+        slug
+        internalID
         registrationStatus {
           qualifiedForBidding
         }
