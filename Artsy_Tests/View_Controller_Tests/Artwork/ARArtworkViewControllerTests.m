@@ -1,8 +1,14 @@
 #import "Artwork.h"
 #import "ARArtworkViewController.h"
+#import "Aerodramus.h"
+#import "ArtsyEcho.h"
 #import "ARLegacyArtworkViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>
 
+
+@interface ARArtworkViewController (Testing)
+@property (strong, nonatomic) Aerodramus *echo;
+@end
 
 @interface _ARLegacyArtworkViewControllerMock : UIViewController
 @end
@@ -99,6 +105,8 @@ describe(@"ARArtworkViewController", ^{
     __block id mockComponentVCClass = nil;
     __block _ARArtworkComponentViewControllerMock *mockComponentVC = nil;
 
+    __block Aerodramus *echo = nil;
+
     beforeEach(^{
         artwork = [[Artwork alloc] initWithArtworkID:@"some-artwork"];
 
@@ -112,7 +120,13 @@ describe(@"ARArtworkViewController", ^{
         (void)[[[mockComponentVCClass stub] andReturn:mockComponentVCClass] alloc];
         (void)[[[mockComponentVCClass stub] andReturn:mockComponentVC] initWithArtworkID:artwork.artworkID];
 
+        echo = [[ArtsyEcho alloc] init];
+        echo.features = @{
+            @"ARReactNativeArtworkEnableNSOInquiry" : [[Feature alloc] initWithName:@"" state:@(NO)]
+        };
+
         vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+        vc.echo = echo;
 
         // Reset all options to default states
         [AROptions setBool:NO forOption:AROptionsRNArtworkNonCommerical];
@@ -136,10 +150,6 @@ describe(@"ARArtworkViewController", ^{
         }
 
         describe(@"when inquireable", ^{
-            beforeEach(^{
-                vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
-            });
-
             for (NSString *availability in componentAvailabilityStates) {
                 it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
                     StubArtworkWithAvailabilityAndInquireability(availability, @(YES));
@@ -171,9 +181,109 @@ describe(@"ARArtworkViewController", ^{
     });
 
     describe(@"concerning artworks for which to show the new component view", ^{
-        describe(@"commerical artworks", ^{
+        describe(@"noncommerical artworks", ^{
+            describe(@"enabled through debug options", ^{
+                beforeEach(^{
+                    [AROptions setBool:YES forOption:AROptionsRNArtworkNonCommerical];
+                });
+
+                for (NSString *availability in componentAvailabilityStates) {
+                    it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
+                        StubArtworkWithAvailability(availability);
+                        (void)vc.view;
+                        expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                    });
+                }
+            });
+
+            describe(@"enabled through echo", ^{
+                beforeEach(^{
+                    echo.features = @{
+                        @"ARReactNativeArtworkEnableNonCommercial" : [[Feature alloc] initWithName:@"" state:@(YES)]
+                    };
+                });
+
+                for (NSString *availability in componentAvailabilityStates) {
+                    it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
+                        StubArtworkWithAvailability(availability);
+                        (void)vc.view;
+                        expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                    });
+                }
+            });
+        });
+
+        describe(@"NSO/inquiry artworks", ^{
+            describe(@"enabled through debug options", ^{
+                beforeEach(^{
+                    [AROptions setBool:YES forOption:AROptionsRNArtworkNSOInquiry];
+                });
+
+                it(@"works with buy-nowable artworks", ^{
+                    StubArtworkWithBNMO(YES, NO);
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                });
+
+                it(@"works with make-offerable artworks", ^{
+                    StubArtworkWithBNMO(NO, YES);
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                });
+            });
+
+            describe(@"enabled through echo", ^{
+                beforeEach(^{
+                    echo.features = @{
+                        @"ARReactNativeArtworkEnableNSOInquiry" : [[Feature alloc] initWithName:@"" state:@(YES)]
+                    };
+                });
+
+                it(@"works with buy-nowable artworks", ^{
+                    StubArtworkWithBNMO(YES, NO);
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                });
+
+                it(@"works with make-offerable artworks", ^{
+                    StubArtworkWithBNMO(NO, YES);
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                });
+            });
+        });
+
+        describe(@"auctions artworks", ^{
+            describe(@"enabled through debug options", ^{
+                beforeEach(^{
+                    [AROptions setBool:YES forOption:AROptionsRNArtworkAuctions];
+                });
+
+                it(@"works artworks that are in a sale", ^{
+                    StubArtworkWithSaleArtwork();
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                });
+            });
+
+            describe(@"enabled through echo", ^{
+                beforeEach(^{
+                    echo.features = @{
+                        @"ARReactNativeArtworkEnableAuctions" : [[Feature alloc] initWithName:@"" state:@(YES)]
+                    };
+                });
+
+                it(@"works artworks that are in a sale", ^{
+                    StubArtworkWithSaleArtwork();
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                });
+            });
+        });
+
+        describe(@"when all artworks lab option is enabled", ^{
             beforeEach(^{
-                [AROptions setBool:YES forOption:AROptionsRNArtworkNonCommerical];
+                [AROptions setBool:YES forOption:AROptionsRNArtworkAlways];
             });
 
             for (NSString *availability in componentAvailabilityStates) {
@@ -183,12 +293,6 @@ describe(@"ARArtworkViewController", ^{
                     expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
                 });
             }
-        });
-
-        describe(@"NSO/inquiry artworks", ^{
-            beforeEach(^{
-                [AROptions setBool:YES forOption:AROptionsRNArtworkNSOInquiry];
-            });
 
             it(@"works with buy-nowable artworks", ^{
                 StubArtworkWithBNMO(YES, NO);
@@ -201,12 +305,6 @@ describe(@"ARArtworkViewController", ^{
                 (void)vc.view;
                 expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
             });
-        });
-
-        describe(@"auctions artworks", ^{
-            beforeEach(^{
-                [AROptions setBool:YES forOption:AROptionsRNArtworkAuctions];
-            });
 
             it(@"works artworks that are in a sale", ^{
                 StubArtworkWithSaleArtwork();
@@ -215,9 +313,11 @@ describe(@"ARArtworkViewController", ^{
             });
         });
 
-        describe(@"when all artworks lab option is enabled", ^{
+        describe(@"when all artworks echo option is enabled", ^{
             beforeEach(^{
-                [AROptions setBool:YES forOption:AROptionsRNArtworkAlways];
+                echo.features = @{
+                    @"ARReactNativeArtworkEnableAlways" : [[Feature alloc] initWithName:@"" state:@(YES)]
+                };
             });
 
             for (NSString *availability in componentAvailabilityStates) {

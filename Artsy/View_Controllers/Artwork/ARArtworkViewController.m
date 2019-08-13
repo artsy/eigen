@@ -4,6 +4,8 @@
 #import "ARDispatchManager.h"
 #import "ARSpinner.h"
 #import "AROptions.h"
+#import "ArtsyEcho.h"
+#import "ARSwitchboard.h"
 #import "UIViewController+SimpleChildren.h"
 
 #import <Emission/ARArtworkComponentViewController.h>
@@ -14,6 +16,7 @@
 @interface ARArtworkViewController ()
 @property (strong, nonatomic) ARLegacyArtworkViewController *legacyViewController;
 @property (strong, nonatomic) ARSpinner *spinner;
+@property (strong, nonatomic) Aerodramus *echo;
 @end
 
 
@@ -21,7 +24,7 @@
 
 - (BOOL)shouldShowNewVersion;
 {
-    if ([AROptions boolForOption:AROptionsRNArtworkAlways]) {
+    if ([AROptions boolForOption:AROptionsRNArtworkAlways] || [self.echo.features[@"ARReactNativeArtworkEnableAlways"] state]) {
         return YES;
     }
 
@@ -29,12 +32,12 @@
     BOOL isArtworkNSOInquiry = self.artwork.isOfferable || self.artwork.isAcquireable || self.artwork.isInquireable;
     BOOL isArtworkAuctions = self.artwork.isInAuction;
 
-    if ([AROptions boolForOption:AROptionsRNArtworkNonCommerical] && isArtworkNonCommerical) {
-        return YES;
-    } else if ([AROptions boolForOption:AROptionsRNArtworkNSOInquiry] && isArtworkNSOInquiry) {
-        return YES;
-    } else if ([AROptions boolForOption:AROptionsRNArtworkAuctions] && isArtworkAuctions) {
-        return YES;
+    if (isArtworkNonCommerical) {
+        return ([AROptions boolForOption:AROptionsRNArtworkNonCommerical] || [self.echo.features[@"ARReactNativeArtworkEnableNonCommercial"] state]);
+    } else if (isArtworkNSOInquiry) {
+        return ([AROptions boolForOption:AROptionsRNArtworkNSOInquiry] || [self.echo.features[@"ARReactNativeArtworkEnableNSOInquiry"] state]);
+    } else if (isArtworkAuctions) {
+        return ([AROptions boolForOption:AROptionsRNArtworkAuctions] || [self.echo.features[@"ARReactNativeArtworkEnableAuctions"] state]);
     }
 
     return NO;
@@ -45,6 +48,7 @@
     if ((self = [super init])) {
         _artwork = artwork;
         _fair = fair;
+        _echo = [[ARSwitchBoard sharedInstance] echo];
     }
     return self;
 }
