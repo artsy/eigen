@@ -1,4 +1,4 @@
-import { Button, Sans } from "@artsy/palette"
+import { Button, color, Sans } from "@artsy/palette"
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -79,16 +79,20 @@ export class BidButton extends React.Component<BidButtonProps> {
         </>
       )
     } else if (artwork.sale.isLiveOpen) {
+      console.log(
+        "artwork.sale.isRegistrationClosed && registeredToBid ????: ",
+        artwork.sale.isRegistrationClosed && registeredToBid
+      )
       return (
         <>
           {artwork.sale.isRegistrationClosed &&
             !registeredToBid && (
-              <Sans size="2" color="black60" pb={1} textAlign="center">
+              <Sans size="2" color={color("black60")} pb={1} textAlign="center">
                 Registration closed
               </Sans>
             )}
           <Button width={100} block size="large" onPress={() => this.redirectToLiveBidding()}>
-            {artwork.sale.isRegistrationClosed && registeredToBid ? "Enter live bidding" : "Watch live bidding"}
+            {artwork.sale.isRegistrationClosed && !registeredToBid ? "Watch live bidding" : "Enter live bidding"}
           </Button>
         </>
       )
