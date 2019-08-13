@@ -13,8 +13,10 @@
 //   * Major dev tool updates
 
 -->
+
 ### Master
 
+- Fixes intermittent crash on opening message attachment previews - ash
 - Fix consignments artist search and make it use relay - alloy
 
 ### 1.12.16
