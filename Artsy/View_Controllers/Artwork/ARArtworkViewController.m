@@ -6,6 +6,7 @@
 #import "AROptions.h"
 #import "ArtsyEcho.h"
 #import "ARSwitchboard.h"
+#import "UIDevice-Hardware.h"
 #import "UIViewController+SimpleChildren.h"
 
 #import <Emission/ARArtworkComponentViewController.h>
@@ -104,6 +105,11 @@
     }];
 
     [self.artwork updateArtwork];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 - (NSInteger)index;

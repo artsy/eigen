@@ -11,6 +11,7 @@ upcoming:
     - Removes ARArtworkSetViewController - ash
     - Prevents admins from customizing API URLs while pointing to production - ash
     - Adds echo flag support for enabling various types of RN Artwork view - ash + david + kieran
+    - Disables landscape rotation for iPhone on Artwork views - ash
   user_facing:
     - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
     - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
