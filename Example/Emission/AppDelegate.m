@@ -231,13 +231,6 @@ randomBOOL(void)
     [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route] animated:YES];
   };
 
-  // Ignore the set attributes for now inside Emission, just load the artwork as a singleton
-  emission.switchBoardModule.presentArtworkSet = ^(UIViewController * _Nonnull fromViewController, NSArray<NSString *> * _Nonnull artworkIDs, NSNumber * _Nonnull index) {
-    NSString *artworkID = artworkIDs[index.integerValue];
-    NSString *route = [NSString stringWithFormat:@"/artwork/%@", artworkID];
-    [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route] animated:YES];
-  };
-
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
     if ([fromViewController isKindOfClass:ARStorybookComponentViewController.class]) {

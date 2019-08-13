@@ -13,14 +13,14 @@
 //   * Major dev tool updates
 
 -->
-
 ### Master
 
 - Fix consignments artist search and make it use relay - alloy
 
-### 1.12.15
+### 1.12.16
 
 - Replace usage of legacy filter artwork fields with new connection - alloy
+- Removes artwork set functionality - ash
 
 ### 1.12.14
 

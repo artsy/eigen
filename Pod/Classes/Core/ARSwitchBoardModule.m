@@ -16,20 +16,6 @@ typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController * _No
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(presentArtworksSet:(nonnull NSNumber *)reactTag artworkIDs:(nonnull NSArray<NSString *> *)artworkIDs initialIndex:(nonnull NSNumber *)index)
-{
-    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
-    UIView *rootView = originatingView;
-    while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
-        rootView = rootView.superview;
-    }
-    UIViewController *viewController = rootView.reactViewController;
-    NSParameterAssert(viewController);
-
-    self.presentArtworkSet(viewController, artworkIDs, index);
-}
-
-
 RCT_EXPORT_METHOD(presentNavigationViewController:(nonnull NSNumber *)reactTag route:(nonnull NSString *)route)
 {
   [self invokeCallback:self.presentNavigationViewController reactTag:reactTag route:route];
