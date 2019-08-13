@@ -19,6 +19,7 @@
 
 ### 1.12.16
 
+- Fix clicking on single pin in City Guide map - alloy
 - Replace usage of legacy filter artwork fields with new connection - alloy
 - Removes artwork set functionality - ash
 
