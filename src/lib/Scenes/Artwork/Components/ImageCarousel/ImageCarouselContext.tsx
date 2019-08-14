@@ -33,6 +33,9 @@ export type ImageCarouselAction =
       type: "FULL_SCREEN_DISMISSED"
     }
   | {
+      type: "FULL_SCREEN_FINISHED_EXITING"
+    }
+  | {
       type: "FULL_SCREEN_FINISHED_ENTERING"
     }
   | {
@@ -43,7 +46,7 @@ export type ImageCarouselAction =
       nextZoomScale: number
     }
 
-export type FullScreenState = "none" | "doing first render" | "animating entry transition" | "entered"
+export type FullScreenState = "none" | "doing first render" | "animating entry transition" | "entered" | "exiting"
 
 export interface ImageCarouselState {
   imageIndex: number
@@ -76,6 +79,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
       embeddedImageRefs,
       embeddedFlatListRef,
       dispatch: (action: ImageCarouselAction) => {
+        console.log({ action })
         switch (action.type) {
           case "IMAGE_INDEX_CHANGED":
             if (state.imageIndex !== action.nextImageIndex) {
@@ -92,6 +96,9 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
             }
             break
           case "FULL_SCREEN_DISMISSED":
+            state.fullScreenState = "exiting"
+            break
+          case "FULL_SCREEN_FINISHED_EXITING":
             state.fullScreenState = "none"
             break
           case "TAPPED_TO_GO_FULL_SCREEN":
