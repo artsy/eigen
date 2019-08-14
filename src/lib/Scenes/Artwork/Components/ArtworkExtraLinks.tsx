@@ -41,24 +41,22 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     return (
       <>
         {(isInquireable || isAcquireable) && (
-          <>
-            <Sans size="2" color="black60">
-              Have a question?{" "}
-              <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
-                Read our FAQ
-              </Text>
-              {isAcquireable && (
-                <>
-                  {" "}
-                  or{" "}
-                  <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
-                    ask a specialist
-                  </Text>
-                  .
-                </>
-              )}
-            </Sans>
-          </>
+          <Sans size="2" color="black60">
+            Have a question?{" "}
+            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
+              Read our FAQ
+            </Text>
+            {isAcquireable && (
+              <>
+                {" "}
+                or{" "}
+                <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
+                  ask a specialist
+                </Text>
+                .
+              </>
+            )}
+          </Sans>
         )}
         {!!consignableArtistsCount && (
           <>
