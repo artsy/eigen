@@ -19,7 +19,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     SwitchBoard.presentNavigationViewController(this, `/inquiry/${this.props.artwork.slug}`)
   }
 
-  renderButtons = () => {
+  render() {
     const { artwork } = this.props
     const { isAcquireable, isOfferable, isInquireable, isInAuction } = artwork
 
@@ -46,10 +46,6 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     } else {
       return <></>
     }
-  }
-
-  render() {
-    return <>{this.renderButtons()}</>
   }
 }
 

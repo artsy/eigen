@@ -66,13 +66,13 @@ describe("CommercialButtons", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
+      isOfferable: true,
+      isInquireable: false,
     }
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Contact gallery")
+    expect(commercialButtons.text()).toContain("Make offer")
   })
 
   it("renders Buy Now button if isAcquireable", async () => {
@@ -86,6 +86,39 @@ describe("CommercialButtons", () => {
       artwork,
     })
     expect(commercialButtons.text()).toContain("Buy now")
+  })
+
+  it("renders Bid button if isInAuction & isBiddable", async () => {
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: false,
+      isInAuction: true,
+      isBiddable: true,
+      sale: {
+        slug: "kieran-testing-ios-artwork-page",
+        internalID: "5d52f117d063bc0007bcb111",
+        registrationStatus: null,
+        isPreview: false,
+        isOpen: true,
+        isLiveOpen: false,
+        isClosed: false,
+        isRegistrationClosed: false,
+      },
+      saleArtwork: {
+        increments: [
+          {
+            cents: 1600000,
+            display: "CHF16,000",
+          },
+        ],
+      },
+    }
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(commercialButtons.text()).toContain("Bid")
   })
 
   it("renders both Buy Now and Make Offer buttons when isOfferable and isAcquireable", async () => {
