@@ -4,7 +4,7 @@ import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
-import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons"
+import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
@@ -56,6 +56,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
     const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
+
     return (
       <>
         {artwork.editionSets && artwork.editionSets.length > 1

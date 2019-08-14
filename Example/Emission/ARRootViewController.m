@@ -251,7 +251,7 @@
 - (ARCellData *)jumpToArtworkWithBNMO
 {
   return [self tappableCellDataWithTitle:@"Artwork With BNMO" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"anthony-caro-table-piece-ccii"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"josh-reames-columbo-ii"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -275,7 +275,7 @@
 - (ARCellData *)jumpToArtworkInAuction
 {
   return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"andy-warhol-mao-one-plate-3"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"marina-donati-insects"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

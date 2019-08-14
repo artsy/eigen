@@ -3,7 +3,7 @@ import { mount } from "enzyme"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
-import { CommercialButtons } from "../CommercialButtons"
+import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformation } from "../CommercialInformation"
 

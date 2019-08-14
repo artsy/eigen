@@ -1,12 +1,11 @@
 import { Button } from "@artsy/palette"
-import { mount } from "enzyme"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
+import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
-import React from "react"
-import { graphql, RelayProp } from "react-relay"
-import { CommercialButtonProps, CommercialButtons, CommercialButtonsFragmentContainer } from "../CommercialButtons"
+import { graphql } from "react-relay"
+import { CommercialButtonsFragmentContainer } from "../CommercialButtons"
 
 jest.unmock("react-relay")
 
@@ -17,19 +16,11 @@ afterEach(() => {
   SwitchBoardMock.presentModalViewController.mockReset()
 })
 
-const defaultArtwork = {
-  slug: "abbas-kiarostami-untitled-7",
-  internalID: "5b2b745e9c18db204fc32e11",
-  isAcquireable: false,
-  isOfferable: false,
-  isInquireable: true,
-}
-
 const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, mockOfferMutationResults }) => {
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,
     query: graphql`
-      query CommercialButtonsTestsQuery {
+      query CommercialButtonsTestsMutationQuery {
         artwork(id: "artworkID") {
           ...CommercialButtons_artwork
         }
@@ -43,76 +34,111 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
   })
 }
 
+const relayComponent = async ({ artwork }) => {
+  return await renderRelayTree({
+    Component: CommercialButtonsFragmentContainer,
+    query: graphql`
+      query CommercialButtonsTestsRenderQuery {
+        artwork(id: "artworkID") {
+          ...CommercialButtons_artwork
+        }
+      }
+    `,
+    mockData: { artwork },
+  })
+}
+
 describe("CommercialButtons", () => {
-  it("renders button for Contact Gallery button if isInquireable", () => {
+  it("renders button for Contact Gallery button if isInquireable", async () => {
     const artwork = {
-      ...defaultArtwork,
+      ...ArtworkFixture,
       isAcquireable: false,
       isOfferable: false,
       isInquireable: true,
     }
-    const component = mount(
-      <CommercialButtons
-        relay={{ environment: {} } as RelayProp}
-        artwork={artwork as CommercialButtonProps["artwork"]}
-      />
-    )
-    expect(component.text()).toContain("Contact gallery")
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(commercialButtons.text()).toContain("Contact gallery")
   })
 
-  it("renders Make Offer button if isOfferable", () => {
+  it("renders Make Offer button if isOfferable", async () => {
     const artwork = {
-      ...defaultArtwork,
+      ...ArtworkFixture,
       isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
+      isOfferable: true,
+      isInquireable: false,
     }
-    const component = mount(
-      <CommercialButtons
-        relay={{ environment: {} } as RelayProp}
-        artwork={artwork as CommercialButtonProps["artwork"]}
-      />
-    )
-    expect(component.text()).toContain("Contact gallery")
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(commercialButtons.text()).toContain("Make offer")
   })
 
-  it("renders Buy Now button if isAcquireable", () => {
+  it("renders Buy Now button if isAcquireable", async () => {
     const artwork = {
-      ...defaultArtwork,
+      ...ArtworkFixture,
       isAcquireable: true,
       isOfferable: false,
       isInquireable: false,
     }
-    const component = mount(
-      <CommercialButtons
-        relay={{ environment: {} } as RelayProp}
-        artwork={artwork as CommercialButtonProps["artwork"]}
-      />
-    )
-    expect(component.text()).toContain("Buy now")
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(commercialButtons.text()).toContain("Buy now")
   })
 
-  it("renders both Buy Now and Make Offer buttons when isOfferable and isAcquireable", () => {
+  it("renders Bid button if isInAuction & isBiddable", async () => {
     const artwork = {
-      ...defaultArtwork,
+      ...ArtworkFixture,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: false,
+      isInAuction: true,
+      isBiddable: true,
+      sale: {
+        slug: "kieran-testing-ios-artwork-page",
+        internalID: "5d52f117d063bc0007bcb111",
+        registrationStatus: null,
+        isPreview: false,
+        isOpen: true,
+        isLiveOpen: false,
+        isClosed: false,
+        isRegistrationClosed: false,
+      },
+      saleArtwork: {
+        increments: [
+          {
+            cents: 1600000,
+            display: "CHF16,000",
+          },
+        ],
+      },
+    }
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(commercialButtons.text()).toContain("Bid")
+  })
+
+  it("renders both Buy Now and Make Offer buttons when isOfferable and isAcquireable", async () => {
+    const artwork = {
+      ...ArtworkFixture,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
     }
-    const component = mount(
-      <CommercialButtons
-        relay={{ environment: {} } as RelayProp}
-        artwork={artwork as CommercialButtonProps["artwork"]}
-      />
-    )
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
     expect(
-      component
+      commercialButtons
         .find(Button)
         .at(0)
         .text()
     ).toContain("Buy now")
     expect(
-      component
+      commercialButtons
         .find(Button)
         .at(1)
         .text()
@@ -121,7 +147,7 @@ describe("CommercialButtons", () => {
 
   it("commits the Buy Now mutation", async () => {
     const artwork = {
-      ...defaultArtwork,
+      ...ArtworkFixture,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
@@ -146,7 +172,7 @@ describe("CommercialButtons", () => {
 
   it("commits the Make Offer mutation", async () => {
     const artwork = {
-      ...defaultArtwork,
+      ...ArtworkFixture,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
