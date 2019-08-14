@@ -53,7 +53,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
   render() {
     const { artwork } = this.props
     const { editionSetID } = this.state
-    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale } = artwork
+    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, slug } = artwork
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
     const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
@@ -78,19 +78,18 @@ export class CommercialInformation extends React.Component<CommercialInformation
                 <AuctionCountDownTimer artwork={artwork} />
               </>
             )}
-          {!!consignableArtistsCount ||
-            (true && (
-              <>
-                <Spacer mb={2} />
-                <ArtworkExtraLinks
-                  artworkSlug={slug}
-                  isAcquireable={isAcquireable}
-                  isInquireable={isInquireable}
-                  consignableArtistsCount={consignableArtistsCount}
-                  artistName={artistName}
-                />
-              </>
-            ))}
+          {(!!consignableArtistsCount || isAcquireable || isInquireable) && (
+            <>
+              <Spacer mb={2} />
+              <ArtworkExtraLinks
+                artworkSlug={slug}
+                isAcquireable={isAcquireable}
+                isInquireable={isInquireable}
+                consignableArtistsCount={consignableArtistsCount}
+                artistName={artistName}
+              />
+            </>
+          )}
         </Box>
       </>
     )
