@@ -242,6 +242,7 @@ fragment ArtworkHeader_artwork on Artwork {
 }
 
 fragment CommercialInformation_artwork on Artwork {
+  slug
   availability
   artists {
     isConsignable
@@ -1696,7 +1697,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "12099182cb39e425e8e820f9fd73e0cb",
+    "id": "17af671544f54e83167d82aa90304ba2",
     "text": null,
     "metadata": {}
   }

@@ -8,12 +8,20 @@ import { Text } from "react-native"
 interface ArtworkExtraLinksProps {
   consignableArtistsCount: number
   artistName: string | null
+  isAcquireable: boolean
+  isInquireable: boolean
+  artworkSlug: string
 }
 
 @track()
 export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
-  handleTap(href: string) {
-    SwitchBoard.presentNavigationViewController(this, href)
+  handleReadOurFAQTap = () => {
+    SwitchBoard.presentNavigationViewController(this, `/buy-now-feature-faq`)
+  }
+
+  handleAskASpecialistTap = () => {
+    const { artworkSlug } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/inquiry/${artworkSlug}`)
   }
 
   @track(() => {
@@ -27,20 +35,42 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
   }
 
-  renderConsignmentsLine(artistsCount, artistName) {
-    return (
-      <Sans size="2" color="black60">
-        Want to sell a work by {artistsCount === 1 ? artistName : "these artists"}?{" "}
-        <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConsignmentsTap()}>
-          Consign with Artsy.
-        </Text>
-      </Sans>
-    )
-  }
-
   render() {
-    const { consignableArtistsCount, artistName } = this.props
+    const { consignableArtistsCount, artistName, isAcquireable, isInquireable } = this.props
 
-    return <>{!!consignableArtistsCount && this.renderConsignmentsLine(consignableArtistsCount, artistName)}</>
+    return (
+      <>
+        {(isInquireable || isAcquireable) && (
+          <>
+            <Sans size="2" color="black60">
+              Have a question?{" "}
+              <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
+                Read our FAQ
+              </Text>
+              {isAcquireable && (
+                <>
+                  {" "}
+                  or{" "}
+                  <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
+                    ask a specialist
+                  </Text>
+                  .
+                </>
+              )}
+            </Sans>
+          </>
+        )}
+        {!!consignableArtistsCount && (
+          <>
+            <Sans size="2" color="black60">
+              Want to sell a work by {consignableArtistsCount === 1 ? artistName : "these artists"}?{" "}
+              <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConsignmentsTap()}>
+                Consign with Artsy.
+              </Text>
+            </Sans>
+          </>
+        )}
+      </>
+    )
   }
 }

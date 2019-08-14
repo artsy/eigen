@@ -8,6 +8,7 @@ import { CommercialPartnerInformation_artwork$ref } from "./CommercialPartnerInf
 declare const _CommercialInformation_artwork$ref: unique symbol;
 export type CommercialInformation_artwork$ref = typeof _CommercialInformation_artwork$ref;
 export type CommercialInformation_artwork = {
+    readonly slug: string;
     readonly availability: string | null;
     readonly artists: ReadonlyArray<{
         readonly isConsignable: boolean | null;
@@ -63,6 +64,13 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -181,5 +189,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '823d5cea7f4137d2332c4ccebba7c95d';
+(node as any).hash = '36f05eee67d254f98bab85a6a718483b';
 export default node;

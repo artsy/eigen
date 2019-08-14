@@ -78,12 +78,19 @@ export class CommercialInformation extends React.Component<CommercialInformation
                 <AuctionCountDownTimer artwork={artwork} />
               </>
             )}
-          {!!consignableArtistsCount && (
-            <>
-              <Spacer mb={2} />
-              <ArtworkExtraLinks consignableArtistsCount={consignableArtistsCount} artistName={artistName} />
-            </>
-          )}
+          {!!consignableArtistsCount ||
+            (true && (
+              <>
+                <Spacer mb={2} />
+                <ArtworkExtraLinks
+                  artworkSlug={slug}
+                  isAcquireable={isAcquireable}
+                  isInquireable={isInquireable}
+                  consignableArtistsCount={consignableArtistsCount}
+                  artistName={artistName}
+                />
+              </>
+            ))}
         </Box>
       </>
     )
@@ -93,6 +100,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
 export const CommercialInformationFragmentContainer = createFragmentContainer(CommercialInformation, {
   artwork: graphql`
     fragment CommercialInformation_artwork on Artwork {
+      slug
       availability
       artists {
         isConsignable
