@@ -47,7 +47,7 @@ type DeepZoomImageSize = ImageDescriptor["deepZoom"]["Image"]["Size"]
  * until you get to 1px * 1px
  */
 export const calculateDeepZoomLevels = ({ Width, Height }: DeepZoomImageSize) => {
-  const result: Box[] = []
+  const result: Box[] = [{ width: Width, height: Height }]
   let w = Width
   let h = Height
   while (w !== 1 || h !== 1) {

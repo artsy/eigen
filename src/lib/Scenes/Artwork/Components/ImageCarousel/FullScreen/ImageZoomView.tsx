@@ -128,6 +128,9 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     useEffect(() => {
       // animate image transition on mount
       if (state.fullScreenState !== "entered" && state.imageIndex === index) {
+        const tag = findNodeHandle(scrollViewRef.current.getNode())
+        EnclosingScrollViewOptOut.optOutOfParentScrollEvents(tag)
+
         getTransitionOffset({
           fromRef: embeddedImageRefs[state.imageIndex],
           toBox: { width, height, x: marginHorizontal, y: marginVertical },
@@ -147,11 +150,6 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
             })
           })
       }
-    }, [])
-
-    useEffect(() => {
-      const tag = findNodeHandle(scrollViewRef.current.getNode())
-      EnclosingScrollViewOptOut.optOutOfParentScrollEvents(tag)
     }, [])
 
     // we need to be able to reset the scroll view zoom level when the user
@@ -249,12 +247,6 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const $contentOffsetY = useAnimatedValue(-marginVertical)
     const $zoomScale = useAnimatedValue(1)
 
-    // as a perf optimisation, when doing the 'zoom in' transition, we only render the
-    // current zoomable image in place of the other images we just render a blank box
-    if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
-      return <View style={screenBoundingBox} />
-    }
-
     const onScroll = useCallback((ev: NativeSyntheticEvent<NativeScrollEvent>) => {
       zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
       contentOffset.current = { ...ev.nativeEvent.contentOffset }
@@ -268,6 +260,12 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
       }
     }, [])
+
+    // as a perf optimisation, when doing the 'zoom in' transition, we only render the
+    // current zoomable image in place of the other images we just render a blank box
+    if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
+      return <View style={screenBoundingBox} />
+    }
 
     return (
       <>
