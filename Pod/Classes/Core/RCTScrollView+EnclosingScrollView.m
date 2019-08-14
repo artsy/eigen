@@ -129,9 +129,12 @@
 
 @interface RCTScrollView (RCTEnclosingScrollView)
 - (void)optOutOfParentScrollEvents;
+- (void)optOutOfAllScrollEvents;
+- (void)optInToAllScrollEvents;
 @end
 
 void* optOutAssociatedPointer = &optOutAssociatedPointer;
+void* optOutAllAssociatedPointer = &optOutAllAssociatedPointer;
 
 @implementation RCTScrollView (RCTEnclosingScrollView)
 
@@ -153,6 +156,26 @@ void* optOutAssociatedPointer = &optOutAssociatedPointer;
   self.optingOut = YES;
 }
 
+- (BOOL)optingOutOfAllScrollEvents
+{
+    return [objc_getAssociatedObject(self, optOutAllAssociatedPointer) boolValue];
+}
+
+- (void)setOptingOutOfAllScrollEvents:(BOOL)optingOut
+{
+    objc_setAssociatedObject(self, optOutAllAssociatedPointer, @(optingOut), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)optOutOfAllScrollEvents
+{
+    self.optingOutOfAllScrollEvents = YES;
+}
+
+- (void)optInToAllScrollEvents
+{
+    self.optingOutOfAllScrollEvents = NO;
+}
+
 // Override method, because we want to send the generated event through the notification center.
 // Everything but the last line of the method are exactly as the original, except with a bunch of KVC shenanigans.
 - (void)sendScrollEventWithName:(NSString *)eventName
@@ -170,7 +193,9 @@ void* optOutAssociatedPointer = &optOutAssociatedPointer;
 //                                                              coalescingKey:_coalescingKey];
 //    [_eventDispatcher sendEvent:scrollEvent];
 
-
+    if (self.optingOutOfAllScrollEvents) {
+        return;
+    }
   uint16_t coalescingKey = [[self valueForKey:@"_coalescingKey"] unsignedIntegerValue];
 
   if (![eventName isEqualToString:[self valueForKey:@"_lastEmittedEventName"]]) {

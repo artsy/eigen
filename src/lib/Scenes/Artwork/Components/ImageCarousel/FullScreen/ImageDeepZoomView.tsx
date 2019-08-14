@@ -4,21 +4,15 @@ import { ImageDescriptor } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
 import { screenBoundingBox } from "./screen"
 
-interface Tile {
-  setShowing: (showing: boolean) => void
-  loaded: boolean
-}
 interface TileProps {
   url: string
   top: number
   left: number
   width: number
   height: number
-  level: number
-  color: string
 }
 
-const Tile: React.FC<TileProps> = ({ url, top, left, width, height, level, color }) => {
+const Tile: React.FC<TileProps> = ({ url, top, left, width, height }) => {
   const [loaded, setLoaded] = useState(false)
   const opacity = useSpringValue(loaded ? 1 : 0)
   return (
@@ -146,8 +140,6 @@ export interface ImageDeepZoomViewProps {
   $contentOffsetY: Animated.Value
 }
 
-const colors = ["#FFA719", "#FFCC00", "#99CCFF", "#488CBA"]
-
 export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   image: {
     deepZoom: {
@@ -177,7 +169,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   const tiles: JSX.Element[] = useMemo(
     () => {
       const result: JSX.Element[] = []
-      for (let level = maxLevelToRender; level <= maxLevelToRender; level++) {
+      for (let level = minLevel; level <= maxLevelToRender; level++) {
         const { minRow, minCol, maxRow, maxCol, numCols, numRows } = getVisibleRowsAndColumns({
           imageFittedWithinScreen: { width, height },
           levelDimensions: levels[level],
@@ -196,16 +188,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
             const tileHeight = row < numRows - 1 ? TileSize : levels[level].height % TileSize
 
             levelTiles.push(
-              <Tile
-                key={url}
-                url={url}
-                top={tileTop}
-                left={tileLeft}
-                width={tileWidth}
-                height={tileHeight}
-                level={level}
-                color={colors[(minLevel - level) % colors.length]}
-              />
+              <Tile key={url} url={url} top={tileTop} left={tileLeft} width={tileWidth} height={tileHeight} />
             )
           }
         }

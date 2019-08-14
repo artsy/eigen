@@ -63,6 +63,9 @@ target 'Emission' do
 
   # Storing Credentials
   pod 'SAMKeychain'
+  
+  # custom zoom animation for image carousel
+  pod 'INTUAnimationEngine'
 
   # Authiung with Artsy
   pod 'Artsy+Authentication', subspecs: %w[email],

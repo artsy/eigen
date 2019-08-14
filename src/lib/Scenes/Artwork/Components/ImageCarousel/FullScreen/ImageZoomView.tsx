@@ -141,11 +141,9 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
                 bounciness: 0,
                 toValue: 1,
                 useNativeDriver: true,
-              }).start()
-              // to make this feel snappy we'll actually finish earlier than the animation ends.
-              setTimeout(() => {
+              }).start(() => {
                 dispatch({ type: "FULL_SCREEN_FINISHED_ENTERING" })
-              }, 50)
+              })
             })
           })
       }
@@ -180,20 +178,52 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
 
     const handleDoubleTapToZoom = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
       const { pageX, pageY } = ev.nativeEvent
-      if (zoomScale.current > 3) {
-        resetZoom()
+      if (Math.ceil(zoomScale.current) >= maxZoomScale) {
+        EnclosingScrollViewOptOut.smoothZoom(
+          findNodeHandle(scrollViewRef.current.getNode()),
+          -marginHorizontal,
+          -marginVertical,
+          width,
+          height
+        )
+        // resetZoom()
       } else {
         // zoom to tapped point
+        let newZoomScale = Math.min(zoomScale.current * 3, maxZoomScale)
+        if (newZoomScale * 2 >= maxZoomScale) {
+          newZoomScale = maxZoomScale
+        }
         const tapX = (contentOffset.current.x + pageX) / zoomScale.current
         const tapY = (contentOffset.current.y + pageY) / zoomScale.current
-        const w = screenWidth / maxZoomScale
-        const h = screenHeight / maxZoomScale
-        scrollViewRef.current.getNode().scrollResponderZoomTo({
-          x: tapX - w / 2,
-          y: tapY - h / 2,
-          width: w,
-          height: h,
-        })
+        const w = screenWidth / newZoomScale
+        const h = screenHeight / newZoomScale
+
+        let x = tapX - w / 2
+        let y = tapY - h / 2
+
+        if (w > width) {
+          // handle centering with margins
+          x = -(w - width) / 2
+        } else if (x + w > width) {
+          // handle constraining right edge
+          x = width - w
+        } else if (x < 0) {
+          // handle constraining left edge
+          x = 0
+        }
+
+        if (h > height) {
+          // handle centering with margins
+          y = -(h - height) / 2
+        } else if (y + h > height) {
+          // handle constraining bottom edge
+          y = height - h
+        } else if (y < 0) {
+          // handle constraining top edge
+          y = 0
+        }
+
+        EnclosingScrollViewOptOut.smoothZoom(findNodeHandle(scrollViewRef.current.getNode()), x, y, w, h)
       }
     })
 
@@ -289,7 +319,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
             </Animated.View>
           </TouchableWithoutFeedback>
         </Animated.ScrollView>
-        {state.fullScreenState !== "doing first render" &&
+        {state.fullScreenState === "entered" &&
           state.imageIndex === index && (
             <ImageDeepZoomView
               image={image}
