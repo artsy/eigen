@@ -72,7 +72,7 @@ export const calculateMinMaxDeepZoomLevels = (imageFittedWithinScreen: Box, zoom
   let minLevel = 0
   const maxLevel = zoomLevels.length - 1
   for (const { width } of zoomLevels) {
-    if (width > imageFittedWithinScreen.width) {
+    if (width >= imageFittedWithinScreen.width) {
       break
     }
     minLevel++
@@ -84,24 +84,27 @@ export const calculateMinMaxDeepZoomLevels = (imageFittedWithinScreen: Box, zoom
  *
  */
 export const getMaxDeepZoomLevelForZoomViewScale = ({
-  minLevel,
-  maxLevel,
   zoomScale,
-  maxZoomScale,
+  minLevelWidth,
+  minLevel,
 }: {
-  minLevel: number
-  maxLevel: number
-  maxZoomScale: number
   zoomScale: number
+  minLevelWidth: number
+  minLevel: number
 }) => {
   // minZoomScale is always 1
   // so we basically want to interpolate zoomScale between [minLevel, maxLevel] based on [1, maxZoomScale]
-  const t = (zoomScale - 1) / (maxZoomScale - 1)
-  return Math.min(Math.round(minLevel + (maxLevel - minLevel) * t), maxLevel)
+  let levelWidth = minLevelWidth
+  let level = minLevel
+  while (levelWidth < minLevelWidth * zoomScale) {
+    levelWidth *= 2
+    level++
+  }
+  return level
 }
 
 export function getVisibleRowsAndColumns({
-  imageFittedWithinScreen,
+  imageFittedWithinScreen: { width, height },
   levelDimensions,
   tileSize,
   viewPort,
@@ -111,25 +114,14 @@ export function getVisibleRowsAndColumns({
   tileSize: number
   viewPort: Rect
 }) {
-  if (!imageFittedWithinScreen) {
-    console.error("imageFittedWithinScreen")
-  }
-  if (!levelDimensions) {
-    console.error("levelDimensions")
-  }
-  if (!tileSize) {
-    console.error("tileSize")
-  }
-  if (!viewPort) {
-    console.error("viewPort")
-  }
-  const scale = levelDimensions.width / imageFittedWithinScreen.width
-  const numCols = Math.ceil(levelDimensions.width / tileSize)
-  const numRows = Math.ceil(levelDimensions.height / tileSize)
-  const minCol = Math.max(0, Math.floor((viewPort.x * scale) / tileSize))
-  const minRow = Math.max(0, Math.floor((viewPort.y * scale) / tileSize))
-  const maxCol = Math.min(numCols, Math.floor(((viewPort.x + viewPort.width) * scale) / tileSize))
-  const maxRow = Math.min(numRows, Math.floor(((viewPort.y + viewPort.height) * scale) / tileSize))
+  const scale = levelDimensions.width / width
+  tileSize = tileSize / scale
+  const numCols = Math.ceil(width / tileSize)
+  const numRows = Math.ceil(height / tileSize)
+  const minCol = Math.max(0, Math.floor(viewPort.x / tileSize))
+  const minRow = Math.max(0, Math.floor(viewPort.y / tileSize))
+  const maxCol = Math.min(numCols, Math.floor((viewPort.x + viewPort.width) / tileSize))
+  const maxRow = Math.min(numRows, Math.floor((viewPort.y + viewPort.height) / tileSize))
   return { minRow, minCol, maxRow, maxCol, numCols, numRows }
 }
 export interface ImageDeepZoomViewProps {
@@ -174,8 +166,14 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
 
   useEvents(viewPortChanges, viewPort => {
     const zoomScale = width / viewPort.width
-    const maxZoomScale = Size.Width / width
-    const maxLevelToRender = getMaxDeepZoomLevelForZoomViewScale({ minLevel, maxLevel, zoomScale, maxZoomScale })
+    const maxLevelToRender = Math.min(
+      getMaxDeepZoomLevelForZoomViewScale({
+        minLevel,
+        minLevelWidth: levels[minLevel].width,
+        zoomScale,
+      }),
+      maxLevel
+    )
     const digest = new DJB2()
 
     for (let level = minLevel; level <= maxLevelToRender; level++) {
@@ -183,7 +181,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
         imageFittedWithinScreen: { width, height },
         levelDimensions: levels[level],
         tileSize: TileSize,
-        viewPort: growRect(viewPort, 100),
+        viewPort: growRect(viewPort, 400 / zoomScale),
       })
       digest.include(level)
       digest.include(minRow)
@@ -204,7 +202,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
         imageFittedWithinScreen: { width, height },
         levelDimensions: levels[level],
         tileSize: TileSize,
-        viewPort: growRect(viewPort, 100),
+        viewPort: growRect(viewPort, 400 / zoomScale),
       })
 
       const levelTiles: JSX.Element[] = []
