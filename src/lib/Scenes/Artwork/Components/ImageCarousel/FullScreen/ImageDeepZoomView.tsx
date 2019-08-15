@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Animated, Image, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
@@ -138,6 +138,7 @@ export interface ImageDeepZoomViewProps {
   $zoomScale: Animated.Value
   $contentOffsetX: Animated.Value
   $contentOffsetY: Animated.Value
+  didMount(): void
 }
 
 export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
@@ -152,7 +153,11 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   $zoomScale,
   $contentOffsetX,
   $contentOffsetY,
+  didMount,
 }) => {
+  useEffect(() => {
+    didMount()
+  }, [])
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(Size), [Size])
   const { minLevel, maxLevel } = useMemo(() => calculateMinMaxDeepZoomLevels({ width, height }, levels), [

@@ -50,6 +50,7 @@ export type FullScreenState = "none" | "doing first render" | "animating entry t
 
 export interface ImageCarouselState {
   imageIndex: number
+  lastImageIndex: number
   fullScreenState: FullScreenState
   isZoomedCompletelyOut: boolean
 }
@@ -65,8 +66,9 @@ export interface ImageCarouselContext {
 export function useNewImageCarouselContext({ images }: { images: ImageDescriptor[] }): ImageCarouselContext {
   const embeddedImageRefs = useMemo(() => [], [])
   const embeddedFlatListRef = useRef<FlatList<any>>()
-  const state = observable({
+  const state = observable<ImageCarouselState>({
     imageIndex: 0,
+    lastImageIndex: 0,
     fullScreenState: "none" as FullScreenState,
     isZoomedCompletelyOut: true,
   })
@@ -79,7 +81,6 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
       embeddedImageRefs,
       embeddedFlatListRef,
       dispatch: (action: ImageCarouselAction) => {
-        console.log({ action })
         switch (action.type) {
           case "IMAGE_INDEX_CHANGED":
             if (state.imageIndex !== action.nextImageIndex) {
@@ -88,6 +89,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
                 action_type: Schema.ActionTypes.Swipe,
                 context_module: Schema.ContextModules.ArtworkImage,
               })
+              state.lastImageIndex = state.imageIndex
               state.imageIndex = action.nextImageIndex
               state.isZoomedCompletelyOut = true
               if (state.fullScreenState !== "none") {

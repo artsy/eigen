@@ -32,6 +32,15 @@ RCT_EXPORT_METHOD(optOutOfParentScrollEvents:(nonnull NSNumber *)tag)
     }
 }
 
+RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
+{
+    UIView* view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+    
+    if ([view isKindOfClass:RCTScrollView.class]) {
+        [((RCTScrollView *) view) scrollViewDidScroll:((RCTScrollView *) view).scrollView];
+    }
+}
+
 // x, y, w, and h, are relative to the un-zoomed content
 RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(nonnull NSNumber *)y w:(nonnull NSNumber *)w h:(nonnull NSNumber *)h)
 {

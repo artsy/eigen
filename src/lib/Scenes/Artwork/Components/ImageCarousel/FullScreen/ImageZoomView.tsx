@@ -160,12 +160,13 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
-        scrollViewRef.current.getNode().scrollResponderZoomTo({
-          x: 0,
-          y: 0,
-          width: screenWidth,
-          height: screenHeight,
-        })
+        EnclosingScrollViewOptOut.smoothZoom(
+          findNodeHandle(scrollViewRef.current.getNode()),
+          -marginHorizontal,
+          -marginVertical,
+          width,
+          height
+        )
       }
     }, [])
 
@@ -261,6 +262,10 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     }, [])
 
+    const triggerScrollEvent = useCallback(() => {
+      EnclosingScrollViewOptOut.triggerScrollEvent(findNodeHandle(scrollViewRef.current.getNode()))
+    }, [])
+
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
     if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
@@ -317,8 +322,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
             </Animated.View>
           </TouchableWithoutFeedback>
         </Animated.ScrollView>
-        {state.fullScreenState === "entered" &&
-          state.imageIndex === index && (
+        {(state.fullScreenState === "entered" || state.fullScreenState === "exiting") &&
+          (state.imageIndex === index || state.lastImageIndex === index) && (
             <ImageDeepZoomView
               image={image}
               width={width}
@@ -327,6 +332,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
               $zoomScale={$zoomScale}
               $contentOffsetX={$contentOffsetX}
               $contentOffsetY={$contentOffsetY}
+              didMount={triggerScrollEvent}
             />
           )}
       </>
