@@ -309,7 +309,7 @@ export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collect
     environment={environment}
     query={graphql`
       query QueryRenderersCollectionQuery($collectionID: String!) {
-        marketingCollection(slug: $collectionID) {
+        collection: marketingCollection(slug: $collectionID) {
           ...Collection_collection
         }
       }

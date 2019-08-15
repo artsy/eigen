@@ -1,5 +1,4 @@
 import { Box, Sans } from "@artsy/palette"
-import { Schema, track } from "lib/utils/track"
 import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -7,16 +6,12 @@ interface CollectionProps {
   collection: any
 }
 
-@track<any>(props => ({
-  context_module: Schema.ContextModules.AboutTheArtist,
-  context_page_owner_slug: props.collection.slug,
-  context_page_owner_id: props.collection.id,
-}))
 export class Collection extends Component<CollectionProps> {
   render() {
+    const { title } = this.props.collection
     return (
       <Box>
-        <Sans size="3t">Hello world</Sans>
+        <Sans size="3t">{title}</Sans>
       </Box>
     )
   }

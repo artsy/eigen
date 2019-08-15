@@ -6,7 +6,7 @@ export type QueryRenderersCollectionQueryVariables = {
     readonly collectionID: string;
 };
 export type QueryRenderersCollectionQueryResponse = {
-    readonly marketingCollection: {
+    readonly collection: {
         readonly " $fragmentRefs": Collection_collection$ref;
     } | null;
 };
@@ -21,7 +21,7 @@ export type QueryRenderersCollectionQuery = {
 query QueryRenderersCollectionQuery(
   $collectionID: String!
 ) {
-  marketingCollection(slug: $collectionID) {
+  collection: marketingCollection(slug: $collectionID) {
     ...Collection_collection
   }
 }
@@ -29,6 +29,10 @@ query QueryRenderersCollectionQuery(
 fragment Collection_collection on MarketingCollection {
   slug
   title
+  description
+  headerImage
+  category
+  credit
 }
 */
 
@@ -59,7 +63,7 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": null,
+        "alias": "collection",
         "name": "marketingCollection",
         "storageKey": null,
         "args": (v1/*: any*/),
@@ -82,7 +86,7 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": null,
+        "alias": "collection",
         "name": "marketingCollection",
         "storageKey": null,
         "args": (v1/*: any*/),
@@ -102,6 +106,34 @@ return {
             "name": "title",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "description",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "headerImage",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "category",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "credit",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -110,11 +142,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "a6a654e57bb03ad379787293d2d4da9f",
+    "id": "53983d472e1f1713473e410b863e807b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b9ce4a0971ac8cf5848ad46fc68044b3';
+(node as any).hash = '8a31710533b8db1aec67616c37bf90ba';
 export default node;
