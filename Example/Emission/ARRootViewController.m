@@ -24,6 +24,7 @@
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <Emission/ARCollectionComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARInquiryComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
@@ -114,6 +115,7 @@
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
+  [sectionData addCellData:self.jumpToCollection];
   [sectionData addCellData:self.jumpToArtwork];
   [sectionData addCellData:self.jumpToArtworkWithInquireable];
   [sectionData addCellData:self.jumpToArtworkWithBNMO];
@@ -317,6 +319,16 @@
                                        preload:^NSArray<ARGraphQLQuery *> *{
     return [ARArtistComponentViewController preloadQueriesWithArtistID:artistID];
   }];
+}
+
+- (ARCellData *)jumpToCollection
+{
+  return [self viewControllerCellDataWithTitle:@"Collection"
+                                     selection:^{
+                                       id viewController = [[ARCollectionComponentViewController alloc] initWithCollectionID:@"kaws-companion"];
+                                       [self.navigationController pushViewController:viewController animated:YES];
+                                     }
+                                       preload:nil];
 }
 
 - (ARCellData *)jumpToRandomArtist
