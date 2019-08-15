@@ -14,6 +14,7 @@ import {
   CityFairListRenderer,
   CitySavedListRenderer,
   CitySectionListRenderer,
+  CollectionRenderer,
   ConversationRenderer,
   FairRenderer,
   GeneRenderer,
@@ -28,6 +29,7 @@ import { ArtworkRenderer } from "./Scenes/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
+import { CollectionContainer } from "./Scenes/Collection/Collection"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -144,6 +146,19 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 })(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
+
+interface CollectionProps {
+  collectionID: string
+}
+
+const Collection: React.SFC<CollectionProps> = ({ collectionID }) => {
+  return (
+    <CollectionRenderer
+      collectionID={collectionID}
+      render={renderWithLoadProgress(CollectionContainer, { collectionID })}
+    />
+  )
+}
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow
@@ -337,3 +352,4 @@ AppRegistry.registerComponent("CityPicker", () => CityPicker)
 AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
 AppRegistry.registerComponent("CityFairList", () => CityFairList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
+AppRegistry.registerComponent("Collection", () => Collection)
