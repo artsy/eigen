@@ -16,8 +16,6 @@ import {
   View,
 } from "react-native"
 
-import { throttle } from "lodash"
-
 const { EnclosingScrollViewOptOut } = NativeModules
 
 import { useAnimatedValue } from "../useAnimatedValue"
@@ -30,6 +28,7 @@ import React from "react"
 import { calculateMaxZoomViewScale, ImageDeepZoomView } from "./ImageDeepZoomView"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
+import { useEventStream } from "./useEventStream"
 
 export interface ImageZoomView {
   resetZoom(): void
@@ -235,14 +234,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       [state.fullScreenState]
     )
 
-    const [viewPort, _setViewPort] = useState({
-      x: contentOffset.current.x / zoomScale.current,
-      y: contentOffset.current.y / zoomScale.current,
-      width: screenWidth / zoomScale.current,
-      height: screenHeight / zoomScale.current,
-    })
-
-    const setViewPort = useMemo(() => throttle(_setViewPort, 50), [])
+    const viewPortChanges = useEventStream<Box>()
 
     const $contentOffsetX = useAnimatedValue(-marginHorizontal)
     const $contentOffsetY = useAnimatedValue(-marginVertical)
@@ -251,7 +243,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const onScroll = useCallback((ev: NativeSyntheticEvent<NativeScrollEvent>) => {
       zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
       contentOffset.current = { ...ev.nativeEvent.contentOffset }
-      setViewPort({
+      viewPortChanges.dispatch({
         x: ev.nativeEvent.contentOffset.x / zoomScale.current,
         y: ev.nativeEvent.contentOffset.y / zoomScale.current,
         width: screenWidth / zoomScale.current,
@@ -328,7 +320,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
               image={image}
               width={width}
               height={height}
-              viewPort={viewPort}
+              viewPortChanges={viewPortChanges}
               $zoomScale={$zoomScale}
               $contentOffsetX={$contentOffsetX}
               $contentOffsetY={$contentOffsetY}

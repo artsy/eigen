@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Animated, Image, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
+import { DJB2 } from "./djb2"
 import { screenBoundingBox } from "./screen"
+import { EventStream, useEvents } from "./useEventStream"
 
 interface TileProps {
   url: string
@@ -134,7 +136,7 @@ export interface ImageDeepZoomViewProps {
   image: ImageDescriptor
   width: number
   height: number
-  viewPort: Rect
+  viewPortChanges: EventStream<Rect>
   $zoomScale: Animated.Value
   $contentOffsetX: Animated.Value
   $contentOffsetY: Animated.Value
@@ -149,13 +151,14 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   },
   width,
   height,
-  viewPort,
+  viewPortChanges,
   $zoomScale,
   $contentOffsetX,
   $contentOffsetY,
   didMount,
 }) => {
   useEffect(() => {
+    // trigger first scroll event
     didMount()
   }, [])
   // setup geometry
@@ -165,83 +168,102 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
     height,
     levels,
   ])
-  const zoomScale = width / viewPort.width
-  const maxZoomScale = Size.Width / width
-  const maxLevelToRender = getMaxDeepZoomLevelForZoomViewScale({ minLevel, maxLevel, zoomScale, maxZoomScale })
 
-  // manage tile state
-  // tiles is the list of JSX tiles. This is immutable for perf reasons
-  const tiles: JSX.Element[] = useMemo(
-    () => {
-      const result: JSX.Element[] = []
-      for (let level = minLevel; level <= maxLevelToRender; level++) {
-        const { minRow, minCol, maxRow, maxCol, numCols, numRows } = getVisibleRowsAndColumns({
-          imageFittedWithinScreen: { width, height },
-          levelDimensions: levels[level],
-          tileSize: TileSize,
-          viewPort,
-        })
+  const lastTilesHashCode = useRef(0)
+  const [tiles, setTiles] = useState([] as JSX.Element[])
 
-        const levelTiles: JSX.Element[] = []
+  useEvents(viewPortChanges, viewPort => {
+    const zoomScale = width / viewPort.width
+    const maxZoomScale = Size.Width / width
+    const maxLevelToRender = getMaxDeepZoomLevelForZoomViewScale({ minLevel, maxLevel, zoomScale, maxZoomScale })
+    const digest = new DJB2()
 
-        for (let row = minRow; row <= maxRow; row++) {
-          for (let col = minCol; col <= maxCol; col++) {
-            const url = `${Url}${level}/${col}_${row}.${Format}`
-            const tileTop = row * TileSize
-            const tileLeft = col * TileSize
-            const tileWidth = col < numCols - 1 ? TileSize : levels[level].width % TileSize
-            const tileHeight = row < numRows - 1 ? TileSize : levels[level].height % TileSize
+    for (let level = minLevel; level <= maxLevelToRender; level++) {
+      const { minRow, minCol, maxRow, maxCol } = getVisibleRowsAndColumns({
+        imageFittedWithinScreen: { width, height },
+        levelDimensions: levels[level],
+        tileSize: TileSize,
+        viewPort: growRect(viewPort, 100),
+      })
+      digest.include(level)
+      digest.include(minRow)
+      digest.include(minCol)
+      digest.include(maxRow)
+      digest.include(maxCol)
+    }
 
-            levelTiles.push(
-              <Tile key={url} url={url} top={tileTop} left={tileLeft} width={tileWidth} height={tileHeight} />
-            )
-          }
+    if (lastTilesHashCode.current === digest.hash) {
+      return
+    }
+
+    lastTilesHashCode.current = digest.hash
+
+    const result: JSX.Element[] = []
+    for (let level = minLevel; level <= maxLevelToRender; level++) {
+      const { minRow, minCol, maxRow, maxCol, numCols, numRows } = getVisibleRowsAndColumns({
+        imageFittedWithinScreen: { width, height },
+        levelDimensions: levels[level],
+        tileSize: TileSize,
+        viewPort: growRect(viewPort, 100),
+      })
+
+      const levelTiles: JSX.Element[] = []
+
+      for (let row = minRow; row <= maxRow; row++) {
+        for (let col = minCol; col <= maxCol; col++) {
+          const url = `${Url}${level}/${col}_${row}.${Format}`
+          const tileTop = row * TileSize
+          const tileLeft = col * TileSize
+          const tileWidth = col < numCols - 1 ? TileSize : levels[level].width % TileSize
+          const tileHeight = row < numRows - 1 ? TileSize : levels[level].height % TileSize
+
+          levelTiles.push(
+            <Tile key={url} url={url} top={tileTop} left={tileLeft} width={tileWidth} height={tileHeight} />
+          )
         }
-
-        const levelScale = levels[level].width / width
-
-        const $scale = Animated.divide($zoomScale, levelScale)
-        const $baseImageTop = Animated.multiply($contentOffsetY, -1)
-        const $baseImageHeight = Animated.multiply(height, $zoomScale)
-        const $baseImageCenterY = Animated.add($baseImageTop, Animated.divide($baseImageHeight, 2))
-
-        const $baseImageLeft = Animated.multiply($contentOffsetX, -1)
-        const $baseImageWidth = Animated.multiply(width, $zoomScale)
-        const $baseImageCenterX = Animated.add($baseImageLeft, Animated.divide($baseImageWidth, 2))
-
-        const $levelPreScaleTop = Animated.subtract($baseImageCenterY, levels[level].height / 2)
-        const $levelPreScaleLeft = Animated.subtract($baseImageCenterX, levels[level].width / 2)
-
-        result.push(
-          <Animated.View
-            key={`level-${level}`}
-            style={{
-              position: "absolute",
-              ...levels[level],
-              transform: [
-                // position centered over base image
-                {
-                  translateX: $levelPreScaleLeft,
-                },
-                {
-                  translateY: $levelPreScaleTop,
-                },
-                // scale it down
-                {
-                  scale: $scale,
-                },
-              ],
-            }}
-          >
-            {levelTiles}
-          </Animated.View>
-        )
       }
 
-      return result
-    },
-    [viewPort]
-  )
+      const levelScale = levels[level].width / width
+
+      const $scale = Animated.divide($zoomScale, levelScale)
+      const $baseImageTop = Animated.multiply($contentOffsetY, -1)
+      const $baseImageHeight = Animated.multiply(height, $zoomScale)
+      const $baseImageCenterY = Animated.add($baseImageTop, Animated.divide($baseImageHeight, 2))
+
+      const $baseImageLeft = Animated.multiply($contentOffsetX, -1)
+      const $baseImageWidth = Animated.multiply(width, $zoomScale)
+      const $baseImageCenterX = Animated.add($baseImageLeft, Animated.divide($baseImageWidth, 2))
+
+      const $levelPreScaleTop = Animated.subtract($baseImageCenterY, levels[level].height / 2)
+      const $levelPreScaleLeft = Animated.subtract($baseImageCenterX, levels[level].width / 2)
+
+      result.push(
+        <Animated.View
+          key={`level-${level}`}
+          style={{
+            position: "absolute",
+            ...levels[level],
+            transform: [
+              // position centered over base image
+              {
+                translateX: $levelPreScaleLeft,
+              },
+              {
+                translateY: $levelPreScaleTop,
+              },
+              // scale it down
+              {
+                scale: $scale,
+              },
+            ],
+          }}
+        >
+          {levelTiles}
+        </Animated.View>
+      )
+    }
+    setTiles(result)
+  })
 
   return (
     <View
@@ -266,4 +288,13 @@ interface Box {
 interface Rect extends Box {
   readonly x: number
   readonly y: number
+}
+
+function growRect(rect: Rect, amount: number) {
+  return {
+    x: rect.x - amount,
+    y: rect.y - amount,
+    width: rect.width + 2 * amount,
+    height: rect.height + 2 * amount,
+  }
 }
