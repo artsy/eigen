@@ -6,14 +6,17 @@ import React from "react"
 import { AuctionCountDownTimer } from "../AuctionCountDownTimer"
 
 const realNow = Settings.now
+const realDefaultZone = Settings.defaultZoneName
 
 describe("AuctionCountDownTimer", () => {
   beforeAll(() => {
+    Settings.defaultZoneName = "America/New_York"
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
   })
 
   afterAll(() => {
     Settings.now = realNow
+    Settings.defaultZoneName = realDefaultZone
   })
 
   it("renders formattedStartDateTime", () => {
@@ -53,7 +56,7 @@ describe("AuctionCountDownTimer", () => {
         <AuctionCountDownTimer artwork={artwork} />
       </Theme>
     )
-    expect(component.find(TimeRemaining).text()).toContain("00d 07h 22m 00s")
+    expect(component.find(TimeRemaining).text()).toContain("01d 08h 20m 00s")
   })
 
   it("doesn't render if sale is null", () => {
