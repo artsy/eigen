@@ -52,15 +52,13 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
     }
 
     return (
-      <>
-        <TimeRemaining
-          labelWithTimeRemaining={sale.formattedStartDateTime}
-          labelFontSize="2"
-          timerFontSize="4t"
-          countdownEnd={auctionStatus === "hasStarted" ? sale.endAt : sale.startAt}
-          highlight="black100"
-        />
-      </>
+      <TimeRemaining
+        labelWithTimeRemaining={sale.formattedStartDateTime}
+        labelFontSize="2"
+        timerFontSize="4t"
+        countdownEnd={auctionStatus === "hasNotStarted" ? sale.startAt : sale.endAt}
+        highlight="black100"
+      />
     )
   }
 }
