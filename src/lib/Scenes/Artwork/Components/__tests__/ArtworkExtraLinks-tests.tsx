@@ -1,5 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
+import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
@@ -12,15 +13,20 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
+    const artwork = {
+      ...ArtworkFixture,
+      ...{
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
+      },
+    }
     const component = mount(
       <Theme>
-        <ArtworkExtraLinks
-          artworkSlug={"123"}
-          isAcquireable={false}
-          isInquireable={false}
-          consignableArtistsCount={3}
-          artistName={null}
-        />
+        <ArtworkExtraLinks artwork={artwork} />
       </Theme>
     )
     const consignmentsLink = component.find(Text).at(1)
@@ -31,43 +37,63 @@ describe("ArtworkExtraLinks", () => {
 
   describe("for an artwork with more than 1 consignable artist", () => {
     it("shows plural link text", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        ...{
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+            {
+              name: "Easter Bunny",
+              isConsignable: true,
+            },
+          ],
+        },
+      }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks
-            artworkSlug={"123"}
-            isAcquireable={false}
-            isInquireable={false}
-            consignableArtistsCount={3}
-            artistName={null}
-          />
+          <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by these artists?")
     })
     it("shows consign link if at least 1 artist is consignable", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        ...{
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        },
+      }
+
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks
-            artworkSlug={"123"}
-            isAcquireable={false}
-            isInquireable={false}
-            consignableArtistsCount={3}
-            artistName={null}
-          />
+          <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
     })
     it("doesn't render component if no artists are consignable", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        ...{
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        },
+      }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks
-            artworkSlug={"123"}
-            consignableArtistsCount={1}
-            isAcquireable={false}
-            isInquireable={false}
-            artistName={null}
-          />
+          <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
       expect(component).toEqual({})
@@ -76,30 +102,40 @@ describe("ArtworkExtraLinks", () => {
 
   describe("for an artwork with one artist", () => {
     it("shows singular link text", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        ...{
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        },
+      }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks
-            artworkSlug={"123"}
-            isAcquireable={false}
-            isInquireable={false}
-            consignableArtistsCount={1}
-            artistName="Santa Claus"
-          />
+          <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
-      expect(component.text()).toContain("Want to sell a work by Santa Claus?")
+      expect(component.text()).toContain("Want to sell a work by Santa?")
     })
 
     it("shows consign link", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        ...{
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        },
+      }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks
-            artworkSlug={"123"}
-            isAcquireable={false}
-            isInquireable={false}
-            consignableArtistsCount={1}
-            artistName="Santa Claus"
-          />
+          <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -107,15 +143,23 @@ describe("ArtworkExtraLinks", () => {
   })
   describe("FAQ and specialist links", () => {
     it("renders FAQ link when isInquireable", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        ...{
+          isAcquireable: false,
+          isInquireable: true,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        },
+      }
+
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks
-            artworkSlug={"123"}
-            isAcquireable={false}
-            isInquireable={true}
-            consignableArtistsCount={1}
-            artistName="Santa Claus"
-          />
+          <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
       expect(component.text()).toContain("Read our FAQ")
@@ -123,15 +167,23 @@ describe("ArtworkExtraLinks", () => {
     })
 
     it("renders ask a specialist link when isAcquireable", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        ...{
+          isAcquireable: true,
+          isInquireable: true,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        },
+      }
+
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks
-            artworkSlug={"123"}
-            isAcquireable={true}
-            isInquireable={true}
-            consignableArtistsCount={1}
-            artistName="Santa Claus"
-          />
+          <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
       expect(component.text()).toContain("Read our FAQ")

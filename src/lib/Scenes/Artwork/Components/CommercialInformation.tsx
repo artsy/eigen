@@ -3,7 +3,7 @@ import { CommercialInformation_artwork } from "__generated__/CommercialInformati
 import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
+import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionCountDownTimerFragmentContainer as AuctionCountDownTimer } from "./AuctionCountDownTimer"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
@@ -53,10 +53,9 @@ export class CommercialInformation extends React.Component<CommercialInformation
   render() {
     const { artwork } = this.props
     const { editionSetID } = this.state
-    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, slug } = artwork
+    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale } = artwork
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
-    const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
 
     return (
       <>
@@ -81,13 +80,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
           {(!!consignableArtistsCount || isAcquireable || isInquireable) && (
             <>
               <Spacer mb={2} />
-              <ArtworkExtraLinks
-                artworkSlug={slug}
-                isAcquireable={isAcquireable}
-                isInquireable={isInquireable}
-                consignableArtistsCount={consignableArtistsCount}
-                artistName={artistName}
-              />
+              <ArtworkExtraLinks artwork={artwork} />
             </>
           )}
         </Box>
@@ -99,11 +92,10 @@ export class CommercialInformation extends React.Component<CommercialInformation
 export const CommercialInformationFragmentContainer = createFragmentContainer(CommercialInformation, {
   artwork: graphql`
     fragment CommercialInformation_artwork on Artwork {
-      slug
       availability
+
       artists {
         isConsignable
-        name
       }
 
       editionSets {
@@ -129,6 +121,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       ...CommercialPartnerInformation_artwork
       ...CommercialEditionSetInformation_artwork
       ...AuctionCountDownTimer_artwork
+      ...ArtworkExtraLinks_artwork
     }
   `,
 })

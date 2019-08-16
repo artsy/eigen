@@ -1,16 +1,14 @@
 import { Sans } from "@artsy/palette"
+import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Text } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
-interface ArtworkExtraLinksProps {
-  consignableArtistsCount: number
-  artistName: string | null
-  isAcquireable: boolean
-  isInquireable: boolean
-  artworkSlug: string
+export interface ArtworkExtraLinksProps {
+  artwork: ArtworkExtraLinks_artwork
 }
 
 @track()
@@ -20,8 +18,8 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   handleAskASpecialistTap = () => {
-    const { artworkSlug } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/inquiry/${artworkSlug}`)
+    const { artwork } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/inquiry/${artwork.slug}`)
   }
 
   @track(() => {
@@ -36,7 +34,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   render() {
-    const { consignableArtistsCount, artistName, isAcquireable, isInquireable } = this.props
+    const { artwork } = this.props
+    const { isAcquireable, isInquireable } = artwork
+    const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
+    const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
 
     return (
       <>
@@ -72,3 +73,17 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     )
   }
 }
+
+export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
+  artwork: graphql`
+    fragment ArtworkExtraLinks_artwork on Artwork {
+      slug
+      isAcquireable
+      isInquireable
+      artists {
+        isConsignable
+        name
+      }
+    }
+  `,
+})
