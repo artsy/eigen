@@ -22,6 +22,10 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
   componentDidMount() {
     const { sale } = this.props.artwork
 
+    if (!sale) {
+      return
+    }
+
     this.interval = setInterval(() => {
       if (DateTime.local() > sale.startAt) {
         this.setState({
