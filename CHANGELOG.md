@@ -16,11 +16,9 @@
 
 ### Master
 
+- Adds new base container / screen for the Collection page - luc
 - Fixes intermittent crash on opening message attachment previews - ash
 - Fix consignments artist search and make it use relay - alloy
-
-### Master
-
 - Adds Commercial Bid Buttons - kierangillen
 
 ### 1.12.16
