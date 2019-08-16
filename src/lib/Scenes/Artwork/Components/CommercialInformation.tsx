@@ -4,6 +4,7 @@ import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
+import { AuctionCountDownTimerFragmentContainer as AuctionCountDownTimer } from "./AuctionCountDownTimer"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -52,7 +53,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
   render() {
     const { artwork } = this.props
     const { editionSetID } = this.state
-    const { isAcquireable, isOfferable, isInquireable } = artwork
+    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale } = artwork
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
     const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
@@ -69,6 +70,14 @@ export class CommercialInformation extends React.Component<CommercialInformation
               <CommercialButtons artwork={artwork} editionSetID={editionSetID} />
             </>
           )}
+          {isInAuction &&
+            sale &&
+            !sale.isClosed && (
+              <>
+                <Spacer mb={2} />
+                <AuctionCountDownTimer artwork={artwork} />
+              </>
+            )}
           {!!consignableArtistsCount && (
             <>
               <Spacer mb={2} />
@@ -96,6 +105,10 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
         saleMessage
       }
 
+      sale {
+        isClosed
+      }
+
       saleMessage
       shippingInfo
       shippingOrigin
@@ -103,10 +116,12 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       isAcquireable
       isOfferable
       isInquireable
+      isInAuction
 
       ...CommercialButtons_artwork
       ...CommercialPartnerInformation_artwork
       ...CommercialEditionSetInformation_artwork
+      ...AuctionCountDownTimer_artwork
     }
   `,
 })

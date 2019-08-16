@@ -1,6 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { AuctionCountDownTimer_artwork$ref } from "./AuctionCountDownTimer_artwork.graphql";
 import { CommercialButtons_artwork$ref } from "./CommercialButtons_artwork.graphql";
 import { CommercialEditionSetInformation_artwork$ref } from "./CommercialEditionSetInformation_artwork.graphql";
 import { CommercialPartnerInformation_artwork$ref } from "./CommercialPartnerInformation_artwork.graphql";
@@ -17,13 +18,17 @@ export type CommercialInformation_artwork = {
         readonly isOfferable: boolean | null;
         readonly saleMessage: string | null;
     } | null> | null;
+    readonly sale: {
+        readonly isClosed: boolean | null;
+    } | null;
     readonly saleMessage: string | null;
     readonly shippingInfo: string | null;
     readonly shippingOrigin: string | null;
     readonly isAcquireable: boolean | null;
     readonly isOfferable: boolean | null;
     readonly isInquireable: boolean | null;
-    readonly " $fragmentRefs": CommercialButtons_artwork$ref & CommercialPartnerInformation_artwork$ref & CommercialEditionSetInformation_artwork$ref;
+    readonly isInAuction: boolean | null;
+    readonly " $fragmentRefs": CommercialButtons_artwork$ref & CommercialPartnerInformation_artwork$ref & CommercialEditionSetInformation_artwork$ref & AuctionCountDownTimer_artwork$ref;
     readonly " $refType": CommercialInformation_artwork$ref;
 };
 
@@ -104,6 +109,24 @@ return {
         (v2/*: any*/)
       ]
     },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "sale",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isClosed",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     (v2/*: any*/),
     {
       "kind": "ScalarField",
@@ -129,6 +152,13 @@ return {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isInAuction",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "FragmentSpread",
       "name": "CommercialButtons_artwork",
       "args": null
@@ -142,9 +172,14 @@ return {
       "kind": "FragmentSpread",
       "name": "CommercialEditionSetInformation_artwork",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "AuctionCountDownTimer_artwork",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = '83b5769837fc412de226dfda25c47ca7';
+(node as any).hash = '823d5cea7f4137d2332c4ccebba7c95d';
 export default node;
