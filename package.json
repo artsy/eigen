@@ -127,7 +127,7 @@
     "@types/react-tracking": "7.0.1",
     "@types/relay-runtime": "5.0.0",
     "@types/styled-components": "4.0.3",
-    "@types/styled-system": "3.0.1",
+    "@types/styled-system": "3.2.2",
     "@types/supercluster": "5.0.0",
     "auto": "7.2.3",
     "awesome-typescript-loader": "3.4.1",
