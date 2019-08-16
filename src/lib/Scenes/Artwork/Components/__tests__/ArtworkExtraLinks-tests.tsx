@@ -15,14 +15,12 @@ describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
     const artwork = {
       ...ArtworkFixture,
-      ...{
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      },
+      artists: [
+        {
+          name: "Santa",
+          isConsignable: true,
+        },
+      ],
     }
     const component = mount(
       <Theme>
@@ -39,18 +37,16 @@ describe("ArtworkExtraLinks", () => {
     it("shows plural link text", () => {
       const artwork = {
         ...ArtworkFixture,
-        ...{
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-            {
-              name: "Easter Bunny",
-              isConsignable: true,
-            },
-          ],
-        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+          {
+            name: "Easter Bunny",
+            isConsignable: true,
+          },
+        ],
       }
       const component = mount(
         <Theme>
@@ -62,14 +58,12 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link if at least 1 artist is consignable", () => {
       const artwork = {
         ...ArtworkFixture,
-        ...{
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
       }
 
       const component = mount(
@@ -82,14 +76,12 @@ describe("ArtworkExtraLinks", () => {
     it("doesn't render component if no artists are consignable", () => {
       const artwork = {
         ...ArtworkFixture,
-        ...{
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
       }
       const component = mount(
         <Theme>
@@ -104,14 +96,12 @@ describe("ArtworkExtraLinks", () => {
     it("shows singular link text", () => {
       const artwork = {
         ...ArtworkFixture,
-        ...{
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
       }
       const component = mount(
         <Theme>
@@ -124,14 +114,12 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link", () => {
       const artwork = {
         ...ArtworkFixture,
-        ...{
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
       }
       const component = mount(
         <Theme>
@@ -145,16 +133,14 @@ describe("ArtworkExtraLinks", () => {
     it("renders FAQ link when isInquireable", () => {
       const artwork = {
         ...ArtworkFixture,
-        ...{
-          isAcquireable: false,
-          isInquireable: true,
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        },
+        isAcquireable: false,
+        isInquireable: true,
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
       }
 
       const component = mount(
@@ -169,16 +155,14 @@ describe("ArtworkExtraLinks", () => {
     it("renders ask a specialist link when isAcquireable", () => {
       const artwork = {
         ...ArtworkFixture,
-        ...{
-          isAcquireable: true,
-          isInquireable: true,
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        },
+        isAcquireable: true,
+        isInquireable: true,
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
       }
 
       const component = mount(

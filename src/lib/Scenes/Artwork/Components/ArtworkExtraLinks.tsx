@@ -34,10 +34,11 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   render() {
-    const { artwork } = this.props
-    const { isAcquireable, isInquireable } = artwork
-    const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
-    const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
+    const {
+      artwork: { isAcquireable, isInquireable, artists },
+    } = this.props
+    const consignableArtistsCount = artists.filter(artist => artist.isConsignable).length
+    const artistName = artists && artists.length === 1 ? artists[0].name : null
 
     return (
       <>
