@@ -245,7 +245,6 @@ fragment CommercialInformation_artwork on Artwork {
   availability
   artists {
     isConsignable
-    name
     id
   }
   editionSets {
@@ -269,6 +268,7 @@ fragment CommercialInformation_artwork on Artwork {
   ...CommercialPartnerInformation_artwork
   ...CommercialEditionSetInformation_artwork
   ...AuctionCountDownTimer_artwork
+  ...ArtworkExtraLinks_artwork
 }
 
 fragment ArtworkHistory_artwork on Artwork {
@@ -331,6 +331,17 @@ fragment AuctionCountDownTimer_artwork on Artwork {
     endAt
     liveStartAt
     formattedStartDateTime
+    id
+  }
+}
+
+fragment ArtworkExtraLinks_artwork on Artwork {
+  slug
+  isAcquireable
+  isInquireable
+  artists {
+    isConsignable
+    name
     id
   }
 }
@@ -1696,7 +1707,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "12099182cb39e425e8e820f9fd73e0cb",
+    "id": "d7b1f1a5e368ab2e51c0ad95c6f550f7",
     "text": null,
     "metadata": {}
   }
