@@ -76,7 +76,7 @@
   },
   "dependencies": {
 
-    "@artsy/palette": "4.16.0",
+    "@artsy/palette": "4.16.1",
     "@mapbox/react-native-mapbox-gl": "l2succes/react-native-mapbox-gl#fix-gesture-recognizer",
     "@react-native-community/cameraroll": "1.0.5",
     "lodash": "4.17.13",
