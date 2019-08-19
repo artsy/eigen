@@ -23,8 +23,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   handleReadOurAuctionFAQsTap = () => {
-    // FIXME:
-    // Add auction FAQs navigation here
+    // FIXME: Add auction FAQs navigation here
   }
 
   handleConditionsOfSaleTap = () => {
@@ -48,6 +47,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     } = this.props
 
     if (isInAuction && sale && !sale.isClosed) {
+      // FIXME: Verify logic when to show Auction "ask a specialist"
       return (
         <>
           <Sans size="2" color="black60">
@@ -62,17 +62,12 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
             Have a question?{" "}
             <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurAuctionFAQsTap()}>
               Read our auction FAQs
+            </Text>{" "}
+            or{" "}
+            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
+              ask a specialist
             </Text>
-            {isAcquireable && (
-              <>
-                {" "}
-                or{" "}
-                <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
-                  ask a specialist
-                </Text>
-                .
-              </>
-            )}
+            .
           </Sans>
         </>
       )
