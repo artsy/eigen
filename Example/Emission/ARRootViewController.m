@@ -41,6 +41,9 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import "ARAdminSentryBreadcrumbViewController.h"
 
+#import <SDWebImage/SDImageCache.h>
+#import <SDWebImage/SDWebImageManager.h>
+
 @implementation ARRootViewController
 
 - (void)viewDidLoad
@@ -599,6 +602,7 @@
   [sectionData addCellData:self.toggleRNPSwitch];
   [sectionData addCellData:self.generateStagingSwitch];
   [sectionData addCellData:self.clearGraphQLQueryCache];
+  [sectionData addCellData:self.clearImageCache];
   [sectionData addCellData:self.logOutButton];
   return sectionData;
 }
@@ -607,6 +611,16 @@
 {
   return [self tappableCellDataWithTitle:@"Clear GraphQL Query Cache" selection:^{
     [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+  }];
+}
+
+- (ARCellData *)clearImageCache;
+{
+  return [self tappableCellDataWithTitle:@"Clear image cache" selection:^{
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [[manager imageCache] clearDiskOnCompletion:^{
+      [[manager imageCache] clearMemory];
+    }];
   }];
 }
 

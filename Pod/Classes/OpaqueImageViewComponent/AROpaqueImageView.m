@@ -94,6 +94,7 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
   //      with an option to the download method.
   //
   SDWebImageManager *manager = [SDWebImageManager sharedManager];
+
   manager.imageCache.shouldDecompressImages = NO;
   manager.imageDownloader.shouldDecompressImages = NO;
 

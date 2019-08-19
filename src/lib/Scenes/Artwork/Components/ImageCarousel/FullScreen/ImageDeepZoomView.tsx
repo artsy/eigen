@@ -19,12 +19,11 @@ interface TileProps {
 
 const Tile: React.FC<TileProps> = ({ url, top, left, width, height, cacheRecord }) => {
   const [loaded, setLoaded] = useState(false)
-  const opacity = useSpringValue(loaded || cacheRecord[url] ? 1 : 0)
+  const opacity = useSpringValue(loaded ? 1 : 0)
   useEffect(() => {
     if (!cacheRecord[url]) {
       cacheRecord[url] = { cached: false, showing: false }
     }
-    setTimeout(() => setLoaded(true), 100)
     return () => {
       cacheRecord[url].showing = false
     }
@@ -38,36 +37,22 @@ const Tile: React.FC<TileProps> = ({ url, top, left, width, height, cacheRecord 
         width,
         height,
         opacity,
-        borderWidth: 1,
-        borderColor: "red",
       }}
-    />
+    >
+      <OpaqueImageView
+        onLoad={() => {
+          setLoaded(true)
+          cacheRecord[url].cached = true
+          cacheRecord[url].showing = true
+        }}
+        imageURL={url}
+        noAnimation
+        useRawURL
+        style={{ width, height }}
+        placeholderBackgroundColor="white"
+      />
+    </Animated.View>
   )
-  // return (
-  //   <Animated.View
-  //     style={{
-  //       position: "absolute",
-  //       top,
-  //       left,
-  //       width,
-  //       height,
-  //       opacity,
-  //     }}
-  //   >
-  //     <OpaqueImageView
-  //       onLoad={() => {
-  //         setLoaded(true)
-  //         cacheRecord[url].cached = true
-  //         cacheRecord[url].showing = true
-  //       }}
-  //       imageURL={url}
-  //       noAnimation
-  //       useRawURL
-  //       style={{ width, height }}
-  //       placeholderBackgroundColor="white"
-  //     />
-  //   </Animated.View>
-  // )
 }
 
 type DeepZoomImageSize = ImageDescriptor["deepZoom"]["Image"]["Size"]
@@ -143,6 +128,7 @@ export function getVisibleRowsAndColumns({
   viewPort: Rect
   grow: number
 }) {
+  // TODO: only grow if it's close
   const scale = levelDimensions.width / width
   tileSize = tileSize / scale
   const numCols = Math.ceil(width / tileSize)
@@ -178,8 +164,23 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   $contentOffsetY,
   didMount,
 }) => {
-  usePerf()
+  // usePerf()
+  const isUpToDate = useRef(false)
+  const needsUpdate = useRef(false)
+  isUpToDate.current = false
+  useEffect(() => {
+    if (needsUpdate.current) {
+      setTimeout(() => {
+        isUpToDate.current = true
+        needsUpdate.current = false
+        didMount()
+      }, 30)
+    } else {
+      isUpToDate.current = true
+    }
+  })
   const cacheRecord = useMemo(() => ({}), [])
+  const tileCache = useMemo(() => ({}), [])
   useEffect(() => {
     // trigger first scroll event
     didMount()
@@ -199,6 +200,11 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
     viewPortChanges,
     throttle(
       viewPort => {
+        if (!isUpToDate.current) {
+          // don't do anything. wait for next update to complete and then schedule one more
+          needsUpdate.current = true
+          return
+        }
         const zoomScale = width / viewPort.width
         const maxLevelToRender = Math.min(
           getMaxDeepZoomLevelForZoomViewScale({
@@ -210,7 +216,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
         )
         const digest = new DJB2()
 
-        for (let level = Math.max(minLevel, maxLevelToRender - 3); level <= maxLevelToRender; level++) {
+        for (let level = Math.max(minLevel, maxLevelToRender - 2); level <= maxLevelToRender; level++) {
           const { minRow, minCol, maxRow, maxCol } = getVisibleRowsAndColumns({
             imageFittedWithinScreen: { width, height },
             levelDimensions: levels[level],
@@ -233,7 +239,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
 
         const result: JSX.Element[] = []
 
-        for (let level = Math.max(minLevel, maxLevelToRender - 3); level <= maxLevelToRender; level++) {
+        for (let level = Math.max(minLevel, maxLevelToRender - 2); level <= maxLevelToRender; level++) {
           const { minRow, minCol, maxRow, maxCol, numCols, numRows } = getVisibleRowsAndColumns({
             imageFittedWithinScreen: { width, height },
             levelDimensions: levels[level],
@@ -244,30 +250,30 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
 
           const levelTiles: JSX.Element[] = []
 
-          let numTiles = 0
           for (let row = minRow; row <= maxRow; row++) {
             for (let col = minCol; col <= maxCol; col++) {
               const url = `${Url}${level}/${col}_${row}.${Format}`
-              const tileTop = row * TileSize
-              const tileLeft = col * TileSize
-              const tileWidth = col < numCols - 1 ? TileSize : levels[level].width % TileSize
-              const tileHeight = row < numRows - 1 ? TileSize : levels[level].height % TileSize
+              if (!tileCache[url]) {
+                const tileTop = row * TileSize
+                const tileLeft = col * TileSize
+                const tileWidth = col < numCols - 1 ? TileSize : levels[level].width % TileSize
+                const tileHeight = row < numRows - 1 ? TileSize : levels[level].height % TileSize
 
-              numTiles++
-              levelTiles.push(
-                <Tile
-                  key={url}
-                  url={url}
-                  top={tileTop}
-                  left={tileLeft}
-                  width={tileWidth}
-                  height={tileHeight}
-                  cacheRecord={cacheRecord}
-                />
-              )
+                tileCache[url] = (
+                  <Tile
+                    key={url}
+                    url={url}
+                    top={tileTop}
+                    left={tileLeft}
+                    width={tileWidth}
+                    height={tileHeight}
+                    cacheRecord={cacheRecord}
+                  />
+                )
+              }
+              levelTiles.push(tileCache[url])
             }
           }
-          console.warn(`level ${level} : ${numTiles}`)
 
           const levelScale = levels[level].width / width
 
@@ -339,38 +345,4 @@ interface Box {
 interface Rect extends Box {
   readonly x: number
   readonly y: number
-}
-
-function growRect(rect: Rect, factor: number) {
-  let amount: number
-  let width: number
-  let height: number
-  if (rect.width < rect.height) {
-    width = rect.width * factor
-    amount = width - rect.width
-    height = rect.height + amount
-  } else {
-    height = rect.height * factor
-    amount = height - rect.height
-    width = rect.width + amount
-  }
-  return {
-    x: rect.x - amount,
-    y: rect.y - amount,
-    width,
-    height,
-  }
-}
-
-function usePerf() {
-  const lastRenderTime = Date.now()
-  const times = useRef([] as number[])
-  useEffect(() => {
-    const lastUpdateTime = Date.now()
-    times.current.push(lastUpdateTime - lastRenderTime)
-    if (times.current.length === 2) {
-      times.current.shift()
-    }
-    console.warn("avg render time", times.current.reduce((a, b) => a + b, 0) / times.current.length)
-  })
 }

@@ -254,32 +254,6 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
   artworkID,
   ...others
 }) => {
-  const artwork: Artwork_artwork & { images: ImageCarousel_images } = {
-    " $fragmentRefs": null,
-    " $refType": null,
-    internalID: "blah",
-    slug: "blah",
-    images: [
-      {
-        image_url: "https://d32dm0rphc51dk.cloudfront.net/CH9OO1DEx_m6X8OsgEgP4w/:version.jpg",
-        width: 6819,
-        height: 4853,
-        deepZoom: {
-          Image: {
-            TileSize: 512,
-            Url: "https://d32dm0rphc51dk.cloudfront.net/CH9OO1DEx_m6X8OsgEgP4w/dztiles/",
-            Format: "jpg",
-            Size: {
-              Width: 6819,
-              Height: 4853,
-            },
-          },
-        },
-      },
-    ],
-  }
-
-  return <ImageCarousel images={artwork.images} />
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {
@@ -294,7 +268,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
               }
             `}
             variables={{
-              artworkID: "richard-haas-times-square-looking-north-from-42nd-street",
+              artworkID: "5d5a7ef3bc0e320013ff1de7",
             }}
             cacheConfig={{
               // Bypass Relay cache on retries.
