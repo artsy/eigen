@@ -51,7 +51,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
       return (
         <>
           <Sans size="2" color="black60">
-            By placeing a bid you agree to Artsy's{" "}
+            By placing a bid you agree to Artsy's{" "}
             <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConditionsOfSaleTap()}>
               Conditions of Sale
             </Text>

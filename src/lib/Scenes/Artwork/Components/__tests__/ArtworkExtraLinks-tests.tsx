@@ -200,7 +200,7 @@ describe("ArtworkExtraLinks", () => {
           .find(Sans)
           .at(0)
           .text()
-      ).toContain("By placeing a bid you agree to Artsy's Conditions of Sale.")
+      ).toContain("By placing a bid you agree to Artsy's Conditions of Sale.")
       expect(
         component
           .find(Sans)
