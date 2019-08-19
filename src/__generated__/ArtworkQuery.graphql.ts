@@ -339,6 +339,11 @@ fragment ArtworkExtraLinks_artwork on Artwork {
   slug
   isAcquireable
   isInquireable
+  isInAuction
+  sale {
+    isClosed
+    id
+  }
   artists {
     isConsignable
     name
@@ -1707,7 +1712,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "d7b1f1a5e368ab2e51c0ad95c6f550f7",
+    "id": "dbe897cf7f80f474a5294d2856f9719f",
     "text": null,
     "metadata": {}
   }

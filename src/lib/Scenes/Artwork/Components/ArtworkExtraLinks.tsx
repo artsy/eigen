@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans, Spacer } from "@artsy/palette"
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
@@ -22,6 +22,15 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     SwitchBoard.presentNavigationViewController(this, `/inquiry/${artwork.slug}`)
   }
 
+  handleReadOurAuctionFAQsTap = () => {
+    // FIXME:
+    // Add auction FAQs navigation here
+  }
+
+  handleConditionsOfSaleTap = () => {
+    SwitchBoard.presentNavigationViewController(this, `/conditions-of-sale`)
+  }
+
   @track(() => {
     return {
       action_name: Schema.ActionNames.ConsignWithArtsy,
@@ -33,20 +42,26 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
   }
 
-  render() {
+  renderFAQAndSpecialist = () => {
     const {
-      artwork: { isAcquireable, isInquireable, artists },
+      artwork: { isAcquireable, isInquireable, isInAuction, sale },
     } = this.props
-    const consignableArtistsCount = artists.filter(artist => artist.isConsignable).length
-    const artistName = artists && artists.length === 1 ? artists[0].name : null
 
-    return (
-      <>
-        {(isInquireable || isAcquireable) && (
+    if (isInAuction && sale && !sale.isClosed) {
+      return (
+        <>
+          <Sans size="2" color="black60">
+            By placeing a bid you agree to Artsy's{" "}
+            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConditionsOfSaleTap()}>
+              Conditions of Sale
+            </Text>
+            .
+          </Sans>
+          <Spacer mb={1} />
           <Sans size="2" color="black60">
             Have a question?{" "}
-            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
-              Read our FAQ
+            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurAuctionFAQsTap()}>
+              Read our auction FAQs
             </Text>
             {isAcquireable && (
               <>
@@ -59,16 +74,47 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
               </>
             )}
           </Sans>
-        )}
-        {!!consignableArtistsCount && (
-          <>
-            <Sans size="2" color="black60">
-              Want to sell a work by {consignableArtistsCount === 1 ? artistName : "these artists"}?{" "}
-              <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConsignmentsTap()}>
-                Consign with Artsy.
+        </>
+      )
+    } else if (isInquireable || isAcquireable) {
+      return (
+        <Sans size="2" color="black60">
+          Have a question?{" "}
+          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
+            Read our FAQ
+          </Text>
+          {isAcquireable && (
+            <>
+              {" "}
+              or{" "}
+              <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
+                ask a specialist
               </Text>
-            </Sans>
-          </>
+              .
+            </>
+          )}
+        </Sans>
+      )
+    }
+  }
+
+  render() {
+    const {
+      artwork: { artists },
+    } = this.props
+    const consignableArtistsCount = artists.filter(artist => artist.isConsignable).length
+    const artistName = artists && artists.length === 1 ? artists[0].name : null
+
+    return (
+      <>
+        {this.renderFAQAndSpecialist()}
+        {!!consignableArtistsCount && (
+          <Sans size="2" color="black60">
+            Want to sell a work by {consignableArtistsCount === 1 ? artistName : "these artists"}?{" "}
+            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConsignmentsTap()}>
+              Consign with Artsy.
+            </Text>
+          </Sans>
         )}
       </>
     )
@@ -81,6 +127,10 @@ export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(Artwor
       slug
       isAcquireable
       isInquireable
+      isInAuction
+      sale {
+        isClosed
+      }
       artists {
         isConsignable
         name
