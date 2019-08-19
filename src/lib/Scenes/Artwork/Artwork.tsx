@@ -1,6 +1,7 @@
 import { Box, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
+import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -17,6 +18,7 @@ import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/Ar
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
+import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
@@ -252,6 +254,32 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
   artworkID,
   ...others
 }) => {
+  const artwork: Artwork_artwork & { images: ImageCarousel_images } = {
+    " $fragmentRefs": null,
+    " $refType": null,
+    internalID: "blah",
+    slug: "blah",
+    images: [
+      {
+        image_url: "https://d32dm0rphc51dk.cloudfront.net/CH9OO1DEx_m6X8OsgEgP4w/:version.jpg",
+        width: 6819,
+        height: 4853,
+        deepZoom: {
+          Image: {
+            TileSize: 512,
+            Url: "https://d32dm0rphc51dk.cloudfront.net/CH9OO1DEx_m6X8OsgEgP4w/dztiles/",
+            Format: "jpg",
+            Size: {
+              Width: 6819,
+              Height: 4853,
+            },
+          },
+        },
+      },
+    ],
+  }
+
+  return <ImageCarousel images={artwork.images} />
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {
@@ -266,7 +294,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
               }
             `}
             variables={{
-              artworkID: "nasa-city",
+              artworkID: "richard-haas-times-square-looking-north-from-42nd-street",
             }}
             cacheConfig={{
               // Bypass Relay cache on retries.

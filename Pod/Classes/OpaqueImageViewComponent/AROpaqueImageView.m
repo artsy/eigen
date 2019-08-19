@@ -8,7 +8,7 @@
 //
 static void
 LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *backgroundColor, void (^callback)(UIImage *loadedImage)) {
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
     CGFloat width = destinationSize.width * scaleFactor;
     CGFloat height = destinationSize.height * scaleFactor;
     NSCAssert(width != 0 && height != 0, @"Resizing an image to %fx%f makes no sense.", width, height);
