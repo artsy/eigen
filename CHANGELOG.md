@@ -19,6 +19,7 @@
 - Fixes intermittent crash on opening message attachment previews - ash
 - Fix consignments artist search and make it use relay - alloy
 - Adds links to Artwork view for FAQ and Ask a Specialist - kierangillen
+- Adds auction extra links in Artwork view - kierangillen
 
 ### Master
 
