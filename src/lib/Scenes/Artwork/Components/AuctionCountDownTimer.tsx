@@ -27,11 +27,11 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
     }
 
     this.interval = setInterval(() => {
-      if (DateTime.local() > sale.startAt) {
+      if (DateTime.local() > DateTime.fromISO(sale.startAt)) {
         this.setState({
           auctionStatus: "hasStarted",
         })
-      } else if (DateTime.local() > sale.endAt) {
+      } else if (DateTime.local() > DateTime.fromISO(sale.endAt)) {
         this.setState({
           auctionStatus: "hasEnded",
         })
@@ -58,6 +58,7 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
     return (
       <TimeRemaining
         labelWithTimeRemaining={sale.formattedStartDateTime}
+        labelWithoutTimeRemaining={sale.formattedStartDateTime}
         labelFontSize="2"
         timerFontSize="4t"
         countdownEnd={auctionStatus === "hasNotStarted" ? sale.startAt : sale.endAt}

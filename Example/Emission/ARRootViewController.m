@@ -275,7 +275,7 @@
 - (ARCellData *)jumpToArtworkInAuction
 {
   return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"fred-t-larson-transcendence"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"italy-tuscany-14th-century-self-portrait"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

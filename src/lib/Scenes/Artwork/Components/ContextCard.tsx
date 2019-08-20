@@ -132,6 +132,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     const { context } = artwork
     if (context) {
       const { __typename } = context
+
       switch (__typename as any) {
         case "Sale":
           header = context.isAuction ? "In auction" : "In sale"
@@ -150,7 +151,6 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           renderContextCard = true
           break
         case "Show":
-          // TODO: Replace with ArtworkContextShow when MPv2 supports it
           const { shows } = artwork
           const show = shows[0]
           header = "In show"
