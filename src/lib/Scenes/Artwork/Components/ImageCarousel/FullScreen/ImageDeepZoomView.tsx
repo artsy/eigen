@@ -1,12 +1,13 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { throttle } from "lodash"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
-import { DJB2 } from "./djb2"
 import { screenBoundingBox } from "./screen"
 import { EventStream, useEvents } from "./useEventStream"
+
+const VISUAL_DEBUG = false
 
 interface TileProps {
   url: string
@@ -14,20 +15,16 @@ interface TileProps {
   left: number
   width: number
   height: number
-  cacheRecord: { [url: string]: { cached: boolean; showing: boolean } }
 }
 
-const Tile: React.FC<TileProps> = ({ url, top, left, width, height, cacheRecord }) => {
+const Tile: React.FC<TileProps> = ({ url, top, left, width, height }) => {
   const [loaded, setLoaded] = useState(false)
-  const opacity = useSpringValue(loaded ? 1 : 0)
-  useEffect(() => {
-    if (!cacheRecord[url]) {
-      cacheRecord[url] = { cached: false, showing: false }
-    }
-    return () => {
-      cacheRecord[url].showing = false
-    }
-  }, [])
+  const opacity = VISUAL_DEBUG ? 1 : useSpringValue(loaded ? 1 : 0)
+  top = VISUAL_DEBUG ? top + height * 0.05 : top
+  left = VISUAL_DEBUG ? left + width * 0.05 : left
+  width = VISUAL_DEBUG ? width * 0.9 : width
+  height = VISUAL_DEBUG ? height * 0.9 : height
+  const backgroundColor = VISUAL_DEBUG ? "rgba(255, 0, 0, 0.2)" : null
   return (
     <Animated.View
       style={{
@@ -37,20 +34,21 @@ const Tile: React.FC<TileProps> = ({ url, top, left, width, height, cacheRecord 
         width,
         height,
         opacity,
+        backgroundColor,
       }}
     >
-      <OpaqueImageView
-        onLoad={() => {
-          setLoaded(true)
-          cacheRecord[url].cached = true
-          cacheRecord[url].showing = true
-        }}
-        imageURL={url}
-        noAnimation
-        useRawURL
-        style={{ width, height }}
-        placeholderBackgroundColor="white"
-      />
+      {!VISUAL_DEBUG && (
+        <OpaqueImageView
+          onLoad={() => {
+            setLoaded(true)
+          }}
+          imageURL={url}
+          noAnimation
+          useRawURL
+          style={{ width, height }}
+          placeholderBackgroundColor="white"
+        />
+      )}
     </Animated.View>
   )
 }
@@ -128,15 +126,14 @@ export function getVisibleRowsAndColumns({
   viewPort: Rect
   grow: number
 }) {
-  // TODO: only grow if it's close
   const scale = levelDimensions.width / width
   tileSize = tileSize / scale
   const numCols = Math.ceil(width / tileSize)
   const numRows = Math.ceil(height / tileSize)
   const minCol = Math.max(0, Math.floor(viewPort.x / tileSize) - grow)
   const minRow = Math.max(0, Math.floor(viewPort.y / tileSize) - grow)
-  const maxCol = Math.min(numCols, Math.floor((viewPort.x + viewPort.width) / tileSize) + grow)
-  const maxRow = Math.min(numRows, Math.floor((viewPort.y + viewPort.height) / tileSize) + grow)
+  const maxCol = Math.min(numCols - 1, Math.floor((viewPort.x + viewPort.width) / tileSize) + grow)
+  const maxRow = Math.min(numRows - 1, Math.floor((viewPort.y + viewPort.height) / tileSize) + grow)
   return { minRow, minCol, maxRow, maxCol, numCols, numRows }
 }
 export interface ImageDeepZoomViewProps {
@@ -147,7 +144,7 @@ export interface ImageDeepZoomViewProps {
   $zoomScale: Animated.Value
   $contentOffsetX: Animated.Value
   $contentOffsetY: Animated.Value
-  didMount(): void
+  triggerScrollEvent(): void
 }
 
 export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
@@ -162,28 +159,11 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   $zoomScale,
   $contentOffsetX,
   $contentOffsetY,
-  didMount,
+  triggerScrollEvent,
 }) => {
   // usePerf()
-  const isUpToDate = useRef(false)
-  const needsUpdate = useRef(false)
-  isUpToDate.current = false
   useEffect(() => {
-    if (needsUpdate.current) {
-      setTimeout(() => {
-        isUpToDate.current = true
-        needsUpdate.current = false
-        didMount()
-      }, 30)
-    } else {
-      isUpToDate.current = true
-    }
-  })
-  const cacheRecord = useMemo(() => ({}), [])
-  const tileCache = useMemo(() => ({}), [])
-  useEffect(() => {
-    // trigger first scroll event
-    didMount()
+    triggerScrollEvent()
   }, [])
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(Size), [Size])
@@ -193,133 +173,62 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
     levels,
   ])
 
-  const lastTilesHashCode = useRef(0)
-  const [tiles, setTiles] = useState([] as JSX.Element[])
+  const [{ minLevelToRender, maxLevelToRender }, setRenderLevels] = useState({
+    minLevelToRender: minLevel,
+    maxLevelToRender: minLevel,
+  })
 
   useEvents(
     viewPortChanges,
-    throttle(
-      viewPort => {
-        if (!isUpToDate.current) {
-          // don't do anything. wait for next update to complete and then schedule one more
-          needsUpdate.current = true
-          return
-        }
-        const zoomScale = width / viewPort.width
-        const maxLevelToRender = Math.min(
-          getMaxDeepZoomLevelForZoomViewScale({
-            minLevel,
-            minLevelWidth: levels[minLevel].width,
-            zoomScale,
-          }),
-          maxLevel
-        )
-        const digest = new DJB2()
-
-        for (let level = Math.max(minLevel, maxLevelToRender - 2); level <= maxLevelToRender; level++) {
-          const { minRow, minCol, maxRow, maxCol } = getVisibleRowsAndColumns({
-            imageFittedWithinScreen: { width, height },
-            levelDimensions: levels[level],
-            tileSize: TileSize,
-            viewPort,
-            grow: 1,
-          })
-          digest.include(level)
-          digest.include(minRow)
-          digest.include(minCol)
-          digest.include(maxRow)
-          digest.include(maxCol)
-        }
-
-        if (lastTilesHashCode.current === digest.hash) {
-          return
-        }
-
-        lastTilesHashCode.current = digest.hash
-
-        const result: JSX.Element[] = []
-
-        for (let level = Math.max(minLevel, maxLevelToRender - 2); level <= maxLevelToRender; level++) {
-          const { minRow, minCol, maxRow, maxCol, numCols, numRows } = getVisibleRowsAndColumns({
-            imageFittedWithinScreen: { width, height },
-            levelDimensions: levels[level],
-            tileSize: TileSize,
-            viewPort,
-            grow: 1,
-          })
-
-          const levelTiles: JSX.Element[] = []
-
-          for (let row = minRow; row <= maxRow; row++) {
-            for (let col = minCol; col <= maxCol; col++) {
-              const url = `${Url}${level}/${col}_${row}.${Format}`
-              if (!tileCache[url]) {
-                const tileTop = row * TileSize
-                const tileLeft = col * TileSize
-                const tileWidth = col < numCols - 1 ? TileSize : levels[level].width % TileSize
-                const tileHeight = row < numRows - 1 ? TileSize : levels[level].height % TileSize
-
-                tileCache[url] = (
-                  <Tile
-                    key={url}
-                    url={url}
-                    top={tileTop}
-                    left={tileLeft}
-                    width={tileWidth}
-                    height={tileHeight}
-                    cacheRecord={cacheRecord}
-                  />
-                )
-              }
-              levelTiles.push(tileCache[url])
-            }
+    useMemo(
+      () =>
+        throttle(
+          viewPort => {
+            const zoomScale = width / viewPort.width
+            const max = Math.min(
+              getMaxDeepZoomLevelForZoomViewScale({
+                minLevel,
+                minLevelWidth: levels[minLevel].width,
+                zoomScale,
+              }),
+              maxLevel
+            )
+            setRenderLevels({ minLevelToRender: Math.max(minLevelToRender, max - 3), maxLevelToRender: max })
+          },
+          250,
+          {
+            trailing: true,
           }
-
-          const levelScale = levels[level].width / width
-
-          const $scale = Animated.divide($zoomScale, levelScale)
-          const $baseImageTop = Animated.multiply($contentOffsetY, -1)
-          const $baseImageHeight = Animated.multiply(height, $zoomScale)
-          const $baseImageCenterY = Animated.add($baseImageTop, Animated.divide($baseImageHeight, 2))
-
-          const $baseImageLeft = Animated.multiply($contentOffsetX, -1)
-          const $baseImageWidth = Animated.multiply(width, $zoomScale)
-          const $baseImageCenterX = Animated.add($baseImageLeft, Animated.divide($baseImageWidth, 2))
-
-          const $levelPreScaleTop = Animated.subtract($baseImageCenterY, levels[level].height / 2)
-          const $levelPreScaleLeft = Animated.subtract($baseImageCenterX, levels[level].width / 2)
-
-          result.push(
-            <Animated.View
-              key={`level-${level}`}
-              style={{
-                position: "absolute",
-                ...levels[level],
-                transform: [
-                  // position centered over base image
-                  {
-                    translateX: $levelPreScaleLeft,
-                  },
-                  {
-                    translateY: $levelPreScaleTop,
-                  },
-                  // scale it down
-                  {
-                    scale: $scale,
-                  },
-                ],
-              }}
-            >
-              {levelTiles}
-            </Animated.View>
-          )
-        }
-
-        setTiles(result)
-      },
-      250,
-      { trailing: true }
+        ),
+      []
     )
+  )
+
+  const imageFittedWithinScreen = useMemo(() => ({ width, height }), [width, height])
+
+  const levelElements = useMemo(
+    () => {
+      const result: JSX.Element[] = []
+      for (let level = minLevelToRender; level <= maxLevelToRender; level++) {
+        result.push(
+          <Level
+            level={level}
+            levelDimensions={levels[level]}
+            imageFittedWithinScreen={imageFittedWithinScreen}
+            makeUrl={({ row, col }) => `${Url}${level}/${col}_${row}.${Format}`}
+            $contentOffsetX={$contentOffsetX}
+            $contentOffsetY={$contentOffsetY}
+            $zoomScale={$zoomScale}
+            tileSize={TileSize}
+            viewPortChanges={viewPortChanges}
+            triggerScrollEvent={triggerScrollEvent}
+            key={level}
+          />
+        )
+      }
+      return result
+    },
+    [minLevelToRender, maxLevelToRender, levels, imageFittedWithinScreen]
   )
 
   return (
@@ -332,7 +241,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
         left: 0,
       }}
     >
-      {tiles}
+      {levelElements}
     </View>
   )
 }
@@ -345,4 +254,153 @@ interface Box {
 interface Rect extends Box {
   readonly x: number
   readonly y: number
+}
+
+const Level: React.FC<{
+  level: number
+  levelDimensions: Box
+  imageFittedWithinScreen: Box
+  $contentOffsetX: Animated.Animated
+  $contentOffsetY: Animated.Animated
+  $zoomScale: Animated.Animated
+  tileSize: number
+  makeUrl: (props: { row: number; col: number }) => string
+  viewPortChanges: EventStream<Rect>
+  triggerScrollEvent(): void
+}> = ({
+  levelDimensions,
+  imageFittedWithinScreen,
+  $contentOffsetX,
+  $contentOffsetY,
+  $zoomScale,
+  tileSize,
+  makeUrl,
+  viewPortChanges,
+  triggerScrollEvent,
+}) => {
+  const [tiles, setTiles] = useState()
+  const tileCache: { [url: string]: JSX.Element } = useMemo(() => ({}), [])
+  const lastFingerprint = useRef("")
+
+  const transform = useMemo(
+    () => {
+      const zoomScale = VISUAL_DEBUG ? 1 : $zoomScale
+      const contentOffsetY = VISUAL_DEBUG ? 0 : $contentOffsetY
+      const contentOffsetX = VISUAL_DEBUG ? 0 : $contentOffsetX
+
+      const levelScale = levelDimensions.width / imageFittedWithinScreen.width
+      const scale = Animated.divide(zoomScale, levelScale)
+      const baseImageTop = Animated.multiply(contentOffsetY, -1)
+      const baseImageHeight = Animated.multiply(imageFittedWithinScreen.height, zoomScale)
+      const baseImageCenterY = Animated.add(baseImageTop, Animated.divide(baseImageHeight, 2))
+
+      const baseImageLeft = Animated.multiply(contentOffsetX, -1)
+      const baseImageWidth = Animated.multiply(imageFittedWithinScreen.width, zoomScale)
+      const baseImageCenterX = Animated.add(baseImageLeft, Animated.divide(baseImageWidth, 2))
+
+      const levelPreScaleTop = Animated.subtract(baseImageCenterY, levelDimensions.height / 2)
+      const levelPreScaleLeft = Animated.subtract(baseImageCenterX, levelDimensions.width / 2)
+
+      return [
+        // position centered over base image
+        {
+          translateX: levelPreScaleLeft,
+        },
+        {
+          translateY: levelPreScaleTop,
+        },
+        // scale it down
+        {
+          scale,
+        },
+      ]
+    },
+    [levelDimensions, $contentOffsetX, $contentOffsetY, $zoomScale, imageFittedWithinScreen]
+  )
+
+  const updateTiles = useCallback((viewPort: Rect) => {
+    const { minRow, minCol, maxRow, maxCol, numCols, numRows } = getVisibleRowsAndColumns({
+      imageFittedWithinScreen,
+      levelDimensions,
+      tileSize,
+      viewPort,
+      grow: 1,
+    })
+
+    const fingerprint = `${minRow}:${minCol}:${maxRow}:${maxCol}:${numCols}:${numRows}`
+    if (fingerprint === lastFingerprint.current) {
+      return
+    }
+
+    lastFingerprint.current = fingerprint
+
+    const result: JSX.Element[] = []
+
+    for (let row = minRow; row <= maxRow; row++) {
+      for (let col = minCol; col <= maxCol; col++) {
+        const url = makeUrl({ col, row })
+        if (!tileCache[url]) {
+          const tileTop = row * tileSize
+          const tileLeft = col * tileSize
+          const tileWidth = col < numCols - 1 ? tileSize : levelDimensions.width % tileSize
+          const tileHeight = row < numRows - 1 ? tileSize : levelDimensions.height % tileSize
+
+          tileCache[url] = (
+            <Tile key={url} url={url} top={tileTop} left={tileLeft} width={tileWidth} height={tileHeight} />
+          )
+        }
+        result.push(tileCache[url])
+      }
+    }
+
+    setTiles(result)
+  }, [])
+
+  const { isReconciled, onReconcile } = useReconciliationInfo()
+
+  const throttledUpdateTiles = useCallback(
+    throttle(
+      (viewPort: Rect) => {
+        if (isReconciled()) {
+          updateTiles(viewPort)
+        } else {
+          onReconcile(triggerScrollEvent)
+        }
+      },
+      250,
+      { trailing: true }
+    ),
+    []
+  )
+
+  useEvents(viewPortChanges, throttledUpdateTiles)
+
+  return (
+    <Animated.View
+      style={{
+        position: "absolute",
+        ...levelDimensions,
+        transform,
+      }}
+    >
+      {tiles}
+    </Animated.View>
+  )
+}
+
+function useReconciliationInfo() {
+  const onReconcile = useRef(null as (() => any) | null)
+  const isReconciled = useRef(false)
+  // reset to false on every render
+  isReconciled.current = false
+  useEffect(() => {
+    isReconciled.current = true
+    if (onReconcile.current) {
+      onReconcile.current()
+      onReconcile.current = null
+    }
+  })
+  const getIsReconciled = useCallback(() => isReconciled.current, [])
+  const setOnReconcile = useCallback((cb: () => any) => (onReconcile.current = cb), [])
+  return { isReconciled: getIsReconciled, onReconcile: setOnReconcile }
 }

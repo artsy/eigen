@@ -324,7 +324,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
               $zoomScale={$zoomScale}
               $contentOffsetX={$contentOffsetX}
               $contentOffsetY={$contentOffsetY}
-              didMount={triggerScrollEvent}
+              triggerScrollEvent={triggerScrollEvent}
             />
           )}
       </>
