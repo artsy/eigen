@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import React from "react"
@@ -129,7 +129,7 @@ describe("ArtworkExtraLinks", () => {
       expect(component.text()).toContain("Consign with Artsy.")
     })
   })
-  describe("FAQ and specialist links", () => {
+  describe("FAQ and specialist BNMO links", () => {
     it("renders FAQ link when isInquireable", () => {
       const artwork = {
         ...ArtworkFixture,
@@ -172,6 +172,47 @@ describe("ArtworkExtraLinks", () => {
       )
       expect(component.text()).toContain("Read our FAQ")
       expect(component.text()).toContain("ask a specialist")
+    })
+  })
+  describe("FAQ and specialist Auction links", () => {
+    it("renders Auction specific text", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isInAuction: true,
+        sale: {
+          isClosed: false,
+        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: true,
+          },
+        ],
+      }
+
+      const component = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} />
+        </Theme>
+      )
+      expect(
+        component
+          .find(Sans)
+          .at(0)
+          .text()
+      ).toContain("By placing a bid you agree to Artsy's Conditions of Sale.")
+      expect(
+        component
+          .find(Sans)
+          .at(1)
+          .text()
+      ).toContain("Read our auction FAQs")
+      expect(
+        component
+          .find(Sans)
+          .at(1)
+          .text()
+      ).toContain("ask a specialist")
     })
   })
 })
