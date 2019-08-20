@@ -1,11 +1,100 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { throttle } from "lodash"
+import { debounce, throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
 import { screenBoundingBox } from "./screen"
 import { EventStream, useEvents } from "./useEventStream"
+
+class TileID {
+  id: string | null = null
+  constructor(public readonly level: number, public readonly row: number, public readonly col: number) {}
+  toString() {
+    if (this.id !== null) {
+      return this.id
+    }
+    this.id = `${this.level}:${this.row}:${this.col}`
+    return this.id
+  }
+}
+
+class Pyramid {
+  currentTiles: { [id: string]: { loaded: boolean } } = {}
+  listeners: Array<() => "unlisten" | null> = []
+  announce = debounce(() => {
+    let i = 0
+    while (i < this.listeners.length) {
+      if (this.listeners[i]() === "unlisten") {
+        this.listeners.splice(i, 1)
+      } else {
+        i++
+      }
+    }
+  })
+  willMount({ id }: { id: TileID }) {
+    this.currentTiles[id.toString()] = { loaded: false }
+  }
+  didMount({ id, onShouldLoad }: { id: TileID; onShouldLoad: () => void }) {
+    if (this.areTilesAboveFinishedLoading(id)) {
+      onShouldLoad()
+    } else {
+      this.listeners.push(() => {
+        if (this.areTilesAboveFinishedLoading(id)) {
+          onShouldLoad()
+          return "unlisten"
+        }
+        return null
+      })
+    }
+    this.announce()
+  }
+  didUnmount({ id }: { id: TileID }) {
+    delete this.currentTiles[id.toString()]
+    this.announce()
+  }
+  didLoad({ id }: { id: TileID }) {
+    this.currentTiles[id.toString()].loaded = true
+    this.announce()
+  }
+  isTileFinishedLoading(id: TileID) {
+    const current = this.currentTiles[id.toString()]
+    if (!current) {
+      // this tile is not being shown so yes it kinda has finished
+      return true
+    }
+    return current.loaded
+  }
+  areTilesAboveFinishedLoading(id: TileID) {
+    // a tile above is considered loaded if it is not being shown or it is and has loaded
+
+    // but also if a tile is not being shown than no tiles above are being shown either and it has kinda finished
+    if (!this.currentTiles[id.toString()]) {
+      return true
+    }
+
+    // this tile is being shown and it has loaded so check tiles above
+    const levelUp = id.level + 1
+    const firstRow = id.row * 2
+    const firstCol = id.col * 2
+
+    const topLeftKey = new TileID(levelUp, firstRow, firstCol)
+    const topRightKey = new TileID(levelUp, firstRow, firstCol + 1)
+    const bottomLeftKey = new TileID(levelUp, firstRow + 1, firstCol)
+    const bottomRightKey = new TileID(levelUp, firstRow + 1, firstCol + 1)
+
+    return (
+      this.isTileFinishedLoading(topLeftKey) &&
+      this.areTilesAboveFinishedLoading(topLeftKey) &&
+      this.isTileFinishedLoading(topRightKey) &&
+      this.areTilesAboveFinishedLoading(topRightKey) &&
+      this.isTileFinishedLoading(bottomLeftKey) &&
+      this.areTilesAboveFinishedLoading(bottomLeftKey) &&
+      this.isTileFinishedLoading(bottomRightKey) &&
+      this.areTilesAboveFinishedLoading(bottomRightKey)
+    )
+  }
+}
 
 const VISUAL_DEBUG = false
 
@@ -15,17 +104,40 @@ interface TileProps {
   left: number
   width: number
   height: number
+  id: TileID
+  pyramid: Pyramid
 }
 
-const Tile: React.FC<TileProps> = ({ url, top, left, width, height }) => {
+const Tile: React.FC<TileProps> = ({ url, top, left, width, height, id, pyramid }) => {
+  const [showing, setShowing] = useState(false)
   const [loaded, setLoaded] = useState(false)
+
+  // register with pyramid during first render
+  useMemo(() => {
+    pyramid.willMount({ id })
+  }, [])
+
+  // wait for tiles above this one to load before this one
+  useEffect(() => {
+    pyramid.didMount({
+      id,
+      onShouldLoad: () => {
+        setShowing(true)
+      },
+    })
+    return () => {
+      pyramid.didUnmount({ id })
+    }
+  }, [])
+
   const opacity = VISUAL_DEBUG ? 1 : useSpringValue(loaded ? 1 : 0)
+
   top = VISUAL_DEBUG ? top + height * 0.05 : top
   left = VISUAL_DEBUG ? left + width * 0.05 : left
   width = VISUAL_DEBUG ? width * 0.9 : width
   height = VISUAL_DEBUG ? height * 0.9 : height
   const backgroundColor = VISUAL_DEBUG ? "rgba(255, 0, 0, 0.2)" : null
-  return (
+  return !showing ? null : (
     <Animated.View
       style={{
         position: "absolute",
@@ -161,7 +273,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   $contentOffsetY,
   triggerScrollEvent,
 }) => {
-  // usePerf()
+  const pyramid = useMemo(() => new Pyramid(), [])
   useEffect(() => {
     triggerScrollEvent()
   }, [])
@@ -223,6 +335,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
             viewPortChanges={viewPortChanges}
             triggerScrollEvent={triggerScrollEvent}
             key={level}
+            pyramid={pyramid}
           />
         )
       }
@@ -260,6 +373,7 @@ const Level: React.FC<{
   level: number
   levelDimensions: Box
   imageFittedWithinScreen: Box
+  pyramid: Pyramid
   $contentOffsetX: Animated.Animated
   $contentOffsetY: Animated.Animated
   $zoomScale: Animated.Animated
@@ -268,8 +382,10 @@ const Level: React.FC<{
   viewPortChanges: EventStream<Rect>
   triggerScrollEvent(): void
 }> = ({
+  level,
   levelDimensions,
   imageFittedWithinScreen,
+  pyramid,
   $contentOffsetX,
   $contentOffsetY,
   $zoomScale,
@@ -318,12 +434,18 @@ const Level: React.FC<{
     [levelDimensions, $contentOffsetX, $contentOffsetY, $zoomScale, imageFittedWithinScreen]
   )
 
-  const updateTiles = useCallback((viewPort: Rect) => {
+  const lastViewPort = useRef<Rect | null>(null)
+
+  const updateTiles = useCallback(() => {
+    if (!lastViewPort.current) {
+      return
+    }
+
     const { minRow, minCol, maxRow, maxCol, numCols, numRows } = getVisibleRowsAndColumns({
       imageFittedWithinScreen,
       levelDimensions,
       tileSize,
-      viewPort,
+      viewPort: lastViewPort.current,
       grow: 1,
     })
 
@@ -346,34 +468,42 @@ const Level: React.FC<{
           const tileHeight = row < numRows - 1 ? tileSize : levelDimensions.height % tileSize
 
           tileCache[url] = (
-            <Tile key={url} url={url} top={tileTop} left={tileLeft} width={tileWidth} height={tileHeight} />
+            <Tile
+              id={new TileID(level, row, col)}
+              pyramid={pyramid}
+              key={url}
+              url={url}
+              top={tileTop}
+              left={tileLeft}
+              width={tileWidth}
+              height={tileHeight}
+            />
           )
         }
         result.push(tileCache[url])
       }
     }
-
     setTiles(result)
   }, [])
 
   const { isReconciled, onReconcile } = useReconciliationInfo()
 
-  const throttledUpdateTiles = useCallback(
-    throttle(
-      (viewPort: Rect) => {
-        if (isReconciled()) {
-          updateTiles(viewPort)
-        } else {
-          onReconcile(triggerScrollEvent)
-        }
-      },
-      250,
-      { trailing: true }
-    ),
-    []
-  )
+  const throttledUpdateTiles = useCallback((viewPort: Rect) => {
+    lastViewPort.current = viewPort
+    if (isReconciled()) {
+      updateTiles()
+    } else {
+      onReconcile(() => {
+        setTimeout(updateTiles, 16)
+      })
+    }
+  }, [])
 
   useEvents(viewPortChanges, throttledUpdateTiles)
+
+  useEffect(() => {
+    triggerScrollEvent()
+  }, [])
 
   return (
     <Animated.View
