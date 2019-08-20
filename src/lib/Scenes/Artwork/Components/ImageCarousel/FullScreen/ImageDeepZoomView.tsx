@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { debounce, throttle } from "lodash"
+import { throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
@@ -8,8 +8,12 @@ import { screenBoundingBox } from "./screen"
 import { EventStream, useEvents } from "./useEventStream"
 
 class TileID {
+  static _cache = {}
+  static create(level: number, row: number, col: number) {
+    return new TileID(level, row, col).intern()
+  }
   id: string | null = null
-  constructor(public readonly level: number, public readonly row: number, public readonly col: number) {}
+  private constructor(public readonly level: number, public readonly row: number, public readonly col: number) {}
   toString() {
     if (this.id !== null) {
       return this.id
@@ -17,45 +21,39 @@ class TileID {
     this.id = `${this.level}:${this.row}:${this.col}`
     return this.id
   }
+  private intern() {
+    const result = TileID._cache[this.toString()]
+    if (result) {
+      return result
+    }
+    TileID._cache[this.toString()] = this
+    return this
+  }
 }
 
 class Pyramid {
-  currentTiles: { [id: string]: { loaded: boolean } } = {}
-  listeners: Array<() => "unlisten" | null> = []
-  announce = debounce(() => {
-    let i = 0
-    while (i < this.listeners.length) {
-      if (this.listeners[i]() === "unlisten") {
-        this.listeners.splice(i, 1)
-      } else {
-        i++
-      }
-    }
-  })
+  tiles: TileID[] = []
+  currentTiles: { [id: string]: { loaded: boolean; onShouldLoad: null | (() => void) } } = {}
+  private timeout = null
+  getTile(id: TileID) {
+    return this.currentTiles[id.toString()]
+  }
   willMount({ id }: { id: TileID }) {
-    this.currentTiles[id.toString()] = { loaded: false }
+    this.tiles.push(id)
+    this.currentTiles[id.toString()] = { loaded: false, onShouldLoad: null }
   }
   didMount({ id, onShouldLoad }: { id: TileID; onShouldLoad: () => void }) {
-    if (this.areTilesAboveFinishedLoading(id)) {
-      onShouldLoad()
-    } else {
-      this.listeners.push(() => {
-        if (this.areTilesAboveFinishedLoading(id)) {
-          onShouldLoad()
-          return "unlisten"
-        }
-        return null
-      })
-    }
-    this.announce()
+    this.currentTiles[id.toString()].onShouldLoad = onShouldLoad
+    this.update()
   }
   didUnmount({ id }: { id: TileID }) {
     delete this.currentTiles[id.toString()]
-    this.announce()
+    this.tiles.splice(this.tiles.indexOf(id), 1)
+    this.update()
   }
   didLoad({ id }: { id: TileID }) {
     this.currentTiles[id.toString()].loaded = true
-    this.announce()
+    this.update()
   }
   isTileFinishedLoading(id: TileID) {
     const current = this.currentTiles[id.toString()]
@@ -65,7 +63,7 @@ class Pyramid {
     }
     return current.loaded
   }
-  areTilesAboveFinishedLoading(id: TileID) {
+  areTilesDirectlyAboveFinishedLoading(id: TileID) {
     // a tile above is considered loaded if it is not being shown or it is and has loaded
 
     // but also if a tile is not being shown than no tiles above are being shown either and it has kinda finished
@@ -78,25 +76,49 @@ class Pyramid {
     const firstRow = id.row * 2
     const firstCol = id.col * 2
 
-    const topLeftKey = new TileID(levelUp, firstRow, firstCol)
-    const topRightKey = new TileID(levelUp, firstRow, firstCol + 1)
-    const bottomLeftKey = new TileID(levelUp, firstRow + 1, firstCol)
-    const bottomRightKey = new TileID(levelUp, firstRow + 1, firstCol + 1)
+    const topLeftKey = TileID.create(levelUp, firstRow, firstCol)
+    const topRightKey = TileID.create(levelUp, firstRow, firstCol + 1)
+    const bottomLeftKey = TileID.create(levelUp, firstRow + 1, firstCol)
+    const bottomRightKey = TileID.create(levelUp, firstRow + 1, firstCol + 1)
 
     return (
       this.isTileFinishedLoading(topLeftKey) &&
-      this.areTilesAboveFinishedLoading(topLeftKey) &&
       this.isTileFinishedLoading(topRightKey) &&
-      this.areTilesAboveFinishedLoading(topRightKey) &&
       this.isTileFinishedLoading(bottomLeftKey) &&
-      this.areTilesAboveFinishedLoading(bottomLeftKey) &&
-      this.isTileFinishedLoading(bottomRightKey) &&
-      this.areTilesAboveFinishedLoading(bottomRightKey)
+      this.isTileFinishedLoading(bottomRightKey)
     )
+  }
+
+  triggerLoad(id: TileID) {
+    const record = this.getTile(id)
+    if (record) {
+      if (record.loaded) {
+        this.triggerLoad(TileID.create(id.level - 1, Math.floor(id.row / 2), Math.floor(id.col / 2)))
+      } else if (this.areTilesDirectlyAboveFinishedLoading(id)) {
+        record.onShouldLoad()
+        record.onShouldLoad = null
+      }
+    }
+  }
+
+  update() {
+    if (this.timeout !== null) {
+      clearTimeout(this.timeout)
+    }
+    this.timeout = setTimeout(() => {
+      this.timeout = null
+      this._update()
+    }, 16)
+  }
+
+  private _update() {
+    for (const id of this.tiles) {
+      this.triggerLoad(id)
+    }
   }
 }
 
-const VISUAL_DEBUG = false
+const VISUAL_DEBUG = true
 
 interface TileProps {
   url: string
@@ -110,7 +132,11 @@ interface TileProps {
 
 const Tile: React.FC<TileProps> = ({ url, top, left, width, height, id, pyramid }) => {
   const [showing, setShowing] = useState(false)
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, _setLoaded] = useState(false)
+  const onLoad = useCallback(() => {
+    _setLoaded(true)
+    pyramid.didLoad({ id })
+  }, [])
 
   // register with pyramid during first render
   useMemo(() => {
@@ -136,8 +162,24 @@ const Tile: React.FC<TileProps> = ({ url, top, left, width, height, id, pyramid 
   left = VISUAL_DEBUG ? left + width * 0.05 : left
   width = VISUAL_DEBUG ? width * 0.9 : width
   height = VISUAL_DEBUG ? height * 0.9 : height
-  const backgroundColor = VISUAL_DEBUG ? "rgba(255, 0, 0, 0.2)" : null
-  return !showing ? null : (
+  const backgroundColor = VISUAL_DEBUG
+    ? !showing
+      ? "rgba(255, 0, 0, 0.2)"
+      : !loaded
+        ? "rgba(0, 0, 255, 0.2)"
+        : "rgba(0, 255, 0, 0.2)"
+    : null
+  if (VISUAL_DEBUG) {
+    useEffect(
+      () => {
+        if (showing) {
+          setTimeout(onLoad, 400)
+        }
+      },
+      [showing]
+    )
+  }
+  return !VISUAL_DEBUG && !showing ? null : (
     <Animated.View
       style={{
         position: "absolute",
@@ -151,9 +193,7 @@ const Tile: React.FC<TileProps> = ({ url, top, left, width, height, id, pyramid 
     >
       {!VISUAL_DEBUG && (
         <OpaqueImageView
-          onLoad={() => {
-            setLoaded(true)
-          }}
+          onLoad={onLoad}
           imageURL={url}
           noAnimation
           useRawURL
@@ -277,6 +317,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
   useEffect(() => {
     triggerScrollEvent()
   }, [])
+
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(Size), [Size])
   const { minLevel, maxLevel } = useMemo(() => calculateMinMaxDeepZoomLevels({ width, height }, levels), [
@@ -305,7 +346,8 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
               }),
               maxLevel
             )
-            setRenderLevels({ minLevelToRender: Math.max(minLevelToRender, max - 3), maxLevelToRender: max })
+            setRenderLevels({ minLevelToRender: Math.max(minLevel, max - 3), maxLevelToRender: max })
+            pyramid.update()
           },
           250,
           {
@@ -469,7 +511,7 @@ const Level: React.FC<{
 
           tileCache[url] = (
             <Tile
-              id={new TileID(level, row, col)}
+              id={TileID.create(level, row, col)}
               pyramid={pyramid}
               key={url}
               url={url}
