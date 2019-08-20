@@ -88,7 +88,7 @@ describe("ContextCard", () => {
   })
 
   describe("Sale context", () => {
-    it("renders show name correctly", () => {
+    it("renders sale name correctly", () => {
       const component = mount(
         <Theme>
           <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
@@ -104,8 +104,24 @@ describe("ContextCard", () => {
           .text()
       ).toMatchInlineSnapshot(`"Christie’s: Prints & Multiples"`)
     })
+    it("renders formatted sale start/end date correctly", () => {
+      const component = mount(
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
+      )
+      expect(component.find(EntityHeader).length).toEqual(1)
 
-    it("renders show image", () => {
+      expect(
+        component
+          .find(Sans)
+          .at(1)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"Ended Oct 25, 2018"`)
+    })
+
+    it("renders sale image", () => {
       const component = mount(
         <Theme>
           <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
