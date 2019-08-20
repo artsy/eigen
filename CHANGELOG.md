@@ -19,6 +19,11 @@
 - Adds new base container / screen for the Collection page - luc
 - Fixes intermittent crash on opening message attachment previews - ash
 - Fix consignments artist search and make it use relay - alloy
+- Adds links to Artwork view for FAQ and Ask a Specialist - kierangillen
+- Adds auction extra links in Artwork view - kierangillen
+
+### Master
+
 - Adds Commercial Bid Buttons - kierangillen
 
 ### 1.12.16
