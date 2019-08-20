@@ -133,8 +133,9 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
     if (context) {
       const { __typename } = context
+
       switch (__typename as any) {
-        case "ArtworkContextAuction":
+        case "Sale":
           header = "In auction"
           name = context.name
           href = context.href
@@ -142,7 +143,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           imageUrl = context.cover_image && context.cover_image.url ? context.cover_image.url : ""
           renderContextCard = true
           break
-        case "ArtworkContextFair":
+        case "Fair":
           header = "In fair"
           name = context.name
           href = context.href
@@ -150,8 +151,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           imageUrl = context.image && context.image.url ? context.image.url : ""
           renderContextCard = true
           break
-        case "ArtworkContextPartnerShow":
-          // TODO: Replace with ArtworkContextShow when MPv2 supports it
+        case "Show":
           const { shows } = artwork
           const show = shows[0]
           header = "In show"

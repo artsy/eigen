@@ -122,7 +122,7 @@ const fairContextArtwork = {
   gravityID: "candice-cmc-superman-donuts-1",
   internalID: "5d0a7485fc1f78001248b677",
   context: {
-    __typename: "ArtworkContextFair",
+    __typename: "Fair",
     id: "QXJ0d29ya0NvbnRleHRGYWlyOm1hcmtldC1hcnQtcGx1cy1kZXNpZ24tMjAxOQ==",
     name: "Market Art + Design 2019",
     href: "/market-art-plus-design-2019",
@@ -154,7 +154,7 @@ const auctionContextArtwork = {
   gravityID: "andy-warhol-mao-one-plate-3",
   internalID: "5bc13101c8d4326cc288ecb8",
   context: {
-    __typename: "ArtworkContextAuction",
+    __typename: "Sale",
     id: "QXJ0d29ya0NvbnRleHRBdWN0aW9uOmNocmlzdGllcy1wcmludHMtYW5kLW11bHRpcGxlcy02",
     name: "Christie’s: Prints & Multiples",
     href: "/auction/christies-prints-and-multiples-6",
@@ -174,7 +174,7 @@ const showContextArtwork = {
   gravityID: "abbas-kiarostami-untitled-7",
   internalID: "5b2b745e9c18db204fc32e11",
   context: {
-    __typename: "ArtworkContextPartnerShow",
+    __typename: "Show",
   },
   shows: [
     {
