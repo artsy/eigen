@@ -1,4 +1,4 @@
-import { Button, EntityHeader, Serif, Theme } from "@artsy/palette"
+import { Button, EntityHeader, Sans, Serif, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { Image } from "react-native"
@@ -87,8 +87,8 @@ describe("ContextCard", () => {
     })
   })
 
-  describe("Auction context", () => {
-    it("renders show name correctly", () => {
+  describe("Sale context", () => {
+    it("renders sale name correctly", () => {
       const component = mount(
         <Theme>
           <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
@@ -104,8 +104,24 @@ describe("ContextCard", () => {
           .text()
       ).toMatchInlineSnapshot(`"Christie’s: Prints & Multiples"`)
     })
+    it("renders formatted sale start/end date correctly", () => {
+      const component = mount(
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
+      )
+      expect(component.find(EntityHeader).length).toEqual(1)
 
-    it("renders show image", () => {
+      expect(
+        component
+          .find(Sans)
+          .at(1)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"Ended Oct 25, 2018"`)
+    })
+
+    it("renders sale image", () => {
       const component = mount(
         <Theme>
           <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
@@ -113,6 +129,45 @@ describe("ContextCard", () => {
       )
 
       expect(component.find(Image)).toHaveLength(1)
+    })
+
+    it("renders 'In Auction' if the sale is an auction", () => {
+      const component = mount(
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
+      )
+
+      expect(
+        component
+          .find(Sans)
+          .at(0)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"In auction"`)
+    })
+
+    it("renders 'In Sale' if the sale is not an auction", () => {
+      const saleContextArtwork = {
+        ...auctionContextArtwork,
+        context: {
+          ...auctionContextArtwork.context,
+          isAuction: false,
+        },
+      }
+      const component = mount(
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
+        </Theme>
+      )
+
+      expect(
+        component
+          .find(Sans)
+          .at(0)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"In sale"`)
     })
   })
 })
@@ -158,6 +213,7 @@ const auctionContextArtwork = {
     id: "QXJ0d29ya0NvbnRleHRBdWN0aW9uOmNocmlzdGllcy1wcmludHMtYW5kLW11bHRpcGxlcy02",
     name: "Christie’s: Prints & Multiples",
     href: "/auction/christies-prints-and-multiples-6",
+    isAuction: true,
     formattedStartDateTime: "Ended Oct 25, 2018",
     cover_image: {
       url: "https://d32dm0rphc51dk.cloudfront.net/bMu0vqXOVlpABBsWVxVIJA/large_rectangle.jpg",
