@@ -1,4 +1,4 @@
-import { Button, EntityHeader, Serif, Theme } from "@artsy/palette"
+import { Button, EntityHeader, Sans, Serif, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { Image } from "react-native"
@@ -87,7 +87,7 @@ describe("ContextCard", () => {
     })
   })
 
-  describe("Auction context", () => {
+  describe("Sale context", () => {
     it("renders show name correctly", () => {
       const component = mount(
         <Theme>
@@ -114,6 +114,45 @@ describe("ContextCard", () => {
 
       expect(component.find(Image)).toHaveLength(1)
     })
+
+    it("renders 'In Auction' if the sale is an auction", () => {
+      const component = mount(
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
+      )
+
+      expect(
+        component
+          .find(Sans)
+          .at(0)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"In auction"`)
+    })
+
+    it("renders 'In Sale' if the sale is not an auction", () => {
+      const saleContextArtwork = {
+        ...auctionContextArtwork,
+        context: {
+          ...auctionContextArtwork.context,
+          isAuction: false,
+        },
+      }
+      const component = mount(
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
+        </Theme>
+      )
+
+      expect(
+        component
+          .find(Sans)
+          .at(0)
+          .render()
+          .text()
+      ).toMatchInlineSnapshot(`"In sale"`)
+    })
   })
 })
 
@@ -122,7 +161,7 @@ const fairContextArtwork = {
   gravityID: "candice-cmc-superman-donuts-1",
   internalID: "5d0a7485fc1f78001248b677",
   context: {
-    __typename: "ArtworkContextFair",
+    __typename: "Fair",
     id: "QXJ0d29ya0NvbnRleHRGYWlyOm1hcmtldC1hcnQtcGx1cy1kZXNpZ24tMjAxOQ==",
     name: "Market Art + Design 2019",
     href: "/market-art-plus-design-2019",
@@ -154,10 +193,11 @@ const auctionContextArtwork = {
   gravityID: "andy-warhol-mao-one-plate-3",
   internalID: "5bc13101c8d4326cc288ecb8",
   context: {
-    __typename: "ArtworkContextAuction",
+    __typename: "Sale",
     id: "QXJ0d29ya0NvbnRleHRBdWN0aW9uOmNocmlzdGllcy1wcmludHMtYW5kLW11bHRpcGxlcy02",
     name: "Christie’s: Prints & Multiples",
     href: "/auction/christies-prints-and-multiples-6",
+    isAuction: true,
     formattedStartDateTime: "Ended Oct 25, 2018",
     cover_image: {
       url: "https://d32dm0rphc51dk.cloudfront.net/bMu0vqXOVlpABBsWVxVIJA/large_rectangle.jpg",
@@ -174,7 +214,7 @@ const showContextArtwork = {
   gravityID: "abbas-kiarostami-untitled-7",
   internalID: "5b2b745e9c18db204fc32e11",
   context: {
-    __typename: "ArtworkContextPartnerShow",
+    __typename: "Show",
   },
   shows: [
     {
