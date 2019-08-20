@@ -130,7 +130,6 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
     const { artwork } = this.props
     const { context } = artwork
-
     if (context) {
       const { __typename } = context
       switch (__typename as any) {
