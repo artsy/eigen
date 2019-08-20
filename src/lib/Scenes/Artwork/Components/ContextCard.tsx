@@ -133,7 +133,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
     if (context) {
       const { __typename } = context
-      console.log("__typename", __typename)
+
       switch (__typename as any) {
         case "Sale":
           header = "In auction"
