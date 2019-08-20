@@ -37,7 +37,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     )
   }
 
-  renderPrice = () => {
+  renderPriceInformation = () => {
     const { artwork } = this.props
     const { isInAuction, sale } = artwork
     const showAuctionFlow = isInAuction && sale && !sale.isClosed
@@ -74,7 +74,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
 
     return (
       <>
-        {this.renderPrice()}
+        {this.renderPriceInformation()}
         <Box>
           {shouldRenderButtons && (
             <>
