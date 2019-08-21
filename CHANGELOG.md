@@ -20,9 +20,7 @@
 - Fix consignments artist search and make it use relay - alloy
 - Adds links to Artwork view for FAQ and Ask a Specialist - kierangillen
 - Adds auction extra links in Artwork view - kierangillen
-
-### Master
-
+- Fix shows artwork filter pickers always reseting to default value - zephraph
 - Adds Commercial Bid Buttons - kierangillen
 
 ### 1.12.16
