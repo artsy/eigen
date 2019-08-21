@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { debounce, throttle } from "lodash"
+import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
@@ -526,7 +526,7 @@ const Level: React.FC<{
     setTiles(result)
   }, [])
 
-  const throttledUpdateTiles = useMemo(() => throttle(updateTiles, 100, { trailing: true }), [])
+  const throttledUpdateTiles = useRenderThrottling(updateTiles, [lastFingerprint.current])
 
   useEvents(viewPortChanges, throttledUpdateTiles)
 
@@ -556,4 +556,45 @@ function useIsMounted() {
     }
   }, [])
   return () => isMounted.current
+}
+
+function useRenderThrottling<Args extends any[]>(cb: (...args: Args) => void, deps: any[]): (...args: Args) => void {
+  const epoch = useRef(0)
+  const lastEpoch = useRef(-1)
+  const isReconciled = useRef(false)
+
+  const nextEpoch = useMemo(() => epoch.current++, deps)
+  if (nextEpoch !== lastEpoch.current) {
+    isReconciled.current = false
+    lastEpoch.current = nextEpoch
+  }
+
+  const onReconcile = useRef(null as null | (() => void))
+  const isMounted = useIsMounted()
+
+  useEffect(() => {
+    if (onReconcile.current) {
+      requestAnimationFrame(() => {
+        isReconciled.current = true
+        if (isMounted() && onReconcile.current) {
+          const callback = onReconcile.current
+          onReconcile.current = null
+          callback()
+        }
+      })
+    } else {
+      isReconciled.current = true
+    }
+  })
+
+  return useMemo(
+    () => (...args: Args) => {
+      if (isReconciled.current) {
+        cb(...args)
+      } else {
+        onReconcile.current = () => cb(...args)
+      }
+    },
+    [cb]
+  )
 }
