@@ -30,7 +30,6 @@ jobs:
       #   AdjustProductionAppToken: from_admin
       #   ArtsyEchoProductionToken:  from_admin
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
-      BUNDLER_VERSION: 2.0.1
 
     # Specify the Xcode version to use.
     macos:
