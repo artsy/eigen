@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.12.x
   dev:
+    - Switched CocoaPods to use the CDN master spec repo - alloy
     - Cleans up unused lab options - ash
     - Removes concept of a lot's "current value" in favour of using the asking price - ash
     - Adds more granular lab options for testing new RN artwork view - ash
