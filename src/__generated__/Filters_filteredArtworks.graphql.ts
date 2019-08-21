@@ -9,6 +9,7 @@ export type Filters_filteredArtworks = {
         readonly slice: ArtworkAggregation | null;
         readonly counts: ReadonlyArray<{
             readonly name: string;
+            readonly value: string;
         } | null> | null;
     } | null> | null;
     readonly " $refType": Filters_filteredArtworks$ref;
@@ -54,6 +55,13 @@ const node: ReaderFragment = {
               "name": "name",
               "args": null,
               "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "value",
+              "args": null,
+              "storageKey": null
             }
           ]
         }
@@ -61,5 +69,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '430b5f7a5feaa71a74ee26f84e8718ac';
+(node as any).hash = '91d31761bb4205fec2bf49fa49d6b080';
 export default node;

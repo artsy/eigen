@@ -55,6 +55,7 @@ fragment Filters_filteredArtworks on FilterArtworksConnection {
     slice
     counts {
       name
+      value
     }
   }
 }
@@ -495,7 +496,14 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "value",
+                        "args": null,
+                        "storageKey": null
+                      }
                     ]
                   }
                 ]
@@ -555,7 +563,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtworksTestsQuery",
-    "id": "a0d4ef4d544f821d3fc4c2afe64e6b41",
+    "id": "6e72c38ede1790407ff496f926913e65",
     "text": null,
     "metadata": {}
   }
