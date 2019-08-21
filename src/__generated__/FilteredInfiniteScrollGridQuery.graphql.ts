@@ -62,9 +62,7 @@ fragment Filters_filteredArtworks on FilterArtworksConnection {
   aggregations {
     slice
     counts {
-      internalID
       name
-      id
     }
   }
 }
@@ -550,15 +548,7 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "internalID",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      (v7/*: any*/),
-                      (v5/*: any*/)
+                      (v7/*: any*/)
                     ]
                   }
                 ]
@@ -618,7 +608,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FilteredInfiniteScrollGridQuery",
-    "id": "7a7b15186e5d2cfb140972abab2d2724",
+    "id": "a9da9e901755c0a82666075d30ee07eb",
     "text": null,
     "metadata": {}
   }
