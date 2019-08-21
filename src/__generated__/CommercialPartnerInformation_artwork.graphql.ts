@@ -7,6 +7,7 @@ export type CommercialPartnerInformation_artwork = {
     readonly availability: string | null;
     readonly shippingOrigin: string | null;
     readonly shippingInfo: string | null;
+    readonly priceIncludesTax: boolean | null;
     readonly partner: {
         readonly name: string | null;
     } | null;
@@ -44,6 +45,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "shippingInfo",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "priceIncludesTax",
       "args": null,
       "storageKey": null
     },
@@ -92,5 +100,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '33d25e8676ba12b6b86917ab2c039567';
+(node as any).hash = 'b24dfdcfb02ccab89502730596588182';
 export default node;
