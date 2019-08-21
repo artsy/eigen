@@ -15,9 +15,9 @@ export function useEventStream<T>(): EventStream<T> {
 export function useEvents<T>(stream: EventStream<T>, listener: (event: T) => any) {
   useEffect(
     () => {
-      ;(stream.__internal_emitter as EventEmitter).addListener("event", listener)
+      stream.__internal_emitter.addListener("event", listener)
       return () => {
-        ;(stream.__internal_emitter as EventEmitter).removeListener("event", listener)
+        stream.__internal_emitter.removeListener("event", listener)
       }
     },
     [listener]
