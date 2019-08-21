@@ -13,11 +13,15 @@ export type ContextCard_artwork = {
         readonly name?: string | null;
         readonly href?: string | null;
         readonly formattedStartDateTime?: string | null;
+        readonly isAuction?: boolean | null;
         readonly cover_image?: {
             readonly url: string | null;
         } | null;
         readonly exhibition_period?: string | null;
         readonly image?: {
+            readonly url: string | null;
+        } | null;
+        readonly coverImage?: {
             readonly url: string | null;
         } | null;
     } & ({
@@ -26,6 +30,7 @@ export type ContextCard_artwork = {
         readonly name: string | null;
         readonly href: string | null;
         readonly formattedStartDateTime: string | null;
+        readonly isAuction: boolean | null;
         readonly cover_image: {
             readonly url: string | null;
         } | null;
@@ -33,6 +38,11 @@ export type ContextCard_artwork = {
         readonly __typename: "Fair";
         readonly exhibition_period: string | null;
         readonly image: {
+            readonly url: string | null;
+        } | null;
+    } | {
+        readonly __typename: "Show";
+        readonly coverImage: {
             readonly url: string | null;
         } | null;
     } | {
@@ -159,6 +169,13 @@ return {
               "args": null,
               "storageKey": null
             },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isAuction",
+              "args": null,
+              "storageKey": null
+            },
             (v6/*: any*/)
           ]
         },
@@ -174,6 +191,26 @@ return {
               "kind": "LinkedField",
               "alias": null,
               "name": "image",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Image",
+              "plural": false,
+              "selections": (v5/*: any*/)
+            }
+          ]
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "Show",
+          "selections": [
+            (v0/*: any*/),
+            (v3/*: any*/),
+            (v4/*: any*/),
+            (v7/*: any*/),
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "coverImage",
               "storageKey": null,
               "args": null,
               "concreteType": "Image",
@@ -218,5 +255,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '39e23fd27aad0a661f2476a735821cd9';
+(node as any).hash = 'a074608c4925e215a2b6c5652b989d04';
 export default node;

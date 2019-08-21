@@ -130,13 +130,12 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
     const { artwork } = this.props
     const { context } = artwork
-
     if (context) {
       const { __typename } = context
 
       switch (__typename as any) {
         case "Sale":
-          header = "In auction"
+          header = context.isAuction ? "In auction" : "In sale"
           name = context.name
           href = context.href
           meta = context.formattedStartDateTime
@@ -206,6 +205,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           name
           href
           formattedStartDateTime
+          isAuction
           cover_image: coverImage {
             url
           }
@@ -216,6 +216,15 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           href
           exhibition_period: exhibitionPeriod
           image {
+            url
+          }
+        }
+        ... on Show {
+          id
+          name
+          href
+          exhibition_period: exhibitionPeriod
+          coverImage {
             url
           }
         }
