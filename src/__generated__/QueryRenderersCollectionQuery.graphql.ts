@@ -33,6 +33,16 @@ fragment Collection_collection on MarketingCollection {
   headerImage
   category
   credit
+  ...CollectionHeader_collection
+}
+
+fragment CollectionHeader_collection on MarketingCollection {
+  slug
+  title
+  description
+  headerImage
+  category
+  credit
 }
 */
 
@@ -142,7 +152,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "53983d472e1f1713473e410b863e807b",
+    "id": "8ed72db052cdb49a3f8fbc74df3fcb33",
     "text": null,
     "metadata": {}
   }

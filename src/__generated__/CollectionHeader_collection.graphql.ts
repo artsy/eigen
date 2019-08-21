@@ -1,25 +1,23 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { CollectionHeader_collection$ref } from "./CollectionHeader_collection.graphql";
-declare const _Collection_collection$ref: unique symbol;
-export type Collection_collection$ref = typeof _Collection_collection$ref;
-export type Collection_collection = {
+declare const _CollectionHeader_collection$ref: unique symbol;
+export type CollectionHeader_collection$ref = typeof _CollectionHeader_collection$ref;
+export type CollectionHeader_collection = {
     readonly slug: string;
     readonly title: string;
     readonly description: string | null;
     readonly headerImage: string | null;
     readonly category: string;
     readonly credit: string | null;
-    readonly " $fragmentRefs": CollectionHeader_collection$ref;
-    readonly " $refType": Collection_collection$ref;
+    readonly " $refType": CollectionHeader_collection$ref;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Collection_collection",
+  "name": "CollectionHeader_collection",
   "type": "MarketingCollection",
   "metadata": null,
   "argumentDefinitions": [],
@@ -65,13 +63,8 @@ const node: ReaderFragment = {
       "name": "credit",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "CollectionHeader_collection",
-      "args": null
     }
   ]
 };
-(node as any).hash = '272bdcb6bf0e1ce2656b47a173b123cb';
+(node as any).hash = '9b4f64d7222b3912ff2f6c9d1b569a4d';
 export default node;

@@ -325,7 +325,7 @@
 {
   return [self viewControllerCellDataWithTitle:@"Collection"
                                      selection:^{
-                                       id viewController = [[ARCollectionComponentViewController alloc] initWithCollectionID:@"street-art"];
+                                       id viewController = [[ARCollectionComponentViewController alloc] initWithCollectionID:@"street-art-now"];
                                        [self.navigationController pushViewController:viewController animated:YES];
                                      }
                                        preload:nil];
