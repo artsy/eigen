@@ -1,5 +1,5 @@
 import { Flex, Spacer } from "@artsy/palette"
-import { Filters_filteredArtworks } from "__generated__/Filters_filteredArtworks.graphql"
+import { ArtworkAggregation, Filters_filteredArtworks } from "__generated__/Filters_filteredArtworks.graphql"
 import { Picker, PickerOption, PickerType } from "lib/Components/Picker"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,10 +15,11 @@ interface Props {
   priceRangeValue: string
 }
 
-const getAggregationSlice = (sliceName, filteredArtworks) =>
+const getAggregationSlice = (sliceName: ArtworkAggregation, filteredArtworks: Filters_filteredArtworks) =>
   filteredArtworks.aggregations.find(({ slice }) => slice === sliceName).counts
 
-const getAggregationOptions = aggregation => aggregation.map(({ id, name }) => ({ text: name, value: id }))
+const getAggregationOptions = (aggregation: ReturnType<typeof getAggregationSlice>) =>
+  aggregation.map(({ internalID, name }) => ({ text: name, value: internalID }))
 
 export const Filters: React.SFC<Props> = ({ onFilterChange, mediumValue, priceRangeValue, filteredArtworks }) => {
   const mediumOptions = filteredArtworks ? getAggregationOptions(getAggregationSlice("MEDIUM", filteredArtworks)) : []
