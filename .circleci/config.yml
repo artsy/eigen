@@ -29,7 +29,8 @@ jobs:
       #   SegmentDevWriteKey: from_admin
       #   AdjustProductionAppToken: from_admin
       #   ArtsyEchoProductionToken:  from_admin
-      BUNDLE_PATH: vendor/bundle  # path to install gems and use for caching
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLER_VERSION: 2.0.1
 
     # Specify the Xcode version to use.
     macos:
@@ -37,15 +38,14 @@ jobs:
 
     # Define the steps required to build the project.
     steps:
-
       # Get the code from the VCS provider.
       - checkout
 
       - restore_cache:
           keys:
-          - v1-gems-{{ checksum "Gemfile.lock" }}
-          # Fall back to using the latest cache if no exact match is found.
-          - v1-gems-
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v1-gems-
 
       # Install gems.
       - run:
@@ -70,9 +70,9 @@ jobs:
 
       - restore_cache:
           keys:
-          - v3-pods-{{ checksum "Podfile.lock" }}
-          # Fall back to using the latest cache if no exact match is found.
-          - v3-pods-
+            - v3-pods-{{ checksum "Podfile.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v3-pods-
 
       - run:
           name: Install CocoaPods
@@ -105,11 +105,11 @@ jobs:
 
       - store_test_results:
           path: test-results.xml
-  
+
       - run:
           name: Danger
           command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
-      
+
       - run:
           name: Deploy if beta
           command: make deploy_if_beta_branch
@@ -117,7 +117,6 @@ jobs:
       - run:
           name: Promote if app_store_submission
           command: make promote_if_app_store_submission_branch
-
 
 workflows:
   version: 2
