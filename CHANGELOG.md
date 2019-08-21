@@ -22,6 +22,7 @@
 - Adds auction extra links in Artwork view - kierangillen
 - Fix shows artwork filter pickers always reseting to default value - zephraph
 - Adds Commercial Bid Buttons - kierangillen
+- Adds VAT included in price to Artwork view - kierangillen
 
 ### 1.12.16
 
