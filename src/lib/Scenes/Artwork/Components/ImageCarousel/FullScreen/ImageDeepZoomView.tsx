@@ -1,11 +1,13 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { throttle } from "lodash"
+import { debounce, throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"
-import { screenBoundingBox } from "./screen"
+import { screenBoundingBox, screenWidth } from "./screen"
 import { EventStream, useEvents } from "./useEventStream"
+
+const VISUAL_DEBUG = false
 
 class TileID {
   static _cache = {}
@@ -32,14 +34,13 @@ class TileID {
 }
 
 class Pyramid {
-  tiles: TileID[] = []
+  tileIDs: TileID[] = []
   currentTiles: { [id: string]: { loaded: boolean; onShouldLoad: null | (() => void) } } = {}
-  private timeout = null
   getTile(id: TileID) {
     return this.currentTiles[id.toString()]
   }
   willMount({ id }: { id: TileID }) {
-    this.tiles.push(id)
+    this.tileIDs.push(id)
     this.currentTiles[id.toString()] = { loaded: false, onShouldLoad: null }
   }
   didMount({ id, onShouldLoad }: { id: TileID; onShouldLoad: () => void }) {
@@ -48,7 +49,7 @@ class Pyramid {
   }
   didUnmount({ id }: { id: TileID }) {
     delete this.currentTiles[id.toString()]
-    this.tiles.splice(this.tiles.indexOf(id), 1)
+    this.tileIDs.splice(this.tileIDs.indexOf(id), 1)
     this.update()
   }
   didLoad({ id }: { id: TileID }) {
@@ -94,31 +95,22 @@ class Pyramid {
     if (record) {
       if (record.loaded) {
         this.triggerLoad(TileID.create(id.level - 1, Math.floor(id.row / 2), Math.floor(id.col / 2)))
-      } else if (this.areTilesDirectlyAboveFinishedLoading(id)) {
+      } else if (record.onShouldLoad && this.areTilesDirectlyAboveFinishedLoading(id)) {
         record.onShouldLoad()
         record.onShouldLoad = null
       }
     }
   }
 
-  update() {
-    if (this.timeout !== null) {
-      clearTimeout(this.timeout)
-    }
-    this.timeout = setTimeout(() => {
-      this.timeout = null
-      this._update()
-    }, 16)
-  }
-
   private _update() {
-    for (const id of this.tiles) {
+    for (const id of this.tileIDs) {
       this.triggerLoad(id)
     }
   }
-}
 
-const VISUAL_DEBUG = true
+  // tslint:disable-next-line:member-ordering
+  update = debounce(this._update.bind(this), 16, { trailing: true })
+}
 
 interface TileProps {
   url: string
@@ -132,9 +124,13 @@ interface TileProps {
 
 const Tile: React.FC<TileProps> = ({ url, top, left, width, height, id, pyramid }) => {
   const [showing, setShowing] = useState(false)
-  const [loaded, _setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const isMounted = useIsMounted()
   const onLoad = useCallback(() => {
-    _setLoaded(true)
+    if (!isMounted()) {
+      return
+    }
+    setLoaded(true)
     pyramid.didLoad({ id })
   }, [])
 
@@ -147,7 +143,7 @@ const Tile: React.FC<TileProps> = ({ url, top, left, width, height, id, pyramid 
   useEffect(() => {
     pyramid.didMount({
       id,
-      onShouldLoad: () => {
+      onShouldLoad() {
         setShowing(true)
       },
     })
@@ -265,6 +261,27 @@ export const getMaxDeepZoomLevelForZoomViewScale = ({
   return level
 }
 
+interface ZoomScaleBoundaries {
+  startZoomScale: number
+  stopZoomScale: number
+}
+export const getZoomScaleBoundaries = ({
+  levels,
+  imageFittedWithinScreen,
+}: {
+  levels: Box[]
+  imageFittedWithinScreen: Box
+}) => {
+  const result: ZoomScaleBoundaries[] = []
+  for (const level of levels) {
+    const perfectZoomScale = level.width / imageFittedWithinScreen.width
+    const startZoomScale = perfectZoomScale / 2
+    const stopZoomScale = perfectZoomScale * 4
+    result.push({ startZoomScale, stopZoomScale })
+  }
+  return result
+}
+
 export function getVisibleRowsAndColumns({
   imageFittedWithinScreen: { width, height },
   levelDimensions,
@@ -320,53 +337,25 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
 
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(Size), [Size])
+  const imageFittedWithinScreen = useMemo(() => ({ width, height }), [width, height])
+  const zoomScaleBoundaries = useMemo(() => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }), [
+    levels,
+    imageFittedWithinScreen,
+  ])
   const { minLevel, maxLevel } = useMemo(() => calculateMinMaxDeepZoomLevels({ width, height }, levels), [
     width,
     height,
     levels,
   ])
 
-  const [{ minLevelToRender, maxLevelToRender }, setRenderLevels] = useState({
-    minLevelToRender: minLevel,
-    maxLevelToRender: minLevel,
-  })
-
-  useEvents(
-    viewPortChanges,
-    useMemo(
-      () =>
-        throttle(
-          viewPort => {
-            const zoomScale = width / viewPort.width
-            const max = Math.min(
-              getMaxDeepZoomLevelForZoomViewScale({
-                minLevel,
-                minLevelWidth: levels[minLevel].width,
-                zoomScale,
-              }),
-              maxLevel
-            )
-            setRenderLevels({ minLevelToRender: Math.max(minLevel, max - 3), maxLevelToRender: max })
-            pyramid.update()
-          },
-          250,
-          {
-            trailing: true,
-          }
-        ),
-      []
-    )
-  )
-
-  const imageFittedWithinScreen = useMemo(() => ({ width, height }), [width, height])
-
   const levelElements = useMemo(
     () => {
       const result: JSX.Element[] = []
-      for (let level = minLevelToRender; level <= maxLevelToRender; level++) {
+      for (let level = minLevel; level <= maxLevel; level++) {
         result.push(
           <Level
             level={level}
+            zoomScaleBoundaries={zoomScaleBoundaries[level]}
             levelDimensions={levels[level]}
             imageFittedWithinScreen={imageFittedWithinScreen}
             makeUrl={({ row, col }) => `${Url}${level}/${col}_${row}.${Format}`}
@@ -383,7 +372,7 @@ export const ImageDeepZoomView: React.FC<ImageDeepZoomViewProps> = ({
       }
       return result
     },
-    [minLevelToRender, maxLevelToRender, levels, imageFittedWithinScreen]
+    [minLevel, maxLevel, levels, imageFittedWithinScreen]
   )
 
   return (
@@ -414,6 +403,7 @@ interface Rect extends Box {
 const Level: React.FC<{
   level: number
   levelDimensions: Box
+  zoomScaleBoundaries: ZoomScaleBoundaries
   imageFittedWithinScreen: Box
   pyramid: Pyramid
   $contentOffsetX: Animated.Animated
@@ -425,6 +415,7 @@ const Level: React.FC<{
   triggerScrollEvent(): void
 }> = ({
   level,
+  zoomScaleBoundaries,
   levelDimensions,
   imageFittedWithinScreen,
   pyramid,
@@ -476,10 +467,17 @@ const Level: React.FC<{
     [levelDimensions, $contentOffsetX, $contentOffsetY, $zoomScale, imageFittedWithinScreen]
   )
 
-  const lastViewPort = useRef<Rect | null>(null)
+  const updateTiles = useCallback((viewPort: Rect) => {
+    const zoomScale = screenWidth / viewPort.width
 
-  const updateTiles = useCallback(() => {
-    if (!lastViewPort.current) {
+    if (zoomScale < zoomScaleBoundaries.startZoomScale || zoomScale > zoomScaleBoundaries.stopZoomScale) {
+      setTiles(arr => {
+        if (arr && arr.length === 0) {
+          return arr
+        }
+        return []
+      })
+      lastFingerprint.current = ""
       return
     }
 
@@ -487,7 +485,7 @@ const Level: React.FC<{
       imageFittedWithinScreen,
       levelDimensions,
       tileSize,
-      viewPort: lastViewPort.current,
+      viewPort,
       grow: 1,
     })
 
@@ -528,18 +526,7 @@ const Level: React.FC<{
     setTiles(result)
   }, [])
 
-  const { isReconciled, onReconcile } = useReconciliationInfo()
-
-  const throttledUpdateTiles = useCallback((viewPort: Rect) => {
-    lastViewPort.current = viewPort
-    if (isReconciled()) {
-      updateTiles()
-    } else {
-      onReconcile(() => {
-        setTimeout(updateTiles, 16)
-      })
-    }
-  }, [])
+  const throttledUpdateTiles = useMemo(() => throttle(updateTiles, 100, { trailing: true }), [])
 
   useEvents(viewPortChanges, throttledUpdateTiles)
 
@@ -560,19 +547,13 @@ const Level: React.FC<{
   )
 }
 
-function useReconciliationInfo() {
-  const onReconcile = useRef(null as (() => any) | null)
-  const isReconciled = useRef(false)
-  // reset to false on every render
-  isReconciled.current = false
+function useIsMounted() {
+  const isMounted = useRef(false)
   useEffect(() => {
-    isReconciled.current = true
-    if (onReconcile.current) {
-      onReconcile.current()
-      onReconcile.current = null
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
     }
-  })
-  const getIsReconciled = useCallback(() => isReconciled.current, [])
-  const setOnReconcile = useCallback((cb: () => any) => (onReconcile.current = cb), [])
-  return { isReconciled: getIsReconciled, onReconcile: setOnReconcile }
+  }, [])
+  return () => isMounted.current
 }
