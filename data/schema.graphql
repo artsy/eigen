@@ -17,14 +17,9 @@ type AddAssetToConsignmentSubmissionPayload {
 
 # One item in an aggregation
 type AggregationCount {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID.
-  internalID: ID!
-  count: Int
-  name: String
-  sortableID: String
+  value: String!
+  count: Int!
+  name: String!
 }
 
 type AnalyticsArtist {
@@ -958,6 +953,7 @@ type Artwork implements Node & Searchable & Sellable {
   pickupAvailable: Boolean
   listPrice: ListPrice
   priceCurrency: String
+  priceIncludesTax: Boolean
 
   # Is this work available for shipping only within the Contenental US?
   shipsToContinentalUSOnly: Boolean
@@ -4099,6 +4095,7 @@ type FollowShowPayload {
 enum Format {
   HTML
   PLAIN
+  MARKDOWN
 }
 
 type FormattedDaySchedules {
@@ -5363,7 +5360,7 @@ type Profile {
   isFollowed: Boolean
   isPublished: Boolean
   name: String
-  isPublicallyVisible: Boolean
+  isPubliclyVisible: Boolean
 }
 
 type ProfileCounts {

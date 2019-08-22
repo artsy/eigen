@@ -17,9 +17,8 @@ export type Gene_gene = {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
-                readonly internalID: string;
-                readonly name: string | null;
-                readonly count: number | null;
+                readonly name: string;
+                readonly count: number;
             } | null> | null;
         } | null> | null;
         readonly edges: ReadonlyArray<{
@@ -40,13 +39,6 @@ var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
   "args": null,
   "storageKey": null
 };
@@ -105,7 +97,13 @@ return {
   ],
   "selections": [
     (v0/*: any*/),
-    (v1/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": "artworks",
@@ -188,7 +186,6 @@ return {
               "concreteType": "AggregationCount",
               "plural": true,
               "selections": [
-                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -289,5 +286,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c903ebd45686de924ddffae188d74a2b';
+(node as any).hash = '962c97b522a0e9a47e629e9d7b167e9a';
 export default node;

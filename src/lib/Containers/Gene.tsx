@@ -364,8 +364,8 @@ export default createPaginationContainer(
           aggregations {
             slice
             counts {
-              internalID
-              name
+               value
+               name
               count
             }
           }

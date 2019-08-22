@@ -149,9 +149,8 @@ fragment Filters_filteredArtworks on FilterArtworksConnection {
   aggregations {
     slice
     counts {
-      internalID
       name
-      id
+      value
     }
   }
 }
@@ -919,9 +918,14 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
                       (v3/*: any*/),
-                      (v4/*: any*/)
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "value",
+                        "args": null,
+                        "storageKey": null
+                      }
                     ]
                   }
                 ]
@@ -981,7 +985,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothTestsQuery",
-    "id": "87e2fbb8417c119e4dd7b055ac8e6dcb",
+    "id": "3a26f1c3695899048992ba2a7c17e5d9",
     "text": null,
     "metadata": {}
   }
