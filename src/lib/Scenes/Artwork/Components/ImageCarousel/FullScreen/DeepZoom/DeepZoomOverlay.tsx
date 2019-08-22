@@ -12,10 +12,13 @@ export interface DeepZoomOverlayProps {
   image: ImageDescriptor
   width: number
   height: number
+  // These following are the control values we need from the ScrollView in the component above (ImageZoomView)
+  // we need them to position the image tiles correctly (animated values) and decide which tiles to show (view port)
   viewPortChanges: EventStream<Rect>
   $zoomScale: Animated.Value
   $contentOffsetX: Animated.Value
   $contentOffsetY: Animated.Value
+  // we need to trigger a scroll event on mount to find out what the starting viewport is.
   triggerScrollEvent(): void
 }
 
@@ -39,6 +42,7 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   triggerScrollEvent,
 }) => {
   const pyramid = useMemo(() => new DeepZoomPyramid(), [])
+  // get first viewport update after mounting to start showing tiles
   useEffect(() => {
     triggerScrollEvent()
   }, [])
@@ -56,6 +60,8 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
     levels,
   ])
 
+  // At the moment we just render all of the levels and let them decide whether or not to show any tiles
+  // this lets us avoid this component needing to update.
   const levelElements = useMemo(
     () => {
       const result: JSX.Element[] = []

@@ -6,7 +6,7 @@ type DeepZoomImageSize = ImageDescriptor["deepZoom"]["Image"]["Size"]
 /**
  * The way that deep zoom images are created is by halving the original image
  * dimensions (rounding up to the nearest pixel at each step) recursively
- * until you get to 1px * 1px
+ * until you get to 1px * 1px. This function does eactly that to the original image's dimensions.
  */
 export const calculateDeepZoomLevels = ({ Width, Height }: DeepZoomImageSize) => {
   const result: Size[] = [{ width: Width, height: Height }]
@@ -27,7 +27,11 @@ export const calculateMaxZoomViewScale = (imageFittedWithinScreen: Size, fullRes
   return fullResolutionImage.Height / imageFittedWithinScreen.height
 }
 
-// zoom levels are in ascending order of size
+/**
+ * A lot of zoom levels are useless because the resolution is lower than the screen size. Usually the first one we want
+ * is around level 9. This function figures it out! I have a feeling this could be done with logarithms rather than a
+ * for loop, but I forgot all the maths I ever learned about 5 years ago.
+ */
 export const calculateMinMaxDeepZoomLevels = (imageFittedWithinScreen: Size, zoomLevels: Size[]) => {
   let minLevel = 0
   const maxLevel = zoomLevels.length - 1
@@ -44,6 +48,11 @@ export interface ZoomScaleBoundaries {
   startZoomScale: number
   stopZoomScale: number
 }
+
+/**
+ * We want to know when to show a particular deep zoom level on screen. This calculates boundaries
+ * for the scroll view's zoomScale property for that purpose.
+ */
 export const getZoomScaleBoundaries = ({
   levels,
   imageFittedWithinScreen,
@@ -53,6 +62,7 @@ export const getZoomScaleBoundaries = ({
 }) => {
   const result: ZoomScaleBoundaries[] = []
   for (const level of levels) {
+    // This is the zoom scale at which the image will be at it's natural resolution
     const perfectZoomScale = level.width / imageFittedWithinScreen.width
     const startZoomScale = perfectZoomScale / 2
     const stopZoomScale = perfectZoomScale * 8
@@ -61,6 +71,9 @@ export const getZoomScaleBoundaries = ({
   return result
 }
 
+/**
+ * This function decides which rows and columns to show of a particular zoom level
+ */
 export function getVisibleRowsAndColumns({
   imageFittedWithinScreen: { width, height },
   levelDimensions,
