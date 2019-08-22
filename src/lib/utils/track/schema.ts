@@ -240,11 +240,14 @@ export enum ActionNames {
   ConsignmentSubmitted = "consignmentSubmitted",
 
   /**
-   * Bid flow
+   * Commercial flow
    */
   BidFlowAddBillingAddress = "addBillingAddress",
   BidFlowPlaceBid = "placeBid",
   BidFlowSaveBillingAddress = "saveBillingAddress",
+  BuyNow = "buyNow",
+  ContactGallery = "contactGallery",
+  MakeOffer = "makeOffer",
 
   /**
    * Show flow
@@ -295,6 +298,7 @@ export enum ContextModules {
   ArtworkImage = "ArtworkImage",
   ArtworkTombstone = "ArtworkTombstone",
   Bibliography = "Bibliography",
+  CommercialButtons = "CommercialButtons",
   ExhibitionHistory = "ExhibitionHistory",
   Provenance = "Provenance",
 }

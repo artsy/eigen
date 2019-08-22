@@ -34,6 +34,12 @@ export class CommercialPartnerInformation extends React.Component<Props> {
                   {artwork.shippingInfo}
                 </Sans>
               )}
+            {artworkIsForSale &&
+              artwork.priceIncludesTax && (
+                <Sans size="3t" color="black60">
+                  VAT included in price
+                </Sans>
+              )}
           </>
         )}
       </>
@@ -47,6 +53,7 @@ export const CommercialPartnerInformationFragmentContainer = createFragmentConta
       availability
       shippingOrigin
       shippingInfo
+      priceIncludesTax
       partner {
         name
       }

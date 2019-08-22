@@ -2,6 +2,7 @@ import { Button } from "@artsy/palette"
 import { BuyNowButton_artwork } from "__generated__/BuyNowButton_artwork.graphql"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -17,6 +18,9 @@ export interface State {
   isCommittingCreateOrderMutation: boolean
 }
 
+const track: Track<BuyNowButtonProps, State> = _track
+
+@track()
 export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
   state = {
     isCommittingCreateOrderMutation: false,
@@ -38,6 +42,11 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
     console.log("src/lib/Scenes/Artwork/Components/BuyNowButton.tsx", error)
   }
 
+  @track({
+    action_name: Schema.ActionNames.BuyNow,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.CommercialButtons,
+  } as any)
   handleCreateOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOrderMutation } = this.state

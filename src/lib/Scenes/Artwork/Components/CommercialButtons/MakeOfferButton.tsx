@@ -2,6 +2,7 @@ import { Button, ButtonVariant } from "@artsy/palette"
 import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -17,6 +18,8 @@ export interface MakeOfferButtonProps {
 export interface State {
   isCommittingCreateOfferOrderMutation: boolean
 }
+
+const track: Track<MakeOfferButtonProps, State> = _track
 
 export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State> {
   state = {
@@ -39,6 +42,11 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
     console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
   }
 
+  @track({
+    action_name: Schema.ActionNames.MakeOffer,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.CommercialButtons,
+  } as any)
   handleCreateOfferOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state

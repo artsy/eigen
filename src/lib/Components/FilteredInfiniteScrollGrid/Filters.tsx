@@ -19,7 +19,7 @@ const getAggregationSlice = (sliceName: ArtworkAggregation, filteredArtworks: Fi
   filteredArtworks.aggregations.find(({ slice }) => slice === sliceName).counts
 
 const getAggregationOptions = (aggregation: ReturnType<typeof getAggregationSlice>) =>
-  aggregation.map(({ internalID, name }) => ({ text: name, value: internalID }))
+  aggregation.map(({ name, value }) => ({ text: name, value }))
 
 export const Filters: React.SFC<Props> = ({ onFilterChange, mediumValue, priceRangeValue, filteredArtworks }) => {
   const mediumOptions = filteredArtworks ? getAggregationOptions(getAggregationSlice("MEDIUM", filteredArtworks)) : []
@@ -53,8 +53,8 @@ export const FiltersContainer = createFragmentContainer(Filters, {
       aggregations {
         slice
         counts {
-          internalID
           name
+          value
         }
       }
     }

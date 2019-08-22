@@ -308,6 +308,7 @@ fragment CommercialPartnerInformation_artwork on Artwork {
   availability
   shippingOrigin
   shippingInfo
+  priceIncludesTax
   partner {
     name
     id
@@ -1729,6 +1730,13 @@ return {
               },
               (v2/*: any*/)
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "priceIncludesTax",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -1737,7 +1745,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "b4378a17524a41df06e9a13677d62d9b",
+    "id": "8b6a0bbdb637ec66c84283bf0c64b374",
     "text": null,
     "metadata": {}
   }

@@ -1,6 +1,7 @@
 import { Button, Spacer } from "@artsy/palette"
 import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
@@ -14,8 +15,16 @@ export interface CommercialButtonProps {
   editionSetID?: string
 }
 
+const track: Track<CommercialButtonProps> = _track
+
+@track()
 export class CommercialButtons extends React.Component<CommercialButtonProps> {
-  handleInquiry = () => {
+  @track({
+    action_name: Schema.ActionNames.ContactGallery,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.CommercialButtons,
+  } as any)
+  handleInquiry() {
     SwitchBoard.presentNavigationViewController(this, `/inquiry/${this.props.artwork.slug}`)
   }
 
