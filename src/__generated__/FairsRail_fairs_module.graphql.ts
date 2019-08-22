@@ -5,6 +5,7 @@ declare const _FairsRail_fairs_module$ref: unique symbol;
 export type FairsRail_fairs_module$ref = typeof _FairsRail_fairs_module$ref;
 export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<{
+        readonly internalID: string;
         readonly slug: string;
         readonly name: string | null;
         readonly profile: {
@@ -22,6 +23,13 @@ export type FairsRail_fairs_module = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
@@ -45,6 +53,7 @@ return {
       "plural": true,
       "selections": [
         (v0/*: any*/),
+        (v1/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -61,7 +70,7 @@ return {
           "concreteType": "Profile",
           "plural": false,
           "selections": [
-            (v0/*: any*/)
+            (v1/*: any*/)
           ]
         },
         {
@@ -73,13 +82,7 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "internalID",
-              "args": null,
-              "storageKey": null
-            },
+            (v0/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -94,5 +97,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ddd85fc8061a3eaeaea33ae46f408748';
+(node as any).hash = '47b9c72152ab4ed347d6f3a19e5b16b3';
 export default node;

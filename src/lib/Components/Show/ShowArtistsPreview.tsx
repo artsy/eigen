@@ -43,9 +43,9 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          const { slug } = artist
+          const { internalID } = artist
           return (
-            <React.Fragment key={slug}>
+            <React.Fragment key={internalID}>
               <ArtistListItem artist={artist} Component={Component} />
               {idx < arr.length - 1 && <Spacer m={1} />}
             </React.Fragment>

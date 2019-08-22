@@ -90,6 +90,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
 
 fragment FairsRail_fairs_module on HomePageFairsModule {
   results {
+    internalID
     slug
     name
     profile {
@@ -766,6 +767,7 @@ return {
                 "concreteType": "Fair",
                 "plural": true,
                 "selections": [
+                  (v4/*: any*/),
                   (v5/*: any*/),
                   (v7/*: any*/),
                   {
@@ -812,7 +814,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersForYouQuery",
-    "id": "54331d618d24748f5d93b65e95dec188",
+    "id": "a8d2cfab35ce43ba369ff7b06ea2535a",
     "text": null,
     "metadata": {}
   }
