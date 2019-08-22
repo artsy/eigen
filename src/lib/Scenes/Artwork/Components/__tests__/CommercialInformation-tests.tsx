@@ -87,9 +87,13 @@ describe("CommercialInformation", () => {
   })
 
   it("renders seller info correctly for non-commercial works", () => {
+    const CommercialInformationArtworkNonCommercial = {
+      ...CommercialInformationArtwork,
+      availability: null,
+    }
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtwork} />
+        <CommercialInformation artwork={CommercialInformationArtworkNonCommercial} />
       </Theme>
     )
     expect(
@@ -181,7 +185,7 @@ const CommercialInformationArtwork = {
     saleMessage: "Contact For Price",
     shippingInfo: "Shipping, tax, and service quoted by seller",
     shippingOrigin: null,
-    availability: "Sold",
+    availability: "sold",
     sale: {
       isAuction: false,
       isClosed: false,

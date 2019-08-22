@@ -10,10 +10,7 @@ export type CommercialPartnerInformation_artwork = {
     readonly partner: {
         readonly name: string | null;
     } | null;
-    readonly sale: {
-        readonly isAuction: boolean | null;
-        readonly isClosed: boolean | null;
-    } | null;
+    readonly isBiddable: boolean | null;
     readonly " $refType": CommercialPartnerInformation_artwork$ref;
 };
 
@@ -66,31 +63,13 @@ const node: ReaderFragment = {
       ]
     },
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "sale",
-      "storageKey": null,
+      "name": "isBiddable",
       "args": null,
-      "concreteType": "Sale",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "isAuction",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "isClosed",
-          "args": null,
-          "storageKey": null
-        }
-      ]
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = '33d25e8676ba12b6b86917ab2c039567';
+(node as any).hash = '50310e1961be00bfc7b0a3532c4f2cc0';
 export default node;
