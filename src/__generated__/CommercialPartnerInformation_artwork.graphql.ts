@@ -11,7 +11,6 @@ export type CommercialPartnerInformation_artwork = {
     readonly partner: {
         readonly name: string | null;
     } | null;
-    readonly isBiddable: boolean | null;
     readonly " $refType": CommercialPartnerInformation_artwork$ref;
 };
 
@@ -69,15 +68,8 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isBiddable",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = '8ac82a9fb5b910950df4fa64fa9871ce';
+(node as any).hash = '6e86a6373852e7f55cf265d4cde3fb0a';
 export default node;

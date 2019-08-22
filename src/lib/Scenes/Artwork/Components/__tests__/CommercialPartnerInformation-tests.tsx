@@ -103,7 +103,5 @@ const CommercialPartnerInformationArtwork = {
     name: "Bob's Gallery",
   },
   priceIncludesTax: false,
-  isBiddable: false,
-
   " $refType": null,
 }

@@ -313,7 +313,6 @@ fragment CommercialPartnerInformation_artwork on Artwork {
     name
     id
   }
-  isBiddable
 }
 
 fragment CommercialEditionSetInformation_artwork on Artwork {
@@ -1745,7 +1744,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "8b6a0bbdb637ec66c84283bf0c64b374",
+    "id": "4026eeddfafe3d913db751626aa22543",
     "text": null,
     "metadata": {}
   }

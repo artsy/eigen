@@ -34,6 +34,3 @@ storiesOf("Artwork/Screens")
       />
     )
   })
-  .add("With dsffsts", () => {
-    return <ArtworkRenderer artworkID="alex-katz-sunset-cove-1" safeAreaInsets={safeAreaInsets} />
-  })

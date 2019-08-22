@@ -10,7 +10,7 @@ interface Props {
 export class CommercialPartnerInformation extends React.Component<Props> {
   render() {
     const { artwork } = this.props
-    const artworkIsForSale = (artwork.availability && artwork.availability === "for sale") || artwork.isBiddable
+    const artworkIsForSale = artwork.availability && artwork.availability === "for sale"
     const artworkIsSold = artwork.availability && artwork.availability === "sold"
     const showsSellerInfo = artwork.partner && artwork.partner.name
     const availabilityDisplayText = artworkIsForSale || artworkIsSold ? "Sold by" : "At"
@@ -57,7 +57,6 @@ export const CommercialPartnerInformationFragmentContainer = createFragmentConta
       partner {
         name
       }
-      isBiddable
     }
   `,
 })
