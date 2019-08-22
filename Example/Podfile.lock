@@ -201,15 +201,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
-    - ORStackView
-    - SDWebImage
-    - "UIView+BooleanAnimations"
-  https://github.com/artsy/Specs.git:
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - Artsy-UIButtons
-    - Extraction
-  https://github.com/cocoapods/specs.git:
     - ARGenericTableViewController
     - boost-for-react-native
     - Expecta
@@ -218,10 +209,18 @@ SPEC REPOS:
     - ISO8601DateFormatter
     - KSCrash
     - "NSURL+QueryDictionary"
+    - ORStackView
     - SAMKeychain
+    - SDWebImage
     - Sentry
     - Specta
     - Stripe
+    - "UIView+BooleanAnimations"
+  https://github.com/artsy/Specs.git:
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - Artsy-UIButtons
+    - Extraction
 
 EXTERNAL SOURCES:
   "Artsy+Authentication":
