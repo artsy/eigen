@@ -43,6 +43,7 @@ fragment Gene_gene_3zv0k0 on Gene {
     aggregations {
       slice
       counts {
+        value
         name
         count
       }
@@ -436,6 +437,13 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "value",
+                        "args": null,
+                        "storageKey": null
+                      },
                       (v6/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -722,7 +730,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersGeneQuery",
-    "id": "2679beb33e0d96d95c37e6441bb5292c",
+    "id": "7d92c9593d20f923f84437a920572fd3",
     "text": null,
     "metadata": {}
   }

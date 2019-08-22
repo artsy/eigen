@@ -17,6 +17,7 @@ export type Gene_gene = {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
+                readonly value: string;
                 readonly name: string;
                 readonly count: number;
             } | null> | null;
@@ -189,6 +190,13 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "value",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "name",
                   "args": null,
                   "storageKey": null
@@ -286,5 +294,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '962c97b522a0e9a47e629e9d7b167e9a';
+(node as any).hash = 'b65180f716521310a86843895b5fceeb';
 export default node;
