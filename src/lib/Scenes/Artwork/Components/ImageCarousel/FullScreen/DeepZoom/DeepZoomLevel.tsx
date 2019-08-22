@@ -1,7 +1,8 @@
+import { screen } from "lib/data/ScreenSizes/screenSizes"
 import { throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated } from "react-native"
-import { Rect, Size } from "../../geometry"
+import { fitInside, Rect, Size } from "../../geometry"
 import { screenWidth } from "../screen"
 import { EventStream, useEvents } from "../useEventStream"
 import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
@@ -13,7 +14,7 @@ export const DeepZoomLevel: React.FC<{
   level: number
   levelDimensions: Size
   zoomScaleBoundaries: ZoomScaleBoundaries
-  imageFittedWithinScreen: Size
+  imageFittedWithinScreen: Size & { marginHorizontal: number; marginVertical: number }
   pyramid: DeepZoomPyramid
   $contentOffsetX: Animated.Animated
   $contentOffsetY: Animated.Animated
@@ -43,8 +44,8 @@ export const DeepZoomLevel: React.FC<{
   const transform = useMemo(
     () => {
       const zoomScale = VISUAL_DEBUG_MODE ? 1 : $zoomScale
-      const contentOffsetY = VISUAL_DEBUG_MODE ? 0 : $contentOffsetY
-      const contentOffsetX = VISUAL_DEBUG_MODE ? 0 : $contentOffsetX
+      const contentOffsetY = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginVertical : $contentOffsetY
+      const contentOffsetX = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginHorizontal : $contentOffsetX
 
       const levelScale = levelDimensions.width / imageFittedWithinScreen.width
       const scale = Animated.divide(zoomScale, levelScale)

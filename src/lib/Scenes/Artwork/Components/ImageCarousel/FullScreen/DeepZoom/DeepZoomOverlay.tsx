@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react"
 import { Animated, View } from "react-native"
-import { Rect } from "../../geometry"
+import { fitInside, Rect } from "../../geometry"
 import { ImageDescriptor } from "../../ImageCarouselContext"
 import { screenBoundingBox } from "../screen"
 import { EventStream } from "../useEventStream"
@@ -19,6 +19,11 @@ export interface DeepZoomOverlayProps {
   triggerScrollEvent(): void
 }
 
+/**
+ * The DeepZoomOverlay component is absolutely positioned such that it occupies the whole screen.
+ * It does not respond to any touch events. Sitting just below (inside the ImageZoomView component) is a scroll view
+ * which is used to provide the pinch-to-zoom and panning gestures which manipulate this overlay's state.
+ */
 export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   image: {
     deepZoom: {
@@ -40,7 +45,7 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
 
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(fullImageSize), [fullImageSize])
-  const imageFittedWithinScreen = useMemo(() => ({ width, height }), [width, height])
+  const imageFittedWithinScreen = useMemo(() => fitInside(screenBoundingBox, { width, height }), [width, height])
   const zoomScaleBoundaries = useMemo(() => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }), [
     levels,
     imageFittedWithinScreen,
