@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { debounce } from "lodash"
+import { debounce, throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, View } from "react-native"
 import { ImageDescriptor } from "../ImageCarouselContext"
@@ -34,13 +34,17 @@ class TileID {
 }
 
 class Pyramid {
-  tileIDs: TileID[] = []
+  tileIDs: TileID[][] = []
   currentTiles: { [id: string]: { loaded: boolean; onShouldLoad: null | (() => void) } } = {}
   getTile(id: TileID) {
     return this.currentTiles[id.toString()]
   }
   willMount({ id }: { id: TileID }) {
-    this.tileIDs.push(id)
+    if (!this.tileIDs[id.level]) {
+      this.tileIDs[id.level] = [id]
+    } else {
+      this.tileIDs[id.level].push(id)
+    }
     this.currentTiles[id.toString()] = { loaded: false, onShouldLoad: null }
   }
   didMount({ id, onShouldLoad }: { id: TileID; onShouldLoad: () => void }) {
@@ -49,7 +53,12 @@ class Pyramid {
   }
   didUnmount({ id }: { id: TileID }) {
     delete this.currentTiles[id.toString()]
-    this.tileIDs.splice(this.tileIDs.indexOf(id), 1)
+    const levelIds = this.tileIDs[id.level]
+    if (levelIds.length === 1) {
+      delete this.tileIDs[id.level]
+    } else {
+      levelIds.splice(levelIds.indexOf(id), 1)
+    }
     this.update()
   }
   didLoad({ id }: { id: TileID }) {
@@ -103,8 +112,22 @@ class Pyramid {
   }
 
   private _update() {
-    for (const id of this.tileIDs) {
-      this.triggerLoad(id)
+    // 25 is safe because that's like 2^25 pixels wide or tall.
+    for (let level = 25; level >= 0; level--) {
+      const levelIds = this.tileIDs[level]
+      if (!levelIds) {
+        continue
+      }
+      let isLoading = false
+      for (const id of levelIds) {
+        if (!this.isTileFinishedLoading(id)) {
+          this.triggerLoad(id)
+          isLoading = true
+        }
+      }
+      if (isLoading) {
+        return
+      }
     }
   }
 
@@ -470,7 +493,7 @@ const Level: React.FC<{
   const updateTiles = useCallback((viewPort: Rect) => {
     const zoomScale = screenWidth / viewPort.width
 
-    if (zoomScale < zoomScaleBoundaries.startZoomScale || zoomScale > zoomScaleBoundaries.stopZoomScale) {
+    if (zoomScale < zoomScaleBoundaries.startZoomScale) {
       setTiles(arr => {
         if (arr && arr.length === 0) {
           return arr
@@ -526,7 +549,7 @@ const Level: React.FC<{
     setTiles(result)
   }, [])
 
-  const throttledUpdateTiles = useRenderThrottling(updateTiles, [lastFingerprint.current])
+  const throttledUpdateTiles = useMemo(() => throttle(updateTiles, 100, { trailing: true }), [])
 
   useEvents(viewPortChanges, throttledUpdateTiles)
 
@@ -556,45 +579,4 @@ function useIsMounted() {
     }
   }, [])
   return () => isMounted.current
-}
-
-function useRenderThrottling<Args extends any[]>(cb: (...args: Args) => void, deps: any[]): (...args: Args) => void {
-  const epoch = useRef(0)
-  const lastEpoch = useRef(-1)
-  const isReconciled = useRef(false)
-
-  const nextEpoch = useMemo(() => epoch.current++, deps)
-  if (nextEpoch !== lastEpoch.current) {
-    isReconciled.current = false
-    lastEpoch.current = nextEpoch
-  }
-
-  const onReconcile = useRef(null as null | (() => void))
-  const isMounted = useIsMounted()
-
-  useEffect(() => {
-    if (onReconcile.current) {
-      requestAnimationFrame(() => {
-        isReconciled.current = true
-        if (isMounted() && onReconcile.current) {
-          const callback = onReconcile.current
-          onReconcile.current = null
-          callback()
-        }
-      })
-    } else {
-      isReconciled.current = true
-    }
-  })
-
-  return useMemo(
-    () => (...args: Args) => {
-      if (isReconciled.current) {
-        cb(...args)
-      } else {
-        onReconcile.current = () => cb(...args)
-      }
-    },
-    [cb]
-  )
 }
