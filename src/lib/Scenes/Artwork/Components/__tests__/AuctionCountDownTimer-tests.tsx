@@ -93,4 +93,24 @@ describe("AuctionCountDownTimer", () => {
     )
     expect(component.find(TimeRemaining).length).toEqual(0)
   })
+
+  it("doesn't render if endAt is null", () => {
+    const artwork = {
+      ...ArtworkFixture,
+      ...{
+        sale: {
+          endAt: null,
+          startAt: "2019-08-16T20:20:00+00:00",
+          liveStartAt: null,
+          formattedStartDateTime: "Ends Aug 16 at 8:20pm UTC",
+        },
+      },
+    }
+    const component = mount(
+      <Theme>
+        <AuctionCountDownTimer artwork={artwork} />
+      </Theme>
+    )
+    expect(component.find(TimeRemaining).length).toEqual(0)
+  })
 })
