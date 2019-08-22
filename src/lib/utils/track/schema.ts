@@ -245,9 +245,9 @@ export enum ActionNames {
   BidFlowAddBillingAddress = "addBillingAddress",
   BidFlowPlaceBid = "placeBid",
   BidFlowSaveBillingAddress = "saveBillingAddress",
-  BuyNow = "BuyNow",
+  BuyNow = "buyNow",
   ContactGallery = "contactGallery",
-  MakeOffer = "MakeOffer",
+  MakeOffer = "makeOffer",
 
   /**
    * Show flow
