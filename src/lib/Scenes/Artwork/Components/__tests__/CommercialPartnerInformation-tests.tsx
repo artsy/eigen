@@ -36,7 +36,6 @@ describe("CommercialPartnerInformation", () => {
   it("hides shipping info for works from closed auctions", () => {
     const CommercialPartnerInformationArtworkClosedAuction = {
       ...CommercialPartnerInformationArtwork,
-      isBiddable: false,
       availability: "not for sale",
     }
     const component = mount(
