@@ -38,7 +38,8 @@ describe("CommercialInformation", () => {
       </Theme>
     )
     expect(component.text()).toContain("Contact for price")
-    expect(component.text()).not.toContain("I'm a Gallery")
+    expect(component.text()).toContain("I'm a Gallery")
+    expect(component.text()).not.toContain("Shipping, tax, and service quoted by seller")
     expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
 
