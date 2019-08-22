@@ -3,10 +3,6 @@ import { mount } from "enzyme"
 import React from "react"
 import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 describe("CommercialPartnerInformation", () => {
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
     const component = mount(
@@ -106,6 +102,7 @@ const CommercialPartnerInformationArtwork = {
   partner: {
     name: "Bob's Gallery",
   },
+  priceIncludesTax: false,
   isBiddable: false,
 
   " $refType": null,
