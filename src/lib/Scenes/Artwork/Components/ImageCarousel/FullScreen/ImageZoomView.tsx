@@ -20,12 +20,13 @@ const { EnclosingScrollViewOptOut } = NativeModules
 
 import { useAnimatedValue } from "../useAnimatedValue"
 
-import { fitInside } from "../geometry"
+import { fitInside, Position, Rect } from "../geometry"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
 import React from "react"
-import { calculateMaxZoomViewScale, ImageDeepZoomView } from "./ImageDeepZoomView"
+import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
+import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
 import { useEventStream } from "./useEventStream"
@@ -39,14 +40,7 @@ export interface ImageZoomViewProps {
   index: number
 }
 
-interface Box {
-  width: number
-  height: number
-  x: number
-  y: number
-}
-
-const measure = (ref: any): Promise<Box> =>
+const measure = (ref: any): Promise<Rect> =>
   new Promise(resolve => ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height })))
 
 interface TransitionOffset {
@@ -57,7 +51,7 @@ interface TransitionOffset {
 
 // calculates the transition offset between the embedded thumbnail (fromRef)
 // and the full-screen image position (toBox)
-async function getTransitionOffset({ fromRef, toBox }: { fromRef: any; toBox: Box }): Promise<TransitionOffset> {
+async function getTransitionOffset({ fromRef, toBox }: { fromRef: any; toBox: Rect }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
 
   fromBox.y += screenSafeAreaInsets.top
@@ -155,7 +149,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     // swipes to another image
     const scrollViewRef = useRef<{ getNode(): ScrollView }>()
     const zoomScale = useRef<number>(1)
-    const contentOffset = useRef<{ x: number; y: number }>({ x: -marginHorizontal, y: -marginVertical })
+    const contentOffset = useRef<Position>({ x: -marginHorizontal, y: -marginVertical })
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
@@ -234,7 +228,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       [state.fullScreenState]
     )
 
-    const viewPortChanges = useEventStream<Box>()
+    const viewPortChanges = useEventStream<Rect>()
 
     const $contentOffsetX = useAnimatedValue(-marginHorizontal)
     const $contentOffsetY = useAnimatedValue(-marginVertical)
@@ -316,7 +310,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         </Animated.ScrollView>
         {(state.fullScreenState === "entered" || state.fullScreenState === "exiting") &&
           (state.imageIndex === index || state.lastImageIndex === index) && (
-            <ImageDeepZoomView
+            <DeepZoomOverlay
               image={image}
               width={width}
               height={height}

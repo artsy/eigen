@@ -1,13 +1,18 @@
-interface Box {
+export interface Size {
   width: number
   height: number
 }
+
+export interface Position {
+  x: number
+  y: number
+}
+
+export interface Rect extends Size, Position {}
+
 // places a box (child) in the center of another (container), making the child 'fit' within the container
 // without overflowing or changing the child's aspect ratio
-export function fitInside(
-  container: Box,
-  child: Box
-): { width: number; height: number; marginHorizontal: number; marginVertical: number } {
+export function fitInside(container: Size, child: Size): Size & { marginHorizontal: number; marginVertical: number } {
   const aspectRatio = child.width / child.height
 
   // start out assuming that we need to constrain the image by height
@@ -44,7 +49,7 @@ const MIN_MARGIN = 20
 
 // given an input array of image sources, calculates the dimensions and positions of all the images on the carousel
 // rail. boundingBox is the maximum possible size that an image can occupy on the rail
-export function getMeasurements({ images, boundingBox }: { images: ReadonlyArray<Box>; boundingBox: Box }) {
+export function getMeasurements({ images, boundingBox }: { images: ReadonlyArray<Size>; boundingBox: Size }) {
   const result: ImageMeasurements[] = []
 
   for (let i = 0; i < images.length; i++) {
