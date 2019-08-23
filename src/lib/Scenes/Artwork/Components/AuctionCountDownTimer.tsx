@@ -21,8 +21,7 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
 
   componentDidMount() {
     const { sale } = this.props.artwork
-
-    if (!sale) {
+    if (!sale || !sale.startAt || !sale.endAt) {
       return
     }
 
@@ -51,7 +50,7 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
     const { sale } = this.props.artwork
     const { auctionStatus } = this.state
 
-    if (!sale) {
+    if (!sale || !sale.startAt || !sale.endAt) {
       return null
     }
 
