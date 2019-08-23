@@ -266,7 +266,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
               }
             `}
             variables={{
-              artworkID: "robert-natkin-intimate-lighting-blue",
+              artworkID,
             }}
             cacheConfig={{
               // Bypass Relay cache on retries.
