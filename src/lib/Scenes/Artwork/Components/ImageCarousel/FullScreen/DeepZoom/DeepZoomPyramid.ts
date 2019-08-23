@@ -65,13 +65,9 @@ export class DeepZoomPyramid {
 
   triggerLoad(id: DeepZoomTileID) {
     const record = this.currentTiles[id.toString()]
-    if (record) {
-      if (record.loaded) {
-        this.triggerLoad(DeepZoomTileID.create(id.level - 1, Math.floor(id.row / 2), Math.floor(id.col / 2)))
-      } else if (record.onShouldLoad) {
-        record.onShouldLoad()
-        record.onShouldLoad = null
-      }
+    if (record && record.onShouldLoad) {
+      record.onShouldLoad()
+      record.onShouldLoad = null
     }
   }
 
