@@ -38,6 +38,9 @@ podspec = Pod::Spec.new do |s|
   # To ensure a consistent image cache between app/lib
   s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
 
+  # For custom animations in DeepZoomOverlay
+  s.dependency 'INTUAnimationEngine'
+
   # React, and the subspecs we have to use
   s.dependency 'React/Core', react_native_version
   s.dependency 'React/CxxBridge', react_native_version
