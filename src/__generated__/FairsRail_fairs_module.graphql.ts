@@ -5,6 +5,7 @@ declare const _FairsRail_fairs_module$ref: unique symbol;
 export type FairsRail_fairs_module$ref = typeof _FairsRail_fairs_module$ref;
 export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<{
+        readonly id: string;
         readonly slug: string;
         readonly name: string | null;
         readonly profile: {
@@ -44,6 +45,13 @@ return {
       "concreteType": "Fair",
       "plural": true,
       "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        },
         (v0/*: any*/),
         {
           "kind": "ScalarField",
@@ -94,5 +102,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ddd85fc8061a3eaeaea33ae46f408748';
+(node as any).hash = '891328d3519eb2c3806bf60b5b88c27e';
 export default node;

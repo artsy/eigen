@@ -26,6 +26,7 @@
 - Fix shows artwork filter pickers always reseting to default value - zephraph
 - Adds Commercial Bid Buttons - kierangillen
 - Adds VAT included in price to Artwork view - kierangillen
+- Replace slug keys with ids - zephraph
 
 ### 1.12.16
 

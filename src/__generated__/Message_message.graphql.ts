@@ -19,6 +19,7 @@ export type Message_message = {
         readonly " $fragmentRefs": InvoicePreview_invoice$ref;
     } | null;
     readonly attachments: ReadonlyArray<{
+        readonly id: string;
         readonly internalID: string;
         readonly content_type: string;
         readonly download_url: string;
@@ -118,6 +119,13 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
           "name": "internalID",
           "args": null,
           "storageKey": null
@@ -157,5 +165,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b8137043d166ef958187233ef500f3c4';
+(node as any).hash = '3616264879c312d8f66303b13ca273d0';
 export default node;

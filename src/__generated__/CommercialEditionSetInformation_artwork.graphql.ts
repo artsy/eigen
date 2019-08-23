@@ -6,6 +6,7 @@ declare const _CommercialEditionSetInformation_artwork$ref: unique symbol;
 export type CommercialEditionSetInformation_artwork$ref = typeof _CommercialEditionSetInformation_artwork$ref;
 export type CommercialEditionSetInformation_artwork = {
     readonly editionSets: ReadonlyArray<{
+        readonly id: string;
         readonly internalID: string;
         readonly isAcquireable: boolean | null;
         readonly isOfferable: boolean | null;
@@ -38,6 +39,13 @@ const node: ReaderFragment = {
       "concreteType": "EditionSet",
       "plural": true,
       "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -107,5 +115,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '94864ca7b73ee8a99f4d57f279c58106';
+(node as any).hash = '49298d8a0f9d10a0e0ef8682fd28ad37';
 export default node;
