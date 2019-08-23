@@ -120,10 +120,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
 
     useEffect(() => {
       // animate image transition on mount
-      if (state.fullScreenState !== "entered" && state.imageIndex === index) {
-        const tag = findNodeHandle(scrollViewRef.current.getNode())
-        EnclosingScrollViewOptOut.optOutOfParentScrollEvents(tag)
 
+      if (state.fullScreenState !== "entered" && state.imageIndex === index) {
         getTransitionOffset({
           fromRef: embeddedImageRefs[state.imageIndex],
           toBox: { width, height, x: marginHorizontal, y: marginVertical },
@@ -224,6 +222,12 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         // hack to get a sane starting contentOffset our ScrollView gives some _whack_ values occasionally
         // for it's first onScroll before the user has actually done any scrolling
         contentOffset.current = { x: -marginHorizontal, y: -marginVertical }
+
+        // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
+        if (state.fullScreenState === "entered" && scrollViewRef.current) {
+          const tag = findNodeHandle(scrollViewRef.current.getNode())
+          EnclosingScrollViewOptOut.optOutOfParentScrollEvents(tag)
+        }
       },
       [state.fullScreenState]
     )
