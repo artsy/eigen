@@ -16,6 +16,9 @@
 
 ### Master
 
+### 1.13.0
+
+- Adds new base container / screen for the Collection page - luc
 - Fixes intermittent crash on opening message attachment previews - ash
 - Fix consignments artist search and make it use relay - alloy
 - Adds links to Artwork view for FAQ and Ask a Specialist - kierangillen
@@ -23,6 +26,7 @@
 - Fix shows artwork filter pickers always reseting to default value - zephraph
 - Adds Commercial Bid Buttons - kierangillen
 - Adds VAT included in price to Artwork view - kierangillen
+- Replace slug keys with ids - zephraph
 
 ### 1.12.16
 

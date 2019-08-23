@@ -317,6 +317,7 @@ fragment CommercialPartnerInformation_artwork on Artwork {
 
 fragment CommercialEditionSetInformation_artwork on Artwork {
   editionSets {
+    id
     internalID
     isAcquireable
     isOfferable
@@ -326,7 +327,6 @@ fragment CommercialEditionSetInformation_artwork on Artwork {
       in
       cm
     }
-    id
   }
   ...CommercialPartnerInformation_artwork
 }
@@ -1744,7 +1744,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "4026eeddfafe3d913db751626aa22543",
+    "id": "771663d93076488dee022f569bb318ef",
     "text": null,
     "metadata": {}
   }

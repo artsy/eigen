@@ -112,13 +112,13 @@ fragment Message_message on Message {
     id
   }
   attachments {
+    id
     internalID
     content_type: contentType
     download_url: downloadURL
     file_name: fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
-    id
   }
 }
 
@@ -742,7 +742,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "3d1242887a3cc13b063c9acde6dfd6cf",
+    "id": "be6a221111166f0d640e0c50728c3499",
     "text": null,
     "metadata": {}
   }

@@ -38,6 +38,7 @@ import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCit
 import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
+import { QueryRenderersCollectionQuery } from "__generated__/QueryRenderersCollectionQuery.graphql"
 import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQuery.graphql"
@@ -298,6 +299,31 @@ export const MyProfileRenderer: React.SFC<RendererProps> = ({ render }) => {
     />
   )
 }
+
+interface CollectionRendererProps extends RendererProps {
+  collectionID: string
+}
+
+export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collectionID, render }) => (
+  <QueryRenderer<QueryRenderersCollectionQuery>
+    environment={environment}
+    query={graphql`
+      query QueryRenderersCollectionQuery($collectionID: String!) {
+        collection: marketingCollection(slug: $collectionID) {
+          ...Collection_collection
+        }
+      }
+    `}
+    variables={{
+      collectionID,
+    }}
+    cacheConfig={{
+      // Bypass Relay cache on retries.
+      force: true,
+    }}
+    render={render}
+  />
+)
 
 interface FairRendererProps extends RendererProps {
   fairID: string
