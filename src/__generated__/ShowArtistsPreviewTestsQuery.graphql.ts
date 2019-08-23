@@ -27,18 +27,18 @@ fragment ShowArtistsPreview_show on Show {
   internalID
   slug
   artists {
+    id
     internalID
     slug
     href
     ...ArtistListItem_artist
-    id
   }
   artists_without_artworks: artistsWithoutArtworks {
+    id
     internalID
     slug
     href
     ...ArtistListItem_artist
-    id
   }
 }
 
@@ -89,6 +89,7 @@ v3 = {
   "storageKey": null
 },
 v4 = [
+  (v3/*: any*/),
   (v1/*: any*/),
   (v2/*: any*/),
   {
@@ -98,7 +99,6 @@ v4 = [
     "args": null,
     "storageKey": null
   },
-  (v3/*: any*/),
   {
     "kind": "ScalarField",
     "alias": null,
@@ -231,7 +231,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsPreviewTestsQuery",
-    "id": "f4acabe7dae883e06da7566c70b66a98",
+    "id": "42cf1410af60e9e4f5dde954d1ab44d2",
     "text": null,
     "metadata": {}
   }

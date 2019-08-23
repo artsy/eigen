@@ -8,12 +8,14 @@ export type ShowArtistsPreview_show = {
     readonly internalID: string;
     readonly slug: string;
     readonly artists: ReadonlyArray<{
+        readonly id: string;
         readonly internalID: string;
         readonly slug: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     } | null> | null;
     readonly artists_without_artworks: ReadonlyArray<{
+        readonly id: string;
         readonly internalID: string;
         readonly slug: string;
         readonly href: string | null;
@@ -40,6 +42,13 @@ v1 = {
   "storageKey": null
 },
 v2 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  },
   (v0/*: any*/),
   (v1/*: any*/),
   {
@@ -87,5 +96,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7ac828504e3df14ef979014e1e08b843';
+(node as any).hash = '8d58d64a33c21a4615c45ad7df960299';
 export default node;

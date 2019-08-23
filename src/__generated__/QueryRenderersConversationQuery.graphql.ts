@@ -123,13 +123,13 @@ fragment Message_message on Message {
     id
   }
   attachments {
+    id
     internalID
     content_type: contentType
     download_url: downloadURL
     file_name: fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
-    id
   }
 }
 
@@ -730,7 +730,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersConversationQuery",
-    "id": "366245e39b08b4de65d668b72cf8eb9d",
+    "id": "9e09d2bf9687286cc5ff5190b834359d",
     "text": null,
     "metadata": {}
   }

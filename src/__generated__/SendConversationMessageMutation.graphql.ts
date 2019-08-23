@@ -63,13 +63,13 @@ fragment Message_message on Message {
     id
   }
   attachments {
+    id
     internalID
     content_type: contentType
     download_url: downloadURL
     file_name: fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
-    id
   }
 }
 
@@ -309,6 +309,7 @@ return {
                     "concreteType": "Attachment",
                     "plural": true,
                     "selections": [
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -336,8 +337,7 @@ return {
                         "name": "fileName",
                         "args": null,
                         "storageKey": null
-                      },
-                      (v5/*: any*/)
+                      }
                     ]
                   }
                 ]
@@ -351,7 +351,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "9a77342cc7cc7d86cdc13f792857a8f2",
+    "id": "db16fc468ff20672a6f117fc1b6f0165",
     "text": null,
     "metadata": {}
   }
