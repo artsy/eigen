@@ -115,7 +115,7 @@ describe("CommercialInformation", () => {
     expect(
       component
         .find(Sans)
-        .at(3)
+        .at(2)
         .render()
         .text()
     ).toMatchInlineSnapshot(`"Want to sell a work by Santa Claus? Consign with Artsy."`)
