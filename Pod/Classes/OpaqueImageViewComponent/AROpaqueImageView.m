@@ -7,8 +7,8 @@
 // * Do not add an alpha channel, to ensure that the image will be drawn by UIImageView without any blending.
 //
 static void
-LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *backgroundColor, void (^callback)(UIImage *loadedImage)) {
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
+LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *backgroundColor, BOOL highPriority, void (^callback)(UIImage *loadedImage)) {
+    dispatch_async(dispatch_get_global_queue(highPriority ? QOS_CLASS_USER_INTERACTIVE : QOS_CLASS_USER_INITIATED, 0), ^{
     CGFloat width = destinationSize.width * scaleFactor;
     CGFloat height = destinationSize.height * scaleFactor;
     NSCAssert(width != 0 && height != 0, @"Resizing an image to %fx%f makes no sense.", width, height);
@@ -107,17 +107,21 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
                                                    options:0
                                                   progress:nil
                                                  completed:^(UIImage *image,
-                                                             NSError *_,
+                                                             NSError *error,
                                                              SDImageCacheType __,
-                                                             BOOL ____,
+                                                             BOOL completed,
                                                              NSURL *imageURL) {
+                                                     
      __strong typeof(weakSelf) strongSelf = weakSelf;
      // Only really assign if the URL we downloaded still matches `self.imageURL`.
      if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
+       if (strongSelf.failSilently && (error != nil || !completed)) {
+         return;
+       }
        // The view might not yet be associated with a window, in which case
        // -[UIView contentScaleFactor] would always return 1, so use screen instead.
        CGFloat scaleFactor = [[UIScreen mainScreen] scale];
-       LoadImage(image, strongSelf.bounds.size, scaleFactor, strongSelf.placeholderBackgroundColor,^(UIImage *loadedImage) {
+       LoadImage(image, strongSelf.bounds.size, scaleFactor, strongSelf.placeholderBackgroundColor, strongSelf.highPriority, ^(UIImage *loadedImage) {
          if ([imageURL isEqual:weakSelf.imageURL]) {
            weakSelf.image = loadedImage;
          }

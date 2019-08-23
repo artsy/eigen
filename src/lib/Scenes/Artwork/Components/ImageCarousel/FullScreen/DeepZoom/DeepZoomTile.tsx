@@ -127,6 +127,8 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({ url, top, left, widt
         useRawURL
         style={{ width, height }}
         placeholderBackgroundColor="white"
+        failSilently
+        highPriority
       />
     </Animated.View>
   )
