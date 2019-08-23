@@ -94,7 +94,6 @@ export default createFragmentContainer(FairsRail, {
     fragment FairsRail_fairs_module on HomePageFairsModule {
       results {
         id
-        internalID
         slug
         name
         profile {
