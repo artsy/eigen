@@ -16,7 +16,7 @@ import {
   View,
 } from "react-native"
 
-const { EnclosingScrollViewOptOut } = NativeModules
+const { ARScrollViewHelpers } = NativeModules
 
 import { useAnimatedValue } from "../useAnimatedValue"
 
@@ -151,7 +151,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
-        EnclosingScrollViewOptOut.smoothZoom(
+        ARScrollViewHelpers.smoothZoom(
           findNodeHandle(scrollViewRef.current.getNode()),
           -marginHorizontal,
           -marginVertical,
@@ -169,7 +169,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const handleDoubleTapToZoom = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
       const { pageX, pageY } = ev.nativeEvent
       if (Math.ceil(zoomScale.current) >= maxZoomScale) {
-        EnclosingScrollViewOptOut.smoothZoom(
+        ARScrollViewHelpers.smoothZoom(
           findNodeHandle(scrollViewRef.current.getNode()),
           -marginHorizontal,
           -marginVertical,
@@ -213,7 +213,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
           y = 0
         }
 
-        EnclosingScrollViewOptOut.smoothZoom(findNodeHandle(scrollViewRef.current.getNode()), x, y, w, h)
+        ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current.getNode()), x, y, w, h)
       }
     })
 
@@ -226,7 +226,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
         if (state.fullScreenState === "entered" && scrollViewRef.current) {
           const tag = findNodeHandle(scrollViewRef.current.getNode())
-          EnclosingScrollViewOptOut.optOutOfParentScrollEvents(tag)
+          ARScrollViewHelpers.optOutOfParentScrollEvents(tag)
         }
       },
       [state.fullScreenState]
@@ -253,7 +253,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     }, [])
 
     const triggerScrollEvent = useCallback(() => {
-      EnclosingScrollViewOptOut.triggerScrollEvent(findNodeHandle(scrollViewRef.current.getNode()))
+      ARScrollViewHelpers.triggerScrollEvent(findNodeHandle(scrollViewRef.current.getNode()))
     }, [])
 
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the

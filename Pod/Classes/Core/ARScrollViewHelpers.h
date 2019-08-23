@@ -28,6 +28,6 @@
 #import "RCTBridgeModule.h"
 #endif
 
-@interface EnclosingScrollViewOptOut : NSObject <RCTBridgeModule>
+@interface ARScrollViewHelpers : NSObject <RCTBridgeModule>
 
 @end

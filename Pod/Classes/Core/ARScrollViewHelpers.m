@@ -1,5 +1,5 @@
 
-#import "EnclosingScrollViewOptOut.h"
+#import "ARScrollViewHelpers.h"
 #import <UIKit/UIKit.h>
 #import "AREmission.h"
 #import <React/RCTBridge.h>
@@ -14,7 +14,7 @@
 -(void)optInToAllScrollEvents;
 @end
 
-@implementation EnclosingScrollViewOptOut
+@implementation ARScrollViewHelpers
 
 RCT_EXPORT_MODULE()
 
@@ -35,7 +35,7 @@ RCT_EXPORT_METHOD(optOutOfParentScrollEvents:(nonnull NSNumber *)tag)
 RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 {
     UIView* view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
-    
+
     if ([view isKindOfClass:RCTScrollView.class]) {
         [((RCTScrollView *) view) scrollViewDidScroll:((RCTScrollView *) view).scrollView];
     }
@@ -48,29 +48,29 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
 
     if ([view isKindOfClass:RCTScrollView.class]) {
         __weak RCTScrollView* weakScrollView = (RCTScrollView *) view;
-        
+
         weakScrollView.scrollView.scrollEnabled = NO;
-        
-        
+
+
         CGFloat startZoomScale = weakScrollView.scrollView.zoomScale;
         CGSize baseImageSize = CGSizeMake(weakScrollView.scrollView.contentSize.width / startZoomScale, weakScrollView.scrollView.contentSize.height / startZoomScale);
         CGSize frameSize = weakScrollView.scrollView.frame.size;
-        
+
         CGFloat marginHorizontal = (frameSize.width - baseImageSize.width) / 2.0;
         CGFloat marginVertical = (frameSize.height - baseImageSize.height) / 2.0;
-        
+
         CGPoint startContentOffset = weakScrollView.scrollView.contentOffset;
-        
-        
+
+
 
         CGRect baseRect;
         baseRect.size = baseImageSize;
         baseRect.origin = CGPointMake(-marginHorizontal, -marginVertical);
-        
-        
-        
+
+
+
         CGRect startRect = CGRectMake(startContentOffset.x / startZoomScale, startContentOffset.y /startZoomScale, frameSize.width / startZoomScale, frameSize.height / startZoomScale);
-        
+
         CGRect targetRect = CGRectMake([x floatValue], [y floatValue], [w floatValue], [h floatValue]);
 
         [INTUAnimationEngine animateWithDuration:0.34 delay:0 animations:^(CGFloat progress) {
@@ -81,7 +81,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
             CGRect rect = INTUInterpolateCGRect(startRect, targetRect, progress);
 
             CGFloat scale = baseRect.size.width / rect.size.width;
-            
+
             [strongScrollView optOutOfAllScrollEvents];
             strongScrollView.scrollView.zoomScale = scale;
             strongScrollView.scrollView.contentOffset = CGPointMake(rect.origin.x * scale, rect.origin.y * scale);
