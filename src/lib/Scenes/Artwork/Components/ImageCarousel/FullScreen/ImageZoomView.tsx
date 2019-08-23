@@ -29,7 +29,7 @@ import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
-import { useEventStream } from "./useEventStream"
+import { useNewEventStream } from "./useEventStream"
 
 export interface ImageZoomView {
   resetZoom(): void
@@ -232,7 +232,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       [state.fullScreenState]
     )
 
-    const viewPortChanges = useEventStream<Rect>()
+    const viewPortChanges = useNewEventStream<Rect>()
 
     const $contentOffsetX = useAnimatedValue(-marginHorizontal)
     const $contentOffsetY = useAnimatedValue(-marginVertical)
