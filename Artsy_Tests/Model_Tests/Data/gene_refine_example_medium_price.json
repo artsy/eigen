@@ -7,25 +7,25 @@
           "slice": "PRICE_RANGE",
           "counts": [
             {
-              "id": "*-*",
+              "value": "*-*",
               "name": "for Sale",
                      "count": 22
 
             },
             {
-              "id": "1000-5000",
+              "value": "1000-5000",
               "name": "between $1,000 & $5,000",
                      "count": 22
 
             },
             {
-              "id": "5000-10000",
+              "value": "5000-10000",
               "name": "between $5,000 & $10,000",
                      "count": 22
 
             },
             {
-              "id": "*-1000",
+              "value": "*-1000",
               "name": "Under $1,000",
                      "count": 22
 
@@ -36,7 +36,7 @@
           "slice": "MEDIUM",
           "counts": [
             {
-              "id": "prints",
+              "value": "prints",
               "name": "Prints",
               "count": 233
             }

@@ -143,7 +143,7 @@ struct GeneRefineSettings {
         let price: Price?
         // The initial settings should always span the full price spectrum, as should non-specific selected prices.
         if (initial || json["selectedPrice"].string == nil || json["selectedPrice"].string == "*-*") {
-            let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue) })
+            let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["value"].stringValue) })
             guard let maxPrice = prices?.sorted(by: >).first else { return nil }
             price = Price(id: "0-\(maxPrice.maxPrice())")
         } else {
@@ -155,7 +155,7 @@ struct GeneRefineSettings {
             print(data)
             return nil
         }
-        let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
+        let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["value"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
 
         let allowedMediums = mediums.filter { $0.count > 0 }
         let allMedium = Medium(id: "*", name: "All Mediums", count: 1)
