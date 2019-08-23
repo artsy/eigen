@@ -1,9 +1,10 @@
 import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
+import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
-import { CommercialButtons } from "../CommercialButtons"
+import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformation } from "../CommercialInformation"
 
@@ -43,33 +44,37 @@ describe("CommercialInformation", () => {
 
   it("doesn't render information when the data is not present", () => {
     const CommercialInformationArtworkNoData = {
-      availability: null,
-      price: "",
-      saleMessage: "",
-      shippingInfo: "",
-      shippingOrigin: null,
-      isAcquireable: false,
-      isOfferable: false,
-      isBiddable: false,
-      isInquireable: false,
-      editionSets: [],
-      sale: {
-        isAuction: false,
-        isClosed: false,
-      },
-      partner: {
-        name: null,
+      ...ArtworkFixture,
+      ...{
+        availability: null,
+        price: "",
+        saleMessage: "",
+        shippingInfo: "",
+        isInAuction: false,
+        shippingOrigin: null,
+        isAcquireable: false,
+        isOfferable: false,
+        isBiddable: false,
+        isInquireable: false,
+        editionSets: [],
+        sale: {
+          isAuction: false,
+          isClosed: false,
+        },
+        partner: {
+          name: null,
+          " $refType": null,
+        },
+        artists: [
+          {
+            isConsignable: false,
+            name: "",
+            " $fragmentRefs": null,
+          },
+        ],
+        " $fragmentRefs": null,
         " $refType": null,
       },
-      artists: [
-        {
-          isConsignable: false,
-          name: "",
-          " $fragmentRefs": null,
-        },
-      ],
-      " $fragmentRefs": null,
-      " $refType": null,
     }
     const component = mount(
       <Theme>
@@ -165,30 +170,34 @@ describe("CommercialInformation", () => {
 })
 
 const CommercialInformationArtwork = {
-  isAcquireable: false,
-  isOfferable: false,
-  isBiddable: false,
-  isInquireable: false,
-  editionSets: [],
-  saleMessage: "Contact For Price",
-  shippingInfo: "Shipping, tax, and service quoted by seller",
-  shippingOrigin: null,
-  availability: "Sold",
-  sale: {
-    isAuction: false,
-    isClosed: false,
-  },
-  partner: {
-    name: "I'm a Gallery",
+  ...ArtworkFixture,
+  ...{
+    isAcquireable: false,
+    isInAuction: false,
+    isOfferable: false,
+    isBiddable: false,
+    isInquireable: false,
+    editionSets: [],
+    saleMessage: "Contact For Price",
+    shippingInfo: "Shipping, tax, and service quoted by seller",
+    shippingOrigin: null,
+    availability: "Sold",
+    sale: {
+      isAuction: false,
+      isClosed: false,
+    },
+    partner: {
+      name: "I'm a Gallery",
+      " $refType": null,
+    },
+    artists: [
+      {
+        isConsignable: true,
+        name: "Santa Claus",
+        " $fragmentRefs": null,
+      },
+    ],
+    " $fragmentRefs": null,
     " $refType": null,
   },
-  artists: [
-    {
-      isConsignable: true,
-      name: "Santa Claus",
-      " $fragmentRefs": null,
-    },
-  ],
-  " $fragmentRefs": null,
-  " $refType": null,
 }

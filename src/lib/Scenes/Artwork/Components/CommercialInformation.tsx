@@ -3,8 +3,9 @@ import { CommercialInformation_artwork } from "__generated__/CommercialInformati
 import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
-import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons"
+import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
+import { AuctionCountDownTimerFragmentContainer as AuctionCountDownTimer } from "./AuctionCountDownTimer"
+import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
@@ -52,10 +53,10 @@ export class CommercialInformation extends React.Component<CommercialInformation
   render() {
     const { artwork } = this.props
     const { editionSetID } = this.state
-    const { isAcquireable, isOfferable, isInquireable } = artwork
+    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale } = artwork
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
-    const artistName = artwork.artists && artwork.artists.length === 1 ? artwork.artists[0].name : null
+
     return (
       <>
         {artwork.editionSets && artwork.editionSets.length > 1
@@ -68,10 +69,18 @@ export class CommercialInformation extends React.Component<CommercialInformation
               <CommercialButtons artwork={artwork} editionSetID={editionSetID} />
             </>
           )}
-          {!!consignableArtistsCount && (
+          {isInAuction &&
+            sale &&
+            !sale.isClosed && (
+              <>
+                <Spacer mb={2} />
+                <AuctionCountDownTimer artwork={artwork} />
+              </>
+            )}
+          {(!!consignableArtistsCount || isAcquireable || isInquireable) && (
             <>
               <Spacer mb={2} />
-              <ArtworkExtraLinks consignableArtistsCount={consignableArtistsCount} artistName={artistName} />
+              <ArtworkExtraLinks artwork={artwork} />
             </>
           )}
         </Box>
@@ -84,15 +93,19 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
   artwork: graphql`
     fragment CommercialInformation_artwork on Artwork {
       availability
+
       artists {
         isConsignable
-        name
       }
 
       editionSets {
         isAcquireable
         isOfferable
         saleMessage
+      }
+
+      sale {
+        isClosed
       }
 
       saleMessage
@@ -102,10 +115,13 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       isAcquireable
       isOfferable
       isInquireable
+      isInAuction
 
       ...CommercialButtons_artwork
       ...CommercialPartnerInformation_artwork
       ...CommercialEditionSetInformation_artwork
+      ...AuctionCountDownTimer_artwork
+      ...ArtworkExtraLinks_artwork
     }
   `,
 })

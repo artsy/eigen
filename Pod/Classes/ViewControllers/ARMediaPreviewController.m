@@ -82,7 +82,9 @@ static char kARMediaPreviewControllerAssociatedObject;
 
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller;
 {
-    return self.hostViewController;
+    // We're seeing an intermittent crash with a nil hostViewController (UIKit is crashing, this method must never return nil).
+    // So in the case that hostViewController *is* nil, we fall back to the top-level controller.
+    return self.hostViewController ?: [[[UIApplication sharedApplication] keyWindow] rootViewController];
 }
 
 - (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller;

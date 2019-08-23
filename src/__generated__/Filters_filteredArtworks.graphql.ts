@@ -8,8 +8,8 @@ export type Filters_filteredArtworks = {
     readonly aggregations: ReadonlyArray<{
         readonly slice: ArtworkAggregation | null;
         readonly counts: ReadonlyArray<{
-            readonly internalID: string;
-            readonly name: string | null;
+            readonly name: string;
+            readonly value: string;
         } | null> | null;
     } | null> | null;
     readonly " $refType": Filters_filteredArtworks$ref;
@@ -52,14 +52,14 @@ const node: ReaderFragment = {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "internalID",
+              "name": "name",
               "args": null,
               "storageKey": null
             },
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "name",
+              "name": "value",
               "args": null,
               "storageKey": null
             }
@@ -69,5 +69,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6e8ed7c5b8cf97462ea16a7393e48a22';
+(node as any).hash = '91d31761bb4205fec2bf49fa49d6b080';
 export default node;

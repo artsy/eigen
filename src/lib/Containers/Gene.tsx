@@ -13,7 +13,7 @@ import Header from "../Components/Gene/Header"
 import Separator from "../Components/Separator"
 import SwitchView, { SwitchEvent } from "../Components/SwitchView"
 import SerifText from "../Components/Text/Serif"
-import Refine from "../NativeModules/triggerRefine"
+import * as Refine from "../NativeModules/triggerRefine"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -364,7 +364,7 @@ export default createPaginationContainer(
           aggregations {
             slice
             counts {
-              internalID
+              value
               name
               count
             }

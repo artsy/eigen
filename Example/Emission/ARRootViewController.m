@@ -24,6 +24,7 @@
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <Emission/ARCollectionComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARInquiryComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
@@ -117,6 +118,7 @@
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
+  [sectionData addCellData:self.jumpToCollection];
   [sectionData addCellData:self.jumpToArtwork];
   [sectionData addCellData:self.jumpToArtworkWithInquireable];
   [sectionData addCellData:self.jumpToArtworkWithBNMO];
@@ -254,7 +256,7 @@
 - (ARCellData *)jumpToArtworkWithBNMO
 {
   return [self tappableCellDataWithTitle:@"Artwork With BNMO" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"anthony-caro-table-piece-ccii"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"josh-reames-columbo-ii"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -278,7 +280,7 @@
 - (ARCellData *)jumpToArtworkInAuction
 {
   return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"andy-warhol-mao-one-plate-3"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"italy-tuscany-14th-century-self-portrait"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -320,6 +322,16 @@
                                        preload:^NSArray<ARGraphQLQuery *> *{
     return [ARArtistComponentViewController preloadQueriesWithArtistID:artistID];
   }];
+}
+
+- (ARCellData *)jumpToCollection
+{
+  return [self viewControllerCellDataWithTitle:@"Collection"
+                                     selection:^{
+                                       id viewController = [[ARCollectionComponentViewController alloc] initWithCollectionID:@"street-art-now"];
+                                       [self.navigationController pushViewController:viewController animated:YES];
+                                     }
+                                       preload:nil];
 }
 
 - (ARCellData *)jumpToRandomArtist

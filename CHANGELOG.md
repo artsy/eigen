@@ -14,9 +14,22 @@
 
 -->
 
-### 1.12.15
+### Master
 
+- Adds new base container / screen for the Collection page - luc
+- Fixes intermittent crash on opening message attachment previews - ash
+- Fix consignments artist search and make it use relay - alloy
+- Adds links to Artwork view for FAQ and Ask a Specialist - kierangillen
+- Adds auction extra links in Artwork view - kierangillen
+- Fix shows artwork filter pickers always reseting to default value - zephraph
+- Adds Commercial Bid Buttons - kierangillen
+- Adds VAT included in price to Artwork view - kierangillen
+
+### 1.12.16
+
+- Fix clicking on single pin in City Guide map - alloy
 - Replace usage of legacy filter artwork fields with new connection - alloy
+- Removes artwork set functionality - ash
 
 ### 1.12.14
 

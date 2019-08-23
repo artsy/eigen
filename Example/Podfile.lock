@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Emission (1.12.15):
+  - Emission (1.12.16):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -205,16 +205,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
-    - INTUAnimationEngine
-    - ORStackView
-    - SDWebImage
-    - "UIView+BooleanAnimations"
-  https://github.com/artsy/Specs.git:
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - Artsy-UIButtons
-    - Extraction
-  https://github.com/cocoapods/specs.git:
     - ARGenericTableViewController
     - boost-for-react-native
     - Expecta
@@ -223,10 +213,18 @@ SPEC REPOS:
     - ISO8601DateFormatter
     - KSCrash
     - "NSURL+QueryDictionary"
+    - ORStackView
     - SAMKeychain
+    - SDWebImage
     - Sentry
     - Specta
     - Stripe
+    - "UIView+BooleanAnimations"
+  https://github.com/artsy/Specs.git:
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - Artsy-UIButtons
+    - Extraction
 
 EXTERNAL SOURCES:
   "Artsy+Authentication":
@@ -281,7 +279,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: 36bb5b11993466076c8c0b607540c4b9263f568f
+  Emission: 36ef8d3fad98de7a3d61555f26ef13533fec0c96
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a

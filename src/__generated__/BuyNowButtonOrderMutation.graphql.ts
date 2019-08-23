@@ -2,18 +2,17 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type CommerceOrderModeEnum = "BUY" | "OFFER" | "%future added value";
-export type CommerceCreateOfferOrderWithArtworkInput = {
+export type CommerceCreateOrderWithArtworkInput = {
     readonly artworkId: string;
     readonly clientMutationId?: string | null;
     readonly editionSetId?: string | null;
-    readonly findActiveOrCreate?: boolean | null;
     readonly quantity?: number | null;
 };
-export type CommercialButtonsOfferOrderMutationVariables = {
-    readonly input: CommerceCreateOfferOrderWithArtworkInput;
+export type BuyNowButtonOrderMutationVariables = {
+    readonly input: CommerceCreateOrderWithArtworkInput;
 };
-export type CommercialButtonsOfferOrderMutationResponse = {
-    readonly commerceCreateOfferOrderWithArtwork: {
+export type BuyNowButtonOrderMutationResponse = {
+    readonly commerceCreateOrderWithArtwork: {
         readonly orderOrError: {
             readonly __typename: string;
             readonly order?: {
@@ -45,18 +44,18 @@ export type CommercialButtonsOfferOrderMutationResponse = {
         });
     } | null;
 };
-export type CommercialButtonsOfferOrderMutation = {
-    readonly response: CommercialButtonsOfferOrderMutationResponse;
-    readonly variables: CommercialButtonsOfferOrderMutationVariables;
+export type BuyNowButtonOrderMutation = {
+    readonly response: BuyNowButtonOrderMutationResponse;
+    readonly variables: BuyNowButtonOrderMutationVariables;
 };
 
 
 
 /*
-mutation CommercialButtonsOfferOrderMutation(
-  $input: CommerceCreateOfferOrderWithArtworkInput!
+mutation BuyNowButtonOrderMutation(
+  $input: CommerceCreateOrderWithArtworkInput!
 ) {
-  commerceCreateOfferOrderWithArtwork(input: $input) {
+  commerceCreateOrderWithArtwork(input: $input) {
     orderOrError {
       __typename
       ... on CommerceOrderWithMutationSuccess {
@@ -83,7 +82,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "input",
-    "type": "CommerceCreateOfferOrderWithArtworkInput!",
+    "type": "CommerceCreateOrderWithArtworkInput!",
     "defaultValue": null
   }
 ],
@@ -157,7 +156,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "CommercialButtonsOfferOrderMutation",
+    "name": "BuyNowButtonOrderMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -165,10 +164,10 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "commerceCreateOfferOrderWithArtwork",
+        "name": "commerceCreateOrderWithArtwork",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "CommerceCreateOfferOrderWithArtworkPayload",
+        "concreteType": "CommerceCreateOrderWithArtworkPayload",
         "plural": false,
         "selections": [
           {
@@ -209,16 +208,16 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "CommercialButtonsOfferOrderMutation",
+    "name": "BuyNowButtonOrderMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "commerceCreateOfferOrderWithArtwork",
+        "name": "commerceCreateOrderWithArtwork",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "CommerceCreateOfferOrderWithArtworkPayload",
+        "concreteType": "CommerceCreateOrderWithArtworkPayload",
         "plural": false,
         "selections": [
           {
@@ -260,12 +259,12 @@ return {
   },
   "params": {
     "operationKind": "mutation",
-    "name": "CommercialButtonsOfferOrderMutation",
-    "id": "8cfb809712a89b6b6a53dfd23e6bfeb6",
+    "name": "BuyNowButtonOrderMutation",
+    "id": "f00c41abf4aff4738987ff9a680cd41c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '7547795206a1797344ed205e04ab47f5';
+(node as any).hash = 'bca5ba762c43b6d715228089a8ec7b43';
 export default node;
