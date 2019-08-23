@@ -1,7 +1,6 @@
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import React from "react"
-import { Animated, View } from "react-native"
+import { Animated, Image, View } from "react-native"
 import { useSpringValue } from "../../useSpringValue"
 import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
 import { DeepZoomPyramid } from "./DeepZoomPyramid"
@@ -120,16 +119,18 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({ url, top, left, widt
         opacity,
       }}
     >
-      <OpaqueImageView
-        onLoad={onLoad}
-        imageURL={url}
-        noAnimation
-        useRawURL
-        style={{ width, height }}
-        placeholderBackgroundColor="white"
-        failSilently
-        highPriority
-      />
+      <Image onLoad={onLoad} source={{ uri: url }} style={{ width, height }} />
+      {/*
+        // TODO: Figure out why we get tearing at tile seams when using this in eigen but not emission
+        <OpaqueImageView
+          imageURL={url}
+          noAnimation
+          useRawURL
+          placeholderBackgroundColor="white"
+          failSilently
+          highPriority
+        />
+      */}
     </Animated.View>
   )
 }
