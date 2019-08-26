@@ -2,12 +2,12 @@ import React from "react"
 import { Image, ImageStyle, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import colors from "lib/data/colors"
+import { get } from "lib/utils/get"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import GenericGrid from "../ArtworkGrids/GenericGrid"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
-
-import colors from "lib/data/colors"
 
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
 
@@ -18,7 +18,8 @@ interface Props {
 
 export class Notification extends React.Component<Props> {
   handleArtistTap() {
-    const artistHref = this.props.notification.artistHref || this.props.notification.artworks[0].artists[0].href
+    const artistHref =
+      this.props.notification.artistHref || get(this.props.notification, n => n.artworks.edges[0].node.artists[0].href)
     if (artistHref) {
       SwitchBoard.presentNavigationViewController(this, artistHref)
     }
