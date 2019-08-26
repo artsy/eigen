@@ -25,11 +25,9 @@ export const MapRenderer: React.SFC<{
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
-        # Don't rename this query withou also updating the generate-cities-cache.js script.
+        # Don't rename this query without also updating the generate-cities-cache.js script.
         query MapRendererQuery($citySlug: String!, $maxInt: Int!) {
-          viewer {
-            ...GlobalMap_viewer @arguments(citySlug: $citySlug, maxInt: $maxInt)
-          }
+          ...GlobalMap_viewer @arguments(citySlug: $citySlug, maxInt: $maxInt)
         }
       `}
       variables={{
@@ -39,7 +37,7 @@ export const MapRenderer: React.SFC<{
       render={({ props: mapProps, error, retry }) => {
         // viewer={null} is to handle the case where we want to render the map with initialCoordinates but the Relay
         // response hasn't arrived yet. Relay requires us to pass an explicit null if the missing data is intentional.
-        const computedProps: any = { viewer: null, ...mapProps, ...props }
+        const computedProps: any = { viewer: mapProps || null, ...props }
 
         if (error) {
           // Error indicates this is the first render with the error.

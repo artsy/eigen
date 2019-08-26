@@ -78,7 +78,7 @@ export default createPaginationContainer(
   CitySavedList,
   {
     viewer: graphql`
-      fragment CitySavedList_viewer on Viewer
+      fragment CitySavedList_viewer on Query
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         city(slug: $citySlug) {
           name
@@ -151,9 +151,7 @@ export default createPaginationContainer(
     },
     query: graphql`
       query CitySavedListQuery($count: Int!, $cursor: String, $citySlug: String!) {
-        viewer {
-          ...CitySavedList_viewer @arguments(count: $count, cursor: $cursor)
-        }
+        ...CitySavedList_viewer @arguments(count: $count, cursor: $cursor)
       }
     `,
   }

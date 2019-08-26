@@ -10,6 +10,18 @@ import { SalesRenderer } from "../Components/Sales/Relay/SalesRenderer"
 
 storiesOf("Home/Relay")
   .add("Root", () => <Home initialTab={0} isVisible={true} tracking={trackingData => console.log(trackingData)} />)
-  .add("Artists", () => <WorksForYouRenderer render={renderWithLoadProgress(WorksForYou)} />)
+  .add("Artists", () => (
+    <WorksForYouRenderer
+      render={renderWithLoadProgress(query => (
+        <WorksForYou query={query as any} />
+      ))}
+    />
+  ))
   .add("For You", () => <ForYouRenderer render={renderWithLoadProgress(ForYou)} />)
-  .add("Auctions", () => <SalesRenderer render={renderWithLoadProgress(Sales)} />)
+  .add("Auctions", () => (
+    <SalesRenderer
+      render={renderWithLoadProgress(query => (
+        <Sales query={query as any} />
+      ))}
+    />
+  ))

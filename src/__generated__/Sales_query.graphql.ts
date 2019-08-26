@@ -1,26 +1,26 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { LotsByFollowedArtists_viewer$ref } from "./LotsByFollowedArtists_viewer.graphql";
+import { LotsByFollowedArtists_query$ref } from "./LotsByFollowedArtists_query.graphql";
 import { SaleListItem_sale$ref } from "./SaleListItem_sale.graphql";
-declare const _Sales_viewer$ref: unique symbol;
-export type Sales_viewer$ref = typeof _Sales_viewer$ref;
-export type Sales_viewer = {
+declare const _Sales_query$ref: unique symbol;
+export type Sales_query$ref = typeof _Sales_query$ref;
+export type Sales_query = {
     readonly sales: ReadonlyArray<{
         readonly href: string | null;
         readonly live_start_at: string | null;
         readonly " $fragmentRefs": SaleListItem_sale$ref;
     } | null> | null;
-    readonly " $fragmentRefs": LotsByFollowedArtists_viewer$ref;
-    readonly " $refType": Sales_viewer$ref;
+    readonly " $fragmentRefs": LotsByFollowedArtists_query$ref;
+    readonly " $refType": Sales_query$ref;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Sales_viewer",
-  "type": "Viewer",
+  "name": "Sales_query",
+  "type": "Query",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
@@ -77,10 +77,10 @@ const node: ReaderFragment = {
     },
     {
       "kind": "FragmentSpread",
-      "name": "LotsByFollowedArtists_viewer",
+      "name": "LotsByFollowedArtists_query",
       "args": null
     }
   ]
 };
-(node as any).hash = 'a01648c39d9b071f8463953ec6f8bad9';
+(node as any).hash = '81decacc84cecee4dcb0fb93b24e3230';
 export default node;

@@ -3,7 +3,7 @@ import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { LotsByFollowedArtists_viewer } from "__generated__/LotsByFollowedArtists_viewer.graphql"
+import { LotsByFollowedArtists_query } from "__generated__/LotsByFollowedArtists_query.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -15,7 +15,7 @@ const DEFAULT_TITLE = "Lots by Artists You Follow"
 interface Props {
   relay: RelayPaginationProp
   title?: string
-  viewer: LotsByFollowedArtists_viewer
+  query: LotsByFollowedArtists_query
 }
 
 interface State {
@@ -43,7 +43,7 @@ export class LotsByFollowedArtists extends Component<Props, State> {
   }
 
   render() {
-    const artworks = this.props.viewer.sale_artworks.edges.map(edge => edge.node.artwork)
+    const artworks = this.props.query.sale_artworks.edges.map(edge => edge.node.artwork)
     if (artworks.length === 0) {
       return null
     }
@@ -65,8 +65,8 @@ export class LotsByFollowedArtists extends Component<Props, State> {
 export default createPaginationContainer(
   LotsByFollowedArtists,
   {
-    viewer: graphql`
-      fragment LotsByFollowedArtists_viewer on Viewer
+    query: graphql`
+      fragment LotsByFollowedArtists_query on Query
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         sale_artworks: saleArtworksConnection(
           first: $count
@@ -92,14 +92,12 @@ export default createPaginationContainer(
     `,
   },
   {
-    getConnectionFromProps: ({ viewer }) => viewer && viewer.sale_artworks,
+    getConnectionFromProps: ({ query }) => query && query.sale_artworks,
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (_props, { count, cursor }) => ({ count, cursor }),
     query: graphql`
       query LotsByFollowedArtistsQuery($count: Int!, $cursor: String) {
-        viewer {
-          ...LotsByFollowedArtists_viewer @arguments(count: $count, cursor: $cursor)
-        }
+        ...LotsByFollowedArtists_query @arguments(count: $count, cursor: $cursor)
       }
     `,
   }

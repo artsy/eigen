@@ -3,9 +3,9 @@
 import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 import { Notification_notification$ref } from "./Notification_notification.graphql";
-declare const _WorksForYou_viewer$ref: unique symbol;
-export type WorksForYou_viewer$ref = typeof _WorksForYou_viewer$ref;
-export type WorksForYou_viewer = {
+declare const _WorksForYou_query$ref: unique symbol;
+export type WorksForYou_query$ref = typeof _WorksForYou_query$ref;
+export type WorksForYou_query = {
     readonly me: {
         readonly followsAndSaves: {
             readonly notifications: {
@@ -39,7 +39,7 @@ export type WorksForYou_viewer = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": WorksForYou_viewer$ref;
+    readonly " $refType": WorksForYou_query$ref;
 };
 
 
@@ -52,8 +52,8 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "WorksForYou_viewer",
-  "type": "Viewer",
+  "name": "WorksForYou_query",
+  "type": "Query",
   "metadata": {
     "connection": [
       {
@@ -329,5 +329,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '930f61ae297bb8bf4869c3e9593933de';
+(node as any).hash = 'c5f141826764d982b4a00aa020709ffe';
 export default node;

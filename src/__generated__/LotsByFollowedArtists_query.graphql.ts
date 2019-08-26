@@ -2,9 +2,9 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _LotsByFollowedArtists_viewer$ref: unique symbol;
-export type LotsByFollowedArtists_viewer$ref = typeof _LotsByFollowedArtists_viewer$ref;
-export type LotsByFollowedArtists_viewer = {
+declare const _LotsByFollowedArtists_query$ref: unique symbol;
+export type LotsByFollowedArtists_query$ref = typeof _LotsByFollowedArtists_query$ref;
+export type LotsByFollowedArtists_query = {
     readonly sale_artworks: {
         readonly pageInfo: {
             readonly endCursor: string | null;
@@ -19,15 +19,15 @@ export type LotsByFollowedArtists_viewer = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": LotsByFollowedArtists_viewer$ref;
+    readonly " $refType": LotsByFollowedArtists_query$ref;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "LotsByFollowedArtists_viewer",
-  "type": "Viewer",
+  "name": "LotsByFollowedArtists_query",
+  "type": "Query",
   "metadata": {
     "connection": [
       {
@@ -161,5 +161,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4df44dec9ee9b75f97bd9ef8b54ce20d';
+(node as any).hash = '1ad34c9ad2c092912183c85624269a28';
 export default node;

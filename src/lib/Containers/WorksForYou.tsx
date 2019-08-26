@@ -17,16 +17,15 @@ import Events from "../NativeModules/Events"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { WorksForYou_query } from "__generated__/WorksForYou_query.graphql"
 import ZeroState from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import colors from "lib/data/colors"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
-import { WorksForYou_viewer } from "__generated__/WorksForYou_viewer.graphql"
-
 interface Props {
   relay: RelayPaginationProp
-  viewer: WorksForYou_viewer
+  query: WorksForYou_query
 }
 
 interface State {
@@ -42,8 +41,8 @@ export class WorksForYou extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const notifications: object[] = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
-    if (this.props.viewer.selectedArtist) {
+    const notifications: object[] = this.props.query.me.followsAndSaves.notifications.edges.map(edge => edge.node)
+    if (this.props.query.selectedArtist) {
       notifications.unshift(this.formattedSpecialNotification())
     }
 
@@ -72,7 +71,7 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   formattedSpecialNotification() {
-    const artist = this.props.viewer.selectedArtist
+    const artist = this.props.query.selectedArtist
 
     return {
       // This is just some unique ID, don’t rely on MP being able to retrieve a notification by this ID.
@@ -99,10 +98,10 @@ export class WorksForYou extends React.Component<Props, State> {
         console.error("WorksForYou.tsx", error.message)
       }
 
-      const notifications: object[] = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
+      const notifications: object[] = this.props.query.me.followsAndSaves.notifications.edges.map(edge => edge.node)
 
       // Make sure we maintain the special notification if it exists
-      if (this.props.viewer.selectedArtist) {
+      if (this.props.query.selectedArtist) {
         notifications.unshift(this.formattedSpecialNotification())
       }
 
@@ -188,8 +187,8 @@ const styles = StyleSheet.create<Styles>({
 const WorksForYouContainer = createPaginationContainer(
   WorksForYou,
   {
-    viewer: graphql`
-      fragment WorksForYou_viewer on Viewer
+    query: graphql`
+      fragment WorksForYou_query on Query
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String" }
@@ -236,7 +235,7 @@ const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.viewer.me.followsAndSaves.notifications
+      return props.query.me.followsAndSaves.notifications
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -255,9 +254,7 @@ const WorksForYouContainer = createPaginationContainer(
     },
     query: graphql`
       query WorksForYouQuery($count: Int!, $cursor: String) {
-        viewer {
-          ...WorksForYou_viewer @arguments(count: $count, cursor: $cursor)
-        }
+        ...WorksForYou_query @arguments(count: $count, cursor: $cursor)
       }
     `,
   }

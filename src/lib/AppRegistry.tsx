@@ -119,8 +119,18 @@ const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
 // TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //
 //     this.renderFetched = data => <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
+//
+// FIXME: Is this really still being used?
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props => (
-  <WorksForYouRenderer {...props} render={renderWithLoadProgress(Containers.WorksForYou, props)} />
+  <WorksForYouRenderer
+    {...props}
+    render={renderWithLoadProgress(
+      query => (
+        <Containers.WorksForYou query={query as any} />
+      ),
+      props
+    )}
+  />
 )
 
 interface InquiryProps {
@@ -313,7 +323,12 @@ const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
   return (
     <CitySavedListRenderer
       citySlug={citySlug}
-      render={renderWithLoadProgress(Containers.CitySavedList, { citySlug })}
+      render={renderWithLoadProgress(
+        props => (
+          <Containers.CitySavedList viewer={props as any} citySlug={citySlug} />
+        ),
+        { citySlug }
+      )}
     />
   )
 }
@@ -329,7 +344,6 @@ AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
 AppRegistry.registerComponent("MyProfileEdit", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
-AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
@@ -351,5 +365,6 @@ AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
 AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
 AppRegistry.registerComponent("CityFairList", () => CityFairList)
+AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
 AppRegistry.registerComponent("Collection", () => Collection)

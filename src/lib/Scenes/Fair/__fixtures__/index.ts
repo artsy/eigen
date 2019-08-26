@@ -178,7 +178,7 @@ export const fairFixture = {
       exhibitors: ["Xavier Hufkens"],
     },
   ],
-  filteredArtworks: {
+  filterArtworksConnection: {
     aggregations: [
       {
         slice: "PRICE_RANGE",
