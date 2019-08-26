@@ -127,7 +127,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     const { artist } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
-    const { url } = image
+    const imageURl = image && image.url
 
     return (
       <Theme>
@@ -135,7 +135,7 @@ export class ArtistListItem extends React.Component<Props, State> {
           <EntityHeader
             name={name}
             meta={formatTombstoneText(nationality, birthday, deathday)}
-            imageUrl={url}
+            imageUrl={imageURl}
             initials={initials}
             FollowButton={
               <Button
