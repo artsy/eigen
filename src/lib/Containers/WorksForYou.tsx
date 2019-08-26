@@ -44,7 +44,6 @@ export class WorksForYou extends React.Component<Props, State> {
 
     const notifications: object[] = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
     if (this.props.viewer.selectedArtist) {
-      console.log("????", this.formattedSpecialNotification())
       notifications.unshift(this.formattedSpecialNotification())
     }
 
@@ -104,7 +103,6 @@ export class WorksForYou extends React.Component<Props, State> {
 
       // Make sure we maintain the special notification if it exists
       if (this.props.viewer.selectedArtist) {
-        console.log("????", this.formattedSpecialNotification())
         notifications.unshift(this.formattedSpecialNotification())
       }
 
