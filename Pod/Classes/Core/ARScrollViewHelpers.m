@@ -50,11 +50,9 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
   RCTScrollView *view = (id)[[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
 
   if ([view isKindOfClass:RCTScrollView.class]) {
-    __weak RCTScrollView *weakScrollView = view;
-
     // first disable scrolling so the user can't interrupt the animation
     // TODO: (this doesn't seem to actually work, needs more investigation)
-    weakScrollView.scrollView.scrollEnabled = NO;
+    view.scrollView.scrollEnabled = NO;
 
     // then figure out start and end view ports.
 
@@ -108,18 +106,20 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
     // so to do this zoom we'll calculate the current view port in these terms and then animate it towards the target
     // view port passed in to this method.
 
-    CGFloat currentZoomScale = weakScrollView.scrollView.zoomScale;
-    CGSize baseImageSize = CGSizeMake(weakScrollView.scrollView.contentSize.width / currentZoomScale, weakScrollView.scrollView.contentSize.height / currentZoomScale);
+    CGFloat currentZoomScale = view.scrollView.zoomScale;
+    CGSize baseImageSize = CGSizeMake(view.scrollView.contentSize.width / currentZoomScale, view.scrollView.contentSize.height / currentZoomScale);
 
     // frame size is the un-zoomed size of the scroll view
-    CGSize frameSize = weakScrollView.scrollView.frame.size;
+    CGSize frameSize = view.scrollView.frame.size;
 
-    CGPoint startContentOffset = weakScrollView.scrollView.contentOffset;
+    CGPoint startContentOffset = view.scrollView.contentOffset;
 
     CGRect startViewPort = CGRectMake(startContentOffset.x / currentZoomScale, startContentOffset.y /currentZoomScale, frameSize.width / currentZoomScale, frameSize.height / currentZoomScale);
 
     CGRect targetViewPort = CGRectMake([x floatValue], [y floatValue], [w floatValue], [h floatValue]);
 
+    __weak RCTScrollView *weakScrollView = view;
+   
     [INTUAnimationEngine animateWithDuration:0.34 delay:0 animations:^(CGFloat progress) {
       progress = INTUEaseInOutSine(progress);
       __strong RCTScrollView *strongScrollView = weakScrollView;
