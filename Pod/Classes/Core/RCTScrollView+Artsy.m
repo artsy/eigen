@@ -210,8 +210,6 @@ void *optOutAllAssociatedPointer = &optOutAllAssociatedPointer;
                                                                  userData:userData
                                                             coalescingKey:coalescingKey];
 
-  // static int transforms = 0;
-  // NSLog(@"eventses %d", transforms++);
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 
   // TODO: This doesn’t coalesce, which is something that’s done by the event dispatcher
