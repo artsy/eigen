@@ -25,19 +25,19 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(optOutOfParentScrollEvents:(nonnull NSNumber *)tag)
 {
-  UIView *view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  RCTScrollView *view = (id)[[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
 
   if ([view isKindOfClass:RCTScrollView.class]) {
-    [((RCTScrollView *) view) optOutOfParentScrollEvents];
+    [view optOutOfParentScrollEvents];
   }
 }
 
 RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 {
-  UIView *view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  RCTScrollView *view = (id)[[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
 
   if ([view isKindOfClass:RCTScrollView.class]) {
-    [((RCTScrollView *) view) scrollViewDidScroll:((RCTScrollView *) view).scrollView];
+    [view scrollViewDidScroll:view.scrollView];
   }
 }
 
@@ -51,10 +51,10 @@ RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 // x, y, w, and h, are relative to the un-zoomed content
 RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(nonnull NSNumber *)y w:(nonnull NSNumber *)w h:(nonnull NSNumber *)h)
 {
-  UIView *view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  RCTScrollView *view = (id)[[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
 
   if ([view isKindOfClass:RCTScrollView.class]) {
-    __weak RCTScrollView *weakScrollView = (RCTScrollView *) view;
+    __weak RCTScrollView *weakScrollView = view;
 
     // first disable scrolling so the user can't interrupt the animation
     // TODO: (this doesn't seem to actually work, needs more investigation)
