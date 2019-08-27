@@ -62,7 +62,7 @@ export class FairsRail extends Component<Props, null> {
       }
 
       return (
-        <TouchableHighlight style={circleIconStyle} onPress={selectionHandler} key={fair.slug}>
+        <TouchableHighlight style={circleIconStyle} onPress={selectionHandler} key={fair.id}>
           <TouchableWrapper>
             <ImageView style={circleIconStyle} imageURL={fair.mobile_image.url} placeholderBackgroundColor="white" />
           </TouchableWrapper>
@@ -93,6 +93,7 @@ export default createFragmentContainer(FairsRail, {
   fairs_module: graphql`
     fragment FairsRail_fairs_module on HomePageFairsModule {
       results {
+        id
         slug
         name
         profile {

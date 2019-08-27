@@ -90,6 +90,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
 
 fragment FairsRail_fairs_module on HomePageFairsModule {
   results {
+    id
     slug
     name
     profile {
@@ -100,7 +101,6 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
       internalID
       url
     }
-    id
   }
 }
 
@@ -766,6 +766,7 @@ return {
                 "concreteType": "Fair",
                 "plural": true,
                 "selections": [
+                  (v0/*: any*/),
                   (v5/*: any*/),
                   (v7/*: any*/),
                   {
@@ -799,8 +800,7 @@ return {
                         "storageKey": null
                       }
                     ]
-                  },
-                  (v0/*: any*/)
+                  }
                 ]
               }
             ]
@@ -812,7 +812,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersForYouQuery",
-    "id": "54331d618d24748f5d93b65e95dec188",
+    "id": "52b8a6140e54da049712bcb9c0757316",
     "text": null,
     "metadata": {}
   }

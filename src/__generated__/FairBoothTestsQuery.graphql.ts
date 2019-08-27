@@ -89,18 +89,18 @@ fragment ShowArtistsPreview_show on Show {
   internalID
   slug
   artists {
+    id
     internalID
     slug
     href
     ...ArtistListItem_artist
-    id
   }
   artists_without_artworks: artistsWithoutArtworks {
+    id
     internalID
     slug
     href
     ...ArtistListItem_artist
-    id
   }
 }
 
@@ -519,10 +519,10 @@ v27 = {
   ]
 },
 v28 = [
+  (v4/*: any*/),
   (v2/*: any*/),
   (v1/*: any*/),
   (v7/*: any*/),
-  (v4/*: any*/),
   (v3/*: any*/),
   (v23/*: any*/),
   (v8/*: any*/),
@@ -985,7 +985,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothTestsQuery",
-    "id": "3a26f1c3695899048992ba2a7c17e5d9",
+    "id": "5c3578228b957031cf20c178bf1cc4ac",
     "text": null,
     "metadata": {}
   }

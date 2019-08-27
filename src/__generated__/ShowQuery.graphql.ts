@@ -155,18 +155,18 @@ fragment ShowArtistsPreview_show on Show {
   internalID
   slug
   artists {
+    id
     internalID
     slug
     href
     ...ArtistListItem_artist
-    id
   }
   artists_without_artworks: artistsWithoutArtworks {
+    id
     internalID
     slug
     href
     ...ArtistListItem_artist
-    id
   }
 }
 
@@ -894,10 +894,10 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
+              (v8/*: any*/),
               (v2/*: any*/),
               (v3/*: any*/),
               (v13/*: any*/),
-              (v8/*: any*/),
               (v4/*: any*/),
               (v14/*: any*/),
               (v9/*: any*/),
@@ -1147,7 +1147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowQuery",
-    "id": "3b8e52a67363880aef0885d22d1706f1",
+    "id": "1d3a0f2206eb2af68823de0031311e4c",
     "text": null,
     "metadata": {}
   }

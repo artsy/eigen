@@ -38,7 +38,8 @@ describe("CommercialInformation", () => {
       </Theme>
     )
     expect(component.text()).toContain("Contact for price")
-    expect(component.text()).not.toContain("I'm a Gallery")
+    expect(component.text()).toContain("I'm a Gallery")
+    expect(component.text()).not.toContain("Shipping, tax, and service quoted by seller")
     expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
 
@@ -87,9 +88,13 @@ describe("CommercialInformation", () => {
   })
 
   it("renders seller info correctly for non-commercial works", () => {
+    const CommercialInformationArtworkNonCommercial = {
+      ...CommercialInformationArtwork,
+      availability: null,
+    }
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtwork} />
+        <CommercialInformation artwork={CommercialInformationArtworkNonCommercial} />
       </Theme>
     )
     expect(
@@ -110,7 +115,7 @@ describe("CommercialInformation", () => {
     expect(
       component
         .find(Sans)
-        .at(3)
+        .at(2)
         .render()
         .text()
     ).toMatchInlineSnapshot(`"Want to sell a work by Santa Claus? Consign with Artsy."`)
@@ -181,7 +186,7 @@ const CommercialInformationArtwork = {
     saleMessage: "Contact For Price",
     shippingInfo: "Shipping, tax, and service quoted by seller",
     shippingOrigin: null,
-    availability: "Sold",
+    availability: "sold",
     sale: {
       isAuction: false,
       isClosed: false,

@@ -60,10 +60,10 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         </Sans>
         <Flex flexDirection="row" alignContent="center">
           {editionSets.map(edition => {
-            const { internalID, dimensions } = edition
+            const { id, internalID, dimensions } = edition
             const selected = internalID === selectedEdition.internalID
             return (
-              <TouchableWithoutFeedback key={internalID} onPress={() => this.selectEdition(internalID)}>
+              <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
                 <EditionSelector px={2} height={26} mt={1} mr={1} selected={selected}>
                   <Sans size="2" weight="medium" color="black100">
                     {dimensions.in}
@@ -102,6 +102,7 @@ export const CommercialEditionSetInformationFragmentContainer = createFragmentCo
     artwork: graphql`
       fragment CommercialEditionSetInformation_artwork on Artwork {
         editionSets {
+          id
           internalID
           isAcquireable
           isOfferable

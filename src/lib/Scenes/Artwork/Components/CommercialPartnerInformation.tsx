@@ -10,12 +10,10 @@ interface Props {
 export class CommercialPartnerInformation extends React.Component<Props> {
   render() {
     const { artwork } = this.props
-    const inClosedAuction = artwork.sale && artwork.sale.isAuction && artwork.sale.isClosed
-    const showsSellerInfo = artwork.partner && artwork.partner.name && !inClosedAuction
-    const availabilityDisplayText =
-      artwork.availability &&
-      (artwork.availability === "for sale" || artwork.availability === "sold" ? "Sold by" : "At")
-
+    const artworkIsForSale = artwork.availability && artwork.availability === "for sale"
+    const artworkIsSold = artwork.availability && artwork.availability === "sold"
+    const showsSellerInfo = artwork.partner && artwork.partner.name
+    const availabilityDisplayText = artworkIsForSale || artworkIsSold ? "Sold by" : "At"
     return (
       <>
         {showsSellerInfo && (
@@ -24,21 +22,24 @@ export class CommercialPartnerInformation extends React.Component<Props> {
             <Sans size="3t" color="black60">
               {availabilityDisplayText} {artwork.partner.name}
             </Sans>
-            {artwork.shippingOrigin && (
-              <Sans size="3t" color="black60">
-                Ships from {artwork.shippingOrigin}
-              </Sans>
-            )}
-            {artwork.shippingInfo && (
-              <Sans size="3t" color="black60">
-                {artwork.shippingInfo}
-              </Sans>
-            )}
-            {artwork.priceIncludesTax && (
-              <Sans size="3t" color="black60">
-                VAT included in price
-              </Sans>
-            )}
+            {artworkIsForSale &&
+              artwork.shippingOrigin && (
+                <Sans size="3t" color="black60">
+                  Ships from {artwork.shippingOrigin}
+                </Sans>
+              )}
+            {artworkIsForSale &&
+              artwork.shippingInfo && (
+                <Sans size="3t" color="black60">
+                  {artwork.shippingInfo}
+                </Sans>
+              )}
+            {artworkIsForSale &&
+              artwork.priceIncludesTax && (
+                <Sans size="3t" color="black60">
+                  VAT included in price
+                </Sans>
+              )}
           </>
         )}
       </>
@@ -55,10 +56,6 @@ export const CommercialPartnerInformationFragmentContainer = createFragmentConta
       priceIncludesTax
       partner {
         name
-      }
-      sale {
-        isAuction
-        isClosed
       }
     }
   `,
