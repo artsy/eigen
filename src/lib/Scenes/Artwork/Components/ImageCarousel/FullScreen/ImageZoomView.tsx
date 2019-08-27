@@ -169,14 +169,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const handleDoubleTapToZoom = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
       const { pageX, pageY } = ev.nativeEvent
       if (Math.ceil(zoomScale.current) >= maxZoomScale) {
-        ARScrollViewHelpers.smoothZoom(
-          findNodeHandle(scrollViewRef.current.getNode()),
-          -marginHorizontal,
-          -marginVertical,
-          width,
-          height
-        )
-        // resetZoom()
+        resetZoom()
       } else {
         // zoom to tapped point
         let newZoomScale = Math.min(zoomScale.current * 3, maxZoomScale)
