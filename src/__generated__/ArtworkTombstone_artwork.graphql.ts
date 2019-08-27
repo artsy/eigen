@@ -17,6 +17,9 @@ export type ArtworkTombstone_artwork = {
     readonly partner: {
         readonly name: string | null;
     } | null;
+    readonly sale: {
+        readonly isClosed: boolean | null;
+    } | null;
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
@@ -125,6 +128,24 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "sale",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isClosed",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "artists",
       "storageKey": null,
       "args": null,
@@ -199,5 +220,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd3a792433b6dbc98f4c3ed94faa32b89';
+(node as any).hash = '12c6ef0636ca72af76ba1dcff04d8838';
 export default node;

@@ -38,6 +38,10 @@ fragment ArtworkTombstone_artwork on Artwork {
     name
     id
   }
+  sale {
+    isClosed
+    id
+  }
   artists {
     name
     href
@@ -203,6 +207,25 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "sale",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Sale",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isClosed",
+                "args": null,
+                "storageKey": null
+              },
+              (v1/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "artists",
             "storageKey": null,
             "args": null,
@@ -300,7 +323,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTombstoneStoryQuery",
-    "id": "489e28129e97749cc3089a34012cc9f3",
+    "id": "23824f0df7c31765f3e7f7b11faa4216",
     "text": null,
     "metadata": {}
   }

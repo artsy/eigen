@@ -467,6 +467,10 @@ fragment ArtworkTombstone_artwork on Artwork {
     name
     id
   }
+  sale {
+    isClosed
+    id
+  }
   artists {
     name
     href
@@ -1877,7 +1881,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "5491d9e12de3262ada6df2847a02e633",
+    "id": "bcda209b6eac208e481ee627d1ada77e",
     "text": null,
     "metadata": {}
   }

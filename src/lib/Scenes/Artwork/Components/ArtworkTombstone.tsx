@@ -107,7 +107,12 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   render() {
     const { artwork } = this.props
     const addedComma = artwork.date ? ", " : ""
-    const displayAuctionLotLabel = artwork.isInAuction && artwork.saleArtwork && artwork.saleArtwork.lotLabel
+    const displayAuctionLotLabel =
+      artwork.isInAuction &&
+      artwork.saleArtwork &&
+      artwork.saleArtwork.lotLabel &&
+      artwork.sale &&
+      !artwork.sale.isClosed
 
     return (
       <Box textAlign="left">
@@ -156,22 +161,24 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             .
           </Serif>
         )}
-        {artwork.isInAuction && (
-          <>
-            <Spacer mb={1} />
-            {artwork.partner && (
-              <Serif color="black100" size="3t" weight="semibold">
-                {artwork.partner.name}
-              </Serif>
-            )}
-            {artwork.saleArtwork &&
-              artwork.saleArtwork.estimate && (
-                <Serif size="3t" color="black60">
-                  Estimated value: {artwork.saleArtwork.estimate}
+        {artwork.isInAuction &&
+          artwork.sale &&
+          !artwork.sale.isClosed && (
+            <>
+              <Spacer mb={1} />
+              {artwork.partner && (
+                <Serif color="black100" size="3t" weight="semibold">
+                  {artwork.partner.name}
                 </Serif>
               )}
-          </>
-        )}
+              {artwork.saleArtwork &&
+                artwork.saleArtwork.estimate && (
+                  <Serif size="3t" color="black60">
+                    Estimated value: {artwork.saleArtwork.estimate}
+                  </Serif>
+                )}
+            </>
+          )}
       </Box>
     )
   }
@@ -191,6 +198,9 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       }
       partner {
         name
+      }
+      sale {
+        isClosed
       }
       artists {
         name
