@@ -25,9 +25,19 @@ query ArtworkTombstoneStoryQuery {
 
 fragment ArtworkTombstone_artwork on Artwork {
   title
+  isInAuction
   medium
   date
   cultural_maker: culturalMaker
+  saleArtwork {
+    lotLabel
+    estimate
+    id
+  }
+  partner {
+    name
+    id
+  }
   artists {
     name
     href
@@ -65,6 +75,13 @@ v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
   "args": null,
   "storageKey": null
 };
@@ -119,6 +136,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "isInAuction",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "medium",
             "args": null,
             "storageKey": null
@@ -140,19 +164,52 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "saleArtwork",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "SaleArtwork",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "lotLabel",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "estimate",
+                "args": null,
+                "storageKey": null
+              },
+              (v1/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v1/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "artists",
             "storageKey": null,
             "args": null,
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "name",
-                "args": null,
-                "storageKey": null
-              },
+              (v2/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -243,7 +300,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTombstoneStoryQuery",
-    "id": "21fe5de37b0090fbce07b014946a7a88",
+    "id": "489e28129e97749cc3089a34012cc9f3",
     "text": null,
     "metadata": {}
   }

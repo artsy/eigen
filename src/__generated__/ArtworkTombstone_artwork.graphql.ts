@@ -6,9 +6,17 @@ declare const _ArtworkTombstone_artwork$ref: unique symbol;
 export type ArtworkTombstone_artwork$ref = typeof _ArtworkTombstone_artwork$ref;
 export type ArtworkTombstone_artwork = {
     readonly title: string | null;
+    readonly isInAuction: boolean | null;
     readonly medium: string | null;
     readonly date: string | null;
     readonly cultural_maker: string | null;
+    readonly saleArtwork: {
+        readonly lotLabel: string | null;
+        readonly estimate: string | null;
+    } | null;
+    readonly partner: {
+        readonly name: string | null;
+    } | null;
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
@@ -27,7 +35,15 @@ export type ArtworkTombstone_artwork = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "ArtworkTombstone_artwork",
   "type": "Artwork",
@@ -38,6 +54,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "title",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isInAuction",
       "args": null,
       "storageKey": null
     },
@@ -65,19 +88,50 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "saleArtwork",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "SaleArtwork",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "lotLabel",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "estimate",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Partner",
+      "plural": false,
+      "selections": [
+        (v0/*: any*/)
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "artists",
       "storageKey": null,
       "args": null,
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "name",
-          "args": null,
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -144,5 +198,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '19a31ace2733b8edffc8205a45dbe1ee';
+})();
+(node as any).hash = 'd3a792433b6dbc98f4c3ed94faa32b89';
 export default node;

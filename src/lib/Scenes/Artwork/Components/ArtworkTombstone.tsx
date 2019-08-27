@@ -107,6 +107,8 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   render() {
     const { artwork } = this.props
     const addedComma = artwork.date ? ", " : ""
+    const displayAuctionLotLabel = artwork.isInAuction && artwork.saleArtwork && artwork.saleArtwork.lotLabel
+
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
@@ -115,7 +117,14 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             artwork.cultural_maker &&
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
-        <Spacer mb={0.5} />
+        <Spacer mb={1} />
+        {displayAuctionLotLabel && (
+          <>
+            <Serif color="black100" size="3t" weight="semibold">
+              {`Lot ${artwork.saleArtwork.lotLabel}`}
+            </Serif>
+          </>
+        )}
         <Flex flexDirection="row" flexWrap="wrap">
           <Serif size="3t">
             <Serif italic color="black60" size="3t">
@@ -147,6 +156,22 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             .
           </Serif>
         )}
+        {artwork.isInAuction && (
+          <>
+            <Spacer mb={1} />
+            {artwork.partner && (
+              <Serif color="black100" size="3t" weight="semibold">
+                {artwork.partner.name}
+              </Serif>
+            )}
+            {artwork.saleArtwork &&
+              artwork.saleArtwork.estimate && (
+                <Serif size="3t" color="black60">
+                  Estimated value: {artwork.saleArtwork.estimate}
+                </Serif>
+              )}
+          </>
+        )}
       </Box>
     )
   }
@@ -156,9 +181,17 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
   artwork: graphql`
     fragment ArtworkTombstone_artwork on Artwork {
       title
+      isInAuction
       medium
       date
       cultural_maker: culturalMaker
+      saleArtwork {
+        lotLabel
+        estimate
+      }
+      partner {
+        name
+      }
       artists {
         name
         href
