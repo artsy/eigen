@@ -43,7 +43,7 @@ RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 
 /**
  * smoothZoom is needed because the native zoomToRect method on UIScrollView does not trigger scroll events
- * Meanwhile, we use scroll events to update the position of elemtents in the DeepZoomOverlay. So if we
+ * Meanwhile, we use scroll events to update the position of elements in the DeepZoomOverlay. So if we
  * use zoomToRect only one scroll event is dispatched for the end state and the components jump suddenly.
  * hence smoothZoom which uses a 3rd-party animation engine to update the scroll view's properties manually
  * triggering a single scroll event for each step in the animation.
@@ -114,7 +114,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
 
     CGFloat currentZoomScale = weakScrollView.scrollView.zoomScale;
     CGSize baseImageSize = CGSizeMake(weakScrollView.scrollView.contentSize.width / currentZoomScale, weakScrollView.scrollView.contentSize.height / currentZoomScale);
-    
+
     // frame size is the un-zoomed size of the scroll view
     CGSize frameSize = weakScrollView.scrollView.frame.size;
 
@@ -130,7 +130,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
       if (!strongScrollView) return;
 
       CGRect nextViewPort = INTUInterpolateCGRect(startViewPort, targetViewPort, progress);
-      
+
       // now that we have our interpolated view port we need to scale it up
 
       CGFloat scale = baseImageSize.width / nextViewPort.size.width;
