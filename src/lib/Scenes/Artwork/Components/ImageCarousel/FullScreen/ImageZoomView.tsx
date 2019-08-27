@@ -161,7 +161,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     }, [])
 
-    const maxZoomScale = calculateMaxZoomViewScale({ width, height }, image.deepZoom.Image.Size)
+    const maxZoomScale = image.deepZoom ? calculateMaxZoomViewScale({ width, height }, image.deepZoom.Image.Size) : 2
 
     // expose resetZoom so that when the user swipes, the off-screen zoom levels can be reset
     useImperativeHandle(ref, () => ({ resetZoom }), [])
@@ -306,7 +306,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
           </TouchableWithoutFeedback>
         </Animated.ScrollView>
         {(state.fullScreenState === "entered" || state.fullScreenState === "exiting") &&
-          (state.imageIndex === index || state.lastImageIndex === index) && (
+          (state.imageIndex === index || state.lastImageIndex === index) &&
+          image.deepZoom && (
             <DeepZoomOverlay
               image={image}
               width={width}

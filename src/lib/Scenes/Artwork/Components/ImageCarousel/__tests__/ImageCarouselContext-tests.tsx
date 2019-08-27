@@ -79,6 +79,8 @@ describe("image carousel context", () => {
     context.dispatch({ type: "FULL_SCREEN_FINISHED_ENTERING" })
     expect(context.state.fullScreenState).toBe("entered")
     context.dispatch({ type: "FULL_SCREEN_DISMISSED" })
+    expect(context.state.fullScreenState).toBe("exiting")
+    context.dispatch({ type: "FULL_SCREEN_FINISHED_EXITING" })
     expect(context.state.fullScreenState).toBe("none")
   })
 
