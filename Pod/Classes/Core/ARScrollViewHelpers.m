@@ -25,7 +25,7 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(optOutOfParentScrollEvents:(nonnull NSNumber *)tag)
 {
-  UIView* view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  UIView *view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
 
   if ([view isKindOfClass:RCTScrollView.class]) {
     [((RCTScrollView *) view) optOutOfParentScrollEvents];
@@ -34,7 +34,7 @@ RCT_EXPORT_METHOD(optOutOfParentScrollEvents:(nonnull NSNumber *)tag)
 
 RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 {
-  UIView* view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  UIView *view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
 
   if ([view isKindOfClass:RCTScrollView.class]) {
     [((RCTScrollView *) view) scrollViewDidScroll:((RCTScrollView *) view).scrollView];
@@ -51,10 +51,10 @@ RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 // x, y, w, and h, are relative to the un-zoomed content
 RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(nonnull NSNumber *)y w:(nonnull NSNumber *)w h:(nonnull NSNumber *)h)
 {
-  UIView* view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  UIView *view = [[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
 
   if ([view isKindOfClass:RCTScrollView.class]) {
-    __weak RCTScrollView* weakScrollView = (RCTScrollView *) view;
+    __weak RCTScrollView *weakScrollView = (RCTScrollView *) view;
 
     // first disable scrolling so the user can't interrupt the animation
     // TODO: (this doesn't seem to actually work, needs more investigation)
@@ -126,7 +126,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
 
     [INTUAnimationEngine animateWithDuration:0.34 delay:0 animations:^(CGFloat progress) {
       progress = INTUEaseInOutSine(progress);
-      __strong RCTScrollView* strongScrollView = weakScrollView;
+      __strong RCTScrollView *strongScrollView = weakScrollView;
       if (!strongScrollView) return;
 
       CGRect nextViewPort = INTUInterpolateCGRect(startViewPort, targetViewPort, progress);
@@ -145,7 +145,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
       [strongScrollView scrollViewDidScroll:strongScrollView.scrollView];
 
     } completion:^(BOOL finished) {
-      __strong RCTScrollView* strongScrollView = weakScrollView;
+      __strong RCTScrollView *strongScrollView = weakScrollView;
       if (!strongScrollView) return;
       strongScrollView.scrollView.scrollEnabled = YES;
     }];

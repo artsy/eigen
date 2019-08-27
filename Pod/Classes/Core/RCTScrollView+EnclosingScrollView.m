@@ -133,8 +133,8 @@
 - (void)optInToAllScrollEvents;
 @end
 
-void* optOutAssociatedPointer = &optOutAssociatedPointer;
-void* optOutAllAssociatedPointer = &optOutAllAssociatedPointer;
+void *optOutAssociatedPointer = &optOutAssociatedPointer;
+void *optOutAllAssociatedPointer = &optOutAllAssociatedPointer;
 
 @implementation RCTScrollView (RCTEnclosingScrollView)
 
