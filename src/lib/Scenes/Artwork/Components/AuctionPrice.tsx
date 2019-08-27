@@ -15,6 +15,24 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     return null
   }
 
+  bidText = (bidsPresent, bidsCount) => {
+    const { artwork } = this.props
+    const bidTextParts = []
+    let reserveMessage = artwork.saleArtwork.reserveMessage
+
+    if (bidsPresent) {
+      bidTextParts.push(bidsCount === 1 ? "1 bid" : bidsCount + " bids")
+      if (reserveMessage) {
+        reserveMessage = reserveMessage.toLocaleLowerCase()
+      }
+    }
+    if (reserveMessage) {
+      reserveMessage = reserveMessage + "."
+      bidTextParts.push(reserveMessage)
+    }
+    return bidTextParts.join(", ")
+  }
+
   render() {
     const { artwork } = this.props
     const { sale, saleArtwork } = artwork
@@ -41,20 +59,6 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const bidsCount = get(artwork, a => a.saleArtwork.counts.bidderPositions)
     const bidsPresent = bidsCount > 0
 
-    const bidTextParts = []
-    let reserveMessage = artwork.saleArtwork.reserveMessage
-    if (bidsPresent) {
-      bidTextParts.push(bidsCount === 1 ? "1 bid" : bidsCount + " bids")
-      if (reserveMessage) {
-        reserveMessage = reserveMessage.toLocaleLowerCase()
-      }
-    }
-    if (reserveMessage) {
-      reserveMessage = reserveMessage + "."
-      bidTextParts.push(reserveMessage)
-    }
-    const bidText = bidTextParts.join(", ")
-
     return (
       <>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
@@ -76,7 +80,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
         </Flex>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           <Sans size="2" pr={1}>
-            {bidText}
+            {this.bidText(bidsPresent, bidsCount)}
           </Sans>
           {myMaxBid && (
             <Sans size="2" color="black60" pl={1}>
