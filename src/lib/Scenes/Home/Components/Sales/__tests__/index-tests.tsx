@@ -11,12 +11,12 @@ jest.mock("../Components/ZeroState/index.html", () => "")
 jest.mock("../Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
-  const auctions = shallow(<Sales {...Object.assign({}, props, { viewer: { sales: [] } })} />)
+  const auctions = shallow(<Sales {...props} query={{ sales: [] } as any} />)
   expect(auctions.find("ZeroState").length).toEqual(1)
 })
 
 it("looks correct when rendered", () => {
-  const auctions = renderWithLayout(<Sales {...props} />, { width: 1000 })
+  const auctions = renderWithLayout(<Sales {...props as any} />, { width: 1000 })
   expect(auctions).toMatchSnapshot()
 })
 
@@ -28,7 +28,7 @@ const props = {
     loadMore: jest.fn(),
     refetch: jest.fn(),
   },
-  viewer: {
+  query: {
     sales: [
       {
         id: "wright-noma",

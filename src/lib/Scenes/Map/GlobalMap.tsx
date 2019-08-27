@@ -786,9 +786,13 @@ const SelectedCluster = styled(Flex)`
   align-items: center;
 `
 
+// FIXME: This should not take the Query type but just City.
+//
+// NOTE: Not renamed the prop from `viewer` becuase there's too much indirection in how the city data is used and it's
+//       too easy to miss a place that needs to be updated. This should be cleaned up when the above FIXME is addressed.
 export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
   viewer: graphql`
-    fragment GlobalMap_viewer on Viewer @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
+    fragment GlobalMap_viewer on Query @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
       city(slug: $citySlug) {
         name
         slug

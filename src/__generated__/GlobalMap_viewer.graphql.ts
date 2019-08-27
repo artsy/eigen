@@ -443,7 +443,7 @@ v19 = [
 return {
   "kind": "Fragment",
   "name": "GlobalMap_viewer",
-  "type": "Viewer",
+  "type": "Query",
   "metadata": null,
   "argumentDefinitions": [
     {
@@ -770,5 +770,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7d24d12a8e10b27bf6528932b2abe624';
+(node as any).hash = '53446e45f521a86c17c04ad7873626f4';
 export default node;

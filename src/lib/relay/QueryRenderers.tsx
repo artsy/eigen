@@ -230,9 +230,7 @@ export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ rende
       environment={environment}
       query={graphql`
         query QueryRenderersWorksForYouQuery($selectedArtist: String!) {
-          viewer {
-            ...WorksForYou_viewer @arguments(selectedArtist: $selectedArtist)
-          }
+          ...WorksForYou_query @arguments(selectedArtist: $selectedArtist)
         }
       `}
       variables={{
@@ -416,9 +414,7 @@ export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ render, c
       environment={environment}
       query={graphql`
         query QueryRenderersCitySavedListQuery($citySlug: String!) {
-          viewer {
-            ...CitySavedList_viewer
-          }
+          ...CitySavedList_viewer
         }
       `}
       variables={{ citySlug }}

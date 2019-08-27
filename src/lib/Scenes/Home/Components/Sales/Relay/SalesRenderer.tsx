@@ -9,9 +9,7 @@ export function SalesRenderer({ render }) {
       environment={defaultEnvironment}
       query={graphql`
         query SalesRendererQuery {
-          viewer {
-            ...Sales_viewer
-          }
+          ...Sales_query
         }
       `}
       variables={{}}

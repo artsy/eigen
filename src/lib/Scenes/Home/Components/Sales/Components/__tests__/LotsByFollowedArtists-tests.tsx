@@ -16,7 +16,7 @@ describe("LotsByFollowedArtists", () => {
         loadMore: jest.fn(),
         isLoading: jest.fn(),
       },
-      viewer: {
+      query: {
         sale_artworks: {
           edges: [
             {

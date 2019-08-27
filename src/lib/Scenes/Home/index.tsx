@@ -123,7 +123,9 @@ export default class Home extends React.Component<Props, State> {
       wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
           <Tab tabLabel=" Artists">
             <WorksForYouRenderer
-              render={renderWithLoadProgress(WorksForYou)}
+              render={renderWithLoadProgress(query => (
+                <WorksForYou query={query as any} />
+              ))}
               selectedArtist={this.props.selectedArtist}
             />
           </Tab>
@@ -131,7 +133,11 @@ export default class Home extends React.Component<Props, State> {
             <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
           </Tab>
           <Tab tabLabel=" Auctions">
-            <SalesRenderer render={renderWithLoadProgress(Sales)} />
+            <SalesRenderer
+              render={renderWithLoadProgress(query => (
+                <Sales query={query as any} />
+              ))}
+            />
           </Tab>
         </ScrollableTabView>
         {!!showConsignmentsSash && (

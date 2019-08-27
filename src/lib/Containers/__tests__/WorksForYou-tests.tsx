@@ -21,11 +21,11 @@ describe("with notifications", () => {
   })
 
   it("updates the notification count", () => {
-    const viewer = notificationsResponse().viewer
+    const query = notificationsResponse().query
     renderer
       .create(
         <Theme>
-          <WorksForYou viewer={viewer as any} relay={null} />
+          <WorksForYou query={query as any} relay={null} />
         </Theme>
       )
       .toJSON()
@@ -33,14 +33,14 @@ describe("with notifications", () => {
   })
 
   it("lays out correctly on small screens", () => {
-    const viewer = notificationsResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer as any} relay={null} />, { width: 100 })
+    const query = notificationsResponse().query
+    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 100 })
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
-    const viewer = notificationsResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer as any} relay={null} />, { width: 700 })
+    const query = notificationsResponse().query
+    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })
@@ -53,7 +53,7 @@ describe("when it has a special notification", () => {
       id: "notification-juliana-huxtable",
       message: "1 Work Added",
       artists: "Juliana Huxtable",
-      artworks: selectedArtistResponse().viewer.selectedArtist.artworks,
+      artworks: selectedArtistResponse().query.selectedArtist.artworks,
       image: {
         resized: {
           url: "cloudfront.url",
@@ -72,20 +72,20 @@ describe("without notifications", () => {
   })
 
   it("lays out correctly on small screens", () => {
-    const viewer = emptyStateResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer as any} relay={null} />, { width: 100 })
+    const query = emptyStateResponse().query
+    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 100 })
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
-    const viewer = emptyStateResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer as any} relay={null} />, { width: 700 })
+    const query = emptyStateResponse().query
+    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })
 
 interface NotificationsResponse {
-  viewer: {
+  query: {
     me: {
       followsAndSaves: {
         notifications: {
@@ -115,7 +115,7 @@ interface NotificationsResponse {
 
 const notificationsResponse = () => {
   return {
-    viewer: {
+    query: {
       me: {
         followsAndSaves: {
           notifications: {
@@ -158,7 +158,7 @@ const notificationsResponse = () => {
 
 const emptyStateResponse = () => {
   return {
-    viewer: {
+    query: {
       me: {
         followsAndSaves: {
           notifications: {
@@ -176,7 +176,7 @@ const emptyStateResponse = () => {
 const selectedArtistResponse = () => {
   {
     const response = notificationsResponse()
-    response.viewer.selectedArtist = {
+    response.query.selectedArtist = {
       slug: "juliana-huxtable",
       name: "Juliana Huxtable",
       href: "artist/juliana-huxtable",
