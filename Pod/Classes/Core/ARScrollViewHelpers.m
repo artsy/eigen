@@ -100,7 +100,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
     // +-------------------------------------------------------+
 
     // in this situation the current viewport would have a y value of something like -30 while the target view
-    // port would havge a y value of about +25 because they are relative to the base image and it's original dimensions
+    // port would have a y value of about +25 because they are relative to the base image and it's original dimensions
     // even if the scroll view if zoomed in or panned around.
 
     // so to do this zoom we'll calculate the current view port in these terms and then animate it towards the target
@@ -119,7 +119,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
     CGRect targetViewPort = CGRectMake([x floatValue], [y floatValue], [w floatValue], [h floatValue]);
 
     __weak RCTScrollView *weakScrollView = view;
-   
+
     [INTUAnimationEngine animateWithDuration:0.34 delay:0 animations:^(CGFloat progress) {
       progress = INTUEaseInOutSine(progress);
       __strong RCTScrollView *strongScrollView = weakScrollView;
