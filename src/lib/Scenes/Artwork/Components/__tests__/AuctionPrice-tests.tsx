@@ -85,113 +85,53 @@ describe("AuctionPrice", () => {
   describe("open auction with no reserve with bids present", () => {
     it("displays proper current bid info including bid count", async () => {
       const wrapper = await getWrapper(OpenAuctionNoReserveWithBids)
+      const texts = wrapper.find(Sans).map(x => x.text())
 
-      expect(
-        wrapper
-          .find(Sans)
-          .at(0)
-          .text()
-      ).toContain("Current bid")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("$850")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(2)
-          .text()
-      ).toContain("11 bids")
+      expect(texts).toContain("Current bid")
+      expect(texts).toContain("$850")
+      expect(texts).toContain("11 bids")
     })
   })
 
   describe("for open auction with reserve and no bids", () => {
     it("displays proper starting bid info and resserve message", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNoBids)
+      const texts = wrapper.find(Sans).map(x => x.text())
 
-      expect(
-        wrapper
-          .find(Sans)
-          .at(0)
-          .text()
-      ).toContain("Starting bid")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(2)
-          .text()
-      ).toContain("This work has a reserve.")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("$3,000")
+      expect(texts).toContain("Starting bid")
+      expect(texts).toContain("This work has a reserve.")
+      expect(texts).toContain("$3,000")
     })
   })
 
   describe("for open auction with some bids and reserve not met", () => {
     it("displays current bid message inculding reserve warning", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNotMetWithBids)
+      const texts = wrapper.find(Sans).map(x => x.text())
 
-      expect(
-        wrapper
-          .find(Sans)
-          .at(0)
-          .text()
-      ).toContain("Current bid")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(2)
-          .text()
-      ).toContain("2 bids, reserve not met.")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("$10,000")
+      expect(texts).toContain("Current bid")
+      expect(texts).toContain("2 bids, reserve not met.")
+      expect(texts).toContain("$10,000")
     })
   })
 
   describe("for open auction with some bids and satisfied reserve", () => {
     it("displays current bid message inculding reserve met", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithBids)
+      const texts = wrapper.find(Sans).map(x => x.text())
 
-      expect(
-        wrapper
-          .find(Sans)
-          .at(0)
-          .text()
-      ).toContain("Current bid")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(2)
-          .text()
-      ).toContain("2 bids, reserve met.")
-      expect(
-        wrapper
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("$500")
+      expect(texts).toContain("Current bid")
+      expect(texts).toContain("2 bids, reserve met.")
+      expect(texts).toContain("$500")
     })
   })
 
   describe("for open auction with my bid winning", () => {
     it("displays max bid and winning indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithMyWinningBid)
+      const texts = wrapper.find(Sans).map(x => x.text())
 
-      expect(
-        wrapper
-          .find(Sans)
-          .at(3)
-          .text()
-      ).toContain("Your max: $15,000")
+      expect(texts).toContain("Your max: $15,000")
       expect(wrapper.find(CheckCircleIcon).length).toBe(1)
     })
   })
@@ -199,13 +139,9 @@ describe("AuctionPrice", () => {
   describe("for open auction with my bid losing", () => {
     it("displays max bid and losing indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithMyLosingBid)
+      const texts = wrapper.find(Sans).map(x => x.text())
 
-      expect(
-        wrapper
-          .find(Sans)
-          .at(3)
-          .text()
-      ).toContain("Your max: $400")
+      expect(texts).toContain("Your max: $400")
       expect(wrapper.find(CloseCircleIcon).length).toBe(1)
     })
   })
@@ -213,13 +149,9 @@ describe("AuctionPrice", () => {
   describe("for open auction with me increasing my max bid while winning", () => {
     it("displays max bid and winning indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNotMetIncreasingOwnBid)
+      const texts = wrapper.find(Sans).map(x => x.text())
 
-      expect(
-        wrapper
-          .find(Sans)
-          .at(3)
-          .text()
-      ).toContain("Your max: $15,000")
+      expect(texts).toContain("Your max: $15,000")
       expect(wrapper.find(CheckCircleIcon).length).toBe(1)
     })
   })
