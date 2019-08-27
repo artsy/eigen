@@ -11,6 +11,7 @@ interface AuctionPriceProps {
 
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
   handleBuyersPremiumTap = () => {
+    // FIXME: This tap needs to be added
     return null
   }
 
