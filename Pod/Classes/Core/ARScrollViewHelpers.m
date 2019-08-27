@@ -8,7 +8,7 @@
 #import <math.h>
 #import "INTUAnimationEngine.h"
 
-#import "RCTScrollView+EnclosingScrollView.h"
+#import "RCTScrollView+Artsy.h"
 
 @implementation ARScrollViewHelpers
 

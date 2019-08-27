@@ -14,7 +14,7 @@
 //      account.
 //
 
-#import "RCTScrollView+EnclosingScrollView.h"
+#import "RCTScrollView+Artsy.h"
 
 #import <React/RCTScrollView.h>
 #import <React/RCTComponent.h>
@@ -101,7 +101,7 @@
 @end
 
 
-@implementation RCTScrollEvent (RCTEnclosingScrollView)
+@implementation RCTScrollEvent (Artsy)
 
 - (RCTDescendantScrollEvent *)scrollEventForScrollView:(UIScrollView *)scrollView
                        relativeFromEnclosingScrollView:(UIScrollView *)enclosingScrollView
@@ -132,7 +132,7 @@
 void *optOutAssociatedPointer = &optOutAssociatedPointer;
 void *optOutAllAssociatedPointer = &optOutAllAssociatedPointer;
 
-@implementation RCTScrollView (RCTEnclosingScrollView)
+@implementation RCTScrollView (Artsy)
 
 // Provide the ability to opt out of scroll event propagation from parents to children.
 // The child opts out of receiving them.

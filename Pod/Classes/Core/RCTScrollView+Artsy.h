@@ -1,6 +1,6 @@
 #import <React/RCTScrollView.h>
 
-@interface RCTScrollView (RCTEnclosingScrollView)
+@interface RCTScrollView (Artsy)
 - (void)optOutOfParentScrollEvents;
 - (void)optOutOfAllScrollEvents;
 - (void)optInToAllScrollEvents;
