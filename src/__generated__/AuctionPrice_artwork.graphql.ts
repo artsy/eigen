@@ -7,6 +7,8 @@ export type AuctionPrice_artwork = {
     readonly slug: string;
     readonly sale: {
         readonly isWithBuyersPremium: boolean | null;
+        readonly isClosed: boolean | null;
+        readonly isLiveOpen: boolean | null;
     } | null;
     readonly saleArtwork: {
         readonly isWithReserve: boolean | null;
@@ -71,6 +73,20 @@ return {
           "kind": "ScalarField",
           "alias": null,
           "name": "isWithBuyersPremium",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isClosed",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isLiveOpen",
           "args": null,
           "storageKey": null
         }
@@ -195,5 +211,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bfcf3229fe2931136f33b2ac2fce5fd4';
+(node as any).hash = 'df0946307e89861a71e867aaf023cb02';
 export default node;

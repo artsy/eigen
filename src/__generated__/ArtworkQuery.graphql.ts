@@ -362,6 +362,8 @@ fragment AuctionPrice_artwork on Artwork {
   slug
   sale {
     isWithBuyersPremium
+    isClosed
+    isLiveOpen
     id
   }
   saleArtwork {
@@ -1851,7 +1853,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "6c8eb80cd63697f93f37bd398af452f5",
+    "id": "882fc402ae6192e35547938daf0a1b74",
     "text": null,
     "metadata": {}
   }

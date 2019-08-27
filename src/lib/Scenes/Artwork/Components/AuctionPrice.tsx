@@ -18,7 +18,17 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const { artwork } = this.props
     const { sale, saleArtwork } = artwork
 
-    if (!saleArtwork) {
+    if (sale.isLiveOpen) {
+      // We do not have reliable Bid info for artworks in Live sales in progress
+      return null
+    } else if (sale.isClosed) {
+      return (
+        <Sans size="4t" weight="medium" color="black100">
+          Bidding closed
+        </Sans>
+      )
+    } else if (!saleArtwork || !saleArtwork.currentBid) {
+      // Don't display anything if there is no starting bid info
       return null
     }
 
@@ -96,6 +106,8 @@ export const AuctionPriceFragmentContainer = createFragmentContainer(AuctionPric
       slug
       sale {
         isWithBuyersPremium
+        isClosed
+        isLiveOpen
       }
       saleArtwork {
         isWithReserve
