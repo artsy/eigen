@@ -5,6 +5,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionCountDownTimerFragmentContainer as AuctionCountDownTimer } from "./AuctionCountDownTimer"
+import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -22,7 +23,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     editionSetID: null,
   }
 
-  renderSingleEditionWork = () => {
+  renderSingleEditionArtwork = () => {
     const { artwork } = this.props
     const saleMessage = artwork.saleMessage === "Contact For Price" ? "Contact for price" : artwork.saleMessage
 
@@ -36,7 +37,19 @@ export class CommercialInformation extends React.Component<CommercialInformation
     )
   }
 
-  renderEditionSetWork = () => {
+  renderPriceInformation = () => {
+    const { artwork } = this.props
+    const { isInAuction } = artwork
+    if (isInAuction) {
+      return <AuctionPrice artwork={artwork} />
+    } else if (artwork.editionSets && artwork.editionSets.length > 1) {
+      return this.renderEditionSetArtwork()
+    } else {
+      return this.renderSingleEditionArtwork()
+    }
+  }
+
+  renderEditionSetArtwork = () => {
     const { artwork } = this.props
     return (
       <CommercialEditionSetInformation
@@ -54,14 +67,13 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { artwork } = this.props
     const { editionSetID } = this.state
     const { isAcquireable, isOfferable, isInquireable, isInAuction, sale } = artwork
-    const shouldRenderButtons = isAcquireable || isOfferable || isInquireable
+    const showAuctionTimerAndButton = isInAuction && sale && !sale.isClosed
+    const shouldRenderButtons = isAcquireable || isOfferable || isInquireable || showAuctionTimerAndButton
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
 
     return (
       <>
-        {artwork.editionSets && artwork.editionSets.length > 1
-          ? this.renderEditionSetWork()
-          : this.renderSingleEditionWork()}
+        {this.renderPriceInformation()}
         <Box>
           {shouldRenderButtons && (
             <>
@@ -69,14 +81,12 @@ export class CommercialInformation extends React.Component<CommercialInformation
               <CommercialButtons artwork={artwork} editionSetID={editionSetID} />
             </>
           )}
-          {isInAuction &&
-            sale &&
-            !sale.isClosed && (
-              <>
-                <Spacer mb={2} />
-                <AuctionCountDownTimer artwork={artwork} />
-              </>
-            )}
+          {showAuctionTimerAndButton && (
+            <>
+              <Spacer mb={2} />
+              <AuctionCountDownTimer artwork={artwork} />
+            </>
+          )}
           {(!!consignableArtistsCount || isAcquireable || isInquireable) && (
             <>
               <Spacer mb={2} />
@@ -122,6 +132,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       ...CommercialEditionSetInformation_artwork
       ...AuctionCountDownTimer_artwork
       ...ArtworkExtraLinks_artwork
+      ...AuctionPrice_artwork
     }
   `,
 })
