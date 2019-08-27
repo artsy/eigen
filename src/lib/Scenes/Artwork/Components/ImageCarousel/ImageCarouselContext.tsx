@@ -9,13 +9,13 @@ export interface ImageDescriptor {
   width: number
   height: number
   deepZoom: {
-    Image: {
-      TileSize: number
-      Url: string
-      Format: string
-      Size: {
-        Width: number
-        Height: number
+    image: {
+      tileSize: number
+      url: string
+      format: string
+      size: {
+        width: number
+        height: number
       }
     }
   }

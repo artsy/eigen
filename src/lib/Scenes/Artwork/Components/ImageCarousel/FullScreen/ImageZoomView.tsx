@@ -161,7 +161,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       }
     }, [])
 
-    const maxZoomScale = image.deepZoom ? calculateMaxZoomViewScale({ width, height }, image.deepZoom.Image.Size) : 2
+    const maxZoomScale = image.deepZoom ? calculateMaxZoomViewScale({ width, height }, image.deepZoom.image.size) : 2
 
     // expose resetZoom so that when the user swipes, the off-screen zoom levels can be reset
     useImperativeHandle(ref, () => ({ resetZoom }), [])

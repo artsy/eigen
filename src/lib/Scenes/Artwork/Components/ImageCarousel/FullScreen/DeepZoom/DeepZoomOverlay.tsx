@@ -30,7 +30,7 @@ export interface DeepZoomOverlayProps {
 export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   image: {
     deepZoom: {
-      Image: { Format, Size: fullImageSize, TileSize, Url },
+      image: { format, size: fullImageSize, tileSize, url },
     },
   },
   width,
@@ -72,11 +72,11 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
             zoomScaleBoundaries={zoomScaleBoundaries[level]}
             levelDimensions={levels[level]}
             imageFittedWithinScreen={imageFittedWithinScreen}
-            makeUrl={({ row, col }) => `${Url}${level}/${col}_${row}.${Format}`}
+            makeUrl={({ row, col }) => `${url}${level}/${col}_${row}.${format}`}
             $contentOffsetX={$contentOffsetX}
             $contentOffsetY={$contentOffsetY}
             $zoomScale={$zoomScale}
-            tileSize={TileSize}
+            tileSize={tileSize}
             viewPortChanges={viewPortChanges}
             triggerScrollEvent={triggerScrollEvent}
             key={level}

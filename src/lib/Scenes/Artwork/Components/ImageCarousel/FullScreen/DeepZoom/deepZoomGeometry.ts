@@ -1,17 +1,17 @@
 import { Rect, Size } from "../../geometry"
 import { ImageDescriptor } from "../../ImageCarouselContext"
 
-type DeepZoomImageSize = ImageDescriptor["deepZoom"]["Image"]["Size"]
+type DeepZoomImageSize = ImageDescriptor["deepZoom"]["image"]["size"]
 
 /**
  * The way that deep zoom images are created is by halving the original image
  * dimensions (rounding up to the nearest pixel at each step) recursively
  * until you get to 1px * 1px. This function does eactly that to the original image's dimensions.
  */
-export const calculateDeepZoomLevels = ({ Width, Height }: DeepZoomImageSize) => {
-  const result: Size[] = [{ width: Width, height: Height }]
-  let w = Width
-  let h = Height
+export const calculateDeepZoomLevels = ({ width, height }: DeepZoomImageSize) => {
+  const result: Size[] = [{ width, height }]
+  let w = width
+  let h = height
   while (w !== 1 || h !== 1) {
     w = Math.ceil(w / 2)
     h = Math.ceil(h / 2)
@@ -24,7 +24,7 @@ export const calculateDeepZoomLevels = ({ Width, Height }: DeepZoomImageSize) =>
  * calculates the max ScrollView.zoomScale for this image
  */
 export const calculateMaxZoomViewScale = (imageFittedWithinScreen: Size, fullResolutionImage: DeepZoomImageSize) => {
-  return fullResolutionImage.Height / imageFittedWithinScreen.height
+  return fullResolutionImage.height / imageFittedWithinScreen.height
 }
 
 /**

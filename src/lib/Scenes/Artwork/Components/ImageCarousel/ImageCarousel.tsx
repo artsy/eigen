@@ -92,13 +92,13 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
       width
       height
       deepZoom {
-        Image {
-          TileSize
-          Url
-          Format
-          Size {
-            Width
-            Height
+        image: Image {
+          tileSize: TileSize
+          url: Url
+          format: Format
+          size: Size {
+            width: Width
+            height: Height
           }
         }
       }

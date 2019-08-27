@@ -449,13 +449,13 @@ fragment ImageCarousel_images on Image {
   width
   height
   deepZoom {
-    Image {
-      TileSize
-      Url
-      Format
-      Size {
-        Width
-        Height
+    image: Image {
+      tileSize: TileSize
+      url: Url
+      format: Format
+      size: Size {
+        width: Width
+        height: Height
       }
     }
   }
@@ -1629,7 +1629,7 @@ return {
                 "selections": [
                   {
                     "kind": "LinkedField",
-                    "alias": null,
+                    "alias": "image",
                     "name": "Image",
                     "storageKey": null,
                     "args": null,
@@ -1638,28 +1638,28 @@ return {
                     "selections": [
                       {
                         "kind": "ScalarField",
-                        "alias": null,
+                        "alias": "tileSize",
                         "name": "TileSize",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
+                        "alias": "url",
                         "name": "Url",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": null,
+                        "alias": "format",
                         "name": "Format",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "LinkedField",
-                        "alias": null,
+                        "alias": "size",
                         "name": "Size",
                         "storageKey": null,
                         "args": null,
@@ -1668,14 +1668,14 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": null,
+                            "alias": "width",
                             "name": "Width",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": null,
+                            "alias": "height",
                             "name": "Height",
                             "args": null,
                             "storageKey": null
@@ -1830,7 +1830,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "cce26cf37e4efa2ead14e9fc1fc75151",
+    "id": "5380520551987bed1f967aa4284e4de2",
     "text": null,
     "metadata": {}
   }

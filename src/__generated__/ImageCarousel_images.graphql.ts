@@ -8,13 +8,13 @@ export type ImageCarousel_images = ReadonlyArray<{
     readonly width: number | null;
     readonly height: number | null;
     readonly deepZoom: {
-        readonly Image: {
-            readonly TileSize: number | null;
-            readonly Url: string | null;
-            readonly Format: string | null;
-            readonly Size: {
-                readonly Width: number | null;
-                readonly Height: number | null;
+        readonly image: {
+            readonly tileSize: number | null;
+            readonly url: string | null;
+            readonly format: string | null;
+            readonly size: {
+                readonly width: number | null;
+                readonly height: number | null;
             } | null;
         } | null;
     } | null;
@@ -64,7 +64,7 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": null,
+          "alias": "image",
           "name": "Image",
           "storageKey": null,
           "args": null,
@@ -73,28 +73,28 @@ const node: ReaderFragment = {
           "selections": [
             {
               "kind": "ScalarField",
-              "alias": null,
+              "alias": "tileSize",
               "name": "TileSize",
               "args": null,
               "storageKey": null
             },
             {
               "kind": "ScalarField",
-              "alias": null,
+              "alias": "url",
               "name": "Url",
               "args": null,
               "storageKey": null
             },
             {
               "kind": "ScalarField",
-              "alias": null,
+              "alias": "format",
               "name": "Format",
               "args": null,
               "storageKey": null
             },
             {
               "kind": "LinkedField",
-              "alias": null,
+              "alias": "size",
               "name": "Size",
               "storageKey": null,
               "args": null,
@@ -103,14 +103,14 @@ const node: ReaderFragment = {
               "selections": [
                 {
                   "kind": "ScalarField",
-                  "alias": null,
+                  "alias": "width",
                   "name": "Width",
                   "args": null,
                   "storageKey": null
                 },
                 {
                   "kind": "ScalarField",
-                  "alias": null,
+                  "alias": "height",
                   "name": "Height",
                   "args": null,
                   "storageKey": null
@@ -123,5 +123,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0780056a1bed78087f97a187fa064357';
+(node as any).hash = 'bf73dd1dcad59fcf94c60e75a95292ce';
 export default node;
