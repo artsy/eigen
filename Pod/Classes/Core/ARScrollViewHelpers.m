@@ -8,11 +8,7 @@
 #import <math.h>
 #import "INTUAnimationEngine.h"
 
-@interface RCTScrollView (EnclosingScrollView)
--(void)optOutOfParentScrollEvents;
--(void)optOutOfAllScrollEvents;
--(void)optInToAllScrollEvents;
-@end
+#import "RCTScrollView+EnclosingScrollView.h"
 
 @implementation ARScrollViewHelpers
 

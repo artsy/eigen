@@ -14,6 +14,8 @@
 //      account.
 //
 
+#import "RCTScrollView+EnclosingScrollView.h"
+
 #import <React/RCTScrollView.h>
 #import <React/RCTComponent.h>
 #import <React/UIView+React.h>
@@ -125,12 +127,6 @@
 
 }
 
-@end
-
-@interface RCTScrollView (RCTEnclosingScrollView)
-- (void)optOutOfParentScrollEvents;
-- (void)optOutOfAllScrollEvents;
-- (void)optInToAllScrollEvents;
 @end
 
 void *optOutAssociatedPointer = &optOutAssociatedPointer;
