@@ -39,9 +39,8 @@ export class CommercialInformation extends React.Component<CommercialInformation
 
   renderPriceInformation = () => {
     const { artwork } = this.props
-    const { isInAuction, sale } = artwork
-    const showAuctionFlow = isInAuction && sale && !sale.isClosed
-    if (showAuctionFlow) {
+    const { isInAuction } = artwork
+    if (isInAuction) {
       return <AuctionPrice artwork={artwork} />
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
       return this.renderEditionSetArtwork()
@@ -68,8 +67,8 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { artwork } = this.props
     const { editionSetID } = this.state
     const { isAcquireable, isOfferable, isInquireable, isInAuction, sale } = artwork
-    const showAuctionFlow = isInAuction && sale && !sale.isClosed
-    const shouldRenderButtons = isAcquireable || isOfferable || isInquireable || showAuctionFlow
+    const showAuctionTimerAndButton = isInAuction && sale && !sale.isClosed
+    const shouldRenderButtons = isAcquireable || isOfferable || isInquireable || showAuctionTimerAndButton
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
 
     return (
@@ -82,7 +81,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
               <CommercialButtons artwork={artwork} editionSetID={editionSetID} />
             </>
           )}
-          {showAuctionFlow && (
+          {showAuctionTimerAndButton && (
             <>
               <Spacer mb={2} />
               <AuctionCountDownTimer artwork={artwork} />
