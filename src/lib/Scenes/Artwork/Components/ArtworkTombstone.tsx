@@ -124,11 +124,9 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         </Flex>
         <Spacer mb={1} />
         {displayAuctionLotLabel && (
-          <>
-            <Serif color="black100" size="3t" weight="semibold">
-              {`Lot ${artwork.saleArtwork.lotLabel}`}
-            </Serif>
-          </>
+          <Serif color="black100" size="3t" weight="semibold">
+            Lot {artwork.saleArtwork.lotLabel}
+          </Serif>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
           <Serif size="3t">
