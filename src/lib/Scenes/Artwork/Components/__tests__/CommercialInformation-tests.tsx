@@ -4,6 +4,9 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
+import { AuctionCountDownTimer } from "../AuctionCountDownTimer"
+import { BidButton } from "../CommercialButtons/BidButton"
+import { BuyNowButton } from "../CommercialButtons/BuyNowButton"
 import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformation } from "../CommercialInformation"
@@ -174,6 +177,29 @@ describe("CommercialInformation", () => {
   })
 })
 
+describe("CommercialInformation buttons and coundtown timer", () => {
+  it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationArtworkInAuction} />
+      </Theme>
+    )
+    expect(component.find(AuctionCountDownTimer).length).toEqual(1)
+    expect(component.find(BidButton).length).toEqual(1)
+  })
+
+  it("doesn't render CountDownTimer or BidButton when not in auction", () => {
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationAcquierableArtwork} />
+      </Theme>
+    )
+    expect(component.find(AuctionCountDownTimer).length).toEqual(0)
+    expect(component.find(BidButton).length).toEqual(0)
+    expect(component.find(BuyNowButton).length).toEqual(1)
+  })
+})
+
 const CommercialInformationArtwork = {
   ...ArtworkFixture,
   ...{
@@ -205,4 +231,33 @@ const CommercialInformationArtwork = {
     " $fragmentRefs": null,
     " $refType": null,
   },
+}
+
+const CommercialInformationArtworkInAuction = {
+  ...CommercialInformationArtwork,
+  isInAuction: true,
+  sale: {
+    isClosed: false,
+    startAt: "2019-08-15T19:22:00+00:00",
+    endAt: "2019-08-16T20:20:00+00:00",
+    liveStartAt: null,
+    formattedStartDateTime: "Ends Aug 16 at 8:20pm UTC",
+  },
+  saleArtwork: {
+    increments: [
+      {
+        cents: 11000000,
+        display: "CHF110,000",
+      },
+      {
+        cents: 12000000,
+        display: "CHF120,000",
+      },
+    ],
+  },
+}
+
+const CommercialInformationAcquierableArtwork = {
+  ...CommercialInformationArtwork,
+  isAcquireable: true,
 }

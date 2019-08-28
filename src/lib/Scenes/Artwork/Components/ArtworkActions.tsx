@@ -92,7 +92,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = heightCm / 2.54
     const widthIn = widthCm / 2.54
 
-    ApiModule.presentAugmentedRealityVIR(image.url, heightIn, widthIn, slug, id)
+    ApiModule.presentAugmentedRealityVIR(image.url, widthIn, heightIn, slug, id)
   }
 
   render() {

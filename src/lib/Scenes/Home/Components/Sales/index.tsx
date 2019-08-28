@@ -1,3 +1,4 @@
+import { Sales_query } from "__generated__/Sales_query.graphql"
 import React from "react"
 import { RefreshControl, SectionList, StyleSheet } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -7,12 +8,7 @@ import { ZeroState } from "./Components/ZeroState"
 
 interface Props {
   relay: RelayRefetchProp
-  viewer: {
-    sales: Array<{
-      href: string | null
-      live_start_at: string | null
-    }>
-  }
+  query: Sales_query
 }
 
 interface State {
@@ -25,14 +21,13 @@ class Sales extends React.Component<Props, State> {
   }
 
   get data() {
-    const { viewer } = this.props
-    const liveAuctions = viewer.sales.filter(a => !!a.live_start_at)
-    const timedAuctions = viewer.sales.filter(a => !a.live_start_at)
+    const { sales } = this.props.query
+    const liveAuctions = sales.filter(a => !!a.live_start_at)
+    const timedAuctions = sales.filter(a => !a.live_start_at)
 
     return {
       liveAuctions,
       timedAuctions,
-      viewer,
     }
   }
 
@@ -53,7 +48,7 @@ class Sales extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.props.viewer.sales.length === 0) {
+    if (this.props.query.sales.length === 0) {
       return <ZeroState />
     }
 
@@ -70,9 +65,9 @@ class Sales extends React.Component<Props, State> {
         renderItem: props => <SaleList {...props} />,
       },
       {
-        data: [{ data: this.data.viewer }],
+        data: [],
         title: "Lots by Artists You Follow",
-        renderItem: props => <LotsByFollowedArtists title={props.section.title} viewer={props.item.data} />,
+        renderItem: props => <LotsByFollowedArtists title={props.section.title} query={this.props.query} />,
       },
     ]
 
@@ -92,22 +87,20 @@ class Sales extends React.Component<Props, State> {
 export default createRefetchContainer(
   Sales,
   {
-    viewer: graphql`
-      fragment Sales_viewer on Viewer {
+    query: graphql`
+      fragment Sales_query on Query {
         sales(live: true, isAuction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {
           ...SaleListItem_sale
           href
           live_start_at: liveStartAt
         }
-        ...LotsByFollowedArtists_viewer
+        ...LotsByFollowedArtists_query
       }
     `,
   },
   graphql`
     query SalesQuery {
-      viewer {
-        ...Sales_viewer
-      }
+      ...Sales_query
     }
   `
 )

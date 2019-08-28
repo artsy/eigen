@@ -82,7 +82,7 @@ v1 = {
 return {
   "kind": "Fragment",
   "name": "CitySavedList_viewer",
-  "type": "Viewer",
+  "type": "Query",
   "metadata": {
     "connection": [
       {
@@ -423,5 +423,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f0fc7db2adc7d57c243ba3f19889317c';
+(node as any).hash = '8061b1394cfb26df8750b0b1b2e6630f';
 export default node;
