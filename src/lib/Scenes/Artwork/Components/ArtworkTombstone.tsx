@@ -140,12 +140,17 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             )}
           </Serif>
         </Flex>
-        <Serif color="black60" size="3t">
-          {artwork.medium}
-        </Serif>
-        <Serif color="black60" size="3t">
-          {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
-        </Serif>
+        {!!artwork.medium && (
+          <Serif color="black60" size="3t">
+            {artwork.medium}
+          </Serif>
+        )}
+        {!!artwork.dimensions.in &&
+          artwork.dimensions.cm && (
+            <Serif color="black60" size="3t">
+              {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
+            </Serif>
+          )}
         {!!artwork.edition_of && (
           <Serif color="black60" size="3t">
             {artwork.edition_of}
