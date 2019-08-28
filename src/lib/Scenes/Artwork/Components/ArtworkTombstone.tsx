@@ -146,7 +146,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           </Serif>
         )}
         {!!artwork.dimensions.in &&
-          artwork.dimensions.cm && (
+          !!artwork.dimensions.cm && (
             <Serif color="black60" size="3t">
               {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
             </Serif>
