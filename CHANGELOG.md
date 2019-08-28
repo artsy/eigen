@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.14.0
+
 ### 1.13.1-0
 
 - Adds Auction lot tombstone data to Artwork - kierangillen
