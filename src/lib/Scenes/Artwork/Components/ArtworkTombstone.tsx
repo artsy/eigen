@@ -133,7 +133,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             <Serif italic color="black60" size="3t">
               {artwork.title + addedComma}
             </Serif>
-            {artwork.date && (
+            {!!artwork.date && (
               <Serif color="black60" size="3t">
                 {artwork.date}
               </Serif>
@@ -156,7 +156,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             {artwork.edition_of}
           </Serif>
         )}
-        {artwork.attribution_class && (
+        {!!artwork.attribution_class && (
           <Serif color="black60" size="3t" mt={1}>
             <TouchableWithoutFeedback onPress={() => this.handleTap("/artwork-classifications")}>
               <Text style={{ textDecorationLine: "underline" }}>{artwork.attribution_class.shortDescription}</Text>
@@ -164,18 +164,18 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             .
           </Serif>
         )}
-        {artwork.isInAuction &&
-          artwork.sale &&
+        {!!artwork.isInAuction &&
+          !!artwork.sale &&
           !artwork.sale.isClosed && (
             <>
               <Spacer mb={1} />
-              {artwork.partner && (
+              {!!artwork.partner && (
                 <Serif color="black100" size="3t" weight="semibold">
                   {artwork.partner.name}
                 </Serif>
               )}
-              {artwork.saleArtwork &&
-                artwork.saleArtwork.estimate && (
+              {!!artwork.saleArtwork &&
+                !!artwork.saleArtwork.estimate && (
                   <Serif size="3t" color="black60">
                     Estimated value: {artwork.saleArtwork.estimate}
                   </Serif>
