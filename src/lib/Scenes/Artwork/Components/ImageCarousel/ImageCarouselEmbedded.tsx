@@ -1,17 +1,18 @@
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
-import React, { useCallback, useContext, useMemo } from "react"
-import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import React, { useCallback, useContext } from "react"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
-const windowWidth = Dimensions.get("window").width
-// The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-const cardHeight = windowWidth >= 375 ? 340 : 290
-export const embeddedCardBoundingBox = { width: windowWidth, height: cardHeight }
-
 // This is the main image caoursel visible on the root of the artwork page
 export const ImageCarouselEmbedded = observer(() => {
+  const screenDimensions = useScreenDimensions()
+  // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  const cardHeight = screenDimensions.width >= 375 ? 340 : 290
+  const embeddedCardBoundingBox = { width: screenDimensions.width, height: cardHeight }
+
   const {
     images,
     embeddedFlatListRef: embeddedFlatListRef,
@@ -20,21 +21,24 @@ export const ImageCarouselEmbedded = observer(() => {
     state,
   } = useContext(ImageCarouselContext)
 
-  const measurements = useMemo(() => getMeasurements({ images, boundingBox: embeddedCardBoundingBox }), [])
-  const offsets = useMemo(() => measurements.map(m => m.cumulativeScrollOffset), [])
+  const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
+  const offsets = measurements.map(m => m.cumulativeScrollOffset)
 
   // update the imageIndex on scroll
-  const onScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    // This finds the index of the image which is being given the most
-    // screen real estate at any given point in time.
-    const nextImageIndex = findClosestIndex(offsets, e.nativeEvent.contentOffset.x)
-    if (nextImageIndex !== state.imageIndex) {
-      dispatch({
-        type: "IMAGE_INDEX_CHANGED",
-        nextImageIndex,
-      })
-    }
-  }, [])
+  const onScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      // This finds the index of the image which is being given the most
+      // screen real estate at any given point in time.
+      const nextImageIndex = findClosestIndex(offsets, e.nativeEvent.contentOffset.x)
+      if (nextImageIndex !== state.imageIndex) {
+        dispatch({
+          type: "IMAGE_INDEX_CHANGED",
+          nextImageIndex,
+        })
+      }
+    },
+    [offsets]
+  )
 
   const goFullScreen = useCallback(() => dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" }), [dispatch])
 
@@ -69,6 +73,8 @@ export const ImageCarouselEmbedded = observer(() => {
 
   return (
     <FlatList<ImageDescriptor>
+      // force full re-render on orientation change
+      key={screenDimensions.orientation}
       data={images}
       horizontal
       ref={embeddedFlatListRef}

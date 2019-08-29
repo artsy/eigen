@@ -1,8 +1,8 @@
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useMemo } from "react"
 import { Animated, View } from "react-native"
 import { fitInside, Rect } from "../../geometry"
 import { ImageDescriptor } from "../../ImageCarouselContext"
-import { screenBoundingBox } from "../screen"
 import { EventStream } from "../useEventStream"
 import { calculateDeepZoomLevels, calculateMinMaxDeepZoomLevels, getZoomScaleBoundaries } from "./deepZoomGeometry"
 import { DeepZoomLevel } from "./DeepZoomLevel"
@@ -41,6 +41,7 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   $contentOffsetY,
   triggerScrollEvent,
 }) => {
+  const screenDimensions = useScreenDimensions()
   const pyramid = useMemo(() => new DeepZoomPyramid(), [])
   // get first viewport update after mounting to start showing tiles
   useEffect(() => {
@@ -49,7 +50,7 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
 
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(fullImageSize), [fullImageSize])
-  const imageFittedWithinScreen = useMemo(() => fitInside(screenBoundingBox, { width, height }), [width, height])
+  const imageFittedWithinScreen = useMemo(() => fitInside(screenDimensions, { width, height }), [width, height])
   const zoomScaleBoundaries = useMemo(() => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }), [
     levels,
     imageFittedWithinScreen,
@@ -94,7 +95,8 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
       pointerEvents="none"
       style={{
         position: "absolute",
-        ...screenBoundingBox,
+        width: screenDimensions.width,
+        height: screenDimensions.height,
         top: 0,
         left: 0,
       }}

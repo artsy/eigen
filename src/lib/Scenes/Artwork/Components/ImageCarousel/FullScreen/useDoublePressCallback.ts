@@ -17,6 +17,6 @@ export function useDoublePressCallback<T extends any[]>(cb: (...t: T) => void) {
         lastPressTime.current = now
       }
     },
-    []
+    [cb]
   )
 }

@@ -1,3 +1,4 @@
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { Animated, Easing, FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
@@ -6,12 +7,12 @@ import { useAnimatedValue } from "../useAnimatedValue"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
 import { ImageZoomView } from "./ImageZoomView"
 import { IndexIndicator } from "./IndexIndicator"
-import { screenBoundingBox, screenWidth } from "./screen"
 import { StatusBarOverlay } from "./StatusBarOverlay"
 import { useSpringFade } from "./useSpringFade"
 import { VerticalSwipeToDismiss } from "./VerticalSwipeToDismiss"
 
 export const ImageCarouselFullScreen = observer(() => {
+  const screenDimensions = useScreenDimensions()
   const { images, dispatch, state } = useContext(ImageCarouselContext)
   const initialScrollIndex = useMemo(() => state.imageIndex, [])
 
@@ -22,12 +23,15 @@ export const ImageCarouselFullScreen = observer(() => {
   }, [])
 
   // update the imageIndex on scroll
-  const onScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenWidth)
-    if (state.fullScreenState === "entered" && nextImageIndex !== state.imageIndex) {
-      dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
-    }
-  }, [])
+  const onScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
+      if (state.fullScreenState === "entered" && nextImageIndex !== state.imageIndex) {
+        dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
+      }
+    },
+    [screenDimensions]
+  )
 
   const zoomViewRefs: ImageZoomView[] = useMemo(() => [], [])
 
@@ -55,7 +59,7 @@ export const ImageCarouselFullScreen = observer(() => {
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
     // on unmount we use it's built-in fade transition
-    <Modal transparent animated={false} hardwareAccelerated>
+    <Modal transparent animated={false} hardwareAccelerated supportedOrientations={["landscape", "portrait"]}>
       <Animated.View
         style={{
           position: "absolute",
@@ -70,18 +74,19 @@ export const ImageCarouselFullScreen = observer(() => {
         <WhiteUnderlay />
         <VerticalSwipeToDismiss onClose={onClose}>
           <FlatList<ImageDescriptor>
+            key={screenDimensions.orientation}
             data={images}
             horizontal
             showsHorizontalScrollIndicator={false}
             scrollEnabled={images.length > 1 && state.fullScreenState === "entered"}
-            snapToInterval={screenBoundingBox.width}
+            snapToInterval={screenDimensions.width}
             keyExtractor={item => item.url}
             decelerationRate="fast"
             initialScrollIndex={initialScrollIndex}
             getItemLayout={(_, index) => ({
               index,
-              offset: index * screenWidth,
-              length: screenWidth,
+              offset: index * screenDimensions.width,
+              length: screenDimensions.width,
             })}
             onScroll={onScroll}
             onMomentumScrollEnd={() => {

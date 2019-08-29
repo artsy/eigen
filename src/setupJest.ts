@@ -85,6 +85,7 @@ mockedModule("./lib/Components/Artist/About.tsx", "About")
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
+import { ScreenDimensions } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 NativeModules.ARTakeCameraPhotoModule = {
   errorCodes: {
@@ -106,12 +107,6 @@ NativeModules.ARSwitchBoardModule = {
   presentModalViewController: jest.fn(),
   presentMediaPreviewController: jest.fn(),
   presentArtworksSet: jest.fn(),
-}
-NativeModules.RNStaticSafeAreaInsets = {
-  top: 20,
-  bottom: 0,
-  left: 0,
-  right: 0,
 }
 
 declare const process: any
@@ -162,3 +157,26 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     done() // it is important to call this here or every test will timeout
   })
 }
+
+jest.mock("./lib/utils/useScreenDimensions", () => {
+  const React = require("react")
+  const screenDimensions: ScreenDimensions = {
+    width: 380,
+    height: 550,
+    orientation: "portrait",
+    safeAreaInsets: {
+      top: 20,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+  }
+
+  return {
+    getCurrentScreenDimensions: () => screenDimensions,
+    ProvideScreenDimensions: ({ children }) => {
+      return React.createElement(React.Fragment, null, children)
+    },
+    useScreenDimensions: () => screenDimensions,
+  }
+})

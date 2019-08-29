@@ -7,6 +7,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -158,19 +159,21 @@ export class Artwork extends React.Component<Props> {
   render() {
     return (
       <Theme>
-        <FlatList
-          data={this.sections()}
-          ItemSeparatorComponent={() => (
-            <Box px={2} mx={2} my={3}>
-              <Separator />
-            </Box>
-          )}
-          contentInset={{ bottom: 40 }}
-          keyExtractor={(item, index) => item.type + String(index)}
-          renderItem={item =>
-            item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
-          }
-        />
+        <ProvideScreenDimensions>
+          <FlatList
+            data={this.sections()}
+            ItemSeparatorComponent={() => (
+              <Box px={2} mx={2} my={3}>
+                <Separator />
+              </Box>
+            )}
+            contentInset={{ bottom: 40 }}
+            keyExtractor={(item, index) => item.type + String(index)}
+            renderItem={item =>
+              item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
+            }
+          />
+        </ProvideScreenDimensions>
       </Theme>
     )
   }

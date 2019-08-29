@@ -1,6 +1,7 @@
 import { Flex, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useContext, useMemo } from "react"
 import { Animated } from "react-native"
@@ -8,7 +9,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor, useNewImageCarouselContext } from "./ImageCarouselContext"
-import { embeddedCardBoundingBox, ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
+import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { useSpringValue } from "./useSpringValue"
 
 export interface ImageCarouselProps {
@@ -22,6 +23,11 @@ export interface ImageCarouselProps {
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
 export const ImageCarousel = observer((props: ImageCarouselProps) => {
+  const screenDimensions = useScreenDimensions()
+  // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  const cardHeight = screenDimensions.width >= 375 ? 340 : 290
+  const embeddedCardBoundingBox = { width: screenDimensions.width, height: cardHeight }
+
   const images: ImageDescriptor[] = useMemo(
     () =>
       props.images.map(image => {
