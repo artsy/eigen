@@ -108,12 +108,6 @@ NativeModules.ARSwitchBoardModule = {
   presentMediaPreviewController: jest.fn(),
   presentArtworksSet: jest.fn(),
 }
-NativeModules.ARDynamicScreenDimensions = {
-  top: 20,
-  bottom: 0,
-  left: 0,
-  right: 0,
-}
 
 declare const process: any
 
