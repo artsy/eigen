@@ -107,7 +107,6 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
     // view port passed in to this method.
 
     CGFloat currentZoomScale = view.scrollView.zoomScale;
-    CGSize baseImageSize = CGSizeMake(view.scrollView.contentSize.width / currentZoomScale, view.scrollView.contentSize.height / currentZoomScale);
 
     // frame size is the un-zoomed size of the scroll view
     CGSize frameSize = view.scrollView.frame.size;
@@ -129,7 +128,7 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
 
       // now that we have our interpolated view port we need to scale it up
 
-      CGFloat scale = baseImageSize.width / nextViewPort.size.width;
+      CGFloat scale = frameSize.width / nextViewPort.size.width;
 
       // disable scroll events while we apply the changes, to avoid jank
       [strongScrollView optOutOfAllScrollEvents];

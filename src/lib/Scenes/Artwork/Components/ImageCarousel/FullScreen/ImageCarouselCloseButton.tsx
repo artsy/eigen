@@ -1,5 +1,5 @@
 import { CloseIcon } from "@artsy/palette"
-import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"
@@ -10,6 +10,7 @@ import { boxShadow } from "./boxShadow"
 const CLOSE_BUTTON_MARGIN = 12
 
 export const ImageCarouselCloseButton = observer(({ onClose }: { onClose(): void }) => {
+  const { safeAreaInsets } = useScreenDimensions()
   const {
     state: { fullScreenState },
   } = useContext(ImageCarouselContext)
@@ -18,8 +19,8 @@ export const ImageCarouselCloseButton = observer(({ onClose }: { onClose(): void
     <View
       style={{
         position: "absolute",
-        left: 0,
-        top: screenSafeAreaInsets.top,
+        top: safeAreaInsets.top,
+        left: safeAreaInsets.left,
       }}
     >
       <TouchableOpacity onPress={onClose}>

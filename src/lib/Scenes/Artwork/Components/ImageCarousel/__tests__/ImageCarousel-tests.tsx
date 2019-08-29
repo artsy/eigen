@@ -5,7 +5,6 @@ import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { getMeasurements } from "../geometry"
 import { ImageCarouselFragmentContainer, PaginationDot } from "../ImageCarousel"
-import { embeddedCardBoundingBox } from "../ImageCarouselEmbedded"
 
 jest.unmock("react-relay")
 const trackEvent = jest.fn()
@@ -97,7 +96,7 @@ describe("ImageCarouselFragmentContainer", () => {
       const wrapper = await getWrapper()
       expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([1, 0.1, 0.1, 0.1, 0.1])
 
-      const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: embeddedCardBoundingBox })
+      const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: { width: 375, height: 275 } })
 
       wrapper
         .find(FlatList)

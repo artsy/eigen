@@ -1,10 +1,10 @@
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
-import { useCallback, useContext, useMemo, useRef } from "react"
+import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import React from "react"
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from "react-native"
 import { ImageCarouselContext } from "../ImageCarouselContext"
 import { useAnimatedValue } from "../useAnimatedValue"
-import { screenHeight } from "./screen"
 
 /**
  * Wraps the content in a scroll view which provides a 'vertical swipe' facility.
@@ -36,6 +36,7 @@ import { screenHeight } from "./screen"
  */
 export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({ children, onClose }) => {
   // keep track of the scroll view's scrollY value
+  const { height: screenHeight, width: screenWidth, orientation } = useScreenDimensions()
   const scrollY = useAnimatedValue(screenHeight)
 
   const opacity = useMemo(
@@ -70,8 +71,26 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({
     [onClose]
   )
 
+  const ref = useRef<{ getNode(): ScrollView }>()
+
+  // 😭😭😭
+  // sometimes in landscape mode the `contentOffset` prop is not respected
+  // and the contentOffset ends up being too low.
+  // What is this I don't even.
+  // So we set it manually after mounting and orientation change to make sure it's always good.
+  useEffect(
+    () => {
+      setTimeout(() => {
+        ref.current.getNode().scrollTo({ animated: false, x: 0, y: screenHeight })
+      }, 10)
+    },
+    [screenHeight]
+  )
+
   return (
     <Animated.ScrollView
+      ref={ref}
+      key={orientation}
       // prevent tapping the status bar from triggering a scroll in this scroll view
       scrollsToTop={false}
       // don't let the user dismiss until after we've fnished showing the full screen mode
@@ -89,8 +108,8 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({
       decelerationRate="fast"
       scrollEventThrottle={0.000000001}
     >
-      <View style={{ height: screenHeight * 3, alignItems: "flex-start", justifyContent: "flex-start" }}>
-        <View style={{ height: screenHeight, marginTop: screenHeight }}>{children}</View>
+      <View style={{ height: screenHeight * 3, width: screenWidth }}>
+        <View style={{ height: screenHeight, width: screenWidth, marginTop: screenHeight }}>{children}</View>
       </View>
     </Animated.ScrollView>
   )

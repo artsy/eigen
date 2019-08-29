@@ -1,8 +1,8 @@
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated } from "react-native"
 import { Rect, Size } from "../../geometry"
-import { screenWidth } from "../screen"
 import { EventStream, useEvents } from "../useEventStream"
 import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
 import { getVisibleRowsAndColumns, ZoomScaleBoundaries } from "./deepZoomGeometry"
@@ -163,9 +163,11 @@ export const DeepZoomLevel: React.FC<{
     [levelDimensions, $contentOffsetX, $contentOffsetY, $zoomScale, imageFittedWithinScreen]
   )
 
+  const screenDimensions = useScreenDimensions()
+
   const updateTiles = useCallback((viewPort: Rect) => {
     // first check whether we should even be showing any tiles at all on this level
-    const zoomScale = screenWidth / viewPort.width
+    const zoomScale = screenDimensions.width / viewPort.width
     // we'll show tiles as long as the zoomScale start boundary has been breached.
     // this means the resolution of the last set of images is starting to get low enough
     // that it makes sense to bring the next higher-resolution level in to play.

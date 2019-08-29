@@ -23,11 +23,11 @@ import { useAnimatedValue } from "../useAnimatedValue"
 import { fitInside, Position, Rect } from "../geometry"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
+import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
-import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
 import { useNewEventStream } from "./useEventStream"
 
@@ -51,10 +51,18 @@ interface TransitionOffset {
 
 // calculates the transition offset between the embedded thumbnail (fromRef)
 // and the full-screen image position (toBox)
-async function getTransitionOffset({ fromRef, toBox }: { fromRef: any; toBox: Rect }): Promise<TransitionOffset> {
+async function getTransitionOffset({
+  fromRef,
+  toBox,
+  safeAreaInsets,
+}: {
+  fromRef: any
+  toBox: Rect
+  safeAreaInsets: SafeAreaInsets
+}): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
 
-  fromBox.y += screenSafeAreaInsets.top
+  fromBox.y += safeAreaInsets.top
 
   const scale = fromBox.width / toBox.width
   const translateX = fromBox.x + fromBox.width / 2 - (toBox.x + toBox.width / 2)
@@ -105,6 +113,7 @@ function createTransform(
 export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> = observer(
   // need to do this ref forwarding to expose the `resetZoom` method to consumers
   React.forwardRef(({ image, index }, ref) => {
+    const screenDimensions = useScreenDimensions()
     const { state, embeddedImageRefs, dispatch } = useContext(ImageCarouselContext)
 
     const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset>({
@@ -116,15 +125,20 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const transition = useAnimatedValue(0)
     const transform = useMemo(() => createTransform(transition, imageTransitionOffset), [imageTransitionOffset])
 
-    const { width, height, marginHorizontal, marginVertical } = fitInside(screenBoundingBox, image)
-
+    const imageFittedWithinScreen = fitInside(screenDimensions, image)
     useEffect(() => {
       // animate image transition on mount
 
       if (state.fullScreenState !== "entered" && state.imageIndex === index) {
         getTransitionOffset({
           fromRef: embeddedImageRefs[state.imageIndex],
-          toBox: { width, height, x: marginHorizontal, y: marginVertical },
+          toBox: {
+            width: imageFittedWithinScreen.width,
+            height: imageFittedWithinScreen.height,
+            x: imageFittedWithinScreen.marginHorizontal,
+            y: imageFittedWithinScreen.marginVertical,
+          },
+          safeAreaInsets: screenDimensions.safeAreaInsets,
         })
           .then(setImageTransitionOffset)
           .then(() => {
@@ -147,74 +161,93 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     // swipes to another image
     const scrollViewRef = useRef<{ getNode(): ScrollView }>()
     const zoomScale = useRef<number>(1)
-    const contentOffset = useRef<Position>({ x: -marginHorizontal, y: -marginVertical })
+    const contentOffset = useRef<Position>({
+      x: -imageFittedWithinScreen.marginHorizontal,
+      y: -imageFittedWithinScreen.marginVertical,
+    })
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
         ARScrollViewHelpers.smoothZoom(
           findNodeHandle(scrollViewRef.current.getNode()),
-          -marginHorizontal,
-          -marginVertical,
-          width,
-          height
+          -imageFittedWithinScreen.marginHorizontal,
+          -imageFittedWithinScreen.marginVertical,
+          screenDimensions.width,
+          screenDimensions.height
         )
       }
     }, [])
 
-    const maxZoomScale = image.deepZoom ? calculateMaxZoomViewScale({ width, height }, image.deepZoom.image.size) : 2
+    const maxZoomScale = image.deepZoom
+      ? calculateMaxZoomViewScale(
+          {
+            width: imageFittedWithinScreen.width,
+            height: imageFittedWithinScreen.height,
+          },
+          image.deepZoom.image.size
+        )
+      : 2
 
     // expose resetZoom so that when the user swipes, the off-screen zoom levels can be reset
-    useImperativeHandle(ref, () => ({ resetZoom }), [])
+    useImperativeHandle(ref, () => ({ resetZoom }), [resetZoom])
 
-    const handleDoubleTapToZoom = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
-      const { pageX, pageY } = ev.nativeEvent
-      if (Math.ceil(zoomScale.current) >= maxZoomScale) {
-        resetZoom()
-      } else {
-        // zoom to tapped point
-        let newZoomScale = Math.min(zoomScale.current * 3, maxZoomScale)
-        if (newZoomScale * 2 >= maxZoomScale) {
-          newZoomScale = maxZoomScale
-        }
-        const tapX = (contentOffset.current.x + pageX) / zoomScale.current
-        const tapY = (contentOffset.current.y + pageY) / zoomScale.current
-        const w = screenWidth / newZoomScale
-        const h = screenHeight / newZoomScale
+    const handleDoubleTapToZoom = useDoublePressCallback(
+      useCallback(
+        (ev: NativeSyntheticEvent<NativeTouchEvent>) => {
+          const { pageX, pageY } = ev.nativeEvent
+          if (Math.ceil(zoomScale.current) >= maxZoomScale) {
+            resetZoom()
+          } else {
+            // zoom to tapped point
+            let newZoomScale = Math.min(zoomScale.current * 3, maxZoomScale)
+            if (newZoomScale * 2 >= maxZoomScale) {
+              newZoomScale = maxZoomScale
+            }
+            const tapX = (contentOffset.current.x + pageX) / zoomScale.current
+            const tapY = (contentOffset.current.y + pageY) / zoomScale.current
+            const w = screenDimensions.width / newZoomScale
+            const h = screenDimensions.height / newZoomScale
 
-        let x = tapX - w / 2
-        let y = tapY - h / 2
+            let x = tapX - w / 2
+            let y = tapY - h / 2
 
-        if (w > width) {
-          // handle centering with margins
-          x = -(w - width) / 2
-        } else if (x + w > width) {
-          // handle constraining right edge
-          x = width - w
-        } else if (x < 0) {
-          // handle constraining left edge
-          x = 0
-        }
+            if (w > imageFittedWithinScreen.width) {
+              // handle centering with margins
+              x = -(w - imageFittedWithinScreen.width) / 2
+            } else if (x + w > imageFittedWithinScreen.width) {
+              // handle constraining right edge
+              x = imageFittedWithinScreen.width - w
+            } else if (x < 0) {
+              // handle constraining left edge
+              x = 0
+            }
 
-        if (h > height) {
-          // handle centering with margins
-          y = -(h - height) / 2
-        } else if (y + h > height) {
-          // handle constraining bottom edge
-          y = height - h
-        } else if (y < 0) {
-          // handle constraining top edge
-          y = 0
-        }
+            if (h > imageFittedWithinScreen.height) {
+              // handle centering with margins
+              y = -(h - imageFittedWithinScreen.height) / 2
+            } else if (y + h > imageFittedWithinScreen.height) {
+              // handle constraining bottom edge
+              y = imageFittedWithinScreen.height - h
+            } else if (y < 0) {
+              // handle constraining top edge
+              y = 0
+            }
 
-        ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current.getNode()), x, y, w, h)
-      }
-    })
+            ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current.getNode()), x, y, w, h)
+          }
+        },
+        [screenDimensions]
+      )
+    )
 
     useEffect(
       () => {
         // hack to get a sane starting contentOffset our ScrollView gives some _whack_ values occasionally
         // for it's first onScroll before the user has actually done any scrolling
-        contentOffset.current = { x: -marginHorizontal, y: -marginVertical }
+        contentOffset.current = {
+          x: -imageFittedWithinScreen.marginHorizontal,
+          y: -imageFittedWithinScreen.marginVertical,
+        }
 
         // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
         if (state.fullScreenState === "entered" && scrollViewRef.current) {
@@ -227,8 +260,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
 
     const viewPortChanges = useNewEventStream<Rect>()
 
-    const $contentOffsetX = useAnimatedValue(-marginHorizontal)
-    const $contentOffsetY = useAnimatedValue(-marginVertical)
+    const $contentOffsetX = useAnimatedValue(-imageFittedWithinScreen.marginHorizontal)
+    const $contentOffsetY = useAnimatedValue(-imageFittedWithinScreen.marginVertical)
     const $zoomScale = useAnimatedValue(1)
 
     const onScroll = useCallback((ev: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -237,8 +270,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       viewPortChanges.dispatch({
         x: ev.nativeEvent.contentOffset.x / zoomScale.current,
         y: ev.nativeEvent.contentOffset.y / zoomScale.current,
-        width: screenWidth / zoomScale.current,
-        height: screenHeight / zoomScale.current,
+        width: screenDimensions.width / zoomScale.current,
+        height: screenDimensions.height / zoomScale.current,
       })
       if (state.imageIndex === index) {
         dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
@@ -252,7 +285,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
     if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
-      return <View style={screenBoundingBox} />
+      return <View style={{ width: screenDimensions.width, height: screenDimensions.height }} />
     }
 
     return (
@@ -276,9 +309,14 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
           centerContent
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            width: imageFittedWithinScreen.width,
+            height: imageFittedWithinScreen.height,
+          }}
           style={[
             {
-              ...screenBoundingBox,
+              width: screenDimensions.width,
+              height: screenDimensions.height,
               // hide this scroll view until the image is ready to start its transition in.
               opacity: state.fullScreenState !== "doing first render" ? 1 : 0,
             },
@@ -288,8 +326,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
             {/* wrapper to apply transform to underlying image */}
             <Animated.View
               style={{
-                width,
-                height,
+                width: imageFittedWithinScreen.width,
+                height: imageFittedWithinScreen.height,
                 transform,
               }}
             >
@@ -298,8 +336,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
                 imageURL={image.url}
                 useRawURL
                 style={{
-                  width,
-                  height,
+                  width: imageFittedWithinScreen.width,
+                  height: imageFittedWithinScreen.height,
                 }}
               />
             </Animated.View>
@@ -310,8 +348,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
           image.deepZoom && (
             <DeepZoomOverlay
               image={image}
-              width={width}
-              height={height}
+              width={imageFittedWithinScreen.width}
+              height={imageFittedWithinScreen.height}
               viewPortChanges={viewPortChanges}
               $zoomScale={$zoomScale}
               $contentOffsetX={$contentOffsetX}
