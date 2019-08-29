@@ -23,7 +23,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     action_name: Schema.ActionNames.ContactGallery,
     action_type: Schema.ActionTypes.Tap,
     context_module: Schema.ContextModules.CommercialButtons,
-  } as any)
+  })
   handleInquiry() {
     SwitchBoard.presentNavigationViewController(this, `/inquiry/${this.props.artwork.slug}`)
   }
