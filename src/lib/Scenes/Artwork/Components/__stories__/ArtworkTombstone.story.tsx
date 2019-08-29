@@ -76,5 +76,5 @@ const artworkTombstoneArtwork = {
   " $refType": null,
 }
 storiesOf("Artwork/Components").add("Tombstone", () => {
-  return <MockArtworkTombstone artwork={artworkTombstoneArtwork} />
+  return <MockArtworkTombstone artwork={artworkTombstoneArtwork as any} />
 })
