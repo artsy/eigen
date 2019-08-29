@@ -72,13 +72,14 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.14.0):
+  - Emission (1.15.0):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
     - Extraction (>= 1.2.1)
     - Folly (= 2018.10.22.00)
     - glog (= 0.3.5)
+    - INTUAnimationEngine
     - ISO8601DateFormatter
     - Pulley
     - react-native-cameraroll (= 1.0.5)
@@ -148,6 +149,9 @@ PODS:
   - FXBlurView (1.6.1)
   - glog (0.3.5)
   - Interstellar/Core (2.0.0)
+  - INTUAnimationEngine (1.4.2):
+    - INTUAnimationEngine/SpringSolver (= 1.4.2)
+  - INTUAnimationEngine/SpringSolver (1.4.2)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
@@ -381,6 +385,7 @@ SPEC REPOS:
     - FBSnapshotTestCase
     - Forgeries
     - FXBlurView
+    - INTUAnimationEngine
     - iRate
     - JSDecoupledAppDelegate
     - JWTDecode
@@ -538,7 +543,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: d4de97a113ed9101e8f7eaa0b0da2a600882007f
+  Emission: 95f7e3f9aa36f573715abb62c497f38540fd23f9
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -551,6 +556,7 @@ SPEC CHECKSUMS:
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   glog: affb802cb73dc1156005a5fb19085008bf6ffd52
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
+  INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
