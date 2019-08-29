@@ -28,7 +28,9 @@ describe("ArtworkExtraLinks", () => {
       </Theme>
     )
     const consignmentsLink = component.find(Text).at(1)
-    expect(consignmentsLink.text()).toContain("Consign with Artsy.")
+    const texts = component.find(Sans).map(x => x.text())
+
+    expect(texts[0]).toContain("Consign with Artsy.")
     consignmentsLink.props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/consign/submission")
   })
