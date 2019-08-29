@@ -17,15 +17,12 @@ interface ArtworkDetailsState {
 export class ArtworkDetails extends React.Component<ArtworkDetailsProps, ArtworkDetailsState> {
   state = { showAll: false }
 
-  @track(
-    () =>
-      ({
-        action_name: Schema.ActionNames.ShowMoreArtworksDetails,
-        action_type: Schema.ActionTypes.Tap,
-        flow: Schema.Flow.ArtworkDetails,
-        context_module: Schema.ContextModules.ArtworkDetails,
-      } as any)
-  )
+  @track(() => ({
+    action_name: Schema.ActionNames.ShowMoreArtworksDetails,
+    action_type: Schema.ActionTypes.Tap,
+    flow: Schema.Flow.ArtworkDetails,
+    context_module: Schema.ContextModules.ArtworkDetails,
+  }))
   showAllArtworks() {
     this.setState({ showAll: true })
   }

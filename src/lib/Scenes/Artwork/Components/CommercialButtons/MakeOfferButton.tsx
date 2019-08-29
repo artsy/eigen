@@ -46,7 +46,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
     action_name: Schema.ActionNames.MakeOffer,
     action_type: Schema.ActionTypes.Tap,
     context_module: Schema.ContextModules.CommercialButtons,
-  } as any)
+  })
   handleCreateOfferOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state

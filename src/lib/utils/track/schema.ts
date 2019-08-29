@@ -26,7 +26,7 @@ export interface Global {
    */
   action_name: ActionNames
 
-  session_length: number
+  session_length?: number
 
   /**
    * OPTIONAL: Additional properties of the action
@@ -38,17 +38,22 @@ export interface Entity extends Global {
   /**
    * The ID of the entity in its database. E.g. the Mongo ID for entities that reside in Gravity.
    */
-  owner_id: string
+  owner_id?: string
 
   /**
    * The public slug for this entity.
    */
-  owner_slug: string
+  owner_slug?: string
 
   /**
    * The type of entity, e.g. Artwork, Artist, etc.
    */
-  owner_type: OwnerEntityTypes
+  owner_type?: OwnerEntityTypes
+
+  /**
+   * Provides a context, usually the component the event is emitted from.
+   */
+  context_module?: string
 }
 
 export interface PageView {

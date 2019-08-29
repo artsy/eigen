@@ -39,15 +39,12 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
 
   width = 0
 
-  @track(
-    (props: Props) =>
-      ({
-        action_name: Schema.ActionNames.GridArtwork,
-        action_type: Schema.ActionTypes.Tap,
-        flow: props.trackingFlow,
-        context_module: props.contextModule,
-      } as any)
-  )
+  @track((props: Props) => ({
+    action_name: Schema.ActionNames.GridArtwork,
+    action_type: Schema.ActionTypes.Tap,
+    flow: props.trackingFlow,
+    context_module: props.contextModule,
+  }))
   layoutState(currentLayout): State {
     const width = currentLayout.width
     const isPad = width > 600

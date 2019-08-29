@@ -46,7 +46,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
     action_name: Schema.ActionNames.BuyNow,
     action_type: Schema.ActionTypes.Tap,
     context_module: Schema.ContextModules.CommercialButtons,
-  } as any)
+  })
   handleCreateOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOrderMutation } = this.state
