@@ -63,7 +63,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
             <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurAuctionFAQsTap()}>
               Read our auction FAQs
             </Text>
-            . or{" "}
+            . Or{" "}
             <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
               ask a specialist
             </Text>
