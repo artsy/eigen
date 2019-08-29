@@ -16,6 +16,12 @@
 
 ### Master
 
+- Send an event when screen orientation changes - ds300
+- Adds Commercial Bid Buttons - kierangillen
+- Adds VAT included in price to Artwork view - kierangillen
+- Add deep zoom mode to image carousel - ds300
+- Replace slug keys with ids - zephraph
+
 ### 1.14.0
 
 ### 1.13.1-0
@@ -31,13 +37,6 @@
 - Adds auction extra links in Artwork view - kierangillen
 - Fix shows artwork filter pickers always reseting to default value - zephraph
 - Adds AuctionPrice to CommercialInformation to render Auction price data - kierangillen
-
-### Master
-
-- Adds Commercial Bid Buttons - kierangillen
-- Adds VAT included in price to Artwork view - kierangillen
-- Add deep zoom mode to image carousel - ds300
-- Replace slug keys with ids - zephraph
 
 ### 1.12.16
 
