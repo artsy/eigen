@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.15.0
+
 - Send an event when screen orientation changes - ds300
 - Adds Commercial Bid Buttons - kierangillen
 - Adds VAT included in price to Artwork view - kierangillen
