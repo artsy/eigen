@@ -492,6 +492,17 @@ fragment ImageCarousel_images on Image {
   image_url: imageURL
   width
   height
+  deepZoom {
+    image: Image {
+      tileSize: TileSize
+      url: Url
+      format: Format
+      size: Size {
+        width: Width
+        height: Height
+      }
+    }
+  }
 }
 
 fragment FollowArtistButton_artist on Artist {
@@ -1751,6 +1762,74 @@ return {
                 "name": "height",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "deepZoom",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "DeepZoom",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": "image",
+                    "name": "Image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "DeepZoomImage",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": "tileSize",
+                        "name": "TileSize",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": "url",
+                        "name": "Url",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": "format",
+                        "name": "Format",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": "size",
+                        "name": "Size",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "DeepZoomImageSize",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": "width",
+                            "name": "Width",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "height",
+                            "name": "Height",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -1881,7 +1960,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "bcda209b6eac208e481ee627d1ada77e",
+    "id": "5df05482ded26936f86b098841fe996a",
     "text": null,
     "metadata": {}
   }

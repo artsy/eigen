@@ -36,6 +36,7 @@
 
 - Adds Commercial Bid Buttons - kierangillen
 - Adds VAT included in price to Artwork view - kierangillen
+- Add deep zoom mode to image carousel - ds300
 - Replace slug keys with ids - zephraph
 
 ### 1.12.16

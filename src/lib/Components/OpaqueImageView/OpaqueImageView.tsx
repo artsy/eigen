@@ -46,6 +46,16 @@ interface Props {
    * Turn off the fade-in animation
    */
   noAnimation?: boolean
+
+  /**
+   * prevents `onLoad` from being called if the image fails to load
+   */
+  failSilently?: boolean
+
+  /**
+   * renders the image at a higher threading priority level ('interactive')
+   */
+  highPriorty?: boolean
 }
 
 interface State {

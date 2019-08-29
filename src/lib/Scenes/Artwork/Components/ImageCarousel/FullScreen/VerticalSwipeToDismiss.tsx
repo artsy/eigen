@@ -87,7 +87,7 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({
       style={[{ opacity }]}
       snapToInterval={screenHeight}
       decelerationRate="fast"
-      scrollEventThrottle={16}
+      scrollEventThrottle={0.000000001}
     >
       <View style={{ height: screenHeight * 3, alignItems: "flex-start", justifyContent: "flex-start" }}>
         <View style={{ height: screenHeight, marginTop: screenHeight }}>{children}</View>

@@ -36,6 +36,12 @@ RCT_CUSTOM_VIEW_PROPERTY(imageURL, NSString, AROpaqueImageView)
 }
 
 RCT_EXPORT_VIEW_PROPERTY(noAnimation, BOOL)
+// TODO: currently the image calls 'onLoad' whether or not the image actually loaded
+// we eventually need some way to distinguish whether a load was successful or not on the
+// react side, but as a temporary solution for one use-case we can just not call `onLoad`
+// when the load fails
+RCT_EXPORT_VIEW_PROPERTY(failSilently, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(highPriority, BOOL)
 
 - (UIView *)view;
 {

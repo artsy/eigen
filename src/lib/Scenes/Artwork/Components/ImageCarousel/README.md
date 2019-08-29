@@ -18,6 +18,8 @@ It's placed over everything else in the app using a React Native Modal component
 
 These two components share context and state. These are managed in `ImageCarouselContext.tsx` and the two components are combined together and provided with context in `ImageCarousel.tsx`
 
+Finally, there's the **deep zoom overlay** which is located in `FullScreen/DeepZoom/DeepZoomOverlay.tsx`. This allows the user to see high resolution versions of the image while they pan + zoom in the full screen mode.
+
 ## How the full screen mode transition works
 
 When you tap to go fullscreen, this is what happens:
@@ -37,6 +39,7 @@ It's basically a set of nested scroll views in a modal. Something like this
           <ScrollViewForPinchToZoom>
             <Image />
           </ScrollViewForPinchToZoom>
+          <DeepZoomOverlay />
         </HorizontalFlatListForSwipingBetweenImages>
       </VerticalScrollViewForDismissingFullScreenMode>
     </Modal>
@@ -45,3 +48,4 @@ It's basically a set of nested scroll views in a modal. Something like this
 - `VerticalScrollViewForDismissingFullScreenMode` provides the vertical-swipe-to-dismiss functionality, and is in `FullScreen/VerticalSwipeToDismiss.tsx`
 - `HorizontalFlatListForSwipingBetweenImages` is given by `FullScreen/ImageCarouselFullScreen.tsx`
 - `ScrollViewForPinchToZoom` is given by `FullScreen/ImageZoomView.tsx`
+- `DeepZoomOverlay` is given by `FullScreen/DeepZoom/DeepZoomOverlay.tsx`

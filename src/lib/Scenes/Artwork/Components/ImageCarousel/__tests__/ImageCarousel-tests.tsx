@@ -13,29 +13,34 @@ const trackEvent = jest.fn()
 const artworkFixture = {
   images: [
     {
-      image_url: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
+      imageURL: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
       width: 1024,
       height: 822,
+      deepZoom: null,
     },
     {
-      image_url: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
+      imageURL: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
       width: 1024,
       height: 919,
+      deepZoom: null,
     },
     {
-      image_url: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
+      imageURL: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
       width: 1024,
       height: 497,
+      deepZoom: null,
     },
     {
-      image_url: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
+      imageURL: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
       width: 1024,
       height: 907,
+      deepZoom: null,
     },
     {
-      image_url: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
+      imageURL: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
       width: 2800,
       height: 2100,
+      deepZoom: null,
     },
   ],
 }

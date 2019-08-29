@@ -6,6 +6,9 @@ import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRe
 
 import {
   Animated,
+  findNodeHandle,
+  NativeModules,
+  NativeScrollEvent,
   NativeSyntheticEvent,
   NativeTouchEvent,
   ScrollView,
@@ -13,17 +16,20 @@ import {
   View,
 } from "react-native"
 
+const { ARScrollViewHelpers } = NativeModules
+
 import { useAnimatedValue } from "../useAnimatedValue"
 
-import { fitInside } from "../geometry"
+import { fitInside, Position, Rect } from "../geometry"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { screenSafeAreaInsets } from "lib/utils/screenSafeAreaInsets"
 import React from "react"
+import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
+import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
 import { screenBoundingBox, screenHeight, screenWidth } from "./screen"
 import { useDoublePressCallback } from "./useDoublePressCallback"
-
-const MAX_ZOOM_SCALE = 4
+import { useNewEventStream } from "./useEventStream"
 
 export interface ImageZoomView {
   resetZoom(): void
@@ -34,14 +40,7 @@ export interface ImageZoomViewProps {
   index: number
 }
 
-interface Box {
-  width: number
-  height: number
-  x: number
-  y: number
-}
-
-const measure = (ref: any): Promise<Box> =>
+const measure = (ref: any): Promise<Rect> =>
   new Promise(resolve => ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height })))
 
 interface TransitionOffset {
@@ -52,7 +51,7 @@ interface TransitionOffset {
 
 // calculates the transition offset between the embedded thumbnail (fromRef)
 // and the full-screen image position (toBox)
-async function getTransitionOffset({ fromRef, toBox }: { fromRef: any; toBox: Box }): Promise<TransitionOffset> {
+async function getTransitionOffset({ fromRef, toBox }: { fromRef: any; toBox: Rect }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
 
   fromBox.y += screenSafeAreaInsets.top
@@ -117,13 +116,15 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const transition = useAnimatedValue(0)
     const transform = useMemo(() => createTransform(transition, imageTransitionOffset), [imageTransitionOffset])
 
+    const { width, height, marginHorizontal, marginVertical } = fitInside(screenBoundingBox, image)
+
     useEffect(() => {
       // animate image transition on mount
+
       if (state.fullScreenState !== "entered" && state.imageIndex === index) {
-        const { marginHorizontal, marginVertical, ...dimensions } = fitInside(screenBoundingBox, image)
         getTransitionOffset({
           fromRef: embeddedImageRefs[state.imageIndex],
-          toBox: { ...dimensions, x: marginHorizontal, y: marginVertical },
+          toBox: { width, height, x: marginHorizontal, y: marginVertical },
         })
           .then(setImageTransitionOffset)
           .then(() => {
@@ -134,53 +135,119 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
                 bounciness: 0,
                 toValue: 1,
                 useNativeDriver: true,
-              }).start()
-              // to make this feel snappy we'll actually finish earlier than the animation ends.
-              setTimeout(() => {
+              }).start(() => {
                 dispatch({ type: "FULL_SCREEN_FINISHED_ENTERING" })
-              }, 50)
+              })
             })
           })
       }
     }, [])
 
-    const { width, height } = fitInside(screenBoundingBox, image)
-
     // we need to be able to reset the scroll view zoom level when the user
     // swipes to another image
-    const scrollViewRef = useRef<ScrollView>()
-    const zoomScale = useRef<number>(0)
+    const scrollViewRef = useRef<{ getNode(): ScrollView }>()
+    const zoomScale = useRef<number>(1)
+    const contentOffset = useRef<Position>({ x: -marginHorizontal, y: -marginVertical })
 
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
-        scrollViewRef.current.scrollResponderZoomTo({
-          x: 0,
-          y: 0,
-          width: screenWidth,
-          height: screenHeight,
-        })
+        ARScrollViewHelpers.smoothZoom(
+          findNodeHandle(scrollViewRef.current.getNode()),
+          -marginHorizontal,
+          -marginVertical,
+          width,
+          height
+        )
       }
     }, [])
+
+    const maxZoomScale = image.deepZoom ? calculateMaxZoomViewScale({ width, height }, image.deepZoom.image.size) : 2
 
     // expose resetZoom so that when the user swipes, the off-screen zoom levels can be reset
     useImperativeHandle(ref, () => ({ resetZoom }), [])
 
     const handleDoubleTapToZoom = useDoublePressCallback((ev: NativeSyntheticEvent<NativeTouchEvent>) => {
-      const { locationX, locationY } = ev.nativeEvent
-      if (zoomScale.current > 3) {
+      const { pageX, pageY } = ev.nativeEvent
+      if (Math.ceil(zoomScale.current) >= maxZoomScale) {
         resetZoom()
       } else {
         // zoom to tapped point
-        const w = screenWidth / MAX_ZOOM_SCALE
-        const h = screenHeight / MAX_ZOOM_SCALE
-        scrollViewRef.current.scrollResponderZoomTo({
-          x: locationX - w / 2,
-          y: locationY - h / 2,
-          width: w,
-          height: h,
-        })
+        let newZoomScale = Math.min(zoomScale.current * 3, maxZoomScale)
+        if (newZoomScale * 2 >= maxZoomScale) {
+          newZoomScale = maxZoomScale
+        }
+        const tapX = (contentOffset.current.x + pageX) / zoomScale.current
+        const tapY = (contentOffset.current.y + pageY) / zoomScale.current
+        const w = screenWidth / newZoomScale
+        const h = screenHeight / newZoomScale
+
+        let x = tapX - w / 2
+        let y = tapY - h / 2
+
+        if (w > width) {
+          // handle centering with margins
+          x = -(w - width) / 2
+        } else if (x + w > width) {
+          // handle constraining right edge
+          x = width - w
+        } else if (x < 0) {
+          // handle constraining left edge
+          x = 0
+        }
+
+        if (h > height) {
+          // handle centering with margins
+          y = -(h - height) / 2
+        } else if (y + h > height) {
+          // handle constraining bottom edge
+          y = height - h
+        } else if (y < 0) {
+          // handle constraining top edge
+          y = 0
+        }
+
+        ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current.getNode()), x, y, w, h)
       }
     })
+
+    useEffect(
+      () => {
+        // hack to get a sane starting contentOffset our ScrollView gives some _whack_ values occasionally
+        // for it's first onScroll before the user has actually done any scrolling
+        contentOffset.current = { x: -marginHorizontal, y: -marginVertical }
+
+        // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
+        if (state.fullScreenState === "entered" && scrollViewRef.current) {
+          const tag = findNodeHandle(scrollViewRef.current.getNode())
+          ARScrollViewHelpers.optOutOfParentScrollEvents(tag)
+        }
+      },
+      [state.fullScreenState]
+    )
+
+    const viewPortChanges = useNewEventStream<Rect>()
+
+    const $contentOffsetX = useAnimatedValue(-marginHorizontal)
+    const $contentOffsetY = useAnimatedValue(-marginVertical)
+    const $zoomScale = useAnimatedValue(1)
+
+    const onScroll = useCallback((ev: NativeSyntheticEvent<NativeScrollEvent>) => {
+      zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
+      contentOffset.current = { ...ev.nativeEvent.contentOffset }
+      viewPortChanges.dispatch({
+        x: ev.nativeEvent.contentOffset.x / zoomScale.current,
+        y: ev.nativeEvent.contentOffset.y / zoomScale.current,
+        width: screenWidth / zoomScale.current,
+        height: screenHeight / zoomScale.current,
+      })
+      if (state.imageIndex === index) {
+        dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
+      }
+    }, [])
+
+    const triggerScrollEvent = useCallback(() => {
+      ARScrollViewHelpers.triggerScrollEvent(findNodeHandle(scrollViewRef.current.getNode()))
+    }, [])
 
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
@@ -189,54 +256,70 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     }
 
     return (
-      // scroll view to allow pinch-to-zoom behaviour
-      <ScrollView
-        ref={scrollViewRef}
-        // disable accidental scrolling before the image has finished entering
-        scrollEnabled={state.fullScreenState === "entered"}
-        onScroll={ev => {
-          zoomScale.current = ev.nativeEvent.zoomScale
-          if (state.imageIndex === index) {
-            dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
-          }
-        }}
-        scrollEventThrottle={100}
-        bounces={false}
-        overScrollMode="never"
-        minimumZoomScale={1}
-        maximumZoomScale={MAX_ZOOM_SCALE}
-        centerContent
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        style={[
-          {
-            height: screenBoundingBox.height,
-            // hide this scroll view until the image is ready to start its transition in.
-            opacity: state.fullScreenState !== "doing first render" ? 1 : 0,
-          },
-        ]}
-      >
-        <TouchableWithoutFeedback onPress={handleDoubleTapToZoom}>
-          {/* wrapper to apply transform to underlying image */}
-          <Animated.View
-            style={{
-              width,
-              height,
-              transform,
-            }}
-          >
-            <OpaqueImageView
-              noAnimation
-              imageURL={image.url}
-              useRawURL
+      <>
+        <Animated.ScrollView
+          ref={scrollViewRef}
+          scrollEnabled={state.fullScreenState === "entered"}
+          onScroll={Animated.event(
+            [{ nativeEvent: { zoomScale: $zoomScale, contentOffset: { x: $contentOffsetX, y: $contentOffsetY } } }],
+            {
+              useNativeDriver: true,
+              listener: onScroll,
+            }
+          )}
+          scrollEventThrottle={0.0000001}
+          bounces={false}
+          bouncesZoom={false}
+          overScrollMode="never"
+          minimumZoomScale={1}
+          maximumZoomScale={maxZoomScale}
+          centerContent
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={[
+            {
+              ...screenBoundingBox,
+              // hide this scroll view until the image is ready to start its transition in.
+              opacity: state.fullScreenState !== "doing first render" ? 1 : 0,
+            },
+          ]}
+        >
+          <TouchableWithoutFeedback onPress={handleDoubleTapToZoom}>
+            {/* wrapper to apply transform to underlying image */}
+            <Animated.View
               style={{
                 width,
                 height,
+                transform,
               }}
+            >
+              <OpaqueImageView
+                noAnimation
+                imageURL={image.url}
+                useRawURL
+                style={{
+                  width,
+                  height,
+                }}
+              />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+        </Animated.ScrollView>
+        {(state.fullScreenState === "entered" || state.fullScreenState === "exiting") &&
+          (state.imageIndex === index || state.lastImageIndex === index) &&
+          image.deepZoom && (
+            <DeepZoomOverlay
+              image={image}
+              width={width}
+              height={height}
+              viewPortChanges={viewPortChanges}
+              $zoomScale={$zoomScale}
+              $contentOffsetX={$contentOffsetX}
+              $contentOffsetY={$contentOffsetY}
+              triggerScrollEvent={triggerScrollEvent}
             />
-          </Animated.View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+          )}
+      </>
     )
   })
 )

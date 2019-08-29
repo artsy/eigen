@@ -7,6 +7,17 @@ export type ImageCarousel_images = ReadonlyArray<{
     readonly image_url: string | null;
     readonly width: number | null;
     readonly height: number | null;
+    readonly deepZoom: {
+        readonly image: {
+            readonly tileSize: number | null;
+            readonly url: string | null;
+            readonly format: string | null;
+            readonly size: {
+                readonly width: number | null;
+                readonly height: number | null;
+            } | null;
+        } | null;
+    } | null;
     readonly " $refType": ImageCarousel_images$ref;
 }>;
 
@@ -41,8 +52,76 @@ const node: ReaderFragment = {
       "name": "height",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "deepZoom",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "DeepZoom",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": "image",
+          "name": "Image",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "DeepZoomImage",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": "tileSize",
+              "name": "TileSize",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": "url",
+              "name": "Url",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": "format",
+              "name": "Format",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "LinkedField",
+              "alias": "size",
+              "name": "Size",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "DeepZoomImageSize",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": "width",
+                  "name": "Width",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": "height",
+                  "name": "Height",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 };
-(node as any).hash = '7c07ddbe8c6d680f73cb4d3ace40e892';
+(node as any).hash = 'bf73dd1dcad59fcf94c60e75a95292ce';
 export default node;

@@ -14,9 +14,12 @@
 //      account.
 //
 
+#import "RCTScrollView+Artsy.h"
+
 #import <React/RCTScrollView.h>
 #import <React/RCTComponent.h>
 #import <React/UIView+React.h>
+#import <objc/runtime.h>
 
 @interface RCTScrollEvent : NSObject <RCTEvent>
 - (instancetype)initWithEventName:(NSString *)eventName
@@ -63,33 +66,33 @@
     // Theoretically it’s probably better to calculate this once `body` is actually used (which is what the superclass
     // does) but that probably works in conjunction with coalescing, something we don’t do atm anyways.
     NSDictionary *body = @{
-      @"contentOffset": @{
-        @"x": @(scrollViewContentOffset.x),
-        @"y": @(scrollViewContentOffset.y)
-      },
-      @"contentInset": @{
-        @"top": @(scrollViewContentInset.top),
-        @"left": @(scrollViewContentInset.left),
-        @"bottom": @(scrollViewContentInset.bottom),
-        @"right": @(scrollViewContentInset.right)
-      },
-      @"contentSize": @{
-        @"width": @(scrollViewContentSize.width),
-        @"height": @(scrollViewContentSize.height)
-      },
-      @"layoutMeasurement": @{
-        @"width": @(enclosingScrollViewFrame.size.width),
-        @"height": @(enclosingScrollViewFrame.size.height)
-      },
-      @"zoomScale": @(scrollViewZoomScale ?: 1),
-    };
+                           @"contentOffset": @{
+                               @"x": @(scrollViewContentOffset.x),
+                               @"y": @(scrollViewContentOffset.y)
+                               },
+                           @"contentInset": @{
+                               @"top": @(scrollViewContentInset.top),
+                               @"left": @(scrollViewContentInset.left),
+                               @"bottom": @(scrollViewContentInset.bottom),
+                               @"right": @(scrollViewContentInset.right)
+                               },
+                           @"contentSize": @{
+                               @"width": @(scrollViewContentSize.width),
+                               @"height": @(scrollViewContentSize.height)
+                               },
+                           @"layoutMeasurement": @{
+                               @"width": @(enclosingScrollViewFrame.size.width),
+                               @"height": @(enclosingScrollViewFrame.size.height)
+                               },
+                           @"zoomScale": @(scrollViewZoomScale ?: 1),
+                           };
 
     if (userData) {
       NSMutableDictionary *mutableBody = [body mutableCopy];
       [mutableBody addEntriesFromDictionary:userData];
       body = [mutableBody copy];
     }
-    
+
     _body = body;
   }
   return self;
@@ -98,7 +101,7 @@
 @end
 
 
-@implementation RCTScrollEvent (RCTEnclosingScrollView)
+@implementation RCTScrollEvent (Artsy)
 
 - (RCTDescendantScrollEvent *)scrollEventForScrollView:(UIScrollView *)scrollView
                        relativeFromEnclosingScrollView:(UIScrollView *)enclosingScrollView
@@ -111,7 +114,7 @@
   // TODO: contentOffset.x -= originOffset.x;
   contentOffset.x = scrollView.contentOffset.x;
   contentOffset.y -= originOffset.y;
-  
+
   return [[RCTDescendantScrollEvent alloc] initWithEventName:self.eventName
                                                     reactTag:reactTag
                                      scrollViewContentOffset:contentOffset
@@ -121,13 +124,53 @@
                                     enclosingScrollViewFrame:enclosingScrollView.frame
                                                     userData:[self valueForKey:@"_userData"]
                                                coalescingKey:coalescingKey];
-    
+
 }
 
 @end
 
+void *optOutAssociatedPointer = &optOutAssociatedPointer;
+void *optOutAllAssociatedPointer = &optOutAllAssociatedPointer;
 
-@implementation RCTScrollView (RCTEnclosingScrollView)
+@implementation RCTScrollView (Artsy)
+
+// Provide the ability to opt out of scroll event propagation from parents to children.
+// The child opts out of receiving them.
+
+- (BOOL)optingOut
+{
+  return [objc_getAssociatedObject(self, optOutAssociatedPointer) boolValue];
+}
+
+- (void)setOptingOut:(BOOL)optingOut
+{
+  objc_setAssociatedObject(self, optOutAssociatedPointer, @(optingOut), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)optOutOfParentScrollEvents
+{
+  self.optingOut = YES;
+}
+
+- (BOOL)optingOutOfAllScrollEvents
+{
+  return [objc_getAssociatedObject(self, optOutAllAssociatedPointer) boolValue];
+}
+
+- (void)setOptingOutOfAllScrollEvents:(BOOL)optingOut
+{
+  objc_setAssociatedObject(self, optOutAllAssociatedPointer, @(optingOut), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)optOutOfAllScrollEvents
+{
+  self.optingOutOfAllScrollEvents = YES;
+}
+
+- (void)optInToAllScrollEvents
+{
+  self.optingOutOfAllScrollEvents = NO;
+}
 
 // Override method, because we want to send the generated event through the notification center.
 // Everything but the last line of the method are exactly as the original, except with a bunch of KVC shenanigans.
@@ -135,18 +178,20 @@
                      scrollView:(UIScrollView *)scrollView
                        userData:(NSDictionary *)userData
 {
-//    if (![_lastEmittedEventName isEqualToString:eventName]) {
-//        _coalescingKey++;
-//        _lastEmittedEventName = [eventName copy];
-//    }
-//    RCTScrollEvent *scrollEvent = [[RCTScrollEvent alloc] initWithEventName:eventName
-//                                                                   reactTag:self.reactTag
-//                                                                 scrollView:scrollView
-//                                                                   userData:userData
-//                                                              coalescingKey:_coalescingKey];
-//    [_eventDispatcher sendEvent:scrollEvent];
+  //    if (![_lastEmittedEventName isEqualToString:eventName]) {
+  //        _coalescingKey++;
+  //        _lastEmittedEventName = [eventName copy];
+  //    }
+  //    RCTScrollEvent *scrollEvent = [[RCTScrollEvent alloc] initWithEventName:eventName
+  //                                                                   reactTag:self.reactTag
+  //                                                                 scrollView:scrollView
+  //                                                                   userData:userData
+  //                                                              coalescingKey:_coalescingKey];
+  //    [_eventDispatcher sendEvent:scrollEvent];
 
-
+  if (self.optingOutOfAllScrollEvents) {
+    return;
+  }
   uint16_t coalescingKey = [[self valueForKey:@"_coalescingKey"] unsignedIntegerValue];
 
   if (![eventName isEqualToString:[self valueForKey:@"_lastEmittedEventName"]]) {
@@ -164,6 +209,7 @@
                                                       scrollViewZoomScale:self.scrollView.zoomScale
                                                                  userData:userData
                                                             coalescingKey:coalescingKey];
+
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 
   // TODO: This doesn’t coalesce, which is something that’s done by the event dispatcher
@@ -180,6 +226,10 @@
   RCTScrollView *enclosingScrollView = notification.object;
   // Only handle events of scrollviews that actually enclose this scrollview.
   if (enclosingScrollView == self || ![self isDescendantOfView:enclosingScrollView]) {
+    return;
+  }
+
+  if (self.optingOut) {
     return;
   }
 
@@ -205,6 +255,7 @@
                       relativeFromEnclosingScrollView:enclosingScrollView.scrollView
                                              reactTag:self.reactTag
                                         coalescingKey:coalescingKey];
+
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 }
 

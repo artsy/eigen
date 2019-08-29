@@ -18,6 +18,7 @@ PODS:
     - Extraction (>= 1.2.1)
     - Folly (= 2018.10.22.00)
     - glog (= 0.3.5)
+    - INTUAnimationEngine
     - ISO8601DateFormatter
     - Pulley
     - react-native-cameraroll (= 1.0.5)
@@ -73,6 +74,9 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - INTUAnimationEngine (1.4.2):
+    - INTUAnimationEngine/SpringSolver (= 1.4.2)
+  - INTUAnimationEngine/SpringSolver (1.4.2)
   - ISO8601DateFormatter (0.8)
   - Keys (1.0.1)
   - KSCrash/Core (1.15.20):
@@ -184,6 +188,7 @@ DEPENDENCIES:
   - FLKAutoLayout
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - INTUAnimationEngine
   - Keys (from `Pods/CocoaPodsKeys`)
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
@@ -206,6 +211,7 @@ SPEC REPOS:
     - Expecta
     - FBSnapshotTestCase
     - FLKAutoLayout
+    - INTUAnimationEngine
     - ISO8601DateFormatter
     - KSCrash
     - "NSURL+QueryDictionary"
@@ -275,13 +281,14 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: decd8e1c2ca0a45145557b5c883bf9ad3a1ed9e3
+  Emission: 39050c874541d43d41a8eb02225036d1336b0b33
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 37e1e09de6411dbee5526860d9f55d9063323ea8
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   KSCrash: 4dc18329a90b516342809b9ca92fc4d199d712ea
@@ -303,6 +310,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
-PODFILE CHECKSUM: 87895822a7cc227af8466bbc6c9b597052cd1fd8
+PODFILE CHECKSUM: a3fc53643ad66e9ec48f5c2215d5b3a145e197fb
 
 COCOAPODS: 1.7.5

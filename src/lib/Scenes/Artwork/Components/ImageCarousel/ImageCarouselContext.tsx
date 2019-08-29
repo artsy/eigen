@@ -8,6 +8,17 @@ export interface ImageDescriptor {
   url: string
   width: number
   height: number
+  deepZoom: {
+    image: {
+      tileSize: number
+      url: string
+      format: string
+      size: {
+        width: number
+        height: number
+      }
+    }
+  }
 }
 
 export type ImageCarouselAction =
@@ -22,6 +33,9 @@ export type ImageCarouselAction =
       type: "FULL_SCREEN_DISMISSED"
     }
   | {
+      type: "FULL_SCREEN_FINISHED_EXITING"
+    }
+  | {
       type: "FULL_SCREEN_FINISHED_ENTERING"
     }
   | {
@@ -32,10 +46,11 @@ export type ImageCarouselAction =
       nextZoomScale: number
     }
 
-export type FullScreenState = "none" | "doing first render" | "animating entry transition" | "entered"
+export type FullScreenState = "none" | "doing first render" | "animating entry transition" | "entered" | "exiting"
 
 export interface ImageCarouselState {
   imageIndex: number
+  lastImageIndex: number
   fullScreenState: FullScreenState
   isZoomedCompletelyOut: boolean
 }
@@ -51,8 +66,9 @@ export interface ImageCarouselContext {
 export function useNewImageCarouselContext({ images }: { images: ImageDescriptor[] }): ImageCarouselContext {
   const embeddedImageRefs = useMemo(() => [], [])
   const embeddedFlatListRef = useRef<FlatList<any>>()
-  const state = observable({
+  const state = observable<ImageCarouselState>({
     imageIndex: 0,
+    lastImageIndex: 0,
     fullScreenState: "none" as FullScreenState,
     isZoomedCompletelyOut: true,
   })
@@ -73,6 +89,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
                 action_type: Schema.ActionTypes.Swipe,
                 context_module: Schema.ContextModules.ArtworkImage,
               })
+              state.lastImageIndex = state.imageIndex
               state.imageIndex = action.nextImageIndex
               state.isZoomedCompletelyOut = true
               if (state.fullScreenState !== "none") {
@@ -81,6 +98,9 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
             }
             break
           case "FULL_SCREEN_DISMISSED":
+            state.fullScreenState = "exiting"
+            break
+          case "FULL_SCREEN_FINISHED_EXITING":
             state.fullScreenState = "none"
             break
           case "TAPPED_TO_GO_FULL_SCREEN":

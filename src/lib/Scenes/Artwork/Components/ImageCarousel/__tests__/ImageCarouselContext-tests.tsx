@@ -8,7 +8,7 @@ describe("image carousel context", () => {
   const trackEvent = jest.fn()
   function Mock() {
     const value = useNewImageCarouselContext({
-      images: [{ height: 5, width: 5, url: "a" }, { height: 5, width: 5, url: "b" }],
+      images: [{ height: 5, width: 5, url: "a", deepZoom: null }, { height: 5, width: 5, url: "b", deepZoom: null }],
     })
     return (
       <ImageCarouselContext.Provider value={value}>
@@ -79,6 +79,8 @@ describe("image carousel context", () => {
     context.dispatch({ type: "FULL_SCREEN_FINISHED_ENTERING" })
     expect(context.state.fullScreenState).toBe("entered")
     context.dispatch({ type: "FULL_SCREEN_DISMISSED" })
+    expect(context.state.fullScreenState).toBe("exiting")
+    context.dispatch({ type: "FULL_SCREEN_FINISHED_EXITING" })
     expect(context.state.fullScreenState).toBe("none")
   })
 
