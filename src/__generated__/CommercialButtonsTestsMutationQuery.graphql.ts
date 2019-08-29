@@ -31,6 +31,10 @@ fragment CommercialButtons_artwork on Artwork {
   isInquireable
   isBiddable
   isInAuction
+  isBuyNowable
+  editionSets {
+    id
+  }
   sale {
     isClosed
     id
@@ -42,6 +46,7 @@ fragment CommercialButtons_artwork on Artwork {
 
 fragment BuyNowButton_artwork on Artwork {
   internalID
+  saleMessage
 }
 
 fragment BidButton_artwork on Artwork {
@@ -197,6 +202,25 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isBuyNowable",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "editionSets",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "EditionSet",
+            "plural": true,
+            "selections": [
+              (v3/*: any*/)
+            ]
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "sale",
@@ -263,6 +287,13 @@ return {
                 "storageKey": null
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "saleMessage",
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "LinkedField",
@@ -344,7 +375,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsMutationQuery",
-    "id": "39774dd5dbef164ed97f324b7c1fe01c",
+    "id": "2169f64fa04bc267a271a15d9bf97acc",
     "text": null,
     "metadata": {}
   }

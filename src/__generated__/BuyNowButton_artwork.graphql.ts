@@ -5,6 +5,7 @@ declare const _BuyNowButton_artwork$ref: unique symbol;
 export type BuyNowButton_artwork$ref = typeof _BuyNowButton_artwork$ref;
 export type BuyNowButton_artwork = {
     readonly internalID: string;
+    readonly saleMessage: string | null;
     readonly " $refType": BuyNowButton_artwork$ref;
 };
 
@@ -23,8 +24,15 @@ const node: ReaderFragment = {
       "name": "internalID",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "saleMessage",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = '2d1aae8ac7e7708f034b67990313c28a';
+(node as any).hash = '609e0283817ad640023edf88297f5f0a';
 export default node;

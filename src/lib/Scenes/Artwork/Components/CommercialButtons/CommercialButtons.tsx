@@ -30,10 +30,23 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
 
   render() {
     const { artwork } = this.props
-    const { isAcquireable, isOfferable, isInquireable, isInAuction } = artwork
+    const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets } = artwork
+    const noEditions = (editionSets && editionSets.length === 0) || !editionSets
 
     if (isInAuction && artwork.sale && !artwork.sale.isClosed) {
-      return <BidButton artwork={artwork} />
+      return (
+        <>
+          {isBuyNowable && noEditions ? (
+            <>
+              <BidButton artwork={artwork} />
+              <Spacer mb={1} />
+              <BuyNowButton variant="secondaryOutline" artwork={artwork} editionSetID={this.props.editionSetID} />
+            </>
+          ) : (
+            <BidButton artwork={artwork} />
+          )}
+        </>
+      )
     } else if (isOfferable && isAcquireable) {
       return (
         <>
@@ -68,6 +81,11 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       isInquireable
       isBiddable
       isInAuction
+      isBuyNowable
+
+      editionSets {
+        id
+      }
 
       sale {
         isClosed

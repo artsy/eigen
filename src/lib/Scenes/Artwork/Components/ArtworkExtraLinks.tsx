@@ -62,8 +62,8 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
             Have a question?{" "}
             <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurAuctionFAQsTap()}>
               Read our auction FAQs
-            </Text>
-            . Or{" "}
+            </Text>{" "}
+            or{" "}
             <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
               ask a specialist
             </Text>
@@ -78,7 +78,6 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
           <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
             Read our FAQ
           </Text>
-          .
           {isAcquireable && (
             <>
               {" "}
@@ -86,9 +85,9 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
               <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
                 ask a specialist
               </Text>
-              .
             </>
           )}
+          .
         </Sans>
       )
     }
