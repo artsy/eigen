@@ -1,5 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
+import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
@@ -21,6 +22,20 @@ describe("ArtworkTombstone", () => {
     expect(component.text()).toContain("Painting")
     expect(component.text()).toContain("Edition 100/200")
     expect(component.text()).toContain("This is an edition of something")
+    expect(component.text()).not.toContain("Lot 8")
+    expect(component.text()).not.toContain("Cool Auction")
+    expect(component.text()).not.toContain("Estimated value: CHF 160,000–CHF 230,000")
+  })
+
+  it("renders auction fields correctly", () => {
+    const component = mount(
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
+      </Theme>
+    )
+    expect(component.text()).toContain("Lot 8")
+    expect(component.text()).toContain("Cool Auction")
+    expect(component.text()).toContain("Estimated value: CHF 160,000–CHF 230,000")
   })
 
   it("redirects to artist page when artist name is clicked", () => {
@@ -199,6 +214,7 @@ describe("ArtworkTombstone", () => {
 })
 
 const artworkTombstoneArtwork = {
+  ...ArtworkFixture,
   title: "Hello im a title",
   medium: "Painting",
   date: "1992",
@@ -254,4 +270,19 @@ const artworkTombstoneArtwork = {
     shortDescription: "This is an edition of something",
   },
   " $refType": null,
+}
+
+const artworkTombstoneAuctionArtwork = {
+  ...artworkTombstoneArtwork,
+  isInAuction: true,
+  saleArtwork: {
+    lotLabel: "8",
+    estimate: "CHF 160,000–CHF 230,000",
+  },
+  partner: {
+    name: "Cool Auction",
+  },
+  sale: {
+    isClosed: false,
+  },
 }

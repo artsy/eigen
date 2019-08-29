@@ -16,6 +16,12 @@
 
 ### Master
 
+### 1.14.0
+
+### 1.13.1-0
+
+- Adds Auction lot tombstone data to Artwork - kierangillen
+
 ### 1.13.0
 
 - Adds new base container / screen for the Collection page - luc

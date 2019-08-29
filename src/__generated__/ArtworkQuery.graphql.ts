@@ -454,9 +454,23 @@ fragment ArtworkActions_artwork on Artwork {
 
 fragment ArtworkTombstone_artwork on Artwork {
   title
+  isInAuction
   medium
   date
   cultural_maker: culturalMaker
+  saleArtwork {
+    lotLabel
+    estimate
+    id
+  }
+  partner {
+    name
+    id
+  }
+  sale {
+    isClosed
+    id
+  }
   artists {
     name
     href
@@ -760,7 +774,17 @@ v24 = [
   (v3/*: any*/),
   (v2/*: any*/)
 ],
-v25 = {
+v25 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "cents",
+    "args": null,
+    "storageKey": null
+  },
+  (v22/*: any*/)
+],
+v26 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "dimensions",
@@ -785,37 +809,27 @@ v25 = {
     }
   ]
 },
-v26 = {
+v27 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "isAcquireable",
   "args": null,
   "storageKey": null
 },
-v27 = {
+v28 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "isOfferable",
   "args": null,
   "storageKey": null
 },
-v28 = {
+v29 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "saleMessage",
   "args": null,
   "storageKey": null
-},
-v29 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "cents",
-    "args": null,
-    "storageKey": null
-  },
-  (v22/*: any*/)
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -1588,6 +1602,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "isInAuction",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "medium",
             "args": null,
             "storageKey": null
@@ -1600,7 +1621,92 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v25/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "saleArtwork",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "SaleArtwork",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "lotLabel",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "estimate",
+                "args": null,
+                "storageKey": null
+              },
+              (v2/*: any*/),
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "increments",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "BidIncrementsFormatted",
+                "plural": true,
+                "selections": (v25/*: any*/)
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isWithReserve",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "reserveMessage",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "reserveStatus",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "currentBid",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "SaleArtworkCurrentBid",
+                "plural": false,
+                "selections": (v23/*: any*/)
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "SaleArtworkCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "bidderPositions",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
+          },
+          (v26/*: any*/),
           {
             "kind": "ScalarField",
             "alias": "edition_of",
@@ -1736,9 +1842,9 @@ return {
             "concreteType": "EditionSet",
             "plural": true,
             "selections": [
-              (v26/*: any*/),
               (v27/*: any*/),
               (v28/*: any*/),
+              (v29/*: any*/),
               (v2/*: any*/),
               (v5/*: any*/),
               {
@@ -1748,10 +1854,10 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v25/*: any*/)
+              (v26/*: any*/)
             ]
           },
-          (v28/*: any*/),
+          (v29/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1766,19 +1872,12 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v26/*: any*/),
           (v27/*: any*/),
+          (v28/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "isInquireable",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isInAuction",
             "args": null,
             "storageKey": null
           },
@@ -1821,7 +1920,7 @@ return {
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
-                    "selections": (v29/*: any*/)
+                    "selections": (v25/*: any*/)
                   },
                   (v2/*: any*/)
                 ]
@@ -1848,77 +1947,6 @@ return {
             ]
           },
           {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "saleArtwork",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "SaleArtwork",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "increments",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "BidIncrementsFormatted",
-                "plural": true,
-                "selections": (v29/*: any*/)
-              },
-              (v2/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "isWithReserve",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "reserveMessage",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "reserveStatus",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "currentBid",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "SaleArtworkCurrentBid",
-                "plural": false,
-                "selections": (v23/*: any*/)
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "SaleArtworkCounts",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "bidderPositions",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              }
-            ]
-          },
-          {
             "kind": "ScalarField",
             "alias": null,
             "name": "priceIncludesTax",
@@ -1932,7 +1960,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "d7f26463adfc6f6c884a1fc354f18165",
+    "id": "5df05482ded26936f86b098841fe996a",
     "text": null,
     "metadata": {}
   }
