@@ -108,7 +108,7 @@ NativeModules.ARSwitchBoardModule = {
   presentMediaPreviewController: jest.fn(),
   presentArtworksSet: jest.fn(),
 }
-NativeModules.RNDynamicScreenDimensions = {
+NativeModules.ARDynamicScreenDimensions = {
   top: 20,
   bottom: 0,
   left: 0,

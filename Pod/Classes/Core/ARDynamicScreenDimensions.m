@@ -1,16 +1,15 @@
-#import "RNDynamicScreenDimensions.h"
+#import "ARDynamicScreenDimensions.h"
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
-#import <Emission/AREmission.h>
-#import <objc/runtime.h>
 
-@interface RNDynamicScreenDimensions ()
+@interface ARDynamicScreenDimensions ()
 @property (nonatomic, strong, readwrite) NSDictionary *currentDimensions;
-@property (nonatomic, readwrite) BOOL isBeingObserved;
+@property (nonatomic, assign, readwrite) BOOL isBeingObserved;
 @end
 
 
-NSDictionary *getSafeAreaInsets()
+static NSDictionary *
+getSafeAreaInsets()
 {
   if (@available(iOS 11.0, *)) {
     return @{
@@ -29,7 +28,8 @@ NSDictionary *getSafeAreaInsets()
   }
 }
 
-NSDictionary *getScreenDimensions()
+static NSDictionary *
+getScreenDimensions()
 {
   CGSize size = UIApplication.sharedApplication.keyWindow.bounds.size;
   return @{
@@ -40,9 +40,11 @@ NSDictionary *getScreenDimensions()
            };
 }
 
-@implementation RNDynamicScreenDimensions
+@implementation ARDynamicScreenDimensions
+
 @synthesize isBeingObserved;
 @synthesize currentDimensions;
+
 RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents
@@ -63,11 +65,11 @@ RCT_EXPORT_MODULE()
 - (void)orientationChanged:(NSNotification *)note
 {
   self.currentDimensions = getScreenDimensions();
-  __weak RNDynamicScreenDimensions *wself = self;
+  __weak ARDynamicScreenDimensions *wself = self;
 
   if (self.isBeingObserved) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      __strong RNDynamicScreenDimensions *sself = wself;
+      __strong ARDynamicScreenDimensions *sself = wself;
       if (sself && sself.isBeingObserved) {
         [sself sendEventWithName:@"change" body:sself.currentDimensions];
       }

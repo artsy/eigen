@@ -15,13 +15,13 @@ export interface ScreenDimensions {
 
 const ScreenDimenionsContext = createContext<ScreenDimensions>(null)
 
-const changes = new NativeEventEmitter(NativeModules.RNDynamicScreenDimensions)
+const changes = new NativeEventEmitter(NativeModules.ARDynamicScreenDimensions)
 
 let screenDimensions: ScreenDimensions = {
-  width: NativeModules.RNDynamicScreenDimensions.width,
-  height: NativeModules.RNDynamicScreenDimensions.height,
-  orientation: NativeModules.RNDynamicScreenDimensions.orientation,
-  safeAreaInsets: NativeModules.RNDynamicScreenDimensions.safeAreaInsets,
+  width: NativeModules.ARDynamicScreenDimensions.width,
+  height: NativeModules.ARDynamicScreenDimensions.height,
+  orientation: NativeModules.ARDynamicScreenDimensions.orientation,
+  safeAreaInsets: NativeModules.ARDynamicScreenDimensions.safeAreaInsets,
 }
 
 export const getCurrentScreenDimensions = () => screenDimensions
