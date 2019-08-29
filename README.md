@@ -94,13 +94,13 @@ We vendor some data from other repositories that you will sometimes need to upda
 
 ### Deploying Emission
 
-**Note:** Deploys are mostly automated using `yarn release patch|minor|major`; the following instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break.
+**Note:** Deploys are mostly automated using `yarn release patch|minor|major`; the following instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break. To release an update to bump Eigen's Emission version, you must use either a major or minor release.
 
 **Note 2:** If you're updating React Native, you're gonna have to do a lot of this stuff manually. See the makefile/alloy/orta for more info.
 
 1. Don't change the `package.json` version.
 1. For non-beta releases, use either `yarn release patch`, `yarn release minor`, or `yarn release major`. For
-   beta releases use `yarn release prerelease`.
+   beta releases, use `yarn release prerelease`. Beta releases are usually reserved for testing major releases before deployment.
 1. If integrating in Eigen consult the docs [on updating Emission](https://github.com/artsy/eigen/blob/master/docs/updating_emission.md)
 
 ### Automated Emission App Deploys
