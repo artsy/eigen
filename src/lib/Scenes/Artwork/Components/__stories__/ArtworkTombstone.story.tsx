@@ -1,10 +1,11 @@
 import { storiesOf } from "@storybook/react-native"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+// import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import React from "react"
 import { graphql } from "react-relay"
 import { ArtworkTombstoneFragmentContainer } from "../ArtworkTombstone"
+
 const MockArtworkTombstone = ({ artwork }: { artwork: ArtworkTombstone_artwork }) => {
   return (
     <MockRelayRenderer
@@ -20,8 +21,9 @@ const MockArtworkTombstone = ({ artwork }: { artwork: ArtworkTombstone_artwork }
     />
   )
 }
+
 const artworkTombstoneArtwork = {
-  ...ArtworkFixture,
+  // ...ArtworkFixture,
   title: "Hello im a title",
   medium: "Painting",
   date: "1992",
