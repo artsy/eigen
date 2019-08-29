@@ -16,6 +16,8 @@
 
 ### Master
 
+- Adds BuyNowButton to artworks in auction with isBuyNowable true - kierangillen
+
 ### 1.15.0
 
 - Send an event when screen orientation changes - ds300
