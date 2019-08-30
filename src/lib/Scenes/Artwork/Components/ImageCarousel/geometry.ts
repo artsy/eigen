@@ -16,13 +16,13 @@ export function fitInside(container: Size, child: Size): Size & { marginHorizont
   const aspectRatio = child.width / child.height
 
   // start out assuming that we need to constrain the image by height
-  let height = container.height
-  let width = aspectRatio * container.height
+  let height = Math.min(container.height, child.height)
+  let width = aspectRatio * height
 
   // check whether we actually need to constrain the image by width
   if (width > container.width) {
     width = container.width
-    height = container.width / aspectRatio
+    height = width / aspectRatio
   }
 
   // calculate centering margins
