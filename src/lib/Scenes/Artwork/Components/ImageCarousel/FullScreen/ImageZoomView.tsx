@@ -125,7 +125,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     const transition = useAnimatedValue(0)
     const transform = useMemo(() => createTransform(transition, imageTransitionOffset), [imageTransitionOffset])
 
-    const imageFittedWithinScreen = fitInside(screenDimensions, image)
+    const imageFittedWithinScreen = fitInside(screenDimensions, image.deepZoom.image.size)
     useEffect(() => {
       // animate image transition on mount
 
