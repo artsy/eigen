@@ -7,7 +7,10 @@ import { ImageZoomView } from "../ImageZoomView"
 describe("ImageCarouselFullScreen", () => {
   function Mock() {
     const value = useNewImageCarouselContext({
-      images: [{ height: 5, width: 5, url: "a", deepZoom: null }, { height: 5, width: 5, url: "b", deepZoom: null }],
+      images: [
+        { height: 5, width: 5, url: "a", deepZoom: { image: { size: { width: 5, height: 5 } } as any } },
+        { height: 5, width: 5, url: "b", deepZoom: { image: { size: { width: 5, height: 5 } } as any } },
+      ],
     })
     return (
       <ImageCarouselContext.Provider value={value}>
