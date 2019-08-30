@@ -64,17 +64,18 @@ RCT_EXPORT_MODULE()
 
 - (void)orientationChanged:(NSNotification *)note
 {
-  self.currentDimensions = getScreenDimensions();
   __weak ARDynamicScreenDimensions *wself = self;
 
-  if (self.isBeingObserved) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      __strong ARDynamicScreenDimensions *sself = wself;
-      if (sself && sself.isBeingObserved) {
-        [sself sendEventWithName:@"change" body:sself.currentDimensions];
-      }
-    });
-  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+    __strong ARDynamicScreenDimensions *sself = wself;
+    if (!sself) {
+      return;
+    }
+    sself.currentDimensions = getScreenDimensions();
+    if (sself.isBeingObserved) {
+      [sself sendEventWithName:@"change" body:sself.currentDimensions];
+    }
+  });
 }
 
 - (void)startObserving
