@@ -296,6 +296,10 @@ fragment CommercialButtons_artwork on Artwork {
   isInquireable
   isBiddable
   isInAuction
+  isBuyNowable
+  editionSets {
+    id
+  }
   sale {
     isClosed
     id
@@ -394,6 +398,7 @@ fragment AuctionPrice_artwork on Artwork {
 
 fragment BuyNowButton_artwork on Artwork {
   internalID
+  saleMessage
 }
 
 fragment BidButton_artwork on Artwork {
@@ -1889,6 +1894,13 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isBuyNowable",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "myLotStanding",
@@ -1960,7 +1972,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "5df05482ded26936f86b098841fe996a",
+    "id": "3e9636f3df5a176bda21de865e0881f2",
     "text": null,
     "metadata": {}
   }

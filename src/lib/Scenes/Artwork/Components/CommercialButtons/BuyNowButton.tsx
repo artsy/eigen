@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button, ButtonVariant } from "@artsy/palette"
 import { BuyNowButton_artwork } from "__generated__/BuyNowButton_artwork.graphql"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -10,6 +10,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 export interface BuyNowButtonProps {
   artwork: BuyNowButton_artwork
   relay: RelayProp
+  variant?: ButtonVariant
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
 }
@@ -105,6 +106,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
   }
 
   render() {
+    const { variant, artwork } = this.props
     const { isCommittingCreateOrderMutation } = this.state
 
     return (
@@ -112,10 +114,13 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
         onPress={() => this.handleCreateOrder()}
         loading={isCommittingCreateOrderMutation}
         size="large"
+        variant={variant}
         block
         width={100}
       >
-        Buy now
+        {variant && variant === "secondaryOutline" && artwork.saleMessage
+          ? `Buy now ${artwork.saleMessage}`
+          : "Buy now"}
       </Button>
     )
   }
@@ -125,6 +130,7 @@ export const BuyNowButtonFragmentContainer = createFragmentContainer(BuyNowButto
   artwork: graphql`
     fragment BuyNowButton_artwork on Artwork {
       internalID
+      saleMessage
     }
   `,
 })
