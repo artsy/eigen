@@ -103,7 +103,7 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
   }
 
   centerOnTab = (index: number) => {
-    if (!this.els[index] || this.scrollView) {
+    if (!this.els[index] || !this.scrollView) {
       return
     }
 
