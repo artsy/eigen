@@ -823,12 +823,6 @@ type ArtistRelatedData {
   ): ArtistConnection
 }
 
-enum ArtistSorts {
-  SORTABLE_ID_ASC
-  SORTABLE_ID_DESC
-  TRENDING_DESC
-}
-
 type ArtistStatuses {
   artists: Boolean
   articles: Boolean
@@ -1509,30 +1503,6 @@ type CitySponsoredContent {
     before: String
     last: Int
   ): ShowConnection
-}
-
-type Collection implements Node {
-  # A globally unique ID.
-  id: ID!
-
-  # A slug ID.
-  slug: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  cached: Int
-  artworksConnection(
-    after: String
-    first: Int
-    before: String
-    last: Int
-    private: Boolean = false
-    sort: CollectionSorts
-  ): ArtworkConnection
-  description: String!
-  default: Boolean!
-  name: String!
-  private: Boolean!
 }
 
 enum CollectionSorts {
@@ -2975,10 +2945,6 @@ type ConsignmentSubmissionEdge {
   cursor: String!
 }
 
-type Convection {
-  geminiTemplateKey: String!
-}
-
 # A conversation.
 type Conversation implements Node {
   # A globally unique ID.
@@ -3762,19 +3728,6 @@ type FairSponsoredContent {
   pressReleaseUrl: String
 }
 
-type FeaturedLink {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: String
-  href: String
-  image: Image
-  initials(length: Int = 3): String
-  subtitle: String
-  title: String
-}
-
 type Feedback {
   # A globally unique ID.
   id: ID!
@@ -3829,12 +3782,6 @@ type FilterArtworksEdge implements ArtworkEdgeInterface {
 
   # A cursor for use in pagination
   cursor: String!
-}
-
-type FilterPartners {
-  aggregations: [PartnersAggregationResults]
-  hits: [Partner]
-  total: Int
 }
 
 type FilterSaleArtworksCounts {
@@ -4206,37 +4153,6 @@ type GeneConnection {
 type GeneEdge {
   # The item at the end of the edge
   node: Gene
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-type GeneFamily {
-  # A globally unique ID.
-  id: ID!
-
-  # A slug ID.
-  slug: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  name: String!
-  genes: [Gene]
-}
-
-# A connection to a list of items.
-type GeneFamilyConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [GeneFamilyEdge]
-}
-
-# An edge in a connection.
-type GeneFamilyEdge {
-  # The item at the end of the edge
-  node: GeneFamily
 
   # A cursor for use in pagination
   cursor: String!
@@ -4886,17 +4802,6 @@ type MessageInitiator {
   email: String
 }
 
-type Metaphysics {
-  queryTracing: Boolean!
-  heapDumps: Boolean!
-  stitching: Boolean!
-  stitchingConvection: Boolean!
-  stitchingExchange: Boolean!
-  stitchingGravity: Boolean!
-  stitchingKaws: Boolean!
-  environment: String!
-}
-
 type Mutation {
   # Create a bidder
   createBidder(input: CreateBidderInput!): CreateBidderPayload
@@ -5007,22 +4912,6 @@ type OpeningHoursText {
 }
 
 union OpeningHoursUnion = OpeningHoursArray | OpeningHoursText
-
-type OrderedSet {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID.
-  internalID: ID!
-  cached: Int
-  description: String
-  key: String
-  itemType: String
-  items: [OrderedSetItem]
-  name: String
-}
-
-union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene
 
 union OrderParty = Partner | User
 
@@ -5302,18 +5191,6 @@ type PartnerCounts {
   ): FormattedNumber
 }
 
-enum PartnersAggregation {
-  CATEGORY
-  LOCATION
-  TOTAL
-}
-
-# The results for one of the requested aggregations
-type PartnersAggregationResults {
-  counts: [AggregationCount]
-  slice: PartnersAggregation
-}
-
 enum PartnerShowPartnerType {
   GALLERY
   MUSEUM
@@ -5375,61 +5252,17 @@ type Query {
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
 
-  # An Article
-  article(
-    # The ID of the Article
-    id: String!
-  ): Article
-
-  # A list of Articles
-  articles(auctionID: String, published: Boolean = true, showID: String, sort: ArticleSorts): [Article]
-
   # An Artwork
   artwork(
     # The slug or ID of the Artwork
     id: String!
   ): Artwork
 
-  # A subset of the metadata for an artwork at a specific time
-  artworkVersion(
-    # The ID of the ArtworkVersion
-    id: String!
-  ): ArtworkVersion
-
-  # A list of Artworks
-  artworks(ids: [String]): [Artwork]
-
   # An Artist
   artist(
     # The slug or ID of the Artist
     id: String!
   ): Artist
-
-  # A list of Artists
-  artists(
-    #
-    #         Only return artists matching specified ids.
-    #         Accepts list of ids.
-    #
-    ids: [String]
-
-    #
-    #         Only return artists matching specified slugs.
-    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
-    #
-    slugs: [String]
-    page: Int = 1
-    size: Int
-    sort: ArtistSorts
-  ): [Artist]
-
-  # Creates, and authorizes, a JWT custom for Causality
-  causalityJWT(
-    role: Role
-
-    # The id of the auction to participate in
-    saleID: String!
-  ): String
 
   # A city-based entry point for local discovery
   city(
@@ -5439,151 +5272,16 @@ type Query {
     # A point which will be used to locate the nearest local discovery city within a threshold
     near: Near
   ): City
-  collection(
-    # The slug or ID of the Collection
-    id: String!
-  ): Collection
-
-  # A user's credit card
-  creditCard(
-    # The ID of the Credit Card
-    id: String!
-  ): CreditCard
-
-  # An External Partner not on the platform
-  externalPartner(
-    # The ID of the Partner
-    id: String!
-  ): ExternalPartner
 
   # A Fair
   fair(
     # The slug or ID of the Fair
     id: String!
   ): Fair
-
-  # A list of Fairs
-  fairs(
-    fairOrganizerID: String
-    hasFullFeature: Boolean
-    hasHomepageSection: Boolean
-    hasListing: Boolean
-
-    #
-    #         Only return fairs matching specified ids.
-    #         Accepts list of ids.
-    #
-    ids: [String]
-    near: Near
-    page: Int
-    size: Int
-    sort: FairSorts
-    status: EventStatus
-  ): [Fair]
-
-  # Partners Elastic Search results
-  filterPartners(
-    defaultProfilePublic: Boolean
-    eligibleForCarousel: Boolean
-
-    # Indicates an active subscription
-    eligibleForListing: Boolean
-
-    # Indicates tier 1/2 for gallery, 1 for institution
-    eligibleForPrimaryBucket: Boolean
-
-    # Indicates tier 3/4 for gallery, 2 for institution
-    eligibleForSecondaryBucket: Boolean
-    ids: [String]
-    hasFullProfile: Boolean
-
-    # Coordinates to find partners closest to
-    near: String
-    page: Int
-
-    #
-    #         Only return partners of the specified partner categories.
-    #         Accepts list of slugs.
-    #
-    partnerCategories: [String]
-    size: Int
-    sort: PartnersSortType
-
-    # term used for searching Partners
-    term: String
-    type: [PartnerClassification]
-    aggregations: [PartnersAggregation]!
-  ): FilterPartners
-
-  # Artworks Elastic Search results
-  filterArtworksConnection(
-    acquireable: Boolean
-    offerable: Boolean
-    aggregationPartnerCities: [String]
-    aggregations: [ArtworkAggregation]
-    artistID: String
-    artistIDs: [String]
-    atAuction: Boolean
-    attributionClass: [String]
-    color: String
-    dimensionRange: String
-    extraAggregationGeneIDs: [String]
-    includeArtworksByFollowedArtists: Boolean
-    includeMediumFilterInAggregation: Boolean
-    inquireableOnly: Boolean
-    forSale: Boolean
-    geneID: String
-    geneIDs: [String]
-    height: String
-    width: String
-
-    # When true, will only return `marketable` works (not nude or provocative).
-    marketable: Boolean
-
-    # A string from the list of allocations, or * to denote all mediums
-    medium: String
-    period: String
-    periods: [String]
-    majorPeriods: [String]
-    partnerID: ID
-    partnerCities: [String]
-    priceRange: String
-    page: Int
-    saleID: ID
-    size: Int
-    sort: String
-    tagID: String
-    keyword: String
-
-    # When true, will only return exact keyword match
-    keywordMatchExact: Boolean
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): FilterArtworksConnection
   gene(
     # The slug or ID of the Gene
     id: String!
   ): Gene
-
-  # A list of Genes
-  genes(
-    size: Int
-
-    #
-    #         Only return genes matching specified slugs.
-    #         Accepts list of slugs.
-    #
-    slugs: [String]
-  ): [Gene]
-
-  # List of curated genes with custom images
-  suggestedGenes: [Gene]
-
-  # A list of Gene Families
-  geneFamilies(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
-  geneFamily: GeneFamily
 
   # Home screen content
   homePage: HomePage
@@ -5602,21 +5300,6 @@ type Query {
     # Exclude these MongoDB ids from results
     excludeIDs: [String]
   ): [Artist]
-
-  # A Search for Genes
-  matchGene(
-    # Your search term
-    term: String!
-
-    # Maximum number of items to retrieve. Default: 5.
-    size: Int
-
-    # Page to retrieve. Default: 1.
-    page: Int
-
-    # Exclude these MongoDB ids from results
-    excludeIDs: [String]
-  ): [Gene]
   me: Me
 
   # Fetches an object given its globally unique ID.
@@ -5624,81 +5307,6 @@ type Query {
     # The globally unique ID of the node.
     id: ID!
   ): Node
-
-  # An OrderedSet
-  orderedSet(
-    # The ID of the OrderedSet
-    id: String!
-  ): OrderedSet
-
-  # A collection of OrderedSets
-  orderedSets(
-    # Key to the OrderedSet or group of OrderedSets
-    key: String!
-    public: Boolean = true
-    page: Int = 1
-    size: Int = 10
-  ): [OrderedSet]
-
-  # A Partner
-  partner(
-    # The slug or ID of the Partner
-    id: String!
-  ): Partner
-
-  # A list of PartnerCategories
-  partnerCategories(
-    categoryType: PartnerCategoryType
-
-    # Filter by whether category is internal
-    internal: Boolean = false
-    size: Int
-  ): [PartnerCategory]
-
-  # A PartnerCategory
-  partnerCategory(
-    # The slug or ID of the PartnerCategory
-    id: String!
-  ): PartnerCategory
-
-  # A list of Partners
-  partners(
-    defaultProfilePublic: Boolean
-    eligibleForCarousel: Boolean
-
-    # Indicates an active subscription
-    eligibleForListing: Boolean
-
-    # Indicates tier 1/2 for gallery, 1 for institution
-    eligibleForPrimaryBucket: Boolean
-
-    # Indicates tier 3/4 for gallery, 2 for institution
-    eligibleForSecondaryBucket: Boolean
-    ids: [String]
-    hasFullProfile: Boolean
-
-    # Coordinates to find partners closest to
-    near: String
-    page: Int
-
-    #
-    #         Only return partners of the specified partner categories.
-    #         Accepts list of slugs.
-    #
-    partnerCategories: [String]
-    size: Int
-    sort: PartnersSortType
-
-    # term used for searching Partners
-    term: String
-    type: [PartnerClassification]
-  ): [Partner]
-
-  # A Profile
-  profile(
-    # The slug or ID of the Profile
-    id: String!
-  ): Profile
 
   # A Sale
   sale(
@@ -5771,59 +5379,11 @@ type Query {
     last: Int
   ): SearchableConnection
 
-  # The schema for difference micro-service settings
-  services: Services
-
   # A Show
   show(
     # The slug or ID of the Show
     id: String!
   ): Show
-  status: Status
-
-  # Fields related to internal systems.
-  system: System
-  tag(
-    # The slug or ID of the Tag
-    id: String!
-  ): Tag
-
-  # Trending artists
-  trendingArtists(
-    # Fetch the top artists for each metric within double the base time period
-    doubleTimePeriod: Boolean = false
-
-    # Trending method
-    method: String = "fetch"
-
-    # Trending metric name
-    name: TrendingMetrics!
-
-    # Number of results to return
-    size: Int = 40
-  ): TrendingArtists
-  user(
-    # Email to search for user by
-    email: String
-
-    # ID of the user
-    id: String
-  ): User
-
-  # A list of Users
-  users(ids: [String]): [User]
-
-  # Popular artists
-  popularArtists(
-    # If true, will exclude followed artists for the user
-    excludeFollowedArtists: Boolean
-
-    # Exclude these ids from results, may result in all artists being excluded.
-    excludeArtistIDs: [String]
-
-    # Number of results to return
-    size: Int
-  ): PopularArtists
 
   # Find list of competing orders
   commerceCompetingOrders(
@@ -5948,11 +5508,6 @@ type ResizedImageUrl {
   width: Int
   height: Int
   url: String
-}
-
-enum Role {
-  PARTICIPANT
-  OPERATOR
 }
 
 # The conditions for uploading assets to media.artsy.net
@@ -6524,11 +6079,6 @@ type SendFeedbackMutationSuccess {
 
 union SendFeedbackMutationType = SendFeedbackMutationSuccess | SendFeedbackMutationFailure
 
-type Services {
-  convection: Convection!
-  metaphysics: Metaphysics!
-}
-
 type Show implements Node & EntityWithFilterArtworksConnectionInterface {
   # A globally unique ID.
   id: ID!
@@ -6840,18 +6390,6 @@ enum sort {
   ASC
 }
 
-type Status {
-  gravity: StatusGravity
-
-  # Metaphysics ping
-  ping: Boolean
-}
-
-# Gravity ping
-type StatusGravity {
-  ping: Boolean
-}
-
 enum SubmissionCategoryAggregation {
   PAINTING
   SCULPTURE
@@ -6882,26 +6420,6 @@ enum SubmissionStateAggregation {
   REJECTED
 }
 
-type System {
-  # Gravity system time, necessary for synchronizing device clocks.
-  time: SystemTime
-}
-
-type SystemTime {
-  day: Int
-  wday: Int
-  month: Int
-  year: Int
-  hour: Int
-  min: Int
-  sec: Int
-  dst: Boolean
-  unix: Int
-  utcOffset: Int
-  zone: String
-  iso8601: String
-}
-
 type Tag implements Node {
   # A globally unique ID.
   id: ID!
@@ -6921,26 +6439,6 @@ type Tag implements Node {
 
 type TrendingArtists {
   artists: [Artist]
-}
-
-enum TrendingMetrics {
-  # Cumulative price achieved at auction. Base time period: 12 weeks
-  ARTIST_AUCTION_LOT
-
-  # Number of artworks in fairs. Base time period: 12 weeks.
-  ARTIST_FAIR
-
-  # Base time period: 2 weeks
-  ARTIST_FOLLOW
-
-  # Base time period: 1 month
-  ARTIST_INQUIRY
-
-  # Base time period: 1 month
-  ARTIST_SAVE
-
-  # Base time period: 2 weeks
-  ARTIST_SEARCH
 }
 
 union UnderlyingCurrentEvent = Show | Sale
