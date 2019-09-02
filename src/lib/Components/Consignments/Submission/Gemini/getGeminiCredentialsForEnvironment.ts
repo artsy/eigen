@@ -9,7 +9,7 @@ import { commitMutation, graphql } from "relay-runtime"
 export type AssetCredentials = getGeminiCredentialsForEnvironmentMutationResponse["requestCredentialsForAssetUpload"]["asset"]
 
 export const getGeminiCredentialsForEnvironment = (input: RequestCredentialsForAssetUploadInput) => {
-  return new Promise<getGeminiCredentialsForEnvironmentMutationResponse>((resolve, reject) => {
+  return new Promise<AssetCredentials>((resolve, reject) => {
     commitMutation<getGeminiCredentialsForEnvironmentMutation>(defaultEnvironment, {
       mutation: graphql`
         mutation getGeminiCredentialsForEnvironmentMutation($input: RequestCredentialsForAssetUploadInput!) {
@@ -42,9 +42,9 @@ export const getGeminiCredentialsForEnvironment = (input: RequestCredentialsForA
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
-          resolve(response)
+          resolve(response.requestCredentialsForAssetUpload.asset)
         }
       },
     })
-  }).then(data => data.requestCredentialsForAssetUpload.asset)
+  })
 }

@@ -1,7 +1,4 @@
-import {
-  createConsignmentSubmissionMutation,
-  createConsignmentSubmissionMutationResponse,
-} from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { createConsignmentSubmissionMutation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 import { ConsignmentSetup } from "../index"
@@ -9,7 +6,7 @@ import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
 
 export const createConsignmentSubmission = (submission: ConsignmentSetup) => {
   const input = consignmentSetupToMutationInput(submission)
-  return new Promise<createConsignmentSubmissionMutationResponse>((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     commitMutation<createConsignmentSubmissionMutation>(defaultEnvironment, {
       mutation: graphql`
         mutation createConsignmentSubmissionMutation($input: CreateSubmissionMutationInput!) {
@@ -26,9 +23,9 @@ export const createConsignmentSubmission = (submission: ConsignmentSetup) => {
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
-          resolve(response)
+          resolve(response.createConsignmentSubmission.consignmentSubmission.internalID)
         }
       },
     })
-  }).then(response => response.createConsignmentSubmission.consignmentSubmission)
+  })
 }

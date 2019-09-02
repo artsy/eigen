@@ -15,7 +15,7 @@ const route = {} as any
 beforeEach(jest.resetAllMocks)
 
 it("calls the draft created event", () => {
-  const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submission_id: "123" }} />).dive()
+  const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submissionID: "123" }} />).dive()
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftCreated()
@@ -31,7 +31,7 @@ it("calls the draft created event", () => {
 })
 
 it("calls the draft created event", () => {
-  const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submission_id: "123" }} />).dive()
+  const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submissionID: "123" }} />).dive()
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftSubmitted()

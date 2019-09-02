@@ -16,7 +16,7 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup) =>
       // Required fields by metaphysics
       artistID: submission.artist ? submission.artist.internalID : "",
       // Required for updating a submission
-      id: submission.submission_id,
+      id: submission.submissionID,
       // Required for finalizing a submission
       state: submission.state,
       // Optional

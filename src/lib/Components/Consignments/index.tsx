@@ -41,7 +41,7 @@ export interface Photo {
 }
 
 export interface ConsignmentSetup {
-  submission_id?: string
+  submissionID?: string
   state?: "DRAFT" | "SUBMITTED"
   artist?: ArtistResult
   photos?: Photo[]
