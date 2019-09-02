@@ -31,7 +31,7 @@ export const updateConsignmentSubmission = (submission: ConsignmentSetup) => {
       variables: { input },
       onError: reject,
       onCompleted: (response, errors) => {
-        if (errors.length > 0) {
+        if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
           resolve(response)
