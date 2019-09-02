@@ -17,6 +17,7 @@
 ### Master
 
 - Adds BuyNowButton to artworks in auction with isBuyNowable true - kierangillen
+- Fix consignments and switch to use Relay - alloy
 
 ### 1.15.0
 
