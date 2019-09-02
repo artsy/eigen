@@ -16,5 +16,6 @@ export const getConvectionGeminiKey = () =>
         }
       }
     `,
-    {}
+    {},
+    { force: true }
   ).then(data => data.system.services.convection.geminiTemplateKey)
