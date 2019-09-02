@@ -17,7 +17,7 @@
 
 #import <CoreServices/CoreServices.h>
 
-@interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, WKUIDelegate>
 @property (nonatomic, readonly, strong) UIGestureRecognizer *gesture;
 @end
 
@@ -91,6 +91,7 @@
     }
 
     _webView = webView;
+    _webView.UIDelegate = self;
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent;
@@ -155,6 +156,22 @@
 
 #pragma mark WKWebViewDelegate
 
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
+{
+  if (!navigationAction.targetFrame.isMainFrame) {
+    NSURL *URL = navigationAction.request.URL;
+    ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
+    if ([switchboard canRouteURL:URL]) {
+      UIViewController *controller = [switchboard loadURL:URL];
+      if (controller) {
+        [self.navigationController pushViewController:controller animated:YES];
+      }
+    }
+  }
+
+  return nil;
+}
+
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
 {
     decisionHandler([self shouldLoadNavigationAction:navigationAction]);
@@ -193,7 +210,7 @@
             ar_dispatch_after(0.5, ^{
                 [self.navigationController popViewControllerAnimated:YES];
             });
-            
+
             return WKNavigationResponsePolicyCancel;
         }
     }
