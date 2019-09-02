@@ -46,5 +46,5 @@ export const getGeminiCredentialsForEnvironment = (input: RequestCredentialsForA
         }
       },
     })
-  })
+  }).then(data => data.requestCredentialsForAssetUpload.asset)
 }

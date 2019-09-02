@@ -2945,6 +2945,10 @@ type ConsignmentSubmissionEdge {
   cursor: String!
 }
 
+type ConvectionService {
+  geminiTemplateKey: String!
+}
+
 # A conversation.
 type Conversation implements Node {
   # A globally unique ID.
@@ -4802,6 +4806,17 @@ type MessageInitiator {
   email: String
 }
 
+type MetaphysicsService {
+  queryTracing: Boolean!
+  heapDumps: Boolean!
+  stitching: Boolean!
+  stitchingConvection: Boolean!
+  stitchingExchange: Boolean!
+  stitchingGravity: Boolean!
+  stitchingKaws: Boolean!
+  environment: String!
+}
+
 type Mutation {
   # Create a bidder
   createBidder(input: CreateBidderInput!): CreateBidderPayload
@@ -5384,6 +5399,9 @@ type Query {
     # The slug or ID of the Show
     id: String!
   ): Show
+
+  # Fields related to internal systems.
+  system: System
 
   # Find list of competing orders
   commerceCompetingOrders(
@@ -6079,6 +6097,11 @@ type SendFeedbackMutationSuccess {
 
 union SendFeedbackMutationType = SendFeedbackMutationSuccess | SendFeedbackMutationFailure
 
+type Services {
+  convection: ConvectionService!
+  metaphysics: MetaphysicsService!
+}
+
 type Show implements Node & EntityWithFilterArtworksConnectionInterface {
   # A globally unique ID.
   id: ID!
@@ -6418,6 +6441,29 @@ enum SubmissionStateAggregation {
   SUBMITTED
   APPROVED
   REJECTED
+}
+
+type System {
+  # The schema for difference micro-service settings
+  services: Services
+
+  # Gravity system time, necessary for synchronizing device clocks.
+  time: SystemTime
+}
+
+type SystemTime {
+  day: Int
+  wday: Int
+  month: Int
+  year: Int
+  hour: Int
+  min: Int
+  sec: Int
+  dst: Boolean
+  unix: Int
+  utcOffset: Int
+  zone: String
+  iso8601: String
 }
 
 type Tag implements Node {

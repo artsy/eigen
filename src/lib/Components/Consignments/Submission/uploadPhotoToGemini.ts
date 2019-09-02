@@ -1,6 +1,7 @@
 import { metaphysics } from "../../../metaphysics"
 import {
   createGeminiAssetWithS3Credentials,
+  getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "./geminiUploadToS3"
@@ -34,22 +35,16 @@ export interface GeminiTokenResonse {
 }
 
 export const uploadImageAndPassToGemini = async (file: string, acl: string, submissionID: string) => {
-  const services = await getConvectionGeminiKey()
-  const convectionKey = services.data.services.convection.geminiTemplateKey
+  const convectionKey = await getConvectionGeminiKey()
 
-  const creationInput = {
-    acl,
-    name: convectionKey,
-  }
   // Get S3 Credentials from Gemini
-  const {
-    requestCredentialsForAssetUpload: { asset: assetCredentials },
-  } = await getGeminiCredentialsForEnvironment(creationInput)
+  const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+
   // Upload our file to the place Gemini recommended
   const s3 = await uploadFileToS3(file, acl, assetCredentials)
 
   // Let Gemini know that this file exists and should be processed
-  const geminiProcess = await createGeminiAssetWithS3Credentials({
+  const geminiAssetToken = await createGeminiAssetWithS3Credentials({
     sourceKey: s3.key,
     templateKey: convectionKey,
     sourceBucket: assetCredentials.policyDocument.conditions.bucket,
@@ -62,22 +57,9 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string, subm
   // Let Convection know that the Gemini asset should be attached to the consignment
   await addAssetToConsignment({
     asset_type: "image",
-    gemini_token: geminiProcess.createGeminiEntryForAsset.asset.token,
+    gemini_token: geminiAssetToken,
     submission_id: submissionID,
   })
-}
-
-export const getConvectionGeminiKey = async () => {
-  const query = `
-  {
-    services {
-      convection {
-        geminiTemplateKey
-      }
-    }
-  }
-  `
-  return metaphysics<GeminiTokenResonse>({ query, variables: {} })
 }
 
 export const addAssetToConsignment = async (options: ConvectionAssetSubmissionInput) => {

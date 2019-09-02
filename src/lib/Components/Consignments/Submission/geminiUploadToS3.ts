@@ -2,6 +2,7 @@ import { AssetCredentials } from "./Gemini/getGeminiCredentialsForEnvironment"
 
 export { getGeminiCredentialsForEnvironment } from "./Gemini/getGeminiCredentialsForEnvironment"
 export { createGeminiAssetWithS3Credentials } from "./Gemini/createGeminiAssetWithS3Credentials"
+export { getConvectionGeminiKey } from "./Gemini/getConvectionGeminiKey"
 
 export interface S3UploadResponse {
   key: string

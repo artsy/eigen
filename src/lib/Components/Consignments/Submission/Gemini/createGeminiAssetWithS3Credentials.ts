@@ -33,5 +33,5 @@ export const createGeminiAssetWithS3Credentials = (input: CreateGeminiEntryForAs
         }
       },
     })
-  })
+  }).then(data => data.createGeminiEntryForAsset.asset.token)
 }
