@@ -5,6 +5,7 @@ import { fetchQuery, graphql } from "react-relay"
 
 import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
+import { throttle } from "lodash"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 import { SearchResults } from "../Components/SearchResults"
@@ -41,13 +42,13 @@ export default class Artist extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  textChanged = async (text: string) => {
+  textChanged = (text: string) => {
     this.setState({ query: text, searching: text.length > 0 })
     this.searchForQuery(text)
   }
 
-  // TODO: Add throttling
-  searchForQuery = async (query: string) => {
+  // tslint:disable:member-ordering
+  searchForQuery = throttle(async (query: string) => {
     const data = await fetchQuery<ConsignmentsArtistQuery>(
       environment,
       graphql`
@@ -72,7 +73,7 @@ export default class Artist extends React.Component<Props, State> {
     )
     const results = data.searchConnection.edges.map(({ node }) => node as ArtistResult)
     this.setState({ results, searching: false })
-  }
+  }, 1000)
 
   render() {
     const isPad = Dimensions.get("window").width > 700
