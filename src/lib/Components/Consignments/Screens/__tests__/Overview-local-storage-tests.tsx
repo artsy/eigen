@@ -6,8 +6,8 @@ AsyncStorage.removeItem = jest.fn()
 import Overview from "../Overview"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
-jest.mock("../../Submission/createConsignmentSubmission", () => jest.fn())
-jest.mock("../../Submission/update", () => jest.fn())
+jest.mock("../../Submission/createConsignmentSubmission", () => ({ createConsignmentSubmission: jest.fn() }))
+jest.mock("../../Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
 
 beforeEach(() => {
   jest.resetAllMocks()

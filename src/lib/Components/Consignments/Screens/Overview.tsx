@@ -11,7 +11,7 @@ import CloseButton from "../Components/CloseButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { FormButton, Row } from "../Components/FormElements"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
-import updateSubmission from "../Submission/update"
+import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 import { LargeHeadline, Subtitle } from "../Typography"
 import Confirmation from "./Confirmation"
@@ -114,7 +114,7 @@ export default class Overview extends React.Component<Props, State> {
       // This is async, but we don't need the synchronous behavior from await.
       this.uploadPhotosIfNeeded()
 
-      updateSubmission(this.state, this.state.submission_id)
+      updateConsignmentSubmission(this.state)
     } else if (this.state.artist) {
       const submission = await createConsignmentSubmission(this.state)
       this.setState({ submission_id: submission.internalID }, () => {
@@ -140,7 +140,7 @@ export default class Overview extends React.Component<Props, State> {
     const submission = this.state as ConsignmentSetup
     let hasSubmittedSuccessfully = true
     try {
-      await updateSubmission({ ...submission, state: "SUBMITTED" }, this.state.submission_id)
+      await updateConsignmentSubmission({ ...submission, state: "SUBMITTED" })
       await AsyncStorage.removeItem(consignmentsStateKey)
       this.submissionDraftSubmitted()
     } catch (error) {

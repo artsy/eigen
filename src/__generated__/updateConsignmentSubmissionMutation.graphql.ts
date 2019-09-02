@@ -4,7 +4,8 @@ import { ConcreteRequest } from "relay-runtime";
 export type SubmissionCategoryAggregation = "ARCHITECTURE" | "DESIGN_DECORATIVE_ART" | "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" | "FASHION_DESIGN_AND_WEARABLE_ART" | "INSTALLATION" | "JEWELRY" | "MIXED_MEDIA" | "OTHER" | "PAINTING" | "PERFORMANCE_ART" | "PHOTOGRAPHY" | "PRINT" | "SCULPTURE" | "TEXTILE_ARTS" | "VIDEO_FILM_ANIMATION" | "%future added value";
 export type SubmissionDimensionAggregation = "CM" | "IN" | "%future added value";
 export type SubmissionStateAggregation = "APPROVED" | "DRAFT" | "REJECTED" | "SUBMITTED" | "%future added value";
-export type CreateSubmissionMutationInput = {
+export type UpdateSubmissionMutationInput = {
+    readonly id: string;
     readonly artistID: string;
     readonly authenticityCertificate?: boolean | null;
     readonly category?: SubmissionCategoryAggregation | null;
@@ -27,28 +28,28 @@ export type CreateSubmissionMutationInput = {
     readonly userID?: string | null;
     readonly clientMutationId?: string | null;
 };
-export type createConsignmentSubmissionMutationVariables = {
-    readonly input: CreateSubmissionMutationInput;
+export type updateConsignmentSubmissionMutationVariables = {
+    readonly input: UpdateSubmissionMutationInput;
 };
-export type createConsignmentSubmissionMutationResponse = {
-    readonly createConsignmentSubmission: {
+export type updateConsignmentSubmissionMutationResponse = {
+    readonly updateConsignmentSubmission: {
         readonly consignmentSubmission: {
             readonly internalID: string | null;
         } | null;
     } | null;
 };
-export type createConsignmentSubmissionMutation = {
-    readonly response: createConsignmentSubmissionMutationResponse;
-    readonly variables: createConsignmentSubmissionMutationVariables;
+export type updateConsignmentSubmissionMutation = {
+    readonly response: updateConsignmentSubmissionMutationResponse;
+    readonly variables: updateConsignmentSubmissionMutationVariables;
 };
 
 
 
 /*
-mutation createConsignmentSubmissionMutation(
-  $input: CreateSubmissionMutationInput!
+mutation updateConsignmentSubmissionMutation(
+  $input: UpdateSubmissionMutationInput!
 ) {
-  createConsignmentSubmission(input: $input) {
+  updateConsignmentSubmission(input: $input) {
     consignmentSubmission {
       internalID
     }
@@ -61,7 +62,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "input",
-    "type": "CreateSubmissionMutationInput!",
+    "type": "UpdateSubmissionMutationInput!",
     "defaultValue": null
   }
 ],
@@ -69,7 +70,7 @@ v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
-    "name": "createConsignmentSubmission",
+    "name": "updateConsignmentSubmission",
     "storageKey": null,
     "args": [
       {
@@ -78,7 +79,7 @@ v1 = [
         "variableName": "input"
       }
     ],
-    "concreteType": "CreateSubmissionMutationPayload",
+    "concreteType": "UpdateSubmissionMutationPayload",
     "plural": false,
     "selections": [
       {
@@ -106,7 +107,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "createConsignmentSubmissionMutation",
+    "name": "updateConsignmentSubmissionMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -114,18 +115,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "createConsignmentSubmissionMutation",
+    "name": "updateConsignmentSubmissionMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
-    "name": "createConsignmentSubmissionMutation",
-    "id": "1193f18a6f5e42b6136f4502f4479ccb",
+    "name": "updateConsignmentSubmissionMutation",
+    "id": "15aa0a85a06807f72c1b64cbb3c312e8",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '960c9b16eb4c0b3f443f638be859c670';
+(node as any).hash = 'ce50d7bafbedce3436446f2e80197f61';
 export default node;

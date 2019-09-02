@@ -1,5 +1,6 @@
 import { includes, isBoolean, isNumber, isString } from "lodash"
 
+// TODO: Is this still needed?
 /**
  * Transforms a JS object into a a GraphQL object
  * @param obj the object to transform

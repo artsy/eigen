@@ -7,8 +7,8 @@ import Overview from "../Overview"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
-jest.mock("../../Submission/update", () => jest.fn())
-import updateSubmission from "../../Submission/update"
+jest.mock("../../Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
+import { updateConsignmentSubmission } from "../../Submission/updateConsignmentSubmission"
 
 jest.mock("../../Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
 import { uploadImageAndPassToGemini } from "../../Submission/uploadPhotoToGemini"
@@ -55,5 +55,5 @@ it("calls update submission when submitting a non-draft version", () => {
   overview.showConfirmationScreen = () => void overview.submitFinalSubmission()
 
   overview.submitFinalSubmission()
-  expect(updateSubmission).toBeCalledWith({ state: "SUBMITTED", submission_id: "123" }, "123")
+  expect(updateConsignmentSubmission).toBeCalledWith({ state: "SUBMITTED", submission_id: "123" })
 })
