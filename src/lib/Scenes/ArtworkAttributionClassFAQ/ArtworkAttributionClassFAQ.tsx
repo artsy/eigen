@@ -39,7 +39,7 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
     return (
       <Theme>
         <ScrollView>
-          <Box pt={this.props.safeAreaInsets.top} pb={this.props.safeAreaInsets.top} px={2}>
+          <Box pt={this.props.safeAreaInsets.top + 3} pb={this.props.safeAreaInsets.top + 4} px={2}>
             <Spacer mt={3} />
             <Serif mb={2} size="8">
               Artwork classifications
