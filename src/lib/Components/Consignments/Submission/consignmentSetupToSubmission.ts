@@ -1,4 +1,4 @@
-import { CreateSubmissionMutationInput } from "__generated__/CreateConsignmentSubmissionMutation.graphql"
+import { CreateSubmissionMutationInput } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignmentSubmissionMutation.graphql"
 import { isNil, omitBy } from "lodash"
 import { ConsignmentSetup } from "../index"

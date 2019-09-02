@@ -12,7 +12,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { SubmissionCategoryAggregation } from "__generated__/CreateConsignmentSubmissionMutation.graphql"
+import { SubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { ConsignmentMetadata } from "../"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"

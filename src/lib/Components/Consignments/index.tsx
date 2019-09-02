@@ -1,7 +1,7 @@
 import React from "react"
 import Welcome from "./Screens/Welcome"
 
-import { SubmissionCategoryAggregation } from "__generated__/CreateConsignmentSubmissionMutation.graphql"
+import { SubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
