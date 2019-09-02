@@ -264,7 +264,7 @@
 - (ARCellData *)jumpToArtworkWithBNMOWithEdition
 {
   return [self tappableCellDataWithTitle:@"Artwork With BNMO Edition Sets" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"david-yarrow-genesis-1"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"terry-oneill-faye-dunaway-the-beverly-hills-hilton-los-angeles-the-morning-after-her-network-oscar-1"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

@@ -58,7 +58,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         <Sans size="3" weight="medium">
           Edition size
         </Sans>
-        <Flex flexDirection="row" alignContent="center">
+        <Flex flexDirection="row" alignContent="center" flexWrap="wrap">
           {editionSets.map(edition => {
             const { id, internalID, dimensions } = edition
             const selected = internalID === selectedEdition.internalID
