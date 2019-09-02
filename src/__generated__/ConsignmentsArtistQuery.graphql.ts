@@ -5,13 +5,27 @@ export type ConsignmentsArtistQueryVariables = {
     readonly query: string;
 };
 export type ConsignmentsArtistQueryResponse = {
-    readonly matchArtist: ReadonlyArray<{
-        readonly internalID: string;
-        readonly name: string | null;
-        readonly image: {
-            readonly url: string | null;
-        } | null;
-    } | null> | null;
+    readonly searchConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: ({
+                readonly internalID?: string;
+                readonly name?: string | null;
+                readonly image?: {
+                    readonly url: string | null;
+                } | null;
+            } & ({
+                readonly internalID: string;
+                readonly name: string | null;
+                readonly image: {
+                    readonly url: string | null;
+                } | null;
+            } | {
+                /*This will never be '% other', but we need some
+                value in case none of the concrete values match.*/
+                readonly __typename: "%other";
+            })) | null;
+        } | null> | null;
+    } | null;
 };
 export type ConsignmentsArtistQuery = {
     readonly response: ConsignmentsArtistQueryResponse;
@@ -24,13 +38,22 @@ export type ConsignmentsArtistQuery = {
 query ConsignmentsArtistQuery(
   $query: String!
 ) {
-  matchArtist(term: $query) {
-    internalID
-    name
-    image {
-      url
+  searchConnection(query: $query, first: 10, entities: [ARTIST], mode: AUTOSUGGEST) {
+    edges {
+      node {
+        __typename
+        ... on Artist {
+          internalID
+          name
+          image {
+            url
+          }
+        }
+        ... on Node {
+          id
+        }
+      }
     }
-    id
   }
 }
 */
@@ -46,40 +69,63 @@ var v0 = [
 ],
 v1 = [
   {
+    "kind": "Literal",
+    "name": "entities",
+    "value": [
+      "ARTIST"
+    ]
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10
+  },
+  {
+    "kind": "Literal",
+    "name": "mode",
+    "value": "AUTOSUGGEST"
+  },
+  {
     "kind": "Variable",
-    "name": "term",
+    "name": "query",
     "variableName": "query"
   }
 ],
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "image",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Image",
-  "plural": false,
+  "kind": "InlineFragment",
+  "type": "Artist",
   "selections": [
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "url",
+      "name": "internalID",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "name",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "image",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Image",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "url",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     }
   ]
 };
@@ -95,15 +141,35 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "matchArtist",
+        "name": "searchConnection",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "Artist",
-        "plural": true,
+        "concreteType": "SearchableConnection",
+        "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/)
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "SearchableEdge",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "node",
+                "storageKey": null,
+                "args": null,
+                "concreteType": null,
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/)
+                ]
+              }
+            ]
+          }
         ]
       }
     ]
@@ -116,21 +182,48 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "matchArtist",
+        "name": "searchConnection",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "Artist",
-        "plural": true,
+        "concreteType": "SearchableConnection",
+        "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
-            "name": "id",
+            "name": "edges",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
+            "concreteType": "SearchableEdge",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "node",
+                "storageKey": null,
+                "args": null,
+                "concreteType": null,
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "__typename",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v2/*: any*/)
+                ]
+              }
+            ]
           }
         ]
       }
@@ -139,11 +232,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConsignmentsArtistQuery",
-    "id": "ed29b8a51936a49b1a3d981f5d084c6e",
+    "id": "856318eea3bd6ca43b0e7b6e3c4b799c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'cb27fca9152591c6a9fbb6102a70418d';
+(node as any).hash = 'fb8f61fe5f1f1428024aab1c717e899c';
 export default node;
