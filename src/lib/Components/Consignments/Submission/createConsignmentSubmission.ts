@@ -7,9 +7,6 @@ import { commitMutation, graphql } from "relay-runtime"
 import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
 
-/**
- * @param submission A submission object
- */
 export const createConsignmentSubmission = (submission: ConsignmentSetup) => {
   const input = consignmentSetupToMutationInput(submission)
   return new Promise<createConsignmentSubmissionMutationResponse>((resolve, reject) => {

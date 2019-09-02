@@ -6,17 +6,6 @@ import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
 
 export const updateConsignmentSubmission = (submission: ConsignmentSetup) => {
   const input = consignmentSetupToMutationInput(submission)
-
-  // const query = `mutation {
-  //   updateConsignmentSubmission(input:${input}) {
-  //     consignment_submission {
-  //       internalID
-  //     }
-  //   }
-  // }`
-  // const results = await metaphysics<UpdateSubmissionResponse>({ query })
-  // return results.data.updateConsignmentSubmission.consignment_submission
-
   return new Promise((resolve, reject) => {
     commitMutation<updateConsignmentSubmissionMutation>(defaultEnvironment, {
       mutation: graphql`
