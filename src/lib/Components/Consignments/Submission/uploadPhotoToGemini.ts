@@ -48,23 +48,21 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string, subm
   // Upload our file to the place Gemini recommended
   const s3 = await uploadFileToS3(file, acl, assetCredentials)
 
-  const triggerGeminiInput = {
-    source_key: s3.key,
-    template_key: convectionKey,
-    source_bucket: assetCredentials.policyDocument.conditions.bucket,
+  // Let Gemini know that this file exists and should be processed
+  const geminiProcess = await createGeminiAssetWithS3Credentials({
+    sourceKey: s3.key,
+    templateKey: convectionKey,
+    sourceBucket: assetCredentials.policyDocument.conditions.bucket,
     metadata: {
       id: submissionID,
       _type: "Consignment",
     },
-  }
-
-  // Let Gemini know that this file exists and should be processed
-  const geminiProcess = await createGeminiAssetWithS3Credentials(triggerGeminiInput)
+  })
 
   // Let Convection know that the Gemini asset should be attached to the consignment
   await addAssetToConsignment({
     asset_type: "image",
-    gemini_token: geminiProcess.data.createGeminiEntryForAsset.asset.token,
+    gemini_token: geminiProcess.createGeminiEntryForAsset.asset.token,
     submission_id: submissionID,
   })
 }

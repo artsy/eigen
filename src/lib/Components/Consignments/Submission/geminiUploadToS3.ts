@@ -1,34 +1,10 @@
-import { metaphysics } from "../../../metaphysics"
 import { AssetCredentials } from "./Gemini/getGeminiCredentialsForEnvironment"
-import objectToGraphQL from "./objectToGraphQL"
-import { GeminiEntryCreationResonse } from "./uploadPhotoToGemini"
-export { getGeminiCredentialsForEnvironment } from "./Gemini/getGeminiCredentialsForEnvironment"
 
-export interface GeminiEntryCreationInput {
-  source_key: string
-  template_key: string
-  source_bucket: string
-  metadata: any
-  clientMutationId?: string
-}
+export { getGeminiCredentialsForEnvironment } from "./Gemini/getGeminiCredentialsForEnvironment"
+export { createGeminiAssetWithS3Credentials } from "./Gemini/createGeminiAssetWithS3Credentials"
 
 export interface S3UploadResponse {
   key: string
-}
-
-export const createGeminiAssetWithS3Credentials = async (options: GeminiEntryCreationInput) => {
-  options.clientMutationId = Math.random().toString(8)
-
-  const input = objectToGraphQL(options, [])
-  const query = `
-    mutation {
-      createGeminiEntryForAsset(input: ${input}) {
-        asset {
-          token
-        }
-      }
-    }`
-  return metaphysics<GeminiEntryCreationResonse>({ query, variables: {} })
 }
 
 // These are in RN, but not declared in the RN types:
@@ -37,7 +13,7 @@ export const createGeminiAssetWithS3Credentials = async (options: GeminiEntryCre
 declare var FormData: any
 declare var XMLHttpRequest: any
 
-export const uploadFileToS3 = async (file: string, acl: string, asset: AssetCredentials) =>
+export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredentials) =>
   new Promise<S3UploadResponse>(resolve => {
     const formData = new FormData()
     const geminiKey = asset.policyDocument.conditions.geminiKey
