@@ -38,18 +38,20 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string, subm
   const convectionKey = services.data.services.convection.geminiTemplateKey
 
   const creationInput = {
-    name: convectionKey,
     acl,
+    name: convectionKey,
   }
   // Get S3 Credentials from Gemini
-  const geminiResponse = await getGeminiCredentialsForEnvironment(creationInput)
+  const {
+    requestCredentialsForAssetUpload: { asset: assetCredentials },
+  } = await getGeminiCredentialsForEnvironment(creationInput)
   // Upload our file to the place Gemini recommended
-  const s3 = await uploadFileToS3(file, creationInput, geminiResponse)
+  const s3 = await uploadFileToS3(file, acl, assetCredentials)
 
   const triggerGeminiInput = {
     source_key: s3.key,
     template_key: convectionKey,
-    source_bucket: geminiResponse.data.requestCredentialsForAssetUpload.asset.policy_document.conditions.bucket,
+    source_bucket: assetCredentials.policyDocument.conditions.bucket,
     metadata: {
       id: submissionID,
       _type: "Consignment",
