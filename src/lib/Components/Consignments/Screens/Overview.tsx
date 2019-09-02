@@ -10,7 +10,7 @@ import TODO from "../Components/ArtworkConsignmentTodo"
 import CloseButton from "../Components/CloseButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { FormButton, Row } from "../Components/FormElements"
-import createSubmission from "../Submission/create"
+import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import updateSubmission from "../Submission/update"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 import { LargeHeadline, Subtitle } from "../Typography"
@@ -116,7 +116,7 @@ export default class Overview extends React.Component<Props, State> {
 
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
-      const submission = await createSubmission(this.state)
+      const submission = await createConsignmentSubmission(this.state)
       this.setState({ submission_id: submission.internalID }, () => {
         this.submissionDraftCreated()
       })

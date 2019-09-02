@@ -1,6 +1,7 @@
 import React from "react"
 import Welcome from "./Screens/Welcome"
 
+import { SubmissionCategoryAggregation } from "__generated__/CreateConsignmentSubmissionMutation.graphql"
 import { ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
@@ -8,7 +9,7 @@ import NavigatorIOS from "react-native-navigator-ios"
 export interface ConsignmentMetadata {
   title: string | null
   year: string | null
-  category: string | null
+  category: SubmissionCategoryAggregation | null
   categoryName: string | null
   medium: string | null
   width: string | null

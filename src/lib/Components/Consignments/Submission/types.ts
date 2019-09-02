@@ -41,14 +41,6 @@ export interface MetaphysicsSubmission {
   internalID?: string
 }
 
-export interface CreateSubmissionResponse {
-  data: {
-    createConsignmentSubmission: {
-      consignment_submission: MetaphysicsSubmission
-    }
-  }
-}
-
 export interface UpdateSubmissionResponse {
   data: {
     updateConsignmentSubmission: {

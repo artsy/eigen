@@ -1,6 +1,6 @@
 import { metaphysics } from "../../../metaphysics"
 import { ConsignmentSetup } from "../index"
-import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
+import { consignmentSetupToMutationInputString } from "./consignmentSetupToSubmission"
 import { UpdateSubmissionResponse } from "./types"
 
 /**
@@ -9,7 +9,7 @@ import { UpdateSubmissionResponse } from "./types"
  * @param id This ID isn't used, but is added to force a non-null ID in the submission
  */
 const updateASubmission = async (submission: ConsignmentSetup, _internalID: string) => {
-  const input = consignmentSetupToMutationInput(submission)
+  const input = consignmentSetupToMutationInputString(submission)
   const query = `mutation {
     updateConsignmentSubmission(input:${input}) {
       consignment_submission {
