@@ -42,7 +42,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   refreshSaleArtwork = () => {
     this.setState({ isRefreshingSaleArtwork: true })
     this.props.relay.refetch(
-      { saleArtworkID: this.props.sale_artwork.internalID },
+      { saleArtworkNodeID: this.props.sale_artwork.id },
       null,
       () => {
         this.setState({ isRefreshingSaleArtwork: false })
@@ -98,11 +98,11 @@ export const MaxBidScreen = createRefetchContainer(
   {
     sale_artwork: graphql`
       fragment SelectMaxBid_sale_artwork on SaleArtwork {
+        id
         increments(useMyMaxBid: true) {
           display
           cents
         }
-        internalID
         ...ConfirmBid_sale_artwork
       }
     `,
@@ -113,8 +113,8 @@ export const MaxBidScreen = createRefetchContainer(
     `,
   },
   graphql`
-    query SelectMaxBidRefetchQuery($saleArtworkID: String!) {
-      sale_artwork: saleArtwork(id: $saleArtworkID) {
+    query SelectMaxBidRefetchQuery($saleArtworkNodeID: ID!) {
+      node(id: $saleArtworkNodeID) {
         ...SelectMaxBid_sale_artwork
       }
     }

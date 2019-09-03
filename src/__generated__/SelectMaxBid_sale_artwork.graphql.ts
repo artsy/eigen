@@ -5,11 +5,11 @@ import { ConfirmBid_sale_artwork$ref } from "./ConfirmBid_sale_artwork.graphql";
 declare const _SelectMaxBid_sale_artwork$ref: unique symbol;
 export type SelectMaxBid_sale_artwork$ref = typeof _SelectMaxBid_sale_artwork$ref;
 export type SelectMaxBid_sale_artwork = {
+    readonly id: string;
     readonly increments: ReadonlyArray<{
         readonly display: string | null;
         readonly cents: number | null;
     } | null> | null;
-    readonly internalID: string;
     readonly " $fragmentRefs": ConfirmBid_sale_artwork$ref;
     readonly " $refType": SelectMaxBid_sale_artwork$ref;
 };
@@ -23,6 +23,13 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -55,18 +62,11 @@ const node: ReaderFragment = {
       ]
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "FragmentSpread",
       "name": "ConfirmBid_sale_artwork",
       "args": null
     }
   ]
 };
-(node as any).hash = 'ecbe558efe4a6120b077dce2b5916798';
+(node as any).hash = 'da3f4c5b318013c4b3203bcd274c23bb';
 export default node;
