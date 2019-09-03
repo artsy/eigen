@@ -164,9 +164,9 @@ exports[`layout works as expected with three tabs 1`] = `
           }
           titles={
             Array [
-              "ABOUT",
-              "WORKS",
-              "SHOWS",
+              "About",
+              "Works",
+              "Shows",
             ]
           }
         />
