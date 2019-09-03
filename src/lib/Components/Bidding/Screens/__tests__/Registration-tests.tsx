@@ -14,10 +14,6 @@ import { Registration } from "../Registration"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
 
-jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
-import { metaphysics } from "../../../../metaphysics"
-const mockphysics = metaphysics as jest.Mock<any>
-
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 import relay from "react-relay"
@@ -45,9 +41,6 @@ const mockPostNotificationName = jest.fn()
 beforeEach(() => {
   Date.now = jest.fn(() => 1525983752116)
   mockTimezone("America/New_York")
-
-  // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
-  mockphysics.mockReset()
   mockPostNotificationName.mockReset()
 
   NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
@@ -144,7 +137,6 @@ describe("when pressing register button", () => {
         onCompleted(mockRequestResponses.qualifiedBidder, null)
         return null
       }) as any
-    mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
@@ -199,8 +191,6 @@ describe("when pressing register button", () => {
       </BiddingThemeProvider>
     )
     component.root.findByType(Registration).instance.setState({ conditionsOfSaleChecked: true })
-
-    mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
     relay.commitMutation = jest.fn()
     component.root.findAllByType(Button)[1].instance.props.onPress()
@@ -455,8 +445,6 @@ describe("when pressing register button", () => {
         onError(new TypeError("Network request failed"))
         return null
       }) as any
-
-    mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
     const component = renderer.create(
       <BiddingThemeProvider>
