@@ -12,6 +12,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
+import { SubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { ConsignmentMetadata } from "../"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
@@ -43,7 +44,7 @@ const categoryOptions = [
   { name: "Design/Decorative Art", value: "DESIGN_DECORATIVE_ART" },
   { name: "Textile Arts", value: "TEXTILE_ARTS" },
   { name: "Other", value: "OTHER" },
-]
+] as Array<{ name: string; value: SubmissionCategoryAggregation }>
 
 interface State extends ConsignmentMetadata {
   showPicker?: boolean

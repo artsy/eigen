@@ -1,84 +1,11 @@
-import { metaphysics } from "../../../metaphysics"
-import objectToGraphQL from "./objectToGraphQL"
-import { GeminiEntryCreationResonse } from "./uploadPhotoToGemini"
+import { AssetCredentials } from "./Gemini/getGeminiCredentialsForEnvironment"
 
-export interface GeminiCredsInput {
-  name: string
-  acl: string
-  clientMutationId?: string
-}
-
-export interface GeminiCredsResponse {
-  data: {
-    requestCredentialsForAssetUpload: {
-      asset: {
-        signature: string
-        credentials: string
-        policy_encoded: string
-        policy_document: {
-          expiration: string
-          conditions: {
-            acl: string
-            bucket: string
-            gemini_key: string
-            success_action_status: string
-          }
-        }
-      }
-    }
-  }
-}
-
-export interface GeminiEntryCreationInput {
-  source_key: string
-  template_key: string
-  source_bucket: string
-  metadata: any
-  clientMutationId?: string
-}
+export { getGeminiCredentialsForEnvironment } from "./Gemini/getGeminiCredentialsForEnvironment"
+export { createGeminiAssetWithS3Credentials } from "./Gemini/createGeminiAssetWithS3Credentials"
+export { getConvectionGeminiKey } from "./Gemini/getConvectionGeminiKey"
 
 export interface S3UploadResponse {
   key: string
-}
-
-export const getGeminiCredentialsForEnvironment = async (options: GeminiCredsInput) => {
-  options.clientMutationId = Math.random().toString(8)
-  const input = objectToGraphQL(options, [])
-  const query = `
-    mutation {
-      requestCredentialsForAssetUpload(input: ${input}) {
-        asset {
-          signature
-          credentials
-          policy_encoded
-          policy_document {
-            expiration
-            conditions {
-              acl
-              bucket
-              gemini_key
-              success_action_status
-            }
-          }
-        }
-      }
-    }`
-  return metaphysics<GeminiCredsResponse>({ query, variables: {} })
-}
-
-export const createGeminiAssetWithS3Credentials = async (options: GeminiEntryCreationInput) => {
-  options.clientMutationId = Math.random().toString(8)
-
-  const input = objectToGraphQL(options, [])
-  const query = `
-    mutation {
-      createGeminiEntryForAsset(input: ${input}) {
-        asset {
-          token
-        }
-      }
-    }`
-  return metaphysics<GeminiEntryCreationResonse>({ query, variables: {} })
 }
 
 // These are in RN, but not declared in the RN types:
@@ -87,22 +14,20 @@ export const createGeminiAssetWithS3Credentials = async (options: GeminiEntryCre
 declare var FormData: any
 declare var XMLHttpRequest: any
 
-export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: GeminiCredsResponse) =>
+export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredentials) =>
   new Promise<S3UploadResponse>(resolve => {
-    const asset = res.data.requestCredentialsForAssetUpload.asset
-
     const formData = new FormData()
-    const geminiKey = asset.policy_document.conditions.gemini_key
-    const bucket = asset.policy_document.conditions.bucket
+    const geminiKey = asset.policyDocument.conditions.geminiKey
+    const bucket = asset.policyDocument.conditions.bucket
     const uploadURL = `https://${bucket}.s3.amazonaws.com`
 
     const data = {
+      acl,
       "Content-Type": "image/jpg",
       key: geminiKey + "/${filename}", // NOTE: This form (which _looks_ like ES6 interpolation) is required by AWS
       AWSAccessKeyId: asset.credentials,
-      acl: req.acl,
-      success_action_status: asset.policy_document.conditions.success_action_status,
-      policy: asset.policy_encoded,
+      success_action_status: asset.policyDocument.conditions.successActionStatus,
+      policy: asset.policyEncoded,
       signature: asset.signature,
     }
 
@@ -124,7 +49,7 @@ export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: G
     // Kinda sucks, but https://github.com/jhen0409/react-native-debugger/issues/38
     const request = new XMLHttpRequest()
     request.onload = e => {
-      if (e.target.status.toString() === asset.policy_document.conditions.success_action_status) {
+      if (e.target.status.toString() === asset.policyDocument.conditions.successActionStatus) {
         // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
         const url = e.target.responseHeaders.Location
         resolve({

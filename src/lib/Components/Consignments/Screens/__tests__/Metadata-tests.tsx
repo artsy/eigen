@@ -13,8 +13,8 @@ const route = {} as any
 const exampleMetadata: ConsignmentMetadata = {
   title: "My Work",
   year: "1983",
-  category: "DESIGN",
-  categoryName: "Design",
+  category: "ARCHITECTURE",
+  categoryName: "Architecture",
   medium: "Wood",
   width: "100",
   height: "100",

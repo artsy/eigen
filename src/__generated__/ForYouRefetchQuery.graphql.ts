@@ -82,8 +82,8 @@ fragment ArtistRail_rail on HomePageArtistModule {
   id
   key
   results {
-    internalID
     id
+    internalID
     ...ArtistCard_artist
   }
 }
@@ -105,12 +105,13 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
 }
 
 fragment ArtistCard_artist on Artist {
+  id
   slug
   internalID
   href
   name
-  formatted_artworks_count: formattedArtworksCount
-  formatted_nationality_and_birthday: formattedNationalityAndBirthday
+  formattedArtworksCount
+  formattedNationalityAndBirthday
   image {
     url(version: "large")
   }
@@ -713,21 +714,21 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  (v4/*: any*/),
                   (v0/*: any*/),
+                  (v4/*: any*/),
                   (v5/*: any*/),
                   (v9/*: any*/),
                   (v7/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": "formatted_artworks_count",
+                    "alias": null,
                     "name": "formattedArtworksCount",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "ScalarField",
-                    "alias": "formatted_nationality_and_birthday",
+                    "alias": null,
                     "name": "formattedNationalityAndBirthday",
                     "args": null,
                     "storageKey": null
@@ -812,7 +813,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "c295b028ac3331543736ffa149ceee49",
+    "id": "5172e7b282bccabcc969e8cb36633544",
     "text": null,
     "metadata": {}
   }

@@ -16,6 +16,9 @@
 
 ### Master
 
+- Remove `metaphysics` function in favour of always using Relay - alloy
+- Fix Home artist rail following and switch to use Relay - alloy
+- Fix consignments and switch to use Relay - alloy
 - Adds BuyNowButton to artworks in auction with isBuyNowable true - kierangillen
 
 ### 1.15.0

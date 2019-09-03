@@ -1,25 +1,18 @@
+import { TimeOffsetProviderQuery } from "__generated__/TimeOffsetProviderQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import { metaphysics } from "../../../metaphysics"
-
-interface SystemResults {
-  data: {
-    system: {
-      time: {
-        unix: number
-      }
-    }
-  }
-}
+import { fetchQuery, graphql } from "relay-runtime"
 
 const getLocalTimestampInMilliSeconds = () => {
   return Date.now()
 }
 
-const fetchSystemTime = () => {
-  return metaphysics<SystemResults>({
-    query: `
-      {
+const fetchSystemTime = () =>
+  fetchQuery<TimeOffsetProviderQuery>(
+    defaultEnvironment,
+    graphql`
+      query TimeOffsetProviderQuery {
         system {
           time {
             unix
@@ -27,15 +20,16 @@ const fetchSystemTime = () => {
         }
       }
     `,
-  })
-}
+    {},
+    { force: true }
+  )
 
 const getGravityTimestampInMilliSeconds = async () => {
   const startTime = getLocalTimestampInMilliSeconds()
-  const { data } = await fetchSystemTime()
+  const { system } = await fetchSystemTime()
 
   const possibleNetworkLatencyInMilliSeconds = (getLocalTimestampInMilliSeconds() - startTime) / 2
-  const serverTimestampInMilliSeconds = data.system.time.unix * 1e3 + possibleNetworkLatencyInMilliSeconds
+  const serverTimestampInMilliSeconds = system.time.unix * 1e3 + possibleNetworkLatencyInMilliSeconds
 
   if (__DEV__) {
     if (typeof jest === "undefined") {

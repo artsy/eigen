@@ -10,8 +10,8 @@ import TODO from "../Components/ArtworkConsignmentTodo"
 import CloseButton from "../Components/CloseButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { FormButton, Row } from "../Components/FormElements"
-import createSubmission from "../Submission/create"
-import updateSubmission from "../Submission/update"
+import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
+import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 import { LargeHeadline, Subtitle } from "../Typography"
 import Confirmation from "./Confirmation"
@@ -110,14 +110,14 @@ export default class Overview extends React.Component<Props, State> {
   updateLocalStateAndMetaphysics = async () => {
     this.saveStateToLocalStorage()
 
-    if (this.state.submission_id) {
+    if (this.state.submissionID) {
       // This is async, but we don't need the synchronous behavior from await.
       this.uploadPhotosIfNeeded()
 
-      updateSubmission(this.state, this.state.submission_id)
+      updateConsignmentSubmission(this.state)
     } else if (this.state.artist) {
-      const submission = await createSubmission(this.state)
-      this.setState({ submission_id: submission.internalID }, () => {
+      const submissionID = await createConsignmentSubmission(this.state)
+      this.setState({ submissionID }, () => {
         this.submissionDraftCreated()
       })
     }
@@ -126,9 +126,9 @@ export default class Overview extends React.Component<Props, State> {
   @track((_props, state) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConsignmentDraftCreated,
-    owner_id: state.submission_id,
+    owner_id: state.submissionID,
     owner_type: Schema.OwnerEntityTypes.Consignment,
-    owner_slug: state.submission_id,
+    owner_slug: state.submissionID,
   }))
   submissionDraftCreated() {
     return null
@@ -140,7 +140,7 @@ export default class Overview extends React.Component<Props, State> {
     const submission = this.state as ConsignmentSetup
     let hasSubmittedSuccessfully = true
     try {
-      await updateSubmission({ ...submission, state: "SUBMITTED" }, this.state.submission_id)
+      await updateConsignmentSubmission({ ...submission, state: "SUBMITTED" })
       await AsyncStorage.removeItem(consignmentsStateKey)
       this.submissionDraftSubmitted()
     } catch (error) {
@@ -154,9 +154,9 @@ export default class Overview extends React.Component<Props, State> {
   @track((_props, state) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConsignmentSubmitted,
-    owner_id: state.submission_id,
+    owner_id: state.submissionID,
     owner_type: Schema.OwnerEntityTypes.Consignment,
-    owner_slug: state.submission_id,
+    owner_slug: state.submissionID,
   }))
   submissionDraftSubmitted() {
     return null
@@ -182,7 +182,7 @@ export default class Overview extends React.Component<Props, State> {
       // quickly it doesn't upload duplicates
       photo.uploading = true
       this.setState({ photos: this.state.photos })
-      await uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
+      await uploadImageAndPassToGemini(photo.file, "private", this.state.submissionID)
 
       // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
       // in the queue

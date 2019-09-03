@@ -8,8 +8,8 @@ export type ArtistRail_rail = {
     readonly id: string;
     readonly key: string | null;
     readonly results: ReadonlyArray<{
-        readonly internalID: string;
         readonly id: string;
+        readonly internalID: string;
         readonly " $fragmentRefs": ArtistCard_artist$ref;
     } | null> | null;
     readonly " $refType": ArtistRail_rail$ref;
@@ -49,6 +49,7 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -56,7 +57,6 @@ return {
           "args": null,
           "storageKey": null
         },
-        (v0/*: any*/),
         {
           "kind": "FragmentSpread",
           "name": "ArtistCard_artist",
@@ -67,5 +67,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '834ab0d3fd94bf2132231c51d2b699cb';
+(node as any).hash = '74248d2c9835a7cd34a3222920187bfc';
 export default node;

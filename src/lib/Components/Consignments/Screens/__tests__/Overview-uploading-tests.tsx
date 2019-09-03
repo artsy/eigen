@@ -7,8 +7,8 @@ import Overview from "../Overview"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
-jest.mock("../../Submission/update", () => jest.fn())
-import updateSubmission from "../../Submission/update"
+jest.mock("../../Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
+import { updateConsignmentSubmission } from "../../Submission/updateConsignmentSubmission"
 
 jest.mock("../../Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
 import { uploadImageAndPassToGemini } from "../../Submission/uploadPhotoToGemini"
@@ -28,7 +28,7 @@ it("uploads a photo when there's an photo without upload as true", () => {
   const overview = new Overview({
     nav,
     route,
-    setup: { submission_id: 1, photos: [{ file: "/a/b/c.png", uploaded: false }] },
+    setup: { submissionID: 1, photos: [{ file: "/a/b/c.png", uploaded: false }] },
   })
   overview.setState = jest.fn()
   overview.uploadPhotosIfNeeded()
@@ -50,10 +50,10 @@ it("doesnt upload a photo when when uploading is true", () => {
 })
 
 it("calls update submission when submitting a non-draft version", () => {
-  const overview = new Overview({ nav, route, setup: { submission_id: "123" } })
+  const overview = new Overview({ nav, route, setup: { submissionID: "123" } })
   overview.setState = jest.fn()
   overview.showConfirmationScreen = () => void overview.submitFinalSubmission()
 
   overview.submitFinalSubmission()
-  expect(updateSubmission).toBeCalledWith({ state: "SUBMITTED", submission_id: "123" }, "123")
+  expect(updateConsignmentSubmission).toBeCalledWith({ state: "SUBMITTED", submissionID: "123" })
 })

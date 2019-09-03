@@ -8,8 +8,8 @@ storyRunner("TODO states:", TODOStories)
 it("requires the same metadata props as force", () => {
   const requiredProps: ConsignmentSetup = {
     metadata: {
-      category: "a",
-      categoryName: "A",
+      category: "ARCHITECTURE",
+      categoryName: "Architecture",
       title: "Work",
       year: "123",
       medium: "123",

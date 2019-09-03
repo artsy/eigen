@@ -36,7 +36,7 @@ describe("state", () => {
   it("sets new state when text is changed", () => {
     const artist = new Artist(emptyProps)
     artist.setState = jest.fn()
-    artist.searchForQuery = jest.fn()
+    artist.searchForQuery = jest.fn() as any
 
     artist.textChanged("Blu")
 

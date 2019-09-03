@@ -3,8 +3,9 @@ import { Dimensions, Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { fetchQuery, graphql } from "react-relay"
 
-import { ConsignmentsArtistQuery, ConsignmentsArtistQueryResponse } from "__generated__/ConsignmentsArtistQuery.graphql"
+import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
+import { throttle } from "lodash"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 import { SearchResults } from "../Components/SearchResults"
@@ -17,9 +18,9 @@ interface Props extends ConsignmentSetup, ViewProperties {
 }
 
 interface State {
-  query: string
+  query: string | null
   searching: boolean
-  results: ConsignmentsArtistQueryResponse["matchArtist"] | null
+  results: ArtistResult[] | null
 }
 
 export default class Artist extends React.Component<Props, State> {
@@ -41,22 +42,28 @@ export default class Artist extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  textChanged = async (text: string) => {
+  textChanged = (text: string) => {
     this.setState({ query: text, searching: text.length > 0 })
     this.searchForQuery(text)
   }
 
-  // TODO: Add throttling
-  searchForQuery = async (query: string) => {
-    const results = await fetchQuery<ConsignmentsArtistQuery>(
+  // tslint:disable:member-ordering
+  searchForQuery = throttle(async (query: string) => {
+    const data = await fetchQuery<ConsignmentsArtistQuery>(
       environment,
       graphql`
         query ConsignmentsArtistQuery($query: String!) {
-          matchArtist(term: $query) {
-            internalID
-            name
-            image {
-              url
+          searchConnection(query: $query, first: 10, entities: [ARTIST], mode: AUTOSUGGEST) {
+            edges {
+              node {
+                ... on Artist {
+                  internalID
+                  name
+                  image {
+                    url
+                  }
+                }
+              }
             }
           }
         }
@@ -64,8 +71,9 @@ export default class Artist extends React.Component<Props, State> {
       { query },
       { force: true }
     )
-    this.setState({ results: results.matchArtist, searching: false })
-  }
+    const results = data.searchConnection.edges.map(({ node }) => node as ArtistResult)
+    this.setState({ results, searching: false })
+  }, 1000)
 
   render() {
     const isPad = Dimensions.get("window").width > 700
@@ -82,7 +90,7 @@ export default class Artist extends React.Component<Props, State> {
               marginRight: 20,
             }}
           >
-            <SearchResults
+            <SearchResults<ArtistResult>
               results={this.state.results}
               query={this.state.query}
               placeholder="Artist/Designer Name"
