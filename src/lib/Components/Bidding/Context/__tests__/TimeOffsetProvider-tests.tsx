@@ -3,13 +3,12 @@ import React from "react"
 import { View } from "react-native"
 import * as renderer from "react-test-renderer"
 
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { TimeOffsetProvider } from "../TimeOffsetProvider"
 
-jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
-import { metaphysics } from "../../../../metaphysics"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
-
-const mockphysics = metaphysics as jest.Mock<any>
+// tslint:disable-next-line:no-var-requires
+const RelayRuntime = require("relay-runtime")
+RelayRuntime.fetchQuery = jest.fn()
 
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
@@ -31,13 +30,11 @@ it("injects timeOffsetInMilliSeconds as a context", () => {
   Date.now = () => dateNow
 
   // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
-  mockphysics.mockReturnValueOnce(
+  RelayRuntime.fetchQuery.mockReturnValueOnce(
     Promise.resolve({
-      data: {
-        system: {
-          time: {
-            unix: (dateNow - 10 * MINUTES) * 1e-3,
-          },
+      system: {
+        time: {
+          unix: (dateNow - 10 * MINUTES) * 1e-3,
         },
       },
     })
