@@ -21,6 +21,7 @@
 - Fix consignments and switch to use Relay - alloy
 - Adds BuyNowButton to artworks in auction with isBuyNowable true - kierangillen
 - Removes errant `tap` events tracking on scroll layout - ash
+- Fixes Artist header follow button - kierangillen
 
 ### 1.15.0
 

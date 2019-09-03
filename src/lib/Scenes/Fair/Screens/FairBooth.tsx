@@ -80,6 +80,7 @@ export class FairBooth extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     const { show } = this.props
+
     return (
       <Theme>
         <FlatList

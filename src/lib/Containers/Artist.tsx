@@ -1,29 +1,21 @@
-// import "@babel/runtime"
-
-import React, { Component } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
-
+import { Artist_artist } from "__generated__/Artist_artist.graphql"
 import About from "lib/Components/Artist/About"
 import Artworks from "lib/Components/Artist/Artworks"
 import Header from "lib/Components/Artist/Header"
 import Shows from "lib/Components/Artist/Shows"
-
 import { SwitchEvent } from "lib/Components/SwitchView"
 import TabView from "lib/Components/TabView"
 import { Schema, Track, track as _track } from "lib/utils/track"
-
-import { Artist_artist } from "__generated__/Artist_artist.graphql"
+import React, { Component } from "react"
+import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 const isPad = Dimensions.get("window").width > 700
 
-// jest.unmock("lib/utils/track")
-
 const TABS = {
-  ABOUT: "ABOUT",
-  WORKS: "WORKS",
-  SHOWS: "SHOWS",
+  ABOUT: "About",
+  WORKS: "Works",
+  SHOWS: "Shows",
 }
 
 interface Props extends ViewProperties {

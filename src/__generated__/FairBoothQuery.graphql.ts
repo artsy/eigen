@@ -135,6 +135,7 @@ fragment FilteredInfiniteScrollGrid_entity on EntityWithFilterArtworksConnection
     edges {
       node {
         id
+        slug
         __typename
       }
       cursor
@@ -997,7 +998,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothQuery",
-    "id": "8ed6613eb6229734e677c122a9028574",
+    "id": "7dc2b033055745e9334f8e250723afe8",
     "text": null,
     "metadata": {}
   }
