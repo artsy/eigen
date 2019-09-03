@@ -796,9 +796,6 @@ type ArtistRelatedData {
 
   # A list of the current user’s suggested artists, based on a single artist
   suggestedConnection(
-    # The slug or ID of an artist
-    artistID: String
-
     # Exclude artists without for sale works
     excludeArtistsWithoutForsaleArtworks: Boolean
 
@@ -810,12 +807,6 @@ type ArtistRelatedData {
 
     # Exclude these ids from results, may result in all artists being excluded.
     excludeArtistIDs: [String]
-
-    # Pagination, need I say more?
-    page: Int
-
-    # Amount of artists to return
-    size: Int
     after: String
     first: Int
     before: String
@@ -4724,30 +4715,6 @@ type Me implements Node {
     size: Int
     sort: SaleSorts
   ): [SaleRegistration]
-
-  # A list of the current user’s suggested artists, based on a single artist
-  suggestedArtists(
-    # The slug or ID of an artist
-    artistID: String
-
-    # Exclude artists without for sale works
-    excludeArtistsWithoutForsaleArtworks: Boolean
-
-    # Exclude artists without any artworks
-    excludeArtistsWithoutArtworks: Boolean
-
-    # Exclude artists the user already follows
-    excludeFollowedArtists: Boolean
-
-    # Exclude these ids from results, may result in all artists being excluded.
-    excludeArtistIDs: [String]
-
-    # Pagination, need I say more?
-    page: Int
-
-    # Amount of artists to return
-    size: Int
-  ): [Artist]
   type: String
 }
 
@@ -5300,21 +5267,6 @@ type Query {
 
   # Home screen content
   homePage: HomePage
-
-  # A Search for Artists
-  matchArtist(
-    # Your search term
-    term: String!
-
-    # Maximum number of items to retrieve. Default: 5.
-    size: Int
-
-    # Page to retrieve. Default: 1.
-    page: Int
-
-    # Exclude these MongoDB ids from results
-    excludeIDs: [String]
-  ): [Artist]
   me: Me
 
   # Fetches an object given its globally unique ID.
@@ -5328,12 +5280,6 @@ type Query {
     # The slug or ID of the Sale
     id: String!
   ): Sale
-
-  # A Sale Artwork
-  saleArtwork(
-    # The slug or ID of the SaleArtwork
-    id: String!
-  ): SaleArtwork
 
   # Sale Artworks search results
   saleArtworksConnection(
@@ -5653,7 +5599,7 @@ type Sale implements Node {
   symbol: String
 }
 
-type SaleArtwork {
+type SaleArtwork implements Node {
   # A globally unique ID.
   id: ID!
 
