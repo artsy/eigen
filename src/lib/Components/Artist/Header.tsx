@@ -115,6 +115,11 @@ class Header extends React.Component<Props, State> {
       relay,
       artist: { slug, id, isFollowed },
     } = this.props
+    const { isFollowedChanging } = this.state
+
+    if (isFollowedChanging) {
+      return
+    }
 
     this.setState(
       {
@@ -146,9 +151,6 @@ class Header extends React.Component<Props, State> {
                 isFollowed: !isFollowed,
               },
             },
-          },
-          updater: store => {
-            store.get(id).setValue(!isFollowed, "isFollowed")
           },
           onError: () => this.failedFollowChange(),
         })

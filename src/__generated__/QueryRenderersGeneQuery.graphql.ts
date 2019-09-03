@@ -67,6 +67,8 @@ fragment Gene_gene_3zv0k0 on Gene {
 fragment Header_gene on Gene {
   internalID
   slug
+  id
+  isFollowed
   name
 }
 
@@ -326,6 +328,13 @@ return {
             "storageKey": null
           },
           (v5/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isFollowed",
+            "args": null,
+            "storageKey": null
+          },
           (v6/*: any*/),
           {
             "kind": "ScalarField",
@@ -730,7 +739,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersGeneQuery",
-    "id": "7d92c9593d20f923f84437a920572fd3",
+    "id": "bf53d92caf4352256b427ff6fcbfcce3",
     "text": null,
     "metadata": {}
   }
