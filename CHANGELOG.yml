@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.12.x
   dev:
+    - Allow opening web view target='_blank' links by pushing onto navigation stack - david + alloy
     - Switch to MP v2 - alloy/justin
     - Cleans up unused lab options - ash
     - Removes concept of a lot's "current value" in favour of using the asking price - ash
