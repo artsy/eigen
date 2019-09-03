@@ -64,7 +64,7 @@ describe("createMockNetworkLayer", () => {
       })
     } catch (e) {
       expect(e.message).toMatchInlineSnapshot(
-        `"Could not find query, ensure operation.text exists or pass resolveQueryFromOperation."`
+        `"RelayMockNetworkLayerError: A mock for field at path 'artwork/title' of type 'String' was expected but not found."`
       )
     }
   })
