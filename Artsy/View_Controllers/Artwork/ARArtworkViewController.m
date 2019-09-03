@@ -30,8 +30,8 @@
     }
 
     BOOL isArtworkNonCommerical = self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable.boolValue;
-    BOOL isArtworkNSOInquiry = self.artwork.isOfferable || self.artwork.isAcquireable || self.artwork.isInquireable;
     BOOL isArtworkAuctions = self.artwork.isInAuction;
+    BOOL isArtworkNSOInquiry = self.artwork.isOfferable || self.artwork.isAcquireable || (self.artwork.isInquireable && !isArtworkAuctions);
 
     if (isArtworkNonCommerical) {
         return ([AROptions boolForOption:AROptionsRNArtworkNonCommerical] || [self.echo.features[@"ARReactNativeArtworkEnableNonCommercial"] state]);
