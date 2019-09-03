@@ -1,35 +1,17 @@
 import React from "react"
+import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import {
-  Animated,
-  NativeModules,
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from "react-native"
-const { ARTemporaryAPIModule } = NativeModules
-
+import { Button } from "@artsy/palette"
+import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
-import Events from "lib/NativeModules/Events"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-
-import { Button } from "@artsy/palette"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-
-import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
-
-type ArtistFollowHandlerResult = Promise<Animated.EndResult>
-export type ArtistFollowButtonStatusSetter = (status: boolean) => ArtistFollowHandlerResult
-export type ArtistFollowHandler = (setFollowButtonStatus: ArtistFollowButtonStatusSetter) => void
 
 interface Props {
   artist: ArtistCard_artist
-  onFollow?: ArtistFollowHandler
+  onFollow?: (completion: (followStatus: boolean) => void) => void
 }
 
 interface State {
@@ -49,36 +31,8 @@ export class ArtistCard extends React.Component<Props, State> {
 
   handleFollowChange = () => {
     this.setState({ processingChange: true })
-
-    ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist.internalID, (error, _following) => {
-      if (error) {
-        console.warn(error)
-        this.setState({ processingChange: false })
-      } else {
-        Events.postEvent({
-          name: "Follow artist",
-          artist_id: this.props.artist.internalID,
-          artist_slug: this.props.artist.slug,
-          // TODO: At some point, this component might be on other screens.
-          source_screen: "home page",
-          context_module: "artist rail",
-        })
-        this.props.onFollow(this.setFollowStatus.bind(this))
-      }
-    })
-  }
-
-  setFollowStatus(status: boolean): ArtistFollowHandlerResult {
-    return new Promise(resolve => {
-      this.setState(
-        {
-          following: status,
-          processingChange: false,
-        },
-        () => {
-          setTimeout(resolve, 400)
-        }
-      )
+    this.props.onFollow((followStatus: boolean) => {
+      this.setState({ processingChange: false, following: followStatus })
     })
   }
 
@@ -92,18 +46,18 @@ export class ArtistCard extends React.Component<Props, State> {
       </Text>
     )
 
-    if (artist.formatted_nationality_and_birthday) {
+    if (artist.formattedNationalityAndBirthday) {
       lines.push(
         <Text key={2} numberOfLines={1} style={styles.serifText}>
-          {artist.formatted_nationality_and_birthday}
+          {artist.formattedNationalityAndBirthday}
         </Text>
       )
     }
 
-    if (artist.formatted_artworks_count) {
+    if (artist.formattedArtworksCount) {
       lines.push(
         <Text key={3} numberOfLines={1} style={[styles.serifText, styles.serifWorksText]}>
-          {artist.formatted_artworks_count}
+          {artist.formattedArtworksCount}
         </Text>
       )
     }
@@ -210,50 +164,19 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const ArtistCardContainer = createFragmentContainer(ArtistCard, {
+export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
   artist: graphql`
     fragment ArtistCard_artist on Artist {
+      id
       slug
       internalID
       href
       name
-      formatted_artworks_count: formattedArtworksCount
-      formatted_nationality_and_birthday: formattedNationalityAndBirthday
+      formattedArtworksCount
+      formattedNationalityAndBirthday
       image {
         url(version: "large")
       }
     }
   `,
 })
-
-export interface ArtistCardResponse {
-  id: string
-  gravityID: string
-  internalID: string
-  href: string
-  name: string
-  formatted_artworks_count: number
-  formatted_nationality_and_birthday: string
-  image: {
-    url: string
-  }
-}
-
-// TODO: Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
-//      this query is duplicated so we can fetch the data manually.
-export const ArtistCardQuery = `
-  ... on Artist {
-    gravityID
-    id
-    internalID
-    href
-    name
-    formatted_artworks_count
-    formatted_nationality_and_birthday
-    image {
-      url(version: "large")
-    }
-  }
-`
-
-export default ArtistCardContainer

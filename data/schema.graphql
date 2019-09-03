@@ -3835,7 +3835,7 @@ type FollowArtistEdge {
 }
 
 input FollowArtistInput {
-  artistID: String
+  artistID: String!
   unfollow: Boolean = false
   clientMutationId: String
 }

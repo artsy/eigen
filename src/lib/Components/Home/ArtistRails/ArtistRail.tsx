@@ -1,18 +1,22 @@
+// TODO: This file still has a bunch of faffing with rendering a relay based version of ArtistCard and a plain React
+//       version. In reality it should be updated to never render the React component but instead update the store and
+//       let Relay re-render the cards.
+
 import React, { Component } from "react"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-
 import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
-
-import metaphysics from "../../../metaphysics"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, Track, track as _track } from "lib/utils/track"
-
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
 import SectionTitle from "../SectionTitle"
-import ArtistCard, { ArtistCardQuery, ArtistCardResponse, ArtistFollowButtonStatusSetter } from "./ArtistCard"
+import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
+import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
+import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
+import Events from "lib/NativeModules/Events"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 
 const Animation = {
   yDelta: 20,
@@ -29,7 +33,7 @@ interface Props extends ViewProperties {
 }
 
 interface State {
-  artists: any[]
+  artists: SuggestedArtist[]
 }
 // FIXME: can remove "trackWithArguments" when the third arguments parameter is added to the typings of react-tracking
 const track: Track<Props, State> = _track
@@ -40,17 +44,7 @@ export class ArtistRail extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     if (props.rail.results) {
-      const artists = props.rail.results.map(artist =>
-        Object.assign(
-          {
-            _animatedValues: {
-              opacity: new Animated.Value(1),
-              translateY: new Animated.Value(0),
-            },
-          },
-          artist
-        )
-      )
+      const artists = props.rail.results.map(artist => setupSuggestedArtist(artist, 1, 0)) as any
       this.state = { artists }
     }
   }
@@ -83,10 +77,6 @@ export class ArtistRail extends Component<Props, State> {
     const artists = this.state.artists.slice(0)
     const index = artists.indexOf(followedArtist)
     if (suggestedArtist) {
-      suggestedArtist._animatedValues = {
-        opacity: new Animated.Value(0),
-        translateY: new Animated.Value(-Animation.yDelta),
-      }
       artists[index] = suggestedArtist
     } else {
       // remove card when there is no suggestion
@@ -105,24 +95,68 @@ export class ArtistRail extends Component<Props, State> {
     owner_slug: followArtist.id,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
-  handleFollowChange(followArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
-    // Get a new suggested artist based on the followed artist.
+  handleFollowChange(followArtist: SuggestedArtist, completionHandler: (followStatus: boolean) => void) {
     return (
-      metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist.internalID))
-        // Return the suggested artist or `undefined` if there is no suggestion.
-        .then(({ me: { suggested_artists } }) => suggested_artists[0])
-        // Return `undefined` if an error occurred.
-        .catch(error => console.warn(error))
-        // Change the status of the follow button to ‘following’.
-        .then(suggestedArtist => setFollowButtonStatus(true).then(() => suggestedArtist))
+      new Promise<SuggestedArtist | null>((resolve, reject) => {
+        commitMutation<ArtistRailFollowMutation>(defaultEnvironment, {
+          mutation: graphql`
+            mutation ArtistRailFollowMutation($input: FollowArtistInput!, $excludeArtistIDs: [String]!) {
+              followArtist(input: $input) {
+                artist {
+                  related {
+                    suggestedConnection(
+                      first: 1
+                      excludeArtistIDs: $excludeArtistIDs
+                      excludeFollowedArtists: true
+                      excludeArtistsWithoutForsaleArtworks: true
+                    ) {
+                      edges {
+                        node {
+                          ...ArtistCard_artist @relay(mask: false)
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            input: { artistID: followArtist.internalID },
+            excludeArtistIDs: this.state.artists.map(({ internalID }) => internalID),
+          },
+          onError: reject,
+          onCompleted: (response, errors) => {
+            if (errors && errors.length > 0) {
+              reject(new Error(JSON.stringify(errors)))
+            } else {
+              Events.postEvent({
+                name: "Follow artist",
+                artist_id: followArtist.internalID,
+                artist_slug: followArtist.slug,
+                // TODO: At some point, this component might be on other screens.
+                source_screen: "home page",
+                context_module: "artist rail",
+              })
+
+              completionHandler(true)
+
+              const [edge] = response.followArtist.artist.related.suggestedConnection.edges
+              resolve(edge ? setupSuggestedArtist(edge.node, 0, -Animation.yDelta) : null)
+            }
+          },
+        })
+      })
         // Animate the followed artist card away.
-        .then(suggestedArtist => this.followedArtistAnimation(followArtist).then(() => suggestedArtist))
+        .then(suggestion => this.followedArtistAnimation(followArtist).then(() => suggestion))
         // Replace the followed artist by the suggested one in the list of artists.
-        .then(suggestedArtist =>
-          this.replaceFollowedArtist(followArtist, suggestedArtist as SuggestedArtist).then(() => suggestedArtist)
-        )
+        .then(suggestion => this.replaceFollowedArtist(followArtist, suggestion).then(() => suggestion))
         // Finally animate the suggested artist card in, if there is a suggestion.
-        .then(suggestedArtist => suggestedArtist && this.suggestedArtistAnimation(suggestedArtist))
+        .then(suggestion => suggestion && this.suggestedArtistAnimation(suggestion))
+        .catch(error => {
+          console.warn(error)
+          completionHandler(false)
+        })
     )
   }
 
@@ -135,7 +169,17 @@ export class ArtistRail extends Component<Props, State> {
         const style = { opacity, transform: [{ translateY }] }
         return (
           <Animated.View key={key} style={style}>
-            <ArtistCard artist={artist} onFollow={setter => this.handleFollowChange(artist, setter)} />
+            {artist.hasOwnProperty("__fragments") ? (
+              <ArtistCardContainer
+                artist={artist as any}
+                onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+              />
+            ) : (
+              <ArtistCard
+                artist={artist as any}
+                onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+              />
+            )}
           </Animated.View>
         )
       })
@@ -191,6 +235,15 @@ export class ArtistRail extends Component<Props, State> {
   }
 }
 
+const setupSuggestedArtist = (artist, opacity, translateY) =>
+  ({
+    ...artist,
+    _animatedValues: {
+      opacity: new Animated.Value(opacity),
+      translateY: new Animated.Value(translateY),
+    },
+  } as SuggestedArtist)
+
 interface Styles {
   cardContainer: ViewStyle
   title: ViewStyle
@@ -216,35 +269,12 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-interface SuggestedArtist extends ArtistCardResponse {
-  internalID: string
-  id: string
+interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
+  // id: string
   _animatedValues?: {
     opacity: Animated.Value
     translateY: Animated.Value
   }
-}
-
-interface SuggestedArtistResponse {
-  me: {
-    suggested_artists: SuggestedArtist[]
-  }
-}
-
-function suggestedArtistQuery(artistID: string): string {
-  return `
-    query {
-      me {
-        suggested_artists(artist_id: "${artistID}",
-                          size: 1,
-                          exclude_followed_artists: true,
-                          exclude_artists_without_forsale_artworks: true) {
-          ${ArtistCardQuery}
-          ...ArtistCard_artist
-        }
-      }
-    }
-  `
 }
 
 export default createFragmentContainer(ArtistRail, {
@@ -253,8 +283,8 @@ export default createFragmentContainer(ArtistRail, {
       id
       key
       results {
-        internalID
         id
+        internalID
         ...ArtistCard_artist
       }
     }

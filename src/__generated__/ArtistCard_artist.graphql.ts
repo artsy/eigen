@@ -4,12 +4,13 @@ import { ReaderFragment } from "relay-runtime";
 declare const _ArtistCard_artist$ref: unique symbol;
 export type ArtistCard_artist$ref = typeof _ArtistCard_artist$ref;
 export type ArtistCard_artist = {
+    readonly id: string;
     readonly slug: string;
     readonly internalID: string;
     readonly href: string | null;
     readonly name: string | null;
-    readonly formatted_artworks_count: string | null;
-    readonly formatted_nationality_and_birthday: string | null;
+    readonly formattedArtworksCount: string | null;
+    readonly formattedNationalityAndBirthday: string | null;
     readonly image: {
         readonly url: string | null;
     } | null;
@@ -25,6 +26,13 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -55,14 +63,14 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": "formatted_artworks_count",
+      "alias": null,
       "name": "formattedArtworksCount",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": "formatted_nationality_and_birthday",
+      "alias": null,
       "name": "formattedNationalityAndBirthday",
       "args": null,
       "storageKey": null
@@ -93,5 +101,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b658cceb13f604f2ab22caaaaacf499a';
+(node as any).hash = '326723821e3dd5f7f171d008638f672d';
 export default node;
