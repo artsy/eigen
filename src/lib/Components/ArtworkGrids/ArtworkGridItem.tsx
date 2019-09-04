@@ -7,6 +7,7 @@ import React from "react"
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+import { Schema, Track, track as _track } from "../../utils/track"
 import SerifText from "../Text/Serif"
 
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
@@ -31,9 +32,20 @@ interface Props {
   // If it's not provided, then it will push just the one artwork
   // to the switchboard.
   onPress?: (artworkID: string) => void
+  trackingFlow?: string
+  contextModule?: string
 }
 
+const track: Track<Props, any> = _track
+
+@track()
 export class Artwork extends React.Component<Props, any> {
+  @track((props: Props) => ({
+    action_name: Schema.ActionNames.GridArtwork,
+    action_type: Schema.ActionTypes.Tap,
+    flow: props.trackingFlow,
+    context_module: props.contextModule,
+  }))
   handleTap() {
     // FIXME: Should this be internalID?
     this.props.onPress && this.props.artwork.slug

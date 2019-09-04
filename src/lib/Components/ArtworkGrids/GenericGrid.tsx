@@ -2,7 +2,6 @@ import Spinner from "lib/Components/Spinner"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { Schema, Track, track as _track } from "../../utils/track"
 import Artwork from "./ArtworkGridItem"
 
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
@@ -22,9 +21,6 @@ interface State {
   sectionCount: number
 }
 
-const track: Track<Props, State> = _track
-
-@track()
 export class GenericArtworksGrid extends React.Component<Props, State> {
   static defaultProps = {
     sectionDirection: "column" as "column",
@@ -39,12 +35,6 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
 
   width = 0
 
-  @track((props: Props) => ({
-    action_name: Schema.ActionNames.GridArtwork,
-    action_type: Schema.ActionTypes.Tap,
-    flow: props.trackingFlow,
-    context_module: props.contextModule,
-  }))
   layoutState(currentLayout): State {
     const width = currentLayout.width
     const isPad = width > 600
@@ -118,12 +108,20 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
     }
     const sectionedArtworks = this.sectionedArtworks()
     const sections = []
+    const { contextModule, trackingFlow } = this.props
     for (let i = 0; i < this.state.sectionCount; i++) {
       const artworkComponents = []
       const artworks = sectionedArtworks[i]
       for (let j = 0; j < artworks.length; j++) {
         const artwork = artworks[j]
-        artworkComponents.push(<Artwork artwork={artwork} key={artwork.id + i + j} />)
+        artworkComponents.push(
+          <Artwork
+            artwork={artwork}
+            key={artwork.id + i + j}
+            trackingFlow={trackingFlow}
+            contextModule={contextModule}
+          />
+        )
         if (j < artworks.length - 1) {
           artworkComponents.push(<View style={spacerStyle} key={"spacer-" + j} accessibilityLabel="Spacer View" />)
         }
