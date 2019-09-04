@@ -20,6 +20,7 @@
 - Fix Home artist rail following and switch to use Relay - alloy
 - Fix consignments and switch to use Relay - alloy
 - Adds BuyNowButton to artworks in auction with isBuyNowable true - kierangillen
+- Removes errant `tap` events tracking on scroll layout - ash
 
 ### 1.15.0
 
