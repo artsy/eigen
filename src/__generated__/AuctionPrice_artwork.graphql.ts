@@ -6,6 +6,7 @@ export type AuctionPrice_artwork$ref = typeof _AuctionPrice_artwork$ref;
 export type AuctionPrice_artwork = {
     readonly slug: string;
     readonly sale: {
+        readonly slug: string;
         readonly isWithBuyersPremium: boolean | null;
         readonly isClosed: boolean | null;
         readonly isLiveOpen: boolean | null;
@@ -37,7 +38,14 @@ export type AuctionPrice_artwork = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v1 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -53,13 +61,7 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -69,6 +71,7 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -130,7 +133,7 @@ return {
           "args": null,
           "concreteType": "SaleArtworkCurrentBid",
           "plural": false,
-          "selections": (v0/*: any*/)
+          "selections": (v1/*: any*/)
         },
         {
           "kind": "LinkedField",
@@ -202,7 +205,7 @@ return {
               "args": null,
               "concreteType": "BidderPositionMaxBid",
               "plural": false,
-              "selections": (v0/*: any*/)
+              "selections": (v1/*: any*/)
             }
           ]
         }
@@ -211,5 +214,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'df0946307e89861a71e867aaf023cb02';
+(node as any).hash = 'b25265a9cf31197684bdf3ed1314035d';
 export default node;

@@ -349,7 +349,6 @@ fragment AuctionCountDownTimer_artwork on Artwork {
 fragment ArtworkExtraLinks_artwork on Artwork {
   slug
   isAcquireable
-  isInquireable
   isInAuction
   sale {
     isClosed
@@ -365,6 +364,7 @@ fragment ArtworkExtraLinks_artwork on Artwork {
 fragment AuctionPrice_artwork on Artwork {
   slug
   sale {
+    slug
     isWithBuyersPremium
     isClosed
     isLiveOpen
@@ -1972,7 +1972,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "3e9636f3df5a176bda21de865e0881f2",
+    "id": "158e6d548fa92ec47a5ffd6605ce68ab",
     "text": null,
     "metadata": {}
   }

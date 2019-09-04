@@ -1,5 +1,6 @@
 import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import { AuctionPrice_artwork } from "__generated__/AuctionPrice_artwork.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import React from "react"
 import { Text } from "react-native"
@@ -11,8 +12,10 @@ interface AuctionPriceProps {
 
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
   handleBuyersPremiumTap = () => {
-    // FIXME: This tap needs to be added
-    return null
+    const auctionSlug = this.props.artwork && this.props.artwork.sale && this.props.artwork.sale.slug
+    if (auctionSlug) {
+      SwitchBoard.presentModalViewController(this, `/auction/${auctionSlug}/buyers-premium`)
+    }
   }
 
   bidText = (bidsPresent, bidsCount) => {
@@ -110,6 +113,7 @@ export const AuctionPriceFragmentContainer = createFragmentContainer(AuctionPric
     fragment AuctionPrice_artwork on Artwork {
       slug
       sale {
+        slug
         isWithBuyersPremium
         isClosed
         isLiveOpen
