@@ -56,7 +56,7 @@ export class SaleList extends Component<Props, State> {
 
     return (
       <View style={style} onLayout={this.onLayout}>
-        <SectionHeader title={section.title} style={{ paddingTop: this.props.section.isFirstItem ? 0 : 22 }} />
+        <SectionHeader title={section.title} />
         {columnCount > 0 ? (
           <FlatList
             contentContainerStyle={{
@@ -66,7 +66,7 @@ export class SaleList extends Component<Props, State> {
             }}
             data={item.data}
             numColumns={columnCount}
-            keyExtractor={row => row.id}
+            keyExtractor={(_item, index) => index.toString()}
             renderItem={row => <SaleListItem key={row.index} sale={row.item} containerWidth={columnWidth} />}
           />
         ) : null}

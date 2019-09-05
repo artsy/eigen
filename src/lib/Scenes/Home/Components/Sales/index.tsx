@@ -65,9 +65,11 @@ class Sales extends React.Component<Props, State> {
         renderItem: props => <SaleList {...props} />,
       },
       {
-        data: [],
+        data: [{ data: this.props.query }],
         title: "Lots by Artists You Follow",
-        renderItem: props => <LotsByFollowedArtists title={props.section.title} query={this.props.query} />,
+        renderItem: props => {
+          return <LotsByFollowedArtists title={props.section.title} query={props.item.data} />
+        },
       },
     ]
 

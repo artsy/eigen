@@ -1034,7 +1034,7 @@ type ArtworkEdge implements ArtworkEdgeInterface {
 
 interface ArtworkEdgeInterface {
   node: Artwork
-  cursor: String!
+  cursor: String
 }
 
 union ArtworkFilterFacet = Tag | Gene
@@ -4672,6 +4672,21 @@ type Me implements Node {
     invoiceId: String!
   ): Invoice
 
+  # Sale Artworks search results
+  lotsByFollowedArtistsConnection(
+    aggregations: [SaleArtworkAggregation]
+    liveSale: Boolean
+    isAuction: Boolean
+    geneIDs: [String]
+    estimateRange: String
+    saleID: ID
+    sort: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworksConnection
+
   # The current user's status relating to bids on artworks
   lotStanding(artworkID: String, saleID: String, saleArtworkID: String): LotStanding
 
@@ -5281,25 +5296,6 @@ type Query {
     id: String!
   ): Sale
 
-  # Sale Artworks search results
-  saleArtworksConnection(
-    aggregations: [SaleArtworkAggregation]
-    artistIDs: [String]
-    includeArtworksByFollowedArtists: Boolean
-    liveSale: Boolean
-    isAuction: Boolean
-    geneIDs: [String]
-    estimateRange: String
-    page: Int
-    saleID: ID
-    size: Int
-    sort: String
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): SaleArtworksConnection
-
   # A list of Sales
   sales(
     # Limit by auction.
@@ -5599,7 +5595,7 @@ type Sale implements Node {
   symbol: String
 }
 
-type SaleArtwork implements Node {
+type SaleArtwork implements Node & ArtworkEdgeInterface {
   # A globally unique ID.
   id: ID!
 
@@ -5610,6 +5606,8 @@ type SaleArtwork implements Node {
   internalID: ID!
   cached: Int
   artwork: Artwork
+  node: Artwork
+  cursor: String
   counts: SaleArtworkCounts
 
   # Currency abbreviation (e.g. "USD")
@@ -5822,25 +5820,16 @@ type SaleArtworksAggregationResults {
 }
 
 # A connection to a list of items.
-type SaleArtworksConnection {
+type SaleArtworksConnection implements ArtworkConnectionInterface {
   # Information to aid in pagination.
   pageInfo: PageInfo!
 
   # A list of edges.
-  edges: [SaleArtworksEdge]
+  edges: [SaleArtwork]
 
   # Returns aggregation counts for the given filter query.
   aggregations: [SaleArtworksAggregationResults]
   counts: FilterSaleArtworksCounts
-}
-
-# An edge in a connection.
-type SaleArtworksEdge {
-  # The item at the end of the edge
-  node: SaleArtwork
-
-  # A cursor for use in pagination
-  cursor: String!
 }
 
 type SaleRegistration {
