@@ -62,7 +62,7 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
 {
   // This will cancel an in-flight download operation, if one exists.
   self.imageURL = nil;
-  
+
   if (self.noAnimation) {
     [super setImage:image];
   } else {
@@ -104,14 +104,14 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
       self.backgroundColor = self.placeholderBackgroundColor;
     }
     self.downloadOperation = [manager downloadImageWithURL:self.imageURL
-                                                   options:0
+                                                   options:self.highPriority ? SDWebImageHighPriority : 0
                                                   progress:nil
                                                  completed:^(UIImage *image,
                                                              NSError *error,
                                                              SDImageCacheType __,
                                                              BOOL completed,
                                                              NSURL *imageURL) {
-                                                     
+
      __strong typeof(weakSelf) strongSelf = weakSelf;
      // Only really assign if the URL we downloaded still matches `self.imageURL`.
      if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {

@@ -87,7 +87,7 @@ export const ImageCarouselEmbedded = observer(() => {
       onScroll={onScroll}
       scrollEventThrottle={50}
       onResponderRelease={onResponderRelease}
-      initialNumToRender={2}
+      initialNumToRender={Math.min(images.length, 20)}
       renderItem={({ item, index }) => {
         const { cumulativeScrollOffset, ...styles } = measurements[index]
         return (
@@ -96,6 +96,8 @@ export const ImageCarouselEmbedded = observer(() => {
             width={styles.width}
             height={styles.height}
             onPress={goFullScreen}
+            // make sure first image loads first
+            highPriority={index === 0}
             ref={ref => {
               embeddedImageRefs[index] = ref
             }}

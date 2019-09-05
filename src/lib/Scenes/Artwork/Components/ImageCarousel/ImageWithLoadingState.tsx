@@ -12,6 +12,7 @@ interface ImageWithLoadingStateProps {
   onLoad?: () => void
   onPress?: () => void
   style?: ViewProps["style"]
+  highPriority?: boolean
 }
 /**
  * Renders an image with a 'fade in' transition when it has loaded.
@@ -20,7 +21,7 @@ interface ImageWithLoadingStateProps {
  *
  * @param param0 same as RN's Image props
  */
-export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStateProps>(({ ...props }, ref) => {
+export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStateProps>((props, ref) => {
   const [isLoading, setIsLoading] = useState(true)
 
   // When the image has loaded we want to fade it in, so we have a white overlay
@@ -52,6 +53,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
             imageURL={imageURL}
             aspectRatio={width / height}
             style={{ width, height }}
+            highPriority={props.highPriority}
           />
         </View>
         <Animated.View

@@ -55,7 +55,7 @@ interface Props {
   /**
    * renders the image at a higher threading priority level ('interactive')
    */
-  highPriorty?: boolean
+  highPriority?: boolean
 }
 
 interface State {
