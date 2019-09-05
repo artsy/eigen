@@ -4,6 +4,7 @@ import React from "react"
 import {
   ColorPropType,
   LayoutChangeEvent,
+  NativeModules,
   PixelRatio,
   processColor,
   requireNativeComponent,
@@ -12,6 +13,8 @@ import {
 
 import colors from "lib/data/colors"
 import { createGeminiUrl } from "./createGeminiUrl"
+
+const { AROpaqueImageViewManager } = NativeModules
 
 interface Props {
   /** The URL from where to fetch the image. */
@@ -75,6 +78,14 @@ export default class OpaqueImageView extends React.Component<Props, State> {
 
   static defaultProps: Props = {
     placeholderBackgroundColor: colors["gray-regular"],
+  }
+
+  /**
+   * Given a list of URLs, prefetches them in the background.
+   * @param urls
+   */
+  static prefetch(urls: string[]) {
+    AROpaqueImageViewManager.prefetch(urls)
   }
 
   constructor(props: Props) {

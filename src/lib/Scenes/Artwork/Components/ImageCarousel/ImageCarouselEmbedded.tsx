@@ -1,6 +1,7 @@
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
-import React, { useCallback, useContext } from "react"
+import React, { useCallback, useContext, useEffect } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
@@ -20,6 +21,13 @@ export const ImageCarouselEmbedded = observer(() => {
     dispatch,
     state,
   } = useContext(ImageCarouselContext)
+
+  useEffect(() => {
+    // Only the first two images are actually rendered to begin with so pre fetch the rest in the background
+    // Note that SDWebImage is smart enough to not download the same image twice so it's safe to pass the
+    // whole array in here rather than slicing off the first two.
+    OpaqueImageView.prefetch(images.map(i => i.url))
+  }, [])
 
   const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map(m => m.cumulativeScrollOffset)
