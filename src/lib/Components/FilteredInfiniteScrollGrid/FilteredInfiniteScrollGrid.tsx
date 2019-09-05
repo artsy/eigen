@@ -73,6 +73,7 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
     const {
       filters: { priceRange, medium },
     } = this.state
+
     return (
       <PortalProvider>
         <Box pt={3}>
@@ -129,6 +130,7 @@ export const FilteredInfiniteScrollGridContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
             }
           }
           ...Filters_filteredArtworks

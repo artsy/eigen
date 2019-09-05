@@ -4,8 +4,10 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Header_artist$ref: unique symbol;
 export type Header_artist$ref = typeof _Header_artist$ref;
 export type Header_artist = {
+    readonly id: string;
     readonly internalID: string;
     readonly slug: string;
+    readonly isFollowed: boolean | null;
     readonly name: string | null;
     readonly nationality: string | null;
     readonly birthday: string | null;
@@ -27,6 +29,13 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "internalID",
       "args": null,
       "storageKey": null
@@ -35,6 +44,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isFollowed",
       "args": null,
       "storageKey": null
     },
@@ -79,5 +95,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '9ebfd7d67218d4bc0c239e73ed458754';
+(node as any).hash = 'b42c4f730bc52308e5cfac3737bcad5b';
 export default node;

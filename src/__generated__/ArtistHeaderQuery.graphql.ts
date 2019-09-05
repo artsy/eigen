@@ -28,8 +28,10 @@ query ArtistHeaderQuery(
 }
 
 fragment Header_artist on Artist {
+  id
   internalID
   slug
+  isFollowed
   name
   nationality
   birthday
@@ -99,6 +101,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "internalID",
             "args": null,
             "storageKey": null
@@ -107,6 +116,13 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "slug",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isFollowed",
             "args": null,
             "storageKey": null
           },
@@ -148,13 +164,6 @@ return {
                 "storageKey": null
               }
             ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -163,7 +172,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistHeaderQuery",
-    "id": "859b57244a0242fae10d039fedf47822",
+    "id": "f5acd6385f4c2064ac1b44f5f3530ddf",
     "text": null,
     "metadata": {}
   }

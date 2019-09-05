@@ -18,8 +18,8 @@ import * as Refine from "../NativeModules/triggerRefine"
 const isPad = Dimensions.get("window").width > 700
 
 const TABS = {
-  WORKS: "WORKS",
-  ABOUT: "ABOUT",
+  WORKS: "Works",
+  ABOUT: "About",
 }
 
 /** The title of the gene when scrolled, with margins */

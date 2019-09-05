@@ -1,24 +1,23 @@
-import React from "react"
-import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-import { Schema, Track, track as _track } from "../../utils/track"
-const { ARTemporaryAPIModule } = NativeModules
 import { Button } from "@artsy/palette"
+import { HeaderFollowArtistMutation } from "__generated__/HeaderFollowArtistMutation.graphql"
 import colors from "lib/data/colors"
+import React from "react"
+import { StyleSheet, TextStyle, View } from "react-native"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { Schema, Track, track as _track } from "../../utils/track"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
 import { Header_artist } from "__generated__/Header_artist.graphql"
 
-const isPad = Dimensions.get("window").width > 700
-
 interface Props {
   artist: Header_artist
+  relay: RelayProp
 }
 
 interface State {
-  following: boolean
   followersCount: number
+  isFollowedChanging: boolean
 }
 
 const track: Track<Props, State> = _track
@@ -28,19 +27,9 @@ class Header extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      following: false,
+      isFollowedChanging: false,
       followersCount: props.artist.counts.follows as number,
     }
-  }
-
-  componentDidMount() {
-    NativeModules.ARTemporaryAPIModule.followStatusForArtist(this.props.artist.internalID, (error, following) => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("Artist/Header.tsx", error.message)
-      }
-      this.setState({ following })
-    })
   }
 
   render() {
@@ -56,18 +45,17 @@ class Header extends React.Component<Props, State> {
   }
 
   renderFollowButton() {
-    if (this.state.following !== null) {
+    if (this.props.artist.isFollowed !== null) {
       return (
-        <View style={styles.followButton}>
-          <Button
-            variant={this.state.following ? "secondaryOutline" : "primaryBlack"}
-            block
-            width={100}
-            onPress={this.handleFollowChange.bind(this)}
-          >
-            {this.state.following ? "Following" : "Follow"}
-          </Button>
-        </View>
+        <Button
+          variant={this.props.artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
+          block
+          width={100}
+          loading={this.state.isFollowedChanging}
+          onPress={this.handleFollowChange.bind(this)}
+        >
+          {this.props.artist.isFollowed ? "Following" : "Follow"}
+        </Button>
       )
     }
   }
@@ -115,33 +103,63 @@ class Header extends React.Component<Props, State> {
     return leadingSubstring + " " + birthday
   }
 
-  @track((props, state) => ({
-    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+  @track(props => ({
+    action_name: props.artist.isFollowed ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleFollowChange() {
-    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
-    ARTemporaryAPIModule.setFollowArtistStatus(
-      !this.state.following,
-      this.props.artist.internalID,
-      (error, following) => {
-        if (error) {
-          console.warn(error)
-          this.failedFollowChange()
-        } else {
-          this.successfulFollowChange()
-        }
-        this.setState({ following, followersCount: newFollowersCount })
+    const {
+      relay,
+      artist: { slug, id, isFollowed },
+    } = this.props
+    const { isFollowedChanging } = this.state
+
+    if (isFollowedChanging) {
+      return
+    }
+
+    this.setState(
+      {
+        isFollowedChanging: true,
+      },
+      () => {
+        commitMutation<HeaderFollowArtistMutation>(relay.environment, {
+          onCompleted: () => this.successfulFollowChange(),
+          mutation: graphql`
+            mutation HeaderFollowArtistMutation($input: FollowArtistInput!) {
+              followArtist(input: $input) {
+                artist {
+                  id
+                  isFollowed
+                }
+              }
+            }
+          `,
+          variables: {
+            input: {
+              artistID: slug,
+              unfollow: isFollowed,
+            },
+          },
+          optimisticResponse: {
+            followArtist: {
+              artist: {
+                id,
+                isFollowed: !isFollowed,
+              },
+            },
+          },
+          onError: () => this.failedFollowChange(),
+        })
       }
     )
-    this.setState({ following: !this.state.following, followersCount: newFollowersCount })
   }
 
-  @track((props, state) => ({
-    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+  @track(props => ({
+    action_name: props.artist.isFollowed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,
@@ -149,10 +167,13 @@ class Header extends React.Component<Props, State> {
   }))
   successfulFollowChange() {
     // callback for analytics purposes
+    this.setState({
+      isFollowedChanging: false,
+    })
   }
 
-  @track((props, state) => ({
-    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+  @track(props => ({
+    action_name: props.artist.isFollowed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,
@@ -160,6 +181,9 @@ class Header extends React.Component<Props, State> {
   }))
   failedFollowChange() {
     // callback for analytics purposes
+    this.setState({
+      isFollowedChanging: false,
+    })
   }
 }
 
@@ -167,7 +191,6 @@ interface Styles {
   base: TextStyle
   headline: TextStyle
   followCount: TextStyle
-  followButton: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -181,20 +204,15 @@ const styles = StyleSheet.create<Styles>({
     color: colors["gray-semibold"],
     marginBottom: 30,
   },
-  followButton: {
-    height: 40,
-    width: isPad ? 330 : null,
-    alignSelf: isPad ? "center" : null,
-    marginLeft: 0,
-    marginRight: 0,
-  },
 })
 
 export default createFragmentContainer(Header, {
   artist: graphql`
     fragment Header_artist on Artist {
+      id
       internalID
       slug
+      isFollowed
       name
       nationality
       birthday

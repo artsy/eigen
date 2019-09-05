@@ -15,40 +15,40 @@ describe("availableTabs", () => {
 
   it("returns About tab if artist has metadata", () => {
     const artist = new Artist(artistProps(true))
-    expect(artist.availableTabs()).toEqual(["ABOUT"])
+    expect(artist.availableTabs()).toEqual(["About"])
   })
 
   it("returns About tab if artist has articles", () => {
     const artist = new Artist(artistProps(false, { articles: 1 }))
-    expect(artist.availableTabs()).toEqual(["ABOUT"])
+    expect(artist.availableTabs()).toEqual(["About"])
   })
 
   it("returns Shows tab if artist has shows", () => {
     const artist = new Artist(artistProps(false, { partner_shows: 2 }))
-    expect(artist.availableTabs()).toEqual(["SHOWS"])
+    expect(artist.availableTabs()).toEqual(["Shows"])
   })
 
   it("returns Works tab if artist has works", () => {
     const artist = new Artist(artistProps(false, { artworks: 2 }))
-    expect(artist.availableTabs()).toEqual(["WORKS"])
+    expect(artist.availableTabs()).toEqual(["Works"])
   })
 
   it("returns all three tabs if artist has metadata, works, and shows", () => {
     const artist = new Artist(artistProps(true, { artworks: 1, partner_shows: 1 }))
-    expect(artist.availableTabs()).toEqual(["ABOUT", "WORKS", "SHOWS"])
+    expect(artist.availableTabs()).toEqual(["About", "Works", "Shows"])
   })
 })
 
 describe("after rendering", () => {
   it("mounts with Works tab selected if works exist", () => {
     const artist = new Artist(artistProps(false, { artworks: 5 }))
-    const worksTabIndex = artist.availableTabs().indexOf("WORKS")
-    expect(artist.initialTabState()).toEqual({ selectedTabIndex: worksTabIndex, selectedTabTitle: "WORKS" })
+    const worksTabIndex = artist.availableTabs().indexOf("Works")
+    expect(artist.initialTabState()).toEqual({ selectedTabIndex: worksTabIndex, selectedTabTitle: "Works" })
   })
 
   it("mounts at the first tab index if artist has no works", () => {
     const artist = new Artist(artistProps(true, { partner_shows: 1 }))
-    expect(artist.initialTabState()).toEqual({ selectedTabIndex: 0, selectedTabTitle: "ABOUT" })
+    expect(artist.initialTabState()).toEqual({ selectedTabIndex: 0, selectedTabTitle: "About" })
   })
 })
 

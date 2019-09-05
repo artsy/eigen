@@ -46,8 +46,10 @@ fragment Artist_artist on Artist {
 }
 
 fragment Header_artist on Artist {
+  id
   internalID
   slug
+  isFollowed
   name
   nationality
   birthday
@@ -348,14 +350,14 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -388,8 +390,8 @@ v10 = {
   "value": 10
 },
 v11 = [
-  (v5/*: any*/),
-  (v6/*: any*/)
+  (v6/*: any*/),
+  (v5/*: any*/)
 ],
 v12 = {
   "kind": "ScalarField",
@@ -444,7 +446,7 @@ v18 = {
   "storageKey": null
 },
 v19 = [
-  (v5/*: any*/)
+  (v6/*: any*/)
 ],
 v20 = {
   "kind": "LinkedField",
@@ -456,7 +458,7 @@ v20 = {
   "plural": false,
   "selections": [
     (v18/*: any*/),
-    (v6/*: any*/),
+    (v5/*: any*/),
     {
       "kind": "InlineFragment",
       "type": "Partner",
@@ -485,7 +487,7 @@ v21 = {
       "args": null,
       "storageKey": null
     },
-    (v6/*: any*/)
+    (v5/*: any*/)
   ]
 },
 v22 = [
@@ -507,13 +509,13 @@ v22 = [
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          (v6/*: any*/),
+          (v5/*: any*/),
           (v2/*: any*/),
           (v7/*: any*/),
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v5/*: any*/),
+          (v6/*: any*/),
           (v15/*: any*/),
           (v16/*: any*/),
           (v17/*: any*/),
@@ -559,7 +561,7 @@ v25 = [
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          (v6/*: any*/),
+          (v5/*: any*/),
           (v2/*: any*/),
           {
             "kind": "LinkedField",
@@ -680,7 +682,7 @@ v25 = [
                 "args": null,
                 "storageKey": null
               },
-              (v6/*: any*/)
+              (v5/*: any*/)
             ]
           },
           {
@@ -710,7 +712,7 @@ v25 = [
                   }
                 ]
               },
-              (v6/*: any*/)
+              (v5/*: any*/)
             ]
           },
           {
@@ -913,6 +915,14 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "isFollowed",
+            "args": null,
+            "storageKey": null
+          },
+          (v6/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "nationality",
             "args": null,
             "storageKey": null
@@ -987,9 +997,9 @@ return {
                         "concreteType": "Artist",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
-                          (v7/*: any*/),
                           (v5/*: any*/),
+                          (v7/*: any*/),
+                          (v6/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -1050,7 +1060,7 @@ return {
                     "concreteType": "Article",
                     "plural": false,
                     "selections": [
-                      (v6/*: any*/),
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": "thumbnail_title",
@@ -1119,7 +1129,6 @@ return {
             "plural": false,
             "selections": (v22/*: any*/)
           },
-          (v6/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "forSaleArtworks",
@@ -1195,13 +1204,13 @@ return {
                           (v12/*: any*/),
                           (v13/*: any*/),
                           (v14/*: any*/),
-                          (v5/*: any*/),
+                          (v6/*: any*/),
                           (v15/*: any*/),
                           (v16/*: any*/),
                           (v17/*: any*/),
                           (v20/*: any*/),
                           (v21/*: any*/),
-                          (v6/*: any*/)
+                          (v5/*: any*/)
                         ]
                       }
                     ]
@@ -1234,7 +1243,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistQuery",
-    "id": "bdee8b506aa2a05ecc957d24e0739db9",
+    "id": "893610c56a03a107b9dad6de5927f562",
     "text": null,
     "metadata": {}
   }

@@ -63,7 +63,6 @@ export class ArtistListItem extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              // FIXME: Should this be internalID?
               artistID: slug,
               unfollow: is_followed,
             },
