@@ -132,7 +132,7 @@ describe("ArtworkExtraLinks", () => {
     })
   })
   describe("FAQ and specialist BNMO links", () => {
-    it("renders FAQ link when isInquireable", () => {
+    it("does not render FAQ or ask a specialist links when isInquireable", () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: false,
@@ -150,7 +150,7 @@ describe("ArtworkExtraLinks", () => {
           <ArtworkExtraLinks artwork={artwork} />
         </Theme>
       )
-      expect(component.text()).toContain("Read our FAQ")
+      expect(component.text()).not.toContain("Read our FAQ")
       expect(component.text()).not.toContain("ask a specialist")
     })
 
