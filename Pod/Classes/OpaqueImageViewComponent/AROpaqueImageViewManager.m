@@ -4,7 +4,6 @@
 
 #import <React/RCTConvert.h>
 
-#import <SDWebImage/SDWebImagePrefetcher.h>
 
 @interface AROpaqueImageViewComponent : AROpaqueImageView
 @property (nonatomic, strong, readwrite) RCTDirectEventBlock onLoad;
@@ -43,12 +42,6 @@ RCT_EXPORT_VIEW_PROPERTY(noAnimation, BOOL)
 // when the load fails
 RCT_EXPORT_VIEW_PROPERTY(failSilently, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(highPriority, BOOL)
-
-RCT_EXPORT_METHOD(prefetch:(nonnull NSArray *)urls)
-{
-  SDWebImagePrefetcher *fetcher = [SDWebImagePrefetcher sharedImagePrefetcher];
-  [fetcher prefetchURLs:urls];
-}
 
 - (UIView *)view;
 {

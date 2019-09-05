@@ -72,13 +72,7 @@ console.error = (message?: any) => {
 
 mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
 mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
-jest.mock("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", () =>
-  Object.assign(props => require("react").createElement("AROpaqueImageView", props), {
-    prefetch() {
-      // noop
-    },
-  })
-)
+mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
