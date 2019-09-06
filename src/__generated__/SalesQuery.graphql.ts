@@ -19,11 +19,15 @@ query SalesQuery {
 }
 
 fragment Sales_query on Query {
-  sales(live: true, isAuction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {
-    ...SaleListItem_sale
-    href
-    live_start_at: liveStartAt
-    id
+  salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
+    edges {
+      node {
+        ...SaleListItem_sale
+        href
+        live_start_at: liveStartAt
+        id
+      }
+    }
   }
   ...LotsByFollowedArtists_query
 }
@@ -244,9 +248,14 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "sales",
-        "storageKey": "sales(isAuction:true,live:true,size:100,sort:\"TIMELY_AT_NAME_ASC\")",
+        "name": "salesConnection",
+        "storageKey": "salesConnection(first:100,isAuction:true,live:true,sort:\"TIMELY_AT_NAME_ASC\")",
         "args": [
+          {
+            "kind": "Literal",
+            "name": "first",
+            "value": 100
+          },
           (v0/*: any*/),
           {
             "kind": "Literal",
@@ -255,73 +264,90 @@ return {
           },
           {
             "kind": "Literal",
-            "name": "size",
-            "value": 100
-          },
-          {
-            "kind": "Literal",
             "name": "sort",
             "value": "TIMELY_AT_NAME_ASC"
           }
         ],
-        "concreteType": "Sale",
-        "plural": true,
+        "concreteType": "SaleConnection",
+        "plural": false,
         "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
-          (v5/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": "live_url_if_open",
-            "name": "liveURLIfOpen",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": "start_at",
-            "name": "startAt",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": "end_at",
-            "name": "endAt",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": "registration_ends_at",
-            "name": "registrationEndsAt",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": "live_start_at",
-            "name": "liveStartAt",
-            "args": null,
-            "storageKey": null
-          },
-          (v6/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": "cover_image",
-            "name": "coverImage",
+            "alias": null,
+            "name": "edges",
             "storageKey": null,
             "args": null,
-            "concreteType": "Image",
-            "plural": false,
+            "concreteType": "SaleEdge",
+            "plural": true,
             "selections": [
-              (v7/*: any*/),
-              (v8/*: any*/)
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "node",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Sale",
+                "plural": false,
+                "selections": [
+                  (v1/*: any*/),
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": "live_url_if_open",
+                    "name": "liveURLIfOpen",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": "start_at",
+                    "name": "startAt",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": "end_at",
+                    "name": "endAt",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": "registration_ends_at",
+                    "name": "registrationEndsAt",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": "live_start_at",
+                    "name": "liveStartAt",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v6/*: any*/),
+                  {
+                    "kind": "LinkedField",
+                    "alias": "cover_image",
+                    "name": "coverImage",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      (v7/*: any*/),
+                      (v8/*: any*/)
+                    ]
+                  },
+                  (v9/*: any*/)
+                ]
+              }
             ]
-          },
-          (v9/*: any*/)
+          }
         ]
       },
       {
@@ -590,7 +616,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SalesQuery",
-    "id": "8bfd285b826c43ca0a552d1b9839df87",
+    "id": "7feb04a62bb6a47d8a8ad1e4becdcb27",
     "text": null,
     "metadata": {}
   }

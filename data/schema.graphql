@@ -2819,6 +2819,7 @@ type CommerceSubmitOrderPayload {
 input CommerceSubmitOrderWithOfferInput {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  confirmedSetupIntentId: String
   offerId: ID!
 }
 
@@ -4712,24 +4713,6 @@ type Me implements Node {
 
   # A list of the current user’s recently viewed artworks.
   recentlyViewedArtworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
-  saleRegistrations(
-    # Limit by auction.
-    isAuction: Boolean = true
-
-    #
-    #         Only return sales matching specified ids.
-    #         Accepts list of ids.
-    #
-    ids: [String]
-
-    # Limit by live status.
-    live: Boolean = true
-
-    # Limit by published status.
-    published: Boolean = true
-    size: Int
-    sort: SaleSorts
-  ): [SaleRegistration]
   type: String
 }
 
@@ -5297,24 +5280,21 @@ type Query {
   ): Sale
 
   # A list of Sales
-  sales(
+  salesConnection(
     # Limit by auction.
     isAuction: Boolean = true
-
-    #
-    #         Only return sales matching specified ids.
-    #         Accepts list of ids.
-    #
-    ids: [String]
 
     # Limit by live status.
     live: Boolean = true
 
     # Limit by published status.
     published: Boolean = true
-    size: Int
     sort: SaleSorts
-  ): [Sale]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleConnection
 
   # Global search
   searchConnection(
@@ -5832,10 +5812,24 @@ type SaleArtworksConnection implements ArtworkConnectionInterface {
   counts: FilterSaleArtworksCounts
 }
 
-type SaleRegistration {
-  bidder: Bidder
-  isRegistered: Boolean
-  sale: Sale
+# A connection to a list of items.
+type SaleConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleEdge]
+  pageCursors: PageCursors
+  totalCount: Int
+}
+
+# An edge in a connection.
+type SaleEdge {
+  # The item at the end of the edge
+  node: Sale
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 enum SaleSorts {

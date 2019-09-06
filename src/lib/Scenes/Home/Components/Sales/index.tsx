@@ -21,7 +21,7 @@ class Sales extends React.Component<Props, State> {
   }
 
   get data() {
-    const { sales } = this.props.query
+    const sales = this.props.query.salesConnection.edges.map(({ node }) => node)
     const liveAuctions = sales.filter(a => !!a.live_start_at)
     const timedAuctions = sales.filter(a => !a.live_start_at)
 
@@ -48,7 +48,7 @@ class Sales extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.props.query.sales.length === 0) {
+    if (this.props.query.salesConnection.edges.length === 0) {
       return <ZeroState />
     }
 
@@ -91,10 +91,14 @@ export default createRefetchContainer(
   {
     query: graphql`
       fragment Sales_query on Query {
-        sales(live: true, isAuction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {
-          ...SaleListItem_sale
-          href
-          live_start_at: liveStartAt
+        salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
+          edges {
+            node {
+              ...SaleListItem_sale
+              href
+              live_start_at: liveStartAt
+            }
+          }
         }
         ...LotsByFollowedArtists_query
       }
