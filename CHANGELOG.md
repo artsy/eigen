@@ -16,6 +16,7 @@
 
 ### Master
 
+- Remove more root fields from MP v2 schema - alloy
 - Remove `metaphysics` function in favour of always using Relay - alloy
 - Fix Home artist rail following and switch to use Relay - alloy
 - Fix consignments and switch to use Relay - alloy

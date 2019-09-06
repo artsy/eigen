@@ -1,16 +1,20 @@
 import React, { Component } from "react"
-import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { LotsByFollowedArtists_query } from "__generated__/LotsByFollowedArtists_query.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
-import Spinner from "lib/Components/Spinner"
-import { PAGE_SIZE } from "lib/data/constants"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import { SectionHeader } from "./SectionHeader"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { SectionHeader as _SectionHeader } from "./SectionHeader"
 
 const DEFAULT_TITLE = "Lots by Artists You Follow"
+
+const Container = styled.View`
+  padding: 10px;
+`
+
+const SectionHeader = styled(_SectionHeader)`
+  padding-bottom: 10px;
+`
 
 interface Props {
   relay: RelayPaginationProp
@@ -18,46 +22,22 @@ interface Props {
   query: LotsByFollowedArtists_query
 }
 
-interface State {
-  fetchingMoreData: boolean
-}
-
-export class LotsByFollowedArtists extends Component<Props, State> {
-  state = {
-    fetchingMoreData: false,
-  }
-
-  loadMore = () => {
-    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
-      return
-    }
-
-    this.setState({ fetchingMoreData: true })
-    this.props.relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("LotsByFollowedArtists.tsx", error.message)
-      }
-      this.setState({ fetchingMoreData: false })
-    })
-  }
-
+export class LotsByFollowedArtists extends Component<Props> {
   render() {
-    const artworks = this.props.query.sale_artworks.edges.map(edge => edge.node.artwork)
-    if (artworks.length === 0) {
+    if (this.props.query.me.lotsByFollowedArtistsConnection.edges.length === 0) {
       return null
     }
 
     const { title = DEFAULT_TITLE } = this.props
 
     return (
-      <ScrollView onScroll={isCloseToBottom(this.loadMore)} scrollEventThrottle={400}>
-        <SectionHeader title={title} />
-        <Container>
-          <GenericGrid artworks={artworks as any} />
-          {this.state.fetchingMoreData && <Spinner style={{ marginTop: 20 }} />}
-        </Container>
-      </ScrollView>
+      <Container>
+        <InfiniteScrollArtworksGrid
+          loadMore={this.props.relay.loadMore}
+          connection={this.props.query.me.lotsByFollowedArtistsConnection}
+          HeaderComponent={<SectionHeader title={title} />}
+        />
+      </Container>
     )
   }
 }
@@ -68,31 +48,20 @@ export default createPaginationContainer(
     query: graphql`
       fragment LotsByFollowedArtists_query on Query
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        sale_artworks: saleArtworksConnection(
-          first: $count
-          after: $cursor
-          liveSale: true
-          isAuction: true
-          includeArtworksByFollowedArtists: true
-        ) @connection(key: "LotsByFollowedArtists_sale_artworks") {
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
-          edges {
-            cursor
-            node {
-              artwork {
-                ...GenericGrid_artworks
-              }
+        me {
+          lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true)
+            @connection(key: "LotsByFollowedArtists_lotsByFollowedArtistsConnection") {
+            edges {
+              cursor
             }
+            ...InfiniteScrollArtworksGrid_connection
           }
         }
       }
     `,
   },
   {
-    getConnectionFromProps: ({ query }) => query && query.sale_artworks,
+    getConnectionFromProps: ({ query }) => query && query.me.lotsByFollowedArtistsConnection,
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (_props, { count, cursor }) => ({ count, cursor }),
     query: graphql`
@@ -102,7 +71,3 @@ export default createPaginationContainer(
     `,
   }
 )
-
-const Container = styled.View`
-  padding: 10px;
-`

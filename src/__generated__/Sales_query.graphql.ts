@@ -6,11 +6,15 @@ import { SaleListItem_sale$ref } from "./SaleListItem_sale.graphql";
 declare const _Sales_query$ref: unique symbol;
 export type Sales_query$ref = typeof _Sales_query$ref;
 export type Sales_query = {
-    readonly sales: ReadonlyArray<{
-        readonly href: string | null;
-        readonly live_start_at: string | null;
-        readonly " $fragmentRefs": SaleListItem_sale$ref;
-    } | null> | null;
+    readonly salesConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly href: string | null;
+                readonly live_start_at: string | null;
+                readonly " $fragmentRefs": SaleListItem_sale$ref;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": LotsByFollowedArtists_query$ref;
     readonly " $refType": Sales_query$ref;
 };
@@ -27,9 +31,14 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "sales",
-      "storageKey": "sales(isAuction:true,live:true,size:100,sort:\"TIMELY_AT_NAME_ASC\")",
+      "name": "salesConnection",
+      "storageKey": "salesConnection(first:100,isAuction:true,live:true,sort:\"TIMELY_AT_NAME_ASC\")",
       "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 100
+        },
         {
           "kind": "Literal",
           "name": "isAuction",
@@ -42,36 +51,53 @@ const node: ReaderFragment = {
         },
         {
           "kind": "Literal",
-          "name": "size",
-          "value": 100
-        },
-        {
-          "kind": "Literal",
           "name": "sort",
           "value": "TIMELY_AT_NAME_ASC"
         }
       ],
-      "concreteType": "Sale",
-      "plural": true,
+      "concreteType": "SaleConnection",
+      "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
+          "kind": "LinkedField",
           "alias": null,
-          "name": "href",
+          "name": "edges",
+          "storageKey": null,
           "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "live_start_at",
-          "name": "liveStartAt",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "FragmentSpread",
-          "name": "SaleListItem_sale",
-          "args": null
+          "concreteType": "SaleEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Sale",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "href",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": "live_start_at",
+                  "name": "liveStartAt",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "SaleListItem_sale",
+                  "args": null
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -82,5 +108,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '81decacc84cecee4dcb0fb93b24e3230';
+(node as any).hash = 'e94deed573d0d7b1e83d4dcb905cc75b';
 export default node;

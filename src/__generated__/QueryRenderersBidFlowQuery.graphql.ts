@@ -63,11 +63,11 @@ fragment ConfirmBid_me on Me {
 }
 
 fragment SelectMaxBid_sale_artwork on SaleArtwork {
+  id
   increments(useMyMaxBid: true) {
     display
     cents
   }
-  internalID
   ...ConfirmBid_sale_artwork
 }
 
@@ -140,28 +140,28 @@ v2 = [
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "cents",
+  "name": "display",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "cents",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "slug",
   "args": null,
   "storageKey": null
 };
@@ -242,6 +242,7 @@ return {
             "concreteType": "SaleArtwork",
             "plural": false,
             "selections": [
+              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -257,8 +258,8 @@ return {
                 "concreteType": "BidIncrementsFormatted",
                 "plural": true,
                 "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/)
+                  (v4/*: any*/),
+                  (v5/*: any*/)
                 ]
               },
               {
@@ -277,7 +278,7 @@ return {
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  (v5/*: any*/),
+                  (v6/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": "live_start_at",
@@ -292,7 +293,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v6/*: any*/)
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -304,7 +305,7 @@ return {
                 "concreteType": "Artwork",
                 "plural": false,
                 "selections": [
-                  (v5/*: any*/),
+                  (v6/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -350,7 +351,7 @@ return {
                       }
                     ]
                   },
-                  (v6/*: any*/)
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -376,14 +377,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v4/*: any*/),
-                  (v3/*: any*/)
+                  (v5/*: any*/),
+                  (v4/*: any*/)
                 ]
-              },
-              (v6/*: any*/)
+              }
             ]
           },
-          (v6/*: any*/)
+          (v3/*: any*/)
         ]
       },
       {
@@ -418,10 +418,10 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v6/*: any*/)
+              (v3/*: any*/)
             ]
           },
-          (v6/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -429,7 +429,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersBidFlowQuery",
-    "id": "c4da5c7318a758d6fcc4757466f88f6e",
+    "id": "b15d66d6742139d778366cabf951be30",
     "text": null,
     "metadata": {}
   }

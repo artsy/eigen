@@ -176,6 +176,9 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
       }
       ...ArtworkGridItem_artwork
     }
+    ... on Node {
+      id
+    }
   }
 }
 
@@ -903,7 +906,8 @@ return {
                     "name": "cursor",
                     "args": null,
                     "storageKey": null
-                  }
+                  },
+                  (v5/*: any*/)
                 ]
               },
               {
@@ -998,7 +1002,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothQuery",
-    "id": "7dc2b033055745e9334f8e250723afe8",
+    "id": "4a00086070d2a5b0c65171edd6bc3626",
     "text": null,
     "metadata": {}
   }
