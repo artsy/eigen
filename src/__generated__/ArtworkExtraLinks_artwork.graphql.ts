@@ -9,6 +9,7 @@ export type ArtworkExtraLinks_artwork = {
     readonly isInAuction: boolean | null;
     readonly sale: {
         readonly isClosed: boolean | null;
+        readonly slug: string;
     } | null;
     readonly artists: ReadonlyArray<{
         readonly isConsignable: boolean | null;
@@ -19,20 +20,22 @@ export type ArtworkExtraLinks_artwork = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "ArtworkExtraLinks_artwork",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -62,7 +65,8 @@ const node: ReaderFragment = {
           "name": "isClosed",
           "args": null,
           "storageKey": null
-        }
+        },
+        (v0/*: any*/)
       ]
     },
     {
@@ -92,5 +96,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '605d1c8892ef73672eddbc298af1b6e8';
+})();
+(node as any).hash = '58a5cb7edab89b5fcf5703e3520803fc';
 export default node;

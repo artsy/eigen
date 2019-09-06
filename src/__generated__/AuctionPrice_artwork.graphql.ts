@@ -6,7 +6,7 @@ export type AuctionPrice_artwork$ref = typeof _AuctionPrice_artwork$ref;
 export type AuctionPrice_artwork = {
     readonly slug: string;
     readonly sale: {
-        readonly slug: string;
+        readonly internalID: string;
         readonly isWithBuyersPremium: boolean | null;
         readonly isClosed: boolean | null;
         readonly isLiveOpen: boolean | null;
@@ -38,14 +38,7 @@ export type AuctionPrice_artwork = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v1 = [
+var v0 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -61,7 +54,13 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -71,7 +70,13 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        (v0/*: any*/),
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "internalID",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -133,7 +138,7 @@ return {
           "args": null,
           "concreteType": "SaleArtworkCurrentBid",
           "plural": false,
-          "selections": (v1/*: any*/)
+          "selections": (v0/*: any*/)
         },
         {
           "kind": "LinkedField",
@@ -205,7 +210,7 @@ return {
               "args": null,
               "concreteType": "BidderPositionMaxBid",
               "plural": false,
-              "selections": (v1/*: any*/)
+              "selections": (v0/*: any*/)
             }
           ]
         }
@@ -214,5 +219,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b25265a9cf31197684bdf3ed1314035d';
+(node as any).hash = 'a26e6102c41d924b3013ed987b48dd56';
 export default node;

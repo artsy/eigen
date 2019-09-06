@@ -12,9 +12,9 @@ interface AuctionPriceProps {
 
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
   handleBuyersPremiumTap = () => {
-    const auctionSlug = this.props.artwork && this.props.artwork.sale && this.props.artwork.sale.slug
-    if (auctionSlug) {
-      SwitchBoard.presentModalViewController(this, `/auction/${auctionSlug}/buyers-premium`)
+    const auctionInternalID = this.props.artwork && this.props.artwork.sale && this.props.artwork.sale.internalID
+    if (auctionInternalID) {
+      SwitchBoard.presentModalViewController(this, `/auction/${auctionInternalID}/buyers-premium`)
     }
   }
 
@@ -113,7 +113,7 @@ export const AuctionPriceFragmentContainer = createFragmentContainer(AuctionPric
     fragment AuctionPrice_artwork on Artwork {
       slug
       sale {
-        slug
+        internalID
         isWithBuyersPremium
         isClosed
         isLiveOpen

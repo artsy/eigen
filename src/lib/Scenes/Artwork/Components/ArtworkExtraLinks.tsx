@@ -23,7 +23,8 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   handleReadOurAuctionFAQsTap = () => {
-    // FIXME: Add auction FAQs navigation here
+    // FIXME:
+    return null
   }
 
   handleConditionsOfSaleTap = () => {
@@ -120,6 +121,7 @@ export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(Artwor
       isInAuction
       sale {
         isClosed
+        slug
       }
       artists {
         isConsignable

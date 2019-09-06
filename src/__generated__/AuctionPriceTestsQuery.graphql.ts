@@ -26,7 +26,7 @@ query AuctionPriceTestsQuery {
 fragment AuctionPrice_artwork on Artwork {
   slug
   sale {
-    slug
+    internalID
     isWithBuyersPremium
     isClosed
     isLiveOpen
@@ -70,18 +70,11 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v3 = [
+v2 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -131,7 +124,13 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "slug",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -141,7 +140,13 @@ return {
             "concreteType": "Sale",
             "plural": false,
             "selections": [
-              (v1/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "internalID",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -163,7 +168,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/)
+              (v1/*: any*/)
             ]
           },
           {
@@ -204,7 +209,7 @@ return {
                 "args": null,
                 "concreteType": "SaleArtworkCurrentBid",
                 "plural": false,
-                "selections": (v3/*: any*/)
+                "selections": (v2/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -224,7 +229,7 @@ return {
                   }
                 ]
               },
-              (v2/*: any*/)
+              (v1/*: any*/)
             ]
           },
           {
@@ -258,7 +263,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/)
+                  (v1/*: any*/)
                 ]
               },
               {
@@ -278,14 +283,14 @@ return {
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
-                    "selections": (v3/*: any*/)
+                    "selections": (v2/*: any*/)
                   },
-                  (v2/*: any*/)
+                  (v1/*: any*/)
                 ]
               }
             ]
           },
-          (v2/*: any*/)
+          (v1/*: any*/)
         ]
       }
     ]
@@ -293,7 +298,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AuctionPriceTestsQuery",
-    "id": "cf7fb6d603f4e4cfcc8b338efdb52667",
+    "id": "5fbc15e44c3fcc0459d43153dba0babf",
     "text": null,
     "metadata": {}
   }
