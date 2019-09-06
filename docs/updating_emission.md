@@ -1,10 +1,11 @@
 ### Updating Emission steps
 
-## Get Emission's code in the App
+## Update Eigen with the most recent version of Emission
 
-- Ship a [new Emission release](https://github.com/artsy/emission#deployment)
-- Update Eigen's `Podfile.lock` via `bundle exec pod update Emission yoga React/Core`
-  ( _note the lower-cased `yoga`: this is necessary due to Mac filesystem case-insensitivity. Additionally, the yoga and React/Core updates may not be necessary depending on your release._ )
+- Ship a [new Emission release](https://github.com/artsy/emission#deploying-emission)
+- Once Emission has finished building in CI, rebase master and switch to a new branch. Then update Eigen's `Podfile.lock` via `bundle exec pod update Emission`, you will see a diff with the new version in `Podfile.lock`.
+- Commit your changes and merge a self assigned PR in Eigen with the updated Emission changes. 
+- Once that PR has merged, switch to your master branch, rebase, and then run `make deploy`. This will create a new version of Eigen with the updated Emission package.
 
 ## Get Emission's to compile
 
