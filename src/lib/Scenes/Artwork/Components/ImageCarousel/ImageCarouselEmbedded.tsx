@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useCallback, useContext } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform, PlatformIOSStatic } from "react-native"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
@@ -12,7 +12,8 @@ export const ImageCarouselEmbedded = observer(() => {
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   const cardHeight = screenDimensions.width >= 375 ? 340 : 290
 
-  const embeddedCardBoundingBox = { width: screenDimensions.width, height: Platform.isPad ? 460 : cardHeight }
+  const IOSPlatform = Platform as PlatformIOSStatic
+  const embeddedCardBoundingBox = { width: screenDimensions.width, height: IOSPlatform.isPad ? 460 : cardHeight }
 
   const {
     images,
