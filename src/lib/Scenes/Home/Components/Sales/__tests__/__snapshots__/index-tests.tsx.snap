@@ -63,7 +63,62 @@ exports[`looks correct when rendered 1`] = `
         "title": "Current Timed Auctions",
       },
       Object {
-        "data": Array [],
+        "data": Array [
+          Object {
+            "data": Object {
+              "me": Object {
+                "lotsByFollowedArtists": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "id": "foo",
+                      },
+                    },
+                  ],
+                  "pageInfo": Object {},
+                },
+              },
+              "salesConnection": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "cover_image": Object {
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
+                      },
+                      "display_timely_at": "In Progress",
+                      "end_at": null,
+                      "href": "/auction/wright-noma",
+                      "id": "wright-noma",
+                      "is_live_open": true,
+                      "is_open": true,
+                      "live_start_at": "2017-11-02T13:00:00+00:00",
+                      "name": "Wright: noma",
+                      "registration_ends_at": "2017-11-01T13:00:00+00:00",
+                      "start_at": "2017-10-16T22:00:00+00:00",
+                    },
+                  },
+                  Object {
+                    "node": Object {
+                      "cover_image": Object {
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
+                      },
+                      "display_timely_at": "In Progress",
+                      "end_at": null,
+                      "href": "/auction/freemans-modern-and-contemporary-works-of-art",
+                      "id": "freemans-modern-and-contemporary-works-of-art",
+                      "is_live_open": false,
+                      "is_open": true,
+                      "live_start_at": "2017-11-02T17:00:00+00:00",
+                      "name": "Freeman's: Modern & Contemporary Works of Art",
+                      "registration_ends_at": "2017-11-01T17:00:00+00:00",
+                      "start_at": "2017-10-17T15:00:00+00:00",
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
         "renderItem": [Function],
         "title": "Lots by Artists You Follow",
       },
@@ -144,7 +199,62 @@ exports[`looks correct when rendered 1`] = `
         "title": "Current Timed Auctions",
       },
       Object {
-        "data": Array [],
+        "data": Array [
+          Object {
+            "data": Object {
+              "me": Object {
+                "lotsByFollowedArtists": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "id": "foo",
+                      },
+                    },
+                  ],
+                  "pageInfo": Object {},
+                },
+              },
+              "salesConnection": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "cover_image": Object {
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
+                      },
+                      "display_timely_at": "In Progress",
+                      "end_at": null,
+                      "href": "/auction/wright-noma",
+                      "id": "wright-noma",
+                      "is_live_open": true,
+                      "is_open": true,
+                      "live_start_at": "2017-11-02T13:00:00+00:00",
+                      "name": "Wright: noma",
+                      "registration_ends_at": "2017-11-01T13:00:00+00:00",
+                      "start_at": "2017-10-16T22:00:00+00:00",
+                    },
+                  },
+                  Object {
+                    "node": Object {
+                      "cover_image": Object {
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
+                      },
+                      "display_timely_at": "In Progress",
+                      "end_at": null,
+                      "href": "/auction/freemans-modern-and-contemporary-works-of-art",
+                      "id": "freemans-modern-and-contemporary-works-of-art",
+                      "is_live_open": false,
+                      "is_open": true,
+                      "live_start_at": "2017-11-02T17:00:00+00:00",
+                      "name": "Freeman's: Modern & Contemporary Works of Art",
+                      "registration_ends_at": "2017-11-01T17:00:00+00:00",
+                      "start_at": "2017-10-17T15:00:00+00:00",
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
         "renderItem": [Function],
         "title": "Lots by Artists You Follow",
       },
@@ -616,6 +726,68 @@ exports[`looks correct when rendered 1`] = `
       onLayout={[Function]}
       style={null}
     />
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <
+        query={
+          Object {
+            "me": Object {
+              "lotsByFollowedArtists": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "id": "foo",
+                    },
+                  },
+                ],
+                "pageInfo": Object {},
+              },
+            },
+            "salesConnection": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "cover_image": Object {
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
+                    },
+                    "display_timely_at": "In Progress",
+                    "end_at": null,
+                    "href": "/auction/wright-noma",
+                    "id": "wright-noma",
+                    "is_live_open": true,
+                    "is_open": true,
+                    "live_start_at": "2017-11-02T13:00:00+00:00",
+                    "name": "Wright: noma",
+                    "registration_ends_at": "2017-11-01T13:00:00+00:00",
+                    "start_at": "2017-10-16T22:00:00+00:00",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "cover_image": Object {
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
+                    },
+                    "display_timely_at": "In Progress",
+                    "end_at": null,
+                    "href": "/auction/freemans-modern-and-contemporary-works-of-art",
+                    "id": "freemans-modern-and-contemporary-works-of-art",
+                    "is_live_open": false,
+                    "is_open": true,
+                    "live_start_at": "2017-11-02T17:00:00+00:00",
+                    "name": "Freeman's: Modern & Contemporary Works of Art",
+                    "registration_ends_at": "2017-11-01T17:00:00+00:00",
+                    "start_at": "2017-10-17T15:00:00+00:00",
+                  },
+                },
+              ],
+            },
+          }
+        }
+        title="Lots by Artists You Follow"
+      />
+    </View>
     <View
       onLayout={[Function]}
       style={null}

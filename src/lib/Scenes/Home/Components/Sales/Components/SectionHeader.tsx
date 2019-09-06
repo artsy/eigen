@@ -24,7 +24,7 @@ interface Props extends ViewProperties {
 
 export const SectionHeader: React.SFC<Props> = props => {
   return (
-    <Header>
+    <Header style={props.style}>
       <Title>{props.title}</Title>
     </Header>
   )

@@ -18,7 +18,7 @@ const Me = ({
 } as any) as SelectMaxBid_me
 
 const SaleArtwork = ({
-  internalID: "sale-artwork-id",
+  id: "sale-artwork-id",
   artwork: {
     id: "meteor shower",
     title: "Meteor Shower",
@@ -102,7 +102,7 @@ it("refetches in next component's refreshSaleArtwork", () => {
 
   nextScreen.root.findByProps({ nextScreen: true }).instance.props.refreshSaleArtwork()
 
-  expect(fakeRelay.refetch).toHaveBeenCalledWith({ saleArtworkID: "sale-artwork-id" }, null, expect.anything(), {
+  expect(fakeRelay.refetch).toHaveBeenCalledWith({ saleArtworkNodeID: "sale-artwork-id" }, null, expect.anything(), {
     force: true,
   })
   expect(component.root.findByType(Spinner)).toBeDefined()

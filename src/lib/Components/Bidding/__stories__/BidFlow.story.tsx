@@ -20,17 +20,17 @@ const testSaleArtworkID = "5ce8ddf9b8ca7812a17b221b"
 const testArtworkID = "5ce8ddf899e7e26cd3715136"
 const testSaleID = "capsule-gallery-auction-modern-post-war-and-contemporary-art"
 
-const BidFlowMaxBidStoryRenderer: React.SFC<any> = ({ saleArtworkID }) => (
+const BidFlowMaxBidStoryRenderer: React.SFC<any> = ({ saleArtworkNodeID }) => (
   <QueryRenderer<BidFlowSelectMaxBidRendererQuery>
     environment={createEnvironment() as any}
     query={graphql`
-      query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
-        sale_artwork: saleArtwork(id: $saleArtworkID) {
+      query BidFlowSelectMaxBidRendererQuery($saleArtworkNodeID: ID!) {
+        node(id: $saleArtworkNodeID) {
           ...SelectMaxBid_sale_artwork
         }
       }
     `}
-    variables={{ saleArtworkID }}
+    variables={{ saleArtworkNodeID }}
     render={renderWithLoadProgress(MaxBidScreen)}
   />
 )
