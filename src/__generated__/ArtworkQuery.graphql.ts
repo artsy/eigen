@@ -352,7 +352,6 @@ fragment ArtworkExtraLinks_artwork on Artwork {
   isInAuction
   sale {
     isClosed
-    slug
     id
   }
   artists {
@@ -1973,7 +1972,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "d247898a881271ec99d300155a2b8ea1",
+    "id": "b6ec5078f68e073a93311d64081f705d",
     "text": null,
     "metadata": {}
   }
