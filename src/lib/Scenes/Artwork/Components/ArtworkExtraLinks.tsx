@@ -121,7 +121,6 @@ export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(Artwor
       isInAuction
       sale {
         isClosed
-        slug
       }
       artists {
         isConsignable

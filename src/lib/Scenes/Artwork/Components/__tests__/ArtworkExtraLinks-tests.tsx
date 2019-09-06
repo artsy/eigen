@@ -183,6 +183,7 @@ describe("ArtworkExtraLinks", () => {
         isInAuction: true,
         sale: {
           isClosed: false,
+          internalID: "123",
         },
         artists: [
           {
