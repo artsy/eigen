@@ -3,6 +3,7 @@ import { AboutWork_artwork } from "__generated__/AboutWork_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
+import { Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutWorkProps {
@@ -13,6 +14,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
   render() {
     const { additional_information, description } = this.props.artwork
     const hasArtworkInfo = additional_information || description
+    const textLimit = Platform.isPad ? 320 : 140
     return (
       hasArtworkInfo && (
         <Join separator={<Spacer mb={2} />}>
@@ -22,7 +24,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
           {additional_information && (
             <ReadMore
               content={additional_information}
-              maxChars={140}
+              maxChars={textLimit}
               trackingFlow={Schema.Flow.AboutTheWork}
               contextModule={Schema.ContextModules.AboutTheWork}
             />
@@ -34,7 +36,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
               </Sans>
               <ReadMore
                 content={description}
-                maxChars={140}
+                maxChars={textLimit}
                 trackingFlow={Schema.Flow.AboutTheWork}
                 contextModule={Schema.ContextModules.AboutTheWorkFromSpecialist}
               />

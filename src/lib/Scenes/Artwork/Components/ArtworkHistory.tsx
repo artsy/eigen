@@ -3,6 +3,7 @@ import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.gra
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
+import { Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkHistoryProps {
@@ -24,6 +25,8 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
 
     const displaySections = sections.filter(i => i.value != null)
 
+    const textLimit = Platform.isPad ? 320 : 140
+
     return (
       <Join separator={<Spacer pb={3} />}>
         {displaySections.map(({ title, value, contextModule }, index) => (
@@ -33,7 +36,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
             </Sans>
             <ReadMore
               content={value}
-              maxChars={140}
+              maxChars={textLimit}
               trackingFlow={Schema.Flow.ArtworkDetails}
               contextModule={contextModule}
             />

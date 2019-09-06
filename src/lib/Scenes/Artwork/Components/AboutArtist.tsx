@@ -4,6 +4,7 @@ import { ArtistListItemContainer as ArtistListItem } from "lib/Components/Artist
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
+import { Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutArtistProps {
@@ -20,6 +21,8 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
       hasSingleArtist && artists[0].biography_blurb && artists[0].biography_blurb.text
         ? artists[0].biography_blurb.text
         : null
+
+    const textLimit = Platform.isPad ? 320 : 140
 
     return (
       <>
@@ -39,7 +42,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
               <ReadMore
                 content={text}
                 trackingFlow={Schema.Flow.AboutTheArtist}
-                maxChars={140}
+                maxChars={textLimit}
                 contextModule={Schema.ContextModules.ArtistBiography}
               />
             </Box>
