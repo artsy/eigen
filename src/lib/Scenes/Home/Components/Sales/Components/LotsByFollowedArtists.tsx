@@ -1,20 +1,11 @@
-import React, { Component } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import styled from "styled-components/native"
-
+import { Box, Theme } from "@artsy/palette"
 import { LotsByFollowedArtists_query } from "__generated__/LotsByFollowedArtists_query.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { SectionHeader as _SectionHeader } from "./SectionHeader"
+import React, { Component } from "react"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { SectionHeader } from "./SectionHeader"
 
 const DEFAULT_TITLE = "Lots by Artists You Follow"
-
-const Container = styled.View`
-  padding: 10px;
-`
-
-const SectionHeader = styled(_SectionHeader)`
-  padding-bottom: 10px;
-`
 
 interface Props {
   relay: RelayPaginationProp
@@ -31,13 +22,19 @@ export class LotsByFollowedArtists extends Component<Props> {
     const { title = DEFAULT_TITLE } = this.props
 
     return (
-      <Container>
-        <InfiniteScrollArtworksGrid
-          loadMore={this.props.relay.loadMore}
-          connection={this.props.query.me.lotsByFollowedArtistsConnection}
-          HeaderComponent={<SectionHeader title={title} />}
-        />
-      </Container>
+      <Theme>
+        <Box p={1}>
+          <InfiniteScrollArtworksGrid
+            loadMore={this.props.relay.loadMore}
+            connection={this.props.query.me.lotsByFollowedArtistsConnection}
+            HeaderComponent={
+              <Box pb={1}>
+                <SectionHeader title={title} />
+              </Box>
+            }
+          />
+        </Box>
+      </Theme>
     )
   }
 }
