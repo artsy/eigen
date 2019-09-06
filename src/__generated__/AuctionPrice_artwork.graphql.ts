@@ -6,6 +6,7 @@ export type AuctionPrice_artwork$ref = typeof _AuctionPrice_artwork$ref;
 export type AuctionPrice_artwork = {
     readonly slug: string;
     readonly sale: {
+        readonly internalID: string;
         readonly isWithBuyersPremium: boolean | null;
         readonly isClosed: boolean | null;
         readonly isLiveOpen: boolean | null;
@@ -69,6 +70,13 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "internalID",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -211,5 +219,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'df0946307e89861a71e867aaf023cb02';
+(node as any).hash = 'a26e6102c41d924b3013ed987b48dd56';
 export default node;

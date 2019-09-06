@@ -23,7 +23,8 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   }
 
   handleReadOurAuctionFAQsTap = () => {
-    // FIXME: Add auction FAQs navigation here
+    // FIXME:
+    return null
   }
 
   handleConditionsOfSaleTap = () => {
@@ -43,7 +44,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
 
   renderFAQAndSpecialist = () => {
     const {
-      artwork: { isAcquireable, isInquireable, isInAuction, sale },
+      artwork: { isAcquireable, isInAuction, sale },
     } = this.props
 
     if (isInAuction && sale && !sale.isClosed) {
@@ -71,22 +72,17 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
           </Sans>
         </>
       )
-    } else if (isInquireable || isAcquireable) {
+    } else if (isAcquireable) {
       return (
         <Sans size="2" color="black60">
           Have a question?{" "}
           <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
             Read our FAQ
+          </Text>{" "}
+          or{" "}
+          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
+            ask a specialist
           </Text>
-          {isAcquireable && (
-            <>
-              {" "}
-              or{" "}
-              <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
-                ask a specialist
-              </Text>
-            </>
-          )}
           .
         </Sans>
       )
@@ -122,7 +118,6 @@ export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(Artwor
     fragment ArtworkExtraLinks_artwork on Artwork {
       slug
       isAcquireable
-      isInquireable
       isInAuction
       sale {
         isClosed

@@ -26,6 +26,7 @@ query AuctionPriceTestsQuery {
 fragment AuctionPrice_artwork on Artwork {
   slug
   sale {
+    internalID
     isWithBuyersPremium
     isClosed
     isLiveOpen
@@ -139,6 +140,13 @@ return {
             "concreteType": "Sale",
             "plural": false,
             "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "internalID",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -290,7 +298,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AuctionPriceTestsQuery",
-    "id": "5f7c3b3077c62677131e9f5bf386dbbf",
+    "id": "5fbc15e44c3fcc0459d43153dba0babf",
     "text": null,
     "metadata": {}
   }
