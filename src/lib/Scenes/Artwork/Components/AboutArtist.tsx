@@ -4,7 +4,7 @@ import { ArtistListItemContainer as ArtistListItem } from "lib/Components/Artist
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
-import { Platform } from "react-native"
+import { Platform, PlatformIOSStatic } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutArtistProps {
@@ -22,7 +22,8 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
         ? artists[0].biography_blurb.text
         : null
 
-    const textLimit = Platform.isPad ? 320 : 140
+    const IOSPlatform = Platform as PlatformIOSStatic
+    const textLimit = IOSPlatform.isPad ? 320 : 140
 
     return (
       <>
