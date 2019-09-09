@@ -16,6 +16,8 @@
 
 ### Master
 
+- Add vscode-apollo-relay for better Relay DX with vscode-apollo extension - alloy
+
 ### 1.16.0
 
 - Remove more root fields from MP v2 schema - alloy
