@@ -88,6 +88,7 @@ fragment Artwork_artwork on Artwork {
   }
   slug
   internalID
+  id
   is_acquireable: isAcquireable
   is_offerable: isOfferable
   is_biddable: isBiddable
@@ -1482,6 +1483,7 @@ return {
           },
           (v4/*: any*/),
           (v5/*: any*/),
+          (v2/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
           (v19/*: any*/),
@@ -1547,7 +1549,6 @@ return {
               }
             ]
           },
-          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -1972,7 +1973,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "b6ec5078f68e073a93311d64081f705d",
+    "id": "dcd1ed3a1858171ebe55a7a27b769c65",
     "text": null,
     "metadata": {}
   }

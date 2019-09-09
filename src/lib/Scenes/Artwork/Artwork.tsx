@@ -10,7 +10,8 @@ import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { RefreshControl } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -23,6 +24,11 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 
 interface Props {
   artwork: Artwork_artwork
+  relay: RelayRefetchProp
+}
+
+interface State {
+  refreshing: boolean
 }
 
 @screenTrack<Props>(props => ({
@@ -36,7 +42,11 @@ interface Props {
   offerable: props.artwork.is_offerable,
   biddable: props.artwork.is_biddable,
 }))
-export class Artwork extends React.Component<Props> {
+export class Artwork extends React.Component<Props, State> {
+  state = {
+    refreshing: false,
+  }
+
   shouldRenderDetails = () => {
     const {
       category,
@@ -88,6 +98,18 @@ export class Artwork extends React.Component<Props> {
     } else {
       return false
     }
+  }
+
+  onRefresh = () => {
+    if (this.state.refreshing) {
+      return
+    }
+
+    this.setState({ refreshing: true })
+
+    this.props.relay.refetch({ id: this.props.artwork.id, fetchContent: true }, null, () => {
+      this.setState({ refreshing: false })
+    })
   }
 
   sections = () => {
@@ -167,6 +189,7 @@ export class Artwork extends React.Component<Props> {
                 <Separator />
               </Box>
             )}
+            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
             contentInset={{ bottom: 40 }}
             keyExtractor={(item, index) => item.type + String(index)}
             renderItem={item =>
@@ -179,77 +202,89 @@ export class Artwork extends React.Component<Props> {
   }
 }
 
-export const ArtworkContainer = createFragmentContainer(Artwork, {
-  artwork: graphql`
-    fragment Artwork_artwork on Artwork {
-      additional_information: additionalInformation
-      description
-      provenance
-      exhibition_history: exhibitionHistory
-      literature
-      partner {
-        type
-        id
-      }
-      artist {
-        name
-        biography_blurb: biographyBlurb {
-          text
+export const ArtworkContainer = createRefetchContainer(
+  Artwork,
+  {
+    artwork: graphql`
+      fragment Artwork_artwork on Artwork
+        @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
+        additional_information: additionalInformation
+        description
+        provenance
+        exhibition_history: exhibitionHistory
+        literature
+        partner {
+          type
+          id
         }
-      }
-      sale {
-        isBenefit
-        isGalleryAuction
-      }
-      category
-      conditionDescription {
-        details
-      }
-      signature
-      signatureInfo {
-        details
-      }
-      certificateOfAuthenticity {
-        details
-      }
-      framed {
-        details
-      }
-      series
-      publisher
-      manufacturer
-      image_rights: imageRights
-      context {
-        __typename
-      }
-      contextGrids {
-        artworks: artworksConnection(first: 6) {
-          edges {
-            node {
-              id
+        artist {
+          name
+          biography_blurb: biographyBlurb {
+            text
+          }
+        }
+        sale {
+          isBenefit
+          isGalleryAuction
+        }
+        category
+        conditionDescription {
+          details
+        }
+        signature
+        signatureInfo {
+          details
+        }
+        certificateOfAuthenticity {
+          details
+        }
+        framed {
+          details
+        }
+        series
+        publisher
+        manufacturer
+        image_rights: imageRights
+        context {
+          __typename
+        }
+        contextGrids {
+          artworks: artworksConnection(first: 6) {
+            edges {
+              node {
+                id
+              }
             }
           }
         }
+        slug
+        internalID
+        id
+        is_acquireable: isAcquireable
+        is_offerable: isOfferable
+        is_biddable: isBiddable
+        is_inquireable: isInquireable
+        availability
+        ...PartnerCard_artwork
+        ...AboutWork_artwork
+        ...OtherWorks_artwork
+        ...AboutArtist_artwork
+        ...ArtworkDetails_artwork
+        ...ContextCard_artwork
+        ...ArtworkHeader_artwork
+        ...CommercialInformation_artwork
+        ...ArtworkHistory_artwork
       }
-      slug
-      internalID
-      is_acquireable: isAcquireable
-      is_offerable: isOfferable
-      is_biddable: isBiddable
-      is_inquireable: isInquireable
-      availability
-      ...PartnerCard_artwork
-      ...AboutWork_artwork
-      ...OtherWorks_artwork
-      ...AboutArtist_artwork
-      ...ArtworkDetails_artwork
-      ...ContextCard_artwork
-      ...ArtworkHeader_artwork
-      ...CommercialInformation_artwork
-      ...ArtworkHistory_artwork
+    `,
+  },
+  graphql`
+    query ArtworkRefetchQuery($id: ID!, $fetchContent: Boolean!) {
+      node(id: $id) {
+        ...Artwork_artwork @arguments(fetchContent: $fetchContent)
+      }
     }
-  `,
-})
+  `
+)
 
 export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: SafeAreaInsets }> = ({
   artworkID,
