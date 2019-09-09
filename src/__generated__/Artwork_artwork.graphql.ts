@@ -64,6 +64,7 @@ export type Artwork_artwork = {
     } | null> | null;
     readonly slug: string;
     readonly internalID: string;
+    readonly id: string;
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
     readonly is_biddable: boolean | null;
@@ -97,7 +98,14 @@ return {
   "name": "Artwork_artwork",
   "type": "Artwork",
   "metadata": null,
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "fetchContent",
+      "type": "Boolean!",
+      "defaultValue": false
+    }
+  ],
   "selections": [
     {
       "kind": "ScalarField",
@@ -379,6 +387,7 @@ return {
       "args": null,
       "storageKey": null
     },
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": "is_acquireable",
@@ -462,5 +471,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2d23334d100995d69da598d55cd6818c';
+(node as any).hash = 'db8693f7ffb05d3afbae8d941129a136';
 export default node;
