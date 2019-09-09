@@ -78,7 +78,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.13'
+  pod 'Emission', '~> 1.16'
   pod 'glog', podspec: './externals/glog/glog.podspec'
 
   # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
