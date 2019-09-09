@@ -17,6 +17,7 @@
 ### Master
 
 - Add vscode-apollo-relay for better Relay DX with vscode-apollo extension - alloy
+- Adds pull to refresh to artwork view - kierangillen
 
 ### 1.16.0
 
