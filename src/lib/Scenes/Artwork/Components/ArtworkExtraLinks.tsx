@@ -4,7 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
-import { Text } from "react-native"
+import { Linking, Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ArtworkExtraLinksProps {
@@ -19,24 +19,25 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
 
   handleAskASpecialistTap = () => {
     const { artwork } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/inquiry/${artwork.slug}`)
+    const mailtoSubject = `Inquiry on ${artwork.title}`.concat(
+      artwork.artist && artwork.artist.name ? ` by ${artwork.artist.name}` : ""
+    )
+    Linking.openURL(`mailto:orders@artsy.net?subject=${mailtoSubject}`)
   }
 
   handleReadOurAuctionFAQsTap = () => {
-    // FIXME:
-    return null
+    // FIXME: Needs to link to the Force view
+    return
   }
 
   handleConditionsOfSaleTap = () => {
     SwitchBoard.presentNavigationViewController(this, `/conditions-of-sale`)
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.ConsignWithArtsy,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkExtraLinks,
-    } as any
+  @track({
+    action_name: Schema.ActionNames.ConsignWithArtsy,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
   })
   handleConsignmentsTap() {
     SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
@@ -116,14 +117,17 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
 export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
   artwork: graphql`
     fragment ArtworkExtraLinks_artwork on Artwork {
-      slug
       isAcquireable
       isInAuction
+      title
       sale {
         isClosed
       }
       artists {
         isConsignable
+        name
+      }
+      artist {
         name
       }
     }
