@@ -29,10 +29,8 @@ import { SelectCountry } from "./SelectCountry"
 
 interface StyledInputInterface {
   /** The object which styled components wraps */
-  root?: {
-    focus?: () => void
-    blur?: () => void
-  }
+  focus?: () => void
+  blur?: () => void
 }
 
 interface StyledInputProps extends InputProps {
@@ -202,7 +200,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your full name"
                 autoFocus={true}
                 textContentType="name"
-                onSubmitEditing={() => this.addressLine1.root.focus()}
+                onSubmitEditing={() => this.addressLine1.focus()}
                 onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.fullNameLayout) })}
               />
@@ -212,7 +210,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 1"
                 placeholder="Add your street address"
                 textContentType="streetAddressLine1"
-                onSubmitEditing={() => this.addressLine2.root.focus()}
+                onSubmitEditing={() => this.addressLine2.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine1Layout) })}
               />
@@ -222,7 +220,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 2 (optional)"
                 placeholder="Add your apt, floor, suite, etc."
                 textContentType="streetAddressLine2"
-                onSubmitEditing={() => this.city.root.focus()}
+                onSubmitEditing={() => this.city.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine2Layout) })}
               />
@@ -232,7 +230,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="City"
                 placeholder="Add your city"
                 textContentType="addressCity"
-                onSubmitEditing={() => this.stateProvinceRegion.root.focus()}
+                onSubmitEditing={() => this.stateProvinceRegion.focus()}
                 onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.cityLayout) })}
               />
@@ -242,7 +240,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="State, Province, or Region"
                 placeholder="Add state, province, or region"
                 textContentType="addressState"
-                onSubmitEditing={() => this.postalCode.root.focus()}
+                onSubmitEditing={() => this.postalCode.focus()}
                 inputRef={el => (this.stateProvinceRegion = el)}
                 onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
                 onFocus={() =>
@@ -258,7 +256,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Postal code"
                 placeholder="Add your postal code"
                 textContentType="postalCode"
-                onSubmitEditing={() => this.phoneNumber.root.focus()}
+                onSubmitEditing={() => this.phoneNumber.focus()}
                 onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.postalCodeLayout) })}
               />
