@@ -27,9 +27,9 @@ export default function<T extends RelayContainer<any>>(
         let data = networkError.response._bodyInit || "{}"
         try {
           data = JSON.parse(data)
-          console.error("Error data", data)
           // tslint:disable-next-line:no-empty
         } catch (e) {}
+        console.error("Error data", data)
       }
 
       if (retrying) {
