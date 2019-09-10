@@ -18,7 +18,10 @@ export default function<T extends RelayContainer<any>>(
       // In tests we want errors to clearly bubble up.
       if (typeof jest !== "undefined") {
         throw error
+      } else {
+        console.error(error)
       }
+
       const networkError = error as any
       if (networkError.response && networkError.response._bodyInit) {
         let data = networkError.response._bodyInit || "{}"
@@ -26,7 +29,7 @@ export default function<T extends RelayContainer<any>>(
           data = JSON.parse(data)
           // tslint:disable-next-line:no-empty
         } catch (e) {}
-        console.error(`Metaphysics Error: ${error.message}\n`, data)
+        console.error("Error data", data)
       }
 
       if (retrying) {
