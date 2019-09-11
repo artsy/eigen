@@ -4,9 +4,9 @@ import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkExtraLinks_artwork$ref: unique symbol;
 export type ArtworkExtraLinks_artwork$ref = typeof _ArtworkExtraLinks_artwork$ref;
 export type ArtworkExtraLinks_artwork = {
-    readonly slug: string;
     readonly isAcquireable: boolean | null;
     readonly isInAuction: boolean | null;
+    readonly title: string | null;
     readonly sale: {
         readonly isClosed: boolean | null;
     } | null;
@@ -14,25 +14,29 @@ export type ArtworkExtraLinks_artwork = {
         readonly isConsignable: boolean | null;
         readonly name: string | null;
     } | null> | null;
+    readonly artist: {
+        readonly name: string | null;
+    } | null;
     readonly " $refType": ArtworkExtraLinks_artwork$ref;
 };
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "ArtworkExtraLinks_artwork",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -44,6 +48,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "isInAuction",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "title",
       "args": null,
       "storageKey": null
     },
@@ -81,16 +92,23 @@ const node: ReaderFragment = {
           "args": null,
           "storageKey": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "name",
-          "args": null,
-          "storageKey": null
-        }
+        (v0/*: any*/)
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artist",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": false,
+      "selections": [
+        (v0/*: any*/)
       ]
     }
   ]
 };
-(node as any).hash = '605d1c8892ef73672eddbc298af1b6e8';
+})();
+(node as any).hash = 'f1fb4fbeb237c8d94b5d4f16a7e095cc';
 export default node;

@@ -348,15 +348,19 @@ fragment AuctionCountDownTimer_artwork on Artwork {
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
-  slug
   isAcquireable
   isInAuction
+  title
   sale {
     isClosed
     id
   }
   artists {
     isConsignable
+    name
+    id
+  }
+  artist {
     name
     id
   }
@@ -1973,7 +1977,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "dcd1ed3a1858171ebe55a7a27b769c65",
+    "id": "4df6c718896fc030ab846611ffc3fcdd",
     "text": null,
     "metadata": {}
   }
