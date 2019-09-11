@@ -1,3 +1,5 @@
+directive @principalField on FIELD
+
 input AddAssetToConsignmentSubmissionInput {
   # The type of the asset
   assetType: String!
@@ -939,15 +941,23 @@ type Artwork implements Node & Searchable & Sellable {
   listPrice: ListPrice
   priceCurrency: String
   priceIncludesTax: Boolean
+  priceIncludesTaxDisplay: String
 
   # Is this work available for shipping only within the Contenental US?
   shipsToContinentalUSOnly: Boolean
+    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
+
+  # Is this work only available for shipping domestically?
+  onlyShipsDomestically: Boolean
 
   # The string that describes domestic and international shipping.
   shippingInfo: String
 
   # Minimal location information describing from where artwork will be shipped.
   shippingOrigin: String
+
+  # The country an artwork will be shipped from.
+  shippingCountry: String
   provenance(format: Format): String
   publisher(format: Format): String
   related(size: Int): [Artwork]

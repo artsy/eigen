@@ -314,9 +314,12 @@ fragment CommercialButtons_artwork on Artwork {
 
 fragment CommercialPartnerInformation_artwork on Artwork {
   availability
+  isAcquireable
+  isForSale
+  isOfferable
   shippingOrigin
   shippingInfo
-  priceIncludesTax
+  priceIncludesTaxDisplay
   partner {
     name
     id
@@ -1985,7 +1988,14 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "priceIncludesTax",
+                "name": "isForSale",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "priceIncludesTaxDisplay",
                 "args": null,
                 "storageKey": null
               }
@@ -1998,7 +2008,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "598734ae4007627f6c0cceb6c1b20142",
+    "id": "9443838491b590dc48b0ec6ea4410ff8",
     "text": null,
     "metadata": {}
   }
