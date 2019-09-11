@@ -115,7 +115,7 @@ export default createPaginationContainer(
           partnerType: { type: "PartnerShowPartnerType" }
           status: { type: "EventStatus" }
           dayThreshold: { type: "Int" }
-          sort: { type: "ShowSorts", defaultValue: "PARTNER_ASC" }
+          sort: { type: "ShowSorts", defaultValue: PARTNER_ASC }
         ) {
         name
         shows: showsConnection(
