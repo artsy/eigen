@@ -82,7 +82,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
           </Sans>
         </Flex>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-          <Sans size="2" pr={1}>
+          <Sans size="2" pr={1} color="black60">
             {this.bidText(bidsPresent, bidsCount)}
           </Sans>
           {myMaxBid && (

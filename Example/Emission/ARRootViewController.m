@@ -280,7 +280,7 @@
 - (ARCellData *)jumpToArtworkInAuction
 {
   return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"paul-cadden-painting"];
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"lucha-rodriguez-untitled"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
