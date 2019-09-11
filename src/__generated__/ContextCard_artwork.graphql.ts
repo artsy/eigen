@@ -11,6 +11,7 @@ export type ContextCard_artwork = {
         readonly __typename: string;
         readonly id?: string;
         readonly name?: string | null;
+        readonly isLiveOpen?: boolean | null;
         readonly href?: string | null;
         readonly formattedStartDateTime?: string | null;
         readonly isAuction?: boolean | null;
@@ -28,6 +29,7 @@ export type ContextCard_artwork = {
         readonly __typename: "Sale";
         readonly id: string;
         readonly name: string | null;
+        readonly isLiveOpen: boolean | null;
         readonly href: string | null;
         readonly formattedStartDateTime: string | null;
         readonly isAuction: boolean | null;
@@ -161,6 +163,13 @@ return {
           "selections": [
             (v0/*: any*/),
             (v3/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isLiveOpen",
+              "args": null,
+              "storageKey": null
+            },
             (v4/*: any*/),
             {
               "kind": "ScalarField",
@@ -255,5 +264,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a074608c4925e215a2b6c5652b989d04';
+(node as any).hash = '942cbc5eb661d7eaa34f7a1d88c3c5ed';
 export default node;

@@ -133,12 +133,14 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     if (context) {
       const { __typename } = context
 
+      console.log("context", context)
+
       switch (__typename as any) {
         case "Sale":
           header = context.isAuction ? "In auction" : "In sale"
           name = context.name
           href = context.href
-          meta = context.formattedStartDateTime
+          meta = context.isLiveOpen ? "In progress" : context.formattedStartDateTime
           imageUrl = context.cover_image && context.cover_image.url ? context.cover_image.url : ""
           renderContextCard = true
           break
@@ -203,6 +205,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
         ... on Sale {
           id
           name
+          isLiveOpen
           href
           formattedStartDateTime
           isAuction
