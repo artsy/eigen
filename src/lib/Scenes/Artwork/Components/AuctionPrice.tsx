@@ -30,7 +30,6 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
       }
     }
     if (reserveMessage) {
-      reserveMessage = reserveMessage + "."
       bidTextParts.push(reserveMessage)
     }
     return bidTextParts.join(", ")
