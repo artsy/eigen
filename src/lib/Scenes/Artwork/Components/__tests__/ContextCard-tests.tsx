@@ -104,6 +104,7 @@ describe("ContextCard", () => {
           .text()
       ).toMatchInlineSnapshot(`"Christie’s: Prints & Multiples"`)
     })
+
     it("renders formatted sale start/end date correctly", () => {
       const component = mount(
         <Theme>
@@ -119,6 +120,30 @@ describe("ContextCard", () => {
           .render()
           .text()
       ).toMatchInlineSnapshot(`"Ended Oct 25, 2018"`)
+    })
+
+    it("if auction is live display in progress", () => {
+      const saleContextArtwork = {
+        ...auctionContextArtwork,
+        context: {
+          ...auctionContextArtwork.context,
+          isLiveOpen: true,
+        },
+      }
+      const component = mount(
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
+        </Theme>
+      )
+      expect(component.find(EntityHeader).length).toEqual(1)
+
+      expect(
+        component
+          .find(Sans)
+          .at(1)
+          .render()
+          .text()
+      ).toEqual("In progress")
     })
 
     it("renders sale image", () => {
@@ -210,6 +235,7 @@ const auctionContextArtwork = {
   internalID: "5bc13101c8d4326cc288ecb8",
   context: {
     __typename: "Sale",
+    isLiveOpen: false,
     id: "QXJ0d29ya0NvbnRleHRBdWN0aW9uOmNocmlzdGllcy1wcmludHMtYW5kLW11bHRpcGxlcy02",
     name: "Christie’s: Prints & Multiples",
     href: "/auction/christies-prints-and-multiples-6",
