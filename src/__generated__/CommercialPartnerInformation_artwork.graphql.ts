@@ -5,9 +5,12 @@ declare const _CommercialPartnerInformation_artwork$ref: unique symbol;
 export type CommercialPartnerInformation_artwork$ref = typeof _CommercialPartnerInformation_artwork$ref;
 export type CommercialPartnerInformation_artwork = {
     readonly availability: string | null;
+    readonly isAcquireable: boolean | null;
+    readonly isForSale: boolean | null;
+    readonly isOfferable: boolean | null;
     readonly shippingOrigin: string | null;
     readonly shippingInfo: string | null;
-    readonly priceIncludesTax: boolean | null;
+    readonly priceIncludesTaxDisplay: string | null;
     readonly partner: {
         readonly name: string | null;
     } | null;
@@ -33,6 +36,27 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "isAcquireable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isForSale",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isOfferable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "shippingOrigin",
       "args": null,
       "storageKey": null
@@ -47,7 +71,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "priceIncludesTax",
+      "name": "priceIncludesTaxDisplay",
       "args": null,
       "storageKey": null
     },
@@ -71,5 +95,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6e86a6373852e7f55cf265d4cde3fb0a';
+(node as any).hash = 'f9a0bea135bd5f94a8aefee20b854c1e';
 export default node;

@@ -10,10 +10,10 @@ interface Props {
 export class CommercialPartnerInformation extends React.Component<Props> {
   render() {
     const { artwork } = this.props
-    const artworkIsForSale = artwork.availability && artwork.availability === "for sale"
     const artworkIsSold = artwork.availability && artwork.availability === "sold"
+    const artworkEcommerceAvailable = artwork.isAcquireable || artwork.isOfferable
     const showsSellerInfo = artwork.partner && artwork.partner.name
-    const availabilityDisplayText = artworkIsForSale || artworkIsSold ? "Sold by" : "At"
+    const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "Sold by" : "At"
     return (
       <>
         {showsSellerInfo && (
@@ -22,22 +22,22 @@ export class CommercialPartnerInformation extends React.Component<Props> {
             <Sans size="3t" color="black60">
               {availabilityDisplayText} {artwork.partner.name}
             </Sans>
-            {artworkIsForSale &&
-              artwork.shippingOrigin && (
+            {artworkEcommerceAvailable &&
+              !!artwork.shippingOrigin && (
                 <Sans size="3t" color="black60">
                   Ships from {artwork.shippingOrigin}
                 </Sans>
               )}
-            {artworkIsForSale &&
-              artwork.shippingInfo && (
+            {artworkEcommerceAvailable &&
+              !!artwork.shippingInfo && (
                 <Sans size="3t" color="black60">
                   {artwork.shippingInfo}
                 </Sans>
               )}
-            {artworkIsForSale &&
-              artwork.priceIncludesTax && (
+            {artworkEcommerceAvailable &&
+              !!artwork.priceIncludesTaxDisplay && (
                 <Sans size="3t" color="black60">
-                  VAT included in price
+                  {artwork.priceIncludesTaxDisplay}
                 </Sans>
               )}
           </>
@@ -51,9 +51,12 @@ export const CommercialPartnerInformationFragmentContainer = createFragmentConta
   artwork: graphql`
     fragment CommercialPartnerInformation_artwork on Artwork {
       availability
+      isAcquireable
+      isForSale
+      isOfferable
       shippingOrigin
       shippingInfo
-      priceIncludesTax
+      priceIncludesTaxDisplay
       partner {
         name
       }
