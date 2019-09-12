@@ -25,7 +25,7 @@
 
 - (BOOL)shouldShowNewVersion;
 {
-    if ([AROptions boolForOption:AROptionsRNArtworkAlways] || [self.echo.features[@"ARReactNativeArtworkEnableAlways"] state]) {
+    if ([AROptions boolForOption:AROptionsRNArtworkAlways]) {
         return YES;
     }
 
