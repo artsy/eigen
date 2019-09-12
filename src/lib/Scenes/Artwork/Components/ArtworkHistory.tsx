@@ -4,6 +4,7 @@ import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { truncatedTextLimit } from "../hardware"
 
 interface ArtworkHistoryProps {
   artwork: ArtworkHistory_artwork
@@ -23,6 +24,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
     ]
 
     const displaySections = sections.filter(i => i.value != null)
+    const textLimit = truncatedTextLimit()
 
     return (
       <Join separator={<Spacer pb={3} />}>
@@ -33,7 +35,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
             </Sans>
             <ReadMore
               content={value}
-              maxChars={140}
+              maxChars={textLimit}
               trackingFlow={Schema.Flow.ArtworkDetails}
               contextModule={contextModule}
             />

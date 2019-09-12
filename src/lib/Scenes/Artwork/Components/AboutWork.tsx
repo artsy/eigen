@@ -4,6 +4,7 @@ import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { truncatedTextLimit } from "../hardware"
 
 interface AboutWorkProps {
   artwork: AboutWork_artwork
@@ -13,6 +14,8 @@ export class AboutWork extends React.Component<AboutWorkProps> {
   render() {
     const { additional_information, description } = this.props.artwork
     const hasArtworkInfo = additional_information || description
+    const textLimit = truncatedTextLimit()
+
     return (
       hasArtworkInfo && (
         <Join separator={<Spacer mb={2} />}>
@@ -22,7 +25,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
           {additional_information && (
             <ReadMore
               content={additional_information}
-              maxChars={140}
+              maxChars={textLimit}
               trackingFlow={Schema.Flow.AboutTheWork}
               contextModule={Schema.ContextModules.AboutTheWork}
             />
@@ -34,7 +37,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
               </Sans>
               <ReadMore
                 content={description}
-                maxChars={140}
+                maxChars={textLimit}
                 trackingFlow={Schema.Flow.AboutTheWork}
                 contextModule={Schema.ContextModules.AboutTheWorkFromSpecialist}
               />

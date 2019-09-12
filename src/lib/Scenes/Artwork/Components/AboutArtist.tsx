@@ -5,6 +5,7 @@ import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { truncatedTextLimit } from "../hardware"
 
 interface AboutArtistProps {
   artwork: AboutArtist_artwork
@@ -20,6 +21,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
       hasSingleArtist && artists[0].biography_blurb && artists[0].biography_blurb.text
         ? artists[0].biography_blurb.text
         : null
+    const textLimit = truncatedTextLimit()
 
     return (
       <>
@@ -39,7 +41,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
               <ReadMore
                 content={text}
                 trackingFlow={Schema.Flow.AboutTheArtist}
-                maxChars={140}
+                maxChars={textLimit}
                 contextModule={Schema.ContextModules.ArtistBiography}
               />
             </Box>
