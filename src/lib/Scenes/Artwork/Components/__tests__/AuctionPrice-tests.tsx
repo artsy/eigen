@@ -99,7 +99,7 @@ describe("AuctionPrice", () => {
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Starting bid")
-      expect(texts).toContain("This work has a reserve.")
+      expect(texts).toContain("This work has a reserve")
       expect(texts).toContain("$3,000")
     })
   })
@@ -110,7 +110,7 @@ describe("AuctionPrice", () => {
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Current bid")
-      expect(texts).toContain("2 bids, reserve not met.")
+      expect(texts).toContain("2 bids, reserve not met")
       expect(texts).toContain("$10,000")
     })
   })
@@ -121,7 +121,7 @@ describe("AuctionPrice", () => {
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Current bid")
-      expect(texts).toContain("2 bids, reserve met.")
+      expect(texts).toContain("2 bids, reserve met")
       expect(texts).toContain("$500")
     })
   })
