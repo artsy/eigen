@@ -4,8 +4,9 @@ import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useContext, useMemo } from "react"
-import { Animated, Platform, PlatformIOSStatic } from "react-native"
+import { Animated } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { isPad } from "../../hardware"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor, useNewImageCarouselContext } from "./ImageCarouselContext"
@@ -27,8 +28,7 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   const cardHeight = screenDimensions.width >= 375 ? 340 : 290
 
-  const IOSPlatform = Platform as PlatformIOSStatic
-  const embeddedCardBoundingBox = { width: screenDimensions.width, height: IOSPlatform.isPad ? 460 : cardHeight }
+  const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
   const images: ImageDescriptor[] = useMemo(
     () =>

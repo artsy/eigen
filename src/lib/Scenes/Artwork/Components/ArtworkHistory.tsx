@@ -3,8 +3,8 @@ import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.gra
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
-import { Platform, PlatformIOSStatic } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { truncatedTextLimit } from "../hardware"
 
 interface ArtworkHistoryProps {
   artwork: ArtworkHistory_artwork
@@ -24,9 +24,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
     ]
 
     const displaySections = sections.filter(i => i.value != null)
-
-    const IOSPlatform = Platform as PlatformIOSStatic
-    const textLimit = IOSPlatform.isPad ? 320 : 140
+    const textLimit = truncatedTextLimit()
 
     return (
       <Join separator={<Spacer pb={3} />}>
