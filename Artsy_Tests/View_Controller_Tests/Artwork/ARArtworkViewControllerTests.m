@@ -273,7 +273,7 @@ describe(@"ARArtworkViewController", ^{
                     };
                 });
 
-                it(@"works artworks that are in a sale", ^{
+                pending(@"works artworks that are in a sale", ^{
                     StubArtworkWithSaleArtwork();
                     (void)vc.view;
                     expect(vc.childViewControllers[0]).to.equal(mockComponentVC);

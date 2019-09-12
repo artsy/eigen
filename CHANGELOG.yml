@@ -15,6 +15,7 @@ upcoming:
     - Adds echo flag support for enabling various types of RN Artwork view - ash + david + kieran
     - Disables landscape rotation for iPhone on Artwork views - ash
     - Fixes problems displaying analytics debugging on iPad - ash
+    - Disables Auctions artwork view when enabled in Echo - ash
   user_facing:
     - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
     - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
