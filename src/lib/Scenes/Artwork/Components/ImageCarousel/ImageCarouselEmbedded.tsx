@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useCallback, useContext } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform, PlatformIOSStatic } from "react-native"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { isPad } from "../../hardware"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
