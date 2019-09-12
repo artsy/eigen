@@ -3,8 +3,8 @@ import { AboutWork_artwork } from "__generated__/AboutWork_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema } from "lib/utils/track"
 import React from "react"
-import { Platform, PlatformIOSStatic } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { truncatedTextLimit } from "../hardware"
 
 interface AboutWorkProps {
   artwork: AboutWork_artwork
@@ -14,9 +14,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
   render() {
     const { additional_information, description } = this.props.artwork
     const hasArtworkInfo = additional_information || description
-
-    const IOSPlatform = Platform as PlatformIOSStatic
-    const textLimit = IOSPlatform.isPad ? 320 : 140
+    const textLimit = truncatedTextLimit()
 
     return (
       hasArtworkInfo && (
