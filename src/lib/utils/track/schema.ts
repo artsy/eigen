@@ -287,7 +287,7 @@ export enum ActionNames {
    * Fair and show shared page events
    */
   ContextualArtist = "contextualArtist",
-  ArtistName = "ArtistName",
+  ArtistName = "artistName",
   ListGallery = "listGallery",
 }
 
