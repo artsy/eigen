@@ -21,7 +21,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
   @track((_props, _state, args) => {
     const [, id, internalID] = args
     return {
-      action_name: Schema.ActionNames.ListArtist,
+      action_name: Schema.ActionNames.ArtistName,
       action_type: Schema.ActionTypes.Tap,
       owner_id: internalID,
       owner_slug: id,

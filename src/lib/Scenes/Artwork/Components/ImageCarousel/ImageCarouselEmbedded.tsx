@@ -1,7 +1,9 @@
+import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useCallback, useContext } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { useTracking } from "react-tracking"
 import { isPad } from "../../hardware"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
@@ -9,6 +11,7 @@ import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 // This is the main image caoursel visible on the root of the artwork page
 export const ImageCarouselEmbedded = observer(() => {
+  const tracking = useTracking()
   const screenDimensions = useScreenDimensions()
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   const cardHeight = screenDimensions.width >= 375 ? 340 : 290
@@ -42,7 +45,17 @@ export const ImageCarouselEmbedded = observer(() => {
     [offsets]
   )
 
-  const goFullScreen = useCallback(() => dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" }), [dispatch])
+  const goFullScreen = useCallback(
+    () => {
+      tracking.trackEvent({
+        action_name: Schema.ActionNames.ArtworkImageZoom,
+        action_type: Schema.ActionTypes.Tap,
+        context_module: Schema.ContextModules.ArtworkImage,
+      })
+      dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" })
+    },
+    [dispatch]
+  )
 
   // this exists as a hack to get onPress functionality while the flat list is still coming to a stop after a swipe.
   // without this the user can tap the image to go fullscreen but nothing happens and it feels baaaad.

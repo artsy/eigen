@@ -5,6 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { filterLocations } from "lib/utils/filterLocations"
 import { get } from "lib/utils/get"
 import { limitWithCount } from "lib/utils/limitWithCount"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -18,9 +19,18 @@ interface State {
   isFollowedChanging: boolean
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 export class PartnerCard extends React.Component<Props, State> {
   state = { isFollowedChanging: false }
-  handleFollowPartner = () => {
+
+  @track({
+    action_name: Schema.ActionNames.FollowPartner,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.PartnerContext,
+  })
+  handleFollowPartner() {
     const { artwork, relay } = this.props
     const {
       slug: partnerSlug,

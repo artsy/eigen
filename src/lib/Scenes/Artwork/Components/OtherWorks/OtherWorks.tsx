@@ -45,7 +45,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
                 artworks={grid.artworks.edges.map(({ node }) => node)}
               />
               <Box mt={2}>
-                <ContextGridCTA href={grid.ctaHref} label={grid.ctaTitle} />
+                <ContextGridCTA contextModule={grid.__typename} href={grid.ctaHref} label={grid.ctaTitle} />
               </Box>
             </React.Fragment>
           ))}

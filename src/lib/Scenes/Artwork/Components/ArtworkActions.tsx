@@ -40,7 +40,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       action_name: props.artwork.is_saved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
       action_type: Schema.ActionTypes.Success,
       context_module: Schema.ContextModules.ArtworkActions,
-    } as any
+    }
   })
   handleArtworkSave() {
     const { artwork, relay } = this.props
@@ -60,13 +60,11 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     })
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.Share,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkActions,
-    } as any
-  })
+  @track(() => ({
+    action_name: Schema.ActionNames.Share,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkActions,
+  }))
   async handleArtworkShare() {
     const { title, href, artists } = this.props.artwork
     try {
@@ -78,13 +76,11 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     }
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.ViewInRoom,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkActions,
-    } as any
-  })
+  @track(() => ({
+    action_name: Schema.ActionNames.ViewInRoom,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkActions,
+  }))
   openViewInRoom() {
     const {
       artwork: { image, id, slug, heightCm, widthCm },

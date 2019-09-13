@@ -99,7 +99,7 @@ export class ArtistListItem extends React.Component<Props, State> {
 
   @track((props: Props) => {
     return {
-      action_name: Schema.ActionNames.ListArtist,
+      action_name: Schema.ActionNames.ArtistName,
       action_type: Schema.ActionTypes.Tap,
       owner_id: props.artist.internalID,
       owner_slug: props.artist.slug,
