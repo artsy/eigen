@@ -17,6 +17,7 @@ upcoming:
     - Fixes problems displaying analytics debugging on iPad - ash
     - Disables Auctions artwork view when enabled in Echo - ash
   user_facing:
+    - Fixes crash when AuctionViewController re-appears without a populated view model - ash
     - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
     - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
     - Adds new React Native Artwork view behind lab option - alloy/david
