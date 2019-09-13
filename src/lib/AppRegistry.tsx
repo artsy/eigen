@@ -2,6 +2,7 @@ import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 import { Container as RelayContainer } from "react-relay"
 
+import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/"
 import BidFlow from "./Containers/BidFlow"
@@ -80,15 +81,10 @@ const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
 
 interface ArtworkProps {
   artworkID: string
+  safeAreaInsets: SafeAreaInsets
 }
 
-const Artwork: React.SFC<ArtworkProps> = track<ArtworkProps>(props => {
-  return {
-    context_screen: Schema.PageNames.ArtworkPage,
-    context_screen_owner_slug: props.artworkID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-  }
-})(props => <ArtworkRenderer {...props} />)
+const Artwork: React.SFC<ArtworkProps> = props => <ArtworkRenderer {...props} />
 
 const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }

@@ -170,15 +170,19 @@ export enum ActionNames {
    * Artwork Page Events
    */
   ArtworkImageSwipe = "artworkImageSwipe",
+  ArtworkImageZoom = "artworkImageZoom",
   ArtworkSave = "artworkSave",
   ArtworkUnsave = "artworkUnsave",
   ArtworkClassification = "artworkClassification",
+  AskASpecialist = "askASpecialist",
   ConsignWithArtsy = "consignWithArtsy",
+  FollowPartner = "followPartner",
   GridArtwork = "gridArtwork",
   Share = "share",
   ViewInRoom = "viewInRoom",
   ReadMore = "readMore",
   ShowMoreArtworksDetails = "showMoreArtworksDetails",
+  ViewAll = "viewAll",
 
   /**
    * City and Map Page Events
@@ -283,7 +287,7 @@ export enum ActionNames {
    * Fair and show shared page events
    */
   ContextualArtist = "contextualArtist",
-  ListArtist = "listArtist",
+  ArtistName = "artistName",
   ListGallery = "listGallery",
 }
 
@@ -305,6 +309,7 @@ export enum ContextModules {
   Bibliography = "Bibliography",
   CommercialButtons = "CommercialButtons",
   ExhibitionHistory = "ExhibitionHistory",
+  PartnerContext = "PartnerContext",
   Provenance = "Provenance",
 }
 

@@ -17,7 +17,12 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     SwitchBoard.presentNavigationViewController(this, `/buy-now-feature-faq`)
   }
 
-  handleAskASpecialistTap = () => {
+  @track({
+    action_name: Schema.ActionNames.AskASpecialist,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
+  })
+  handleAskASpecialistTap() {
     const { artwork } = this.props
     const mailtoSubject = `Inquiry on ${artwork.title}`.concat(
       artwork.artist && artwork.artist.name ? ` by ${artwork.artist.name}` : ""

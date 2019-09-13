@@ -21,6 +21,7 @@ export interface State {
 
 const track: Track<MakeOfferButtonProps, State> = _track
 
+@track()
 export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State> {
   state = {
     isCommittingCreateOfferOrderMutation: false,
