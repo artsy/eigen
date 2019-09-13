@@ -32,23 +32,33 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
 
   const images: ImageDescriptor[] = useMemo(
     () =>
-      props.images.map(image => {
-        const { width, height } = fitInside(embeddedCardBoundingBox, image)
-        return {
-          width,
-          height,
-          url: createGeminiUrl({
-            imageURL: image.image_url.replace(":version", "normalized"),
+      props.images
+        .map(image => {
+          if (!image.height || !image.width || !image.image_url) {
+            // something is very wrong
+            return null
+          }
+          const { width, height } = fitInside(embeddedCardBoundingBox, image)
+          return {
             width,
             height,
-          }),
-          deepZoom: image.deepZoom,
-        }
-      }),
+            url: createGeminiUrl({
+              imageURL: image.image_url.replace(":version", "normalized"),
+              width,
+              height,
+            }),
+            deepZoom: image.deepZoom,
+          }
+        })
+        .filter(Boolean),
     [props.images]
   )
 
   const context = useNewImageCarouselContext({ images })
+
+  if (images.length === 0) {
+    return null
+  }
 
   return (
     <ImageCarouselContext.Provider value={context}>
