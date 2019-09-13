@@ -42,7 +42,7 @@ StubArtworkWithAvailability(NSString *availability)
 }
 
 static void
-StubArtworkWithBNMO(BOOL buyable, BOOL offerable)
+StubArtworkWithBNMOInSale(BOOL buyable, BOOL offerable, BOOL inSale)
 {
     NSDictionary *response = @{
         @"data" : @{
@@ -51,12 +51,20 @@ StubArtworkWithBNMO(BOOL buyable, BOOL offerable)
                 @"title" : @"Some Title",
                 @"availability" : @"for sale",
                 @"is_acquireable": @(buyable),
-                @"is_offerable": @(offerable)
+                @"is_offerable": @(offerable),
+                @"is_in_auction": @(inSale)
             }
         }
     };
     [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:response];
 }
+
+static void
+StubArtworkWithBNMO(BOOL buyable, BOOL offerable)
+{
+    StubArtworkWithBNMOInSale(buyable, offerable, NO);
+}
+
 
 static void
 StubArtworkWithSaleArtwork()
@@ -229,6 +237,12 @@ describe(@"ARArtworkViewController", ^{
                     StubArtworkWithBNMO(NO, YES);
                     (void)vc.view;
                     expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
+                });
+
+                it(@"doesn't work if the artwork is in a sale", ^{
+                    StubArtworkWithBNMOInSale(YES, YES, YES);
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).notTo.equal(mockComponentVC);
                 });
             });
 
