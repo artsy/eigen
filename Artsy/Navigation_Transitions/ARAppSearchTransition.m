@@ -1,6 +1,8 @@
 #import "ARAppSearchTransition.h"
 #import "ARAppSearchViewController.h"
+#import "ARTopMenuViewController.h"
 
+#import <FLKAutoLayout/FLKAutoLayout.h>
 
 @implementation ARAppSearchTransition
 
@@ -22,15 +24,16 @@
 
     [transitionContext.containerView addSubview:fromVC.view];
     [transitionContext.containerView addSubview:toVC.view];
+    [toVC.view alignToView:transitionContext.containerView];
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
         delay:0.0
         options:UIViewAnimationOptionCurveEaseOut
         animations:^{
-                         toVC.view.alpha = 1;
+            toVC.view.alpha = 1;
         }
         completion:^(BOOL finished) {
-                        [transitionContext completeTransition:YES];
+            [transitionContext completeTransition:YES];
         }];
 }
 
