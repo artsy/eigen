@@ -6,6 +6,7 @@ export type AboutWork_artwork$ref = typeof _AboutWork_artwork$ref;
 export type AboutWork_artwork = {
     readonly additional_information: string | null;
     readonly description: string | null;
+    readonly isInAuction: boolean | null;
     readonly " $refType": AboutWork_artwork$ref;
 };
 
@@ -31,8 +32,15 @@ const node: ReaderFragment = {
       "name": "description",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isInAuction",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'f3da3330656a55193835199d037e7749';
+(node as any).hash = '70aba130eb2abbadacc053aade0d4ef1';
 export default node;

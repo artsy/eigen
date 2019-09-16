@@ -78,6 +78,18 @@ describe("AboutWork", () => {
     expect(component.find(Sans).length).toEqual(0)
   })
 
+  it("hides 'From Artsy Specialist:' for auction works", () => {
+    const artworkInAuction = { ...aboutWorkArtwork, isInAuction: true }
+    const component = shallow(<AboutWork artwork={artworkInAuction} />)
+    expect(component.find(Sans).length).toEqual(1)
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .text()
+    ).not.toEqual("From Artsy Specialist:")
+  })
+
   it("truncates the reaad more component properly for phones", () => {
     ;(truncatedTextLimit as jest.Mock).mockReturnValueOnce(140)
     const component = mount(
@@ -121,5 +133,6 @@ const aboutWorkArtwork = {
   additional_information:
     "This is some information about the artwork by the gallery. It has to be at least 320 characters in order to test that the read more component truncates possibly. So here is soem lorem ipsum: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   description: "This is some information about the artwork by Artsy.",
+  isInAuction: false,
   " $refType": null,
 }

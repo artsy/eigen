@@ -141,6 +141,7 @@ fragment PartnerCard_artwork on Artwork {
 fragment AboutWork_artwork on Artwork {
   additional_information: additionalInformation
   description
+  isInAuction
 }
 
 fragment OtherWorks_artwork on Artwork {
@@ -1531,6 +1532,13 @@ return {
                 "storageKey": null
               },
               {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isInAuction",
+                "args": null,
+                "storageKey": null
+              },
+              {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "artists",
@@ -1631,13 +1639,6 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "heightCm",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "isInAuction",
                 "args": null,
                 "storageKey": null
               },
@@ -2011,7 +2012,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "ca7aeec16c160faaf30001d9644d6556",
+    "id": "ee53e6496cdbbd6cafe37dd1081d9dea",
     "text": null,
     "metadata": {}
   }
