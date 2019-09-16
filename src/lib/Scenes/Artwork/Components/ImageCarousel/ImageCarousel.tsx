@@ -17,6 +17,8 @@ export interface ImageCarouselProps {
   images: ImageCarousel_images
 }
 
+const THUMBNAIL_PIXEL_DENSITY = 1.5
+
 /**
  * ImageCarousel
  * NOTE: This component currently assumes it is being rendered at the full width of the screen.
@@ -44,8 +46,8 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
             height,
             url: createGeminiUrl({
               imageURL: image.image_url.replace(":version", "normalized"),
-              width: width * 1.5,
-              height: height * 1.5,
+              width: width * THUMBNAIL_PIXEL_DENSITY,
+              height: height * THUMBNAIL_PIXEL_DENSITY,
             }),
             deepZoom: image.deepZoom,
           }
