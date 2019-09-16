@@ -44,8 +44,8 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
             height,
             url: createGeminiUrl({
               imageURL: image.image_url.replace(":version", "normalized"),
-              width,
-              height,
+              width: width * 1.5,
+              height: height * 1.5,
             }),
             deepZoom: image.deepZoom,
           }
