@@ -17,7 +17,7 @@ export interface ImageCarouselProps {
   images: ImageCarousel_images
 }
 
-const THUMBNAIL_PIXEL_DENSITY = 1.5
+const THUMBNAIL_PIXEL_DENSITY = 2
 
 /**
  * ImageCarousel
