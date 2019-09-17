@@ -25,24 +25,20 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     showingMoreArtists: false,
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.ArtistName,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkTombstone,
-    } as any
-  })
+  @track(() => ({
+    action_name: Schema.ActionNames.ArtistName,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkTombstone,
+  }))
   handleArtistTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.ArtworkClassification,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkTombstone,
-    } as any
-  })
+  @track(() => ({
+    action_name: Schema.ActionNames.ArtworkClassification,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkTombstone,
+  }))
   handleClassificationTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
