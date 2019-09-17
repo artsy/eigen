@@ -1,4 +1,4 @@
-import { color, Flex, Sans } from "@artsy/palette"
+import { color, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -15,8 +15,8 @@ import { get } from "lib/utils/get"
 
 const Badges = styled.View`
   position: absolute;
-  bottom: 16px;
-  left: 1px;
+  bottom: ${space(0.5)};
+  left: 0;
   display: flex;
   flex-direction: row;
 `
@@ -24,7 +24,7 @@ const Badge = styled.View`
   border-radius: 2px;
   padding: 3px 5px 1px 6px;
   background-color: white;
-  margin-left: 5px;
+  margin-left: ${space(0.5)};
 `
 
 interface Props {
@@ -86,21 +86,21 @@ export class Artwork extends React.Component<Props, any> {
         <Badges>
           {!!is_acquireable && (
             <Badge>
-              <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
+              <Sans weight="medium" size="0">
                 BUY NOW
               </Sans>
             </Badge>
           )}
           {!!is_offerable && (
             <Badge>
-              <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
+              <Sans weight="medium" size="0">
                 MAKE OFFER
               </Sans>
             </Badge>
           )}
           {!!is_biddable && (
             <Badge>
-              <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
+              <Sans weight="medium" size="0">
                 BID
               </Sans>
             </Badge>

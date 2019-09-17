@@ -25,10 +25,10 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       style={
         Array [
           Object {
-            "bottom": 16,
+            "bottom": 5,
             "display": "flex",
             "flexDirection": "row",
-            "left": 1,
+            "left": 0,
             "position": "absolute",
           },
         ]
@@ -52,7 +52,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -61,9 +61,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -88,7 +85,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -97,9 +94,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -283,10 +277,10 @@ exports[`in a closed sale renders without any price information 1`] = `
       style={
         Array [
           Object {
-            "bottom": 16,
+            "bottom": 5,
             "display": "flex",
             "flexDirection": "row",
-            "left": 1,
+            "left": 0,
             "position": "absolute",
           },
         ]
@@ -310,7 +304,7 @@ exports[`in a closed sale renders without any price information 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -319,9 +313,6 @@ exports[`in a closed sale renders without any price information 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -346,7 +337,7 @@ exports[`in a closed sale renders without any price information 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -355,9 +346,6 @@ exports[`in a closed sale renders without any price information 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -541,10 +529,10 @@ exports[`in an open sale renders with current bid 1`] = `
       style={
         Array [
           Object {
-            "bottom": 16,
+            "bottom": 5,
             "display": "flex",
             "flexDirection": "row",
-            "left": 1,
+            "left": 0,
             "position": "absolute",
           },
         ]
@@ -568,7 +556,7 @@ exports[`in an open sale renders with current bid 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -577,9 +565,6 @@ exports[`in an open sale renders with current bid 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -604,7 +589,7 @@ exports[`in an open sale renders with current bid 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -613,9 +598,6 @@ exports[`in an open sale renders with current bid 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -799,10 +781,10 @@ exports[`in an open sale renders with starting bid 1`] = `
       style={
         Array [
           Object {
-            "bottom": 16,
+            "bottom": 5,
             "display": "flex",
             "flexDirection": "row",
-            "left": 1,
+            "left": 0,
             "position": "absolute",
           },
         ]
@@ -826,7 +808,7 @@ exports[`in an open sale renders with starting bid 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -835,9 +817,6 @@ exports[`in an open sale renders with starting bid 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -862,7 +841,7 @@ exports[`in an open sale renders with starting bid 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -871,9 +850,6 @@ exports[`in an open sale renders with starting bid 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -1056,10 +1032,10 @@ exports[`renders properly 1`] = `
       style={
         Array [
           Object {
-            "bottom": 16,
+            "bottom": 5,
             "display": "flex",
             "flexDirection": "row",
-            "left": 1,
+            "left": 0,
             "position": "absolute",
           },
         ]
@@ -1083,7 +1059,7 @@ exports[`renders properly 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -1092,9 +1068,6 @@ exports[`renders properly 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
@@ -1119,7 +1092,7 @@ exports[`renders properly 1`] = `
         <Text
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
-          lineHeight={8}
+          lineHeight="8px"
           style={
             Array [
               Object {
@@ -1128,9 +1101,6 @@ exports[`renders properly 1`] = `
                 "lineHeight": 8,
               },
               Object {},
-              Object {
-                "paddingTop": 1,
-              },
             ]
           }
         >
