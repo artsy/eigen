@@ -130,7 +130,6 @@ export const FilteredInfiniteScrollGridContainer = createPaginationContainer(
           edges {
             node {
               id
-              slug
             }
           }
           ...Filters_filteredArtworks

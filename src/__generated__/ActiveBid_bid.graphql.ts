@@ -11,9 +11,6 @@ export type ActiveBid_bid = {
     } | null;
     readonly most_recent_bid: {
         readonly id: string;
-        readonly max_bid: {
-            readonly display: string | null;
-        } | null;
         readonly sale_artwork: {
             readonly artwork: {
                 readonly href: string | null;
@@ -44,16 +41,7 @@ var v0 = {
   "name": "href",
   "args": null,
   "storageKey": null
-},
-v1 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
-];
+};
 return {
   "kind": "Fragment",
   "name": "ActiveBid_bid",
@@ -102,16 +90,6 @@ return {
           "name": "id",
           "args": null,
           "storageKey": null
-        },
-        {
-          "kind": "LinkedField",
-          "alias": "max_bid",
-          "name": "maxBid",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "BidderPositionMaxBid",
-          "plural": false,
-          "selections": (v1/*: any*/)
         },
         {
           "kind": "LinkedField",
@@ -185,7 +163,15 @@ return {
               "args": null,
               "concreteType": "SaleArtworkHighestBid",
               "plural": false,
-              "selections": (v1/*: any*/)
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "display",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
             },
             {
               "kind": "ScalarField",
@@ -208,5 +194,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6c196712ca3d74580a8fd0b4c291b505';
+(node as any).hash = 'd32166296aef7a6c6e6c093e04193119';
 export default node;

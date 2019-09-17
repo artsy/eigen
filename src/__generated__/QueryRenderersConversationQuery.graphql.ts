@@ -31,19 +31,17 @@ fragment Conversation_me on Me {
   conversation(id: $conversationID) {
     internalID
     id
+    lastMessageID
+    unread
     to {
       name
-      initials
       id
     }
     from {
       email
       id
     }
-    last_message_id: lastMessageID
     ...Messages_conversation
-    initial_message: initialMessage
-    unread
   }
 }
 
@@ -336,6 +334,20 @@ return {
               (v1/*: any*/),
               (v2/*: any*/),
               {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "lastMessageID",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "unread",
+                "args": null,
+                "storageKey": null
+              },
+              {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "to",
@@ -345,8 +357,8 @@ return {
                 "plural": false,
                 "selections": [
                   (v3/*: any*/),
-                  (v4/*: any*/),
-                  (v2/*: any*/)
+                  (v2/*: any*/),
+                  (v4/*: any*/)
                 ]
               },
               {
@@ -363,13 +375,6 @@ return {
                   (v3/*: any*/),
                   (v4/*: any*/)
                 ]
-              },
-              {
-                "kind": "ScalarField",
-                "alias": "last_message_id",
-                "name": "lastMessageID",
-                "args": null,
-                "storageKey": null
               },
               {
                 "kind": "ScalarField",
@@ -712,13 +717,6 @@ return {
                     ]
                   }
                 ]
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "unread",
-                "args": null,
-                "storageKey": null
               }
             ]
           },
@@ -730,7 +728,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersConversationQuery",
-    "id": "9e09d2bf9687286cc5ff5190b834359d",
+    "id": "da82499be4eb913b14a04bb2eed65582",
     "text": null,
     "metadata": {}
   }

@@ -6,13 +6,13 @@ export type FairExhibitors_fair$ref = typeof _FairExhibitors_fair$ref;
 export type FairExhibitors_fair = {
     readonly slug: string;
     readonly internalID: string;
-    readonly exhibitors_grouped_by_name: ReadonlyArray<{
+    readonly exhibitorsGroupedByName: ReadonlyArray<{
         readonly letter: string | null;
         readonly exhibitors: ReadonlyArray<{
             readonly name: string | null;
             readonly slug: string;
-            readonly profile_id: string | null;
-            readonly partner_id: string | null;
+            readonly profileID: string | null;
+            readonly partnerID: string | null;
         } | null> | null;
     } | null> | null;
     readonly " $refType": FairExhibitors_fair$ref;
@@ -45,7 +45,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "exhibitors_grouped_by_name",
+      "alias": null,
       "name": "exhibitorsGroupedByName",
       "storageKey": null,
       "args": null,
@@ -78,14 +78,14 @@ return {
             (v0/*: any*/),
             {
               "kind": "ScalarField",
-              "alias": "profile_id",
+              "alias": null,
               "name": "profileID",
               "args": null,
               "storageKey": null
             },
             {
               "kind": "ScalarField",
-              "alias": "partner_id",
+              "alias": null,
               "name": "partnerID",
               "args": null,
               "storageKey": null
@@ -97,5 +97,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '458e78f3e9b1b285493f2988839af57d';
+(node as any).hash = '18b238bbd00241542a381b2fc2cc97f7';
 export default node;

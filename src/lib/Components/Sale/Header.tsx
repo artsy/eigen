@@ -38,9 +38,10 @@ export default createFragmentContainer(Header, {
   sale: graphql`
     fragment Header_sale on Sale {
       name
-      cover_image: coverImage {
-        href
-      }
+      # See above TODO
+      # cover_image: coverImage {
+      #   href
+      # }
     }
   `,
 })

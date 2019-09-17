@@ -55,7 +55,7 @@ export class FairArtists extends React.Component<Props, State> {
   }
 
   groupArtists = artists => {
-    const artistsNamePairs = toPairs(groupBy(artists, ({ sortable_id }) => sortable_id.charAt(0)))
+    const artistsNamePairs = toPairs(groupBy(artists, ({ sortableID }) => sortableID.charAt(0)))
     // artists should be sorted, but re-sort to make sure we display in A-Z
     const groupedArtists: any = sortBy(
       map(artistsNamePairs, ([letter, artistsForLetter], index) => ({
@@ -103,13 +103,9 @@ export const FairArtistsContainer = createPaginationContainer(
             endCursor
           }
           edges {
-            cursor
             node {
               ...ArtistListItem_artist
-              sortable_id: sortableID
-              href
-              internalID
-              slug
+              sortableID
             }
           }
         }

@@ -13,7 +13,6 @@ export type Categories_me = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly gene: {
-                        readonly slug: string;
                         readonly id: string;
                         readonly name: string | null;
                         readonly href: string | null;
@@ -135,13 +134,6 @@ const node: ReaderFragment = {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "slug",
-                          "args": null,
-                          "storageKey": null
-                        },
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
                           "name": "id",
                           "args": null,
                           "storageKey": null
@@ -204,5 +196,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '66628e16561a5d98d8436304c89838ce';
+(node as any).hash = '6583628cb5e43c46ef8136f0ffbc38c7';
 export default node;

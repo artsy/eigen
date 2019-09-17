@@ -5,8 +5,8 @@ declare const _HeroUnits_hero_units$ref: unique symbol;
 export type HeroUnits_hero_units$ref = typeof _HeroUnits_hero_units$ref;
 export type HeroUnits_hero_units = ReadonlyArray<{
     readonly id: string;
-    readonly href: string | null;
     readonly title: string | null;
+    readonly href: string | null;
     readonly heading: string | null;
     readonly narrow_image_url: string | null;
     readonly wide_image_url: string | null;
@@ -34,14 +34,14 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "href",
+      "name": "title",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "title",
+      "name": "href",
       "args": null,
       "storageKey": null
     },
@@ -80,5 +80,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '90bba728424a5ef6818b6650fcda3f76';
+(node as any).hash = '4f027cedec5f897a10440af5d716eaf0';
 export default node;

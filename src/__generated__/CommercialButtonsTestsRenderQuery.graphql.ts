@@ -25,11 +25,9 @@ query CommercialButtonsTestsRenderQuery {
 
 fragment CommercialButtons_artwork on Artwork {
   slug
-  internalID
   isAcquireable
   isOfferable
   isInquireable
-  isBiddable
   isInAuction
   isBuyNowable
   editionSets {
@@ -53,13 +51,11 @@ fragment BidButton_artwork on Artwork {
   slug
   sale {
     slug
-    internalID
     registrationStatus {
       qualifiedForBidding
       id
     }
     isPreview
-    isOpen
     isLiveOpen
     isClosed
     isRegistrationClosed
@@ -76,7 +72,6 @@ fragment BidButton_artwork on Artwork {
   saleArtwork {
     increments {
       cents
-      display
     }
     id
   }
@@ -105,24 +100,19 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "cents",
-  "args": null,
-  "storageKey": null
-};
+v3 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "cents",
+    "args": null,
+    "storageKey": null
+  }
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -165,7 +155,6 @@ return {
         "plural": false,
         "selections": [
           (v1/*: any*/),
-          (v2/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -184,13 +173,6 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "isInquireable",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isBiddable",
             "args": null,
             "storageKey": null
           },
@@ -217,7 +199,7 @@ return {
             "concreteType": "EditionSet",
             "plural": true,
             "selections": [
-              (v3/*: any*/)
+              (v2/*: any*/)
             ]
           },
           {
@@ -236,9 +218,8 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v3/*: any*/),
-              (v1/*: any*/),
               (v2/*: any*/),
+              (v1/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -255,20 +236,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v2/*: any*/)
                 ]
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "isPreview",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "isOpen",
                 "args": null,
                 "storageKey": null
               },
@@ -287,6 +261,13 @@ return {
                 "storageKey": null
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "ScalarField",
@@ -327,11 +308,9 @@ return {
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
-                    "selections": [
-                      (v4/*: any*/)
-                    ]
+                    "selections": (v3/*: any*/)
                   },
-                  (v3/*: any*/)
+                  (v2/*: any*/)
                 ]
               }
             ]
@@ -353,21 +332,12 @@ return {
                 "args": null,
                 "concreteType": "BidIncrementsFormatted",
                 "plural": true,
-                "selections": [
-                  (v4/*: any*/),
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "display",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
+                "selections": (v3/*: any*/)
               },
-              (v3/*: any*/)
+              (v2/*: any*/)
             ]
           },
-          (v3/*: any*/)
+          (v2/*: any*/)
         ]
       }
     ]
@@ -375,7 +345,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsRenderQuery",
-    "id": "da2e859381cb65cd9d5eaa42d0effffa",
+    "id": "b4ff9a3ccff3e595f0c3a9924eea69c2",
     "text": null,
     "metadata": {}
   }

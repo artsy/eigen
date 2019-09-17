@@ -5,8 +5,6 @@ declare const _ContextCard_artwork$ref: unique symbol;
 export type ContextCard_artwork$ref = typeof _ContextCard_artwork$ref;
 export type ContextCard_artwork = {
     readonly id: string;
-    readonly slug: string;
-    readonly internalID: string;
     readonly context: ({
         readonly __typename: string;
         readonly id?: string;
@@ -15,16 +13,16 @@ export type ContextCard_artwork = {
         readonly href?: string | null;
         readonly formattedStartDateTime?: string | null;
         readonly isAuction?: boolean | null;
-        readonly cover_image?: {
-            readonly url: string | null;
-        } | null;
-        readonly exhibition_period?: string | null;
-        readonly image?: {
-            readonly url: string | null;
-        } | null;
         readonly coverImage?: {
             readonly url: string | null;
         } | null;
+        readonly exhibitionPeriod?: string | null;
+        readonly image?: {
+            readonly url: string | null;
+        } | null;
+        readonly internalID?: string;
+        readonly slug?: string;
+        readonly isFollowed?: boolean | null;
     } & ({
         readonly __typename: "Sale";
         readonly id: string;
@@ -33,37 +31,25 @@ export type ContextCard_artwork = {
         readonly href: string | null;
         readonly formattedStartDateTime: string | null;
         readonly isAuction: boolean | null;
-        readonly cover_image: {
+        readonly coverImage: {
             readonly url: string | null;
         } | null;
     } | {
         readonly __typename: "Fair";
-        readonly exhibition_period: string | null;
+        readonly exhibitionPeriod: string | null;
         readonly image: {
             readonly url: string | null;
         } | null;
     } | {
         readonly __typename: "Show";
-        readonly coverImage: {
-            readonly url: string | null;
-        } | null;
+        readonly internalID: string;
+        readonly slug: string;
+        readonly isFollowed: boolean | null;
     } | {
         /*This will never be '% other', but we need some
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
     })) | null;
-    readonly shows: ReadonlyArray<{
-        readonly id: string;
-        readonly name: string | null;
-        readonly href: string | null;
-        readonly slug: string;
-        readonly internalID: string;
-        readonly exhibition_period: string | null;
-        readonly is_followed: boolean | null;
-        readonly cover_image: {
-            readonly url: string | null;
-        } | null;
-    } | null> | null;
     readonly " $refType": ContextCard_artwork$ref;
 };
 
@@ -80,32 +66,18 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v5 = [
+v3 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -114,19 +86,19 @@ v5 = [
     "storageKey": null
   }
 ],
-v6 = {
+v4 = {
   "kind": "LinkedField",
-  "alias": "cover_image",
+  "alias": null,
   "name": "coverImage",
   "storageKey": null,
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": (v5/*: any*/)
+  "selections": (v3/*: any*/)
 },
-v7 = {
+v5 = {
   "kind": "ScalarField",
-  "alias": "exhibition_period",
+  "alias": null,
   "name": "exhibitionPeriod",
   "args": null,
   "storageKey": null
@@ -139,8 +111,6 @@ return {
   "argumentDefinitions": [],
   "selections": [
     (v0/*: any*/),
-    (v1/*: any*/),
-    (v2/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -162,7 +132,7 @@ return {
           "type": "Sale",
           "selections": [
             (v0/*: any*/),
-            (v3/*: any*/),
+            (v1/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -170,7 +140,7 @@ return {
               "args": null,
               "storageKey": null
             },
-            (v4/*: any*/),
+            (v2/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -185,7 +155,7 @@ return {
               "args": null,
               "storageKey": null
             },
-            (v6/*: any*/)
+            (v4/*: any*/)
           ]
         },
         {
@@ -193,9 +163,9 @@ return {
           "type": "Fair",
           "selections": [
             (v0/*: any*/),
-            (v3/*: any*/),
-            (v4/*: any*/),
-            (v7/*: any*/),
+            (v1/*: any*/),
+            (v2/*: any*/),
+            (v5/*: any*/),
             {
               "kind": "LinkedField",
               "alias": null,
@@ -204,7 +174,7 @@ return {
               "args": null,
               "concreteType": "Image",
               "plural": false,
-              "selections": (v5/*: any*/)
+              "selections": (v3/*: any*/)
             }
           ]
         },
@@ -213,56 +183,37 @@ return {
           "type": "Show",
           "selections": [
             (v0/*: any*/),
-            (v3/*: any*/),
-            (v4/*: any*/),
-            (v7/*: any*/),
             {
-              "kind": "LinkedField",
+              "kind": "ScalarField",
               "alias": null,
-              "name": "coverImage",
-              "storageKey": null,
+              "name": "internalID",
               "args": null,
-              "concreteType": "Image",
-              "plural": false,
-              "selections": (v5/*: any*/)
-            }
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "slug",
+              "args": null,
+              "storageKey": null
+            },
+            (v1/*: any*/),
+            (v2/*: any*/),
+            (v5/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isFollowed",
+              "args": null,
+              "storageKey": null
+            },
+            (v4/*: any*/)
           ]
         }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "shows",
-      "storageKey": "shows(size:1)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 1
-        }
-      ],
-      "concreteType": "Show",
-      "plural": true,
-      "selections": [
-        (v0/*: any*/),
-        (v3/*: any*/),
-        (v4/*: any*/),
-        (v1/*: any*/),
-        (v2/*: any*/),
-        (v7/*: any*/),
-        {
-          "kind": "ScalarField",
-          "alias": "is_followed",
-          "name": "isFollowed",
-          "args": null,
-          "storageKey": null
-        },
-        (v6/*: any*/)
       ]
     }
   ]
 };
 })();
-(node as any).hash = '942cbc5eb661d7eaa34f7a1d88c3c5ed';
+(node as any).hash = 'a9ece62ccaacd7f6ed0daafc8355fd91';
 export default node;

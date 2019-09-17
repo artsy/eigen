@@ -49,8 +49,6 @@ fragment Fairs_me_1G22uz on Me {
           image {
             url
           }
-          start_at: startAt
-          end_at: endAt
           __typename
         }
         cursor
@@ -272,20 +270,6 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "start_at",
-                            "name": "startAt",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "end_at",
-                            "name": "endAt",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
                             "alias": null,
                             "name": "__typename",
                             "args": null,
@@ -348,7 +332,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairsQuery",
-    "id": "090c7f1bfb0cfe1e52990e3e331735e0",
+    "id": "0db860c34b07fefd1a0cf48e5ceb780b",
     "text": null,
     "metadata": {}
   }

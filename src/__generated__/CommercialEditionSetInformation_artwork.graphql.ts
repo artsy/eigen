@@ -8,8 +8,6 @@ export type CommercialEditionSetInformation_artwork = {
     readonly editionSets: ReadonlyArray<{
         readonly id: string;
         readonly internalID: string;
-        readonly isAcquireable: boolean | null;
-        readonly isOfferable: boolean | null;
         readonly saleMessage: string | null;
         readonly editionOf: string | null;
         readonly dimensions: {
@@ -50,20 +48,6 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "alias": null,
           "name": "internalID",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "isAcquireable",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "isOfferable",
           "args": null,
           "storageKey": null
         },
@@ -115,5 +99,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '49298d8a0f9d10a0e0ef8682fd28ad37';
+(node as any).hash = 'e8a7c66739dcb5af490a7dddbdc52d07';
 export default node;

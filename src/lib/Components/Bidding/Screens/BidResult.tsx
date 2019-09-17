@@ -72,7 +72,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
-    const { live_start_at, end_at } = sale_artwork.sale
+    const { liveStartAt, endAt } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
 
     return (
@@ -92,7 +92,7 @@ export class BidResult extends React.Component<BidResultProps> {
                 </Markdown>
               )}
 
-              {this.shouldDisplayTimer(status) && <Timer liveStartsAt={live_start_at} endsAt={end_at} />}
+              {this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
             </Flex>
           </View>
           {this.canBidAgain(status) ? (
@@ -121,14 +121,9 @@ export class BidResult extends React.Component<BidResultProps> {
 export const BidResultScreen = createFragmentContainer(BidResult, {
   sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
-      minimum_next_bid: minimumNextBid {
-        amount
-        cents
-        display
-      }
       sale {
-        live_start_at: liveStartAt
-        end_at: endAt
+        liveStartAt
+        endAt
         slug
       }
     }

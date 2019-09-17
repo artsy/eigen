@@ -10,27 +10,6 @@ import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 
 import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
 
-const Container = styled.View`
-  margin-bottom: 15;
-`
-
-const Title = styled(SectionTitle)`
-  margin-left: 20;
-`
-
-const IconCarousel = styled.ScrollView`
-  flex-direction: row;
-  overflow: visible;
-  margin-top: 10;
-  margin-left: 16;
-  margin-right: 16;
-`
-
-const TouchableWrapper = styled.View`
-  margin-left: 4;
-  margin-right: 4;
-`
-
 interface Props {
   fairs_module: FairsRail_fairs_module
 }
@@ -64,7 +43,7 @@ export class FairsRail extends Component<Props, null> {
       return (
         <TouchableHighlight style={circleIconStyle} onPress={selectionHandler} key={fair.id}>
           <TouchableWrapper>
-            <ImageView style={circleIconStyle} imageURL={fair.mobile_image.url} placeholderBackgroundColor="white" />
+            <ImageView style={circleIconStyle} imageURL={fair.mobileImage.url} placeholderBackgroundColor="white" />
           </TouchableWrapper>
         </TouchableHighlight>
       )
@@ -95,15 +74,34 @@ export default createFragmentContainer(FairsRail, {
       results {
         id
         slug
-        name
         profile {
           slug
         }
-        mobile_image: mobileImage {
-          internalID
+        mobileImage {
           url
         }
       }
     }
   `,
 })
+
+const Container = styled.View`
+  margin-bottom: 15;
+`
+
+const Title = styled(SectionTitle)`
+  margin-left: 20;
+`
+
+const IconCarousel = styled.ScrollView`
+  flex-direction: row;
+  overflow: visible;
+  margin-top: 10;
+  margin-left: 16;
+  margin-right: 16;
+`
+
+const TouchableWrapper = styled.View`
+  margin-left: 4;
+  margin-right: 4;
+`

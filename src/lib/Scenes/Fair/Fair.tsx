@@ -24,13 +24,7 @@ export const FairContainer = createFragmentContainer(Fair, {
   fair: graphql`
     fragment Fair_fair on Fair {
       id
-      slug
       ...FairDetail_fair
-      organizer {
-        website
-      }
-      about
-      ticketsLink
     }
   `,
 })

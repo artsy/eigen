@@ -555,7 +555,7 @@ export const ConfirmBidScreen = createRefetchContainer(
       fragment ConfirmBid_me on Me {
         has_qualified_credit_cards: hasQualifiedCreditCards
         bidders(saleID: $saleID) {
-          qualified_for_bidding: qualifiedForBidding
+          id
         }
       }
     `,
@@ -565,7 +565,7 @@ export const ConfirmBidScreen = createRefetchContainer(
       me {
         has_qualified_credit_cards: hasQualifiedCreditCards
         bidders(saleID: $saleID) {
-          qualified_for_bidding: qualifiedForBidding
+          id
         }
       }
     }

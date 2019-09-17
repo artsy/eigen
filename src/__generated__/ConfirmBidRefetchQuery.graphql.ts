@@ -8,7 +8,7 @@ export type ConfirmBidRefetchQueryResponse = {
     readonly me: {
         readonly has_qualified_credit_cards: boolean | null;
         readonly bidders: ReadonlyArray<{
-            readonly qualified_for_bidding: boolean | null;
+            readonly id: string;
         } | null> | null;
     } | null;
 };
@@ -26,7 +26,6 @@ query ConfirmBidRefetchQuery(
   me {
     has_qualified_credit_cards: hasQualifiedCreditCards
     bidders(saleID: $saleID) {
-      qualified_for_bidding: qualifiedForBidding
       id
     }
     id
@@ -50,26 +49,30 @@ v1 = {
   "args": null,
   "storageKey": null
 },
-v2 = [
-  {
-    "kind": "Variable",
-    "name": "saleID",
-    "variableName": "saleID"
-  }
-],
-v3 = {
-  "kind": "ScalarField",
-  "alias": "qualified_for_bidding",
-  "name": "qualifiedForBidding",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
+},
+v3 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "bidders",
+  "storageKey": null,
+  "args": [
+    {
+      "kind": "Variable",
+      "name": "saleID",
+      "variableName": "saleID"
+    }
+  ],
+  "concreteType": "Bidder",
+  "plural": true,
+  "selections": [
+    (v2/*: any*/)
+  ]
 };
 return {
   "kind": "Request",
@@ -90,18 +93,7 @@ return {
         "plural": false,
         "selections": [
           (v1/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "bidders",
-            "storageKey": null,
-            "args": (v2/*: any*/),
-            "concreteType": "Bidder",
-            "plural": true,
-            "selections": [
-              (v3/*: any*/)
-            ]
-          }
+          (v3/*: any*/)
         ]
       }
     ]
@@ -121,20 +113,8 @@ return {
         "plural": false,
         "selections": [
           (v1/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "bidders",
-            "storageKey": null,
-            "args": (v2/*: any*/),
-            "concreteType": "Bidder",
-            "plural": true,
-            "selections": [
-              (v3/*: any*/),
-              (v4/*: any*/)
-            ]
-          },
-          (v4/*: any*/)
+          (v3/*: any*/),
+          (v2/*: any*/)
         ]
       }
     ]
@@ -142,11 +122,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConfirmBidRefetchQuery",
-    "id": "5a4cf26f4fd23009e67008c634e06a57",
+    "id": "ad1642dc31d8cc664803d629a050b4e9",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd51babc8a4e214e0ab945cdf1587144f';
+(node as any).hash = 'a6ee6ff7504cdc72ac306e391d258c9c';
 export default node;

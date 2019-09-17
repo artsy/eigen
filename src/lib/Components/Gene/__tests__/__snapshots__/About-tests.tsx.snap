@@ -139,7 +139,7 @@ exports[`shows trending artists correctly 1`] = `
             }
           }
         >
-          36 works, 30 for sale
+          36 works
         </Text>
       </View>
       <View
@@ -189,7 +189,7 @@ exports[`shows trending artists correctly 1`] = `
             }
           }
         >
-          31 works, 24 for sale
+          31 works
         </Text>
       </View>
     </View>

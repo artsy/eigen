@@ -86,7 +86,7 @@ exports[`lays out correctly 1`] = `
           }
         }
       >
-        4 works, 2 for sale
+        4 works
       </Text>
     </View>
     <View

@@ -13,14 +13,12 @@ export type PartnerCard_artwork = {
         readonly type: string | null;
         readonly name: string | null;
         readonly slug: string;
-        readonly internalID: string;
         readonly id: string;
         readonly href: string | null;
         readonly initials: string | null;
         readonly profile: {
             readonly id: string;
             readonly internalID: string;
-            readonly slug: string;
             readonly is_followed: boolean | null;
             readonly icon: {
                 readonly url: string | null;
@@ -37,20 +35,6 @@ export type PartnerCard_artwork = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -119,9 +103,14 @@ return {
           "args": null,
           "storageKey": null
         },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
         (v0/*: any*/),
-        (v1/*: any*/),
-        (v2/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -145,9 +134,14 @@ return {
           "concreteType": "Profile",
           "plural": false,
           "selections": [
-            (v2/*: any*/),
-            (v1/*: any*/),
             (v0/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "internalID",
+              "args": null,
+              "storageKey": null
+            },
             {
               "kind": "ScalarField",
               "alias": "is_followed",
@@ -204,5 +198,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5bb4d3858878280364e20e02f381df01';
+(node as any).hash = '662a4f1df0e12f9ce31dd37f8a512346';
 export default node;

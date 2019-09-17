@@ -42,7 +42,7 @@ const props = {
             end_at: null,
             registration_ends_at: "2017-11-01T13:00:00+00:00",
             live_start_at: "2017-11-02T13:00:00+00:00",
-            display_timely_at: "In Progress",
+            displayTimelyAt: "In Progress",
             cover_image: {
               url: "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
             },
@@ -59,7 +59,7 @@ const props = {
             end_at: null,
             registration_ends_at: "2017-11-01T17:00:00+00:00",
             live_start_at: "2017-11-02T17:00:00+00:00",
-            display_timely_at: "In Progress",
+            displayTimelyAt: "In Progress",
             cover_image: {
               url: "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
             },

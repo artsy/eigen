@@ -26,7 +26,6 @@ query MoreInfoTestsQuery {
 fragment MoreInfo_show on Show {
   internalID
   slug
-  exhibition_period: exhibitionPeriod
   pressReleaseUrl
   openingReceptionText
   partner {
@@ -123,13 +122,6 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "slug",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": "exhibition_period",
-            "name": "exhibitionPeriod",
             "args": null,
             "storageKey": null
           },
@@ -240,7 +232,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MoreInfoTestsQuery",
-    "id": "ccf4c6a1f56249c3b3ebaec8d757c541",
+    "id": "8335a74249c2d3565dc22caa88ba4acd",
     "text": null,
     "metadata": {}
   }

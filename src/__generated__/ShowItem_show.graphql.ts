@@ -11,7 +11,6 @@ export type ShowItem_show = {
     readonly end_at: string | null;
     readonly images: ReadonlyArray<{
         readonly url: string | null;
-        readonly aspect_ratio: number;
     } | null> | null;
     readonly partner: ({
         readonly name?: string | null;
@@ -86,13 +85,6 @@ return {
           "name": "url",
           "args": null,
           "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "aspect_ratio",
-          "name": "aspectRatio",
-          "args": null,
-          "storageKey": null
         }
       ]
     },
@@ -117,5 +109,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '61249cbfc1dc3fc184951041d3c358c1';
+(node as any).hash = '0e5b8437d01a545b7dafb191fe889a4a';
 export default node;

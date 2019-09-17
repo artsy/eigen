@@ -40,7 +40,7 @@ export class FairExhibitors extends React.Component<Props, State> {
       return
     }
     const sections = [] as any
-    const exhibitorsGroupedByName = fair.exhibitors_grouped_by_name || []
+    const exhibitorsGroupedByName = fair.exhibitorsGroupedByName || []
     exhibitorsGroupedByName.forEach(group => {
       sections.push({
         title: group.letter,
@@ -71,13 +71,13 @@ export class FairExhibitors extends React.Component<Props, State> {
   renderExhibitor(data) {
     const { item, index, section } = data
     const { count } = section
-    const { name, profile_id, id, partner_id } = item
+    const { name, profileID, slug, partnerID } = item
     const generatedKey = count - index
     return (
       <Box mb={2} key={generatedKey}>
         <TouchableOpacity
           onPress={() => {
-            this.handleOnPressName(profile_id, id, partner_id)
+            this.handleOnPressName(profileID, slug, partnerID)
           }}
         >
           <Serif size="3">{name}</Serif>
@@ -130,13 +130,13 @@ const FairExhibitorsFragmentContainer = createFragmentContainer(FairExhibitors, 
     fragment FairExhibitors_fair on Fair {
       slug
       internalID
-      exhibitors_grouped_by_name: exhibitorsGroupedByName {
+      exhibitorsGroupedByName {
         letter
         exhibitors {
           name
           slug
-          profile_id: profileID
-          partner_id: partnerID
+          profileID
+          partnerID
         }
       }
     }

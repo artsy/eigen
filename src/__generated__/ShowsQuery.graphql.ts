@@ -80,10 +80,8 @@ fragment ShowItemRow_show on Show {
   status
   cover_image: coverImage {
     url
-    aspect_ratio: aspectRatio
   }
   is_fair_booth: isFairBooth
-  start_at: startAt
   end_at: endAt
 }
 */
@@ -385,13 +383,6 @@ return {
                                 "name": "url",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "aspect_ratio",
-                                "name": "aspectRatio",
-                                "args": null,
-                                "storageKey": null
                               }
                             ]
                           },
@@ -399,13 +390,6 @@ return {
                             "kind": "ScalarField",
                             "alias": "is_fair_booth",
                             "name": "isFairBooth",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "start_at",
-                            "name": "startAt",
                             "args": null,
                             "storageKey": null
                           },
@@ -449,7 +433,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowsQuery",
-    "id": "d13130a7081378f93f0668ff3fa60453",
+    "id": "fde33fc8fb6abe35c2e600dfe236c792",
     "text": null,
     "metadata": {}
   }

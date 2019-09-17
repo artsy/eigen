@@ -40,11 +40,11 @@ class HeroUnits extends React.Component<Props, State> {
     this.setState({ width, height, margin, fontSize })
   }
 
-  handlePress = heroUnit => {
+  handlePress = (heroUnit: HeroUnits_hero_units[number]) => {
     SwitchBoard.presentNavigationViewController(this, heroUnit.href)
   }
 
-  renderHeroUnit(heroUnit, margin, width, height) {
+  renderHeroUnit(heroUnit: HeroUnits_hero_units[number], margin, width, height) {
     return (
       <TouchableHighlight
         key={heroUnit.id}
@@ -93,8 +93,8 @@ export default createFragmentContainer(HeroUnits, {
   hero_units: graphql`
     fragment HeroUnits_hero_units on HomePageHeroUnit @relay(plural: true) {
       id
-      href
       title
+      href
       heading
       narrow_image_url: backgroundImageURL(version: NARROW)
       wide_image_url: backgroundImageURL(version: WIDE)

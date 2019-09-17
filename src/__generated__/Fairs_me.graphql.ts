@@ -23,8 +23,6 @@ export type Fairs_me = {
                     readonly image: {
                         readonly url: string | null;
                     } | null;
-                    readonly start_at: string | null;
-                    readonly end_at: string | null;
                 } | null;
             } | null> | null;
         } | null;
@@ -196,20 +194,6 @@ return {
                     },
                     {
                       "kind": "ScalarField",
-                      "alias": "start_at",
-                      "name": "startAt",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": "end_at",
-                      "name": "endAt",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
                       "alias": null,
                       "name": "__typename",
                       "args": null,
@@ -258,5 +242,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'df7f0e3130d3edef52b1727370d5135a';
+(node as any).hash = 'c30bb3202e4cb46d63a032ab442fb3df';
 export default node;

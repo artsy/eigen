@@ -211,20 +211,6 @@ const fairContextArtwork = {
       url: "https://d32dm0rphc51dk.cloudfront.net/R5z4lkyH6DyGhEwAg44NSA/wide.jpg",
     },
   },
-  shows: [
-    {
-      id: "U2hvdzphcmR0LWdhbGxlcnktYXJkdC1nYWxsZXJ5LWF0LW1hcmtldC1hcnQtcGx1cy1kZXNpZ24tMjAxOQ==",
-      name: "ARDT Gallery at Market Art + Design 2019",
-      href: "/show/ardt-gallery-ardt-gallery-at-market-art-plus-design-2019",
-      gravityID: "ardt-gallery-ardt-gallery-at-market-art-plus-design-2019",
-      internalID: "5cf574b16378630006d32d96",
-      exhibition_period: "Jul 5 – 7",
-      is_followed: null,
-      cover_image: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/Xe5AEfsGGvtlRILk8PFR_g/tall.jpg",
-      },
-    },
-  ],
   " $refType": null,
   " $fragmentRefs": null,
 }
@@ -241,7 +227,7 @@ const auctionContextArtwork = {
     href: "/auction/christies-prints-and-multiples-6",
     isAuction: true,
     formattedStartDateTime: "Ended Oct 25, 2018",
-    cover_image: {
+    coverImage: {
       url: "https://d32dm0rphc51dk.cloudfront.net/bMu0vqXOVlpABBsWVxVIJA/large_rectangle.jpg",
     },
   },
@@ -257,21 +243,17 @@ const showContextArtwork = {
   internalID: "5b2b745e9c18db204fc32e11",
   context: {
     __typename: "Show",
-  },
-  shows: [
-    {
-      id: "U2hvdzpjYW1hLWdhbGxlcnktMS10aW1lLWxhcHNl",
-      name: "Time Lapse",
-      href: "/show/cama-gallery-1-time-lapse",
-      gravityID: "cama-gallery-1-time-lapse",
-      internalID: "5b335e329c18db4a5a5015cc",
-      exhibition_period: "Jun 22 – Jul 3, 2018",
-      is_followed: null,
-      cover_image: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/MYRUdCdCDdpU9dLTcmDX0A/medium.jpg",
-      },
+    id: "U2hvdzpjYW1hLWdhbGxlcnktMS10aW1lLWxhcHNl",
+    name: "Time Lapse",
+    href: "/show/cama-gallery-1-time-lapse",
+    gravityID: "cama-gallery-1-time-lapse",
+    internalID: "5b335e329c18db4a5a5015cc",
+    exhibition_period: "Jun 22 – Jul 3, 2018",
+    is_followed: null,
+    coverImage: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/MYRUdCdCDdpU9dLTcmDX0A/medium.jpg",
     },
-  ],
+  },
   fair: null,
   " $refType": null,
   " $fragmentRefs": null,

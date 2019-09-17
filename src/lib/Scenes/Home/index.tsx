@@ -17,8 +17,6 @@ import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import { SalesRenderer } from "lib/Scenes/Home/Components/Sales/Relay/SalesRenderer"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
-import { QueryRenderersWorksForYouQueryResponse } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
-import { SalesRendererQueryResponse } from "__generated__/SalesRendererQuery.graphql"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"
 
@@ -54,15 +52,6 @@ const screenSchemaForCurrentTab = currentSelectedTab => {
 
   return screenType
 }
-
-/**
- * These trampolines are to support the slightly awkward case where all of the props need to be captured as a single
- * prop, which is because these forward the root Query type.
- *
- * TODO: See if it’s possible to refactor things such that this is no longer necessary.
- */
-const WorksForYouTrampoline: React.FC<QueryRenderersWorksForYouQueryResponse> = query => <WorksForYou query={query} />
-const SalesTrampoline: React.FC<SalesRendererQueryResponse> = query => <Sales query={query} />
 
 // This kills two birds with one stone:
 // It's necessary to wrap all tracks nested in this component, so they dispatch properly
@@ -134,7 +123,9 @@ export default class Home extends React.Component<Props, State> {
       wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
           <Tab tabLabel=" Artists">
             <WorksForYouRenderer
-              render={renderWithLoadProgress(WorksForYouTrampoline as any)}
+              render={renderWithLoadProgress(query => (
+                <WorksForYou query={query as any} />
+              ))}
               selectedArtist={this.props.selectedArtist}
             />
           </Tab>
@@ -142,7 +133,11 @@ export default class Home extends React.Component<Props, State> {
             <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
           </Tab>
           <Tab tabLabel=" Auctions">
-            <SalesRenderer render={renderWithLoadProgress(SalesTrampoline as any)} />
+            <SalesRenderer
+              render={renderWithLoadProgress(query => (
+                <Sales query={query as any} />
+              ))}
+            />
           </Tab>
         </ScrollableTabView>
         {!!showConsignmentsSash && (

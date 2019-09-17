@@ -27,13 +27,11 @@ fragment BidButton_artwork on Artwork {
   slug
   sale {
     slug
-    internalID
     registrationStatus {
       qualifiedForBidding
       id
     }
     isPreview
-    isOpen
     isLiveOpen
     isClosed
     isRegistrationClosed
@@ -50,7 +48,6 @@ fragment BidButton_artwork on Artwork {
   saleArtwork {
     increments {
       cents
-      display
     }
     id
   }
@@ -79,13 +76,15 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "cents",
-  "args": null,
-  "storageKey": null
-};
+v3 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "cents",
+    "args": null,
+    "storageKey": null
+  }
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -139,13 +138,6 @@ return {
             "selections": [
               (v1/*: any*/),
               {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "internalID",
-                "args": null,
-                "storageKey": null
-              },
-              {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "registrationStatus",
@@ -168,13 +160,6 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "isPreview",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "isOpen",
                 "args": null,
                 "storageKey": null
               },
@@ -234,9 +219,7 @@ return {
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
-                    "selections": [
-                      (v3/*: any*/)
-                    ]
+                    "selections": (v3/*: any*/)
                   },
                   (v2/*: any*/)
                 ]
@@ -260,16 +243,7 @@ return {
                 "args": null,
                 "concreteType": "BidIncrementsFormatted",
                 "plural": true,
-                "selections": [
-                  (v3/*: any*/),
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "display",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
+                "selections": (v3/*: any*/)
               },
               (v2/*: any*/)
             ]
@@ -282,7 +256,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidButtonTestsQuery",
-    "id": "fe4c89fbdebe0b713ce33a76f9e1774a",
+    "id": "e7747d2e2e0f06cb72388e3869d50387",
     "text": null,
     "metadata": {}
   }
