@@ -1,3 +1,4 @@
+import { PixelRatio } from "react-native"
 import { Rect, Size } from "../../geometry"
 import { ImageDescriptor } from "../../ImageCarouselContext"
 
@@ -36,7 +37,7 @@ export const calculateMinMaxDeepZoomLevels = (imageFittedWithinScreen: Size, zoo
   let minLevel = 0
   const maxLevel = zoomLevels.length - 1
   for (const { width } of zoomLevels) {
-    if (width >= imageFittedWithinScreen.width) {
+    if (width >= imageFittedWithinScreen.width * PixelRatio.get()) {
       break
     }
     minLevel++
@@ -63,7 +64,7 @@ export const getZoomScaleBoundaries = ({
   const result: ZoomScaleBoundaries[] = []
   for (const level of levels) {
     // This is the zoom scale at which the image will be at it's natural resolution
-    const perfectZoomScale = level.width / imageFittedWithinScreen.width
+    const perfectZoomScale = level.width / (imageFittedWithinScreen.width * PixelRatio.get())
     const startZoomScale = perfectZoomScale / 2
     const stopZoomScale = perfectZoomScale * 8
     result.push({ startZoomScale, stopZoomScale })
