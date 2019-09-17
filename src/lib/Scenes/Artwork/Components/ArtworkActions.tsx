@@ -1,4 +1,15 @@
-import { Box, color, EyeOpenedIcon, Flex, HeartFillIcon, HeartIcon, Sans, ShareIcon } from "@artsy/palette"
+import {
+  BellFillIcon,
+  BellIcon,
+  Box,
+  color,
+  EyeOpenedIcon,
+  Flex,
+  HeartFillIcon,
+  HeartIcon,
+  Sans,
+  ShareIcon,
+} from "@artsy/palette"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { Schema, track } from "lib/utils/track"
@@ -93,20 +104,35 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   render() {
     const {
-      artwork: { is_saved, is_hangable },
+      artwork: { is_saved, is_hangable, sale },
     } = this.props
+
+    const isOpenSale = sale && sale.isAuction && !sale.isClosed
 
     return (
       <View>
         <Flex flexDirection="row">
-          <TouchableWithoutFeedback onPress={() => this.handleArtworkSave()}>
-            <UtilButton pr={3}>
-              <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
-              <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
-                {is_saved ? "Saved" : "Save"}
-              </Sans>
-            </UtilButton>
-          </TouchableWithoutFeedback>
+          {!isOpenSale && (
+            <TouchableWithoutFeedback onPress={() => this.handleArtworkSave()}>
+              <UtilButton pr={3}>
+                <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
+                <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
+                  {is_saved ? "Saved" : "Save"}
+                </Sans>
+              </UtilButton>
+            </TouchableWithoutFeedback>
+          )}
+          {isOpenSale && (
+            <TouchableWithoutFeedback onPress={() => this.handleArtworkSave()}>
+              <UtilButton pr={3}>
+                <Box mr={0.5}>{is_saved ? <BellFillIcon fill="purple100" /> : <BellIcon />}</Box>
+                <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
+                  Watch lot
+                </Sans>
+              </UtilButton>
+            </TouchableWithoutFeedback>
+          )}
+
           {Constants.AREnabled &&
             is_hangable && (
               <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
@@ -153,6 +179,10 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       }
       image {
         url
+      }
+      sale {
+        isAuction
+        isClosed
       }
       widthCm
       heightCm

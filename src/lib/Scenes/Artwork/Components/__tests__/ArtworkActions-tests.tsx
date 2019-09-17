@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { BellIcon, Sans } from "@artsy/palette"
 import { shallow } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -91,6 +91,28 @@ describe("ArtworkActions", () => {
           .text()
       ).toMatchInlineSnapshot(`"Share"`)
     })
+  })
+
+  it("shows a bell icon and 'Watch lot' text instead of herart icon and 'Save' if work is in an open auction", () => {
+    const artworkActionsArtworkInAuction = {
+      ...artworkActionsArtwork,
+      sale: {
+        isAuction: true,
+        isClosed: false,
+      },
+    }
+    const component = shallow(<ArtworkActions artwork={artworkActionsArtworkInAuction} />)
+    expect(component.find(Sans).length).toEqual(3)
+
+    expect(
+      component
+        .find(Sans)
+        .at(0)
+        .render()
+        .text()
+    ).toMatchInlineSnapshot(`"Watch lot"`)
+
+    expect(component.find(BellIcon).length).toEqual(1)
   })
 
   describe("without AR enabled", () => {
@@ -253,6 +275,10 @@ const artworkActionsArtwork = {
   ],
   image: {
     url: "image.com/image",
+  },
+  sale: {
+    isAuction: false,
+    isClosed: false,
   },
   is_saved: false,
   is_hangable: true,
