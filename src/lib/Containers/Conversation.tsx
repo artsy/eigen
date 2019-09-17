@@ -89,7 +89,7 @@ export class Conversation extends React.Component<Props, State> {
       updateConversation(
         this.props.relay.environment,
         conversation,
-        conversation.last_message_id,
+        conversation.lastMessageID,
         _response => {
           this.setState({ markedMessageAsRead: true })
         },
@@ -178,17 +178,15 @@ export default createFragmentContainer(Conversation, {
       conversation(id: $conversationID) {
         internalID
         id
+        lastMessageID
+        unread
         to {
           name
-          initials
         }
         from {
           email
         }
-        last_message_id: lastMessageID
         ...Messages_conversation
-        initial_message: initialMessage
-        unread
       }
     }
   `,

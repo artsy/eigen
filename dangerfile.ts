@@ -6,7 +6,7 @@ import { compact, includes, uniq } from "lodash"
 import * as fs from "fs"
 import * as path from "path"
 
-import * as recurseSync from "recursive-readdir-sync"
+import recurseSync from "recursive-readdir-sync"
 const allFiles = recurseSync("./src")
 
 // Setup

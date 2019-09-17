@@ -22,14 +22,12 @@ export type FairDetail_fair = {
     readonly organizer: {
         readonly website: string | null;
     } | null;
-    readonly about: string | null;
-    readonly ticketsLink: string | null;
     readonly profile: {
         readonly name: string | null;
     } | null;
     readonly sponsoredContent: {
-        readonly activationText: string | null;
         readonly pressReleaseUrl: string | null;
+        readonly activationText: string | null;
     } | null;
     readonly shows: {
         readonly pageInfo: {
@@ -40,8 +38,6 @@ export type FairDetail_fair = {
         readonly edges: ReadonlyArray<{
             readonly cursor: string;
             readonly node: {
-                readonly slug: string;
-                readonly internalID: string;
                 readonly artworks: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
@@ -68,13 +64,6 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -113,8 +102,14 @@ return {
   ],
   "selections": [
     (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     (v1/*: any*/),
-    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -189,20 +184,6 @@ return {
       ]
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "about",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "ticketsLink",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
       "alias": null,
       "name": "profile",
@@ -211,7 +192,7 @@ return {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        (v2/*: any*/)
+        (v1/*: any*/)
       ]
     },
     {
@@ -226,14 +207,14 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "activationText",
+          "name": "pressReleaseUrl",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "pressReleaseUrl",
+          "name": "activationText",
           "args": null,
           "storageKey": null
         }
@@ -305,8 +286,6 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
-                (v1/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": "artworks",
@@ -373,5 +352,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a7053c6bb6bbbeae6c79922e0984a2c2';
+(node as any).hash = '0985881eb9fd5d43ffd3c108cf272c05';
 export default node;

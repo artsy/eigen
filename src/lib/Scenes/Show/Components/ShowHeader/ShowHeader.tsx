@@ -202,11 +202,9 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       internalID
       id
       name
-      press_release: pressRelease
       is_followed: isFollowed
       end_at: endAt
       exhibition_period: exhibitionPeriod
-      status
       isStubShow
       partner {
         ... on Partner {

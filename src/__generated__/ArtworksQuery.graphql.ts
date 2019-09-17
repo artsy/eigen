@@ -52,7 +52,6 @@ fragment Artworks_me_1G22uz on Me {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
   image {
     aspect_ratio: aspectRatio
   }
@@ -63,15 +62,12 @@ fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message: saleMessage
-  is_in_auction: isInAuction
   is_biddable: isBiddable
   is_acquireable: isAcquireable
   is_offerable: isOfferable
   slug
   sale {
     is_auction: isAuction
-    is_live_open: isLiveOpen
-    is_open: isOpen
     is_closed: isClosed
     display_timely_at: displayTimelyAt
     id
@@ -276,13 +272,6 @@ return {
                         "selections": [
                           (v2/*: any*/),
                           {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "slug",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
                             "kind": "LinkedField",
                             "alias": null,
                             "name": "image",
@@ -336,13 +325,6 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "is_in_auction",
-                            "name": "isInAuction",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
                             "alias": "is_biddable",
                             "name": "isBiddable",
                             "args": null,
@@ -363,6 +345,13 @@ return {
                             "storageKey": null
                           },
                           {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "slug",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
                             "kind": "LinkedField",
                             "alias": null,
                             "name": "sale",
@@ -375,20 +364,6 @@ return {
                                 "kind": "ScalarField",
                                 "alias": "is_auction",
                                 "name": "isAuction",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "is_live_open",
-                                "name": "isLiveOpen",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "is_open",
-                                "name": "isOpen",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -513,7 +488,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksQuery",
-    "id": "214cddfbf797555cfca5305331f75127",
+    "id": "7bccc77f16ad18b94cf64d34c1b2c537",
     "text": null,
     "metadata": {}
   }

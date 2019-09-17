@@ -37,16 +37,13 @@ fragment FairArtists_fair on Fair {
       endCursor
     }
     edges {
-      cursor
       node {
         ...ArtistListItem_artist
-        sortable_id: sortableID
-        href
-        internalID
-        slug
+        sortableID
         id
         __typename
       }
+      cursor
     }
   }
 }
@@ -206,13 +203,6 @@ return {
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "cursor",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "node",
@@ -293,7 +283,7 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "sortable_id",
+                        "alias": null,
                         "name": "sortableID",
                         "args": null,
                         "storageKey": null
@@ -306,6 +296,13 @@ return {
                         "storageKey": null
                       }
                     ]
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cursor",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               }
@@ -328,7 +325,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtistsRendererQuery",
-    "id": "01ca1b098cc2d55915aa938ba0f515ae",
+    "id": "b3cdae9c8f868ed4f5bbde50e08ed541",
     "text": null,
     "metadata": {}
   }

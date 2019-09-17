@@ -94,7 +94,7 @@ export class ConversationSnippet extends React.Component<Props> {
     if (item.__typename === "Artwork") {
       const artworkTitle = `${item.title.trim()}, `
       const artworkDate = `${item.date}`
-      const artworkArtist = `${item.artist_names} · `
+      const artworkArtist = `${item.artistNames} · `
 
       return (
         <HorizontalLayout>
@@ -145,13 +145,13 @@ export class ConversationSnippet extends React.Component<Props> {
     if (item.__typename === "Artwork") {
       imageURL = item.image.url
     } else if (item.__typename === "Show") {
-      imageURL = item.cover_image.url
+      imageURL = item.coverImage.url
     }
 
     const partnerName = conversation.to.name
 
-    const conversationText = conversation.last_message && conversation.last_message.replace(/\n/g, " ")
-    const date = moment(conversation.last_message_at).fromNow(true) + " ago"
+    const conversationText = conversation.lastMessage && conversation.lastMessage.replace(/\n/g, " ")
+    const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <TouchableWithoutFeedback onPress={() => this.conversationSelected()}>
         <Card>
@@ -181,8 +181,8 @@ export default createFragmentContainer(ConversationSnippet, {
       to {
         name
       }
-      last_message: lastMessage
-      last_message_at: lastMessageAt
+      lastMessage
+      lastMessageAt
       unread
       items {
         item {
@@ -190,7 +190,7 @@ export default createFragmentContainer(ConversationSnippet, {
           ... on Artwork {
             date
             title
-            artist_names: artistNames
+            artistNames
             image {
               url
             }
@@ -200,7 +200,7 @@ export default createFragmentContainer(ConversationSnippet, {
               name
             }
             name
-            cover_image: coverImage {
+            coverImage {
               url
             }
           }

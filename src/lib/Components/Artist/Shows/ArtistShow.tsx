@@ -20,7 +20,8 @@ interface Props {
 
 class Show extends React.Component<Props> {
   handleTap() {
-    const href = hrefForPartialShow(this.props.show)
+    const { slug, is_fair_booth, href: showHref } = this.props.show
+    const href = hrefForPartialShow({ slug, href: showHref, is_fair_booth })
     SwitchBoard.presentNavigationViewController(this, href)
   }
 

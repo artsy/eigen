@@ -14,7 +14,7 @@ export type ContextCardFollowMutationResponse = {
         readonly show: {
             readonly slug: string;
             readonly internalID: string;
-            readonly is_followed: boolean | null;
+            readonly isFollowed: boolean | null;
             readonly id: string;
         } | null;
     } | null;
@@ -34,7 +34,7 @@ mutation ContextCardFollowMutation(
     show {
       slug
       internalID
-      is_followed: isFollowed
+      isFollowed
       id
     }
   }
@@ -91,7 +91,7 @@ v1 = [
           },
           {
             "kind": "ScalarField",
-            "alias": "is_followed",
+            "alias": null,
             "name": "isFollowed",
             "args": null,
             "storageKey": null
@@ -127,11 +127,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ContextCardFollowMutation",
-    "id": "21c3b692a0a5a7285359d5d74c4cc7b7",
+    "id": "d492efc5bb01d11b8045f4bd9a8013d7",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd66bb4d85639e8f70731c332a3674ad9';
+(node as any).hash = 'd5670cb5205e24a337e07eec0afbf553';
 export default node;

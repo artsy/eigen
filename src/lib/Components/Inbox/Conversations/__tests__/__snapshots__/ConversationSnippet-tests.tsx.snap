@@ -165,25 +165,6 @@ exports[`renders correctly with a show 1`] = `
         </Text>
       </View>
       <Text
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "black",
-              "fontSize": 16,
-              "textAlign": "left",
-            },
-            Object {},
-            Object {
-              "fontFamily": "ReactNativeAGaramondPro-Regular",
-            },
-          ]
-        }
-      >
-        Karl and Anna... Fab!
-      </Text>
-      <Text
         style={
           Array [
             Object {
@@ -198,7 +179,7 @@ exports[`renders correctly with a show 1`] = `
           ]
         }
       >
-        A YEAR AGO
+        A FEW SECONDS AGO
       </Text>
     </View>
   </View>
@@ -377,7 +358,7 @@ exports[`renders correctly with an artwork 1`] = `
               ]
             }
           >
-            Bradley Theodore · 
+            undefined · 
           </Text>
           <Text
             style={
@@ -408,25 +389,6 @@ exports[`renders correctly with an artwork 1`] = `
         </Text>
       </View>
       <Text
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "black",
-              "fontSize": 16,
-              "textAlign": "left",
-            },
-            Object {},
-            Object {
-              "fontFamily": "ReactNativeAGaramondPro-Regular",
-            },
-          ]
-        }
-      >
-        Karl and Anna... Fab!
-      </Text>
-      <Text
         style={
           Array [
             Object {
@@ -441,7 +403,7 @@ exports[`renders correctly with an artwork 1`] = `
           ]
         }
       >
-        A YEAR AGO
+        A FEW SECONDS AGO
       </Text>
     </View>
   </View>

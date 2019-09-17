@@ -21,11 +21,30 @@ interface Props extends ViewProperties {
   show: MoreInfo_show
 }
 
+type Section =
+  | {
+      type: "event"
+      data: { event: MoreInfo_show["events"][number] }
+    }
+  | {
+      type: "pressRelease"
+      data: MoreInfo_show
+    }
+  | {
+      type: "galleryWebsite"
+      data: MoreInfo_show
+    }
+  | {
+      type: "pressReleaseUrl"
+      data: MoreInfo_show
+    }
+  | {
+      type: "receptionText"
+      data: string
+    }
+
 interface State {
-  sections: Array<{
-    type: "event" | "pressRelease" | "galleryWebsite" | "pressReleaseUrl" | "receptionText"
-    data: any
-  }>
+  sections: Section[]
 }
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.AboutTheShowPage,
@@ -41,7 +60,7 @@ export class MoreInfo extends React.Component<Props, State> {
   componentDidMount() {
     const { show } = this.props
 
-    const sections = []
+    const sections: Section[] = []
 
     show.events.forEach(event => {
       sections.push({
@@ -102,13 +121,13 @@ export class MoreInfo extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
   }
 
-  renderItem = ({ item: { data, type } }) => {
-    switch (type) {
+  renderItem = ({ item }: { item: Section }) => {
+    switch (item.type) {
       case "galleryWebsite":
         return (
           <CaretButton
-            onPress={() => this.renderGalleryWebsite(data.partner.website)}
-            text={data.partner.type === "Gallery" ? "Visit gallery site" : "Visit institution site"}
+            onPress={() => this.renderGalleryWebsite(item.data.partner.website)}
+            text={item.data.partner.type === "Gallery" ? "Visit gallery site" : "Visit institution site"}
           />
         )
       case "pressReleaseUrl":
@@ -121,13 +140,13 @@ export class MoreInfo extends React.Component<Props, State> {
                 Opening reception
               </Sans>
             </Box>
-            <Sans size="3t">{data}</Sans>
+            <Sans size="3t">{item.data}</Sans>
           </>
         )
       case "event":
-        return <ShowEventSection {...data} />
+        return <ShowEventSection {...item.data} />
       case "pressRelease":
-        return <TextSection title="Press Release" text={data.press_release} />
+        return <TextSection title="Press Release" text={item.data.press_release} />
     }
   }
 
@@ -159,7 +178,6 @@ export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
     fragment MoreInfo_show on Show {
       internalID
       slug
-      exhibition_period: exhibitionPeriod
       pressReleaseUrl
       openingReceptionText
       partner {

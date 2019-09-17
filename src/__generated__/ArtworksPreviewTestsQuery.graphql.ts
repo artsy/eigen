@@ -42,7 +42,6 @@ fragment ArtworksPreview_fair on Fair {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
   image {
     aspect_ratio: aspectRatio
   }
@@ -53,15 +52,12 @@ fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message: saleMessage
-  is_in_auction: isInAuction
   is_biddable: isBiddable
   is_acquireable: isAcquireable
   is_offerable: isOfferable
   slug
   sale {
     is_auction: isAuction
-    is_live_open: isLiveOpen
-    is_open: isOpen
     is_closed: isClosed
     display_timely_at: displayTimelyAt
     id
@@ -222,7 +218,6 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v1/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -277,13 +272,6 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "is_in_auction",
-                        "name": "isInAuction",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
                         "alias": "is_biddable",
                         "name": "isBiddable",
                         "args": null,
@@ -303,6 +291,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v1/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -316,20 +305,6 @@ return {
                             "kind": "ScalarField",
                             "alias": "is_auction",
                             "name": "isAuction",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "is_live_open",
-                            "name": "isLiveOpen",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "is_open",
-                            "name": "isOpen",
                             "args": null,
                             "storageKey": null
                           },
@@ -427,7 +402,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksPreviewTestsQuery",
-    "id": "86fabd524076756029888cf93f009273",
+    "id": "906622d37b7d37fa846dd25088c0724d",
     "text": null,
     "metadata": {}
   }

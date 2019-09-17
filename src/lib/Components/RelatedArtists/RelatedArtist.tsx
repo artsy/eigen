@@ -37,17 +37,13 @@ class RelatedArtist extends Component<Props> {
     )
   }
 
-  artworksString(counts) {
-    if (counts.totalWorks <= 0) {
-      return ""
-    }
-
+  artworksString(counts: RelatedArtist_artist["counts"]) {
     const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? " works" : " work") : null
-    if (totalWorks && counts.for_sale_artworks === counts.artworks) {
+    if (totalWorks && counts.forSaleArtworks === counts.artworks) {
       return totalWorks + " for sale"
     }
 
-    const forSale = counts.for_sale_artworks ? counts.for_sale_artworks + " for sale" : null
+    const forSale = counts.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
     if (forSale && totalWorks) {
       return totalWorks + ", " + forSale
     }
@@ -81,7 +77,7 @@ export default createFragmentContainer(RelatedArtist, {
       href
       name
       counts {
-        for_sale_artworks: forSaleArtworks
+        forSaleArtworks
         artworks
       }
       image {

@@ -34,14 +34,12 @@ fragment PartnerCard_artwork on Artwork {
     type
     name
     slug
-    internalID
     id
     href
     initials
     profile {
       id
       internalID
-      slug
       is_followed: isFollowed
       icon {
         url(version: "square140")
@@ -67,20 +65,6 @@ v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
   "args": null,
   "storageKey": null
 };
@@ -181,8 +165,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/),
-              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "slug",
+                "args": null,
+                "storageKey": null
+              },
               (v1/*: any*/),
               {
                 "kind": "ScalarField",
@@ -208,8 +197,13 @@ return {
                 "plural": false,
                 "selections": [
                   (v1/*: any*/),
-                  (v3/*: any*/),
-                  (v2/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "internalID",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": "is_followed",
@@ -272,7 +266,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerCardTestsQuery",
-    "id": "4e8c2b9f02a11999ba37ea9bf25fb90f",
+    "id": "4e32952ed4e198c5fbd4677537ce0a19",
     "text": null,
     "metadata": {}
   }

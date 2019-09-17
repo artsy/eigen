@@ -7,7 +7,6 @@ export type AuctionCountDownTimer_artwork = {
     readonly sale: {
         readonly startAt: string | null;
         readonly endAt: string | null;
-        readonly liveStartAt: string | null;
         readonly formattedStartDateTime: string | null;
     } | null;
     readonly " $refType": AuctionCountDownTimer_artwork$ref;
@@ -48,13 +47,6 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "liveStartAt",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
           "name": "formattedStartDateTime",
           "args": null,
           "storageKey": null
@@ -63,5 +55,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '274549645e415575ff724ec93cd8ec48';
+(node as any).hash = '684a015d3d26b472450ed056a952464a';
 export default node;

@@ -28,7 +28,7 @@ query ImageCarouselTestsQuery {
 }
 
 fragment ImageCarousel_images on Image {
-  image_url: imageURL
+  url: imageURL
   width
   height
   deepZoom {
@@ -116,7 +116,7 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": "image_url",
+                "alias": "url",
                 "name": "imageURL",
                 "args": null,
                 "storageKey": null
@@ -219,7 +219,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ImageCarouselTestsQuery",
-    "id": "17c5328bb5c648f21dcba00f6627e56f",
+    "id": "23ef66a0dbbd53bcf52766b0e420c2db",
     "text": null,
     "metadata": {}
   }

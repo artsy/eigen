@@ -11,7 +11,6 @@ export type FilteredInfiniteScrollGrid_entity = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly slug: string;
             } | null;
         } | null> | null;
         readonly " $fragmentRefs": Filters_filteredArtworks$ref & InfiniteScrollArtworksGrid_connection$ref;
@@ -124,13 +123,6 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "slug",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
@@ -186,5 +178,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6fb12e1c4c55eacc3a06f0dd31acf3b9';
+(node as any).hash = '299cf05b1674172e889e1edb203eb98e';
 export default node;

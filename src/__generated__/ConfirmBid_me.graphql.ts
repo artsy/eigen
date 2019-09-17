@@ -6,7 +6,7 @@ export type ConfirmBid_me$ref = typeof _ConfirmBid_me$ref;
 export type ConfirmBid_me = {
     readonly has_qualified_credit_cards: boolean | null;
     readonly bidders: ReadonlyArray<{
-        readonly qualified_for_bidding: boolean | null;
+        readonly id: string;
     } | null> | null;
     readonly " $refType": ConfirmBid_me$ref;
 };
@@ -50,8 +50,8 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": "qualified_for_bidding",
-          "name": "qualifiedForBidding",
+          "alias": null,
+          "name": "id",
           "args": null,
           "storageKey": null
         }
@@ -59,5 +59,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0286e30226bf7c9a94564705a699336f';
+(node as any).hash = '316558546349c6c6cd56a990b045c1e4';
 export default node;

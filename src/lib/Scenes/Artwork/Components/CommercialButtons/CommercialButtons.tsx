@@ -75,11 +75,9 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
   artwork: graphql`
     fragment CommercialButtons_artwork on Artwork {
       slug
-      internalID
       isAcquireable
       isOfferable
       isInquireable
-      isBiddable
       isInAuction
       isBuyNowable
 

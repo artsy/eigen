@@ -20,7 +20,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                 },
-                "display_timely_at": "In Progress",
+                "displayTimelyAt": "In Progress",
                 "end_at": null,
                 "href": "/auction/wright-noma",
                 "id": "wright-noma",
@@ -35,7 +35,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                 },
-                "display_timely_at": "In Progress",
+                "displayTimelyAt": "In Progress",
                 "end_at": null,
                 "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                 "id": "freemans-modern-and-contemporary-works-of-art",
@@ -85,7 +85,7 @@ exports[`looks correct when rendered 1`] = `
                       "cover_image": Object {
                         "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                       },
-                      "display_timely_at": "In Progress",
+                      "displayTimelyAt": "In Progress",
                       "end_at": null,
                       "href": "/auction/wright-noma",
                       "id": "wright-noma",
@@ -102,7 +102,7 @@ exports[`looks correct when rendered 1`] = `
                       "cover_image": Object {
                         "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                       },
-                      "display_timely_at": "In Progress",
+                      "displayTimelyAt": "In Progress",
                       "end_at": null,
                       "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                       "id": "freemans-modern-and-contemporary-works-of-art",
@@ -156,7 +156,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                 },
-                "display_timely_at": "In Progress",
+                "displayTimelyAt": "In Progress",
                 "end_at": null,
                 "href": "/auction/wright-noma",
                 "id": "wright-noma",
@@ -171,7 +171,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                 },
-                "display_timely_at": "In Progress",
+                "displayTimelyAt": "In Progress",
                 "end_at": null,
                 "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                 "id": "freemans-modern-and-contemporary-works-of-art",
@@ -221,7 +221,7 @@ exports[`looks correct when rendered 1`] = `
                       "cover_image": Object {
                         "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                       },
-                      "display_timely_at": "In Progress",
+                      "displayTimelyAt": "In Progress",
                       "end_at": null,
                       "href": "/auction/wright-noma",
                       "id": "wright-noma",
@@ -238,7 +238,7 @@ exports[`looks correct when rendered 1`] = `
                       "cover_image": Object {
                         "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                       },
-                      "display_timely_at": "In Progress",
+                      "displayTimelyAt": "In Progress",
                       "end_at": null,
                       "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                       "id": "freemans-modern-and-contemporary-works-of-art",
@@ -325,7 +325,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                 },
-                "display_timely_at": "In Progress",
+                "displayTimelyAt": "In Progress",
                 "end_at": null,
                 "href": "/auction/wright-noma",
                 "id": "wright-noma",
@@ -340,7 +340,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                 },
-                "display_timely_at": "In Progress",
+                "displayTimelyAt": "In Progress",
                 "end_at": null,
                 "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                 "id": "freemans-modern-and-contemporary-works-of-art",
@@ -409,7 +409,6 @@ exports[`looks correct when rendered 1`] = `
                 }
               >
                 <AROpaqueImageView
-                  imageURL="https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg"
                   style={
                     Array [
                       Object {
@@ -478,36 +477,6 @@ exports[`looks correct when rendered 1`] = `
                     >
                       Wright: noma
                     </Text>
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "white",
-                            "borderRadius": 2,
-                            "marginLeft": 3,
-                            "paddingBottom": 1,
-                            "paddingLeft": 4,
-                            "paddingRight": 4,
-                            "paddingTop": 1,
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          Array [
-                            Object {
-                              "alignSelf": "center",
-                              "fontFamily": "AvantGardeGothicITC",
-                              "fontSize": 7,
-                              "letterSpacing": 1.5,
-                            },
-                          ]
-                        }
-                      >
-                        LIVE
-                      </Text>
-                    </View>
                   </View>
                   <View
                     style={
@@ -566,7 +535,6 @@ exports[`looks correct when rendered 1`] = `
                 }
               >
                 <AROpaqueImageView
-                  imageURL="https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg"
                   style={
                     Array [
                       Object {
@@ -635,36 +603,6 @@ exports[`looks correct when rendered 1`] = `
                     >
                       Freeman's: Modern & Contemporary Works of Art
                     </Text>
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "white",
-                            "borderRadius": 2,
-                            "marginLeft": 3,
-                            "paddingBottom": 1,
-                            "paddingLeft": 4,
-                            "paddingRight": 4,
-                            "paddingTop": 1,
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          Array [
-                            Object {
-                              "alignSelf": "center",
-                              "fontFamily": "AvantGardeGothicITC",
-                              "fontSize": 7,
-                              "letterSpacing": 1.5,
-                            },
-                          ]
-                        }
-                      >
-                        LIVE
-                      </Text>
-                    </View>
                   </View>
                   <View
                     style={
@@ -752,7 +690,7 @@ exports[`looks correct when rendered 1`] = `
                     "cover_image": Object {
                       "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                     },
-                    "display_timely_at": "In Progress",
+                    "displayTimelyAt": "In Progress",
                     "end_at": null,
                     "href": "/auction/wright-noma",
                     "id": "wright-noma",
@@ -769,7 +707,7 @@ exports[`looks correct when rendered 1`] = `
                     "cover_image": Object {
                       "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                     },
-                    "display_timely_at": "In Progress",
+                    "displayTimelyAt": "In Progress",
                     "end_at": null,
                     "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                     "id": "freemans-modern-and-contemporary-works-of-art",

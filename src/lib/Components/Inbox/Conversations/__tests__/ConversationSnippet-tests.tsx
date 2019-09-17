@@ -41,7 +41,7 @@ const show = {
     name: "Catty Fair",
   },
   name: "Catty Show",
-  cover_image: {
+  coverImage: {
     url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
   },
 }

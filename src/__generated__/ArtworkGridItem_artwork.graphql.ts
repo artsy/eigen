@@ -7,15 +7,12 @@ export type ArtworkGridItem_artwork = {
     readonly title: string | null;
     readonly date: string | null;
     readonly sale_message: string | null;
-    readonly is_in_auction: boolean | null;
     readonly is_biddable: boolean | null;
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
     readonly slug: string;
     readonly sale: {
         readonly is_auction: boolean | null;
-        readonly is_live_open: boolean | null;
-        readonly is_open: boolean | null;
         readonly is_closed: boolean | null;
         readonly display_timely_at: string | null;
     } | null;
@@ -80,13 +77,6 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": "is_in_auction",
-      "name": "isInAuction",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
       "alias": "is_biddable",
       "name": "isBiddable",
       "args": null,
@@ -126,20 +116,6 @@ return {
           "kind": "ScalarField",
           "alias": "is_auction",
           "name": "isAuction",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "is_live_open",
-          "name": "isLiveOpen",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "is_open",
-          "name": "isOpen",
           "args": null,
           "storageKey": null
         },
@@ -255,5 +231,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'abd0e65d56c6630565d9dd9067f1d11a';
+(node as any).hash = '42b38b569004394987dd8f28d13514f3';
 export default node;

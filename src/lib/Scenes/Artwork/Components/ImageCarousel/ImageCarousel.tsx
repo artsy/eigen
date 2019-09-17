@@ -4,7 +4,7 @@ import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { observer } from "mobx-react"
 import React, { useContext, useMemo } from "react"
-import { Animated } from "react-native"
+import { Animated, PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { isPad } from "../../hardware"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
@@ -16,8 +16,6 @@ import { useSpringValue } from "./useSpringValue"
 export interface ImageCarouselProps {
   images: ImageCarousel_images
 }
-
-const THUMBNAIL_PIXEL_DENSITY = 2
 
 /**
  * ImageCarousel
@@ -36,7 +34,7 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
     () =>
       props.images
         .map(image => {
-          if (!image.height || !image.width || !image.image_url) {
+          if (!image.height || !image.width || !image.url) {
             // something is very wrong
             return null
           }
@@ -45,9 +43,10 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
             width,
             height,
             url: createGeminiUrl({
-              imageURL: image.image_url.replace(":version", "normalized"),
-              width: width * THUMBNAIL_PIXEL_DENSITY,
-              height: height * THUMBNAIL_PIXEL_DENSITY,
+              imageURL: image.url.replace(":version", "normalized"),
+              // upscale to match screen resolution
+              width: width * PixelRatio.get(),
+              height: height * PixelRatio.get(),
             }),
             deepZoom: image.deepZoom,
           }
@@ -108,7 +107,7 @@ export const PaginationDot = observer(({ diameter, index }: { diameter: number; 
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
   images: graphql`
     fragment ImageCarousel_images on Image @relay(plural: true) {
-      image_url: imageURL
+      url: imageURL
       width
       height
       deepZoom {

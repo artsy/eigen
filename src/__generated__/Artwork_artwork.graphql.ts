@@ -23,7 +23,6 @@ export type Artwork_artwork = {
         readonly id: string;
     } | null;
     readonly artist: {
-        readonly name: string | null;
         readonly biography_blurb: {
             readonly text: string | null;
         } | null;
@@ -170,13 +169,6 @@ return {
       "concreteType": "Artist",
       "plural": false,
       "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "name",
-          "args": null,
-          "storageKey": null
-        },
         {
           "kind": "LinkedField",
           "alias": "biography_blurb",
@@ -471,5 +463,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'db8693f7ffb05d3afbae8d941129a136';
+(node as any).hash = '749c71e2e646dce8fd256b021fb6fcf6';
 export default node;

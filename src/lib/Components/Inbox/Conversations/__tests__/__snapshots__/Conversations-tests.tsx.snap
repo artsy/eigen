@@ -264,7 +264,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    Bradley Theodore · 
+                    undefined · 
                   </Text>
                   <Text
                     style={
@@ -294,25 +294,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   </Text>
                 </Text>
               </View>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontSize": 16,
-                      "textAlign": "left",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
-                    },
-                  ]
-                }
-              >
-                Karl and Anna... Fab!
-              </Text>
               <Text
                 style={
                   Array [
@@ -493,7 +474,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    Aida Muluneh · 
+                    undefined · 
                   </Text>
                   <Text
                     style={
@@ -523,25 +504,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   </Text>
                 </Text>
               </View>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontSize": 16,
-                      "textAlign": "left",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
-                    },
-                  ]
-                }
-              >
-                Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
-              </Text>
               <Text
                 style={
                   Array [

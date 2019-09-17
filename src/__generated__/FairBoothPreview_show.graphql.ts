@@ -7,8 +7,6 @@ export type FairBoothPreview_show$ref = typeof _FairBoothPreview_show$ref;
 export type FairBoothPreview_show = {
     readonly slug: string;
     readonly internalID: string;
-    readonly name: string | null;
-    readonly is_fair_booth: boolean | null;
     readonly counts: {
         readonly artworks: number | null;
     } | null;
@@ -19,8 +17,10 @@ export type FairBoothPreview_show = {
         readonly internalID?: string;
         readonly id?: string;
         readonly profile?: {
+            readonly id: string;
+            readonly slug: string;
             readonly internalID: string;
-            readonly is_followed: boolean | null;
+            readonly isFollowed: boolean | null;
         } | null;
     } & ({
         readonly name: string | null;
@@ -29,18 +29,17 @@ export type FairBoothPreview_show = {
         readonly internalID: string;
         readonly id: string;
         readonly profile: {
+            readonly id: string;
+            readonly slug: string;
             readonly internalID: string;
-            readonly is_followed: boolean | null;
+            readonly isFollowed: boolean | null;
         } | null;
     } | {
         /*This will never be '% other', but we need some
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
     })) | null;
-    readonly fair: {
-        readonly name: string | null;
-    } | null;
-    readonly cover_image: {
+    readonly coverImage: {
         readonly url: string | null;
     } | null;
     readonly location: {
@@ -76,7 +75,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -89,14 +88,6 @@ return {
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
-    (v2/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": "is_fair_booth",
-      "name": "isFairBooth",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -128,7 +119,13 @@ return {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            (v2/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "name",
+              "args": null,
+              "storageKey": null
+            },
             {
               "kind": "ScalarField",
               "alias": null,
@@ -138,13 +135,7 @@ return {
             },
             (v0/*: any*/),
             (v1/*: any*/),
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "id",
-              "args": null,
-              "storageKey": null
-            },
+            (v2/*: any*/),
             {
               "kind": "LinkedField",
               "alias": null,
@@ -154,10 +145,12 @@ return {
               "concreteType": "Profile",
               "plural": false,
               "selections": [
+                (v2/*: any*/),
+                (v0/*: any*/),
                 (v1/*: any*/),
                 {
                   "kind": "ScalarField",
-                  "alias": "is_followed",
+                  "alias": null,
                   "name": "isFollowed",
                   "args": null,
                   "storageKey": null
@@ -171,18 +164,6 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "fair",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Fair",
-      "plural": false,
-      "selections": [
-        (v2/*: any*/)
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": "cover_image",
       "name": "coverImage",
       "storageKey": null,
       "args": null,
@@ -263,5 +244,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e7b099c3d4951e2459d0b8527811ce38';
+(node as any).hash = '046ef34f7f4e477a2de6b5c29b37e648';
 export default node;

@@ -105,8 +105,6 @@ export default createPaginationContainer(
                 image {
                   url
                 }
-                start_at: startAt
-                end_at: endAt
               }
             }
           }

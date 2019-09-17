@@ -126,12 +126,10 @@ export const BidButtonFragmentContainer = createFragmentContainer(BidButton, {
       slug
       sale {
         slug
-        internalID
         registrationStatus {
           qualifiedForBidding
         }
         isPreview
-        isOpen
         isLiveOpen
         isClosed
         isRegistrationClosed
@@ -146,7 +144,6 @@ export const BidButtonFragmentContainer = createFragmentContainer(BidButton, {
       saleArtwork {
         increments {
           cents
-          display
         }
       }
     }

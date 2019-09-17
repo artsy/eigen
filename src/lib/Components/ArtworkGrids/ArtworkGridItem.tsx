@@ -207,15 +207,12 @@ export default createFragmentContainer(Artwork, {
       title
       date
       sale_message: saleMessage
-      is_in_auction: isInAuction
       is_biddable: isBiddable
       is_acquireable: isAcquireable
       is_offerable: isOfferable
       slug
       sale {
         is_auction: isAuction
-        is_live_open: isLiveOpen
-        is_open: isOpen
         is_closed: isClosed
         display_timely_at: displayTimelyAt
       }

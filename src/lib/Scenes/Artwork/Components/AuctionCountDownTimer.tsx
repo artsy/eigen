@@ -73,7 +73,6 @@ export const AuctionCountDownTimerFragmentContainer = createFragmentContainer(Au
       sale {
         startAt
         endAt
-        liveStartAt
         formattedStartDateTime
       }
     }

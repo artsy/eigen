@@ -16,6 +16,9 @@
 
 ### Master
 
+### 1.17.0
+
+- Remove unused field selections from GraphQL documents - alloy, ds300, kierangillen, sweir27
 - Add vscode-apollo-relay for better Relay DX with vscode-apollo extension - alloy
 - Adds pull to refresh to artwork view - kierangillen
 - Adds mailto to orders@artsy.net for Ask a Specialist - kierangillen

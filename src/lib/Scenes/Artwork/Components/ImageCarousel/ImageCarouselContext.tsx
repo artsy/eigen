@@ -1,25 +1,11 @@
+import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { Schema } from "lib/utils/track"
 import { observable } from "mobx"
 import React, { useMemo, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 
-export interface ImageDescriptor {
-  url: string
-  width: number
-  height: number
-  deepZoom: {
-    image: {
-      tileSize: number
-      url: string
-      format: string
-      size: {
-        width: number
-        height: number
-      }
-    }
-  }
-}
+export type ImageDescriptor = Pick<ImageCarousel_images[number], "deepZoom" | "height" | "width" | "url">
 
 export type ImageCarouselAction =
   | {

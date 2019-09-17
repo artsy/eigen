@@ -10,54 +10,28 @@ import { CommercialPartnerInformation_artwork$ref } from "./CommercialPartnerInf
 declare const _CommercialInformation_artwork$ref: unique symbol;
 export type CommercialInformation_artwork$ref = typeof _CommercialInformation_artwork$ref;
 export type CommercialInformation_artwork = {
-    readonly availability: string | null;
-    readonly artists: ReadonlyArray<{
-        readonly isConsignable: boolean | null;
-    } | null> | null;
-    readonly editionSets: ReadonlyArray<{
-        readonly isAcquireable: boolean | null;
-        readonly isOfferable: boolean | null;
-        readonly saleMessage: string | null;
-    } | null> | null;
-    readonly sale: {
-        readonly isClosed: boolean | null;
-    } | null;
-    readonly saleMessage: string | null;
-    readonly shippingInfo: string | null;
-    readonly shippingOrigin: string | null;
     readonly isAcquireable: boolean | null;
     readonly isOfferable: boolean | null;
     readonly isInquireable: boolean | null;
     readonly isInAuction: boolean | null;
+    readonly availability: string | null;
+    readonly saleMessage: string | null;
+    readonly artists: ReadonlyArray<{
+        readonly isConsignable: boolean | null;
+    } | null> | null;
+    readonly editionSets: ReadonlyArray<{
+        readonly id: string;
+    } | null> | null;
+    readonly sale: {
+        readonly isClosed: boolean | null;
+    } | null;
     readonly " $fragmentRefs": CommercialButtons_artwork$ref & CommercialPartnerInformation_artwork$ref & CommercialEditionSetInformation_artwork$ref & AuctionCountDownTimer_artwork$ref & ArtworkExtraLinks_artwork$ref & AuctionPrice_artwork$ref;
     readonly " $refType": CommercialInformation_artwork$ref;
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "isAcquireable",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "isOfferable",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "saleMessage",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "CommercialInformation_artwork",
   "type": "Artwork",
@@ -67,7 +41,42 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "isAcquireable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isOfferable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isInquireable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isInAuction",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "availability",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "saleMessage",
       "args": null,
       "storageKey": null
     },
@@ -98,9 +107,13 @@ return {
       "concreteType": "EditionSet",
       "plural": true,
       "selections": [
-        (v0/*: any*/),
-        (v1/*: any*/),
-        (v2/*: any*/)
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        }
       ]
     },
     {
@@ -120,37 +133,6 @@ return {
           "storageKey": null
         }
       ]
-    },
-    (v2/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "shippingInfo",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "shippingOrigin",
-      "args": null,
-      "storageKey": null
-    },
-    (v0/*: any*/),
-    (v1/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isInquireable",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isInAuction",
-      "args": null,
-      "storageKey": null
     },
     {
       "kind": "FragmentSpread",
@@ -184,6 +166,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = '80b6e7da486b3229e5ce1066f2a644ea';
+(node as any).hash = '4bd54198a6f6f917d462d02953797897';
 export default node;

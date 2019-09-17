@@ -7,12 +7,10 @@ export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<{
         readonly id: string;
         readonly slug: string;
-        readonly name: string | null;
         readonly profile: {
             readonly slug: string;
         } | null;
-        readonly mobile_image: {
-            readonly internalID: string | null;
+        readonly mobileImage: {
             readonly url: string | null;
         } | null;
     } | null>;
@@ -54,13 +52,6 @@ return {
         },
         (v0/*: any*/),
         {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "name",
-          "args": null,
-          "storageKey": null
-        },
-        {
           "kind": "LinkedField",
           "alias": null,
           "name": "profile",
@@ -74,20 +65,13 @@ return {
         },
         {
           "kind": "LinkedField",
-          "alias": "mobile_image",
+          "alias": null,
           "name": "mobileImage",
           "storageKey": null,
           "args": null,
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "internalID",
-              "args": null,
-              "storageKey": null
-            },
             {
               "kind": "ScalarField",
               "alias": null,
@@ -102,5 +86,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '891328d3519eb2c3806bf60b5b88c27e';
+(node as any).hash = 'ddfb08dfd7c899b6a007b62b54b790cf';
 export default node;

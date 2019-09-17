@@ -102,30 +102,24 @@ export class CommercialInformation extends React.Component<CommercialInformation
 export const CommercialInformationFragmentContainer = createFragmentContainer(CommercialInformation, {
   artwork: graphql`
     fragment CommercialInformation_artwork on Artwork {
+      isAcquireable
+      isOfferable
+      isInquireable
+      isInAuction
       availability
+      saleMessage
 
       artists {
         isConsignable
       }
 
       editionSets {
-        isAcquireable
-        isOfferable
-        saleMessage
+        id
       }
 
       sale {
         isClosed
       }
-
-      saleMessage
-      shippingInfo
-      shippingOrigin
-
-      isAcquireable
-      isOfferable
-      isInquireable
-      isInAuction
 
       ...CommercialButtons_artwork
       ...CommercialPartnerInformation_artwork

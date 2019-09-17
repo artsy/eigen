@@ -24,7 +24,6 @@ query AuctionPriceTestsQuery {
 }
 
 fragment AuctionPrice_artwork on Artwork {
-  slug
   sale {
     internalID
     isWithBuyersPremium
@@ -33,9 +32,7 @@ fragment AuctionPrice_artwork on Artwork {
     id
   }
   saleArtwork {
-    isWithReserve
     reserveMessage
-    reserveStatus
     currentBid {
       display
     }
@@ -125,13 +122,6 @@ return {
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "slug",
-            "args": null,
-            "storageKey": null
-          },
-          {
             "kind": "LinkedField",
             "alias": null,
             "name": "sale",
@@ -183,21 +173,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "isWithReserve",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
                 "name": "reserveMessage",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "reserveStatus",
                 "args": null,
                 "storageKey": null
               },
@@ -298,7 +274,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AuctionPriceTestsQuery",
-    "id": "5fbc15e44c3fcc0459d43153dba0babf",
+    "id": "6d244de9906e4602332d1cf51d127e2b",
     "text": null,
     "metadata": {}
   }

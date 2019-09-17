@@ -8,11 +8,9 @@ declare const _CommercialButtons_artwork$ref: unique symbol;
 export type CommercialButtons_artwork$ref = typeof _CommercialButtons_artwork$ref;
 export type CommercialButtons_artwork = {
     readonly slug: string;
-    readonly internalID: string;
     readonly isAcquireable: boolean | null;
     readonly isOfferable: boolean | null;
     readonly isInquireable: boolean | null;
-    readonly isBiddable: boolean | null;
     readonly isInAuction: boolean | null;
     readonly isBuyNowable: boolean | null;
     readonly editionSets: ReadonlyArray<{
@@ -44,13 +42,6 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "isAcquireable",
       "args": null,
       "storageKey": null
@@ -66,13 +57,6 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "isInquireable",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isBiddable",
       "args": null,
       "storageKey": null
     },
@@ -143,5 +127,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '446a2a05fe9eeb88b52db0dec7389234';
+(node as any).hash = 'e65fb79099cb3b3e016dedcb0a763cf1';
 export default node;

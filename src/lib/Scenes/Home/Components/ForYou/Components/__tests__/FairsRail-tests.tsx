@@ -11,13 +11,13 @@ const fairsModule = {
     {
       id: "the-fair",
       name: "The Fair",
-      mobile_image: { id: "image", url: "https://neopets.jpg" },
+      mobileImage: { id: "image", url: "https://neopets.jpg" },
       profile: { href: "https://neopets.com" },
     },
     {
       id: "the-profileless-fair",
       name: "The Profileless Fair: You Should Not See Me in Snapshots",
-      mobile_image: { id: "image", url: "https://neopets.jpg" },
+      mobileImage: { id: "image", url: "https://neopets.jpg" },
       profile: null,
     },
   ],

@@ -14,12 +14,8 @@ export type FairArtists_fair = {
             readonly endCursor: string | null;
         };
         readonly edges: ReadonlyArray<{
-            readonly cursor: string;
             readonly node: {
-                readonly sortable_id: string | null;
-                readonly href: string | null;
-                readonly internalID: string;
-                readonly slug: string;
+                readonly sortableID: string | null;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
             } | null;
         } | null> | null;
@@ -29,22 +25,7 @@ export type FairArtists_fair = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "FairArtists_fair",
   "type": "Fair",
@@ -75,8 +56,20 @@ return {
     }
   ],
   "selections": [
-    (v0/*: any*/),
-    (v1/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": "artists",
@@ -128,13 +121,6 @@ return {
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "cursor",
-              "args": null,
-              "storageKey": null
-            },
-            {
               "kind": "LinkedField",
               "alias": null,
               "name": "node",
@@ -145,20 +131,11 @@ return {
               "selections": [
                 {
                   "kind": "ScalarField",
-                  "alias": "sortable_id",
+                  "alias": null,
                   "name": "sortableID",
                   "args": null,
                   "storageKey": null
                 },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "href",
-                  "args": null,
-                  "storageKey": null
-                },
-                (v1/*: any*/),
-                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -172,6 +149,13 @@ return {
                   "args": null
                 }
               ]
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
             }
           ]
         }
@@ -179,6 +163,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = '054553e19a3179920e30ef9e136c0839';
+(node as any).hash = '1dfc136e3df0fccd7b8f79d48fcdd6c6';
 export default node;

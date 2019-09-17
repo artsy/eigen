@@ -150,14 +150,12 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         type
         name
         slug
-        internalID
         id
         href
         initials
         profile {
           id
           internalID
-          slug
           is_followed: isFollowed
           icon {
             url(version: "square140")

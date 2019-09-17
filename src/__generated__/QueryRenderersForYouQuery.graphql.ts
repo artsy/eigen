@@ -92,13 +92,11 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
   results {
     id
     slug
-    name
     profile {
       slug
       id
     }
-    mobile_image: mobileImage {
-      internalID
+    mobileImage {
       url
     }
   }
@@ -160,7 +158,6 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
   image {
     aspect_ratio: aspectRatio
   }
@@ -171,15 +168,12 @@ fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message: saleMessage
-  is_in_auction: isInAuction
   is_biddable: isBiddable
   is_acquireable: isAcquireable
   is_offerable: isOfferable
   slug
   sale {
     is_auction: isAuction
-    is_live_open: isLiveOpen
-    is_open: isOpen
     is_closed: isClosed
     display_timely_at: displayTimelyAt
     id
@@ -523,7 +517,6 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
-                  (v5/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -560,13 +553,6 @@ return {
                   },
                   {
                     "kind": "ScalarField",
-                    "alias": "is_in_auction",
-                    "name": "isInAuction",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
                     "alias": "is_biddable",
                     "name": "isBiddable",
                     "args": null,
@@ -586,6 +572,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
+                  (v5/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -599,20 +586,6 @@ return {
                         "kind": "ScalarField",
                         "alias": "is_auction",
                         "name": "isAuction",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_live_open",
-                        "name": "isLiveOpen",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_open",
-                        "name": "isOpen",
                         "args": null,
                         "storageKey": null
                       },
@@ -769,7 +742,6 @@ return {
                 "selections": [
                   (v0/*: any*/),
                   (v5/*: any*/),
-                  (v7/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -785,14 +757,13 @@ return {
                   },
                   {
                     "kind": "LinkedField",
-                    "alias": "mobile_image",
+                    "alias": null,
                     "name": "mobileImage",
                     "storageKey": null,
                     "args": null,
                     "concreteType": "Image",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -813,7 +784,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersForYouQuery",
-    "id": "d08d7ec3c246ed80ed2af98505d8e3a3",
+    "id": "7744da3dcf9f8162717c9e8e1a4189f7",
     "text": null,
     "metadata": {}
   }

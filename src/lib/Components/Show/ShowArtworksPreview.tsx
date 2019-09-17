@@ -8,7 +8,7 @@ import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 interface Props {
   onViewAllArtworksPressed: () => void
   show: ShowArtworksPreview_show
-  title: string
+  title?: string
   relay: RelayProp
 }
 

@@ -34,10 +34,8 @@ export type ShowItemRow_show = {
     readonly status: string | null;
     readonly cover_image: {
         readonly url: string | null;
-        readonly aspect_ratio: number;
     } | null;
     readonly is_fair_booth: boolean | null;
-    readonly start_at: string | null;
     readonly end_at: string | null;
     readonly " $refType": ShowItemRow_show$ref;
 };
@@ -184,13 +182,6 @@ return {
           "name": "url",
           "args": null,
           "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "aspect_ratio",
-          "name": "aspectRatio",
-          "args": null,
-          "storageKey": null
         }
       ]
     },
@@ -198,13 +189,6 @@ return {
       "kind": "ScalarField",
       "alias": "is_fair_booth",
       "name": "isFairBooth",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "start_at",
-      "name": "startAt",
       "args": null,
       "storageKey": null
     },
@@ -218,5 +202,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f3460269adffd20b7426b11ac9a20101';
+(node as any).hash = '0bff9a002bbda9d71d8c4230f7c7b710';
 export default node;
