@@ -44,9 +44,7 @@ export class ArtistRail extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     if (props.rail.results) {
-      const artists = props.rail.results.map(({ id, internalID }) =>
-        setupSuggestedArtist({ id, internalID }, 1, 0)
-      ) as any
+      const artists = props.rail.results.map(artist => setupSuggestedArtist(artist, 1, 0)) as any
       this.state = { artists }
     }
   }
