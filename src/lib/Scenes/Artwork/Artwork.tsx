@@ -218,7 +218,6 @@ export const ArtworkContainer = createRefetchContainer(
           id
         }
         artist {
-          name
           biography_blurb: biographyBlurb {
             text
           }

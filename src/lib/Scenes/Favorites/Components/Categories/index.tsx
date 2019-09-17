@@ -95,7 +95,6 @@ export default createPaginationContainer(
             edges {
               node {
                 gene {
-                  slug
                   id
                   name
                   href

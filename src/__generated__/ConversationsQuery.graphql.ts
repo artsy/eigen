@@ -54,8 +54,8 @@ fragment ConversationSnippet_conversation on Conversation {
     name
     id
   }
-  last_message: lastMessage
-  last_message_at: lastMessageAt
+  lastMessage
+  lastMessageAt
   unread
   items {
     item {
@@ -63,7 +63,7 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Artwork {
         date
         title
-        artist_names: artistNames
+        artistNames
         image {
           url
         }
@@ -74,7 +74,7 @@ fragment ConversationSnippet_conversation on Conversation {
           id
         }
         name
-        cover_image: coverImage {
+        coverImage {
           url
         }
       }
@@ -277,7 +277,14 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "last_message_at",
+                        "alias": null,
+                        "name": "lastMessage",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "lastMessageAt",
                         "args": null,
                         "storageKey": null
@@ -329,7 +336,7 @@ return {
                                   },
                                   {
                                     "kind": "ScalarField",
-                                    "alias": "artist_names",
+                                    "alias": null,
                                     "name": "artistNames",
                                     "args": null,
                                     "storageKey": null
@@ -363,7 +370,7 @@ return {
                                   (v2/*: any*/),
                                   {
                                     "kind": "LinkedField",
-                                    "alias": "cover_image",
+                                    "alias": null,
                                     "name": "coverImage",
                                     "storageKey": null,
                                     "args": null,
@@ -409,7 +416,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationsQuery",
-    "id": "386aa36282a025b6c65fc9a129b345b6",
+    "id": "4587fa958ec869e9700b9d66df269bc3",
     "text": null,
     "metadata": {}
   }

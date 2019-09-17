@@ -27,14 +27,14 @@ export class FairBoothPreview extends React.Component<Props, State> {
   }
 
   @track((props, _, args) => {
-    const partnerSlug = args[0]
-    const partnerID = args[1]
+    const slug = args[0]
+    const internalID = args[1]
     const {
       show: {
         partner: { profile },
       },
     } = props
-    const isFollowed = profile ? profile.is_followed : null
+    const isFollowed = profile ? profile.isFollowed : null
     if (isFollowed === null) {
       return
     }
@@ -42,23 +42,25 @@ export class FairBoothPreview extends React.Component<Props, State> {
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Success,
-      owner_id: partnerID,
-      owner_slug: partnerSlug,
+      owner_id: internalID,
+      owner_slug: slug,
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  trackFollowPartner(_partnerSlug, _partnerID) {
+  trackFollowPartner(_slug, _internalID) {
     return null
   }
 
   handleFollowPartner = () => {
     const { show, relay } = this.props
     const {
-      partner: { slug: partnerSlug, internalID: partnerID, id: partnerRelayID, profile },
+      partner: { slug: partnerSlug, internalID: partnerInternalID, id: partnerID, profile },
     } = show
-    const isFollowed = !!profile ? profile.is_followed : null
-    const internalID = !!profile ? profile.internalID : null
-    if (isFollowed === null || !internalID) {
+    if (!profile) {
+      return
+    }
+    const isFollowed = profile.isFollowed
+    if (isFollowed === null) {
       return
     }
     this.setState(
@@ -71,36 +73,38 @@ export class FairBoothPreview extends React.Component<Props, State> {
             this.setState({
               isFollowedChanging: false,
             })
-            this.trackFollowPartner(partnerSlug, partnerID)
+            this.trackFollowPartner(partnerSlug, partnerInternalID)
           },
           mutation: graphql`
             mutation FairBoothPreviewMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
+                  id
                   slug
                   internalID
-                  is_followed: isFollowed
+                  isFollowed
                 }
               }
             }
           `,
           variables: {
             input: {
-              profileID: internalID,
+              profileID: profile.internalID,
               unfollow: isFollowed,
             },
           },
           optimisticResponse: {
             followProfile: {
               profile: {
-                internalID,
-                slug: partnerSlug,
-                is_followed: !isFollowed,
+                id: profile.id,
+                internalID: profile.internalID,
+                slug: profile.slug,
+                isFollowed: !isFollowed,
               },
             },
           },
           updater: store => {
-            store.get(partnerRelayID).setValue(!isFollowed, "is_followed")
+            store.get(partnerID).setValue(!isFollowed, "isFollowed")
           },
         })
       }
@@ -139,7 +143,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     const {
       show: {
         artworks,
-        cover_image,
+        coverImage,
         location,
         partner: { name: partnerName, profile },
         counts: { artworks: artworkCount },
@@ -153,9 +157,9 @@ export class FairBoothPreview extends React.Component<Props, State> {
           onFollowPartner={this.handleFollowPartner}
           name={partnerName}
           location={display}
-          isFollowed={profile ? profile.is_followed : null}
+          isFollowed={profile ? profile.isFollowed : null}
           isFollowedChanging={this.state.isFollowedChanging}
-          url={cover_image && cover_image.url}
+          url={coverImage && coverImage.url}
           onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
         />
         <Box mt={1}>{<GenericGrid artworks={artworks.edges.map(a => a.node) as any} />}</Box>
@@ -175,8 +179,6 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
     fragment FairBoothPreview_show on Show {
       slug
       internalID
-      name
-      is_fair_booth: isFairBooth
       counts {
         artworks
       }
@@ -188,15 +190,14 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
           internalID
           id
           profile {
+            id
+            slug
             internalID
-            is_followed: isFollowed
+            isFollowed
           }
         }
       }
-      fair {
-        name
-      }
-      cover_image: coverImage {
+      coverImage {
         url
       }
       location {

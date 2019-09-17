@@ -11,13 +11,7 @@ export type Detail_show$ref = typeof _Detail_show$ref;
 export type Detail_show = {
     readonly internalID: string;
     readonly slug: string;
-    readonly name: string | null;
     readonly description: string | null;
-    readonly city: string | null;
-    readonly isStubShow: boolean | null;
-    readonly images: ReadonlyArray<{
-        readonly internalID: string | null;
-    } | null> | null;
     readonly location: {
         readonly openingHours: ({
             readonly schedules?: ReadonlyArray<{
@@ -39,14 +33,13 @@ export type Detail_show = {
         })) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     } | null;
-    readonly artists_without_artworks: ReadonlyArray<{
+    readonly artistsWithoutArtworks: ReadonlyArray<{
         readonly slug: string;
     } | null> | null;
     readonly counts: {
         readonly artworks: number | null;
         readonly artists: number | null;
     } | null;
-    readonly status: string | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly type?: string | null;
@@ -68,21 +61,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
   "args": null,
   "storageKey": null
 };
@@ -93,41 +72,20 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     (v0/*: any*/),
-    (v1/*: any*/),
-    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "description",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "city",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isStubShow",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "images",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Image",
-      "plural": true,
-      "selections": [
-        (v0/*: any*/)
-      ]
     },
     {
       "kind": "LinkedField",
@@ -202,14 +160,14 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "artists_without_artworks",
+      "alias": null,
       "name": "artistsWithoutArtworks",
       "storageKey": null,
       "args": null,
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        (v1/*: any*/)
+        (v0/*: any*/)
       ]
     },
     {
@@ -238,13 +196,6 @@ return {
       ]
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "status",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
       "alias": null,
       "name": "partner",
@@ -257,7 +208,13 @@ return {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            (v2/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "name",
+              "args": null,
+              "storageKey": null
+            },
             {
               "kind": "ScalarField",
               "alias": null,
@@ -292,5 +249,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '96d683f7cf1d11df32d49cf249862c77';
+(node as any).hash = '6b10fecaf389604f1d711c4b5b4bda88';
 export default node;

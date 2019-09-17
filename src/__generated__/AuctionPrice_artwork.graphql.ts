@@ -4,7 +4,6 @@ import { ReaderFragment } from "relay-runtime";
 declare const _AuctionPrice_artwork$ref: unique symbol;
 export type AuctionPrice_artwork$ref = typeof _AuctionPrice_artwork$ref;
 export type AuctionPrice_artwork = {
-    readonly slug: string;
     readonly sale: {
         readonly internalID: string;
         readonly isWithBuyersPremium: boolean | null;
@@ -12,9 +11,7 @@ export type AuctionPrice_artwork = {
         readonly isLiveOpen: boolean | null;
     } | null;
     readonly saleArtwork: {
-        readonly isWithReserve: boolean | null;
         readonly reserveMessage: string | null;
-        readonly reserveStatus: string | null;
         readonly currentBid: {
             readonly display: string | null;
         } | null;
@@ -54,13 +51,6 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -112,21 +102,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "isWithReserve",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
           "name": "reserveMessage",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "reserveStatus",
           "args": null,
           "storageKey": null
         },
@@ -219,5 +195,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a26e6102c41d924b3013ed987b48dd56';
+(node as any).hash = '6595333be88a259da957344f624b6db2';
 export default node;

@@ -95,7 +95,6 @@ export default createRefetchContainer(
           edges {
             node {
               ...SaleListItem_sale
-              href
               live_start_at: liveStartAt
             }
           }

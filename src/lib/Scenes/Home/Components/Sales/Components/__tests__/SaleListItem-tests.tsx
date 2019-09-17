@@ -33,7 +33,7 @@ const props = {
     .add(5, "hour")
     .toISOString(),
   live_url_if_open: null,
-  display_timely_at: "Live in 2 hours",
+  displayTimelyAt: "Live in 2 hours",
   cover_image: {
     url: "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
   },

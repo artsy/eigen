@@ -9,7 +9,6 @@ export type Sales_query = {
     readonly salesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly href: string | null;
                 readonly live_start_at: string | null;
                 readonly " $fragmentRefs": SaleListItem_sale$ref;
             } | null;
@@ -78,13 +77,6 @@ const node: ReaderFragment = {
               "selections": [
                 {
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "href",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
                   "alias": "live_start_at",
                   "name": "liveStartAt",
                   "args": null,
@@ -108,5 +100,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e94deed573d0d7b1e83d4dcb905cc75b';
+(node as any).hash = 'c69fdf7f4fd289f56a4bff2f9bd5f82d';
 export default node;

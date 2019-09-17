@@ -110,7 +110,6 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
 export const AuctionPriceFragmentContainer = createFragmentContainer(AuctionPrice, {
   artwork: graphql`
     fragment AuctionPrice_artwork on Artwork {
-      slug
       sale {
         internalID
         isWithBuyersPremium
@@ -118,9 +117,7 @@ export const AuctionPriceFragmentContainer = createFragmentContainer(AuctionPric
         isLiveOpen
       }
       saleArtwork {
-        isWithReserve
         reserveMessage
-        reserveStatus
         currentBid {
           display
         }

@@ -160,9 +160,6 @@ export default createFragmentContainer(ActiveBid, {
       }
       most_recent_bid: mostRecentBid {
         id
-        max_bid: maxBid {
-          display
-        }
         sale_artwork: saleArtwork {
           artwork {
             href

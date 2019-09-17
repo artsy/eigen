@@ -3,15 +3,16 @@ import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.g
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import { get } from "lib/utils/get"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { get, take } from "lodash"
+import { take } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   show: ShowArtistsPreview_show
   onViewAllArtistsPressed: () => void
-  Component: any
+  Component?: any
 }
 
 const track: Track<Props> = _track
@@ -35,8 +36,8 @@ export class ShowArtistsPreview extends React.Component<Props> {
   render() {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
-    const artists = get(show, "artists", []).concat(get(show, "artists_without_artworks", []))
-    const items: ShowArtistsPreview_show["artists"] = take(artists, artistsShown)
+    const artists = get(show, s => s.artists, []).concat(get(show, s => s.artists_without_artworks, []))
+    const items = take(artists, artistsShown)
 
     return (
       <>

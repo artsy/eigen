@@ -39,7 +39,6 @@ fragment Categories_me_1G22uz on Me {
       edges {
         node {
           gene {
-            slug
             id
             name
             href
@@ -213,13 +212,6 @@ return {
                             "concreteType": "Gene",
                             "plural": false,
                             "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "slug",
-                                "args": null,
-                                "storageKey": null
-                              },
                               (v2/*: any*/),
                               {
                                 "kind": "ScalarField",
@@ -295,7 +287,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CategoriesMeQuery",
-    "id": "33cdc78670ae63eb8ad546f7a1432172",
+    "id": "0ee862fb0d588dc294b1620573b3677f",
     "text": null,
     "metadata": {}
   }

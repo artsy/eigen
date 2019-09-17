@@ -8,15 +8,15 @@ export type ConversationSnippet_conversation = {
     readonly to: {
         readonly name: string;
     };
-    readonly last_message: string | null;
-    readonly last_message_at: string | null;
+    readonly lastMessage: string | null;
+    readonly lastMessageAt: string | null;
     readonly unread: boolean | null;
     readonly items: ReadonlyArray<{
         readonly item: ({
             readonly __typename: string;
             readonly date?: string | null;
             readonly title?: string | null;
-            readonly artist_names?: string | null;
+            readonly artistNames?: string | null;
             readonly image?: {
                 readonly url: string | null;
             } | null;
@@ -24,14 +24,14 @@ export type ConversationSnippet_conversation = {
                 readonly name: string | null;
             } | null;
             readonly name?: string | null;
-            readonly cover_image?: {
+            readonly coverImage?: {
                 readonly url: string | null;
             } | null;
         } & ({
             readonly __typename: "Artwork";
             readonly date: string | null;
             readonly title: string | null;
-            readonly artist_names: string | null;
+            readonly artistNames: string | null;
             readonly image: {
                 readonly url: string | null;
             } | null;
@@ -41,7 +41,7 @@ export type ConversationSnippet_conversation = {
                 readonly name: string | null;
             } | null;
             readonly name: string | null;
-            readonly cover_image: {
+            readonly coverImage: {
                 readonly url: string | null;
             } | null;
         } | {
@@ -101,14 +101,14 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": "last_message",
+      "alias": null,
       "name": "lastMessage",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": "last_message_at",
+      "alias": null,
       "name": "lastMessageAt",
       "args": null,
       "storageKey": null
@@ -165,7 +165,7 @@ return {
                 },
                 {
                   "kind": "ScalarField",
-                  "alias": "artist_names",
+                  "alias": null,
                   "name": "artistNames",
                   "args": null,
                   "storageKey": null
@@ -199,7 +199,7 @@ return {
                 (v0/*: any*/),
                 {
                   "kind": "LinkedField",
-                  "alias": "cover_image",
+                  "alias": null,
                   "name": "coverImage",
                   "storageKey": null,
                   "args": null,
@@ -216,5 +216,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ac3f7de52b8ab5b35e443600bfc0039f';
+(node as any).hash = '51a731d89429f7b46a9000aed66aec62';
 export default node;

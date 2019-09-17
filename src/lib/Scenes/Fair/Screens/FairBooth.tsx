@@ -13,8 +13,18 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { FairBoothHeaderContainer as FairBoothHeader } from "../Components/FairBoothHeader"
 
+type Item =
+  | {
+      type: "artworks"
+      data: { show: FairBooth_show; onViewAllArtworksPressed: () => void }
+    }
+  | {
+      type: "artists"
+      data: { show: FairBooth_show; onViewAllArtistsPressed: () => void }
+    }
+
 interface State {
-  sections: Array<{ type: "artworks" | "artists"; data: object }>
+  sections: Item[]
 }
 
 interface Props {
@@ -62,12 +72,12 @@ export class FairBooth extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
-  renderItem = ({ item: { data, type } }) => {
-    switch (type) {
+  renderItem = ({ item }: { item: Item }) => {
+    switch (item.type) {
       case "artworks":
-        return <ShowArtworksPreview {...data} />
+        return <ShowArtworksPreview {...item.data} />
       case "artists":
-        return <ShowArtistsPreview {...data} />
+        return <ShowArtistsPreview {...item.data} />
       default:
         return null
     }
@@ -113,8 +123,6 @@ export const FairBoothContainer = createFragmentContainer(FairBooth, {
       ...FairBoothHeader_show
       ...ShowArtworksPreview_show
       ...ShowArtistsPreview_show
-      ...ShowArtists_show
-      ...ShowArtworks_show
     }
   `,
 })

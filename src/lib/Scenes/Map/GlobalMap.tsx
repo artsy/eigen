@@ -786,7 +786,10 @@ const SelectedCluster = styled(Flex)`
   align-items: center;
 `
 
-// FIXME: This should not take the Query type but just City.
+// FIXME:
+// * This should not take the Query type but just City.
+// * Use fragments to reduce the size of this fragment.
+// * Test if there are unnused field selections.
 //
 // NOTE: Not renamed the prop from `viewer` becuase there's too much indirection in how the city data is used and it's
 //       too easy to miss a place that needs to be updated. This should be cleaned up when the above FIXME is addressed.

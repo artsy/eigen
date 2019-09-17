@@ -19,12 +19,8 @@ export const CollectionHeader = props => {
 export const CollectionHeaderContainer = createFragmentContainer(CollectionHeader, {
   collection: graphql`
     fragment CollectionHeader_collection on MarketingCollection {
-      slug
       title
       description
-      headerImage
-      category
-      credit
     }
   `,
 })

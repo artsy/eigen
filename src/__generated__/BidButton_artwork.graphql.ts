@@ -7,12 +7,10 @@ export type BidButton_artwork = {
     readonly slug: string;
     readonly sale: {
         readonly slug: string;
-        readonly internalID: string;
         readonly registrationStatus: {
             readonly qualifiedForBidding: boolean | null;
         } | null;
         readonly isPreview: boolean | null;
-        readonly isOpen: boolean | null;
         readonly isLiveOpen: boolean | null;
         readonly isClosed: boolean | null;
         readonly isRegistrationClosed: boolean | null;
@@ -27,7 +25,6 @@ export type BidButton_artwork = {
     readonly saleArtwork: {
         readonly increments: ReadonlyArray<{
             readonly cents: number | null;
-            readonly display: string | null;
         } | null> | null;
     } | null;
     readonly " $refType": BidButton_artwork$ref;
@@ -43,13 +40,15 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "cents",
-  "args": null,
-  "storageKey": null
-};
+v1 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "cents",
+    "args": null,
+    "storageKey": null
+  }
+];
 return {
   "kind": "Fragment",
   "name": "BidButton_artwork",
@@ -68,13 +67,6 @@ return {
       "plural": false,
       "selections": [
         (v0/*: any*/),
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "internalID",
-          "args": null,
-          "storageKey": null
-        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -97,13 +89,6 @@ return {
           "kind": "ScalarField",
           "alias": null,
           "name": "isPreview",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "isOpen",
           "args": null,
           "storageKey": null
         },
@@ -162,9 +147,7 @@ return {
               "args": null,
               "concreteType": "BidderPositionMaxBid",
               "plural": false,
-              "selections": [
-                (v1/*: any*/)
-              ]
+              "selections": (v1/*: any*/)
             }
           ]
         }
@@ -187,21 +170,12 @@ return {
           "args": null,
           "concreteType": "BidIncrementsFormatted",
           "plural": true,
-          "selections": [
-            (v1/*: any*/),
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "display",
-              "args": null,
-              "storageKey": null
-            }
-          ]
+          "selections": (v1/*: any*/)
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '1c08add1bf088f42a66a138df9979dd0';
+(node as any).hash = 'ec09ef9d1708154bd5abdb12518bcf64';
 export default node;

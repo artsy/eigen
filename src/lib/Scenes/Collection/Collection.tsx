@@ -69,13 +69,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
 export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
     fragment Collection_collection on MarketingCollection {
-      slug
-      title
-      description
-      headerImage
-      category
-      credit
-
       ...CollectionHeader_collection
     }
   `,

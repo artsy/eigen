@@ -47,7 +47,7 @@ const Separator = styled.View`
   margin-top: 9px;
 `
 
-interface Props {
+interface SavedItemRowProps {
   href: string
   name: string
   image: {
@@ -56,7 +56,7 @@ interface Props {
   square_image?: boolean | undefined
 }
 
-export default class SavedArtistRow extends React.Component<Props, null> {
+export default class SavedArtistRow extends React.Component<SavedItemRowProps, null> {
   handleTap() {
     Switchboard.presentNavigationViewController(this, this.props.href)
   }

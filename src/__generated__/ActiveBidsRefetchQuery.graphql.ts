@@ -41,9 +41,6 @@ fragment ActiveBid_bid on LotStanding {
   }
   most_recent_bid: mostRecentBid {
     id
-    max_bid: maxBid {
-      display
-    }
     sale_artwork: saleArtwork {
       artwork {
         href
@@ -75,16 +72,7 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
-],
-v2 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
@@ -159,16 +147,6 @@ return {
                   (v0/*: any*/),
                   {
                     "kind": "LinkedField",
-                    "alias": "max_bid",
-                    "name": "maxBid",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "BidderPositionMaxBid",
-                    "plural": false,
-                    "selections": (v1/*: any*/)
-                  },
-                  {
-                    "kind": "LinkedField",
                     "alias": "sale_artwork",
                     "name": "saleArtwork",
                     "storageKey": null,
@@ -185,7 +163,7 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          (v1/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -240,7 +218,15 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkHighestBid",
                         "plural": false,
-                        "selections": (v1/*: any*/)
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "display",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -277,7 +263,7 @@ return {
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
+                  (v1/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": "is_live_open",
@@ -298,7 +284,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ActiveBidsRefetchQuery",
-    "id": "ee3468ad07027d687673652145a95770",
+    "id": "21dba509602d1fec7a5c41c674613da0",
     "text": null,
     "metadata": {}
   }

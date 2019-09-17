@@ -32,7 +32,6 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
   id
   increments(useMyMaxBid: true) {
     display
-    cents
   }
   ...ConfirmBid_sale_artwork
 }
@@ -60,14 +59,9 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
-  minimum_next_bid: minimumNextBid {
-    amount
-    cents
-    display
-  }
   sale {
-    live_start_at: liveStartAt
-    end_at: endAt
+    liveStartAt
+    endAt
     slug
     id
   }
@@ -98,20 +92,6 @@ v2 = {
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "display",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "cents",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
@@ -186,8 +166,13 @@ return {
                 "concreteType": "BidIncrementsFormatted",
                 "plural": true,
                 "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/)
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "display",
+                    "args": null,
+                    "storageKey": null
+                  }
                 ]
               },
               {
@@ -206,7 +191,7 @@ return {
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  (v5/*: any*/),
+                  (v3/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": "live_start_at",
@@ -221,7 +206,21 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/)
+                  (v2/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "liveStartAt",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endAt",
+                    "args": null,
+                    "storageKey": null
+                  }
                 ]
               },
               {
@@ -233,7 +232,7 @@ return {
                 "concreteType": "Artwork",
                 "plural": false,
                 "selections": [
-                  (v5/*: any*/),
+                  (v3/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -288,26 +287,6 @@ return {
                 "name": "lotLabel",
                 "args": null,
                 "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": "minimum_next_bid",
-                "name": "minimumNextBid",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "SaleArtworkMinimumNextBid",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "amount",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  (v4/*: any*/),
-                  (v3/*: any*/)
-                ]
               }
             ]
           }
@@ -318,7 +297,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SelectMaxBidRefetchQuery",
-    "id": "f0b91ec66bc0c2a61f9660292a98b39f",
+    "id": "fe2507ee54eaefdc6a529a461e322dfd",
     "text": null,
     "metadata": {}
   }

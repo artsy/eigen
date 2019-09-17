@@ -86,7 +86,6 @@ export const ShowItemContainer = createFragmentContainer(ShowItem, {
       end_at: endAt
       images {
         url
-        aspect_ratio: aspectRatio
       }
       partner {
         ... on Partner {

@@ -2,10 +2,8 @@ import React from "react"
 import { Picker, PickerProperties } from "react-native"
 import styled from "styled-components/native"
 
-import { Bid } from "../types"
-
 export interface MaxBidPickerProps extends PickerProperties {
-  bids: ReadonlyArray<Bid>
+  bids: ReadonlyArray<{ display: string }>
 }
 
 export class MaxBidPicker extends React.Component<MaxBidPickerProps> {

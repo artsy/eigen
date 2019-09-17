@@ -23,7 +23,6 @@ exports[`renders correctly 1`] = `
   }
 >
   <AROpaqueImageView
-    imageURL="https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg"
     style={
       Array [
         Object {
@@ -92,36 +91,6 @@ exports[`renders correctly 1`] = `
       >
         Freeman's: Modern & Contemporary Works of Art
       </Text>
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "white",
-              "borderRadius": 2,
-              "marginLeft": 3,
-              "paddingBottom": 1,
-              "paddingLeft": 4,
-              "paddingRight": 4,
-              "paddingTop": 1,
-            },
-          ]
-        }
-      >
-        <Text
-          style={
-            Array [
-              Object {
-                "alignSelf": "center",
-                "fontFamily": "AvantGardeGothicITC",
-                "fontSize": 7,
-                "letterSpacing": 1.5,
-              },
-            ]
-          }
-        >
-          LIVE
-        </Text>
-      </View>
     </View>
     <View
       style={

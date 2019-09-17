@@ -68,9 +68,9 @@ export class FairHeader extends React.Component<Props, State> {
   }
 
   getContextualDetails() {
-    const { followed_content, artists_names, counts } = this.props.fair
-    const fairfollowedArtistList = (followed_content && followed_content.artists) || []
-    const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
+    const { followedContent, artistsConnection, counts } = this.props.fair
+    const fairfollowedArtistList = (followedContent && followedContent.artists) || []
+    const artistList = artistsConnection.edges.map(i => i.node).filter(Boolean)
     const uniqArtistList = uniq(fairfollowedArtistList.concat(artistList))
 
     return (
@@ -119,7 +119,7 @@ export class FairHeader extends React.Component<Props, State> {
 
   render() {
     const {
-      fair: { image, name, profile, start_at, end_at, exhibition_period, formattedOpeningHours },
+      fair: { image, name, profile, startAt, endAt, exhibitionPeriod, formattedOpeningHours },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
     const imageHeight = 567
@@ -135,17 +135,17 @@ export class FairHeader extends React.Component<Props, State> {
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>
-              {!!exhibition_period && (
+              {!!exhibitionPeriod && (
                 <Sans size="3" textAlign="center" color="white100">
-                  {exhibition_period}
+                  {exhibitionPeriod}
                 </Sans>
               )}
             </Flex>
           </Flex>
-          {!!start_at &&
-            !!end_at && (
+          {!!startAt &&
+            !!endAt && (
               <CountdownContainer>
-                <CountdownTimer startAt={start_at} endAt={end_at} formattedOpeningHours={formattedOpeningHours} />
+                <CountdownTimer startAt={startAt} endAt={endAt} formattedOpeningHours={formattedOpeningHours} />
               </CountdownContainer>
             )}
         </Box>
@@ -162,42 +162,30 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
   fair: graphql`
     fragment FairHeader_fair on Fair {
       slug
-      internalID
       name
       formattedOpeningHours
+      startAt
+      endAt
+      exhibitionPeriod
+
       counts {
         artists
-        partners
       }
-      followed_content: followedContent {
+
+      image {
+        url
+      }
+
+      followedContent {
         artists {
           name
           href
           slug
           internalID
         }
-        galleries {
-          internalID
-          name
-        }
       }
-      partner_names: showsConnection(first: 2) {
-        edges {
-          node {
-            slug
-            partner {
-              ... on Partner {
-                profile {
-                  name
-                  slug
-                  internalID
-                }
-              }
-            }
-          }
-        }
-      }
-      artists_names: artistsConnection(first: 3) {
+
+      artistsConnection(first: 3) {
         edges {
           node {
             name
@@ -207,27 +195,13 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           }
         }
       }
-      image {
-        image_url: imageURL
-        aspect_ratio: aspectRatio
-        url
-      }
+
       profile {
+        id
         icon {
-          internalID
-          href
-          height
-          width
           url(version: "square140")
         }
-        id
-        slug
-        name
-        is_followed: isFollowed
       }
-      start_at: startAt
-      end_at: endAt
-      exhibition_period: exhibitionPeriod
     }
   `,
 })

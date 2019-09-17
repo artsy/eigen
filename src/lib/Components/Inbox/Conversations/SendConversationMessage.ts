@@ -3,7 +3,7 @@ import { commitMutation, graphql } from "react-relay"
 import { ConnectionHandler, Environment, MutationConfig, RecordSourceSelectorProxy } from "relay-runtime"
 
 interface Conversation {
-  last_message_id: string
+  lastMessageID: string
   internalID: string
   id: string
   from: {
@@ -55,7 +55,7 @@ export function sendConversationMessage(
         from: conversation.from.email,
         bodyText: text,
         // Reply to the last message
-        replyToMessageID: conversation.last_message_id,
+        replyToMessageID: conversation.lastMessageID,
       },
     },
 

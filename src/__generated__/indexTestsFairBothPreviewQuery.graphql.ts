@@ -26,8 +26,6 @@ query indexTestsFairBothPreviewQuery {
 fragment FairBoothPreview_show on Show {
   slug
   internalID
-  name
-  is_fair_booth: isFairBooth
   counts {
     artworks
   }
@@ -40,9 +38,10 @@ fragment FairBoothPreview_show on Show {
       internalID
       id
       profile {
-        internalID
-        is_followed: isFollowed
         id
+        slug
+        internalID
+        isFollowed
       }
     }
     ... on Node {
@@ -52,11 +51,7 @@ fragment FairBoothPreview_show on Show {
       id
     }
   }
-  fair {
-    name
-    id
-  }
-  cover_image: coverImage {
+  coverImage {
     url
   }
   location {
@@ -75,7 +70,6 @@ fragment FairBoothPreview_show on Show {
 
 fragment GenericGrid_artworks on Artwork {
   id
-  slug
   image {
     aspect_ratio: aspectRatio
   }
@@ -86,15 +80,12 @@ fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message: saleMessage
-  is_in_auction: isInAuction
   is_biddable: isBiddable
   is_acquireable: isAcquireable
   is_offerable: isOfferable
   slug
   sale {
     is_auction: isAuction
-    is_live_open: isLiveOpen
-    is_open: isOpen
     is_closed: isClosed
     display_timely_at: displayTimelyAt
     id
@@ -146,14 +137,14 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -164,17 +155,17 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = [
-  (v3/*: any*/),
-  (v4/*: any*/)
-],
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "display",
   "args": null,
   "storageKey": null
-};
+},
+v7 = [
+  (v4/*: any*/),
+  (v3/*: any*/)
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -218,14 +209,6 @@ return {
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
-          (v3/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": "is_fair_booth",
-            "name": "isFairBooth",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -260,12 +243,12 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v4/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   (v5/*: any*/),
                   (v1/*: any*/),
                   (v2/*: any*/),
@@ -278,15 +261,16 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
+                      (v3/*: any*/),
+                      (v1/*: any*/),
                       (v2/*: any*/),
                       {
                         "kind": "ScalarField",
-                        "alias": "is_followed",
+                        "alias": null,
                         "name": "isFollowed",
                         "args": null,
                         "storageKey": null
-                      },
-                      (v4/*: any*/)
+                      }
                     ]
                   }
                 ]
@@ -296,16 +280,6 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "fair",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Fair",
-            "plural": false,
-            "selections": (v6/*: any*/)
-          },
-          {
-            "kind": "LinkedField",
-            "alias": "cover_image",
             "name": "coverImage",
             "storageKey": null,
             "args": null,
@@ -330,8 +304,8 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              (v7/*: any*/),
-              (v4/*: any*/)
+              (v6/*: any*/),
+              (v3/*: any*/)
             ]
           },
           {
@@ -367,8 +341,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
-                      (v1/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -423,13 +396,6 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "is_in_auction",
-                        "name": "isInAuction",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
                         "alias": "is_biddable",
                         "name": "isBiddable",
                         "args": null,
@@ -449,6 +415,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v1/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -467,20 +434,6 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "is_live_open",
-                            "name": "isLiveOpen",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "is_open",
-                            "name": "isOpen",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
                             "alias": "is_closed",
                             "name": "isClosed",
                             "args": null,
@@ -493,7 +446,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -514,10 +467,10 @@ return {
                             "concreteType": "SaleArtworkCurrentBid",
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/)
+                              (v6/*: any*/)
                             ]
                           },
-                          (v4/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -534,7 +487,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v6/*: any*/)
+                        "selections": (v7/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -544,7 +497,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v6/*: any*/)
+                        "selections": (v7/*: any*/)
                       },
                       (v5/*: any*/)
                     ]
@@ -553,7 +506,7 @@ return {
               }
             ]
           },
-          (v4/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -561,7 +514,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsFairBothPreviewQuery",
-    "id": "75597785eb99da82db66f8e66b560832",
+    "id": "199205a09cc26a053f7a5351773e6c3d",
     "text": null,
     "metadata": {}
   }

@@ -7,7 +7,6 @@ export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
     readonly internalID: string;
     readonly slug: string;
-    readonly exhibition_period: string | null;
     readonly pressReleaseUrl: string | null;
     readonly openingReceptionText: string | null;
     readonly partner: ({
@@ -48,13 +47,6 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "exhibition_period",
-      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     },
@@ -128,5 +120,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8c89cd8e513cef411fec9d3f3f2197be';
+(node as any).hash = '85085e24aa4e107b81ae3e19c8567e7a';
 export default node;
