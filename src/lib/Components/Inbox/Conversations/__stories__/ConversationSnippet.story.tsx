@@ -9,8 +9,8 @@ import { ConversationSnippet } from "../ConversationSnippet"
 const conversation = ({
   id: "582",
   to: { name: "ACA Galleries" },
-  last_message: "Karl and Anna... Fab!",
-  last_message_at: null, // moment().subtract(1, "year").toISOString(),
+  lastMessage: "Karl and Anna... Fab!",
+  lastMessageAt: null, // moment().subtract(1, "year").toISOString(),
   unread: true,
   items: [
     {
