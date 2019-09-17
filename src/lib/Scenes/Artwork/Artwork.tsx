@@ -112,8 +112,7 @@ export class Artwork extends React.Component<Props, State> {
       {},
       error => {
         if (error) {
-          // FIXME: Handle error
-          console.error("Sales/index.tsx", error.message)
+          console.error("Artwork.tsx refretch query: ", error.message)
         }
         this.setState({ refreshing: false })
       },
