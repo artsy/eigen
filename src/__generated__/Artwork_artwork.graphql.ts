@@ -97,14 +97,7 @@ return {
   "name": "Artwork_artwork",
   "type": "Artwork",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "fetchContent",
-      "type": "Boolean!",
-      "defaultValue": false
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     {
       "kind": "ScalarField",
@@ -463,5 +456,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '749c71e2e646dce8fd256b021fb6fcf6';
+(node as any).hash = 'bde838a1acfe6dfcc8c851fc9eb6257f';
 export default node;
