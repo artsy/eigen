@@ -107,9 +107,17 @@ export class Artwork extends React.Component<Props, State> {
 
     this.setState({ refreshing: true })
 
-    this.props.relay.refetch({ id: this.props.artwork.id, fetchContent: true }, null, () => {
-      this.setState({ refreshing: false })
-    })
+    this.props.relay.refetch(
+      { id: this.props.artwork.id },
+      {},
+      error => {
+        if (error) {
+          console.error("Artwork.tsx refetch query: ", error.message)
+        }
+        this.setState({ refreshing: false })
+      },
+      { force: true }
+    )
   }
 
   sections = () => {
@@ -206,8 +214,7 @@ export const ArtworkContainer = createRefetchContainer(
   Artwork,
   {
     artwork: graphql`
-      fragment Artwork_artwork on Artwork
-        @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
+      fragment Artwork_artwork on Artwork {
         additional_information: additionalInformation
         description
         provenance
@@ -277,9 +284,9 @@ export const ArtworkContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query ArtworkRefetchQuery($id: ID!, $fetchContent: Boolean!) {
+    query ArtworkRefetchQuery($id: ID!) {
       node(id: $id) {
-        ...Artwork_artwork @arguments(fetchContent: $fetchContent)
+        ...Artwork_artwork
       }
     }
   `

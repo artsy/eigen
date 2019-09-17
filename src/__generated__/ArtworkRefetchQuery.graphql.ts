@@ -4,7 +4,6 @@ import { ConcreteRequest } from "relay-runtime";
 import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 export type ArtworkRefetchQueryVariables = {
     readonly id: string;
-    readonly fetchContent: boolean;
 };
 export type ArtworkRefetchQueryResponse = {
     readonly node: {
@@ -24,12 +23,12 @@ query ArtworkRefetchQuery(
 ) {
   node(id: $id) {
     __typename
-    ...Artwork_artwork_abFTe
+    ...Artwork_artwork
     id
   }
 }
 
-fragment Artwork_artwork_abFTe on Artwork {
+fragment Artwork_artwork on Artwork {
   additional_information: additionalInformation
   description
   provenance
@@ -565,12 +564,6 @@ var v0 = [
     "name": "id",
     "type": "ID!",
     "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "fetchContent",
-    "type": "Boolean!",
-    "defaultValue": null
   }
 ],
 v1 = [
@@ -829,13 +822,7 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "Artwork_artwork",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "fetchContent",
-                "variableName": "fetchContent"
-              }
-            ]
+            "args": null
           }
         ]
       }
@@ -1892,11 +1879,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "0831b9db633bea149b03f2db36f513a5",
+    "id": "06dadab5341b3acefacb4bd82ce1bd03",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c4f618685e450d5e4dfe48f4c0e727e3';
+(node as any).hash = '5347a650dfa174454158ec98135cb827';
 export default node;
