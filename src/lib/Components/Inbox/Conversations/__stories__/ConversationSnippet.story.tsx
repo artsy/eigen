@@ -18,7 +18,7 @@ const conversation = ({
         __typename: "Artwork" as "Artwork",
         title: "Karl and Anna Face Off (Diptych)",
         date: "2016",
-        artist_names: "Bradley Theodore",
+        artistNames: "Bradley Theodore",
         image: {
           url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
         },
