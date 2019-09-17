@@ -87,7 +87,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
               <AuctionCountDownTimer artwork={artwork} />
             </>
           )}
-          {(!!consignableArtistsCount || isAcquireable || isInquireable) && (
+          {(!!consignableArtistsCount || isAcquireable) && (
             <>
               <Spacer mb={2} />
               <ArtworkExtraLinks artwork={artwork} />
