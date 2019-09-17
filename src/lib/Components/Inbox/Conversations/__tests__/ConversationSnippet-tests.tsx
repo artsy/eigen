@@ -52,12 +52,12 @@ const artworkConversation = {
   inquiry_id: "59302144275b244a81d0f9c6",
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
   to: { name: "ACA Galleries" },
-  last_message: "Karl and Anna... Fab!",
-  last_message_at: moment()
+  lastMessage: "Karl and Anna... Fab!",
+  lastMessageAt: moment()
     .subtract(1, "year")
     .toISOString(),
   unread: true,
-  created_at: "2017-06-01T14:14:35.538Z",
+  createdAt: "2017-06-01T14:14:35.538Z",
   items: [
     {
       item: artwork,
@@ -71,12 +71,12 @@ const showConversation = {
   inquiry_id: "59302144275b244a81d0f9c6",
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
   to: { name: "ACA Galleries" },
-  last_message: "Karl and Anna... Fab!",
-  last_message_at: moment()
+  lastMessage: "Karl and Anna... Fab!",
+  lastMessageAt: moment()
     .subtract(1, "year")
     .toISOString(),
   unread: true,
-  created_at: "2017-06-01T14:14:35.538Z",
+  createdAt: "2017-06-01T14:14:35.538Z",
   items: [
     {
       item: show,
