@@ -38,17 +38,17 @@ exports[`messaging inbox looks correct when rendered 1`] = `
             "name": "Jean-Luc Collecteur",
           },
           "id": "582",
-          "inquiry_id": "59302144275b244a81d0f9c6",
+          "inquiryId": "59302144275b244a81d0f9c6",
           "items": Array [
             Object {
               "item": Object {
                 "__typename": "Artwork",
-                "artist_names": "Bradley Theodore",
+                "artistNames": "Bradley Theodore",
                 "date": "2016",
                 "href": "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
                 "id": "bradley-theodore-karl-and-anna-face-off-diptych",
                 "image": Object {
-                  "image_url": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+                  "imageUrl": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
                   "url": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
                 },
                 "title": "Karl and Anna Face Off (Diptych)",
@@ -56,13 +56,13 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               "title": "Karl and Anna Face Off (Diptych)",
             },
           ],
-          "last_message": "Karl and Anna... Fab!",
+          "lastMessage": "Karl and Anna... Fab!",
           "to": Object {
             "name": "ACA Galleries",
           },
         },
         Object {
-          "created_at": "2017-06-01T14:12:19.155Z",
+          "createdAt": "2017-06-01T14:12:19.155Z",
           "from": Object {
             "email": "luc+messaging@artsymail.com",
             "name": "Jean-Luc Collecteur",
@@ -73,12 +73,12 @@ exports[`messaging inbox looks correct when rendered 1`] = `
             Object {
               "item": Object {
                 "__typename": "Artwork",
-                "artist_names": "Aida Muluneh",
+                "artistNames": "Aida Muluneh",
                 "date": "2016",
                 "href": "/artwork/aida-muluneh-darkness-give-way-to-light-1",
                 "id": "aida-muluneh-darkness-give-way-to-light-1",
                 "image": Object {
-                  "image_url": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+                  "imageUrl": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
                   "url": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
                 },
                 "title": "Darkness Give Way to Light",
@@ -86,7 +86,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               "title": "Darkness Give Way to Light",
             },
           ],
-          "last_message": "Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?",
+          "lastMessage": "Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?",
           "to": Object {
             "name": "David Krut Projects",
           },
@@ -264,7 +264,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    undefined · 
+                    Bradley Theodore · 
                   </Text>
                   <Text
                     style={
@@ -294,6 +294,25 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   </Text>
                 </Text>
               </View>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                Karl and Anna... Fab!
+              </Text>
               <Text
                 style={
                   Array [
@@ -474,7 +493,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    undefined · 
+                    Aida Muluneh · 
                   </Text>
                   <Text
                     style={
@@ -504,6 +523,25 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   </Text>
                 </Text>
               </View>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
+              </Text>
               <Text
                 style={
                   Array [

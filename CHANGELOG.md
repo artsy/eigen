@@ -19,6 +19,7 @@
 ### 1.17.0
 
 - Remove unused field selections from GraphQL documents - alloy, ds300, kierangillen, sweir27
+- Fix scroll-to-top behaviour on Home/Artists and Home/Auctions tabs - alloy
 - Add vscode-apollo-relay for better Relay DX with vscode-apollo extension - alloy
 - Adds pull to refresh to artwork view - kierangillen
 - Adds mailto to orders@artsy.net for Ask a Specialist - kierangillen

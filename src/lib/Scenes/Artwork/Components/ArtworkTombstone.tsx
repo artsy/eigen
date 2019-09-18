@@ -25,14 +25,21 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     showingMoreArtists: false,
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.ArtworkClassification,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkTombstone,
-    } as any
-  })
-  handleTap(href: string) {
+  @track(() => ({
+    action_name: Schema.ActionNames.ArtistName,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkTombstone,
+  }))
+  handleArtistTap(href: string) {
+    SwitchBoard.presentNavigationViewController(this, href)
+  }
+
+  @track(() => ({
+    action_name: Schema.ActionNames.ArtworkClassification,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkTombstone,
+  }))
+  handleClassificationTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
@@ -62,7 +69,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
 
   renderArtistName(artistName: string, href: string) {
     return href ? (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this, href)}>
+      <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
         <Serif size="4t" weight="semibold">
           {artistName}
         </Serif>
@@ -158,7 +165,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         )}
         {!!artwork.attribution_class && (
           <Serif color="black60" size="3t" mt={1}>
-            <TouchableWithoutFeedback onPress={() => this.handleTap("/artwork-classifications")}>
+            <TouchableWithoutFeedback onPress={() => this.handleClassificationTap("/artwork-classifications")}>
               <Text style={{ textDecorationLine: "underline" }}>{artwork.attribution_class.shortDescription}</Text>
             </TouchableWithoutFeedback>
             .

@@ -62,10 +62,10 @@ describe("messaging inbox", () => {
         {
           node: {
             id: "582",
-            inquiry_id: "59302144275b244a81d0f9c6",
+            inquiryId: "59302144275b244a81d0f9c6",
             from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
             to: { name: "ACA Galleries" },
-            last_message: "Karl and Anna... Fab!",
+            lastMessage: "Karl and Anna... Fab!",
             created_at: "2017-06-01T14:14:35.538Z",
             items: [
               {
@@ -76,10 +76,10 @@ describe("messaging inbox", () => {
                   href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
                   title: "Karl and Anna Face Off (Diptych)",
                   date: "2016",
-                  artist_names: "Bradley Theodore",
+                  artistNames: "Bradley Theodore",
                   image: {
                     url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
-                    image_url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+                    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
                   },
                 },
               },
@@ -92,10 +92,10 @@ describe("messaging inbox", () => {
             inquiry_id: "593020be8b3b814f9f86f2fd",
             from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
             to: { name: "David Krut Projects" },
-            last_message:
+            lastMessage:
               "Hi, I’m interested in purchasing this work. \
                     Could you please provide more information about the piece?",
-            created_at: "2017-06-01T14:12:19.155Z",
+            createdAt: "2017-06-01T14:12:19.155Z",
             items: [
               {
                 title: "Darkness Give Way to Light",
@@ -105,10 +105,10 @@ describe("messaging inbox", () => {
                   href: "/artwork/aida-muluneh-darkness-give-way-to-light-1",
                   title: "Darkness Give Way to Light",
                   date: "2016",
-                  artist_names: "Aida Muluneh",
+                  artistNames: "Aida Muluneh",
                   image: {
                     url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
-                    image_url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+                    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
                   },
                 },
               },
