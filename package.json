@@ -177,7 +177,7 @@
     "tslint-plugin-relay": "0.0.2",
     "typescript": "3.3.3333",
     "typescript-styled-plugin": "0.13.0",
-    "vscode-apollo-relay": "1.4.1"
+    "vscode-apollo-relay": "1.4.2"
   },
   "jest": {
     "preset": "react-native",
