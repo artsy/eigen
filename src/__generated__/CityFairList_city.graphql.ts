@@ -12,7 +12,7 @@ export type CityFairList_city = {
                 readonly name: string | null;
                 readonly exhibition_period: string | null;
                 readonly counts: {
-                    readonly partners: any | null;
+                    readonly partners: number | null;
                 } | null;
                 readonly location: {
                     readonly coordinates: {

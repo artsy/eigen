@@ -16,7 +16,7 @@ export type AuctionPrice_artwork = {
             readonly display: string | null;
         } | null;
         readonly counts: {
-            readonly bidderPositions: any | null;
+            readonly bidderPositions: number | null;
         } | null;
     } | null;
     readonly myLotStanding: ReadonlyArray<{

@@ -9,7 +9,7 @@ export type ArtworksPreview_fair = {
     readonly id: string;
     readonly filterArtworksConnection: {
         readonly counts: {
-            readonly total: any | null;
+            readonly total: number | null;
         } | null;
         readonly edges: ReadonlyArray<{
             readonly node: {

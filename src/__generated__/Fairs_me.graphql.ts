@@ -17,7 +17,7 @@ export type Fairs_me = {
                     readonly exhibition_period: string | null;
                     readonly name: string | null;
                     readonly counts: {
-                        readonly partners: any | null;
+                        readonly partners: number | null;
                     } | null;
                     readonly href: string | null;
                     readonly image: {

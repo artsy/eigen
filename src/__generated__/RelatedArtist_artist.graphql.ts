@@ -7,8 +7,8 @@ export type RelatedArtist_artist = {
     readonly href: string | null;
     readonly name: string | null;
     readonly counts: {
-        readonly forSaleArtworks: any | null;
-        readonly artworks: any | null;
+        readonly forSaleArtworks: number | null;
+        readonly artworks: number | null;
     } | null;
     readonly image: {
         readonly url: string | null;
