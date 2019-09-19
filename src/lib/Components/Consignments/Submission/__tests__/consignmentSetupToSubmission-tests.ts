@@ -32,7 +32,7 @@ describe("consignment metadata -> submission", () => {
       clientMutationId: "ID",
       artistID: "danger",
       category: "DESIGN_DECORATIVE_ART",
-      dimensions_metric: "CM",
+      dimensionsMetric: "CM",
       edition: false,
       height: "100",
       medium: "Wood",

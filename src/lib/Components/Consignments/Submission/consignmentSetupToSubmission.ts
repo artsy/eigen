@@ -23,7 +23,7 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup) =>
       authenticityCertificate: submission.certificateOfAuth,
       category: submission.metadata ? submission.metadata.category : undefined,
       depth: submission.metadata && submission.metadata.depth && submission.metadata.depth.toString(),
-      dimensions_metric: submission.metadata && submission.metadata.unit,
+      dimensionsMetric: submission.metadata && submission.metadata.unit,
       edition: !!submission.editionInfo,
       editionNumber: submission.editionInfo && submission.editionInfo.number,
       editionSize: submission.editionInfo && parseInt(submission.editionInfo.size, 10),
