@@ -233,4 +233,32 @@ describe("CommercialButtons", () => {
         .text()
     ).toContain("Buy now $8000")
   })
+
+  it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: false,
+      availability: "sold",
+      isOfferable: false,
+      isInquireable: false,
+      isInAuction: true,
+      isBuyNowable: true,
+      saleMessage: "$8000",
+      sale: {
+        isClosed: false,
+        registrationStatus: null,
+        isPreview: false,
+        isOpen: true,
+        isLiveOpen: false,
+        isRegistrationClosed: false,
+      },
+      saleArtwork: {
+        increments: [{ cents: 320000, display: "€3,200" }],
+      },
+    }
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(commercialButtons.find(Button).length).toEqual(0)
+  })
 })

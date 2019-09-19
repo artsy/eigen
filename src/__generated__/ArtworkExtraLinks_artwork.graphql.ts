@@ -7,6 +7,7 @@ export type ArtworkExtraLinks_artwork = {
     readonly isAcquireable: boolean | null;
     readonly isInAuction: boolean | null;
     readonly title: string | null;
+    readonly availability: string | null;
     readonly sale: {
         readonly isClosed: boolean | null;
     } | null;
@@ -55,6 +56,13 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "title",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "availability",
       "args": null,
       "storageKey": null
     },
@@ -110,5 +118,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f1fb4fbeb237c8d94b5d4f16a7e095cc';
+(node as any).hash = '9cf70b62ad790d9f76a867dafde9f9fc';
 export default node;

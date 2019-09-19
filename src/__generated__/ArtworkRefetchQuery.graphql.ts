@@ -279,6 +279,7 @@ fragment CommercialButtons_artwork on Artwork {
   isInquireable
   isInAuction
   isBuyNowable
+  availability
   editionSets {
     id
   }
@@ -332,6 +333,7 @@ fragment ArtworkExtraLinks_artwork on Artwork {
   isAcquireable
   isInAuction
   title
+  availability
   sale {
     isClosed
     id
@@ -1879,7 +1881,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "06dadab5341b3acefacb4bd82ce1bd03",
+    "id": "105282de3311abdcc6e0810f04824260",
     "text": null,
     "metadata": {}
   }

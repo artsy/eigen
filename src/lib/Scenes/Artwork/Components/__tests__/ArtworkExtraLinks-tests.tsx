@@ -217,5 +217,30 @@ describe("ArtworkExtraLinks", () => {
           .text()
       ).toContain("ask a specialist")
     })
+
+    it("hides auction links when auction work has sold via buy now", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        availability: "sold",
+        isInAuction: true,
+        sale: {
+          isClosed: false,
+          internalID: "123",
+        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: false,
+          },
+        ],
+      }
+
+      const component = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} />
+        </Theme>
+      )
+      expect(component.find(Sans).length).toEqual(0)
+    })
   })
 })

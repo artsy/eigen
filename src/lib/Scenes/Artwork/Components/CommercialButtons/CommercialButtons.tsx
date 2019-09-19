@@ -4,6 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { areEqualSelectors } from "relay-runtime"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 import { BuyNowButtonFragmentContainer as BuyNowButton } from "./BuyNowButton"
 import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOfferButton"
@@ -30,10 +31,11 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
 
   render() {
     const { artwork } = this.props
-    const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets } = artwork
+    const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, availability } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
+    const hasNotSold = availability && availability !== "sold"
 
-    if (isInAuction && artwork.sale && !artwork.sale.isClosed) {
+    if (isInAuction && artwork.sale && !artwork.sale.isClosed && hasNotSold) {
       return (
         <>
           {isBuyNowable && noEditions ? (
@@ -80,7 +82,7 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       isInquireable
       isInAuction
       isBuyNowable
-
+      availability
       editionSets {
         id
       }

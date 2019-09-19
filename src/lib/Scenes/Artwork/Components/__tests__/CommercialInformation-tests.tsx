@@ -188,6 +188,23 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     expect(component.find(BidButton).length).toEqual(1)
   })
 
+  it("doesn't render CountDownTimer, BidButton, or BuyNowButton when artwork is in an auction but sold via buy now", () => {
+    const CommercialInformationSoldArtworkInAuction = {
+      ...CommercialInformationArtworkInAuction,
+      availability: "sold",
+      isAcquireable: false,
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationSoldArtworkInAuction} />
+      </Theme>
+    )
+    expect(component.find(AuctionCountDownTimer).length).toEqual(0)
+    expect(component.find(BidButton).length).toEqual(0)
+    expect(component.find(BuyNowButton).length).toEqual(0)
+  })
+
   it("doesn't render CountDownTimer or BidButton when not in auction", () => {
     const component = mount(
       <Theme>
@@ -235,6 +252,8 @@ const CommercialInformationArtwork = {
 
 const CommercialInformationArtworkInAuction = {
   ...CommercialInformationArtwork,
+  availability: "for sale",
+  isAcquireable: true,
   isInAuction: true,
   sale: {
     isClosed: false,
