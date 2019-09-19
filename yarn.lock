@@ -7728,10 +7728,15 @@ image-size@^0.6.0:
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.1.tgz#98122a562d59dcc097ef1b2c8191866eb8f5d663"
   integrity sha512-lHMlI2MykfeHAQdtydQh4fTcBQVf4zLTA91w1euBe9rbmAfJ/iyzMh8H3KD9u1RldlHaMS3tmMV5TEe9BkmW9g==
 
-immutable@^3.8.1, immutable@^3.8.2:
+immutable@^3.8.1:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
   integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
+
+immutable@^4.0.0-rc.12:
+  version "4.0.0-rc.12"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
+  integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
 
 immutable@~3.7.6:
   version "3.7.6"
@@ -13307,13 +13312,13 @@ relateurl@0.2.x:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-relay-compiler-language-typescript@4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-4.3.0.tgz#4069253adfe7866d677324c50f166ee20ea53240"
-  integrity sha512-X7hOG3Q/YkkwCuP6MA881aY3JmqatpsnCpW/J58LOaS6NQ6osl1aurmL7qVwfrIUfk+aSXvUbyUrFeQUj/DhXg==
+relay-compiler-language-typescript@4.9.0:
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-4.9.0.tgz#9211c6246d849763e4905e2a9c6a03afb3d75cf5"
+  integrity sha512-QsWezOetK93FzeTgdzHfINpyYr3tjChIliFwWs7G34ObrA97V0NVe80xnUaqOubq6RIX5c+CqxNsUg45afEW1w==
   dependencies:
-    immutable "^3.8.2"
-    invariant "^2.2.2"
+    immutable "^4.0.0-rc.12"
+    invariant "^2.2.4"
 
 relay-compiler@6.0.0:
   version "6.0.0"

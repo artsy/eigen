@@ -160,7 +160,7 @@
     "react-test-renderer": "16.8.6",
     "recursive-readdir-sync": "1.0.6",
     "relay-compiler": "6.0.0",
-    "relay-compiler-language-typescript": "4.3.0",
+    "relay-compiler-language-typescript": "4.9.0",
     "relay-config": "6.0.0",
     "relay-mock-network-layer": "2.0.0",
     "snapshot-diff": "0.2.2",
