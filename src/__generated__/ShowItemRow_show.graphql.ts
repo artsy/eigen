@@ -10,25 +10,14 @@ export type ShowItemRow_show = {
     readonly is_followed: boolean | null;
     readonly name: string | null;
     readonly isStubShow: boolean | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
         readonly profile?: {
             readonly image: {
                 readonly url: string | null;
             } | null;
         } | null;
-    } & ({
-        readonly name: string | null;
-        readonly profile: {
-            readonly image: {
-                readonly url: string | null;
-            } | null;
-        } | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly href: string | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;

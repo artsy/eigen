@@ -16,8 +16,10 @@ export type FairArtists_fair = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly sortableID: string | null;
+                readonly __typename: string;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
             } | null;
+            readonly cursor: string;
         } | null> | null;
     } | null;
     readonly " $refType": FairArtists_fair$ref;

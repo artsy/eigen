@@ -41,11 +41,10 @@ export class Messages extends React.Component<Props, State> {
 
   renderMessage({ item, index }) {
     const conversation = this.props.conversation
-    const { artwork, show } = conversation.items[0]
+    const { item: subjectItem } = conversation.items[0]
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
     const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
-    // FIXME: This is the same bug as described in ArtworkCarouselHeader.
     return (
       <Message
         index={index}
@@ -57,19 +56,19 @@ export class Messages extends React.Component<Props, State> {
         initials={initials}
         artworkPreview={
           item.first_message &&
-          artwork.href && (
+          subjectItem.__typename === "Artwork" && (
             <ArtworkPreview
-              artwork={artwork as any}
-              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
+              artwork={subjectItem}
+              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href)}
             />
           )
         }
         showPreview={
           item.first_message &&
-          show.href && (
+          subjectItem.__typename === "Show" && (
             <ShowPreview
-              show={show as any}
-              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, show.href)}
+              show={subjectItem}
+              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href)}
             />
           )
         }
@@ -207,31 +206,17 @@ export default createPaginationContainer(
           }
         }
         items {
-          artwork: item {
+          item {
+            __typename
             ... on Artwork {
               href
               ...ArtworkPreview_artwork
             }
-          }
-          show: item {
             ... on Show {
               href
               ...ShowPreview_show
             }
           }
-          # FIXME: Working around a type generator bug, see ArtworkCarouselHeader.tsx for details.
-          #
-          # item {
-          #   __typename
-          #   ... on Artwork {
-          #     href
-          #     ...ArtworkPreview_artwork
-          #   }
-          #   ... on Show {
-          #     href
-          #     ...ShowPreview_show
-          #   }
-          # }
         }
       }
     `,

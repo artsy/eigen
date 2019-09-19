@@ -135,8 +135,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     }
 
     if (context) {
-      const { __typename } = context
-      switch (__typename as any) {
+      switch (context.__typename) {
         case "Sale":
           header = "In auction"
           meta = context.isLiveOpen ? "In progress" : context.formattedStartDateTime
@@ -153,6 +152,8 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           imageUrl = context.coverImage && context.coverImage.url ? context.coverImage.url : ""
           followButton = this.followButton(context)
           break
+        default:
+          return null
       }
     } else {
       return null

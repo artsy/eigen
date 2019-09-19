@@ -10,15 +10,9 @@ export type ArtistNotForSaleArtworksGridQueryVariables = {
     readonly filter?: ReadonlyArray<ArtistArtworksFilters | null> | null;
 };
 export type ArtistNotForSaleArtworksGridQueryResponse = {
-    readonly node: ({
+    readonly node: {
         readonly " $fragmentRefs": ArtistNotForSaleArtworksGrid_artist$ref;
-    } & ({
-        readonly " $fragmentRefs": ArtistNotForSaleArtworksGrid_artist$ref;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
 };
 export type ArtistNotForSaleArtworksGridQuery = {
     readonly response: ArtistNotForSaleArtworksGridQueryResponse;

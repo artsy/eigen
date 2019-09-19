@@ -20,7 +20,9 @@ export type Categories_me = {
                             readonly url: string | null;
                         } | null;
                     } | null;
+                    readonly __typename: string;
                 } | null;
+                readonly cursor: string;
             } | null> | null;
         } | null;
     } | null;

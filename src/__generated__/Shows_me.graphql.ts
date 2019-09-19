@@ -16,8 +16,10 @@ export type Shows_me = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly id: string;
+                    readonly __typename: string;
                     readonly " $fragmentRefs": ShowItemRow_show$ref;
                 } | null;
+                readonly cursor: string;
             } | null> | null;
         } | null;
     } | null;

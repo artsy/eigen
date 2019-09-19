@@ -13,21 +13,6 @@ export type ConversationSnippet_conversation = {
     readonly unread: boolean | null;
     readonly items: ReadonlyArray<{
         readonly item: ({
-            readonly __typename: string;
-            readonly date?: string | null;
-            readonly title?: string | null;
-            readonly artistNames?: string | null;
-            readonly image?: {
-                readonly url: string | null;
-            } | null;
-            readonly fair?: {
-                readonly name: string | null;
-            } | null;
-            readonly name?: string | null;
-            readonly coverImage?: {
-                readonly url: string | null;
-            } | null;
-        } & ({
             readonly __typename: "Artwork";
             readonly date: string | null;
             readonly title: string | null;
@@ -45,10 +30,10 @@ export type ConversationSnippet_conversation = {
                 readonly url: string | null;
             } | null;
         } | {
-            /*This will never be '% other', but we need some
+            /*This will never be '%other', but we need some
             value in case none of the concrete values match.*/
             readonly __typename: "%other";
-        })) | null;
+        }) | null;
     } | null> | null;
     readonly " $refType": ConversationSnippet_conversation$ref;
 };

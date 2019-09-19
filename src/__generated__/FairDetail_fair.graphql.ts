@@ -45,6 +45,7 @@ export type FairDetail_fair = {
                         } | null;
                     } | null> | null;
                 } | null;
+                readonly __typename: string;
                 readonly " $fragmentRefs": FairBoothPreview_show$ref;
             } | null;
         } | null> | null;

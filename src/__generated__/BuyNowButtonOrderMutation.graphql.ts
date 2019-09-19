@@ -14,17 +14,6 @@ export type BuyNowButtonOrderMutationVariables = {
 export type BuyNowButtonOrderMutationResponse = {
     readonly commerceCreateOrderWithArtwork: {
         readonly orderOrError: {
-            readonly __typename: string;
-            readonly order?: {
-                readonly internalID: string;
-                readonly mode: CommerceOrderModeEnum | null;
-            };
-            readonly error?: {
-                readonly type: string;
-                readonly code: string;
-                readonly data: string | null;
-            };
-        } & ({
             readonly __typename: "CommerceOrderWithMutationSuccess";
             readonly order: {
                 readonly internalID: string;
@@ -38,10 +27,10 @@ export type BuyNowButtonOrderMutationResponse = {
                 readonly data: string | null;
             };
         } | {
-            /*This will never be '% other', but we need some
+            /*This will never be '%other', but we need some
             value in case none of the concrete values match.*/
             readonly __typename: "%other";
-        });
+        };
     } | null;
 };
 export type BuyNowButtonOrderMutation = {

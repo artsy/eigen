@@ -16,8 +16,10 @@ export type WorksForYou_query = {
                 readonly edges: ReadonlyArray<{
                     readonly node: {
                         readonly id: string;
+                        readonly __typename: string;
                         readonly " $fragmentRefs": Notification_notification$ref;
                     } | null;
+                    readonly cursor: string;
                 } | null> | null;
             } | null;
         } | null;

@@ -36,17 +36,10 @@ export type GlobalMap_viewer = {
                 readonly type: string | null;
                 readonly start_at: string | null;
                 readonly end_at: string | null;
-                readonly partner: ({
+                readonly partner: {
                     readonly name?: string | null;
                     readonly type?: string | null;
-                } & ({
-                    readonly name: string | null;
-                    readonly type: string | null;
-                } | {
-                    /*This will never be '% other', but we need some
-                    value in case none of the concrete values match.*/
-                    readonly __typename: "%other";
-                })) | null;
+                } | null;
             } | null> | null;
             readonly shows: {
                 readonly totalCount: number | null;
@@ -76,7 +69,7 @@ export type GlobalMap_viewer = {
                     readonly type: string | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
-                    readonly partner: ({
+                    readonly partner: {
                         readonly name?: string | null;
                         readonly type?: string | null;
                         readonly profile?: {
@@ -84,19 +77,7 @@ export type GlobalMap_viewer = {
                                 readonly url: string | null;
                             } | null;
                         } | null;
-                    } & ({
-                        readonly name: string | null;
-                        readonly type: string | null;
-                        readonly profile: {
-                            readonly image: {
-                                readonly url: string | null;
-                            } | null;
-                        } | null;
-                    } | {
-                        /*This will never be '% other', but we need some
-                        value in case none of the concrete values match.*/
-                        readonly __typename: "%other";
-                    })) | null;
+                    } | null;
                 } | null;
             } | null> | null;
         } | null;
@@ -124,7 +105,7 @@ export type GlobalMap_viewer = {
                     readonly type: string | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
-                    readonly partner: ({
+                    readonly partner: {
                         readonly name?: string | null;
                         readonly type?: string | null;
                         readonly profile?: {
@@ -132,19 +113,7 @@ export type GlobalMap_viewer = {
                                 readonly url: string | null;
                             } | null;
                         } | null;
-                    } & ({
-                        readonly name: string | null;
-                        readonly type: string | null;
-                        readonly profile: {
-                            readonly image: {
-                                readonly url: string | null;
-                            } | null;
-                        } | null;
-                    } | {
-                        /*This will never be '% other', but we need some
-                        value in case none of the concrete values match.*/
-                        readonly __typename: "%other";
-                    })) | null;
+                    } | null;
                 } | null;
             } | null> | null;
         } | null;

@@ -25,8 +25,14 @@ export type Gene_gene = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly __typename: string;
             } | null;
+            readonly cursor: string;
         } | null> | null;
+        readonly pageInfo: {
+            readonly endCursor: string | null;
+            readonly hasNextPage: boolean;
+        };
         readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
     } | null;
     readonly " $fragmentRefs": Header_gene$ref & About_gene$ref;

@@ -6,24 +6,6 @@ export type ContextCard_artwork$ref = typeof _ContextCard_artwork$ref;
 export type ContextCard_artwork = {
     readonly id: string;
     readonly context: ({
-        readonly __typename: string;
-        readonly id?: string;
-        readonly name?: string | null;
-        readonly isLiveOpen?: boolean | null;
-        readonly href?: string | null;
-        readonly formattedStartDateTime?: string | null;
-        readonly isAuction?: boolean | null;
-        readonly coverImage?: {
-            readonly url: string | null;
-        } | null;
-        readonly exhibitionPeriod?: string | null;
-        readonly image?: {
-            readonly url: string | null;
-        } | null;
-        readonly internalID?: string;
-        readonly slug?: string;
-        readonly isFollowed?: boolean | null;
-    } & ({
         readonly __typename: "Sale";
         readonly id: string;
         readonly name: string | null;
@@ -36,20 +18,30 @@ export type ContextCard_artwork = {
         } | null;
     } | {
         readonly __typename: "Fair";
+        readonly id: string;
+        readonly name: string | null;
+        readonly href: string | null;
         readonly exhibitionPeriod: string | null;
         readonly image: {
             readonly url: string | null;
         } | null;
     } | {
         readonly __typename: "Show";
+        readonly id: string;
         readonly internalID: string;
         readonly slug: string;
+        readonly name: string | null;
+        readonly href: string | null;
+        readonly exhibitionPeriod: string | null;
         readonly isFollowed: boolean | null;
+        readonly coverImage: {
+            readonly url: string | null;
+        } | null;
     } | {
-        /*This will never be '% other', but we need some
+        /*This will never be '%other', but we need some
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
-    })) | null;
+    }) | null;
     readonly " $refType": ContextCard_artwork$ref;
 };
 

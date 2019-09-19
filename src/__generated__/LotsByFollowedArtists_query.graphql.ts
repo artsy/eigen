@@ -9,7 +9,14 @@ export type LotsByFollowedArtists_query = {
         readonly lotsByFollowedArtistsConnection: {
             readonly edges: ReadonlyArray<{
                 readonly cursor: string | null;
+                readonly node: {
+                    readonly __typename: string;
+                } | null;
             } | null> | null;
+            readonly pageInfo: {
+                readonly endCursor: string | null;
+                readonly hasNextPage: boolean;
+            };
             readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
         } | null;
     } | null;

@@ -9,17 +9,10 @@ export type MoreInfo_show = {
     readonly slug: string;
     readonly pressReleaseUrl: string | null;
     readonly openingReceptionText: string | null;
-    readonly partner: ({
+    readonly partner: {
         readonly website?: string | null;
         readonly type?: string | null;
-    } & ({
-        readonly website: string | null;
-        readonly type: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly press_release: string | null;
     readonly events: ReadonlyArray<{
         readonly " $fragmentRefs": ShowEventSection_event$ref;

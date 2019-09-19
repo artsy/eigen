@@ -12,22 +12,12 @@ export type ArtworkCarousel_rail = {
         readonly medium: string | null;
         readonly price_range: string | null;
     } | null;
-    readonly context: ({
+    readonly context: {
         readonly artist?: {
             readonly href: string | null;
         } | null;
         readonly href?: string | null;
-    } & ({
-        readonly artist: {
-            readonly href: string | null;
-        } | null;
-    } | {
-        readonly href: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly results: ReadonlyArray<{
         readonly " $fragmentRefs": GenericGrid_artworks$ref;
     } | null> | null;
