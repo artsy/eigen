@@ -60,6 +60,7 @@ describe("CommercialInformation", () => {
         isOfferable: false,
         isBiddable: false,
         isInquireable: false,
+        isForSale: false,
         editionSets: [],
         sale: {
           isAuction: false,

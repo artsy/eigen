@@ -81,6 +81,7 @@ describe("ArtworkExtraLinks", () => {
     it("doesn't render component if no artists are consignable", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -101,6 +102,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows singular link text", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
