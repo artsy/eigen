@@ -94,6 +94,7 @@ describe("CommercialInformation", () => {
     const CommercialInformationArtworkNonCommercial = {
       ...CommercialInformationArtwork,
       availability: null,
+      isForSale: false,
     }
     const component = mount(
       <Theme>
@@ -193,6 +194,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       ...CommercialInformationArtworkInAuction,
       availability: "sold",
       isAcquireable: false,
+      isForSale: false,
     }
 
     const component = mount(
@@ -225,6 +227,7 @@ const CommercialInformationArtwork = {
     isOfferable: false,
     isBiddable: false,
     isInquireable: false,
+    isForSale: true,
     editionSets: [],
     saleMessage: "Contact For Price",
     shippingInfo: "Shipping, tax, and service quoted by seller",

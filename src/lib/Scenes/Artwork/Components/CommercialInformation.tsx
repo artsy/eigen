@@ -39,9 +39,9 @@ export class CommercialInformation extends React.Component<CommercialInformation
 
   renderPriceInformation = () => {
     const { artwork } = this.props
-    const { isInAuction, availability } = artwork
-    const hasNotSold = availability && availability !== "sold"
-    if (isInAuction && hasNotSold) {
+    const { isInAuction, isForSale } = artwork
+
+    if (isInAuction && isForSale) {
       return <AuctionPrice artwork={artwork} />
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
       return this.renderEditionSetArtwork()
@@ -67,9 +67,9 @@ export class CommercialInformation extends React.Component<CommercialInformation
   render() {
     const { artwork } = this.props
     const { editionSetID } = this.state
-    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale } = artwork
-    const hasNotSold = artwork.availability && artwork.availability !== "sold"
-    const showAuctionTimerAndButton = isInAuction && sale && !sale.isClosed && hasNotSold
+    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
+
+    const showAuctionTimerAndButton = isInAuction && sale && !sale.isClosed && isForSale
     const shouldRenderButtons = isAcquireable || isOfferable || isInquireable || showAuctionTimerAndButton
     const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
 
@@ -110,6 +110,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       isInAuction
       availability
       saleMessage
+      isForSale
 
       artists {
         isConsignable
@@ -123,7 +124,6 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
         isClosed
       }
 
-      ...CommercialButtons_artwork
       ...CommercialPartnerInformation_artwork
       ...CommercialEditionSetInformation_artwork
       ...AuctionCountDownTimer_artwork

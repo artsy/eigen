@@ -55,6 +55,7 @@ describe("CommercialButtons", () => {
       isAcquireable: false,
       isOfferable: false,
       isInquireable: true,
+      isForSale: true,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -68,6 +69,7 @@ describe("CommercialButtons", () => {
       isAcquireable: false,
       isOfferable: true,
       isInquireable: false,
+      isForSale: true,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -81,6 +83,7 @@ describe("CommercialButtons", () => {
       isAcquireable: true,
       isOfferable: false,
       isInquireable: false,
+      isForSale: true,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -96,6 +99,7 @@ describe("CommercialButtons", () => {
       isInquireable: false,
       isInAuction: true,
       isBiddable: true,
+      isForSale: true,
       sale: {
         slug: "kieran-testing-ios-artwork-page",
         internalID: "5d52f117d063bc0007bcb111",
@@ -127,6 +131,7 @@ describe("CommercialButtons", () => {
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
+      isForSale: true,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -148,6 +153,7 @@ describe("CommercialButtons", () => {
   it("commits the Buy Now mutation", async () => {
     const artwork = {
       ...ArtworkFixture,
+      isForSale: true,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
@@ -176,6 +182,7 @@ describe("CommercialButtons", () => {
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
+      isForSale: true,
     }
 
     const commercialButtons = await componentWithQuery({
@@ -202,6 +209,7 @@ describe("CommercialButtons", () => {
       isAcquireable: true,
       isOfferable: false,
       isInquireable: false,
+      isForSale: true,
       isInAuction: true,
       isBuyNowable: true,
       saleMessage: "$8000",
@@ -238,7 +246,7 @@ describe("CommercialButtons", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
-      availability: "sold",
+      isForSale: false,
       isOfferable: false,
       isInquireable: false,
       isInAuction: true,

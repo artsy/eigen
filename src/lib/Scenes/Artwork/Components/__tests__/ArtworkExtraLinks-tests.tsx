@@ -15,6 +15,7 @@ describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
     const artwork = {
       ...ArtworkFixture,
+      isForSale: true,
       artists: [
         {
           name: "Santa",
@@ -39,6 +40,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows plural link text", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -60,6 +62,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link if at least 1 artist is consignable", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -116,6 +119,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -137,6 +141,7 @@ describe("ArtworkExtraLinks", () => {
         ...ArtworkFixture,
         isAcquireable: false,
         isInquireable: true,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -158,6 +163,7 @@ describe("ArtworkExtraLinks", () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: true,
+        isForSale: true,
         isInquireable: true,
         artists: [
           {
@@ -181,6 +187,7 @@ describe("ArtworkExtraLinks", () => {
       const artwork = {
         ...ArtworkFixture,
         isInAuction: true,
+        isForSale: true,
         sale: {
           isClosed: false,
           internalID: "123",
@@ -221,7 +228,7 @@ describe("ArtworkExtraLinks", () => {
     it("hides auction links when auction work has sold via buy now", () => {
       const artwork = {
         ...ArtworkFixture,
-        availability: "sold",
+        isForSale: false,
         isInAuction: true,
         sale: {
           isClosed: false,

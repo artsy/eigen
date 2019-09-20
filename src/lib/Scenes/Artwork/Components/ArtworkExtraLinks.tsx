@@ -50,12 +50,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
 
   renderFAQAndSpecialist = () => {
     const {
-      artwork: { isAcquireable, isInAuction, sale, availability },
+      artwork: { isAcquireable, isInAuction, sale, isForSale },
     } = this.props
 
-    const hasNotSold = availability && availability !== "sold"
-
-    if (isInAuction && sale && !sale.isClosed && hasNotSold) {
+    if (isInAuction && sale && !sale.isClosed && isForSale) {
       // FIXME: Verify logic when to show Auction "ask a specialist"
       return (
         <>
@@ -127,7 +125,7 @@ export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(Artwor
       isAcquireable
       isInAuction
       title
-      availability
+      isForSale
       sale {
         isClosed
       }
