@@ -8,6 +8,7 @@ export type SelectMaxBid_sale_artwork = {
     readonly id: string;
     readonly increments: ReadonlyArray<{
         readonly display: string | null;
+        readonly cents: number | null;
     } | null> | null;
     readonly " $fragmentRefs": ConfirmBid_sale_artwork$ref;
     readonly " $refType": SelectMaxBid_sale_artwork$ref;
@@ -50,6 +51,13 @@ const node: ReaderFragment = {
           "name": "display",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "cents",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -60,5 +68,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a02cfab9770fae1ebabcd2357d637878';
+(node as any).hash = 'da3f4c5b318013c4b3203bcd274c23bb';
 export default node;

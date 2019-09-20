@@ -32,6 +32,7 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
   id
   increments(useMyMaxBid: true) {
     display
+    cents
   }
   ...ConfirmBid_sale_artwork
 }
@@ -172,6 +173,13 @@ return {
                     "name": "display",
                     "args": null,
                     "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cents",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               },
@@ -297,7 +305,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidFlowSelectMaxBidRendererQuery",
-    "id": "f8fb2d7ad9bb72b52884f1e2e45fe513",
+    "id": "68a741547d6fd3c8ce5fb06b17401c60",
     "text": null,
     "metadata": {}
   }
