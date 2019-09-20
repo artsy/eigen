@@ -12,7 +12,7 @@ interface AboutWorkProps {
 
 export class AboutWork extends React.Component<AboutWorkProps> {
   render() {
-    const { additional_information, description } = this.props.artwork
+    const { additional_information, description, isInAuction } = this.props.artwork
     const hasArtworkInfo = additional_information || description
     const textLimit = truncatedTextLimit()
 
@@ -32,9 +32,11 @@ export class AboutWork extends React.Component<AboutWorkProps> {
           )}
           {description && (
             <Flex>
-              <Sans size="2" color="black60" mb="3px">
-                From Artsy Specialist:
-              </Sans>
+              {!isInAuction && (
+                <Sans size="2" color="black60" mb="3px">
+                  From Artsy Specialist:
+                </Sans>
+              )}
               <ReadMore
                 content={description}
                 maxChars={textLimit}
@@ -54,6 +56,7 @@ export const AboutWorkFragmentContainer = createFragmentContainer(AboutWork, {
     fragment AboutWork_artwork on Artwork {
       additional_information: additionalInformation
       description
+      isInAuction
     }
   `,
 })

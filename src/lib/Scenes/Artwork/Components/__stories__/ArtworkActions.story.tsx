@@ -20,6 +20,10 @@ storiesOf("Artwork/Components").add("All Actions", () => {
             name: "Abbas Kiarostami",
           },
         ],
+        sale: {
+          isAuction: false,
+          isClosed: false,
+        },
         heightCm: 10,
         widthCm: 10,
         image: {

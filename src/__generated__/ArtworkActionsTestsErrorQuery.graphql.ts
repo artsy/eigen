@@ -38,6 +38,11 @@ fragment ArtworkActions_artwork on Artwork {
   image {
     url
   }
+  sale {
+    isAuction
+    isClosed
+    id
+  }
   widthCm
   heightCm
 }
@@ -180,6 +185,32 @@ return {
             ]
           },
           {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "sale",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Sale",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isAuction",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isClosed",
+                "args": null,
+                "storageKey": null
+              },
+              (v1/*: any*/)
+            ]
+          },
+          {
             "kind": "ScalarField",
             "alias": null,
             "name": "widthCm",
@@ -200,7 +231,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkActionsTestsErrorQuery",
-    "id": "1ea4accf486ff232043793948e64bfb1",
+    "id": "6ded5cd2908a11a0a7f7b9cea5430612",
     "text": null,
     "metadata": {}
   }
