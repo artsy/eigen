@@ -1,5 +1,5 @@
 upcoming:
-  version: 5.0.6
+  version: 5.0.7
   date: TBD
   emission_version: 1.12.x
   dev:
@@ -32,11 +32,12 @@ upcoming:
     - Removes left-and-right swiping between artwork views - ash
 
 releases:
-  - version: 5.0.5
-    date: TBD
-    - 
-  user_facing:
-    - Fixes crash for iOS 13 users - ash & david
+  - version: 5.0.6
+    date: September 23, 2019
+    emission_version: 1.11.6
+      - 
+    user_facing:
+      - Fixes crash for iOS 13 users - ash & david
 
 releases:
   - version: 5.0.5
