@@ -244,7 +244,11 @@ export default class Overview extends React.Component<Props, State> {
             </View>
             <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : -30 }}>
               {this.state.hasLoaded && (
-                <FormButton text="Submit" onPress={canSubmit ? this.submitFinalSubmission : undefined} />
+                <FormButton
+                  text="Submit"
+                  onPress={canSubmit ? this.submitFinalSubmission : undefined}
+                  disabled={!canSubmit}
+                />
               )}
             </Row>
             <Row style={{ justifyContent: "center" }}>
