@@ -34,6 +34,13 @@ upcoming:
 releases:
   - version: 5.0.5
     date: TBD
+    - 
+  user_facing:
+    - Fixes crash for iOS 13 users - ash & david
+
+releases:
+  - version: 5.0.5
+    date: June 25, 2019
     emission_version: 1.11.6
     dev:
       - Adds analytics tracking for artwork set view controller swipes - ash

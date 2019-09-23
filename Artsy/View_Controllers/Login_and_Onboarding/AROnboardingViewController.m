@@ -169,9 +169,11 @@
     NSMutableArray *slides = [NSMutableArray array];
     NSInteger numberOfImages = [UIDevice isPad] ? 5 : 4;
     for (int i = 1; i <= numberOfImages; i++) {
-        NSString *file = [NSString stringWithFormat:@"splash_%d.jpg", i];
-        UIImage *image = [UIImage imageNamed:file];
-        [slides addObject:image];
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"splash_%d@2x", i] ofType:@"jpg"];
+        UIImage *image = [UIImage imageWithContentsOfFile:filePath];
+        if (image) {
+            [slides addObject:image];
+        }
     }
 
     ARSlideshowViewController *slideshow = [[ARSlideshowViewController alloc] initWithSlides:slides];
