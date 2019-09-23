@@ -1,1 +1,1 @@
-This release fixes a problem selecting certain search results, as well as some performance improvements.
+This release fixes a problem where the app would crash on launch for users who weren't already logged in.
