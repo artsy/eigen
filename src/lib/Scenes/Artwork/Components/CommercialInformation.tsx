@@ -124,6 +124,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
         isClosed
       }
 
+      ...CommercialButtons_artwork
       ...CommercialPartnerInformation_artwork
       ...CommercialEditionSetInformation_artwork
       ...AuctionCountDownTimer_artwork
