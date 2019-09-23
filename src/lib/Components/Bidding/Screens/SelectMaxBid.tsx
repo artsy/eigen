@@ -101,6 +101,7 @@ export const MaxBidScreen = createRefetchContainer(
         id
         increments(useMyMaxBid: true) {
           display
+          cents # Used on the ConfirmBid screen
         }
         ...ConfirmBid_sale_artwork
       }

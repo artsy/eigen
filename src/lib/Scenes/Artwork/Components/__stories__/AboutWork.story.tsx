@@ -16,19 +16,46 @@ storiesOf("Artwork/Components").add("About this Work", () => {
         <Sans size="3t" weight="medium" color="purple100" mb={2}>
           About the work (All info present)
         </Sans>
-        <AboutWork artwork={{ additional_information: additionalInformation, description, " $refType": null }} />
+        <AboutWork
+          artwork={{
+            additional_information: additionalInformation,
+            isInAuction: false,
+            description,
+            " $refType": null,
+          }}
+        />
+      </Flex>
+      <Flex>
+        <Sans size="3t" weight="medium" color="purple100" mb={2}>
+          About the work (All info present, auction work)
+        </Sans>
+        <AboutWork
+          artwork={{
+            additional_information: additionalInformation,
+            isInAuction: true,
+            description,
+            " $refType": null,
+          }}
+        />
       </Flex>
       <Flex>
         <Sans size="3t" weight="medium" color="purple100" mb={2}>
           About the work (Only additional_information present)
         </Sans>
-        <AboutWork artwork={{ additional_information: additionalInformation, description: null, " $refType": null }} />
+        <AboutWork
+          artwork={{
+            additional_information: additionalInformation,
+            isInAuction: false,
+            description: null,
+            " $refType": null,
+          }}
+        />
       </Flex>
       <Flex>
         <Sans size="3t" weight="medium" color="purple100" mb={2}>
           About the work (Only description present)
         </Sans>
-        <AboutWork artwork={{ additional_information: null, description, " $refType": null }} />
+        <AboutWork artwork={{ additional_information: null, isInAuction: false, description, " $refType": null }} />
       </Flex>
     </Join>
   )
