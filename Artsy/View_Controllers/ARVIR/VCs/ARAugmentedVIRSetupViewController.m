@@ -132,7 +132,8 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
             [playVC.view alignToView:self.view];
             [playVC didMoveToParentViewController:self];
 
-            UIImageView *poster = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ar_vir_opening_frame.jpg"]];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"ar_vir_opening_frame" ofType:@"jpg"];
+            UIImageView *poster = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:path]];
             poster.contentMode = UIViewContentModeScaleAspectFill;
             [self.view addSubview:poster];
             [poster alignToView:self.view];
