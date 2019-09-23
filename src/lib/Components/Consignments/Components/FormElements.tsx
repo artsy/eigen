@@ -36,7 +36,7 @@ export const Label = (props: any) => (
 
 export const FormButton: React.SFC<FormButtonProps> = props => (
   <Box style={Object.assign({ width: 174, marginTop: 20 }, props.style)}>
-    <Button block width={100} variant="primaryWhite" onPress={props.onPress}>
+    <Button block width={100} variant="primaryWhite" onPress={props.onPress} disabled={props.disabled}>
       {props.text}
     </Button>
   </Box>
