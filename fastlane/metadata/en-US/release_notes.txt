@@ -1,1 +1,0 @@
-This release fixes a crash in the app for some users when registering for an auction.
