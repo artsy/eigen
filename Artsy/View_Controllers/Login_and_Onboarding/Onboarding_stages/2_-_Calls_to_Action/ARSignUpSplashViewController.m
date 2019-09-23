@@ -44,10 +44,16 @@
 
 - (NSDictionary *)pageWithImageName:(NSString *)imageName bodyCopy:(NSString *)copy
 {
-    return @{
-        @"image" : [UIImage imageNamed:imageName],
-        @"copy" : copy
-    };
+    NSString *path = [[NSBundle mainBundle] pathForResource:imageName ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    if (image) {
+        return @{
+            @"image" : image,
+            @"copy" : copy
+        };
+    } else {
+        return @{};
+    }
 }
 
 - (instancetype)init
@@ -55,7 +61,7 @@
     self = [super init];
     if (self) {
         _pages = @[
-            [self pageWithImageName:@"onboard_1.jpg"
+            [self pageWithImageName:@"onboard_1@2x"
                            bodyCopy:@"Buy art from premier galleries and auction houses from around the world"],
         ];
     }
