@@ -20,7 +20,9 @@ describe("Artwork", () => {
     jest.clearAllMocks()
   })
   it("renders a snapshot", () => {
-    const component = mount(<Artwork artwork={ArtworkFixture} relay={{ environment: {} } as RelayRefetchProp} />)
+    const component = mount(
+      <Artwork isVisible artwork={ArtworkFixture} relay={{ environment: {} } as RelayRefetchProp} />
+    )
     expect(component.find(ArtworkHeader).length).toEqual(1)
   })
 

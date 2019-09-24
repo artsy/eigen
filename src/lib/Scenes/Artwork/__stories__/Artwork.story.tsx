@@ -11,16 +11,23 @@ const safeAreaInsets = {
 
 storiesOf("Artwork/Screens")
   .add("Institution", () => {
-    return <ArtworkRenderer artworkID="pablo-picasso-le-reve-the-dream" safeAreaInsets={safeAreaInsets} />
+    return <ArtworkRenderer isVisible artworkID="pablo-picasso-le-reve-the-dream" safeAreaInsets={safeAreaInsets} />
   })
   // At some point, this work will probably no longer be eligible for BNMO :shrug:
   .add("BNMO", () => {
-    return <ArtworkRenderer artworkID="enrico-baj-portrait-1-from-baj-chez-picasso" safeAreaInsets={safeAreaInsets} />
+    return (
+      <ArtworkRenderer
+        isVisible
+        artworkID="enrico-baj-portrait-1-from-baj-chez-picasso"
+        safeAreaInsets={safeAreaInsets}
+      />
+    )
   })
   // Hopefully this is an artwork in a mocktion that gets recreated in staging each week
   .add("Biddable", () => {
     return (
       <ArtworkRenderer
+        isVisible
         artworkID="pablo-picasso-buste-de-femme-assise-dans-un-fauteuil"
         safeAreaInsets={safeAreaInsets}
       />
@@ -29,6 +36,7 @@ storiesOf("Artwork/Screens")
   .add("With multiple artists", () => {
     return (
       <ArtworkRenderer
+        isVisible
         artworkID="andy-warhol-twenty-years-1977-signed-slash-inscribed-by-leo-exhibition-catalogue-leo-castelli-gallery-1st-edition"
         safeAreaInsets={safeAreaInsets}
       />

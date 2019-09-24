@@ -82,6 +82,7 @@ const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
 interface ArtworkProps {
   artworkID: string
   safeAreaInsets: SafeAreaInsets
+  isVisible: boolean
 }
 
 const Artwork: React.SFC<ArtworkProps> = props => <ArtworkRenderer {...props} />
