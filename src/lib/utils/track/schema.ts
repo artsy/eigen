@@ -169,20 +169,26 @@ export enum ActionNames {
   /**
    * Artwork Page Events
    */
+  ArtworkClassification = "artworkClassification",
   ArtworkImageSwipe = "artworkImageSwipe",
   ArtworkImageZoom = "artworkImageZoom",
   ArtworkSave = "artworkSave",
   ArtworkUnsave = "artworkUnsave",
-  ArtworkClassification = "artworkClassification",
   AskASpecialist = "askASpecialist",
+  AuctionsFAQ = "auctionsFAQ",
+  Bid = "bid",
+  ConditionsOfSale = "conditionsOfSale",
   ConsignWithArtsy = "consignWithArtsy",
+  EnterLiveBidding = "enterLiveBidding",
   FollowPartner = "followPartner",
   GridArtwork = "gridArtwork",
-  Share = "share",
-  ViewInRoom = "viewInRoom",
+  IncreaseMaxBid = "increaseMaxBid",
   ReadMore = "readMore",
+  RegisterToBid = "registerToBid",
+  Share = "share",
   ShowMoreArtworksDetails = "showMoreArtworksDetails",
   ViewAll = "viewAll",
+  ViewInRoom = "viewInRoom",
 
   /**
    * City and Map Page Events

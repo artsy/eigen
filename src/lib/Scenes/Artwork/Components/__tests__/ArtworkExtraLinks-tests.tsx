@@ -1,6 +1,7 @@
 import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import Event from "lib/NativeModules/Events"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
@@ -8,6 +9,10 @@ import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
+
+jest.unmock("react-tracking")
+
+jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
@@ -185,28 +190,28 @@ describe("ArtworkExtraLinks", () => {
     })
   })
   describe("FAQ and specialist Auction links", () => {
-    it("renders Auction specific text", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isInAuction: true,
-        isForSale: true,
-        sale: {
-          isClosed: false,
-          internalID: "123",
+    const artwork = {
+      ...ArtworkFixture,
+      isForSale: true,
+      isInAuction: true,
+      sale: {
+        isClosed: false,
+        internalID: "123",
+      },
+      artists: [
+        {
+          name: "Santa",
+          isConsignable: true,
         },
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      }
+      ],
+    }
 
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
-        </Theme>
-      )
+    const component = mount(
+      <Theme>
+        <ArtworkExtraLinks artwork={artwork} />
+      </Theme>
+    )
+    it("renders Auction specific text", () => {
       expect(
         component
           .find(Sans)
@@ -228,28 +233,27 @@ describe("ArtworkExtraLinks", () => {
     })
 
     it("hides auction links when auction work has sold via buy now", () => {
-      const artwork = {
-        ...ArtworkFixture,
+      const notForSaleArtwork = {
+        ...artwork,
         isForSale: false,
-        isInAuction: true,
-        sale: {
-          isClosed: false,
-          internalID: "123",
-        },
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: false,
-          },
-        ],
       }
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={notForSaleArtwork} />
         </Theme>
       )
       expect(component.find(Sans).length).toEqual(0)
+    })
+
+    it("calls the draft created event", () => {
+      component
+        .find("Text")
+        .findWhere(t => t.text() === "ask a specialist")
+        .first()
+        .props()
+        .onPress()
+      expect(Event.postEvent).toBeCalled()
     })
   })
 })

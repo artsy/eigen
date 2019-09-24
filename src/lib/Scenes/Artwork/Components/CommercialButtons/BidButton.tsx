@@ -1,8 +1,10 @@
 import { Button, color, Sans } from "@artsy/palette"
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import track from "react-tracking"
 
 export const PREDICTION_URL = "https://live.artsy.net"
 
@@ -11,28 +13,45 @@ export interface BidButtonProps {
   relay: RelayProp
 }
 
+@track()
 export class BidButton extends React.Component<BidButtonProps> {
-  setMaxBid = (newVal: number) => {
+  @track({
+    action_name: Schema.ActionNames.IncreaseMaxBid,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  setMaxBid(newVal: number) {
     this.setState({ selectedMaxBidCents: newVal })
   }
 
-  handleBid = () => {
+  @track({
+    action_name: Schema.ActionNames.Bid,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  handleBid() {
     const { sale } = this.props.artwork
     SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${this.props.artwork.slug}`)
   }
 
-  redirectToRegister = () => {
+  @track({
+    action_name: Schema.ActionNames.RegisterToBid,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  redirectToRegister() {
     const { sale } = this.props.artwork
     SwitchBoard.presentNavigationViewController(this, `/auction-registration/${sale.slug}`)
   }
 
-  redirectToLiveBidding = () => {
+  @track({
+    action_name: Schema.ActionNames.EnterLiveBidding,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  redirectToLiveBidding() {
     const { slug } = this.props.artwork.sale
     const liveUrl = `${PREDICTION_URL}/${slug}`
     SwitchBoard.presentNavigationViewController(this, liveUrl)
   }
 
-  redirectToBid = (firstIncrement: number) => {
+  redirectToBid(firstIncrement: number) {
     const { slug, sale } = this.props.artwork
     const bid = firstIncrement
 

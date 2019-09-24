@@ -30,12 +30,22 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     Linking.openURL(`mailto:orders@artsy.net?subject=${mailtoSubject}`)
   }
 
-  handleReadOurAuctionFAQsTap = () => {
+  @track({
+    action_name: Schema.ActionNames.AuctionsFAQ,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
+  })
+  handleReadOurAuctionFAQsTap() {
     // FIXME: Needs to link to the Force view
     return
   }
 
-  handleConditionsOfSaleTap = () => {
+  @track({
+    action_name: Schema.ActionNames.ConditionsOfSale,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
+  })
+  handleConditionsOfSaleTap() {
     SwitchBoard.presentNavigationViewController(this, `/conditions-of-sale`)
   }
 
