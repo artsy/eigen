@@ -14,10 +14,8 @@ export type Conversations_me = {
             readonly node: {
                 readonly internalID: string | null;
                 readonly last_message: string | null;
-                readonly __typename: string;
                 readonly " $fragmentRefs": ConversationSnippet_conversation$ref;
             } | null;
-            readonly cursor: string;
         } | null> | null;
     } | null;
     readonly " $refType": Conversations_me$ref;

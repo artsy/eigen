@@ -39,14 +39,8 @@ export type CityFairList_city = {
                 } | null;
                 readonly start_at: string | null;
                 readonly end_at: string | null;
-                readonly __typename: string;
             } | null;
-            readonly cursor: string;
         } | null> | null;
-        readonly pageInfo: {
-            readonly endCursor: string | null;
-            readonly hasNextPage: boolean;
-        };
     } | null;
     readonly " $refType": CityFairList_city$ref;
 };

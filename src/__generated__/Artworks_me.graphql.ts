@@ -15,10 +15,8 @@ export type Artworks_me = {
             };
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly __typename: string;
                     readonly " $fragmentRefs": GenericGrid_artworks$ref;
                 } | null;
-                readonly cursor: string;
             } | null> | null;
         } | null;
     } | null;

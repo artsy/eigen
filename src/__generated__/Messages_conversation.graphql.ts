@@ -36,7 +36,6 @@ export type Messages_conversation = {
                 readonly attachments: ReadonlyArray<{
                     readonly internalID: string;
                 } | null> | null;
-                readonly __typename: string;
                 readonly " $fragmentRefs": Message_message$ref;
             } | null;
         } | null> | null;

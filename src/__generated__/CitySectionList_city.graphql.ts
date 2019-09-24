@@ -36,9 +36,7 @@ export type CitySectionList_city = {
                         } | null;
                     } | null;
                 } | null;
-                readonly __typename: string;
             } | null;
-            readonly cursor: string;
         } | null> | null;
     } | null;
     readonly " $refType": CitySectionList_city$ref;

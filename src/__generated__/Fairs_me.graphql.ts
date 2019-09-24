@@ -23,14 +23,8 @@ export type Fairs_me = {
                     readonly image: {
                         readonly url: string | null;
                     } | null;
-                    readonly __typename: string;
                 } | null;
-                readonly cursor: string;
             } | null> | null;
-            readonly pageInfo: {
-                readonly endCursor: string | null;
-                readonly hasNextPage: boolean;
-            };
         } | null;
     } | null;
     readonly " $refType": Fairs_me$ref;

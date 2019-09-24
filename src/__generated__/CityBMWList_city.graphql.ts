@@ -40,14 +40,8 @@ export type CityBMWList_city = {
                             } | null;
                         } | null;
                     } | null;
-                    readonly __typename: string;
                 } | null;
-                readonly cursor: string;
             } | null> | null;
-            readonly pageInfo: {
-                readonly endCursor: string | null;
-                readonly hasNextPage: boolean;
-            };
         } | null;
     } | null;
     readonly " $refType": CityBMWList_city$ref;

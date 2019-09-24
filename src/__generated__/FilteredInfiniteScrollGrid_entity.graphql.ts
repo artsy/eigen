@@ -11,14 +11,8 @@ export type FilteredInfiniteScrollGrid_entity = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly __typename: string;
             } | null;
-            readonly cursor: string;
         } | null> | null;
-        readonly pageInfo: {
-            readonly endCursor: string | null;
-            readonly hasNextPage: boolean;
-        };
         readonly " $fragmentRefs": Filters_filteredArtworks$ref & InfiniteScrollArtworksGrid_connection$ref;
     } | null;
     readonly " $refType": FilteredInfiniteScrollGrid_entity$ref;
