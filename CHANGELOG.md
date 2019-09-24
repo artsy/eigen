@@ -19,6 +19,7 @@
 ### 1.17.2
 
 - Refetches Artwork page query on re-appear - ash & purchase team
+- Add more analytics around auction related actions - ashkan18
 
 ### 1.17.1
 
