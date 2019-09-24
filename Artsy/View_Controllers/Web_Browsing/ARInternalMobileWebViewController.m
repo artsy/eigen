@@ -75,10 +75,10 @@ static void *ARProgressContext = &ARProgressContext;
 {
     [super viewDidLoad];
     [self showLoading];
-    
+
     // KVO on progress for when we can show the page
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
-    
+
     if ([AROptions boolForOption:AROptionsShowMartsyOnScreen]) {
         [self displayDebugMartsyIndicator];
     }
@@ -165,8 +165,14 @@ static void *ARProgressContext = &ARProgressContext;
 
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
+
             if (viewController) {
-                [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                if ([viewController isKindOfClass:[UINavigationController class]]) {
+                    // Navigation controllers can't be pushed onto regular navigation controllers, only the top menu VC.
+                    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                } else {
+                    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                }
             }
 
             ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
