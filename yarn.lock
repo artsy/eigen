@@ -1725,10 +1725,10 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
-"@types/react-relay@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-5.0.0.tgz#03244d48c2942ef9b1df69479e1e6516b6074c5c"
-  integrity sha512-DUm4YW2cdkF3P1TayDMR05Bmda7Cl+mTWj2dnpSwDYl5tEuKCZsj9zhNZsGr6ldIUVbjkyW9QzyAvWYGKiKZkg==
+"@types/react-relay@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-5.0.1.tgz#a369e04e7c1862359c1c4a0f428518c30b342d4a"
+  integrity sha512-nvLlSmkQN/OBu9hLvJGtE8KmN5TviKZIWyU7IKUa0X6OPvl21Qf6gUFPEYWcNL+ql/490kPxSzJzZCeVrw3yQg==
   dependencies:
     "@types/react" "*"
     "@types/relay-runtime" "*"
@@ -1755,10 +1755,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/relay-runtime@*", "@types/relay-runtime@5.0.5":
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-5.0.5.tgz#62fb80d4925a707583e535f6d0afdf0762467adb"
-  integrity sha512-ZfhRGH8kYnMUeV3NBSYsy99hvJ/GiWAZ4Kc7KG7SuKXdYAHNuHV69TJnHmnmuh54EZytu3NplYDwccerghykpQ==
+"@types/relay-runtime@*", "@types/relay-runtime@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-6.0.1.tgz#c304373d185bf4d9f601a696d27df02ac38b7ea7"
+  integrity sha512-jM+vW47/Uux1dvSdzIsGvrY9yieNMXuI0iUyoESebFhI70VOJOSmVnQqLDtI5wHTNP6WQzJARv2UWrZn3Qr8lQ==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -13312,10 +13312,10 @@ relateurl@0.2.x:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-relay-compiler-language-typescript@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-5.0.0.tgz#22ed9e177cc94d6eb859a186e6b8431bc272cd0e"
-  integrity sha512-Qi+iu1NHOyjBkSytc1mUC9P37qEu2zgR212Bea71zXgkRazZeM4Z8SnKJmmt6qrflDJPdcs+UuleloQ8U9k98Q==
+relay-compiler-language-typescript@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-6.0.0.tgz#a283f0916ae070e18086e64bc429de9203e442eb"
+  integrity sha512-y2p2vmf7vmYQtVo/t/LLjE5rWW8HWic2C3pzjdcxTYgf47XIn7iu4F2BzTkWIsoVn/NR8vDf6YqCikIWyk3XIA==
   dependencies:
     immutable "^4.0.0-rc.12"
     invariant "^2.2.4"
