@@ -15,6 +15,7 @@ jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { mockTracking } from "lib/tests/mockTracking"
 
 describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
@@ -206,11 +207,12 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    const component = mount(
+    const Component = mockTracking(() => (
       <Theme>
         <ArtworkExtraLinks artwork={artwork} />
       </Theme>
-    )
+    ))
+    const component = mount(<Component />)
     it("renders Auction specific text", () => {
       expect(
         component
@@ -246,14 +248,46 @@ describe("ArtworkExtraLinks", () => {
       expect(component.find(Sans).length).toEqual(0)
     })
 
-    it("calls the draft created event", () => {
+    it("posts proper event in when clicking Ask A Specialist", () => {
       component
         .find("Text")
         .findWhere(t => t.text() === "ask a specialist")
         .first()
         .props()
         .onPress()
-      expect(Event.postEvent).toBeCalled()
+      expect(Event.postEvent).toBeCalledWith({
+        action_name: "askASpecialist",
+        action_type: "tap",
+        context_module: "ArtworkExtraLinks",
+      })
+    })
+
+    it("posts proper event in when clicking Read our auction FAQs", () => {
+      component
+        .find("Text")
+        .findWhere(t => t.text() === "Read our auction FAQs")
+        .first()
+        .props()
+        .onPress()
+      expect(Event.postEvent).toBeCalledWith({
+        action_name: "auctionsFAQ",
+        action_type: "tap",
+        context_module: "ArtworkExtraLinks",
+      })
+    })
+
+    it("posts proper event in when clicking Conditions of Sale", () => {
+      component
+        .find("Text")
+        .findWhere(t => t.text() === "Conditions of Sale")
+        .first()
+        .props()
+        .onPress()
+      expect(Event.postEvent).toBeCalledWith({
+        action_name: "conditionsOfSale",
+        action_type: "tap",
+        context_module: "ArtworkExtraLinks",
+      })
     })
   })
 })

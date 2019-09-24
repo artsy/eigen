@@ -189,6 +189,7 @@ export enum ActionNames {
   ShowMoreArtworksDetails = "showMoreArtworksDetails",
   ViewAll = "viewAll",
   ViewInRoom = "viewInRoom",
+  WatchLiveBidding = "watchLiveBidding",
 
   /**
    * City and Map Page Events
