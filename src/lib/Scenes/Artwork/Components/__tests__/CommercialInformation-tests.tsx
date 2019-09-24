@@ -60,6 +60,7 @@ describe("CommercialInformation", () => {
         isOfferable: false,
         isBiddable: false,
         isInquireable: false,
+        isForSale: false,
         editionSets: [],
         sale: {
           isAuction: false,
@@ -94,6 +95,7 @@ describe("CommercialInformation", () => {
     const CommercialInformationArtworkNonCommercial = {
       ...CommercialInformationArtwork,
       availability: null,
+      isForSale: false,
     }
     const component = mount(
       <Theme>
@@ -188,6 +190,24 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     expect(component.find(BidButton).length).toEqual(1)
   })
 
+  it("doesn't render CountDownTimer, BidButton, or BuyNowButton when artwork is in an auction but sold via buy now", () => {
+    const CommercialInformationSoldArtworkInAuction = {
+      ...CommercialInformationArtworkInAuction,
+      availability: "sold",
+      isAcquireable: false,
+      isForSale: false,
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={CommercialInformationSoldArtworkInAuction} />
+      </Theme>
+    )
+    expect(component.find(AuctionCountDownTimer).length).toEqual(0)
+    expect(component.find(BidButton).length).toEqual(0)
+    expect(component.find(BuyNowButton).length).toEqual(0)
+  })
+
   it("doesn't render CountDownTimer or BidButton when not in auction", () => {
     const component = mount(
       <Theme>
@@ -208,6 +228,7 @@ const CommercialInformationArtwork = {
     isOfferable: false,
     isBiddable: false,
     isInquireable: false,
+    isForSale: true,
     editionSets: [],
     saleMessage: "Contact For Price",
     shippingInfo: "Shipping, tax, and service quoted by seller",
@@ -235,6 +256,8 @@ const CommercialInformationArtwork = {
 
 const CommercialInformationArtworkInAuction = {
   ...CommercialInformationArtwork,
+  availability: "for sale",
+  isAcquireable: true,
   isInAuction: true,
   sale: {
     isClosed: false,

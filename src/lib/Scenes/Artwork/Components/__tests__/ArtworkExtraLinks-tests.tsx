@@ -15,6 +15,7 @@ describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
     const artwork = {
       ...ArtworkFixture,
+      isForSale: true,
       artists: [
         {
           name: "Santa",
@@ -39,6 +40,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows plural link text", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -60,6 +62,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link if at least 1 artist is consignable", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -78,6 +81,7 @@ describe("ArtworkExtraLinks", () => {
     it("doesn't render component if no artists are consignable", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -98,6 +102,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows singular link text", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -116,6 +121,7 @@ describe("ArtworkExtraLinks", () => {
     it("shows consign link", () => {
       const artwork = {
         ...ArtworkFixture,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -137,6 +143,7 @@ describe("ArtworkExtraLinks", () => {
         ...ArtworkFixture,
         isAcquireable: false,
         isInquireable: true,
+        isForSale: true,
         artists: [
           {
             name: "Santa",
@@ -158,6 +165,7 @@ describe("ArtworkExtraLinks", () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: true,
+        isForSale: true,
         isInquireable: true,
         artists: [
           {
@@ -181,6 +189,7 @@ describe("ArtworkExtraLinks", () => {
       const artwork = {
         ...ArtworkFixture,
         isInAuction: true,
+        isForSale: true,
         sale: {
           isClosed: false,
           internalID: "123",
@@ -216,6 +225,31 @@ describe("ArtworkExtraLinks", () => {
           .at(1)
           .text()
       ).toContain("ask a specialist")
+    })
+
+    it("hides auction links when auction work has sold via buy now", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isForSale: false,
+        isInAuction: true,
+        sale: {
+          isClosed: false,
+          internalID: "123",
+        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: false,
+          },
+        ],
+      }
+
+      const component = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} />
+        </Theme>
+      )
+      expect(component.find(Sans).length).toEqual(0)
     })
   })
 })

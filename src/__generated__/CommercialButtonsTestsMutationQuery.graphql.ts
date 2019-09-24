@@ -30,6 +30,7 @@ fragment CommercialButtons_artwork on Artwork {
   isInquireable
   isInAuction
   isBuyNowable
+  isForSale
   editionSets {
     id
   }
@@ -191,6 +192,13 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isForSale",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "editionSets",
@@ -345,7 +353,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsMutationQuery",
-    "id": "96ca3563fe2a823087059822fd995912",
+    "id": "a11880f94aa793ffdc05246c2d5cb102",
     "text": null,
     "metadata": {}
   }

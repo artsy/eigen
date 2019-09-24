@@ -16,6 +16,7 @@ export type CommercialInformation_artwork = {
     readonly isInAuction: boolean | null;
     readonly availability: string | null;
     readonly saleMessage: string | null;
+    readonly isForSale: boolean | null;
     readonly artists: ReadonlyArray<{
         readonly isConsignable: boolean | null;
     } | null> | null;
@@ -77,6 +78,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "saleMessage",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isForSale",
       "args": null,
       "storageKey": null
     },
@@ -166,5 +174,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4bd54198a6f6f917d462d02953797897';
+(node as any).hash = 'b459f734768830ae388b460aa5c002ef';
 export default node;

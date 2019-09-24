@@ -247,6 +247,7 @@ fragment CommercialInformation_artwork on Artwork {
   isInAuction
   availability
   saleMessage
+  isForSale
   artists {
     isConsignable
     id
@@ -279,6 +280,7 @@ fragment CommercialButtons_artwork on Artwork {
   isInquireable
   isInAuction
   isBuyNowable
+  isForSale
   editionSets {
     id
   }
@@ -332,6 +334,7 @@ fragment ArtworkExtraLinks_artwork on Artwork {
   isAcquireable
   isInAuction
   title
+  isForSale
   sale {
     isClosed
     id
@@ -1755,6 +1758,13 @@ return {
           },
           (v29/*: any*/),
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isForSale",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "editionSets",
@@ -1847,13 +1857,6 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "isForSale",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
             "name": "shippingOrigin",
             "args": null,
             "storageKey": null
@@ -1879,7 +1882,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "88f73000b32aee5f64a1f583b0c39028",
+    "id": "6226c7b4f6d7da63adca236092a999c4",
     "text": null,
     "metadata": {}
   }
