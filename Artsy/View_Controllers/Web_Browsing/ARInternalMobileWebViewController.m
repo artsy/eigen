@@ -166,7 +166,7 @@ static void *ARProgressContext = &ARProgressContext;
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
             if (viewController) {
-                [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
             }
 
             ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
