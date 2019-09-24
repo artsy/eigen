@@ -20,7 +20,23 @@ describe("Artwork", () => {
     jest.clearAllMocks()
   })
   it("renders a snapshot", () => {
-    const component = mount(<Artwork artwork={ArtworkFixture} relay={{ environment: {} } as RelayRefetchProp} />)
+    const component = mount(
+      <Artwork isVisible artwork={ArtworkFixture} relay={{ environment: {} } as RelayRefetchProp} />
+    )
     expect(component.find(ArtworkHeader).length).toEqual(1)
+  })
+
+  it("refetches on re-appear", () => {
+    const refetchMock = jest.fn()
+    const component = mount(
+      <Artwork
+        artwork={ArtworkFixture as any}
+        relay={({ environment: {}, refetch: refetchMock } as unknown) as RelayRefetchProp}
+        isVisible
+      />
+    )
+    component.setProps({ isVisible: false })
+    component.setProps({ isVisible: true })
+    expect(refetchMock).toHaveBeenCalled()
   })
 })
