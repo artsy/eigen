@@ -24,6 +24,7 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 
 interface Props {
   artwork: Artwork_artwork
+  isVisible: boolean
   relay: RelayRefetchProp
 }
 
@@ -78,6 +79,13 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    // If we are visible, but weren't, then we are re-appearing (not called on first render).
+    if (this.props.isVisible && !prevProps.isVisible) {
+      this.onRefresh()
+    }
+  }
+
   shouldRenderPartner = () => {
     const { partner, sale } = this.props.artwork
     if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
@@ -106,7 +114,10 @@ export class Artwork extends React.Component<Props, State> {
     }
 
     this.setState({ refreshing: true })
+    this.forceRefetch(() => this.setState({ refreshing: false }))
+  }
 
+  forceRefetch = (onComplete?: () => void) => {
     this.props.relay.refetch(
       { id: this.props.artwork.id },
       {},
@@ -114,7 +125,9 @@ export class Artwork extends React.Component<Props, State> {
         if (error) {
           console.error("Artwork.tsx refetch query: ", error.message)
         }
-        this.setState({ refreshing: false })
+        if (onComplete) {
+          onComplete()
+        }
       },
       { force: true }
     )
@@ -292,7 +305,7 @@ export const ArtworkContainer = createRefetchContainer(
   `
 )
 
-export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: SafeAreaInsets }> = ({
+export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: SafeAreaInsets; isVisible: boolean }> = ({
   artworkID,
   ...others
 }) => {

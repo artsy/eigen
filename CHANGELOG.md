@@ -16,6 +16,8 @@
 
 ### Master
 
+- Refetches Artwork page query on re-appear - ash & purchase team
+
 ### 1.17.1
 
 ### 1.17.0
