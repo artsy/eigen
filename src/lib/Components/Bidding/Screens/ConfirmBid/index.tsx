@@ -238,8 +238,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   createBidderPosition() {
     commitMutation<ConfirmBidCreateBidderPositionMutation>(this.props.relay.environment, {
-      onCompleted: (results, errors) =>
-        isEmpty(errors) ? this.verifyBidderPosition(results) : this.presentErrorResult(errors),
+      onCompleted: (results, errors) => {
+        return isEmpty(errors) ? this.verifyBidderPosition(results) : this.presentErrorResult(errors)
+      },
       onError: this.presentErrorResult.bind(this),
       mutation: graphql`
         mutation ConfirmBidCreateBidderPositionMutation($input: BidderPositionInput!) {

@@ -25,6 +25,7 @@ import stripe from "tipsi-stripe"
 
 import { Theme } from "@artsy/palette"
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
+import { waitUntil } from "lib/tests/waitUntil"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
@@ -45,7 +46,7 @@ beforeEach(() => {
   }
 })
 
-it("allows bidders with a qualified credit card to bid", () => {
+it("allows bidders with a qualified credit card to bid", async () => {
   let screen = renderer.create(
     <Theme>
       <SelectMaxBid
@@ -61,7 +62,6 @@ it("allows bidders with a qualified credit card to bid", () => {
   screen.root.findAllByType(Button)[0].instance.props.onPress()
 
   screen = fakeNavigator.nextStep()
-
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
   bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
@@ -73,10 +73,9 @@ it("allows bidders with a qualified credit card to bid", () => {
   screen.root.findByType(Checkbox).instance.props.onPress()
   screen.root.findAllByType(Button)[1].instance.props.onPress()
 
-  jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
+  await waitUntil(() => fakeNavigator.stackSize() === 2)
 
   screen = fakeNavigator.nextStep()
-
   expect(getTitleText(screen)).toEqual("You’re the highest bidder")
 })
 
