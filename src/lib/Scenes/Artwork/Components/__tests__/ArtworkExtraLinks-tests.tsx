@@ -236,16 +236,27 @@ describe("ArtworkExtraLinks", () => {
 
     it("hides auction links when auction work has sold via buy now", () => {
       const notForSaleArtwork = {
-        ...artwork,
+        ...ArtworkFixture,
+        isInAuction: true,
         isForSale: false,
+        sale: {
+          isClosed: false,
+          internalID: "123",
+        },
+        artists: [
+          {
+            name: "Santa",
+            isConsignable: false,
+          },
+        ],
       }
 
-      const component = mount(
+      const componentWithNoLink = mount(
         <Theme>
           <ArtworkExtraLinks artwork={notForSaleArtwork} />
         </Theme>
       )
-      expect(component.find(Sans).length).toEqual(0)
+      expect(componentWithNoLink.find(Sans).length).toEqual(0)
     })
 
     it("posts proper event in when clicking Ask A Specialist", () => {
