@@ -1,6 +1,7 @@
 import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import Event from "lib/NativeModules/Events"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
@@ -9,7 +10,12 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
 
+jest.unmock("react-tracking")
+
+jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { mockTracking } from "lib/tests/mockTracking"
 
 describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
@@ -185,28 +191,29 @@ describe("ArtworkExtraLinks", () => {
     })
   })
   describe("FAQ and specialist Auction links", () => {
-    it("renders Auction specific text", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isInAuction: true,
-        isForSale: true,
-        sale: {
-          isClosed: false,
-          internalID: "123",
+    const artwork = {
+      ...ArtworkFixture,
+      isForSale: true,
+      isInAuction: true,
+      sale: {
+        isClosed: false,
+        internalID: "123",
+      },
+      artists: [
+        {
+          name: "Santa",
+          isConsignable: true,
         },
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      }
+      ],
+    }
 
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
-        </Theme>
-      )
+    const Component = mockTracking(() => (
+      <Theme>
+        <ArtworkExtraLinks artwork={artwork} />
+      </Theme>
+    ))
+    const component = mount(<Component />)
+    it("renders Auction specific text", () => {
       expect(
         component
           .find(Sans)
@@ -228,10 +235,10 @@ describe("ArtworkExtraLinks", () => {
     })
 
     it("hides auction links when auction work has sold via buy now", () => {
-      const artwork = {
+      const notForSaleArtwork = {
         ...ArtworkFixture,
-        isForSale: false,
         isInAuction: true,
+        isForSale: false,
         sale: {
           isClosed: false,
           internalID: "123",
@@ -244,12 +251,54 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const component = mount(
+      const componentWithNoLink = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={notForSaleArtwork} />
         </Theme>
       )
-      expect(component.find(Sans).length).toEqual(0)
+      expect(componentWithNoLink.find(Sans).length).toEqual(0)
+    })
+
+    it("posts proper event in when clicking Ask A Specialist", () => {
+      component
+        .find("Text")
+        .findWhere(t => t.text() === "ask a specialist")
+        .first()
+        .props()
+        .onPress()
+      expect(Event.postEvent).toBeCalledWith({
+        action_name: "askASpecialist",
+        action_type: "tap",
+        context_module: "ArtworkExtraLinks",
+      })
+    })
+
+    it("posts proper event in when clicking Read our auction FAQs", () => {
+      component
+        .find("Text")
+        .findWhere(t => t.text() === "Read our auction FAQs")
+        .first()
+        .props()
+        .onPress()
+      expect(Event.postEvent).toBeCalledWith({
+        action_name: "auctionsFAQ",
+        action_type: "tap",
+        context_module: "ArtworkExtraLinks",
+      })
+    })
+
+    it("posts proper event in when clicking Conditions of Sale", () => {
+      component
+        .find("Text")
+        .findWhere(t => t.text() === "Conditions of Sale")
+        .first()
+        .props()
+        .onPress()
+      expect(Event.postEvent).toBeCalledWith({
+        action_name: "conditionsOfSale",
+        action_type: "tap",
+        context_module: "ArtworkExtraLinks",
+      })
     })
   })
 })

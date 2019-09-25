@@ -1,8 +1,10 @@
 import { Button, color, Sans } from "@artsy/palette"
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import track from "react-tracking"
 
 export const PREDICTION_URL = "https://live.artsy.net"
 
@@ -11,43 +13,109 @@ export interface BidButtonProps {
   relay: RelayProp
 }
 
+const registrationWasAttempted = sale => !!sale.registrationStatus
+const isRegisteredToBid = sale => registrationWasAttempted(sale) && sale.registrationStatus.qualifiedForBidding
+const watchOnly = sale => sale.isRegistrationClosed && !isRegisteredToBid(sale)
+
+@track()
 export class BidButton extends React.Component<BidButtonProps> {
-  setMaxBid = (newVal: number) => {
+  @track({
+    action_name: Schema.ActionNames.IncreaseMaxBid,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  setMaxBid(newVal: number) {
     this.setState({ selectedMaxBidCents: newVal })
   }
 
-  handleBid = () => {
+  @track({
+    action_name: Schema.ActionNames.Bid,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  handleBid() {
     const { sale } = this.props.artwork
     SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${this.props.artwork.slug}`)
   }
 
-  redirectToRegister = () => {
+  @track({
+    action_name: Schema.ActionNames.RegisterToBid,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  redirectToRegister() {
     const { sale } = this.props.artwork
     SwitchBoard.presentNavigationViewController(this, `/auction-registration/${sale.slug}`)
   }
 
-  redirectToLiveBidding = () => {
+  @track(props => {
+    const { artwork } = props
+    return {
+      action_name: watchOnly(artwork.sale) ? Schema.ActionNames.EnterLiveBidding : Schema.ActionNames.WatchLiveBidding,
+      action_type: Schema.ActionTypes.Tap,
+    }
+  })
+  redirectToLiveBidding() {
     const { slug } = this.props.artwork.sale
     const liveUrl = `${PREDICTION_URL}/${slug}`
     SwitchBoard.presentNavigationViewController(this, liveUrl)
   }
 
-  redirectToBid = (firstIncrement: number) => {
+  redirectToBid(firstIncrement: number) {
     const { slug, sale } = this.props.artwork
     const bid = firstIncrement
 
     SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
   }
 
+  renderIsPreview(registrationAttempted: boolean, registeredToBid: boolean) {
+    return (
+      <>
+        {!registrationAttempted && (
+          <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
+            Register to bid
+          </Button>
+        )}
+        {registrationAttempted &&
+          !registeredToBid && (
+            <Button width={100} block size="large" mt={1} disabled>
+              Registration pending
+            </Button>
+          )}
+        {registrationAttempted &&
+          registeredToBid && (
+            <Button width={100} block size="large" mt={1} disabled>
+              Registration complete
+            </Button>
+          )}
+      </>
+    )
+  }
+
+  renderIsLiveOpen() {
+    const { sale } = this.props.artwork
+    const isWatchOnly = watchOnly(sale)
+    return (
+      <>
+        {isWatchOnly && (
+          <Sans size="2" color={color("black60")} pb={1} textAlign="center">
+            Registration closed
+          </Sans>
+        )}
+        <Button width={100} block size="large" onPress={() => this.redirectToLiveBidding()}>
+          {isWatchOnly ? "Watch live bidding" : "Enter live bidding"}
+        </Button>
+      </>
+    )
+  }
+
   render() {
     const { artwork } = this.props
+    const { sale, saleArtwork } = artwork
 
-    if (artwork.sale && artwork.sale.isClosed) {
+    if (sale && sale.isClosed) {
       return null
     }
 
-    const registrationAttempted = !!artwork.sale.registrationStatus
-    const registeredToBid = registrationAttempted && artwork.sale.registrationStatus.qualifiedForBidding
+    const registrationAttempted = registrationWasAttempted(sale)
+    const registeredToBid = isRegisteredToBid(sale)
 
     /**
      * NOTE: This is making an incorrect assumption that there could only ever
@@ -57,49 +125,17 @@ export class BidButton extends React.Component<BidButtonProps> {
     const myLotStanding = artwork.myLotStanding && artwork.myLotStanding[0]
     const hasMyBids = !!(myLotStanding && myLotStanding.mostRecentBid)
 
-    if (artwork.sale.isPreview) {
-      return (
-        <>
-          {!registrationAttempted && (
-            <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
-              Register to bid
-            </Button>
-          )}
-          {registrationAttempted &&
-            !registeredToBid && (
-              <Button width={100} block size="large" mt={1} disabled>
-                Registration pending
-              </Button>
-            )}
-          {registrationAttempted &&
-            registeredToBid && (
-              <Button width={100} block size="large" mt={1} disabled>
-                Registration complete
-              </Button>
-            )}
-        </>
-      )
-    } else if (artwork.sale.isLiveOpen) {
-      return (
-        <>
-          {artwork.sale.isRegistrationClosed &&
-            !registeredToBid && (
-              <Sans size="2" color={color("black60")} pb={1} textAlign="center">
-                Registration closed
-              </Sans>
-            )}
-          <Button width={100} block size="large" onPress={() => this.redirectToLiveBidding()}>
-            {artwork.sale.isRegistrationClosed && !registeredToBid ? "Watch live bidding" : "Enter live bidding"}
-          </Button>
-        </>
-      )
+    if (sale.isPreview) {
+      return this.renderIsPreview(registrationAttempted, registeredToBid)
+    } else if (sale.isLiveOpen) {
+      return this.renderIsLiveOpen()
     } else if (registrationAttempted && !registeredToBid) {
       return (
         <Button width={100} block size="large" disabled>
           Registration pending
         </Button>
       )
-    } else if (artwork.sale.isRegistrationClosed && !registeredToBid) {
+    } else if (sale.isRegistrationClosed && !registeredToBid) {
       return (
         <Button width={100} block size="large" disabled>
           Registration closed
@@ -107,7 +143,7 @@ export class BidButton extends React.Component<BidButtonProps> {
       )
     } else {
       const myLastMaxBid = hasMyBids && myLotStanding.mostRecentBid.maxBid.cents
-      const increments = artwork.saleArtwork.increments.filter(increment => increment.cents > (myLastMaxBid || 0))
+      const increments = saleArtwork.increments.filter(increment => increment.cents > (myLastMaxBid || 0))
       const firstIncrement = increments && increments.length && increments[0]
       const incrementCents = firstIncrement && firstIncrement.cents
 
