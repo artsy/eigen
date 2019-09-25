@@ -1,9 +1,17 @@
-import { GraphQLFieldResolver, GraphQLResolveInfo, isAbstractType, isLeafType, responsePathAsArray } from "graphql"
+import {
+  GraphQLFieldResolver,
+  GraphQLResolveInfo,
+  isAbstractType,
+  isLeafType,
+  isNonNullType,
+  responsePathAsArray,
+} from "graphql"
 import { IMocks } from "graphql-tools/dist/Interfaces"
 import getNetworkLayer from "relay-mock-network-layer"
 import { INetwork as RelayNetwork, Network } from "relay-runtime"
 import uuid from "uuid"
 
+import { get } from "lib/utils/get"
 import schema from "../../../../data/schema.graphql"
 import FormattedNumber from "./CustomScalars/formatted_number"
 /**
@@ -62,7 +70,10 @@ export const createMockFetchQuery = ({
       // whether to resolve fields in a given value
       if (typeof source !== "object") {
         const parentPath = pathAsArray.slice(0, -1).join("/")
-        throw new Error(`The value at path '${parentPath}' should be an object but is a ${typeof source}.`)
+        const operationName = get(info, i => i.operation.name.value)
+        throw new Error(
+          `The value at path '${parentPath}' for operation '${operationName}' should be an object but is a ${typeof source}.`
+        )
       }
 
       // handle aliased fields first
@@ -103,7 +114,8 @@ export const createMockFetchQuery = ({
 
       throw error(
         info,
-        ({ type, path }) => `A mock for field at path '${path}' of type '${type}' was expected but not found.`
+        ({ type, path, operationName }) =>
+          `A mock for field at path '${path}' of type '${type}' was expected for operation '${operationName}', but none was found.`
       )
     }) as GraphQLFieldResolver<any, any>,
     schema,
@@ -141,7 +153,8 @@ const checkLeafType = (value: unknown, info: GraphQLResolveInfo) => {
     } catch (e) {
       throw error(
         info,
-        ({ type, path }) => `Expected mock value of type '${type}' but got '${typeof value}' at path '${path}'`
+        ({ type, path, operationName }) =>
+          `Expected mock value of type '${type}' but got '${typeof value}' at path '${path}' for operation '${operationName}'`
       )
     }
   }
@@ -151,7 +164,11 @@ const checkLeafType = (value: unknown, info: GraphQLResolveInfo) => {
 // This function tries to infer the concrete type of a value that appears
 // in a position whose type is either a union or an interface
 const inferUnionOrInterfaceType = (value: unknown, info: GraphQLResolveInfo) => {
-  const returnType = info.returnType
+  let returnType = info.returnType
+
+  if (isNonNullType(returnType)) {
+    returnType = returnType.ofType
+  }
 
   if (!isAbstractType(returnType)) {
     return value
@@ -161,7 +178,8 @@ const inferUnionOrInterfaceType = (value: unknown, info: GraphQLResolveInfo) => 
   if (typeof value !== "object") {
     throw error(
       info,
-      ({ type, path }) => `Expected object of type '${type}' but got '${typeof value}' at path '${path}'`
+      ({ type, path, operationName }) =>
+        `Expected object of type '${type}' but got '${typeof value}' at path '${path}' for operation '${operationName}'`
     )
   }
 
@@ -183,15 +201,26 @@ const inferUnionOrInterfaceType = (value: unknown, info: GraphQLResolveInfo) => 
   const possibleTypes = unionMemberTypes.map(type => type.name).join(", ")
   throw error(
     info,
-    ({ path }) => `Ambiguous object at path '${path}'. Add a __typename from this list: [${possibleTypes}]`
+    ({ path, operationName }) =>
+      `Ambiguous object at path '${path}' for operation '${operationName}'. Add a __typename from this list: [${possibleTypes}]`
   )
 }
 
-function error(info: GraphQLResolveInfo, renderMessage: (args: { type: string; path: string }) => string) {
+function error(
+  info: GraphQLResolveInfo,
+  renderMessage: (
+    args: {
+      type: string
+      path: string
+      operationName: string
+    }
+  ) => string
+) {
   return new Error(
     renderMessage({
       path: responsePathAsArray(info.path).join("/"),
       type: info.returnType.inspect(),
+      operationName: get(info, i => i.operation.name.value, "(unknown)"),
     })
   )
 }
