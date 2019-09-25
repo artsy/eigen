@@ -30,6 +30,7 @@ upcoming:
     - Trim whitespace in featured links
     - Improves UX when opening artwork view - ash
     - Removes left-and-right swiping between artwork views - ash
+    - Fixes opening Terms/Privacy Policy links during onboarding - ash
 
 releases:
   - version: 5.0.6
