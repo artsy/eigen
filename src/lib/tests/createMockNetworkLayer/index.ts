@@ -79,12 +79,16 @@ export const createMockFetchQuery = ({
       // handle aliased fields first
       const alias = info.fieldNodes[0].alias
       if (alias && alias.value in source) {
-        return inferUnionOrInterfaceType(checkLeafType(source[alias.value], info), info)
+        const value = source[alias.value]
+        checkValue(value, info)
+        return value
       }
 
       // the common case, the field has a fixture and is not aliased
       if (info.fieldName in source) {
-        return inferUnionOrInterfaceType(checkLeafType(source[info.fieldName], info), info)
+        const value = source[info.fieldName]
+        checkValue(value, info)
+        return value
       }
 
       if (info.fieldName === "id" || info.fieldName === "slug" || info.fieldName === "internalID") {
@@ -145,25 +149,40 @@ export const createMockFetchQuery = ({
   })
 }
 
+const checkNonNullType = (value: unknown, info: GraphQLResolveInfo) => {
+  const returnType = info.returnType
+  if (value == null) {
+    if (isNonNullType(returnType)) {
+      throw error(
+        info,
+        ({ type, path, operationName }) =>
+          `Expected '${type}' value for non-nullable field at path '${path}' for operation '${operationName}'`
+      )
+    }
+  }
+}
+
 const checkLeafType = (value: unknown, info: GraphQLResolveInfo) => {
   const returnType = info.returnType
-  if (isLeafType(returnType)) {
+
+  if (isLeafType(returnType) && value != null) {
     try {
       returnType.parseValue(value)
     } catch (e) {
       throw error(
         info,
         ({ type, path, operationName }) =>
-          `Expected mock value of type '${type}' but got '${typeof value}' at path '${path}' for operation '${operationName}'`
+          `Expected mock value of type '${type}' but got '${
+            value === null ? "null" : typeof value
+          }' at path '${path}' for operation '${operationName}'`
       )
     }
   }
-  return value
 }
 
 // This function tries to infer the concrete type of a value that appears
 // in a position whose type is either a union or an interface
-const inferUnionOrInterfaceType = (value: unknown, info: GraphQLResolveInfo) => {
+const checkUnionOrInterfaceType = (value: unknown, info: GraphQLResolveInfo) => {
   let returnType = info.returnType
 
   if (isNonNullType(returnType)) {
@@ -204,6 +223,12 @@ const inferUnionOrInterfaceType = (value: unknown, info: GraphQLResolveInfo) => 
     ({ path, operationName }) =>
       `Ambiguous object at path '${path}' for operation '${operationName}'. Add a __typename from this list: [${possibleTypes}]`
   )
+}
+
+const checkValue = (value: unknown, info: GraphQLResolveInfo) => {
+  checkNonNullType(value, info)
+  checkLeafType(value, info)
+  checkUnionOrInterfaceType(value, info)
 }
 
 function error(
