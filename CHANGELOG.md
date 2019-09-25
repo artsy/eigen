@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes submitting a consignment with a missing edition size - ash
+
 ### 1.17.2
 
 - Refetches Artwork page query on re-appear - ash & purchase team
