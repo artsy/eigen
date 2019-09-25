@@ -244,14 +244,12 @@
 
 - (void)showTermsAndConditions
 {
-    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"terms"];
-    [self pushViewController:webViewController animated:YES];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/terms"]];
 }
 
 - (void)showPrivacyPolicy
 {
-    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"privacy"];
-    [self pushViewController:webViewController animated:YES];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/privacy"]];
 }
 
 
