@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes issue where the Artwork page would show a refresh animation on re-appear - ash
+
 ### 1.17.2
 
 - Refetches Artwork page query on re-appear - ash & purchase team
