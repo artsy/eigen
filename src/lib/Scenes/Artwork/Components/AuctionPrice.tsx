@@ -60,6 +60,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const myMaxBid = get(myMostRecent, bid => bid.maxBid.display)
     const bidsCount = get(artwork, a => a.saleArtwork.counts.bidderPositions)
     const bidsPresent = bidsCount > 0
+    const bidText = this.bidText(bidsPresent, bidsCount) ? this.bidText(bidsPresent, bidsCount) : null
 
     return (
       <>
@@ -81,9 +82,12 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
           </Sans>
         </Flex>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-          <Sans size="2" pr={1} color="black60">
-            {this.bidText(bidsPresent, bidsCount)}
-          </Sans>
+          {bidText && (
+            <Sans size="2" pr={1} color="black60">
+              {bidText}
+            </Sans>
+          )}
+
           {myMaxBid && (
             <Sans size="2" color="black60" pl={1}>
               Your max: {myMaxBid}
