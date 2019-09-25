@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes issue where the Artwork page would show a refresh animation on re-appear - ash
+- Fixes submitting a consignment with a missing edition size - ash
 
 ### 1.17.2
 

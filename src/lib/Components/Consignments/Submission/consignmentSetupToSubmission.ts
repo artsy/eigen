@@ -26,7 +26,7 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup) =>
       dimensionsMetric: submission.metadata && submission.metadata.unit,
       edition: !!submission.editionInfo,
       editionNumber: submission.editionInfo && submission.editionInfo.number,
-      editionSize: submission.editionInfo && parseInt(submission.editionInfo.size, 10),
+      editionSize: submission.editionInfo && (parseInt(submission.editionInfo.size, 10) || null), // parseInt(undefined) returns NaN, which errors on MP.
       height: submission.metadata && submission.metadata.height,
       locationCity: submission.location && submission.location.city,
       locationCountry: submission.location && submission.location.country,
