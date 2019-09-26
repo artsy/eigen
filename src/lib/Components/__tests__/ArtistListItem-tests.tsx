@@ -1,6 +1,4 @@
-import { Button } from "@artsy/palette"
-import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
-import { renderUntil } from "lib/tests/renderUntil"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
 import { ArtistFixture } from "../../__fixtures__/ArtistFixture"
@@ -10,24 +8,19 @@ jest.unmock("react-relay")
 
 describe("ArtistListItem", () => {
   const render = () =>
-    renderUntil(
-      wrapper => {
-        return wrapper.find(Button).length > 0
-      },
-      <MockRelayRenderer
-        Component={({ artist }) => <ArtistListItem artist={artist} />}
-        query={graphql`
-          query ArtistListItemTestsQuery {
-            artist(id: "pablo-picasso") {
-              ...ArtistListItem_artist
-            }
+    renderRelayTree({
+      Component: ({ artist }) => <ArtistListItem artist={artist} />,
+      query: graphql`
+        query ArtistListItemTestsQuery {
+          artist(id: "pablo-picasso") {
+            ...ArtistListItem_artist
           }
-        `}
-        mockData={{
-          artist: ArtistFixture,
-        }}
-      />
-    )
+        }
+      `,
+      mockData: {
+        artist: ArtistFixture,
+      },
+    })
 
   it("renders properly", async () => {
     const tree = await render()

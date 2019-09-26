@@ -1,6 +1,4 @@
-import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
-import { renderUntil } from "lib/tests/renderUntil"
-import React from "react"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
 import { FairBMWArtActivation } from "../FairBMWArtActivation"
@@ -8,29 +6,24 @@ import { FairBMWArtActivation } from "../FairBMWArtActivation"
 jest.unmock("react-relay")
 
 it("renders properly", async () => {
-  const tree = await renderUntil(
-    wrapper => {
-      return wrapper.find("FairBMWArtActivation").length > 0
-    },
-    <MockRelayRenderer
-      Component={FairBMWArtActivation}
-      query={graphql`
-        query FairBMWArtActivationTestsQuery {
-          fair(id: "art-basel-in-miami-beach-2018") {
-            slug
-            internalID
-            sponsoredContent {
-              activationText
-              pressReleaseUrl
-            }
+  const tree = await renderRelayTree({
+    Component: FairBMWArtActivation,
+    query: graphql`
+      query FairBMWArtActivationTestsQuery {
+        fair(id: "art-basel-in-miami-beach-2018") {
+          slug
+          internalID
+          sponsoredContent {
+            activationText
+            pressReleaseUrl
           }
         }
-      `}
-      mockResolvers={{
-        Fair: () => fairFixture,
-      }}
-    />
-  )
+      }
+    `,
+    mockResolvers: {
+      Fair: () => fairFixture,
+    },
+  })
   const dom = tree.text()
 
   expect(dom).toContain("BMW Art Activations")

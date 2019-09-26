@@ -1,10 +1,8 @@
-import React from "react"
 import { graphql } from "react-relay"
 
 import { ShowFixture } from "lib/__fixtures__/ShowFixture"
-import { MockRelayRenderer } from "../../../../tests/MockRelayRenderer"
-import { renderUntil } from "../../../../tests/renderUntil"
 
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { MoreInfoContainer } from "../MoreInfo"
 
 jest.unmock("react-relay")
@@ -14,22 +12,19 @@ jest.unmock("react-relay")
   are going to bring these changes into Emission and then revisit this test.
 */
 it("Renders the Show MoreInfo screen", async () => {
-  const tree = await renderUntil(
-    wrapper => wrapper.text().includes("Press Release"),
-    <MockRelayRenderer
-      Component={MoreInfoContainer}
-      query={graphql`
-        query MoreInfoTestsQuery {
-          show(id: "anderson-fine-art-gallery-flickinger-collection") {
-            ...MoreInfo_show
-          }
+  const tree = await renderRelayTree({
+    Component: MoreInfoContainer,
+    query: graphql`
+      query MoreInfoTestsQuery {
+        show(id: "anderson-fine-art-gallery-flickinger-collection") {
+          ...MoreInfo_show
         }
-      `}
-      mockData={{
-        show: ShowFixture,
-      }}
-    />
-  )
+      }
+    `,
+    mockData: {
+      show: ShowFixture,
+    },
+  })
 
   expect(tree.text()).toContain("Paintings and Sculpture from the Sea Island Estate of the Flickingers")
 })
