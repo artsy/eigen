@@ -1,0 +1,1 @@
+This release includes a newly redesigned artwork view (for most artworks). We've also worked on improving the Live Auctions experience, and have included a number of small, general bug fixes and performance improvements.
