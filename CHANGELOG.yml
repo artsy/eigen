@@ -3,36 +3,44 @@ upcoming:
   date: TBD
   emission_version: 1.12.x
   dev:
-    - Allow opening web view target='_blank' links by pushing onto navigation stack - david + alloy
-    - Switch to MP v2 - alloy/justin
-    - Cleans up unused lab options - ash
-    - Removes concept of a lot's "current value" in favour of using the asking price - ash
-    - Adds more granular lab options for testing new RN artwork view - ash
-    - Make status bar white on artwork views - ash + david
-    - Adds Switchboard-based routing for inquiry, BNMO - kieran + ash
-    - Removes ARArtworkSetViewController - ash
-    - Prevents admins from customizing API URLs while pointing to production - ash
-    - Adds echo flag support for enabling various types of RN Artwork view - ash + david + kieran
-    - Disables landscape rotation for iPhone on Artwork views - ash
-    - Fixes problems displaying analytics debugging on iPad - ash
-    - Disables Auctions artwork view when enabled in Echo - ash
+    - 
   user_facing:
-    - Fixes crash when AuctionViewController re-appears without a populated view model - ash
-    - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
-    - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
-    - Adds new React Native Artwork view behind lab option - alloy/david
-    - Integrates View-in-Room support from React Native Artwork view - ash/steve
-    - LAI view now updates the number of bids as they come in - ash
-    - LAI view now opens on all sales - ash
-    - Adds edition information to LAI lot info view - ash/lily
-    - Don't push same search view if it already exists
-    - Live auction current lot now updates current bid - ash/anson
-    - Trim whitespace in featured links
-    - Improves UX when opening artwork view - ash
-    - Removes left-and-right swiping between artwork views - ash
-    - Fixes opening Terms/Privacy Policy links during onboarding - ash
+    - Re-enables Artwork Auctions view to respect Echo flag - ash
 
 releases:
+  - version: 5.0.7
+    date: September 30, 2019
+    emission_version: 1.17.3
+    dev:
+      - Allow opening web view target='_blank' links by pushing onto navigation stack - david + alloy
+      - Switch to MP v2 - alloy/justin
+      - Cleans up unused lab options - ash
+      - Removes concept of a lot's "current value" in favour of using the asking price - ash
+      - Adds more granular lab options for testing new RN artwork view - ash
+      - Make status bar white on artwork views - ash + david
+      - Adds Switchboard-based routing for inquiry, BNMO - kieran + ash
+      - Removes ARArtworkSetViewController - ash
+      - Prevents admins from customizing API URLs while pointing to production - ash
+      - Adds echo flag support for enabling various types of RN Artwork view - ash + david + kieran
+      - Disables landscape rotation for iPhone on Artwork views - ash
+      - Fixes problems displaying analytics debugging on iPad - ash
+      - Disables Auctions artwork view when enabled in Echo - ash
+    user_facing:
+      - Fixes crash when AuctionViewController re-appears without a populated view model - ash
+      - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
+      - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
+      - Adds new React Native Artwork view behind lab option - alloy/david
+      - Integrates View-in-Room support from React Native Artwork view - ash/steve
+      - LAI view now updates the number of bids as they come in - ash
+      - LAI view now opens on all sales - ash
+      - Adds edition information to LAI lot info view - ash/lily
+      - Don't push same search view if it already exists
+      - Live auction current lot now updates current bid - ash/anson
+      - Trim whitespace in featured links
+      - Improves UX when opening artwork view - ash
+      - Removes left-and-right swiping between artwork views - ash
+      - Fixes opening Terms/Privacy Policy links during onboarding - ash\
+
   - version: 5.0.6
     date: September 23, 2019
     emission_version: 1.11.6
@@ -40,7 +48,6 @@ releases:
     user_facing:
       - Fixes crash for iOS 13 users - ash & david
 
-releases:
   - version: 5.0.5
     date: June 25, 2019
     emission_version: 1.11.6

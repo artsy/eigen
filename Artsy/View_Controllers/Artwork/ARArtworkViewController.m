@@ -39,8 +39,7 @@
     } else if (isArtworkNSOInquiry) {
         return ([AROptions boolForOption:AROptionsRNArtworkNSOInquiry] || [self.echo.features[@"ARReactNativeArtworkEnableNSOInquiry"] state]);
     } else if (isArtworkAuctions) {
-        // We're disabling the Echo clause here until we're ready to actually ship Auctions support. See: https://artsyproduct.atlassian.net/browse/PURCHASE-1481
-        return ([AROptions boolForOption:AROptionsRNArtworkAuctions]);// || [self.echo.features[@"ARReactNativeArtworkEnableAuctions"] state]);
+        return ([AROptions boolForOption:AROptionsRNArtworkAuctions] || [self.echo.features[@"ARReactNativeArtworkEnableAuctions"] state]);
     }
 
     return NO;
