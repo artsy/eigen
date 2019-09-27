@@ -8,9 +8,35 @@ export type ArtworkActionsTestsErrorQueryResponse = {
         readonly " $fragmentRefs": ArtworkActions_artwork$ref;
     } | null;
 };
+export type ArtworkActionsTestsErrorQueryRawResponse = {
+    readonly artwork: ({
+        readonly id: string;
+        readonly internalID: string;
+        readonly slug: string;
+        readonly title: string | null;
+        readonly href: string | null;
+        readonly is_saved: boolean | null;
+        readonly is_hangable: boolean | null;
+        readonly artists: ReadonlyArray<({
+            readonly name: string | null;
+            readonly id: string | null;
+        }) | null> | null;
+        readonly image: ({
+            readonly url: string | null;
+        }) | null;
+        readonly sale: ({
+            readonly isAuction: boolean | null;
+            readonly isClosed: boolean | null;
+            readonly id: string | null;
+        }) | null;
+        readonly widthCm: number | null;
+        readonly heightCm: number | null;
+    }) | null;
+};
 export type ArtworkActionsTestsErrorQuery = {
     readonly response: ArtworkActionsTestsErrorQueryResponse;
     readonly variables: ArtworkActionsTestsErrorQueryVariables;
+    readonly rawResponse: ArtworkActionsTestsErrorQueryRawResponse;
 };
 
 
@@ -237,5 +263,5 @@ return {
   }
 };
 })();
-(node as any).hash = '0f4d324a28cc23f093d33c5bffa9222e';
+(node as any).hash = 'f2f1b8004fa40a78682c36a75a79838a';
 export default node;

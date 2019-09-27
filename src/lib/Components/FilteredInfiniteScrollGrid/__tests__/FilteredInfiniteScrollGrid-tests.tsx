@@ -1,3 +1,4 @@
+import { FilteredInfiniteScrollGridTestsQueryRawResponse } from "__generated__/FilteredInfiniteScrollGridTestsQuery.graphql"
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -17,7 +18,7 @@ describe("FilteredInfiniteScrollGrid", () => {
         return <FilteredInfiniteScrollGrid entity={show} />
       },
       query: graphql`
-        query FilteredInfiniteScrollGridTestsQuery {
+        query FilteredInfiniteScrollGridTestsQuery @raw_response_type {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
             id # dummy
             # filteredArtworks(size: 0, medium: "*", priceRange: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
@@ -28,7 +29,7 @@ describe("FilteredInfiniteScrollGrid", () => {
       `,
       mockData: {
         show: ShowFixture,
-      },
+      } as FilteredInfiniteScrollGridTestsQueryRawResponse,
     })
     expect(tree.find(InfiniteScrollArtworksGrid).props().filteredArtworks.artworks.edges.length).toBe(
       ShowFixture.filteredArtworks.artworks_connection.edges.length

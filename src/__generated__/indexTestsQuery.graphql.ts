@@ -8,9 +8,181 @@ export type indexTestsQueryResponse = {
         readonly " $fragmentRefs": Show_show$ref;
     } | null;
 };
+export type indexTestsQueryRawResponse = {
+    readonly show: ({
+        readonly internalID: string;
+        readonly slug: string;
+        readonly description: string | null;
+        readonly id: string;
+        readonly name: string | null;
+        readonly is_followed: boolean | null;
+        readonly end_at: string | null;
+        readonly exhibition_period: string | null;
+        readonly isStubShow: boolean | null;
+        readonly partner: ({
+            readonly __typename: "Partner";
+            readonly id: string | null;
+            readonly name: string | null;
+            readonly slug: string;
+            readonly href: string | null;
+            readonly type: string | null;
+        } | {
+            readonly __typename: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly images: ReadonlyArray<({
+            readonly url: string | null;
+            readonly aspect_ratio: number;
+        }) | null> | null;
+        readonly followedArtists: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly artist: ({
+                        readonly name: string | null;
+                        readonly href: string | null;
+                        readonly slug: string;
+                        readonly internalID: string;
+                        readonly id: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly artists: ReadonlyArray<({
+            readonly name: string | null;
+            readonly href: string | null;
+            readonly slug: string;
+            readonly internalID: string;
+            readonly id: string | null;
+            readonly initials: string | null;
+            readonly is_followed: boolean | null;
+            readonly nationality: string | null;
+            readonly birthday: string | null;
+            readonly deathday: string | null;
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null> | null;
+        readonly counts: ({
+            readonly artworks: number | null;
+            readonly artists: number | null;
+        }) | null;
+        readonly artworks: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly image: ({
+                        readonly aspect_ratio: number;
+                        readonly url: string | null;
+                    }) | null;
+                    readonly title: string | null;
+                    readonly date: string | null;
+                    readonly sale_message: string | null;
+                    readonly is_biddable: boolean | null;
+                    readonly is_acquireable: boolean | null;
+                    readonly is_offerable: boolean | null;
+                    readonly slug: string;
+                    readonly sale: ({
+                        readonly is_auction: boolean | null;
+                        readonly is_closed: boolean | null;
+                        readonly display_timely_at: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly sale_artwork: ({
+                        readonly current_bid: ({
+                            readonly display: string | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly artists: ReadonlyArray<({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null> | null;
+                    readonly partner: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly href: string | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly artists_without_artworks: ReadonlyArray<({
+            readonly id: string;
+            readonly internalID: string;
+            readonly slug: string;
+            readonly href: string | null;
+            readonly name: string | null;
+            readonly initials: string | null;
+            readonly is_followed: boolean | null;
+            readonly nationality: string | null;
+            readonly birthday: string | null;
+            readonly deathday: string | null;
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null> | null;
+        readonly nearbyShows: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly internalID: string;
+                    readonly slug: string;
+                    readonly name: string | null;
+                    readonly exhibition_period: string | null;
+                    readonly end_at: string | null;
+                    readonly images: ReadonlyArray<({
+                        readonly url: string | null;
+                    }) | null> | null;
+                    readonly partner: ({
+                        readonly __typename: "Partner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly location: ({
+            readonly id: string;
+            readonly internalID: string;
+            readonly city: string | null;
+            readonly address: string | null;
+            readonly address_2: string | null;
+            readonly postal_code: string | null;
+            readonly summary: string | null;
+            readonly coordinates: ({
+                readonly lat: number | null;
+                readonly lng: number | null;
+            }) | null;
+            readonly day_schedules: ReadonlyArray<({
+                readonly start_time: number | null;
+                readonly end_time: number | null;
+                readonly day_of_week: string | null;
+            }) | null> | null;
+            readonly openingHours: ({
+                readonly __typename: "OpeningHoursArray";
+                readonly schedules: ReadonlyArray<({
+                    readonly days: string | null;
+                    readonly hours: string | null;
+                }) | null> | null;
+            } | {
+                readonly __typename: "OpeningHoursText";
+                readonly text: string | null;
+            } | {
+                readonly __typename: string | null;
+            }) | null;
+        }) | null;
+        readonly artistsWithoutArtworks: ReadonlyArray<({
+            readonly slug: string;
+            readonly id: string | null;
+        }) | null> | null;
+    }) | null;
+};
 export type indexTestsQuery = {
     readonly response: indexTestsQueryResponse;
     readonly variables: indexTestsQueryVariables;
+    readonly rawResponse: indexTestsQueryRawResponse;
 };
 
 
@@ -1100,5 +1272,5 @@ return {
   }
 };
 })();
-(node as any).hash = '3e2c9eb71446a9653f129ea9d755a483';
+(node as any).hash = '8948d2977a008a920856eb50e9cf57bb';
 export default node;

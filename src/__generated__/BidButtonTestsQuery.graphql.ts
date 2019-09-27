@@ -8,9 +8,42 @@ export type BidButtonTestsQueryResponse = {
         readonly " $fragmentRefs": BidButton_artwork$ref;
     } | null;
 };
+export type BidButtonTestsQueryRawResponse = {
+    readonly artwork: ({
+        readonly slug: string;
+        readonly sale: ({
+            readonly slug: string;
+            readonly registrationStatus: ({
+                readonly qualifiedForBidding: boolean | null;
+                readonly id: string | null;
+            }) | null;
+            readonly isPreview: boolean | null;
+            readonly isLiveOpen: boolean | null;
+            readonly isClosed: boolean | null;
+            readonly isRegistrationClosed: boolean | null;
+            readonly id: string | null;
+        }) | null;
+        readonly myLotStanding: ReadonlyArray<{
+            readonly mostRecentBid: ({
+                readonly maxBid: ({
+                    readonly cents: number | null;
+                }) | null;
+                readonly id: string | null;
+            }) | null;
+        }> | null;
+        readonly saleArtwork: ({
+            readonly increments: ReadonlyArray<({
+                readonly cents: number | null;
+            }) | null> | null;
+            readonly id: string | null;
+        }) | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type BidButtonTestsQuery = {
     readonly response: BidButtonTestsQueryResponse;
     readonly variables: BidButtonTestsQueryVariables;
+    readonly rawResponse: BidButtonTestsQueryRawResponse;
 };
 
 
@@ -262,5 +295,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'c34df61d98473707551dc9e699983c1b';
+(node as any).hash = '8ae58427a014f2412339549684c8c2a6';
 export default node;

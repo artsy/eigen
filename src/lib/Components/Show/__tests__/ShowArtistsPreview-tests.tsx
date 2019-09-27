@@ -1,3 +1,4 @@
+import { ShowArtistsPreviewTestsQueryRawResponse } from "__generated__/ShowArtistsPreviewTestsQuery.graphql"
 import { graphql } from "react-relay"
 
 import { Button } from "@artsy/palette"
@@ -14,7 +15,7 @@ const renderTree = () =>
   renderRelayTree({
     Component: ShowArtistsPreview,
     query: graphql`
-      query ShowArtistsPreviewTestsQuery {
+      query ShowArtistsPreviewTestsQuery @raw_response_type {
         show(id: "anderson-fine-art-gallery-flickinger-collection") {
           ...ShowArtistsPreview_show
         }
@@ -25,7 +26,7 @@ const renderTree = () =>
         ...ShowFixture,
         artists: () => ShowFixture.artists,
       }),
-    },
+    } as ShowArtistsPreviewTestsQueryRawResponse,
   })
 
 describe("ArtistsContainer", () => {

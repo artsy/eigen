@@ -50,16 +50,13 @@ export type Artwork_artwork = {
     readonly manufacturer: string | null;
     readonly image_rights: string | null;
     readonly context: ({
-        readonly __typename: string;
-        readonly isAuction?: boolean | null;
-    } & ({
         readonly __typename: "Sale";
         readonly isAuction: boolean | null;
     } | {
-        /*This will never be '% other', but we need some
+        /*This will never be '%other', but we need some
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
-    })) | null;
+    }) | null;
     readonly contextGrids: ReadonlyArray<{
         readonly artworks: {
             readonly edges: ReadonlyArray<{

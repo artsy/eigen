@@ -8,9 +8,36 @@ export type ShowArtistsTestsQueryResponse = {
         readonly " $fragmentRefs": ShowArtists_show$ref;
     } | null;
 };
+export type ShowArtistsTestsQueryRawResponse = {
+    readonly show: ({
+        readonly internalID: string;
+        readonly slug: string;
+        readonly artists_grouped_by_name: ReadonlyArray<({
+            readonly letter: string | null;
+            readonly items: ReadonlyArray<({
+                readonly id: string;
+                readonly internalID: string;
+                readonly slug: string;
+                readonly name: string | null;
+                readonly initials: string | null;
+                readonly href: string | null;
+                readonly is_followed: boolean | null;
+                readonly nationality: string | null;
+                readonly birthday: string | null;
+                readonly deathday: string | null;
+                readonly image: ({
+                    readonly url: string | null;
+                }) | null;
+                readonly sortable_id: string | null;
+            }) | null> | null;
+        }) | null> | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type ShowArtistsTestsQuery = {
     readonly response: ShowArtistsTestsQueryResponse;
     readonly variables: ShowArtistsTestsQueryVariables;
+    readonly rawResponse: ShowArtistsTestsQueryRawResponse;
 };
 
 
@@ -246,5 +273,5 @@ return {
   }
 };
 })();
-(node as any).hash = '112df1f78ef22031c816a0c5c43aa1f5';
+(node as any).hash = 'eb3e3768845b65968de0e3c59d7c31ff';
 export default node;

@@ -1,3 +1,4 @@
+import { indexTestsQueryRawResponse } from "__generated__/indexTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import Show from "../"
@@ -9,7 +10,7 @@ it("Renders a show", async () => {
   const tree = await renderRelayTree({
     Component: Show,
     query: graphql`
-      query indexTestsQuery {
+      query indexTestsQuery @raw_response_type {
         show(id: "anderson-fine-art-gallery-flickinger-collection") {
           ...Show_show
         }
@@ -17,7 +18,7 @@ it("Renders a show", async () => {
     `,
     mockResolvers: {
       Show: () => ShowFixture,
-    },
+    } as indexTestsQueryRawResponse,
   })
 
   expect(tree.text()).toContain("Flickinger Collection")

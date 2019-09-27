@@ -1,4 +1,6 @@
 import { BellIcon, Sans } from "@artsy/palette"
+import { ArtworkActionsTestsErrorQueryRawResponse } from "__generated__/ArtworkActionsTestsErrorQuery.graphql"
+import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { shallow } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -147,13 +149,13 @@ describe("ArtworkActions", () => {
       return await renderRelayTree({
         Component: ArtworkActionsFragmentContainer,
         query: graphql`
-          query ArtworkActionsTestsQuery {
+          query ArtworkActionsTestsQuery @raw_response_type {
             artwork(id: "artworkID") {
               ...ArtworkActions_artwork
             }
           }
         `,
-        mockData: { artwork: mockArtworkData },
+        mockData: { artwork: mockArtworkData } as ArtworkActionsTestsQueryRawResponse,
         mockMutationResults: { saveArtwork: mockSaveResults },
       })
     }
@@ -225,13 +227,13 @@ describe("ArtworkActions", () => {
       const artworkActions = await renderRelayTree({
         Component: ArtworkActionsFragmentContainer,
         query: graphql`
-          query ArtworkActionsTestsErrorQuery {
+          query ArtworkActionsTestsErrorQuery @raw_response_type {
             artwork(id: "artworkID") {
               ...ArtworkActions_artwork
             }
           }
         `,
-        mockData: { artwork: artworkActionsArtwork },
+        mockData: { artwork: artworkActionsArtwork } as ArtworkActionsTestsErrorQueryRawResponse,
         mockMutationResults: {
           saveArtwork: () => {
             return Promise.reject(new Error("failed to fetch"))

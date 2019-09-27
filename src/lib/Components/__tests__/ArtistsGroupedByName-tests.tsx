@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+import { ArtistsGroupedByNameTestsQueryRawResponse } from "__generated__/ArtistsGroupedByNameTestsQuery.graphql"
 import { ArtistFixture } from "lib/__fixtures__/ArtistFixture"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { FairArtists } from "lib/Scenes/Fair/Screens/FairArtists"
@@ -25,7 +26,7 @@ describe("ArtistsGroupedByName", () => {
         )
       },
       query: graphql`
-        query ArtistsGroupedByNameTestsQuery {
+        query ArtistsGroupedByNameTestsQuery @raw_response_type {
           artist(id: "pablo-picasso") {
             ...ArtistListItem_artist
           }
@@ -33,7 +34,7 @@ describe("ArtistsGroupedByName", () => {
       `,
       mockData: {
         artist: ArtistFixture,
-      },
+      } as ArtistsGroupedByNameTestsQueryRawResponse,
     })
     expect(tree.html()).toMatchSnapshot()
   })

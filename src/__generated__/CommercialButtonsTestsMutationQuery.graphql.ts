@@ -8,9 +8,53 @@ export type CommercialButtonsTestsMutationQueryResponse = {
         readonly " $fragmentRefs": CommercialButtons_artwork$ref;
     } | null;
 };
+export type CommercialButtonsTestsMutationQueryRawResponse = {
+    readonly artwork: ({
+        readonly slug: string;
+        readonly isAcquireable: boolean | null;
+        readonly isOfferable: boolean | null;
+        readonly isInquireable: boolean | null;
+        readonly isInAuction: boolean | null;
+        readonly isBuyNowable: boolean | null;
+        readonly isForSale: boolean | null;
+        readonly editionSets: ReadonlyArray<({
+            readonly id: string;
+        }) | null> | null;
+        readonly sale: ({
+            readonly isClosed: boolean | null;
+            readonly id: string | null;
+            readonly slug: string;
+            readonly registrationStatus: ({
+                readonly qualifiedForBidding: boolean | null;
+                readonly id: string | null;
+            }) | null;
+            readonly isPreview: boolean | null;
+            readonly isLiveOpen: boolean | null;
+            readonly isRegistrationClosed: boolean | null;
+        }) | null;
+        readonly internalID: string;
+        readonly saleMessage: string | null;
+        readonly myLotStanding: ReadonlyArray<{
+            readonly mostRecentBid: ({
+                readonly maxBid: ({
+                    readonly cents: number | null;
+                }) | null;
+                readonly id: string | null;
+            }) | null;
+        }> | null;
+        readonly saleArtwork: ({
+            readonly increments: ReadonlyArray<({
+                readonly cents: number | null;
+            }) | null> | null;
+            readonly id: string | null;
+        }) | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type CommercialButtonsTestsMutationQuery = {
     readonly response: CommercialButtonsTestsMutationQueryResponse;
     readonly variables: CommercialButtonsTestsMutationQueryVariables;
+    readonly rawResponse: CommercialButtonsTestsMutationQueryRawResponse;
 };
 
 
@@ -359,5 +403,5 @@ return {
   }
 };
 })();
-(node as any).hash = '47ec20c27d57750176a1d9a3d8be1e85';
+(node as any).hash = '1b1fc047331a2cc46edb5e1c61f4b763';
 export default node;

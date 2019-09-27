@@ -1,4 +1,5 @@
 import { Button, Theme } from "@artsy/palette"
+import { BidButtonTestsQueryRawResponse } from "__generated__/BidButtonTestsQuery.graphql"
 import {
   ArtworkFromAuctionPreview,
   ArtworkFromClosedAuction,
@@ -45,7 +46,7 @@ describe("BidButton", () => {
         </Theme>
       ),
       query: graphql`
-        query BidButtonTestsQuery {
+        query BidButtonTestsQuery @raw_response_type {
           artwork(id: "auction_artwork") {
             ...BidButton_artwork
           }
@@ -53,7 +54,7 @@ describe("BidButton", () => {
       `,
       mockResolvers: {
         Artwork: () => response,
-      },
+      } as BidButtonTestsQueryRawResponse,
     })
   }
 

@@ -8,9 +8,53 @@ export type indexTestsFairHeaderQueryResponse = {
         readonly " $fragmentRefs": FairHeader_fair$ref;
     } | null;
 };
+export type indexTestsFairHeaderQueryRawResponse = {
+    readonly fair: ({
+        readonly slug: string;
+        readonly name: string | null;
+        readonly formattedOpeningHours: string | null;
+        readonly startAt: string | null;
+        readonly endAt: string | null;
+        readonly exhibitionPeriod: string | null;
+        readonly counts: ({
+            readonly artists: number | null;
+        }) | null;
+        readonly image: ({
+            readonly url: string | null;
+        }) | null;
+        readonly followedContent: ({
+            readonly artists: ReadonlyArray<({
+                readonly name: string | null;
+                readonly href: string | null;
+                readonly slug: string;
+                readonly internalID: string;
+                readonly id: string | null;
+            }) | null> | null;
+        }) | null;
+        readonly artistsConnection: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly name: string | null;
+                    readonly href: string | null;
+                    readonly slug: string;
+                    readonly internalID: string;
+                    readonly id: string | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly profile: ({
+            readonly id: string;
+            readonly icon: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type indexTestsFairHeaderQuery = {
     readonly response: indexTestsFairHeaderQueryResponse;
     readonly variables: indexTestsFairHeaderQueryVariables;
+    readonly rawResponse: indexTestsFairHeaderQueryRawResponse;
 };
 
 
@@ -329,5 +373,5 @@ return {
   }
 };
 })();
-(node as any).hash = '5ef9b6e4aa7c6762bd2dd66872aa8eb0';
+(node as any).hash = '107d811d4e25fd0141831a02899fb3a7';
 export default node;

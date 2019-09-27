@@ -1,3 +1,4 @@
+import { FairBMWArtActivationTestsQueryRawResponse } from "__generated__/FairBMWArtActivationTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
@@ -9,7 +10,7 @@ it("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: FairBMWArtActivation,
     query: graphql`
-      query FairBMWArtActivationTestsQuery {
+      query FairBMWArtActivationTestsQuery @raw_response_type {
         fair(id: "art-basel-in-miami-beach-2018") {
           slug
           internalID
@@ -22,7 +23,7 @@ it("renders properly", async () => {
     `,
     mockResolvers: {
       Fair: () => fairFixture,
-    },
+    } as FairBMWArtActivationTestsQueryRawResponse,
   })
   const dom = tree.text()
 

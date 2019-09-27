@@ -1,3 +1,4 @@
+import { ShowArtworksPreviewTestsQueryRawResponse } from "__generated__/ShowArtworksPreviewTestsQuery.graphql"
 import { ShowFixture } from "lib/__fixtures__/ShowFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
@@ -10,7 +11,7 @@ it("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: (props: any) => <ShowArtworksPreview title="All works" {...props} />,
     query: graphql`
-      query ShowArtworksPreviewTestsQuery {
+      query ShowArtworksPreviewTestsQuery @raw_response_type {
         show(id: "anderson-fine-art-gallery-flickinger-collection") {
           ...ShowArtworksPreview_show
         }
@@ -18,7 +19,7 @@ it("renders properly", async () => {
     `,
     mockResolvers: {
       Show: () => ShowFixture,
-    },
+    } as ShowArtworksPreviewTestsQueryRawResponse,
   })
 
   expect(tree.html()).toMatchSnapshot()

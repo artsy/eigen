@@ -1,3 +1,4 @@
+import { ShowEventSectionTestsQueryRawResponse } from "__generated__/ShowEventSectionTestsQuery.graphql"
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -17,7 +18,7 @@ describe("ShowEventSection", () => {
         </Theme>
       ),
       query: graphql`
-        query ShowEventSectionTestsQuery {
+        query ShowEventSectionTestsQuery @raw_response_type {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
             events {
               ...ShowEventSection_event
@@ -27,7 +28,7 @@ describe("ShowEventSection", () => {
       `,
       mockData: {
         show: ShowFixture,
-      },
+      } as ShowEventSectionTestsQueryRawResponse,
     })
     expect(tree.html()).toMatchSnapshot()
   })

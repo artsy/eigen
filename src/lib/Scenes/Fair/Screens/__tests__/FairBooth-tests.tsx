@@ -1,3 +1,4 @@
+import { FairBoothTestsQueryRawResponse } from "__generated__/FairBoothTestsQuery.graphql"
 import { FairBoothShowFixture } from "lib/__fixtures__/FairBoothShowFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
@@ -13,7 +14,7 @@ xit("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: ({ show }) => <FairBooth show={show} />,
     query: graphql`
-      query FairBoothTestsQuery {
+      query FairBoothTestsQuery @raw_response_type {
         show(id: "two-palms-two-palms-at-art-basel-miami-beach-2018") {
           ...FairBooth_show
         }
@@ -21,7 +22,7 @@ xit("renders properly", async () => {
     `,
     mockResolvers: {
       Show: () => FairBoothShowFixture,
-    },
+    } as FairBoothTestsQueryRawResponse,
   })
   expect(tree.html()).toMatchSnapshot()
 })

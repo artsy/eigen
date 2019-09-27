@@ -1,3 +1,4 @@
+import { FairMoreInfoTestsQueryRawResponse } from "__generated__/FairMoreInfoTestsQuery.graphql"
 import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
 import { FairMoreInfo, shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "../FairMoreInfo"
@@ -14,7 +15,7 @@ const renderTree = () =>
   renderRelayTree({
     Component: FairMoreInfo,
     query: graphql`
-      query FairMoreInfoTestsQuery {
+      query FairMoreInfoTestsQuery @raw_response_type {
         fair(id: "sofa-chicago-2018") {
           links
           about
@@ -24,7 +25,7 @@ const renderTree = () =>
     `,
     mockData: {
       fair: fairFixture,
-    },
+    } as FairMoreInfoTestsQueryRawResponse,
   })
 
 describe("FairMoreInfo", () => {

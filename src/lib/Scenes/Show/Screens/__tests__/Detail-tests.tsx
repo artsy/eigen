@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+import { DetailTestsQueryRawResponse } from "__generated__/DetailTestsQuery.graphql"
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -20,7 +21,7 @@ xit("Renders the Show Detail Screen", async () => {
       )
     },
     query: graphql`
-      query DetailTestsQuery {
+      query DetailTestsQuery @raw_response_type {
         show(id: "anderson-fine-art-gallery-flickinger-collection") {
           ...Detail_show
         }
@@ -28,7 +29,7 @@ xit("Renders the Show Detail Screen", async () => {
     `,
     mockData: {
       show: ShowFixture,
-    },
+    } as DetailTestsQueryRawResponse,
   })
 
   expect(tree.text()).toContain("Flickinger Collection")

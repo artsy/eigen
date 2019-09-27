@@ -1,3 +1,4 @@
+import { FairExhibitorsTestsQueryRawResponse } from "__generated__/FairExhibitorsTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
@@ -10,7 +11,7 @@ xit("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: FairExhibitors,
     query: graphql`
-      query FairExhibitorsTestsQuery {
+      query FairExhibitorsTestsQuery @raw_response_type {
         fair(id: "art-basel-in-miami-beach-2018") {
           exhibitors_grouped_by_name: exhibitorsGroupedByName {
             letter
@@ -25,7 +26,7 @@ xit("renders properly", async () => {
     `,
     mockData: {
       fair: fairFixture,
-    },
+    } as FairExhibitorsTestsQueryRawResponse,
   })
   const htmlDom = tree.text()
 

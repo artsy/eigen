@@ -14,9 +14,23 @@ export type FairExhibitorsTestsQueryResponse = {
         } | null> | null;
     } | null;
 };
+export type FairExhibitorsTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly exhibitors_grouped_by_name: ReadonlyArray<({
+            readonly letter: string | null;
+            readonly exhibitors: ReadonlyArray<({
+                readonly name: string | null;
+                readonly slug: string;
+                readonly profile_id: string | null;
+            }) | null> | null;
+        }) | null> | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type FairExhibitorsTestsQuery = {
     readonly response: FairExhibitorsTestsQueryResponse;
     readonly variables: FairExhibitorsTestsQueryVariables;
+    readonly rawResponse: FairExhibitorsTestsQueryRawResponse;
 };
 
 
@@ -153,5 +167,5 @@ return {
   }
 };
 })();
-(node as any).hash = '02dbd95ae31b367685e9949b7339cd4b';
+(node as any).hash = 'c0e071d0923d011a2eb340fda215c5b1';
 export default node;

@@ -1,4 +1,5 @@
 import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "@artsy/palette"
+import { AuctionPriceTestsQueryRawResponse } from "__generated__/AuctionPriceTestsQuery.graphql"
 import {
   AuctionPreview,
   AuctionPreviewNoStartingBid,
@@ -30,7 +31,7 @@ describe("AuctionPrice", () => {
         </Theme>
       ),
       query: graphql`
-        query AuctionPriceTestsQuery {
+        query AuctionPriceTestsQuery @raw_response_type {
           artwork(id: "auction_artwork_estimate_premium") {
             ...AuctionPrice_artwork
           }
@@ -38,7 +39,7 @@ describe("AuctionPrice", () => {
       `,
       mockResolvers: {
         Artwork: () => response,
-      },
+      } as AuctionPriceTestsQueryRawResponse,
     })
   }
 

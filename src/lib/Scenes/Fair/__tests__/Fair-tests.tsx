@@ -1,3 +1,4 @@
+import { FairTestsQueryRawResponse } from "__generated__/FairTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import { fairFixture } from "../__fixtures__"
@@ -12,7 +13,7 @@ describe("Fair", () => {
     renderRelayTree({
       Component: FairScreen,
       query: graphql`
-        query FairTestsQuery {
+        query FairTestsQuery @raw_response_type {
           fair(id: "sofa-chicago-2018") {
             ...Fair_fair
           }
@@ -20,7 +21,7 @@ describe("Fair", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      } as FairTestsQueryRawResponse,
     })
 
   xit("renders properly", async () => {

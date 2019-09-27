@@ -1,3 +1,4 @@
+import { ArtistListItemTestsQueryRawResponse } from "__generated__/ArtistListItemTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
@@ -11,7 +12,7 @@ describe("ArtistListItem", () => {
     renderRelayTree({
       Component: ({ artist }) => <ArtistListItem artist={artist} />,
       query: graphql`
-        query ArtistListItemTestsQuery {
+        query ArtistListItemTestsQuery @raw_response_type {
           artist(id: "pablo-picasso") {
             ...ArtistListItem_artist
           }
@@ -19,7 +20,7 @@ describe("ArtistListItem", () => {
       `,
       mockData: {
         artist: ArtistFixture,
-      },
+      } as ArtistListItemTestsQueryRawResponse,
     })
 
   it("renders properly", async () => {

@@ -1,3 +1,4 @@
+import { GlobalMapTestsQueryRawResponse } from "__generated__/GlobalMapTestsQuery.graphql"
 import { CityFixture } from "lib/__fixtures__/CityFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
@@ -29,7 +30,7 @@ xdescribe("GlobalMap", () => {
       },
       Component: GlobalMapContainer,
       query: graphql`
-        query GlobalMapTestsQuery($citySlug: String!, $maxInt: Int!) {
+        query GlobalMapTestsQuery($citySlug: String!, $maxInt: Int!) @raw_response_type {
           ...GlobalMap_viewer @arguments(citySlug: $citySlug, maxInt: $maxInt)
         }
       `,
@@ -37,7 +38,7 @@ xdescribe("GlobalMap", () => {
         viewer: {
           city: CityFixture,
         },
-      },
+      } as GlobalMapTestsQueryRawResponse,
       variables: {
         citySlug: "new-york-ny-usa",
         maxInt: 42,

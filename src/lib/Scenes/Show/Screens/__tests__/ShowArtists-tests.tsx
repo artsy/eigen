@@ -1,3 +1,4 @@
+import { ShowArtistsTestsQueryRawResponse } from "__generated__/ShowArtistsTestsQuery.graphql"
 import { ShowFixture } from "lib/__fixtures__/ShowFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
@@ -11,7 +12,7 @@ describe("AllArtists", () => {
     const tree = await renderRelayTree({
       Component: ShowArtistsScreen,
       query: graphql`
-        query ShowArtistsTestsQuery {
+        query ShowArtistsTestsQuery @raw_response_type {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
             ...ShowArtists_show
           }
@@ -19,7 +20,7 @@ describe("AllArtists", () => {
       `,
       mockData: {
         show: ShowFixture,
-      },
+      } as ShowArtistsTestsQueryRawResponse,
     })
 
     expect(tree.html()).toMatchSnapshot()

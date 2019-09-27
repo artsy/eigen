@@ -1,3 +1,4 @@
+import { FiltersTestsQueryRawResponse } from "__generated__/FiltersTestsQuery.graphql"
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -23,7 +24,7 @@ const renderTree = () =>
       </PortalProvider>
     ),
     query: graphql`
-      query FiltersTestsQuery {
+      query FiltersTestsQuery @raw_response_type {
         show(id: "anderson-fine-art-gallery-flickinger-collection") {
           id # dummy
           # filteredArtworks(size: 0, medium: "*", priceRange: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
@@ -34,7 +35,7 @@ const renderTree = () =>
     `,
     mockData: {
       show: ShowFixture,
-    },
+    } as FiltersTestsQueryRawResponse,
   })
 
 describe("Filters", () => {

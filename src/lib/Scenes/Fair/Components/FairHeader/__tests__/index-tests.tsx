@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+import { indexTestsFairHeaderQueryRawResponse } from "__generated__/indexTestsFairHeaderQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
@@ -16,7 +17,7 @@ describe("FairHeader", () => {
         </Theme>
       ),
       query: graphql`
-        query indexTestsFairHeaderQuery {
+        query indexTestsFairHeaderQuery @raw_response_type {
           fair(id: "sofa-chicago-2018") {
             ...FairHeader_fair
           }
@@ -24,7 +25,7 @@ describe("FairHeader", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      } as indexTestsFairHeaderQueryRawResponse,
     })
 
     expect(tree.html()).toMatchSnapshot()
