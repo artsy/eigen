@@ -20,8 +20,8 @@ xit("renders properly", async () => {
         }
       }
     `,
-    mockResolvers: {
-      Show: () => FairBoothShowFixture,
+    mockData: {
+      show: FairBoothShowFixture,
     } as FairBoothTestsQueryRawResponse,
   })
   expect(tree.html()).toMatchSnapshot()

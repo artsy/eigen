@@ -37,8 +37,8 @@ describe("AuctionPrice", () => {
           }
         }
       `,
-      mockResolvers: {
-        Artwork: () => response,
+      mockData: {
+        artwork: response,
       } as AuctionPriceTestsQueryRawResponse,
     })
   }

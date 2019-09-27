@@ -151,9 +151,9 @@ export const RegisteredBidder = {
 export const RegistedBidderWithBids = {
   myLotStanding: [
     {
-      most_recent_bid: {
-        max_bid: {
-          cents: "30000",
+      mostRecentBid: {
+        maxBid: {
+          cents: 30000,
         },
       },
     },

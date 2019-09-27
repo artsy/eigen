@@ -16,8 +16,8 @@ it("Renders a show", async () => {
         }
       }
     `,
-    mockResolvers: {
-      Show: () => ShowFixture,
+    mockData: {
+      show: ShowFixture,
     } as indexTestsQueryRawResponse,
   })
 

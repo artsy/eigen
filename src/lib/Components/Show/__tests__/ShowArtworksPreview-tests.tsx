@@ -17,8 +17,8 @@ it("renders properly", async () => {
         }
       }
     `,
-    mockResolvers: {
-      Show: () => ShowFixture,
+    mockData: {
+      show: ShowFixture,
     } as ShowArtworksPreviewTestsQueryRawResponse,
   })
 

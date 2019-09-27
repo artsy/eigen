@@ -17,7 +17,6 @@ import { merge as _merge } from "lodash"
 import { Settings } from "luxon"
 import React from "react"
 import { graphql } from "react-relay"
-import { AuctionState } from "../../CommercialInformation"
 import { BidButtonFragmentContainer as BidButton } from "../BidButton"
 
 jest.unmock("react-relay")
@@ -38,7 +37,7 @@ describe("BidButton", () => {
     Settings.defaultZoneName = realDefaultZone
   })
 
-  const getWrapper = async (response, auctionState: AuctionState) => {
+  const getWrapper = async (response, auctionState) => {
     return await renderRelayTree({
       Component: (props: any) => (
         <Theme>
@@ -52,8 +51,8 @@ describe("BidButton", () => {
           }
         }
       `,
-      mockResolvers: {
-        Artwork: () => response,
+      mockData: {
+        artwork: response,
       } as BidButtonTestsQueryRawResponse,
     })
   }

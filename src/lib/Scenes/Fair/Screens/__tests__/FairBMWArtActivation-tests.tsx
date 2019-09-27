@@ -21,8 +21,8 @@ it("renders properly", async () => {
         }
       }
     `,
-    mockResolvers: {
-      Fair: () => fairFixture,
+    mockData: {
+      fair: fairFixture,
     } as FairBMWArtActivationTestsQueryRawResponse,
   })
   const dom = tree.text()

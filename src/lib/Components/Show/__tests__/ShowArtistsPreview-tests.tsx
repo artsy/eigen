@@ -21,11 +21,8 @@ const renderTree = () =>
         }
       }
     `,
-    mockResolvers: {
-      Show: () => ({
-        ...ShowFixture,
-        artists: () => ShowFixture.artists,
-      }),
+    mockData: {
+      show: ShowFixture,
     } as ShowArtistsPreviewTestsQueryRawResponse,
   })
 
