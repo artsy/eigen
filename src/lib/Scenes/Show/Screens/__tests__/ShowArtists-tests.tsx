@@ -6,9 +6,8 @@ import { ShowArtistsContainer as ShowArtistsScreen } from "../../../../Scenes/Sh
 
 jest.unmock("react-relay")
 
-// FIXME: Fix fixture data
 describe("AllArtists", () => {
-  xit("renders properly", async () => {
+  it("renders properly", async () => {
     const tree = await renderRelayTree({
       Component: ShowArtistsScreen,
       query: graphql`

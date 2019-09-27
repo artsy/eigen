@@ -21,7 +21,7 @@ const renderTree = () =>
     } as ShowTestsQueryRawResponse,
   })
 
-xit("renders the Show screen", async () => {
+it("renders the Show screen", async () => {
   const tree = await renderTree()
   expect(tree.text()).toContain("Flickinger Collection")
 })

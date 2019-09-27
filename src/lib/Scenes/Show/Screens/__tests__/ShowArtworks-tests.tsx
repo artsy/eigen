@@ -6,7 +6,7 @@ import { ShowArtworksContainer as ShowArtworks } from "../../../../Scenes/Show/S
 
 jest.unmock("react-relay")
 
-xit("renders properly", async () => {
+it("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: ShowArtworks,
     query: graphql`

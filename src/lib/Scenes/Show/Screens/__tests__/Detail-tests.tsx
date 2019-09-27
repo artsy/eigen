@@ -10,8 +10,7 @@ import { DetailContainer } from "../Detail"
 
 jest.unmock("react-relay")
 
-// FIXME: Fixture must be wrong
-xit("Renders the Show Detail Screen", async () => {
+it("Renders the Show Detail Screen", async () => {
   const tree = await renderRelayTree({
     Component: ({ show }) => {
       return (
