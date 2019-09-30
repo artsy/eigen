@@ -1,5 +1,9 @@
 ## Getting Setup
 
+### Xcode Version
+
+Currently we require developers to use Xcode 10, with the latest version (10.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+
 ### Fork and Clone
 
 Follow the instructions in [the README](https://github.com/artsy/eigen).
