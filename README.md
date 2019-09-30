@@ -40,7 +40,7 @@ bundle exec pod install --repo-update
 open Artsy.xcworkspace
 ```
 
-This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Build > Run`.
+This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Product > Run` (or ⌘R).
 
 **Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
 
