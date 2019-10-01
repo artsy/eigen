@@ -27,7 +27,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     const mailtoSubject = `Inquiry on ${artwork.title}`.concat(
       artwork.artist && artwork.artist.name ? ` by ${artwork.artist.name}` : ""
     )
-    Linking.openURL(`mailto:orders@artsy.net?subject=${mailtoSubject}`)
+    Linking.openURL(`mailto:specialist@artsy.net?subject=${mailtoSubject}`)
   }
 
   @track({
@@ -36,7 +36,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     context_module: Schema.ContextModules.ArtworkExtraLinks,
   })
   handleReadOurAuctionFAQsTap() {
-    // FIXME: Needs to link to the Force view
+    SwitchBoard.presentNavigationViewController(this, `/auction-faq`)
     return
   }
 
