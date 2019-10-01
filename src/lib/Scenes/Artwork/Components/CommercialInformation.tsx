@@ -25,7 +25,14 @@ export class CommercialInformation extends React.Component<CommercialInformation
 
   renderSingleEditionArtwork = () => {
     const { artwork } = this.props
-    const saleMessage = artwork.saleMessage === "Contact For Price" ? "Contact for price" : artwork.saleMessage
+    let saleMessage
+    if (artwork.isInAuction && artwork.sale && artwork.sale.isClosed) {
+      saleMessage = "Bidding closed"
+    } else if (artwork.saleMessage === "Contact For Price") {
+      saleMessage = "Contact for price"
+    } else {
+      saleMessage = artwork.saleMessage
+    }
 
     return (
       <Box>
