@@ -22,12 +22,12 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     action_type: Schema.ActionTypes.Tap,
     context_module: Schema.ContextModules.ArtworkExtraLinks,
   })
-  handleAskASpecialistTap() {
+  handleAskASpecialistTap(emailAddress) {
     const { artwork } = this.props
     const mailtoSubject = `Inquiry on ${artwork.title}`.concat(
       artwork.artist && artwork.artist.name ? ` by ${artwork.artist.name}` : ""
     )
-    Linking.openURL(`mailto:specialist@artsy.net?subject=${mailtoSubject}`)
+    Linking.openURL(`mailto:${emailAddress}?subject=${mailtoSubject}`)
   }
 
   @track({
@@ -81,7 +81,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
               Read our auction FAQs
             </Text>{" "}
             or{" "}
-            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              onPress={() => this.handleAskASpecialistTap("specialist@artsy.net")}
+            >
               ask a specialist
             </Text>
             .
@@ -96,7 +99,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
             Read our FAQ
           </Text>{" "}
           or{" "}
-          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleAskASpecialistTap()}>
+          <Text
+            style={{ textDecorationLine: "underline" }}
+            onPress={() => this.handleAskASpecialistTap("orders@artsy.net")}
+          >
             ask a specialist
           </Text>
           .
