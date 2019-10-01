@@ -43,7 +43,8 @@ export const ArtworkFixture = {
   literature: null,
   provenance: null,
   context: {
-    __typename: "ArtworkContextPartnerShow",
+    __typename: "Sale",
+    isAuction: true,
   },
   contextGrids: [],
   dimensions: {

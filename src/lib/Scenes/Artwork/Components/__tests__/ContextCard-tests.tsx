@@ -1,4 +1,4 @@
-import { Button, EntityHeader, Sans, Serif, Theme } from "@artsy/palette"
+import { Box, Button, EntityHeader, Sans, Serif, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { Image } from "react-native"
@@ -172,7 +172,7 @@ describe("ContextCard", () => {
       ).toMatchInlineSnapshot(`"In auction"`)
     })
 
-    it("renders 'In Sale' if the sale is not an auction", () => {
+    it("renders nothing if the sale is not an auction", () => {
       const saleContextArtwork = {
         ...auctionContextArtwork,
         context: {
@@ -181,18 +181,10 @@ describe("ContextCard", () => {
         },
       }
       const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
-        </Theme>
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
       )
 
-      expect(
-        component
-          .find(Sans)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"In sale"`)
+      expect(component.find(Box).length).toBe(0)
     })
   })
 })

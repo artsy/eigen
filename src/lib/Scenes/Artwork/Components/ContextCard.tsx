@@ -127,11 +127,18 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
     const { artwork } = this.props
     const { context } = artwork
+
+    // Don't display a context card ever if the work is in a non-auction sale as the existing
+    // sale page is not built for this purpose.
+    if (context && context.__typename === "Sale" && context.isAuction === false) {
+      return null
+    }
+
     if (context) {
       const { __typename } = context
       switch (__typename as any) {
         case "Sale":
-          header = context.isAuction ? "In auction" : "In sale"
+          header = "In auction"
           meta = context.isLiveOpen ? "In progress" : context.formattedStartDateTime
           imageUrl = context.coverImage && context.coverImage.url ? context.coverImage.url : ""
           break
