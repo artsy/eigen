@@ -65,6 +65,7 @@ describe("ArtworkExtraLinks", () => {
       )
       expect(component.text()).toContain("Want to sell a work by these artists?")
     })
+
     it("shows consign link if at least 1 artist is consignable", () => {
       const artwork = {
         ...ArtworkFixture,
@@ -84,6 +85,7 @@ describe("ArtworkExtraLinks", () => {
       )
       expect(component.text()).toContain("Consign with Artsy.")
     })
+
     it("doesn't render component if no artists are consignable", () => {
       const artwork = {
         ...ArtworkFixture,
@@ -143,6 +145,7 @@ describe("ArtworkExtraLinks", () => {
       expect(component.text()).toContain("Consign with Artsy.")
     })
   })
+
   describe("FAQ and specialist BNMO links", () => {
     it("does not render FAQ or ask a specialist links when isInquireable", () => {
       const artwork = {
@@ -189,7 +192,26 @@ describe("ArtworkExtraLinks", () => {
       expect(component.text()).toContain("Read our FAQ")
       expect(component.text()).toContain("ask a specialist")
     })
+
+    it("renders ask a specialist link when isOfferable", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isOfferable: true,
+        isForSale: true,
+        isInquireable: true,
+        artists: [{ name: "Santa", isConsignable: true }],
+      }
+
+      const component = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} />
+        </Theme>
+      )
+      expect(component.text()).toContain("Read our FAQ")
+      expect(component.text()).toContain("ask a specialist")
+    })
   })
+
   describe("FAQ and specialist Auction links", () => {
     const artwork = {
       ...ArtworkFixture,

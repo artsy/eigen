@@ -336,6 +336,7 @@ fragment AuctionCountDownTimer_artwork on Artwork {
 fragment ArtworkExtraLinks_artwork on Artwork {
   isAcquireable
   isInAuction
+  isOfferable
   title
   isForSale
   sale {
@@ -1885,7 +1886,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "f09abd607b2e04f4f7f39154109c40a0",
+    "id": "1c1e924c4b2c8522b160349dbf0ff457",
     "text": null,
     "metadata": {}
   }

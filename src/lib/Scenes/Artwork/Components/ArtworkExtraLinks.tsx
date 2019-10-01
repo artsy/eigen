@@ -60,7 +60,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
 
   renderFAQAndSpecialist = () => {
     const {
-      artwork: { isAcquireable, isInAuction, sale, isForSale },
+      artwork: { isAcquireable, isOfferable, isInAuction, sale, isForSale },
     } = this.props
 
     if (isInAuction && sale && !sale.isClosed && isForSale) {
@@ -91,7 +91,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
           </Sans>
         </>
       )
-    } else if (isAcquireable) {
+    } else if (isAcquireable || isOfferable) {
       return (
         <Sans size="2" color="black60">
           Have a question?{" "}
@@ -140,6 +140,7 @@ export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(Artwor
     fragment ArtworkExtraLinks_artwork on Artwork {
       isAcquireable
       isInAuction
+      isOfferable
       title
       isForSale
       sale {

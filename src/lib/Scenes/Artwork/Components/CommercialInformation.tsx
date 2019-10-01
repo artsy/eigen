@@ -76,27 +76,27 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { editionSetID } = this.state
     const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
 
-    const showAuctionTimerAndButton = isInAuction && sale && !sale.isClosed && isForSale
-    const shouldRenderButtons = isAcquireable || isOfferable || isInquireable || showAuctionTimerAndButton
-    const consignableArtistsCount = artwork.artists.filter(artist => artist.isConsignable).length
+    const isBiddableInAuction = isInAuction && sale && !sale.isClosed && isForSale
+    const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
+    const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
 
     return (
       <>
         {this.renderPriceInformation()}
         <Box>
-          {shouldRenderButtons && (
+          {canTakeCommercialAction && (
             <>
               <Spacer mb={2} />
               <CommercialButtons artwork={artwork} editionSetID={editionSetID} />
             </>
           )}
-          {showAuctionTimerAndButton && (
+          {isBiddableInAuction && (
             <>
               <Spacer mb={2} />
               <AuctionCountDownTimer artwork={artwork} />
             </>
           )}
-          {(!!consignableArtistsCount || isAcquireable) && (
+          {(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
             <>
               <Spacer mb={2} />
               <ArtworkExtraLinks artwork={artwork} />
