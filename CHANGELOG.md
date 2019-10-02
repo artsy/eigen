@@ -16,6 +16,8 @@
 
 ### Master
 
+- Remove mobx - ds300
+
 ### 1.17.3
 
 - Fixes issue where the Artwork page would show a refresh animation on re-appear - ash
