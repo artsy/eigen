@@ -74,6 +74,7 @@ export class ArtworkPreview extends React.Component<Props> {
 
   render() {
     const artwork = this.props.artwork
+    const artworkImage = artwork.image
 
     return (
       <TouchableHighlight
@@ -81,7 +82,7 @@ export class ArtworkPreview extends React.Component<Props> {
         onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
       >
         <Container>
-          <Image imageURL={artwork.image.url} />
+          {artworkImage && <Image imageURL={artwork.image.url} />}
           <TextContainer>
             <SerifText>{artwork.artist_names}</SerifText>
             <TitleAndDate>

@@ -143,9 +143,9 @@ export class ConversationSnippet extends React.Component<Props> {
 
     let imageURL
     if (item.__typename === "Artwork") {
-      imageURL = item.image.url
+      imageURL = item.image && item.image.url
     } else if (item.__typename === "Show") {
-      imageURL = item.coverImage.url
+      imageURL = item.coverImage && item.coverImage.url
     }
 
     const partnerName = conversation.to.name
