@@ -5,7 +5,6 @@ gem 'cocoapods', '1.6.0.beta.1'
 # So we know if we need to run `pod install`
 gem 'cocoapods-check'
 gem 'cocoapods-keys' # So we don't leak ENV vars
-gem "cocoapods-fix-react-native"
 gem 'psych' # So our Podfile.lock is consistent
 
 group :development do

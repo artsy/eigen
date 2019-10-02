@@ -10,7 +10,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
 inhibit_all_warnings!
-plugin 'cocoapods-fix-react-native'
 
 # Note: These should be reflected _accurately_ in the environment of
 #       the continuous build server.
