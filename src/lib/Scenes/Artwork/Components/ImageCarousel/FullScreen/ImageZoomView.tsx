@@ -1,7 +1,5 @@
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
-import { observer } from "mobx-react"
-
 import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 
 import {
@@ -110,11 +108,17 @@ function createTransform(
  *
  *  https://css-tricks.com/animating-layouts-with-the-flip-technique/
  */
-export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> = observer(
+export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> =
   // need to do this ref forwarding to expose the `resetZoom` method to consumers
   React.forwardRef(({ image, index }, ref) => {
     const screenDimensions = useScreenDimensions()
-    const { state, embeddedImageRefs, dispatch } = useContext(ImageCarouselContext)
+    const { embeddedImageRefs, dispatch, imageIndex, fullScreenState, lastImageIndex } = useContext(
+      ImageCarouselContext
+    )
+
+    imageIndex.useUpdates()
+    fullScreenState.useUpdates()
+    lastImageIndex.useUpdates()
 
     const [imageTransitionOffset, setImageTransitionOffset] = useState<TransitionOffset>({
       scale: 1,
@@ -129,9 +133,9 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
     useEffect(() => {
       // animate image transition on mount
 
-      if (state.fullScreenState !== "entered" && state.imageIndex === index) {
+      if (fullScreenState.current !== "entered" && imageIndex.current === index) {
         getTransitionOffset({
-          fromRef: embeddedImageRefs[state.imageIndex],
+          fromRef: embeddedImageRefs[imageIndex.current],
           toBox: {
             width: imageFittedWithinScreen.width,
             height: imageFittedWithinScreen.height,
@@ -250,12 +254,12 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         }
 
         // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
-        if (state.fullScreenState === "entered" && scrollViewRef.current) {
+        if (fullScreenState.current === "entered" && scrollViewRef.current) {
           const tag = findNodeHandle(scrollViewRef.current.getNode())
           ARScrollViewHelpers.optOutOfParentScrollEvents(tag)
         }
       },
-      [state.fullScreenState]
+      [fullScreenState.current]
     )
 
     const viewPortChanges = useNewEventStream<Rect>()
@@ -273,7 +277,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
         width: screenDimensions.width / zoomScale.current,
         height: screenDimensions.height / zoomScale.current,
       })
-      if (state.imageIndex === index) {
+      if (imageIndex.current === index) {
         dispatch({ type: "ZOOM_SCALE_CHANGED", nextZoomScale: zoomScale.current })
       }
     }, [])
@@ -284,7 +288,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
 
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
-    if (state.fullScreenState !== "entered" && index !== state.imageIndex) {
+    if (fullScreenState.current !== "entered" && index !== imageIndex.current) {
       return <View style={{ width: screenDimensions.width, height: screenDimensions.height }} />
     }
 
@@ -292,7 +296,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       <>
         <Animated.ScrollView
           ref={scrollViewRef}
-          scrollEnabled={state.fullScreenState === "entered"}
+          scrollEnabled={fullScreenState.current === "entered"}
           onScroll={Animated.event(
             [{ nativeEvent: { zoomScale: $zoomScale, contentOffset: { x: $contentOffsetX, y: $contentOffsetY } } }],
             {
@@ -318,7 +322,7 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
               width: screenDimensions.width,
               height: screenDimensions.height,
               // hide this scroll view until the image is ready to start its transition in.
-              opacity: state.fullScreenState !== "doing first render" ? 1 : 0,
+              opacity: fullScreenState.current !== "doing first render" ? 1 : 0,
             },
           ]}
         >
@@ -343,8 +347,8 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
             </Animated.View>
           </TouchableWithoutFeedback>
         </Animated.ScrollView>
-        {(state.fullScreenState === "entered" || state.fullScreenState === "exiting") &&
-          (state.imageIndex === index || state.lastImageIndex === index) &&
+        {(fullScreenState.current === "entered" || fullScreenState.current === "exiting") &&
+          (imageIndex.current === index || lastImageIndex.current === index) &&
           image.deepZoom && (
             <DeepZoomOverlay
               image={image}
@@ -360,4 +364,3 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       </>
     )
   })
-)

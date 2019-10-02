@@ -1,5 +1,4 @@
 import { Sans } from "@artsy/palette"
-import { observer } from "mobx-react"
 import { useContext, useMemo } from "react"
 import React from "react"
 import { Animated, View } from "react-native"
@@ -13,11 +12,14 @@ import { useSpringFade } from "./useSpringFade"
  * at the bottom of the screen in full screen mode. But only when the image
  * is zoomed completely out!
  */
-export const IndexIndicator: React.FC = observer(() => {
-  const { images, state } = useContext(ImageCarouselContext)
+export const IndexIndicator: React.FC = () => {
+  const { images, isZoomedCompletelyOut, imageIndex } = useContext(ImageCarouselContext)
+
+  isZoomedCompletelyOut.useUpdates()
+  imageIndex.useUpdates()
 
   const entryOpacity = useSpringFade("in")
-  const hideOpacity = useSpringValue(state.isZoomedCompletelyOut ? 1 : 0)
+  const hideOpacity = useSpringValue(isZoomedCompletelyOut.current ? 1 : 0)
   const opacity = useMemo(() => Animated.multiply(entryOpacity, hideOpacity), [])
 
   if (images.length === 1) {
@@ -48,9 +50,9 @@ export const IndexIndicator: React.FC = observer(() => {
         ]}
       >
         <Sans size="3">
-          {state.imageIndex + 1} of {images.length}
+          {imageIndex.current + 1} of {images.length}
         </Sans>
       </Animated.View>
     </View>
   )
-})
+}

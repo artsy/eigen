@@ -1,5 +1,4 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { observer } from "mobx-react"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from "react-native"
@@ -34,7 +33,7 @@ import { useAnimatedValue } from "../useAnimatedValue"
  * If the user stops scrolling at a large enough threshold, the 'onClose' callback is called.
  *
  */
-export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({ children, onClose }) => {
+export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children, onClose }) => {
   // keep track of the scroll view's scrollY value
   const { height: screenHeight, width: screenWidth, orientation } = useScreenDimensions()
   const scrollY = useAnimatedValue(screenHeight)
@@ -48,7 +47,8 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({
     []
   )
 
-  const { state } = useContext(ImageCarouselContext)
+  const { fullScreenState } = useContext(ImageCarouselContext)
+  fullScreenState.useUpdates()
   // only want to trigger the onClose call if the user is not still touching
   // and the scroll view is still going with momentum.
   const isMomentumScrolling = useRef<boolean>(false)
@@ -61,7 +61,7 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({
       if (
         // this state.fullScreenState check is to prvent some glitchy behaviour that can occur right
         // after mounting. Somehow a momentum scroll is triggered in some situations. :shrug:
-        state.fullScreenState === "entered" &&
+        fullScreenState.current === "entered" &&
         // if the user ends up scrolling at least half a screen, trigger the 'onClose' callback.
         (y > screenHeight + screenHeight / 2 || y < screenHeight / 2)
       ) {
@@ -94,7 +94,7 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({
       // prevent tapping the status bar from triggering a scroll in this scroll view
       scrollsToTop={false}
       // don't let the user dismiss until after we've fnished showing the full screen mode
-      scollEnabled={state.fullScreenState === "entered"}
+      scollEnabled={fullScreenState.current === "entered"}
       contentOffset={{ x: 0, y: screenHeight }}
       onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
         useNativeDriver: true,
@@ -113,4 +113,4 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = observer(({
       </View>
     </Animated.ScrollView>
   )
-})
+}

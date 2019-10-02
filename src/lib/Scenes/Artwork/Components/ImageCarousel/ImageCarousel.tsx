@@ -2,7 +2,6 @@ import { Flex, Spacer } from "@artsy/palette"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { observer } from "mobx-react"
 import React, { useContext, useMemo } from "react"
 import { Animated, PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -23,7 +22,7 @@ export interface ImageCarouselProps {
  * To use it in places where this is not desirable it would need to take explicit width and height props
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
-export const ImageCarousel = observer((props: ImageCarouselProps) => {
+export const ImageCarousel = (props: ImageCarouselProps) => {
   const screenDimensions = useScreenDimensions()
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   const cardHeight = screenDimensions.width >= 375 ? 340 : 290
@@ -57,6 +56,8 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
 
   const context = useNewImageCarouselContext({ images })
 
+  context.fullScreenState.useUpdates()
+
   if (images.length === 0) {
     return null
   }
@@ -66,11 +67,11 @@ export const ImageCarousel = observer((props: ImageCarouselProps) => {
       <Flex>
         <ImageCarouselEmbedded />
         {images.length > 1 && <PaginationDots />}
-        {context.state.fullScreenState !== "none" && <ImageCarouselFullScreen />}
+        {context.fullScreenState.current !== "none" && <ImageCarouselFullScreen />}
       </Flex>
     </ImageCarouselContext.Provider>
   )
-})
+}
 
 function PaginationDots() {
   const { images } = useContext(ImageCarouselContext)
@@ -86,9 +87,10 @@ function PaginationDots() {
   )
 }
 
-export const PaginationDot = observer(({ diameter, index }: { diameter: number; index: number }) => {
-  const { state } = useContext(ImageCarouselContext)
-  const opacity = useSpringValue(state.imageIndex === index ? 1 : 0.1)
+export const PaginationDot = ({ diameter, index }: { diameter: number; index: number }) => {
+  const { imageIndex } = useContext(ImageCarouselContext)
+  imageIndex.useUpdates()
+  const opacity = useSpringValue(imageIndex.current === index ? 1 : 0.1)
 
   return (
     <Animated.View
@@ -102,7 +104,7 @@ export const PaginationDot = observer(({ diameter, index }: { diameter: number; 
       }}
     />
   )
-})
+}
 
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
   images: graphql`
