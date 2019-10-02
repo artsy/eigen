@@ -12,6 +12,10 @@ function useForceUpdate() {
   return useMemo(() => () => isMounted.current && setEpoch(x => x + 1), [])
 }
 
+/**
+ * For rationale on why this exists
+ * https://github.com/artsy/emission/pull/1900
+ */
 export class GlobalState<T> {
   private listeners: Array<() => void> = []
   constructor(private _current: T) {}
