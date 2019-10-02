@@ -1,6 +1,5 @@
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { observer } from "mobx-react"
 import React, { useCallback, useContext } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useTracking } from "react-tracking"
@@ -10,7 +9,7 @@ import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 // This is the main image caoursel visible on the root of the artwork page
-export const ImageCarouselEmbedded = observer(() => {
+export const ImageCarouselEmbedded = () => {
   const tracking = useTracking()
   const screenDimensions = useScreenDimensions()
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
@@ -23,7 +22,7 @@ export const ImageCarouselEmbedded = observer(() => {
     embeddedFlatListRef: embeddedFlatListRef,
     embeddedImageRefs: embeddedImageRefs,
     dispatch,
-    state,
+    imageIndex,
   } = useContext(ImageCarouselContext)
 
   const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
@@ -35,7 +34,7 @@ export const ImageCarouselEmbedded = observer(() => {
       // This finds the index of the image which is being given the most
       // screen real estate at any given point in time.
       const nextImageIndex = findClosestIndex(offsets, e.nativeEvent.contentOffset.x)
-      if (nextImageIndex !== state.imageIndex) {
+      if (nextImageIndex !== imageIndex.current) {
         dispatch({
           type: "IMAGE_INDEX_CHANGED",
           nextImageIndex,
@@ -122,4 +121,4 @@ export const ImageCarouselEmbedded = observer(() => {
       }}
     />
   )
-})
+}

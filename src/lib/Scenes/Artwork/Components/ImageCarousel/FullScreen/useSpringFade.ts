@@ -8,9 +8,10 @@ import { useSpringValue } from "../useSpringValue"
  * @param fade either "in" or "out"
  */
 export const useSpringFade = (fade: "in" | "out") => {
-  const { state } = useContext(ImageCarouselContext)
+  const { fullScreenState } = useContext(ImageCarouselContext)
+  fullScreenState.useUpdates()
   const isFullScreenReady =
-    state.fullScreenState === "animating entry transition" || state.fullScreenState === "entered"
+    fullScreenState.current === "animating entry transition" || fullScreenState.current === "entered"
   const [from, to] = fade === "in" ? [0, 1] : [1, 0]
   return useSpringValue(isFullScreenReady ? to : from)
 }

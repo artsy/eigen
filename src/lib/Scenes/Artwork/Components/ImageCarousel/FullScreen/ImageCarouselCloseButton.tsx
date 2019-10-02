@@ -1,6 +1,5 @@
 import { CloseIcon } from "@artsy/palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { observer } from "mobx-react"
 import React, { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { ImageCarouselContext } from "../ImageCarouselContext"
@@ -9,12 +8,13 @@ import { boxShadow } from "./boxShadow"
 // taken from https://github.com/artsy/eigen/blob/0831853cb574566415f3bd8b3908b26b61f61eec/Artsy/View_Controllers/Util/ARNavigationController.m#L125
 const CLOSE_BUTTON_MARGIN = 12
 
-export const ImageCarouselCloseButton = observer(({ onClose }: { onClose(): void }) => {
+export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
   const { safeAreaInsets } = useScreenDimensions()
-  const {
-    state: { fullScreenState },
-  } = useContext(ImageCarouselContext)
-  const showCloseButton = fullScreenState === "entered" || fullScreenState === "animating entry transition"
+  const { fullScreenState } = useContext(ImageCarouselContext)
+  fullScreenState.useUpdates()
+
+  const showCloseButton =
+    fullScreenState.current === "entered" || fullScreenState.current === "animating entry transition"
   return (
     <View
       style={{
@@ -54,4 +54,4 @@ export const ImageCarouselCloseButton = observer(({ onClose }: { onClose(): void
       </TouchableOpacity>
     </View>
   )
-})
+}

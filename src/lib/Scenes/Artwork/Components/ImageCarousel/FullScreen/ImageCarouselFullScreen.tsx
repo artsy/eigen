@@ -1,5 +1,4 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { observer } from "mobx-react"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { Animated, Easing, FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
@@ -11,13 +10,14 @@ import { StatusBarOverlay } from "./StatusBarOverlay"
 import { useSpringFade } from "./useSpringFade"
 import { VerticalSwipeToDismiss } from "./VerticalSwipeToDismiss"
 
-export const ImageCarouselFullScreen = observer(() => {
+export const ImageCarouselFullScreen = () => {
   const screenDimensions = useScreenDimensions()
-  const { images, dispatch, state } = useContext(ImageCarouselContext)
-  const initialScrollIndex = useMemo(() => state.imageIndex, [])
+  const { images, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
+  fullScreenState.useUpdates()
+  const initialScrollIndex = useMemo(() => imageIndex.current, [])
 
   const onClose = useCallback(() => {
-    if (state.fullScreenState === "entered") {
+    if (fullScreenState.current === "entered") {
       dispatch({ type: "FULL_SCREEN_DISMISSED" })
     }
   }, [])
@@ -26,7 +26,7 @@ export const ImageCarouselFullScreen = observer(() => {
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
-      if (state.fullScreenState === "entered" && nextImageIndex !== state.imageIndex) {
+      if (fullScreenState.current === "entered" && nextImageIndex !== imageIndex.current) {
         dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
       }
     },
@@ -41,7 +41,7 @@ export const ImageCarouselFullScreen = observer(() => {
 
   useEffect(
     () => {
-      if (state.fullScreenState === "exiting") {
+      if (fullScreenState.current === "exiting") {
         Animated.timing(masterOpacity, {
           duration: 200,
           toValue: 0,
@@ -53,7 +53,7 @@ export const ImageCarouselFullScreen = observer(() => {
         })
       }
     },
-    [state.fullScreenState]
+    [fullScreenState.current]
   )
 
   return (
@@ -78,7 +78,7 @@ export const ImageCarouselFullScreen = observer(() => {
             data={images}
             horizontal
             showsHorizontalScrollIndicator={false}
-            scrollEnabled={images.length > 1 && state.fullScreenState === "entered"}
+            scrollEnabled={images.length > 1 && fullScreenState.current === "entered"}
             snapToInterval={screenDimensions.width}
             keyExtractor={item => item.url}
             decelerationRate="fast"
@@ -92,7 +92,7 @@ export const ImageCarouselFullScreen = observer(() => {
             onMomentumScrollEnd={() => {
               // reset the zooms of all non-visible zoom views when the horizontal carousel comes to a stop
               for (let i = 0; i < images.length; i++) {
-                if (i !== state.imageIndex && zoomViewRefs[i]) {
+                if (i !== imageIndex.current && zoomViewRefs[i]) {
                   zoomViewRefs[i].resetZoom()
                 }
               }
@@ -116,14 +116,14 @@ export const ImageCarouselFullScreen = observer(() => {
       </Animated.View>
     </Modal>
   )
-})
+}
 
 /**
  * Used as a backdrop to the full screen image carousel.
  * fades in at the same time as the shared element transition
  * is playing
  */
-const WhiteUnderlay: React.FC = observer(() => {
+const WhiteUnderlay: React.FC = () => {
   const opacity = useSpringFade("in")
 
   return (
@@ -139,4 +139,4 @@ const WhiteUnderlay: React.FC = observer(() => {
       }}
     />
   )
-})
+}
