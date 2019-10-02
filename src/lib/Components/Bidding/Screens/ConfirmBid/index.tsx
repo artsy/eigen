@@ -427,7 +427,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             <View>
               <Flex m={4} alignItems="center">
                 {artworkImage && (
-                  <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artwork.image.url }} />
+                  <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
                 )}
 
                 <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>

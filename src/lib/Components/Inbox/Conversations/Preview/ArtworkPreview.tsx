@@ -82,7 +82,7 @@ export class ArtworkPreview extends React.Component<Props> {
         onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
       >
         <Container>
-          {artworkImage && <Image imageURL={artwork.image.url} />}
+          {artworkImage && <Image imageURL={artworkImage.url} />}
           <TextContainer>
             <SerifText>{artwork.artist_names}</SerifText>
             <TitleAndDate>
