@@ -49,9 +49,17 @@ export type Artwork_artwork = {
     readonly publisher: string | null;
     readonly manufacturer: string | null;
     readonly image_rights: string | null;
-    readonly context: {
+    readonly context: ({
         readonly __typename: string;
-    } | null;
+        readonly isAuction?: boolean | null;
+    } & ({
+        readonly __typename: "Sale";
+        readonly isAuction: boolean | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly contextGrids: ReadonlyArray<{
         readonly artworks: {
             readonly edges: ReadonlyArray<{
@@ -304,6 +312,19 @@ return {
           "name": "__typename",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "Sale",
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isAuction",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         }
       ]
     },
@@ -456,5 +477,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bde838a1acfe6dfcc8c851fc9eb6257f';
+(node as any).hash = '77983ec5c4357af4d3c5b399c468a784';
 export default node;

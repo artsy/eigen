@@ -162,7 +162,7 @@ export class Artwork extends React.Component<Props, State> {
       sections.push("partnerCard")
     }
 
-    if (context) {
+    if (context && context.__typename === "Sale" && context.isAuction) {
       sections.push("contextCard")
     }
 
@@ -266,6 +266,9 @@ export const ArtworkContainer = createRefetchContainer(
         image_rights: imageRights
         context {
           __typename
+          ... on Sale {
+            isAuction
+          }
         }
         contextGrids {
           artworks: artworksConnection(first: 6) {

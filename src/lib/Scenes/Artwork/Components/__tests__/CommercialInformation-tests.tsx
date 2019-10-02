@@ -144,7 +144,7 @@ describe("CommercialInformation", () => {
     ).toMatchInlineSnapshot(`"Want to sell a work by Santa Claus? Consign with Artsy."`)
   })
 
-  it("when edition set is selected it's internalID is passed to CommercialButtons for mutation", () => {
+  it("when edition set is selected its internalID is passed to CommercialButtons for mutation", () => {
     const artworkWithEditionSets = {
       ...CommercialInformationArtwork,
       isAcquireable: true,
@@ -238,6 +238,82 @@ describe("CommercialInformation buttons and coundtown timer", () => {
   })
 })
 
+describe("ArtworkExtraLinks", () => {
+  it("does not show the extra links if the work is inquireable", () => {
+    const inquireableArtwork = {
+      ...CommercialInformationArtwork,
+      artists: [{ isConsignable: false, name: "Santa Claus", " $fragmentRefs": null }],
+      isInquireable: true,
+      isAcquireable: false,
+      isOfferable: false,
+      isInAuction: false,
+      isForSale: false,
+      sale: { isClosed: false },
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={inquireableArtwork} />
+      </Theme>
+    )
+    expect(component.find(ArtworkExtraLinks).length).toEqual(0)
+  })
+
+  it("shows the extra links if the work is acquireable", () => {
+    const acquireableArtwork = {
+      ...CommercialInformationArtwork,
+      artists: [{ isConsignable: false, name: "Santa Claus", " $fragmentRefs": null }],
+      isInquireable: false,
+      isAcquireable: true,
+      isOfferable: false,
+      isInAuction: false,
+      isForSale: true,
+      sale: null,
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={acquireableArtwork} />
+      </Theme>
+    )
+    expect(component.find(ArtworkExtraLinks).length).toEqual(1)
+  })
+
+  it("shows the extra links if the work is offerable", () => {
+    const offerableArtwork = {
+      ...CommercialInformationArtwork,
+      artists: [{ isConsignable: false, name: "Santa Claus", " $fragmentRefs": null }],
+      isInquireable: false,
+      isAcquireable: false,
+      isOfferable: true,
+      isInAuction: false,
+      isForSale: true,
+      sale: null,
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={offerableArtwork} />
+      </Theme>
+    )
+    expect(component.find(ArtworkExtraLinks).length).toEqual(1)
+  })
+
+  it("shows the extra links if the work is biddable", () => {
+    const nonConsignableBiddableArtwork = {
+      ...CommercialInformationArtworkInAuction,
+      artists: [{ isConsignable: false, name: "Santa Claus", " $fragmentRefs": null }],
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformation artwork={nonConsignableBiddableArtwork} />
+      </Theme>
+    )
+    expect(component.find(ArtworkExtraLinks).length).toEqual(1)
+  })
+})
+
 const CommercialInformationArtwork = {
   ...ArtworkFixture,
   ...{
@@ -275,7 +351,7 @@ const CommercialInformationArtwork = {
 const CommercialInformationArtworkInAuction = {
   ...CommercialInformationArtwork,
   availability: "for sale",
-  isAcquireable: true,
+  isAcquireable: false,
   isInAuction: true,
   sale: {
     isClosed: false,
