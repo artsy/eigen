@@ -94,9 +94,17 @@ describe("ImageCarouselFragmentContainer", () => {
 
     it("'selects' subsequent pagination dots as a result of scrolling", async () => {
       const wrapper = await getWrapper()
-      expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([1, 0.1, 0.1, 0.1, 0.1])
 
       const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: { width: 375, height: 275 } })
+
+      wrapper
+        .find(FlatList)
+        .props()
+        .onScroll({ nativeEvent: { contentOffset: { x: 0 } } })
+      jest.advanceTimersByTime(5000)
+      wrapper.update()
+
+      expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([1, 0.1, 0.1, 0.1, 0.1])
 
       wrapper
         .find(FlatList)
