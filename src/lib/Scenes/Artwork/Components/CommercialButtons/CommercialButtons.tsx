@@ -4,6 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { AuctionState } from "../CommercialInformation"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 import { BuyNowButtonFragmentContainer as BuyNowButton } from "./BuyNowButton"
 import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOfferButton"
@@ -13,6 +14,7 @@ export interface CommercialButtonProps {
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
+  auctionState: AuctionState
 }
 
 const track: Track<CommercialButtonProps> = _track
@@ -29,21 +31,21 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
   }
 
   render() {
-    const { artwork } = this.props
+    const { artwork, auctionState } = this.props
     const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, isForSale } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
 
-    if (isInAuction && artwork.sale && !artwork.sale.isClosed && isForSale) {
+    if (isInAuction && artwork.sale && auctionState !== "hasEnded" && isForSale) {
       return (
         <>
           {isBuyNowable && noEditions ? (
             <>
-              <BidButton artwork={artwork} />
+              <BidButton artwork={artwork} auctionState={auctionState} />
               <Spacer mb={1} />
               <BuyNowButton variant="secondaryOutline" artwork={artwork} editionSetID={this.props.editionSetID} />
             </>
           ) : (
-            <BidButton artwork={artwork} />
+            <BidButton artwork={artwork} auctionState={auctionState} />
           )}
         </>
       )

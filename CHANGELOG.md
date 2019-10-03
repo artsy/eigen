@@ -24,6 +24,7 @@
 
 - Remove mobx - ds300
 - Add missing auction analytics events - ashkan18
+- Adds Artwork Auctions refresh on state change - kierangillen
 
 ### 1.17.3
 
