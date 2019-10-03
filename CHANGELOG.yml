@@ -1,11 +1,12 @@
 upcoming:
-  version: 6.0.0
+  version: 5.0.8
   date: TBD
-  emission_version: 1.12.x
+  emission_version: 1.17.6
   dev:
     - 
   user_facing:
     - Re-enables Artwork Auctions view to respect Echo flag - ash
+    - Re-disables Artwork Auctions view to respect Echo flag - ash
     - Fixes crashes navigating to view controllers which were already in a navigation stack - ash
 
 releases:

@@ -39,7 +39,8 @@
     } else if (isArtworkNSOInquiry) {
         return ([AROptions boolForOption:AROptionsRNArtworkNSOInquiry] || [self.echo.features[@"ARReactNativeArtworkEnableNSOInquiry"] state]);
     } else if (isArtworkAuctions) {
-        return ([AROptions boolForOption:AROptionsRNArtworkAuctions] || [self.echo.features[@"ARReactNativeArtworkEnableAuctions"] state]);
+        // Disabled temporarily until 6.0.0 is released.
+        return ([AROptions boolForOption:AROptionsRNArtworkAuctions]); // || [self.echo.features[@"ARReactNativeArtworkEnableAuctions"] state]);
     }
 
     return NO;

@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.17.3):
+  - Emission (1.17.6):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -543,7 +543,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 4c62c02396327be7286449416776fe56ec0d0875
+  Emission: 327b914e95abe4c3f2cc90bd1fb9bd23891e9195
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
