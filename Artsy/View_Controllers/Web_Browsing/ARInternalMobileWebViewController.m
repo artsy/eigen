@@ -170,6 +170,18 @@ static void *ARProgressContext = &ARProgressContext;
                 if ([viewController isKindOfClass:[UINavigationController class]]) {
                     // Navigation controllers can't be pushed onto regular navigation controllers, only the top menu VC.
                     [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                } else if (viewController.navigationController) {
+                    // viewController already has a navigation controller set on it, which indicates it's a special case
+                    // where it's already in a navigation stack somewhere. Let's dismiss ourselves (if applicable) and then
+                    // show the VC through the normal ARTopMenuViewController flow, which handles all special cases.
+
+                    if (self.presentingViewController) {
+                        [self.presentingViewController dismissViewControllerAnimated:ARPerformWorkAsynchronously completion:^{
+                            [[ARTopMenuViewController sharedController] pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                        }];
+                    } else {
+                        [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                    }
                 } else {
                     [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
                 }

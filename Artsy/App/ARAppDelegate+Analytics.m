@@ -51,7 +51,6 @@
 
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
-#import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 
 // Views
