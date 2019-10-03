@@ -56,13 +56,16 @@ export class Artwork extends React.Component<Props, any> {
   render() {
     const artwork = this.props.artwork
     const partnerName = artwork.partner && artwork.partner.name
+    const artworkImage = artwork.image
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View>
-          <View style={styles.imageWrapper}>
-            <OpaqueImageView aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
-            {this.badges()}
-          </View>
+          {artworkImage && (
+            <View style={styles.imageWrapper}>
+              <OpaqueImageView aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
+              {this.badges()}
+            </View>
+          )}
           {this.saleInfoLine()}
           {this.artists()}
           {this.artworkTitle()}

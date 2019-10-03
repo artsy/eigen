@@ -413,6 +413,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   render() {
     const { artwork, lot_label, sale } = this.props.sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
+    const artworkImage = artwork.image
 
     return (
       <BiddingThemeProvider>
@@ -425,7 +426,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <View>
               <Flex m={4} alignItems="center">
-                <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artwork.image.url }} />
+                {artworkImage && (
+                  <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
+                )}
 
                 <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
                   {artwork.artist_names}
