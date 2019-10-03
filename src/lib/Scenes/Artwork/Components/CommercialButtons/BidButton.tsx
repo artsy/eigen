@@ -16,7 +16,7 @@ export interface BidButtonProps {
 const registrationWasAttempted = sale => !!sale.registrationStatus
 const isRegisteredToBid = sale => registrationWasAttempted(sale) && sale.registrationStatus.qualifiedForBidding
 const watchOnly = sale => sale.isRegistrationClosed && !isRegisteredToBid(sale)
-const getMyLotStanding = artwork => artwork.myLotStanding && artwork.myLotStanding[0]
+const getMyLotStanding = artwork => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
 const getHasBid = myLotStanding => !!(myLotStanding && myLotStanding.mostRecentBid)
 
 @track()
