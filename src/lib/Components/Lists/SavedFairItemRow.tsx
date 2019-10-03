@@ -71,9 +71,11 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Box height="95" mx="20" mt="9">
           <Flex flexGrow="1" flexDirection="row" alignItems="center">
-            <Box height="50" width="50" mt="21" style={{ borderRadius: 25, overflow: "hidden" }}>
-              <OpaqueImageView width={50} height={50} imageURL={imageURL} />
-            </Box>
+            {imageURL && (
+              <Box height="50" width="50" mt="21" style={{ borderRadius: 25, overflow: "hidden" }}>
+                <OpaqueImageView width={50} height={50} imageURL={imageURL} />
+              </Box>
+            )}
             <Flex flexDirection="column" flexGrow="1" width="197">
               <Sans size="3" color="black" weight="medium" numberOfLines={1} ml="13">
                 {item.name}
