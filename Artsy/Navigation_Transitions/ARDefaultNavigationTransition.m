@@ -51,13 +51,14 @@
 - (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)context
 {
     CGRect fullFrame = [context initialFrameForViewController:fromVC];
+    CGRect offScreen = fullFrame;
+    offScreen.origin.x = offScreen.size.width;
 
     // To = Coming up
     // From = Moving to the Side
 
     [context.containerView addSubview:toVC.view];
     [context.containerView addSubview:fromVC.view];
-    fromVC.view.frame = fullFrame;
 
     UIViewAnimationOptions options = UIViewAnimationOptionCurveEaseOut;
 
@@ -106,7 +107,7 @@
          toVC.view.alpha = 1;
          toVC.view.transform = CGAffineTransformIdentity;
 
-         fromVC.view.transform = CGAffineTransformMakeTranslation(fullFrame.size.width, 0);
+         fromVC.view.frame = offScreen;
 
          backButtonSnapshot.alpha = self.backButtonTargetAlpha;
         }
