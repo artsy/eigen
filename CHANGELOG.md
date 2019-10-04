@@ -23,6 +23,7 @@
 ### 1.17.4
 
 - Remove mobx - ds300
+- Add missing auction analytics events - ashkan18
 
 ### 1.17.3
 

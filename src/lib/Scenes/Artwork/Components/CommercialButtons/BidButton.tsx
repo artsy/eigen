@@ -16,26 +16,11 @@ export interface BidButtonProps {
 const registrationWasAttempted = sale => !!sale.registrationStatus
 const isRegisteredToBid = sale => registrationWasAttempted(sale) && sale.registrationStatus.qualifiedForBidding
 const watchOnly = sale => sale.isRegistrationClosed && !isRegisteredToBid(sale)
+const getMyLotStanding = artwork => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
+const getHasBid = myLotStanding => !!(myLotStanding && myLotStanding.mostRecentBid)
 
 @track()
 export class BidButton extends React.Component<BidButtonProps> {
-  @track({
-    action_name: Schema.ActionNames.IncreaseMaxBid,
-    action_type: Schema.ActionTypes.Tap,
-  })
-  setMaxBid(newVal: number) {
-    this.setState({ selectedMaxBidCents: newVal })
-  }
-
-  @track({
-    action_name: Schema.ActionNames.Bid,
-    action_type: Schema.ActionTypes.Tap,
-  })
-  handleBid() {
-    const { sale } = this.props.artwork
-    SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${this.props.artwork.slug}`)
-  }
-
   @track({
     action_name: Schema.ActionNames.RegisterToBid,
     action_type: Schema.ActionTypes.Tap,
@@ -58,6 +43,15 @@ export class BidButton extends React.Component<BidButtonProps> {
     SwitchBoard.presentNavigationViewController(this, liveUrl)
   }
 
+  @track(props => {
+    const { artwork } = props
+    const myLotStanding = getMyLotStanding(artwork)
+    const hasBid = getHasBid(myLotStanding)
+    return {
+      action_name: hasBid ? Schema.ActionNames.IncreaseMaxBid : Schema.ActionNames.Bid,
+      action_type: Schema.ActionTypes.Tap,
+    }
+  })
   redirectToBid(firstIncrement: number) {
     const { slug, sale } = this.props.artwork
     const bid = firstIncrement
@@ -122,8 +116,8 @@ export class BidButton extends React.Component<BidButtonProps> {
      *       be 1 live sale with this work. When we run into that case, there is
      *       likely design work to be done too, so we can adjust this then.
      */
-    const myLotStanding = artwork.myLotStanding && artwork.myLotStanding[0]
-    const hasMyBids = !!(myLotStanding && myLotStanding.mostRecentBid)
+    const myLotStanding = getMyLotStanding(artwork)
+    const hasBid = getHasBid(myLotStanding)
 
     if (sale.isPreview) {
       return this.renderIsPreview(registrationAttempted, registeredToBid)
@@ -142,14 +136,14 @@ export class BidButton extends React.Component<BidButtonProps> {
         </Button>
       )
     } else {
-      const myLastMaxBid = hasMyBids && myLotStanding.mostRecentBid.maxBid.cents
+      const myLastMaxBid = hasBid && myLotStanding.mostRecentBid.maxBid.cents
       const increments = saleArtwork.increments.filter(increment => increment.cents > (myLastMaxBid || 0))
       const firstIncrement = increments && increments.length && increments[0]
       const incrementCents = firstIncrement && firstIncrement.cents
 
       return (
         <Button width={100} size="large" block onPress={() => this.redirectToBid(incrementCents)}>
-          {hasMyBids ? "Increase max bid" : "Bid"}
+          {hasBid ? "Increase max bid" : "Bid"}
         </Button>
       )
     }
