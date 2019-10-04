@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes crash with missing artist images - ash
+- Uses em dash between text in ReadMore component instead of line break - kierangillen
 
 ### 1.17.6
 
