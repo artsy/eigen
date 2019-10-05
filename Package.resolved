@@ -6,17 +6,17 @@
         "repositoryURL": "https://github.com/JohnSundell/Files.git",
         "state": {
           "branch": null,
-          "revision": "06f95bd1bf4f8d5f50bc6bb30b808c253acd4c88",
-          "version": "2.2.1"
+          "revision": "a84615f4558151fab52ac38df697ce2442991f93",
+          "version": "2.3.0"
         }
       },
       {
         "package": "Logger",
-        "repositoryURL": "https://github.com/f-meloni/Logger",
+        "repositoryURL": "https://github.com/shibapm/Logger",
         "state": {
           "branch": null,
-          "revision": "c1cb5a142b99687ecc55d8de101bf082889f5fd1",
-          "version": "0.2.2"
+          "revision": "53c3ecca5abe8cf46697e33901ee774236d94cce",
+          "version": "0.2.3"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/JohnSundell/Marathon",
         "state": {
           "branch": null,
-          "revision": "a06df8de0b79c1a3b69228ec5368acd52956d8ec",
-          "version": "3.1.0"
+          "revision": "35b672e05ac411fb104e462fbfd6541f995abc17",
+          "version": "3.3.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/JohnSundell/Releases.git",
         "state": {
           "branch": null,
-          "revision": "e74f0895855b56147cb96f2d45aba3ec37da64fb",
-          "version": "3.0.0"
+          "revision": "ea62f33a429185b0ed21344c2355862c5bc4fcce",
+          "version": "4.0.0"
         }
       },
       {
@@ -66,7 +66,7 @@
       },
       {
         "package": "ShellOut",
-        "repositoryURL": "https://github.com/JohnSundell/ShellOut",
+        "repositoryURL": "https://github.com/JohnSundell/ShellOut.git",
         "state": {
           "branch": null,
           "revision": "d3d54ce662dfee7fef619330b71d251b8d4869f9",
@@ -78,26 +78,8 @@
         "repositoryURL": "https://github.com/danger/swift.git",
         "state": {
           "branch": null,
-          "revision": "a4e836b5443b3ba475cb6cc0b05ddd54ff65fc26",
-          "version": "1.5.0"
-        }
-      },
-      {
-        "package": "Unbox",
-        "repositoryURL": "https://github.com/JohnSundell/Unbox.git",
-        "state": {
-          "branch": null,
-          "revision": "9575afeb61597fdea9070ca07effede5fb37c2c8",
-          "version": "3.1.0"
-        }
-      },
-      {
-        "package": "Wrap",
-        "repositoryURL": "https://github.com/JohnSundell/Wrap.git",
-        "state": {
-          "branch": null,
-          "revision": "8085c925060b84a1fc0caef444c130da2c8154c3",
-          "version": "3.0.1"
+          "revision": "33d35bf94f54155be505ffecfca745e4cc1cd0cc",
+          "version": "1.6.5"
         }
       },
       {
@@ -105,8 +87,8 @@
         "repositoryURL": "https://github.com/jpsim/Yams",
         "state": {
           "branch": null,
-          "revision": "26ab35f50ea891e8edefcc9d975db2f6b67e1d68",
-          "version": "1.0.1"
+          "revision": "b08dba4bcea978bf1ad37703a384097d3efce5af",
+          "version": "1.0.2"
         }
       }
     ]
