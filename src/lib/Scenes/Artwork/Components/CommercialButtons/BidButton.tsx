@@ -5,11 +5,13 @@ import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
+import { AuctionState } from "../CommercialInformation"
 
 export const PREDICTION_URL = "https://live.artsy.net"
 
 export interface BidButtonProps {
   artwork: BidButton_artwork
+  auctionState: AuctionState
   relay: RelayProp
 }
 
@@ -101,7 +103,7 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 
   render() {
-    const { artwork } = this.props
+    const { artwork, auctionState } = this.props
     const { sale, saleArtwork } = artwork
 
     if (sale && sale.isClosed) {
@@ -119,9 +121,9 @@ export class BidButton extends React.Component<BidButtonProps> {
     const myLotStanding = getMyLotStanding(artwork)
     const hasBid = getHasBid(myLotStanding)
 
-    if (sale.isPreview) {
+    if (auctionState === "isPreview") {
       return this.renderIsPreview(registrationAttempted, registeredToBid)
-    } else if (sale.isLiveOpen) {
+    } else if (auctionState === "isLive") {
       return this.renderIsLiveOpen()
     } else if (registrationAttempted && !registeredToBid) {
       return (

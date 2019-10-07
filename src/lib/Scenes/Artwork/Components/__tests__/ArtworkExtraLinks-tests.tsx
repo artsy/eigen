@@ -16,6 +16,7 @@ jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { mockTracking } from "lib/tests/mockTracking"
+import { AuctionState } from "../CommercialInformation"
 
 describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
@@ -31,7 +32,7 @@ describe("ArtworkExtraLinks", () => {
     }
     const component = mount(
       <Theme>
-        <ArtworkExtraLinks artwork={artwork} />
+        <ArtworkExtraLinks artwork={artwork} auctionState={null} />
       </Theme>
     )
     const consignmentsLink = component.find(Text).at(1)
@@ -60,7 +61,7 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by these artists?")
@@ -80,7 +81,7 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -99,7 +100,7 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component).toEqual({})
@@ -120,7 +121,7 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by Santa?")
@@ -139,7 +140,7 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -163,7 +164,7 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component.text()).not.toContain("Read our FAQ")
@@ -186,7 +187,7 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component.text()).toContain("Read our FAQ")
@@ -204,7 +205,7 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
         </Theme>
       )
       expect(component.text()).toContain("Read our FAQ")
@@ -231,7 +232,7 @@ describe("ArtworkExtraLinks", () => {
 
     const Component = mockTracking(() => (
       <Theme>
-        <ArtworkExtraLinks artwork={artwork} />
+        <ArtworkExtraLinks artwork={artwork} auctionState={"inProgress" as AuctionState} />
       </Theme>
     ))
     const component = mount(<Component />)
@@ -275,10 +276,28 @@ describe("ArtworkExtraLinks", () => {
 
       const componentWithNoLink = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={notForSaleArtwork} />
+          <ArtworkExtraLinks artwork={notForSaleArtwork} auctionState={null} />
         </Theme>
       )
       expect(componentWithNoLink.find(Sans).length).toEqual(0)
+    })
+
+    it("hides auction links when auctionState hasEnded", () => {
+      const componentWithEndedAuctionState = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} auctionState={"hasEnded" as AuctionState} />
+        </Theme>
+      )
+      expect(componentWithEndedAuctionState.text()).not.toContain("By placing a bid you agree to")
+    })
+
+    it("displays auction links when auctionState is inProgress", () => {
+      const componentWithEndedAuctionState = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} auctionState={"inProgress" as AuctionState} />
+        </Theme>
+      )
+      expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
     })
 
     it("posts proper event in when clicking Ask A Specialist", () => {
