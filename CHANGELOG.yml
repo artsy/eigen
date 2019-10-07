@@ -5,6 +5,7 @@ upcoming:
   dev:
     - 
   user_facing:
+    - Adds killswitch based on Eigen version set in echo - kierangillen
     - Re-enables Artwork Auctions view to respect Echo flag - ash
     - Re-disables Artwork Auctions view to respect Echo flag - ash
     - Fixes crashes navigating to view controllers which were already in a navigation stack - ash
