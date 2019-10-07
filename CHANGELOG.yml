@@ -1,7 +1,7 @@
 upcoming:
   version: 5.0.8
   date: TBD
-  emission_version: 1.17.6
+  emission_version: 1.17.7
   dev:
     - 
   user_facing:
