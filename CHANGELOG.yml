@@ -9,6 +9,7 @@ upcoming:
     - Re-disables Artwork Auctions view to respect Echo flag - ash
     - Fixes crashes navigating to view controllers which were already in a navigation stack - ash
     - Fixes problem not being able to select buy now works from an auction - ash
+    - Fixes search result pop transition (empty view bug) - ash & lily
 
 releases:
   - version: 5.0.7

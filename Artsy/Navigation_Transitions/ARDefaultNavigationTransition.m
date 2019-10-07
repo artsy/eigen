@@ -34,30 +34,30 @@
         delay:0.0
         options:UIViewAnimationOptionCurveEaseOut
         animations:^{
-         fromVC.view.alpha = 0.2;
-         fromVC.view.transform = CGAffineTransformMakeScale(0.9, 0.9);
+            fromVC.view.alpha = 0.2;
+            fromVC.view.transform = CGAffineTransformMakeScale(0.9, 0.9);
 
-         toVC.view.frame = fullFrame;
-
+            toVC.view.frame = fullFrame;
         }
         completion:^(BOOL finished) {
-         fromVC.view.alpha = 1;
-         fromVC.view.transform = CGAffineTransformIdentity;
+            fromVC.view.alpha = 1;
+            fromVC.view.transform = CGAffineTransformIdentity;
 
-         [transitionContext completeTransition:YES];
+            [transitionContext completeTransition:YES];
         }];
 }
 
 - (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)context
 {
     CGRect fullFrame = [context initialFrameForViewController:fromVC];
+    CGRect offScreen = fullFrame;
+    offScreen.origin.x = offScreen.size.width;
 
     // To = Coming up
     // From = Moving to the Side
 
     [context.containerView addSubview:toVC.view];
     [context.containerView addSubview:fromVC.view];
-    fromVC.view.frame = fullFrame;
 
     UIViewAnimationOptions options = UIViewAnimationOptionCurveEaseOut;
 
@@ -97,33 +97,34 @@
     }
 
     toVC.view.alpha = 0.2;
+    toVC.view.frame = [context finalFrameForViewController:toVC];
     toVC.view.transform = CGAffineTransformMakeScale(0.9, 0.9);
 
     [UIView animateWithDuration:[self transitionDuration:context]
         delay:0.0
         options:options
         animations:^{
-         toVC.view.alpha = 1;
-         toVC.view.transform = CGAffineTransformIdentity;
+            toVC.view.alpha = 1;
+            toVC.view.transform = CGAffineTransformIdentity;
 
-         fromVC.view.transform = CGAffineTransformMakeTranslation(fullFrame.size.width, 0);
+            fromVC.view.frame = offScreen;
 
-         backButtonSnapshot.alpha = self.backButtonTargetAlpha;
+            backButtonSnapshot.alpha = self.backButtonTargetAlpha;
         }
         completion:^(BOOL finished) {
-         toVC.view.alpha = 1;
-         toVC.view.transform = CGAffineTransformIdentity;
+            toVC.view.alpha = 1;
+            toVC.view.transform = CGAffineTransformIdentity;
 
-         // Unhide the buttons
-         navigationController.backButton.hidden = NO;
+            // Unhide the buttons
+            navigationController.backButton.hidden = NO;
 
-         [backButtonSnapshot removeFromSuperview];
+            [backButtonSnapshot removeFromSuperview];
 
-         if ([context transitionWasCancelled]) {
-             fromVC.view.frame = fullFrame;
-         }
+            if ([context transitionWasCancelled]) {
+                fromVC.view.frame = fullFrame;
+            }
 
-         [context completeTransition:![context transitionWasCancelled]];
+            [context completeTransition:![context transitionWasCancelled]];
         }];
 }
 
