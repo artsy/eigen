@@ -260,6 +260,12 @@ fragment CommercialInformation_artwork on Artwork {
   }
   sale {
     isClosed
+    isAuction
+    isLiveOpen
+    isPreview
+    liveStartAt
+    endAt
+    startAt
     id
   }
   ...CommercialButtons_artwork
@@ -1030,6 +1036,35 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              (v11/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isPreview",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "liveStartAt",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "endAt",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "startAt",
+                "args": null,
+                "storageKey": null
+              },
               (v4/*: any*/),
               {
                 "kind": "LinkedField",
@@ -1053,40 +1088,11 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "isPreview",
-                "args": null,
-                "storageKey": null
-              },
-              (v11/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
                 "name": "isRegistrationClosed",
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "startAt",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "endAt",
-                "args": null,
-                "storageKey": null
-              },
               (v12/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "liveStartAt",
-                "args": null,
-                "storageKey": null
-              },
               (v7/*: any*/),
               {
                 "kind": "ScalarField",
@@ -1894,7 +1900,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "3c22dda4eea4406bb08da40b5be6061b",
+    "id": "0710af7a3d821515ec7ab285f3ad1d89",
     "text": null,
     "metadata": {}
   }

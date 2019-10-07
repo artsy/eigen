@@ -6,9 +6,11 @@ import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Linking, Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { AuctionState } from "./CommercialInformation"
 
 export interface ArtworkExtraLinksProps {
   artwork: ArtworkExtraLinks_artwork
+  auctionState: AuctionState
 }
 
 @track()
@@ -61,10 +63,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   renderFAQAndSpecialist = () => {
     const {
       artwork: { isAcquireable, isOfferable, isInAuction, sale, isForSale },
+      auctionState,
     } = this.props
 
-    if (isInAuction && sale && !sale.isClosed && isForSale) {
-      // FIXME: Verify logic when to show Auction "ask a specialist"
+    if (isInAuction && sale && isForSale && auctionState !== "hasEnded") {
       return (
         <>
           <Sans size="2" color="black60">
@@ -108,6 +110,8 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
           .
         </Sans>
       )
+    } else {
+      return null
     }
   }
 

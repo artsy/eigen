@@ -35,13 +35,13 @@ describe("AuctionCountDownTimer", () => {
     }
     const component = mount(
       <Theme>
-        <AuctionCountDownTimer artwork={artwork} />
+        <AuctionCountDownTimer artwork={artwork} auctionState="hasStarted" />
       </Theme>
     )
     expect(component.find(TimeRemaining).text()).toContain("Ends Aug 16 at 8:20pm UTC")
   })
 
-  it("renders the correct countdown time", () => {
+  it("renders the correct countdown time using endAt if auctionState hasStarted", () => {
     const artwork = {
       ...ArtworkFixture,
       ...{
@@ -55,7 +55,7 @@ describe("AuctionCountDownTimer", () => {
     }
     const component = mount(
       <Theme>
-        <AuctionCountDownTimer artwork={artwork} />
+        <AuctionCountDownTimer artwork={artwork} auctionState="hasStarted" />
       </Theme>
     )
     expect(component.find(TimeRemaining).text()).toContain("01d 08h 20m 00s")
@@ -91,7 +91,7 @@ describe("AuctionCountDownTimer", () => {
     }
     const component = mount(
       <Theme>
-        <AuctionCountDownTimer artwork={artwork} />
+        <AuctionCountDownTimer artwork={artwork} auctionState="hasStarted" />
       </Theme>
     )
     expect(component.find(TimeRemaining).length).toEqual(0)
@@ -111,7 +111,7 @@ describe("AuctionCountDownTimer", () => {
     }
     const component = mount(
       <Theme>
-        <AuctionCountDownTimer artwork={artwork} />
+        <AuctionCountDownTimer artwork={artwork} auctionState="hasStarted" />
       </Theme>
     )
     expect(component.find(TimeRemaining).length).toEqual(0)
@@ -131,9 +131,29 @@ describe("AuctionCountDownTimer", () => {
     }
     const component = mount(
       <Theme>
-        <AuctionCountDownTimer artwork={artwork} />
+        <AuctionCountDownTimer artwork={artwork} auctionState="hasStarted" />
       </Theme>
     )
     expect(component.find(TimeRemaining).length).toEqual(0)
+  })
+
+  it("uses startAt if auctionState isPreview", () => {
+    const artwork = {
+      ...ArtworkFixture,
+      ...{
+        sale: {
+          endAt: "2020-08-16T20:20:00+00:00",
+          startAt: "2019-08-16T20:20:00+00:00",
+          liveStartAt: null,
+          formattedStartDateTime: "Starts Aug 16 at 8:20pm UTC",
+        },
+      },
+    }
+    const component = mount(
+      <Theme>
+        <AuctionCountDownTimer artwork={artwork} auctionState="isPreview" />
+      </Theme>
+    )
+    expect(component.find(TimeRemaining).text()).toContain("01d 08h 20m 00s")
   })
 })

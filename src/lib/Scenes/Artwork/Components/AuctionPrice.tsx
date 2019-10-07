@@ -5,9 +5,11 @@ import { get } from "lib/utils/get"
 import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { AuctionState } from "./CommercialInformation"
 
 interface AuctionPriceProps {
   artwork: AuctionPrice_artwork
+  auctionState: AuctionState
 }
 
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
@@ -36,13 +38,13 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
   }
 
   render() {
-    const { artwork } = this.props
+    const { artwork, auctionState } = this.props
     const { sale, saleArtwork } = artwork
 
-    if (sale.isLiveOpen) {
+    if (auctionState === "isLive") {
       // We do not have reliable Bid info for artworks in Live sales in progress
       return null
-    } else if (sale.isClosed) {
+    } else if (auctionState === "hasEnded") {
       return (
         <Sans size="4t" weight="medium" color="black100">
           Bidding closed

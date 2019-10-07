@@ -19,7 +19,7 @@ describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtwork} />
+        <CommercialInformation artwork={CommercialInformationArtwork as any} />
       </Theme>
     )
     expect(component.text()).toContain("Contact for price")
@@ -38,7 +38,7 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={workInEndedAuction} />
+        <CommercialInformation artwork={workInEndedAuction as any} />
       </Theme>
     )
 
@@ -55,7 +55,7 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtworkClosedAuction} />
+        <CommercialInformation artwork={CommercialInformationArtworkClosedAuction as any} />
       </Theme>
     )
     expect(component.text()).toContain("Contact for price")
@@ -83,6 +83,11 @@ describe("CommercialInformation", () => {
         sale: {
           isAuction: false,
           isClosed: false,
+          isLiveOpen: false,
+          isPreview: false,
+          liveStartAt: null,
+          endAt: null,
+          startAt: null,
         },
         partner: {
           name: null,
@@ -101,7 +106,7 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtworkNoData} />
+        <CommercialInformation artwork={CommercialInformationArtworkNoData as any} />
       </Theme>
     )
     expect(component.text()).not.toContain("Contact for price")
@@ -117,7 +122,7 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtworkNonCommercial} />
+        <CommercialInformation artwork={CommercialInformationArtworkNonCommercial as any} />
       </Theme>
     )
     expect(
@@ -132,7 +137,7 @@ describe("CommercialInformation", () => {
   it("renders consign with Artsy text", () => {
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtwork} />
+        <CommercialInformation artwork={CommercialInformationArtwork as any} />
       </Theme>
     )
     expect(
@@ -179,7 +184,7 @@ describe("CommercialInformation", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={artworkWithEditionSets} />
+        <CommercialInformation artwork={artworkWithEditionSets as any} />
       </Theme>
     )
 
@@ -201,7 +206,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
   it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationArtworkInAuction} />
+        <CommercialInformation artwork={CommercialInformationArtworkInAuction as any} />
       </Theme>
     )
     expect(component.find(AuctionCountDownTimer).length).toEqual(1)
@@ -218,7 +223,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationSoldArtworkInAuction} />
+        <CommercialInformation artwork={CommercialInformationSoldArtworkInAuction as any} />
       </Theme>
     )
     expect(component.find(AuctionCountDownTimer).length).toEqual(0)
@@ -229,7 +234,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
   it("doesn't render CountDownTimer or BidButton when not in auction", () => {
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={CommercialInformationAcquierableArtwork} />
+        <CommercialInformation artwork={CommercialInformationAcquierableArtwork as any} />
       </Theme>
     )
     expect(component.find(AuctionCountDownTimer).length).toEqual(0)
@@ -248,12 +253,20 @@ describe("ArtworkExtraLinks", () => {
       isOfferable: false,
       isInAuction: false,
       isForSale: false,
-      sale: { isClosed: false },
+      sale: {
+        isClosed: false,
+        isLiveOpen: false,
+        isPreview: false,
+        liveStartAt: null,
+        endAt: null,
+        startAt: null,
+        isAuction: false,
+      },
     }
 
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={inquireableArtwork} />
+        <CommercialInformation artwork={inquireableArtwork as any} />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(0)
@@ -273,7 +286,7 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={acquireableArtwork} />
+        <CommercialInformation artwork={acquireableArtwork as any} />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
@@ -293,7 +306,7 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={offerableArtwork} />
+        <CommercialInformation artwork={offerableArtwork as any} />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
@@ -307,7 +320,7 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformation artwork={nonConsignableBiddableArtwork} />
+        <CommercialInformation artwork={nonConsignableBiddableArtwork as any} />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
@@ -316,36 +329,39 @@ describe("ArtworkExtraLinks", () => {
 
 const CommercialInformationArtwork = {
   ...ArtworkFixture,
-  ...{
-    isAcquireable: false,
-    isInAuction: false,
-    isOfferable: false,
-    isBiddable: false,
-    isInquireable: false,
-    isForSale: true,
-    editionSets: [],
-    saleMessage: "Contact For Price",
-    shippingInfo: "Shipping, tax, and service quoted by seller",
-    shippingOrigin: null,
-    availability: "sold",
-    sale: {
-      isAuction: false,
-      isClosed: false,
-    },
-    partner: {
-      name: "I'm a Gallery",
-      " $refType": null,
-    },
-    artists: [
-      {
-        isConsignable: true,
-        name: "Santa Claus",
-        " $fragmentRefs": null,
-      },
-    ],
-    " $fragmentRefs": null,
+  isAcquireable: false,
+  isInAuction: false,
+  isOfferable: false,
+  isBiddable: false,
+  isInquireable: false,
+  isForSale: true,
+  editionSets: [],
+  saleMessage: "Contact For Price",
+  shippingInfo: "Shipping, tax, and service quoted by seller",
+  shippingOrigin: null,
+  availability: "sold",
+  sale: {
+    isClosed: false,
+    isAuction: false,
+    isLiveOpen: false,
+    isPreview: false,
+    liveStartAt: null,
+    endAt: null,
+    startAt: null,
+  },
+  partner: {
+    name: "I'm a Gallery",
     " $refType": null,
   },
+  artists: [
+    {
+      isConsignable: true,
+      name: "Santa Claus",
+      " $fragmentRefs": null,
+    },
+  ],
+  " $fragmentRefs": null,
+  " $refType": null,
 }
 
 const CommercialInformationArtworkInAuction = {
@@ -355,6 +371,9 @@ const CommercialInformationArtworkInAuction = {
   isInAuction: true,
   sale: {
     isClosed: false,
+    isAuction: true,
+    isLiveOpen: false,
+    isPreview: false,
     startAt: "2019-08-15T19:22:00+00:00",
     endAt: "2019-08-16T20:20:00+00:00",
     liveStartAt: null,

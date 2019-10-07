@@ -19,6 +19,7 @@
 ### 1.17.7
 
 - Fixes crash with missing artist images - ash
+- Uses em dash between text in ReadMore component instead of line break - kierangillen
 
 ### 1.17.6
 
@@ -28,6 +29,7 @@
 
 - Remove mobx - ds300
 - Add missing auction analytics events - ashkan18
+- Adds Artwork Auctions refresh on state change - kierangillen
 
 ### 1.17.3
 

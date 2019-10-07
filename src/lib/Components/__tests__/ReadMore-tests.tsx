@@ -39,6 +39,17 @@ describe("ReadMore", () => {
     expect(component.find(Sans).length).toEqual(0)
   })
 
+  it("Renders an em dash if the text has line breaks when not expanded", () => {
+    const component = shallow(<ReadMore maxChars={30} content={"Line break\n\nWhich should render an em dash"} />)
+
+    expect(
+      component
+        .find(Serif)
+        .at(1)
+        .text()
+    ).toContain(" — Which should")
+  })
+
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
     const component = mount(
       <Theme>

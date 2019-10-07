@@ -25,6 +25,12 @@ export type CommercialInformation_artwork = {
     } | null> | null;
     readonly sale: {
         readonly isClosed: boolean | null;
+        readonly isAuction: boolean | null;
+        readonly isLiveOpen: boolean | null;
+        readonly isPreview: boolean | null;
+        readonly liveStartAt: string | null;
+        readonly endAt: string | null;
+        readonly startAt: string | null;
     } | null;
     readonly " $fragmentRefs": CommercialButtons_artwork$ref & CommercialPartnerInformation_artwork$ref & CommercialEditionSetInformation_artwork$ref & AuctionCountDownTimer_artwork$ref & ArtworkExtraLinks_artwork$ref & AuctionPrice_artwork$ref;
     readonly " $refType": CommercialInformation_artwork$ref;
@@ -139,6 +145,48 @@ const node: ReaderFragment = {
           "name": "isClosed",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isAuction",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isLiveOpen",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isPreview",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "liveStartAt",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "endAt",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "startAt",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -174,5 +222,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b459f734768830ae388b460aa5c002ef';
+(node as any).hash = '227b2c6a0eccaf9b4375600216a99f62';
 export default node;
