@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes crash with missing artist images - ash
+
 ### 1.17.6
 
 ### 1.17.5

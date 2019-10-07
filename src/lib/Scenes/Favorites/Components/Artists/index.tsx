@@ -71,13 +71,7 @@ class Artists extends React.Component<Props, State> {
       <FlatList<ArtistDetails>
         data={rows}
         keyExtractor={({ id }) => id}
-        renderItem={({
-          item: {
-            href,
-            image: { url },
-            name,
-          },
-        }) => <SavedItemRow href={href} image={{ url }} name={name} />}
+        renderItem={({ item: { href, image, name } }) => <SavedItemRow href={href} image={image} name={name} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
