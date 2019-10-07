@@ -40,6 +40,8 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
       return `Starts ${this.formatDateTime(startAt)}`
     } else if (liveStartAt && thisMoment.isBefore(liveStartMoment)) {
       return `Live ${this.formatDateTime(liveStartAt)}`
+    } else if (liveStartAt && thisMoment.isAfter(liveStartMoment) && thisMoment.isBefore(endMoment)) {
+      return `In progress`
     } else if (thisMoment.isBefore(endMoment)) {
       return `Ends ${this.formatDateTime(endAt)}`
     } else if (endAt === null) {
@@ -57,13 +59,14 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
       return null
     }
 
-    const liveStartAtDate = new Date(sale.liveStartAt)
-    const todaysDate = new Date()
-    const liveSaleHasNotStarted = sale.liveStartAt && liveStartAtDate > todaysDate
+    // const liveStartAtDate = new Date(sale.liveStartAt)
+    // const todaysDate = new Date()
+    // const liveSaleHasNotStarted = sale.liveStartAt && liveStartAtDate > todaysDate
+
     const timerLabel = this.timerLabelText(sale.startAt, sale.liveStartAt, sale.endAt)
-    const startAtDate = liveSaleHasNotStarted ? sale.liveStartAt : sale.startAt
+    const startAtDate = auctionState === "isPreview" ? sale.startAt : sale.liveStartAt
     console.log("AUC STATE", auctionState)
-    const countdownEnd = auctionState === "isPreview" ? startAtDate : sale.endAt
+    const countdownEnd = auctionState === "hasEnded" ? sale.endAt : startAtDate
 
     return (
       <TimeRemaining
