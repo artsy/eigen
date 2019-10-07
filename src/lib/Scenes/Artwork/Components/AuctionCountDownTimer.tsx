@@ -15,9 +15,9 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
     const now = moment().tz(moment.tz.guess(true))
     const dateInMoment = moment(date).tz(moment.tz.guess(true))
     if (now.year() !== dateInMoment.year()) {
-      return `${dateInMoment.format("MMM D, YYYY")}, ${dateInMoment.format("h:mma z")}`
+      return `${dateInMoment.format("MMM D, YYYY")}, ${dateInMoment.format("h:mma")}`
     } else {
-      return `${dateInMoment.format("MMM D")}, ${dateInMoment.format("h:mma z")}`
+      return `${dateInMoment.format("MMM D")}, ${dateInMoment.format("h:mma")}`
     }
   }
 
@@ -33,13 +33,13 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
 
   timerLabelText(startAt: string, liveStartAt: string, endAt: string) {
     const thisMoment = moment()
-    const startMoment = moment.tz(startAt)
-    const liveStartMoment = moment.tz(liveStartAt)
-    const endMoment = moment.tz(endAt)
+    const startMoment = moment(startAt)
+    const liveStartMoment = moment(liveStartAt)
+    const endMoment = moment(endAt)
     if (!liveStartAt && thisMoment.isBefore(startMoment)) {
       return `Starts ${this.formatDateTime(startAt)}`
     } else if (liveStartAt && thisMoment.isBefore(liveStartMoment)) {
-      return `Starts ${this.formatDateTime(liveStartAt)}`
+      return `Live ${this.formatDateTime(liveStartAt)}`
     } else if (thisMoment.isBefore(endMoment)) {
       return `Ends ${this.formatDateTime(endAt)}`
     } else if (endAt === null) {
@@ -62,6 +62,7 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
     const liveSaleHasNotStarted = sale.liveStartAt && liveStartAtDate > todaysDate
     const timerLabel = this.timerLabelText(sale.startAt, sale.liveStartAt, sale.endAt)
     const startAtDate = liveSaleHasNotStarted ? sale.liveStartAt : sale.startAt
+    console.log("AUC STATE", auctionState)
     const countdownEnd = auctionState === "isPreview" ? startAtDate : sale.endAt
 
     return (
@@ -83,7 +84,6 @@ export const AuctionCountDownTimerFragmentContainer = createFragmentContainer(Au
       sale {
         startAt
         endAt
-        formattedStartDateTime
         liveStartAt
       }
     }
