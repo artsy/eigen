@@ -27,8 +27,8 @@ export const ReadMore = React.memo(({ content, maxChars, presentLinksModally, tr
       react: (node, output, state) => {
         return (
           <Serif size="3t" color="black100" key={state.key}>
+            {!isExpanded && Number(state.key) > 0 ? "⁠ — " : null}
             {output(node.content, state)}
-            {isExpanded ? null : "⁠ — "}
           </Serif>
         )
       },
