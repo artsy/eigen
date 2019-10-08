@@ -1,8 +1,8 @@
 import { TimeRemaining } from "@artsy/palette"
 import { AuctionCountDownTimer_artwork } from "__generated__/AuctionCountDownTimer_artwork.graphql"
-import moment from "moment"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { formatDate, formatDateTime, timeUntil } from "../../../utils/formatDates"
 import { AuctionState } from "./CommercialInformation"
 
 interface AuctionCountDownTimerProps {
@@ -11,43 +11,44 @@ interface AuctionCountDownTimerProps {
 }
 
 export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimerProps> {
-  formatDateTime(date: string) {
-    const now = moment().tz(moment.tz.guess(true))
-    const dateInMoment = moment(date).tz(moment.tz.guess(true))
-    if (now.year() !== dateInMoment.year()) {
-      return `${dateInMoment.format("MMM D, YYYY")}, ${dateInMoment.format("h:mma")}`
+  countdownValue(sale) {
+    const liveStartAtDate = new Date(sale.liveStartAt)
+    const startAtDate = new Date(sale.startAt)
+    // const endAtDate = new Date(sale.andAt)
+    const todaysDate = new Date()
+
+    if (startAtDate > todaysDate) {
+      return sale.startAt
+    } else if (liveStartAtDate && liveStartAtDate > todaysDate) {
+      return sale.liveStartAt
     } else {
-      return `${dateInMoment.format("MMM D")}, ${dateInMoment.format("h:mma")}`
+      return sale.endAt
     }
   }
 
-  formatDate(date: string) {
-    const now = moment().tz(moment.tz.guess(true))
-    const dateInMoment = moment(date).tz(moment.tz.guess(true))
-    if (now.year() !== dateInMoment.year()) {
-      return `${dateInMoment.format("MMM D, YYYY")}`
-    } else {
-      return `${dateInMoment.format("MMM D")}`
-    }
-  }
-
-  timerLabelText(startAt: string, liveStartAt: string, endAt: string) {
-    const thisMoment = moment()
-    const startMoment = moment(startAt)
-    const liveStartMoment = moment(liveStartAt)
-    const endMoment = moment(endAt)
-    if (!liveStartAt && thisMoment.isBefore(startMoment)) {
-      return `Starts ${this.formatDateTime(startAt)}`
-    } else if (liveStartAt && thisMoment.isBefore(liveStartMoment)) {
-      return `Live ${this.formatDateTime(liveStartAt)}`
-    } else if (liveStartAt && thisMoment.isAfter(liveStartMoment) && thisMoment.isBefore(endMoment)) {
+  timeUntil = (startAt, liveStartAt, endAt, auctionState) => {
+    if (auctionState === "isPreview") {
+      return `Starts ${formatDateTime(startAt)}`
+    } else if (liveStartAt && auctionState === "hasStarted") {
+      return `Live ${formatDateTime(liveStartAt)}`
+    } else if (auctionState === "isLive") {
       return `In progress`
-    } else if (thisMoment.isBefore(endMoment)) {
-      return `Ends ${this.formatDateTime(endAt)}`
+    } else if (auctionState === "hasEnded") {
+      return `Ended ${formatDate(endAt)}`
     } else if (endAt === null) {
       return null
     } else {
-      return `Ended ${this.formatDate(endAt)}`
+      return `Ends ${formatDateTime(endAt)}`
+    }
+  }
+
+  xcountdownValue(sale, auctionState) {
+    if (auctionState === "isPreview") {
+      return sale.startAt
+    } else if (auctionState === "hasStarted" && sale.liveStartAt) {
+      return sale.liveStartAt
+    } else {
+      return sale.endAt
     }
   }
 
@@ -63,10 +64,20 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
     // const todaysDate = new Date()
     // const liveSaleHasNotStarted = sale.liveStartAt && liveStartAtDate > todaysDate
 
-    const timerLabel = this.timerLabelText(sale.startAt, sale.liveStartAt, sale.endAt)
-    const startAtDate = auctionState === "isPreview" ? sale.startAt : sale.liveStartAt
-    console.log("AUC STATE", auctionState)
-    const countdownEnd = auctionState === "hasEnded" ? sale.endAt : startAtDate
+    // const timerLabel = timeUntil(sale.startAt, sale.liveStartAt, sale.endAt)
+
+    const timerLabel = this.timeUntil(sale.startAt, sale.liveStartAt, sale.endAt, auctionState)
+    const startAtDate = sale.liveStartAt && auctionState === "hasStarted" ? sale.liveStartAt : sale.startAt
+
+    // const countdownEnd = auctionState === "hasEnded" ? sale.endAt : startAtDate
+    // const countdownEnd = auctionState === "" ? startAtDate : sale.endAt
+    // const countdownEnd = this.countdownValue(sale)
+    const countdownEnd = this.xcountdownValue(sale, auctionState)
+    console.log("countdownEnd", countdownEnd)
+    if (!countdownEnd) {
+      console.log("countdownEnd", countdownEnd)
+      return null
+    }
 
     return (
       <TimeRemaining
