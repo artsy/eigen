@@ -272,12 +272,12 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     Message *killSwitchVersion = ARSwitchBoard.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
     if(killSwitchVersion.content != nil){
-        NSMutableDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
+        NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
         NSString *buildVersion = infoDictionary[@"CFBundleShortVersionString"];
         NSString *echoMinimumBuild = killSwitchVersion.content;
         
         if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedDescending) {
-            UIAlertController * alert = [UIAlertController
+            UIAlertController *alert = [UIAlertController
                                          alertControllerWithTitle:@"Version out of date"
                                          message:@"Please update your Artsy app."
                                          preferredStyle:UIAlertControllerStyleAlert];
@@ -287,6 +287,7 @@ static ARAppDelegate *_sharedInstance = nil;
                                               handler:^(UIAlertAction * action) {
                                                   NSString *iTunesLink = @"https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080";
                                                   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+                                                  // We wait 1 second to make sure the view controller hierarchy has been set up.
                                                   ar_dispatch_after(1, ^{
                                                       exit(0);
                                                   });
@@ -295,7 +296,6 @@ static ARAppDelegate *_sharedInstance = nil;
             [alert addAction:linkToAppButton];
             
             [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-            return;
         }
     }
 }
