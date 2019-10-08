@@ -34,6 +34,13 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   },
 }))
 
+jest.mock("react-native-sentry", () => ({
+  Sentry: {
+    // tslint:disable-next-line:no-empty
+    captureMessage() {},
+  },
+}))
+
 jest.mock("@mapbox/react-native-mapbox-gl", () => ({
   MapView: () => null,
   StyleURL: {
