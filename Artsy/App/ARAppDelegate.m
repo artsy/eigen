@@ -278,8 +278,8 @@ static ARAppDelegate *_sharedInstance = nil;
         
         if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedDescending) {
             UIAlertController *alert = [UIAlertController
-                                         alertControllerWithTitle:@"Version out of date"
-                                         message:@"Please update your Artsy app."
+                                         alertControllerWithTitle:@"New app version required"
+                                         message:@"Please update your Artsy app to continue."
                                          preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* linkToAppButton = [UIAlertAction
                                               actionWithTitle:@"Download"
