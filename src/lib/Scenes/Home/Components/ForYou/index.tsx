@@ -6,6 +6,7 @@ import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import ArtworkCarousel from "./Components/ArtworkCarousel"
 import FairsRail from "./Components/FairsRail"
 
+import { Box, Flex, Spinner, Theme } from "@artsy/palette"
 import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
 
 interface Props extends ViewProperties {
@@ -83,37 +84,50 @@ export class ForYou extends React.Component<Props, State> {
 
   render() {
     return (
-      <FlatList
-        data={this.state.rowData}
-        renderScrollComponent={props => {
-          return (
-            <ScrollView
-              {...props}
-              removeClippedSubviews={true}
-              automaticallyAdjustContentInsets={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={this.handleRefresh}
-                  style={{ marginBottom: 18 }}
-                />
-              }
-            />
-          )
-        }}
-        renderItem={({ item: { data, type } }) => {
-          switch (type) {
-            case "artwork":
-              return <ArtworkCarousel key={data.id} rail={data} />
-            case "artist":
-              return <ArtistRail key={data.id} rail={data} />
-            case "fairs":
-              return <FairsRail key={data.id} fairs_module={data} />
-          }
-        }}
-        keyExtractor={(item, index) => item.data.type + String(index)}
-        style={{ overflow: "visible" }}
-      />
+      <Theme>
+        <FlatList
+          data={this.state.rowData}
+          renderScrollComponent={props => {
+            return (
+              <ScrollView
+                {...props}
+                removeClippedSubviews={true}
+                automaticallyAdjustContentInsets={false}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.isRefreshing}
+                    onRefresh={this.handleRefresh}
+                    style={{ marginBottom: 18 }}
+                  />
+                }
+              />
+            )
+          }}
+          renderItem={({ item: { data, type } }) => {
+            switch (type) {
+              case "artwork":
+                return <ArtworkCarousel key={data.id} rail={data} />
+              case "artist":
+                return <ArtistRail key={data.id} rail={data} />
+              case "fairs":
+                return <FairsRail key={data.id} fairs_module={data} />
+            }
+          }}
+          ListFooterComponent={() => (
+            <>
+              {this.state.isRefreshing && (
+                <Box style={{ height: 50 }}>
+                  <Flex mt={2} flexDirection="row" justifyContent="center">
+                    <Spinner style={{ marginTop: 20 }} />
+                  </Flex>
+                </Box>
+              )}
+            </>
+          )}
+          keyExtractor={(item, index) => item.data.type + String(index)}
+          style={{ overflow: "visible" }}
+        />
+      </Theme>
     )
   }
 }

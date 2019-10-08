@@ -1,6 +1,5 @@
+import { Box, Flex, Spinner, Theme } from "@artsy/palette"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-
 import {
   ListView,
   ListViewDataSource,
@@ -12,6 +11,7 @@ import {
   View,
   ViewStyle,
 } from "react-native"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import Events from "../NativeModules/Events"
 
@@ -143,14 +143,27 @@ export class WorksForYou extends React.Component<Props, State> {
 
   renderNotifications() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={data => <Notification notification={data} />}
-        renderSeparator={(sectionID, rowID) =>
-          <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
-        }
-        scrollEnabled={false}
-      />
+      <Theme>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={data => <Notification notification={data} />}
+          renderSeparator={(sectionID, rowID) =>
+            <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
+          }
+          renderFooter={() => (
+            <>
+              {this.props.relay.isLoading() && (
+                <Box style={{ height: 50 }}>
+                  <Flex mt={2} flexDirection="row" justifyContent="center">
+                    <Spinner style={{ marginTop: 20 }} />
+                  </Flex>
+                </Box>
+              )}
+            </>
+          )}
+          scrollEnabled={false}
+        />
+      </Theme>
     )
   }
 
