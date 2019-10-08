@@ -271,10 +271,10 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)killSwitch;
 {
     Message *killSwitchVersion = ARSwitchBoard.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
-    if(killSwitchVersion.content != nil){
+    NSString *echoMinimumBuild = killSwitchVersion.content;
+    if(echoMinimumBuild){
         NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
         NSString *buildVersion = infoDictionary[@"CFBundleShortVersionString"];
-        NSString *echoMinimumBuild = killSwitchVersion.content;
         
         if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedDescending) {
             UIAlertController *alert = [UIAlertController
