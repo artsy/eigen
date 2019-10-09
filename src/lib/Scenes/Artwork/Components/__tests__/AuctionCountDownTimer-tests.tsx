@@ -1,14 +1,10 @@
 import { Theme, TimeRemaining } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
-import { Settings } from "luxon"
 import moment from "moment"
 import "moment-timezone"
 import React from "react"
 import { AuctionCountDownTimer, timeUntil } from "../AuctionCountDownTimer"
-
-// const realNow = Settings.now
-// const realDefaultZone = Settings.defaultZoneName
 
 describe("AuctionCountDownTimer", () => {
   const dateNow = 1565870400000 // 2019-08-15T12:00:00.000Z in milliseconds
