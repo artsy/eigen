@@ -91,9 +91,13 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (UIImage *)badgeBackgroundImageWithColor:(UIColor *)color;
 {
     CGSize size = self.bounds.size;
+    CGSize circleSize = self.bounds.size;
+    circleSize.width /= 2;
+    circleSize.height /= 2;
+    // We dont want to alter the size of the button so we need to only halve the ellipse size, the button will otherwise resize to the image we return
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     [color setFill];
-    CGContextFillEllipseInRect(UIGraphicsGetCurrentContext(), (CGRect){ CGPointZero, size });
+    CGContextFillEllipseInRect(UIGraphicsGetCurrentContext(), CGRectMake(circleSize.width / 2, circleSize.height / 2, circleSize.width, circleSize.height));
     UIImage *backgroundImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return backgroundImage;
@@ -409,22 +413,13 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (NSArray *)buttons
 {
-    if ([self.echo shouldShowLocalDiscovery]) {
-        return @[
-             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
-             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
-             [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
-             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
-             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-            ];
-    }
-    
     return @[
-             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
-             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
-             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
-             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-             ];
+            [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+            [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+            [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
+            [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+            [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+        ];
 }
 
 - (void)updateButtons;
@@ -709,34 +704,19 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (NSString *)descriptionForNavIndex:(NSInteger)index
 {
-    if ([self.echo shouldShowLocalDiscovery]) {
-        switch (index) {
-            case 0:
-                return @"home";
-            case 1:
-                return @"search";
-            case 2:
-                return @"cityGuide";
-            case 3:
-                return @"messages";
-            case 4:
-                return @"favorites";
-            default:
-                return @"unknown";
-        }
-    } else {
-        switch (index) {
-            case 0:
-                return @"home";
-            case 1:
-                return @"search";
-            case 2:
-                return @"messages";
-            case 3:
-                return @"favorites";
-            default:
-                return @"unknown";
-        }
+    switch (index) {
+        case 0:
+            return @"home";
+        case 1:
+            return @"search";
+        case 2:
+            return @"cityGuide";
+        case 3:
+            return @"messages";
+        case 4:
+            return @"favorites";
+        default:
+            return @"unknown";
     }
 }
 
