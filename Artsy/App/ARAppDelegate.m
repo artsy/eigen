@@ -272,7 +272,7 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     Message *killSwitchVersion = ARSwitchBoard.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
     NSString *echoMinimumBuild = killSwitchVersion.content;
-    if(echoMinimumBuild){
+    if (echoMinimumBuild != nil && [echoMinimumBuild length] > 0) {
         NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
         NSString *buildVersion = infoDictionary[@"CFBundleShortVersionString"];
         
