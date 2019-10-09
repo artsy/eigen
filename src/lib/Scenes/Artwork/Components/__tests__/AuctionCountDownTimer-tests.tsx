@@ -5,48 +5,27 @@ import { Settings } from "luxon"
 import moment from "moment"
 import "moment-timezone"
 import React from "react"
-import { AuctionCountDownTimer } from "../AuctionCountDownTimer"
+import { AuctionCountDownTimer, timeUntil } from "../AuctionCountDownTimer"
 
-const realNow = Settings.now
-const realDefaultZone = Settings.defaultZoneName
+// const realNow = Settings.now
+// const realDefaultZone = Settings.defaultZoneName
 
 describe("AuctionCountDownTimer", () => {
-  // beforeAll(() => {
-  //   Settings.defaultZoneName = "America/New_York"
-  //   Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
-  // })
-
-  // afterAll(() => {
-  //   Settings.now = realNow
-  //   Settings.defaultZoneName = realDefaultZone
-  // })
-
-  const dateNow = 1565870400000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+  const dateNow = 1565870400000 // 2019-08-15T12:00:00.000Z in milliseconds
   let oneDayAgo
   let oneDayFromNow
-  let oneWeekFromNow
-  let oneMonthFromNow
   let oneYearFromNow
-  let today
 
   beforeEach(() => {
     jest.useFakeTimers()
 
-    // Thursday, May 10, 2018 8:22:32.000 PM UTC
+    // 2019-08-15T12:00:00.000Z
     Date.now = () => dateNow
-
-    today = moment(dateNow).toISOString()
 
     oneDayFromNow = moment(dateNow)
       .add(1, "day")
       .toISOString()
 
-    // oneWeekFromNow = moment(dateNow)
-    //   .add(1, "week")
-    //   .toISOString()
-    // oneMonthFromNow = moment(dateNow)
-    //   .add(1, "week")
-    //   .toISOString()
     oneYearFromNow = moment(dateNow)
       .add(1, "year")
       .toISOString()
@@ -54,6 +33,61 @@ describe("AuctionCountDownTimer", () => {
     oneDayAgo = moment(dateNow)
       .subtract(1, "day")
       .toISOString()
+  })
+
+  describe("timeUntil", () => {
+    it("returns 'Ended' string when auction hasEnded", () => {
+      const startAt = oneDayAgo
+      const liveStartAt = oneDayAgo
+      const endAt = oneDayAgo
+      const auctionState = "hasEnded"
+      const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
+      expect(date).toEqual("Ended Aug 14")
+    })
+
+    it("returns 'Ended' string with year when auction hasEnded over a year ago", () => {
+      const startAt = oneDayAgo
+      const liveStartAt = oneDayAgo
+      const endAt = oneYearFromNow
+      const auctionState = "hasEnded"
+      const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
+      expect(date).toEqual("Ended Aug 15, 2020")
+    })
+
+    it("returns 'Ends' string when sale has started and there is no live sale", () => {
+      const startAt = oneDayAgo
+      const liveStartAt = null
+      const endAt = oneDayFromNow
+      const auctionState = "hasStarted"
+      const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
+      expect(date).toEqual("Ends Aug 16, 8:00am")
+    })
+
+    it("returns 'Starts' string when auction isPreview", () => {
+      const startAt = oneDayFromNow
+      const liveStartAt = oneDayFromNow
+      const endAt = oneYearFromNow
+      const auctionState = "isPreview"
+      const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
+      expect(date).toEqual("Starts Aug 16, 8:00am")
+    })
+    it("returns 'Live' string when auction has started but live sale has not", () => {
+      const startAt = oneDayAgo
+      const liveStartAt = oneDayFromNow
+      const endAt = oneYearFromNow
+      const auctionState = "hasStarted"
+      const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
+      expect(date).toEqual("Live Aug 16, 8:00am")
+    })
+
+    it("returns 'In progress' string when auction is live", () => {
+      const startAt = oneDayAgo
+      const liveStartAt = oneDayAgo
+      const endAt = oneDayFromNow
+      const auctionState = "isLive"
+      const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
+      expect(date).toEqual("In progress")
+    })
   })
 
   xit("renders correct label for timer", () => {

@@ -2,7 +2,7 @@ import { TimeRemaining } from "@artsy/palette"
 import { AuctionCountDownTimer_artwork } from "__generated__/AuctionCountDownTimer_artwork.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { formatDate, formatDateTime, timeUntil } from "../../../utils/formatDates"
+import { formatDate, formatDateTime } from "../../../utils/formatDates"
 import { AuctionState } from "./CommercialInformation"
 
 interface AuctionCountDownTimerProps {
@@ -10,39 +10,24 @@ interface AuctionCountDownTimerProps {
   auctionState: AuctionState
 }
 
+export const timeUntil = (startAt, liveStartAt, endAt, auctionState) => {
+  if (auctionState === "isPreview") {
+    return `Starts ${formatDateTime(startAt)}`
+  } else if (liveStartAt && auctionState === "hasStarted") {
+    return `Live ${formatDateTime(liveStartAt)}`
+  } else if (auctionState === "isLive") {
+    return `In progress`
+  } else if (auctionState === "hasEnded") {
+    return `Ended ${formatDate(endAt)}`
+  } else if (endAt !== null) {
+    return `Ends ${formatDateTime(endAt)}`
+  } else {
+    return null
+  }
+}
+
 export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimerProps> {
-  countdownValue(sale) {
-    const liveStartAtDate = new Date(sale.liveStartAt)
-    const startAtDate = new Date(sale.startAt)
-    // const endAtDate = new Date(sale.andAt)
-    const todaysDate = new Date()
-
-    if (startAtDate > todaysDate) {
-      return sale.startAt
-    } else if (liveStartAtDate && liveStartAtDate > todaysDate) {
-      return sale.liveStartAt
-    } else {
-      return sale.endAt
-    }
-  }
-
-  timeUntil = (startAt, liveStartAt, endAt, auctionState) => {
-    if (auctionState === "isPreview") {
-      return `Starts ${formatDateTime(startAt)}`
-    } else if (liveStartAt && auctionState === "hasStarted") {
-      return `Live ${formatDateTime(liveStartAt)}`
-    } else if (auctionState === "isLive") {
-      return `In progress`
-    } else if (auctionState === "hasEnded") {
-      return `Ended ${formatDate(endAt)}`
-    } else if (endAt === null) {
-      return null
-    } else {
-      return `Ends ${formatDateTime(endAt)}`
-    }
-  }
-
-  xcountdownValue(sale, auctionState) {
+  countdownValue(sale, auctionState) {
     if (auctionState === "isPreview") {
       return sale.startAt
     } else if (auctionState === "hasStarted" && sale.liveStartAt) {
@@ -60,22 +45,10 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
       return null
     }
 
-    // const liveStartAtDate = new Date(sale.liveStartAt)
-    // const todaysDate = new Date()
-    // const liveSaleHasNotStarted = sale.liveStartAt && liveStartAtDate > todaysDate
+    const timerLabel = timeUntil(sale.startAt, sale.liveStartAt, sale.endAt, auctionState)
+    const countdownEnd = this.countdownValue(sale, auctionState)
 
-    // const timerLabel = timeUntil(sale.startAt, sale.liveStartAt, sale.endAt)
-
-    const timerLabel = this.timeUntil(sale.startAt, sale.liveStartAt, sale.endAt, auctionState)
-    const startAtDate = sale.liveStartAt && auctionState === "hasStarted" ? sale.liveStartAt : sale.startAt
-
-    // const countdownEnd = auctionState === "hasEnded" ? sale.endAt : startAtDate
-    // const countdownEnd = auctionState === "" ? startAtDate : sale.endAt
-    // const countdownEnd = this.countdownValue(sale)
-    const countdownEnd = this.xcountdownValue(sale, auctionState)
-    console.log("countdownEnd", countdownEnd)
     if (!countdownEnd) {
-      console.log("countdownEnd", countdownEnd)
       return null
     }
 

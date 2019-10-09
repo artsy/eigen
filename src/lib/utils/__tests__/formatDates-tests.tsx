@@ -1,15 +1,12 @@
 import { mockTimezone } from "lib/tests/mockTimezone"
 import moment from "moment"
 import "moment-timezone"
-import { formatDate, formatDateTime, timeUntil } from "../formatDates"
+import { formatDate, formatDateTime } from "../formatDates"
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 let oneDayAgo
 let oneDayFromNow
-let oneWeekFromNow
-let oneMonthFromNow
 let oneYearFromNow
-let today
 
 beforeEach(() => {
   jest.useFakeTimers()
@@ -17,18 +14,10 @@ beforeEach(() => {
   // Thursday, May 10, 2018 8:22:32.000 PM UTC
   Date.now = () => dateNow
 
-  today = moment(dateNow).toISOString()
-
   oneDayFromNow = moment(dateNow)
     .add(1, "day")
     .toISOString()
 
-  // oneWeekFromNow = moment(dateNow)
-  //   .add(1, "week")
-  //   .toISOString()
-  // oneMonthFromNow = moment(dateNow)
-  //   .add(1, "week")
-  //   .toISOString()
   oneYearFromNow = moment(dateNow)
     .add(1, "year")
     .toISOString()
@@ -50,12 +39,6 @@ describe("formatDate", () => {
     const date = formatDate(oneYearFromNow)
     expect(date).toEqual("May 10, 2019")
   })
-
-  // it("adjusts according to timezone", () => {
-  //   mockTimezone("America/Los_Angeles")
-  //   const date = formatDate(oneDayFromNow)
-  //   expect(date).toEqual("")
-  // })
 })
 
 describe("formatDateTime", () => {
