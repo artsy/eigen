@@ -4,7 +4,6 @@ import "moment-timezone"
 import { formatDate, formatDateTime } from "../formatDates"
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
-let oneDayAgo
 let oneDayFromNow
 let oneYearFromNow
 
@@ -20,10 +19,6 @@ beforeEach(() => {
 
   oneYearFromNow = moment(dateNow)
     .add(1, "year")
-    .toISOString()
-
-  oneDayAgo = moment(dateNow)
-    .subtract(1, "day")
     .toISOString()
 })
 
