@@ -31,6 +31,7 @@ interface Props {
 interface State {
   dataSource: ListViewDataSource | null
   isRefreshing: boolean
+  loadingContent: boolean
 }
 
 export class WorksForYou extends React.Component<Props, State> {
@@ -53,6 +54,7 @@ export class WorksForYou extends React.Component<Props, State> {
     this.state = {
       dataSource,
       isRefreshing: false,
+      loadingContent: false,
     }
   }
 
@@ -92,21 +94,28 @@ export class WorksForYou extends React.Component<Props, State> {
     if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
     }
-    this.props.relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("WorksForYou.tsx", error.message)
-      }
+    this.setState({ loadingContent: true }, () => {
+      this.props.relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("WorksForYou.tsx", error.message)
+        }
 
-      const notifications: object[] = this.props.query.me.followsAndSaves.notifications.edges.map(edge => edge.node)
+        const notifications: object[] = this.props.query.me.followsAndSaves.notifications.edges.map(edge => edge.node)
 
-      // Make sure we maintain the special notification if it exists
-      if (this.props.query.selectedArtist) {
-        notifications.unshift(this.formattedSpecialNotification())
-      }
+        // Make sure we maintain the special notification if it exists
+        if (this.props.query.selectedArtist) {
+          notifications.unshift(this.formattedSpecialNotification())
+        }
 
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(notifications),
+        this.setState(
+          {
+            dataSource: this.state.dataSource.cloneWithRows(notifications),
+          },
+          () => {
+            this.setState({ loadingContent: false })
+          }
+        )
       })
     })
   }
@@ -142,6 +151,8 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   renderNotifications() {
+    const { loadingContent } = this.state
+
     return (
       <Theme>
         <ListView
@@ -152,10 +163,10 @@ export class WorksForYou extends React.Component<Props, State> {
           }
           renderFooter={() => (
             <>
-              {this.props.relay.isLoading() && (
-                <Box style={{ height: 50 }}>
-                  <Flex mt={2} flexDirection="row" justifyContent="center">
-                    <Spinner style={{ marginTop: 20 }} />
+              {loadingContent && (
+                <Box p={2} style={{ height: 50 }}>
+                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                    <Spinner />
                   </Flex>
                 </Box>
               )}
