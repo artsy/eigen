@@ -1,6 +1,4 @@
-import { Settings } from "luxon"
-import moment from "moment"
-import "moment-timezone"
+import { DateTime, Settings } from "luxon"
 import { formatDate, formatDateTime } from "../formatDates"
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
@@ -13,13 +11,13 @@ beforeEach(() => {
   // Thursday, May 10, 2018 8:22:32.000 PM UTC
   Date.now = () => dateNow
 
-  oneDayFromNow = moment(dateNow)
-    .add(1, "day")
-    .toISOString()
+  oneDayFromNow = DateTime.fromMillis(dateNow)
+    .plus({ days: 1 })
+    .toISO()
 
-  oneYearFromNow = moment(dateNow)
-    .add(1, "year")
-    .toISOString()
+  oneYearFromNow = DateTime.fromMillis(dateNow)
+    .plus({ years: 1 })
+    .toISO()
 })
 
 describe("formatDate", () => {

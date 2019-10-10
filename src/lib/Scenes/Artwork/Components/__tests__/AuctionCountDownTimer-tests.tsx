@@ -1,7 +1,7 @@
 import { Theme, TimeRemaining } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
-import moment from "moment"
+import { DateTime } from "luxon"
 import "moment-timezone"
 import React from "react"
 import { AuctionCountDownTimer, timeUntil } from "../AuctionCountDownTimer"
@@ -10,7 +10,7 @@ describe("AuctionCountDownTimer", () => {
   const dateNow = 1565870400000 // 2019-08-15T12:00:00.000Z in milliseconds
   let oneDayAgo
   let oneDayFromNow
-  let oneYearFromNow
+  let oneYearAgo
 
   beforeEach(() => {
     jest.useFakeTimers()
@@ -18,17 +18,17 @@ describe("AuctionCountDownTimer", () => {
     // 2019-08-15T12:00:00.000Z
     Date.now = () => dateNow
 
-    oneDayFromNow = moment(dateNow)
-      .add(1, "day")
-      .toISOString()
+    oneDayFromNow = DateTime.fromMillis(dateNow)
+      .plus({ days: 1 })
+      .toISO()
 
-    oneYearFromNow = moment(dateNow)
-      .add(1, "year")
-      .toISOString()
+    oneYearAgo = DateTime.fromMillis(dateNow)
+      .minus({ years: 1 })
+      .toISO()
 
-    oneDayAgo = moment(dateNow)
-      .subtract(1, "day")
-      .toISOString()
+    oneDayAgo = DateTime.fromMillis(dateNow)
+      .minus({ days: 1 })
+      .toISO()
   })
 
   describe("timeUntil", () => {
@@ -44,10 +44,10 @@ describe("AuctionCountDownTimer", () => {
     it("returns 'Ended' string with year when auction hasEnded over a year ago", () => {
       const startAt = oneDayAgo
       const liveStartAt = oneDayAgo
-      const endAt = oneYearFromNow
+      const endAt = oneYearAgo
       const auctionState = "hasEnded"
       const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
-      expect(date).toEqual("Ended Aug 15, 2020")
+      expect(date).toEqual("Ended Aug 15, 2018")
     })
 
     it("returns 'Ends' string when sale has started and there is no live sale", () => {
@@ -56,24 +56,24 @@ describe("AuctionCountDownTimer", () => {
       const endAt = oneDayFromNow
       const auctionState = "hasStarted"
       const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
-      expect(date).toEqual("Ends Aug 16, 8:00am")
+      expect(date).toEqual("Ends Aug 16, 8:00am EDT")
     })
 
     it("returns 'Starts' string when auction isPreview", () => {
       const startAt = oneDayFromNow
       const liveStartAt = oneDayFromNow
-      const endAt = oneYearFromNow
+      const endAt = oneDayFromNow
       const auctionState = "isPreview"
       const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
-      expect(date).toEqual("Starts Aug 16, 8:00am")
+      expect(date).toEqual("Starts Aug 16, 8:00am EDT")
     })
     it("returns 'Live' string when auction has started but live sale has not", () => {
       const startAt = oneDayAgo
       const liveStartAt = oneDayFromNow
-      const endAt = oneYearFromNow
+      const endAt = oneDayFromNow
       const auctionState = "hasStarted"
       const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
-      expect(date).toEqual("Live Aug 16, 8:00am")
+      expect(date).toEqual("Live Aug 16, 8:00am EDT")
     })
 
     it("returns 'In progress' string when auction is live", () => {
@@ -85,26 +85,6 @@ describe("AuctionCountDownTimer", () => {
       expect(date).toEqual("In progress")
     })
   })
-
-  xit("renders correct label for timer", () => {
-    const artwork = {
-      ...ArtworkFixture,
-      ...{
-        sale: {
-          startAt: "2019-08-15T19:22:00+00:00",
-          endAt: "2019-08-16T20:20:00+00:00",
-          liveStartAt: null,
-        },
-      },
-    }
-    const component = mount(
-      <Theme>
-        <AuctionCountDownTimer artwork={artwork} auctionState="hasStarted" />
-      </Theme>
-    )
-    expect(component.find(TimeRemaining).text()).toContain("Ends Aug 16 at 8:20pm UTC")
-  })
-
   it("renders the correct countdown time and label using endAt if auctionState hasStarted", () => {
     const artwork = {
       ...ArtworkFixture,
