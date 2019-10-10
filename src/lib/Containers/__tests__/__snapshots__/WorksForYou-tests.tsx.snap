@@ -27,6 +27,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             "items": 2,
           }
         }
+        renderFooter={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
@@ -285,6 +286,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             "items": 2,
           }
         }
+        renderFooter={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}

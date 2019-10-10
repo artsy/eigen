@@ -1,6 +1,5 @@
+import { Box, Flex, Theme } from "@artsy/palette"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-
 import {
   ListView,
   ListViewDataSource,
@@ -12,12 +11,14 @@ import {
   View,
   ViewStyle,
 } from "react-native"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import Events from "../NativeModules/Events"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { WorksForYou_query } from "__generated__/WorksForYou_query.graphql"
+import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import colors from "lib/data/colors"
@@ -31,6 +32,7 @@ interface Props {
 interface State {
   dataSource: ListViewDataSource | null
   isRefreshing: boolean
+  loadingContent: boolean
 }
 
 export class WorksForYou extends React.Component<Props, State> {
@@ -53,6 +55,7 @@ export class WorksForYou extends React.Component<Props, State> {
     this.state = {
       dataSource,
       isRefreshing: false,
+      loadingContent: false,
     }
   }
 
@@ -92,21 +95,28 @@ export class WorksForYou extends React.Component<Props, State> {
     if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
     }
-    this.props.relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("WorksForYou.tsx", error.message)
-      }
+    this.setState({ loadingContent: true }, () => {
+      this.props.relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("WorksForYou.tsx", error.message)
+        }
 
-      const notifications: object[] = this.props.query.me.followsAndSaves.notifications.edges.map(edge => edge.node)
+        const notifications: object[] = this.props.query.me.followsAndSaves.notifications.edges.map(edge => edge.node)
 
-      // Make sure we maintain the special notification if it exists
-      if (this.props.query.selectedArtist) {
-        notifications.unshift(this.formattedSpecialNotification())
-      }
+        // Make sure we maintain the special notification if it exists
+        if (this.props.query.selectedArtist) {
+          notifications.unshift(this.formattedSpecialNotification())
+        }
 
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(notifications),
+        this.setState(
+          {
+            dataSource: this.state.dataSource.cloneWithRows(notifications),
+          },
+          () => {
+            this.setState({ loadingContent: false })
+          }
+        )
       })
     })
   }
@@ -142,15 +152,30 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   renderNotifications() {
+    const { loadingContent } = this.state
+
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={data => <Notification notification={data} />}
-        renderSeparator={(sectionID, rowID) =>
-          <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
-        }
-        scrollEnabled={false}
-      />
+      <Theme>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={data => <Notification notification={data} />}
+          renderSeparator={(sectionID, rowID) =>
+            <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
+          }
+          renderFooter={() => (
+            <>
+              {loadingContent && (
+                <Box p={2} style={{ height: 50 }}>
+                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                    <Spinner />
+                  </Flex>
+                </Box>
+              )}
+            </>
+          )}
+          scrollEnabled={false}
+        />
+      </Theme>
     )
   }
 
