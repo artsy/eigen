@@ -7,6 +7,7 @@ upcoming:
   user_facing:
     - Adds killswitch based on Eigen version set in echo - kierangillen
     - Re-enables Auctions Artwork Echo flag - ash
+    - Fixes circle badge size on nav when user has messages - kierangillen
 
 releases:
   - version: 5.0.8
