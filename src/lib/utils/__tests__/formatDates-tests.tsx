@@ -1,4 +1,4 @@
-import { mockTimezone } from "lib/tests/mockTimezone"
+import { Settings } from "luxon"
 import moment from "moment"
 import "moment-timezone"
 import { formatDate, formatDateTime } from "../formatDates"
@@ -24,13 +24,11 @@ beforeEach(() => {
 
 describe("formatDate", () => {
   it("shows month and day if year is the same as current year", () => {
-    mockTimezone("America/New_York")
     const date = formatDate(oneDayFromNow)
     expect(date).toEqual("May 11")
   })
 
   it("shows month, day, and year if year is not the same as current year", () => {
-    mockTimezone("America/New_York")
     const date = formatDate(oneYearFromNow)
     expect(date).toEqual("May 10, 2019")
   })
@@ -38,20 +36,18 @@ describe("formatDate", () => {
 
 describe("formatDateTime", () => {
   it("shows month and day if year is the same as current year", () => {
-    mockTimezone("America/New_York")
     const date = formatDateTime(oneDayFromNow)
-    expect(date).toEqual("May 11, 4:22pm")
+    expect(date).toEqual("May 11, 4:22pm EDT")
   })
 
   it("shows month, day, and year if year is not the same as current year", () => {
-    mockTimezone("America/New_York")
     const date = formatDateTime(oneYearFromNow)
-    expect(date).toEqual("May 10, 2019, 4:22pm")
+    expect(date).toEqual("May 10, 2019, 4:22pm EDT")
   })
 
   it("adjusts according to timezone", () => {
-    mockTimezone("America/Los_Angeles")
+    Settings.defaultZoneName = "America/Los_Angeles"
     const date = formatDateTime(oneDayFromNow)
-    expect(date).toEqual("May 11, 1:22pm")
+    expect(date).toEqual("May 11, 1:22pm PDT")
   })
 })
