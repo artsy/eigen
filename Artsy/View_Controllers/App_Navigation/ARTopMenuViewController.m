@@ -413,13 +413,22 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (NSArray *)buttons
 {
+    if ([self.echo shouldShowLocalDiscovery]) {
+        return @[
+             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+             [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
+             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+            ];
+    }
+    
     return @[
-            [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
-            [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
-            [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
-            [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
-            [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-        ];
+             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+             ];
 }
 
 - (void)updateButtons;
@@ -704,19 +713,34 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (NSString *)descriptionForNavIndex:(NSInteger)index
 {
-    switch (index) {
-        case 0:
-            return @"home";
-        case 1:
-            return @"search";
-        case 2:
-            return @"cityGuide";
-        case 3:
-            return @"messages";
-        case 4:
-            return @"favorites";
-        default:
-            return @"unknown";
+    if ([self.echo shouldShowLocalDiscovery]) {
+        switch (index) {
+            case 0:
+                return @"home";
+            case 1:
+                return @"search";
+            case 2:
+                return @"cityGuide";
+            case 3:
+                return @"messages";
+            case 4:
+                return @"favorites";
+            default:
+                return @"unknown";
+        }
+    } else {
+        switch (index) {
+            case 0:
+                return @"home";
+            case 1:
+                return @"search";
+            case 2:
+                return @"messages";
+            case 3:
+                return @"favorites";
+            default:
+                return @"unknown";
+        }
     }
 }
 
