@@ -249,7 +249,7 @@ export default createPaginationContainer(
     },
     getVariables(props, paginationInfo, _fragmentVariables) {
       return {
-        conversationID: props.conversation.id,
+        conversationID: props.conversation.internalID,
         count: paginationInfo.count,
         after: paginationInfo.cursor,
       }
