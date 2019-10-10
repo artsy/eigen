@@ -19,7 +19,7 @@ export const timeUntil = (startAt, liveStartAt, endAt, auctionState) => {
     return `In progress`
   } else if (auctionState === "hasEnded") {
     return `Ended ${formatDate(endAt)}`
-  } else if (endAt !== null) {
+  } else if (endAt && auctionState === "hasStarted") {
     return `Ends ${formatDateTime(endAt)}`
   } else {
     return null

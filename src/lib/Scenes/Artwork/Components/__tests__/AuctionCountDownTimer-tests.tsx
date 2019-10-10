@@ -2,7 +2,6 @@ import { Theme, TimeRemaining } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { DateTime } from "luxon"
-import "moment-timezone"
 import React from "react"
 import { AuctionCountDownTimer, timeUntil } from "../AuctionCountDownTimer"
 
