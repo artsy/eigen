@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner, Theme } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import React from "react"
 import {
   ListView,
@@ -18,6 +18,7 @@ import Events from "../NativeModules/Events"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { WorksForYou_query } from "__generated__/WorksForYou_query.graphql"
+import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import colors from "lib/data/colors"
