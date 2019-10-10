@@ -204,12 +204,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }
     [self.window makeKeyAndVisible];
 
-    NSDictionary *remoteNotification = self.initialLaunchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotification) {
-        // The app was not running, so considering it to be in the UIApplicationStateInactive state.
-        [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
-                                                               inApplicationState:UIApplicationStateInactive];
-    }
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
@@ -275,7 +269,7 @@ static ARAppDelegate *_sharedInstance = nil;
     if (echoMinimumBuild != nil && [echoMinimumBuild length] > 0) {
         NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
         NSString *buildVersion = infoDictionary[@"CFBundleShortVersionString"];
-        
+
         if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedDescending) {
             UIAlertController *alert = [UIAlertController
                                          alertControllerWithTitle:@"New app version required"
@@ -292,9 +286,9 @@ static ARAppDelegate *_sharedInstance = nil;
                                                       exit(0);
                                                   });
                                               }];
-            
+
             [alert addAction:linkToAppButton];
-            
+
             [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
         }
     }
@@ -479,7 +473,7 @@ static ARAppDelegate *_sharedInstance = nil;
         ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [navigationController pushViewController:adminSettings animated:YES];
     }
-    
+
 }
 
 - (void)showQuicksilver
