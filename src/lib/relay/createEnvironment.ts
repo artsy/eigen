@@ -5,6 +5,7 @@ import { Environment, RecordSource, Store } from "relay-runtime"
 import { metaphysicsURL } from "./config"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
+import { timingMiddleware } from "./middlewares/timingMiddleware"
 
 const Emission = NativeModules.Emission
 const Constants = NativeModules.ARCocoaConstantsModule
@@ -29,6 +30,7 @@ export default function createEnvironment() {
       disableServerMiddlewareTip: true,
     }),
     metaphysicsExtensionsLoggerMiddleware(),
+    timingMiddleware(),
   ])
 
   const source = new RecordSource()

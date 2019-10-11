@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *metaphysicsURL;
 @property (nonatomic, copy, readonly) NSString *userAgent;
 @property (nonatomic, copy, readonly) NSString *predictionURL;
+@property (nonatomic, copy, readonly) NSString *volleyURL;
+
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
@@ -40,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
+                 volleyURL:(NSString *)prediction
                      userAgent:(NSString *)userAgent
                        options:(NSDictionary *)options;
 @end

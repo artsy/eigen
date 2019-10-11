@@ -11,6 +11,7 @@ extern NSString *const ARStagingAPIURLDefault;
 extern NSString *const ARStagingWebURLDefault;
 extern NSString *const ARStagingMetaphysicsURLDefault;
 extern NSString *const ARStagingPredictionURLDefault;
+extern NSString *const ARStagingVolleyURLDefault;
 extern NSString *const ARRNPackagerHostDefault;
 
 @interface ARDefaults : NSObject

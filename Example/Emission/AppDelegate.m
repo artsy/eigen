@@ -158,6 +158,7 @@ randomBOOL(void)
                                                                          gravityURL:setup.gravityURL
                                                                      metaphysicsURL:setup.metaphysicsURL
                                                                       predictionURL:setup.predictionURL
+                                                                          volleyURL:setup.volleyURL
                                                                           userAgent:@"Emission Example"
                                                                             options:setup.options];
 
@@ -453,4 +454,3 @@ randomBOOL(void)
 }
 
 @end
-
