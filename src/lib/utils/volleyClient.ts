@@ -91,7 +91,10 @@ class VolleyClient {
         })
     },
     1000,
-    { trailing: true }
+    {
+      leading: false,
+      trailing: true,
+    }
   )
   constructor(public readonly serviceName: string) {}
   send(metric: VolleyMetric) {
