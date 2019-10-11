@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
-                 volleyURL:(NSString *)prediction
+                     volleyURL:(NSString *)prediction
                      userAgent:(NSString *)userAgent
                        options:(NSDictionary *)options;
 @end
