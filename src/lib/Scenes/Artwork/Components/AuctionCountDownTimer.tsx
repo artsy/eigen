@@ -10,6 +10,7 @@ interface AuctionCountDownTimerProps {
   auctionState: AuctionState
 }
 
+// see CommercialInformation.tsx for more info on auctionState
 export const timeUntil = (startAt, liveStartAt, endAt, auctionState) => {
   if (auctionState === "isPreview") {
     return `Starts ${formatDateTime(startAt)}`

@@ -22,6 +22,12 @@ interface CommercialInformationState {
   auctionState: AuctionState
 }
 
+// Possible states for an auction:
+// - isPreview: Auction is open for registration but artworks cannot be bid on. This occurs when the current time is before any auction's startAt.
+// - hasStarted: Auction has started but live auction, if one exists, has not
+// - isLive: Live auction is in progress
+// - hasEnded: Auction is over
+
 const initialAuctionState = sale => {
   if (sale && sale.isAuction) {
     if (sale.isClosed) {
