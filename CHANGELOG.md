@@ -16,6 +16,8 @@
 
 ### Master
 
+- Add graphql request duration reporting via volley - ds300
+
 ### 1.17.7
 
 - Fixes crash with missing artist images - ash
