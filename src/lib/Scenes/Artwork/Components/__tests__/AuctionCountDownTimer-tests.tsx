@@ -6,6 +6,7 @@ import React from "react"
 import { AuctionCountDownTimer, timeUntil } from "../AuctionCountDownTimer"
 
 describe("AuctionCountDownTimer", () => {
+  const realNow = Date.now
   const dateNow = 1565870400000 // 2019-08-15T12:00:00.000Z in milliseconds
   let oneDayAgo
   let oneDayFromNow
@@ -29,6 +30,8 @@ describe("AuctionCountDownTimer", () => {
       .minus({ days: 1 })
       .toISO()
   })
+
+  afterAll(() => (Date.now = realNow))
 
   describe("timeUntil", () => {
     it("returns 'Ended' string when auction hasEnded", () => {

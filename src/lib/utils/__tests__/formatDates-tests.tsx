@@ -4,6 +4,7 @@ import { formatDate, formatDateTime } from "../formatDates"
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 let oneDayFromNow
 let oneYearFromNow
+const realNow = Date.now
 
 beforeEach(() => {
   jest.useFakeTimers()
@@ -19,6 +20,8 @@ beforeEach(() => {
     .plus({ years: 1 })
     .toISO()
 })
+
+afterAll(() => (Date.now = realNow))
 
 describe("formatDate", () => {
   it("shows month and day if year is the same as current year", () => {
