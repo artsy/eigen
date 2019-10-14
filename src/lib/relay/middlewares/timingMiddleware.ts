@@ -10,7 +10,7 @@ export function timingMiddleware() {
         type: "timing",
         name: "graphql-request-duration",
         timing: duration,
-        tags: [`operation:${operation}`],
+        tags: [`operation:${operation}`, `id:${req.id}`],
       })
       return res
     })
