@@ -120,7 +120,7 @@ export default class Home extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
-          initialPage={this.props.initialTab || ArtistsWorksForYouTab}
+          initialPage={this.props.initialTab || ForYouTab}
           ref={tabView => (this.tabView = tabView)}
           onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
           renderTabBar={props => (
