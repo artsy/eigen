@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Sans } from "@artsy/palette"
+import { ArrowRightIcon, Flex, Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
@@ -29,12 +29,12 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
     if (href && label) {
       return (
         <TouchableWithoutFeedback onPress={() => this.openLink()}>
-          <Text>
+          <Flex flexDirection="row" alignContent="center">
             <Sans size="3" textAlign="left" weight="medium">
               {label}
             </Sans>
-            <ArrowRightIcon fill="black30" ml={1} />
-          </Text>
+            <ArrowRightIcon fill="black30" ml={1} mt={0.3} />
+          </Flex>
         </TouchableWithoutFeedback>
       )
     } else {
