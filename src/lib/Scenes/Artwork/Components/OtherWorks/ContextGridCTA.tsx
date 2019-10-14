@@ -2,7 +2,7 @@ import { ArrowRightIcon, Flex, Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
-import { Text, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 
 interface ContextGridCTAProps {
   href?: string
