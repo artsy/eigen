@@ -8,6 +8,7 @@ const realNow = Date.now
 
 beforeEach(() => {
   jest.useFakeTimers()
+  Settings.defaultZoneName = "America/New_York"
 
   // Thursday, May 10, 2018 8:22:32.000 PM UTC
   Date.now = () => dateNow

@@ -1,7 +1,7 @@
 import { Theme, TimeRemaining } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
-import { DateTime } from "luxon"
+import { DateTime, Settings } from "luxon"
 import React from "react"
 import { AuctionCountDownTimer, timeUntil } from "../AuctionCountDownTimer"
 
@@ -14,6 +14,7 @@ describe("AuctionCountDownTimer", () => {
 
   beforeEach(() => {
     jest.useFakeTimers()
+    Settings.defaultZoneName = "America/New_York"
 
     // 2019-08-15T12:00:00.000Z
     Date.now = () => dateNow
