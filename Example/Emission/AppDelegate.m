@@ -158,8 +158,8 @@ randomBOOL(void)
                                                                          gravityURL:setup.gravityURL
                                                                      metaphysicsURL:setup.metaphysicsURL
                                                                       predictionURL:setup.predictionURL
-                                                                          volleyURL:setup.volleyURL
                                                                           userAgent:@"Emission Example"
+                                                                                env:setup.inStaging ? AREnvStaging : AREnvProduction
                                                                             options:setup.options];
 
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];

@@ -24,14 +24,12 @@
     _gravityURL = @"https://api.artsy.net";
     _metaphysicsURL = @"https://metaphysics-production.artsy.net";
     _predictionURL = @"https://live.artsy.net";
-    _volleyURL = @"https://volley.artsy.net/report";
 
     BOOL useStaging = [defaults boolForKey:ARUseStagingDefault];
     if (useStaging) {
       _gravityURL = [defaults stringForKey:ARStagingAPIURLDefault];
       _metaphysicsURL = [defaults stringForKey:ARStagingMetaphysicsURLDefault];
       _predictionURL = [defaults stringForKey:ARStagingPredictionURLDefault];
-      _volleyURL = [defaults stringForKey:ARStagingVolleyURLDefault];
     }
 
     BOOL runningUnitTests = NSClassFromString(@"XCTest") != Nil;

@@ -108,6 +108,7 @@ NativeModules.ARCocoaConstantsModule = {
 }
 NativeModules.Emission = {
   userAgent: "Jest Unit Tests",
+  env: "test",
 }
 NativeModules.ARSwitchBoardModule = {
   presentNavigationViewController: jest.fn(),

@@ -1,8 +1,12 @@
-import { gravityURL } from "lib/relay/config"
 import { throttle } from "lodash"
 import { NativeModules } from "react-native"
 import { Sentry } from "react-native-sentry"
-const { Emission } = NativeModules
+
+const URLS = {
+  production: "https://volley.artsy.net/report",
+  staging: "https://volley-staging.artsy.net/report",
+  test: "fake-volley-url",
+}
 
 type Tags = string[]
 
@@ -64,12 +68,13 @@ class VolleyClient {
   queue: VolleyMetric[] = []
   private _dispatch = throttle(
     () => {
-      if (!Emission.volleyURL) {
+      const volleyURL = URLS[NativeModules.Emission.env]
+      if (!volleyURL) {
         return
       }
       const metrics = this.queue
       this.queue = []
-      fetch(Emission.volleyURL, {
+      fetch(volleyURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,6 +108,4 @@ class VolleyClient {
   }
 }
 
-const isStaging = gravityURL.includes("staging")
-
-export const volleyClient = new VolleyClient(isStaging ? "eigen-staging" : "eigen")
+export const volleyClient = new VolleyClient(NativeModules.Emission.env === "staging" ? "eigen-staging" : "eigen")

@@ -12,6 +12,17 @@
 
 #import <SentryReactNative/RNSentry.h>
 
+NSString *const AREnvProduction = @"production";
+NSString *const AREnvStaging = @"staging";
+NSString *const AREnvTest = @"test";
+
+void AREnvAssert(NSString *env) {
+  if ([env isEqualToString:AREnvProduction] || [env isEqualToString:AREnvStaging] || [env isEqualToString:AREnvTest]) {
+    return;
+  }
+  [NSException raise:NSInvalidArgumentException format:@"Invalid AREnv '%@'", env];
+}
+
 @implementation AREmissionConfiguration
 
 RCT_EXPORT_MODULE(Emission);
@@ -30,9 +41,10 @@ RCT_EXPORT_MODULE(Emission);
     @"gravityURL": self.gravityURL,
     @"metaphysicsURL": self.metaphysicsURL,
     @"predictionURL": self.predictionURL,
-    @"volleyURL": self.volleyURL,
     @"userAgent": self.userAgent,
     @"options": self.options,
+    // production | staging | development | test
+    @"env": self.env,
 
     // Empty is falsy in JS, so these are fine too.
     @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
@@ -51,8 +63,8 @@ RCT_EXPORT_MODULE(Emission);
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
-                     volleyURL:(NSString *)volley
                      userAgent:(NSString *)userAgent
+                           env:(NSString *)env
                        options:(NSDictionary *)options
 {
     self = [super init];
@@ -65,9 +77,9 @@ RCT_EXPORT_MODULE(Emission);
     _mapBoxAPIClientKey = mapBoxAPIClientKey.copy;
     _metaphysicsURL = metaphysics.copy;
     _predictionURL = prediction.copy;
-    _volleyURL = volley.copy;
     _userAgent = userAgent.copy;
     _options = options.copy;
+    _env = env;
     return self;
 }
 @end
@@ -97,7 +109,6 @@ static AREmission *_sharedInstance = nil;
   NSParameterAssert(config.gravityURL);
   NSParameterAssert(config.metaphysicsURL);
   NSParameterAssert(config.predictionURL);
-  NSParameterAssert(config.volleyURL);
   NSParameterAssert(config.options);
 
   if ((self = [super init])) {

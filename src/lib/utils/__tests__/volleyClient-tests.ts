@@ -1,13 +1,5 @@
 import { volleyClient } from "../volleyClient"
 
-jest.mock("react-native", () => ({
-  NativeModules: {
-    Emission: {
-      volleyURL: "fake-volley-url",
-    },
-  },
-}))
-
 jest.mock("lodash", () => ({
   throttle(fn: any, ms: any) {
     let timeout = 0 as any
@@ -65,5 +57,20 @@ describe("volleyClient", () => {
         "method": "POST",
       }
     `)
+  })
+
+  describe("in production", () => {
+    beforeAll(() => {
+      require("react-native").NativeModules.Emission.env = "production"
+    })
+    afterAll(() => {
+      require("react-native").NativeModules.Emission.env = "test"
+    })
+    it("has a different URL", () => {
+      volleyClient.send({ type: "increment", name: "counter" })
+      jest.advanceTimersByTime(3000)
+      expect(fetch).toHaveBeenCalledTimes(1)
+      expect(fetch.mock.calls[0][0]).toBe("https://volley.artsy.net/report")
+    })
   })
 })

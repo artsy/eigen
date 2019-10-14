@@ -18,7 +18,6 @@
 @property (copy, nonatomic, readonly) NSString *gravityURL;
 @property (copy, nonatomic, readonly) NSString *metaphysicsURL;
 @property (copy, nonatomic, readonly) NSString *predictionURL;
-@property (copy, nonatomic, readonly) NSString *volleyURL;
 @property (copy, nonatomic, readonly) NSString *packagerURL;
 
 @property (nonatomic, strong, readonly) NSString *emissionLoadedFromString;

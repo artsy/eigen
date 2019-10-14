@@ -105,8 +105,8 @@
                                                                              gravityURL:setup.gravityURL
                                                                          metaphysicsURL:setup.metaphysicsURL
                                                                           predictionURL:setup.predictionURL
-                                                                              volleyURL:setup.volleyURL
                                                                               userAgent:@"Emission Example"
+                                                                                    env:AREnvTest
                                                                                 options:setup.options];
       return @[config];
     }, setup.jsCodeLocation);
