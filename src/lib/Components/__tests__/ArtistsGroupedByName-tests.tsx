@@ -33,7 +33,7 @@ describe("ArtistsGroupedByName", () => {
       `,
       mockData: {
         artist: ArtistFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as ArtistsGroupedByNameTestsQueryRawResponse,
     })
     expect(tree.html()).toMatchSnapshot()
   })

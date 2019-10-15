@@ -19,7 +19,7 @@ describe("FairArtists", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as FairArtistsTestsQueryRawResponse,
     })
 
     expect(tree.html()).toMatchSnapshot()

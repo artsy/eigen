@@ -17,7 +17,7 @@ xit("renders properly", async () => {
     `,
     mockData: {
       fair: fairFixture,
-    },
+    }, // Enable/fix this when making large change to these components/fixtures: as FairArtworksTestsQueryRawResponse,
   })
 
   expect(tree.html()).toMatchSnapshot()

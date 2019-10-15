@@ -221,7 +221,7 @@ describe("ArtworkActions", () => {
       expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
     })
 
-    // TODO Update once we can use relay's new facilities for testing
+    // TODO: Update once we can use relay's new facilities for testing
     xit("handles errors in saving gracefully", async () => {
       const artworkActions = await renderRelayTree({
         Component: ArtworkActionsFragmentContainer,
@@ -232,7 +232,7 @@ describe("ArtworkActions", () => {
             }
           }
         `,
-        mockData: { artwork: artworkActionsArtwork },
+        mockData: { artwork: artworkActionsArtwork }, // Enable/fix this when making large change to these components/fixtures: as ArtworkActionsTestsErrorQueryRawResponse,
         mockMutationResults: {
           saveArtwork: () => {
             return Promise.reject(new Error("failed to fetch"))

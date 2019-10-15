@@ -24,7 +24,7 @@ describe("FairBoothPreview", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as indexTestsFairBothPreviewQueryRawResponse,
     })
 
     expect(tree.html()).toMatchSnapshot()

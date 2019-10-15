@@ -59,7 +59,7 @@ describe("ImageCarouselFragmentContainer", () => {
       `,
       mockData: {
         artwork,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as ImageCarouselTestsQueryRawResponse,
     })
   }
   const getDotOpacity = dot => dot.find(Animated.View).props().style.opacity._value

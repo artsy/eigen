@@ -24,7 +24,7 @@ describe("FairHeader", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as indexTestsFairHeaderQueryRawResponse,
     })
 
     expect(tree.html()).toMatchSnapshot()

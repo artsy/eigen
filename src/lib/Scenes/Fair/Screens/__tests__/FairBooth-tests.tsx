@@ -21,7 +21,7 @@ xit("renders properly", async () => {
     `,
     mockData: {
       show: FairBoothShowFixture,
-    },
+    }, // Enable/fix this when making large change to these components/fixtures: as FairBoothTestsQueryRawResponse,
   })
   expect(tree.html()).toMatchSnapshot()
 })

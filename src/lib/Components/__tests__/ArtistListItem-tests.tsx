@@ -19,7 +19,7 @@ describe("ArtistListItem", () => {
       `,
       mockData: {
         artist: ArtistFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as ArtistListItemTestsQueryRawResponse,
     })
 
   it("renders properly", async () => {

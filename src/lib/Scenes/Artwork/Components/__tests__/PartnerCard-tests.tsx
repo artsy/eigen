@@ -312,7 +312,7 @@ describe("PartnerCard", () => {
             }
           }
         `,
-        mockData: { artwork: PartnerCardArtwork },
+        mockData: { artwork: PartnerCardArtwork }, // Enable/fix this when making large change to these components/fixtures: as PartnerCardTestsErrorQueryRawResponse,
         mockMutationResults: {
           PartnerCardFragmentContainer: () => {
             return Promise.reject(new Error("failed to fetch"))

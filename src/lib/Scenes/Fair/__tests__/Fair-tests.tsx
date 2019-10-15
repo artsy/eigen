@@ -20,7 +20,7 @@ describe("Fair", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as FairTestsQueryRawResponse,
     })
 
   xit("renders properly", async () => {

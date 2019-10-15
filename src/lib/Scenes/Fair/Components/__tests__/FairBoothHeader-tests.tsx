@@ -23,7 +23,7 @@ const render = () =>
     `,
     mockData: {
       data: FairBoothShowFixture,
-    },
+    }, // Enable/fix this when making large change to these components/fixtures: as FairBoothHeaderTestsQueryRawResponse,
   })
 
 describe("FairBoothHeader", () => {
