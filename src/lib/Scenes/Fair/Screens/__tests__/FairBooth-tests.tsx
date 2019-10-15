@@ -1,4 +1,3 @@
-import { FairBoothTestsQueryRawResponse } from "__generated__/FairBoothTestsQuery.graphql"
 import { FairBoothShowFixture } from "lib/__fixtures__/FairBoothShowFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
@@ -22,7 +21,7 @@ xit("renders properly", async () => {
     `,
     mockData: {
       show: FairBoothShowFixture,
-    } as FairBoothTestsQueryRawResponse,
+    },
   })
   expect(tree.html()).toMatchSnapshot()
 })

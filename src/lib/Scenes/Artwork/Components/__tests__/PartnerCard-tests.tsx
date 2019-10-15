@@ -1,5 +1,4 @@
 import { Button, Sans, Serif, Theme } from "@artsy/palette"
-import { PartnerCardTestsErrorQueryRawResponse } from "__generated__/PartnerCardTestsErrorQuery.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
@@ -313,7 +312,7 @@ describe("PartnerCard", () => {
             }
           }
         `,
-        mockData: { artwork: PartnerCardArtwork } as PartnerCardTestsErrorQueryRawResponse,
+        mockData: { artwork: PartnerCardArtwork },
         mockMutationResults: {
           PartnerCardFragmentContainer: () => {
             return Promise.reject(new Error("failed to fetch"))

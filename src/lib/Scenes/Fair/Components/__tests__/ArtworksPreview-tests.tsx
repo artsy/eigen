@@ -1,4 +1,3 @@
-import { ArtworksPreviewTestsQueryRawResponse } from "__generated__/ArtworksPreviewTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
@@ -18,7 +17,7 @@ it("renders properly", async () => {
     `,
     mockData: {
       fair: fairFixture,
-    } as ArtworksPreviewTestsQueryRawResponse,
+    },
   })
 
   expect(tree.html()).toMatchSnapshot()

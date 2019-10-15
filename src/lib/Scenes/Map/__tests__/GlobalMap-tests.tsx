@@ -1,4 +1,3 @@
-import { GlobalMapTestsQueryRawResponse } from "__generated__/GlobalMapTestsQuery.graphql"
 import { CityFixture } from "lib/__fixtures__/CityFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
@@ -38,7 +37,7 @@ xdescribe("GlobalMap", () => {
         viewer: {
           city: CityFixture,
         },
-      } as GlobalMapTestsQueryRawResponse,
+      },
       variables: {
         citySlug: "new-york-ny-usa",
         maxInt: 42,

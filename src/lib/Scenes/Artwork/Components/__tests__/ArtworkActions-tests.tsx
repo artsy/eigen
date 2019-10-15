@@ -1,5 +1,4 @@
 import { BellIcon, Sans } from "@artsy/palette"
-import { ArtworkActionsTestsErrorQueryRawResponse } from "__generated__/ArtworkActionsTestsErrorQuery.graphql"
 import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { shallow } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
@@ -233,7 +232,7 @@ describe("ArtworkActions", () => {
             }
           }
         `,
-        mockData: { artwork: artworkActionsArtwork } as ArtworkActionsTestsErrorQueryRawResponse,
+        mockData: { artwork: artworkActionsArtwork },
         mockMutationResults: {
           saveArtwork: () => {
             return Promise.reject(new Error("failed to fetch"))

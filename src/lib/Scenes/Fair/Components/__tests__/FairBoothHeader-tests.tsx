@@ -1,5 +1,4 @@
 import { Theme } from "@artsy/palette"
-import { FairBoothHeaderTestsQueryRawResponse } from "__generated__/FairBoothHeaderTestsQuery.graphql"
 import { FairBoothShowFixture } from "lib/__fixtures__/FairBoothShowFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
@@ -24,7 +23,7 @@ const render = () =>
     `,
     mockData: {
       data: FairBoothShowFixture,
-    } as FairBoothHeaderTestsQueryRawResponse,
+    },
   })
 
 describe("FairBoothHeader", () => {

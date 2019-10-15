@@ -1,4 +1,3 @@
-import { ImageCarouselTestsQueryRawResponse } from "__generated__/ImageCarouselTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { Animated, FlatList } from "react-native"
@@ -60,7 +59,7 @@ describe("ImageCarouselFragmentContainer", () => {
       `,
       mockData: {
         artwork,
-      } as ImageCarouselTestsQueryRawResponse,
+      },
     })
   }
   const getDotOpacity = dot => dot.find(Animated.View).props().style.opacity._value
