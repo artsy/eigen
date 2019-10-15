@@ -13,24 +13,13 @@ export type Detail_show = {
     readonly slug: string;
     readonly description: string | null;
     readonly location: {
-        readonly openingHours: ({
+        readonly openingHours: {
             readonly schedules?: ReadonlyArray<{
                 readonly days: string | null;
                 readonly hours: string | null;
             } | null> | null;
             readonly text?: string | null;
-        } & ({
-            readonly schedules: ReadonlyArray<{
-                readonly days: string | null;
-                readonly hours: string | null;
-            } | null> | null;
-        } | {
-            readonly text: string | null;
-        } | {
-            /*This will never be '% other', but we need some
-            value in case none of the concrete values match.*/
-            readonly __typename: "%other";
-        })) | null;
+        } | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     } | null;
     readonly artistsWithoutArtworks: ReadonlyArray<{
@@ -40,17 +29,10 @@ export type Detail_show = {
         readonly artworks: number | null;
         readonly artists: number | null;
     } | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
         readonly type?: string | null;
-    } & ({
-        readonly name: string | null;
-        readonly type: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly " $fragmentRefs": ShowHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & Shows_show$ref;
     readonly " $refType": Detail_show$ref;
 };

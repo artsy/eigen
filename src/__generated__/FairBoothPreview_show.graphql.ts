@@ -10,7 +10,7 @@ export type FairBoothPreview_show = {
     readonly counts: {
         readonly artworks: number | null;
     } | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
         readonly href?: string | null;
         readonly slug?: string;
@@ -22,23 +22,7 @@ export type FairBoothPreview_show = {
             readonly internalID: string;
             readonly isFollowed: boolean | null;
         } | null;
-    } & ({
-        readonly name: string | null;
-        readonly href: string | null;
-        readonly slug: string;
-        readonly internalID: string;
-        readonly id: string;
-        readonly profile: {
-            readonly id: string;
-            readonly slug: string;
-            readonly internalID: string;
-            readonly isFollowed: boolean | null;
-        } | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly coverImage: {
         readonly url: string | null;
     } | null;

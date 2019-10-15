@@ -16,7 +16,7 @@ describe("FairBoothPreview", () => {
         </Theme>
       ),
       query: graphql`
-        query indexTestsFairBothPreviewQuery {
+        query indexTestsFairBothPreviewQuery @raw_response_type {
           show(id: "abxy-blk-and-blue") {
             ...FairBoothPreview_show
           }
@@ -24,7 +24,7 @@ describe("FairBoothPreview", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as indexTestsFairBothPreviewQueryRawResponse,
     })
 
     expect(tree.html()).toMatchSnapshot()

@@ -93,9 +93,9 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
               const {
                 commerceCreateOfferOrderWithArtwork: { orderOrError },
               } = data
-              if (orderOrError.error) {
+              if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
-              } else {
+              } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
               }
             })

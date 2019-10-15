@@ -8,9 +8,44 @@ export type FairArtistsTestsQueryResponse = {
         readonly " $fragmentRefs": FairArtists_fair$ref;
     } | null;
 };
+export type FairArtistsTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly slug: string;
+        readonly internalID: string;
+        readonly artists: ({
+            readonly pageInfo: {
+                readonly hasNextPage: boolean;
+                readonly startCursor: string | null;
+                readonly endCursor: string | null;
+            };
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly internalID: string;
+                    readonly slug: string;
+                    readonly name: string | null;
+                    readonly initials: string | null;
+                    readonly href: string | null;
+                    readonly is_followed: boolean | null;
+                    readonly nationality: string | null;
+                    readonly birthday: string | null;
+                    readonly deathday: string | null;
+                    readonly image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly sortableID: string | null;
+                    readonly __typename: "Artist";
+                }) | null;
+                readonly cursor: string;
+            }) | null> | null;
+        }) | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type FairArtistsTestsQuery = {
     readonly response: FairArtistsTestsQueryResponse;
     readonly variables: FairArtistsTestsQueryVariables;
+    readonly rawResponse: FairArtistsTestsQueryRawResponse;
 };
 
 
@@ -319,5 +354,5 @@ return {
   }
 };
 })();
-(node as any).hash = '48bf54144fa282b6f59e03ec5f86dcb8';
+(node as any).hash = 'a0275da350f8c0a0125c64aae97dd079';
 export default node;

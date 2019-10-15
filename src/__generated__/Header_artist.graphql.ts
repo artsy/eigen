@@ -12,7 +12,7 @@ export type Header_artist = {
     readonly nationality: string | null;
     readonly birthday: string | null;
     readonly counts: {
-        readonly follows: any | null;
+        readonly follows: number | null;
     } | null;
     readonly " $refType": Header_artist$ref;
 };

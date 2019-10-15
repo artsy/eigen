@@ -20,24 +20,13 @@ export type LocationMap_location = {
         readonly end_time: number | null;
         readonly day_of_week: string | null;
     } | null> | null;
-    readonly openingHours: ({
+    readonly openingHours: {
         readonly schedules?: ReadonlyArray<{
             readonly days: string | null;
             readonly hours: string | null;
         } | null> | null;
         readonly text?: string | null;
-    } & ({
-        readonly schedules: ReadonlyArray<{
-            readonly days: string | null;
-            readonly hours: string | null;
-        } | null> | null;
-    } | {
-        readonly text: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly " $refType": LocationMap_location$ref;
 };
 

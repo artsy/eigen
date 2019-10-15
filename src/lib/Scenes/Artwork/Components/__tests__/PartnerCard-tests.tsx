@@ -1,4 +1,5 @@
 import { Button, Sans, Serif, Theme } from "@artsy/palette"
+import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -219,13 +220,13 @@ describe("PartnerCard", () => {
           </Theme>
         ),
         query: graphql`
-          query PartnerCardTestsQuery {
+          query PartnerCardTestsQuery @raw_response_type {
             artwork(id: "artworkID") {
               ...PartnerCard_artwork
             }
           }
         `,
-        mockData: { artwork: mockArtworkData },
+        mockData: { artwork: mockArtworkData } as PartnerCardTestsQueryRawResponse,
         mockMutationResults: { followProfile: mockFollowResults },
       })
     }
@@ -305,13 +306,13 @@ describe("PartnerCard", () => {
       const partnerCard = await renderRelayTree({
         Component: PartnerCardFragmentContainer,
         query: graphql`
-          query PartnerCardTestsErrorQuery {
+          query PartnerCardTestsErrorQuery @raw_response_type {
             artwork(id: "artworkID") {
               ...PartnerCard_artwork
             }
           }
         `,
-        mockData: { artwork: PartnerCardArtwork },
+        mockData: { artwork: PartnerCardArtwork }, // Enable/fix this when making large change to these components/fixtures: as PartnerCardTestsErrorQueryRawResponse,
         mockMutationResults: {
           PartnerCardFragmentContainer: () => {
             return Promise.reject(new Error("failed to fetch"))

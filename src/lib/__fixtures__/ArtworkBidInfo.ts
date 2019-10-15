@@ -3,6 +3,7 @@ export const ClosedAuctionArtwork = {
   sale: {
     isClosed: true,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: true,
@@ -23,6 +24,7 @@ export const AuctionPreview = {
   sale: {
     isClosed: false,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: false,
@@ -43,6 +45,7 @@ export const AuctionPreviewNoStartingBid = {
   sale: {
     isClosed: false,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: false,
@@ -61,6 +64,7 @@ export const OpenAuctionNoReserveNoBids = {
   sale: {
     isClosed: false,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: false,
@@ -82,6 +86,7 @@ export const OpenAuctionNoReserveWithBids = {
   sale: {
     isClosed: false,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: false,
@@ -102,6 +107,7 @@ export const OpenAuctionReserveNoBids = {
   sale: {
     isClosed: false,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: true,
@@ -122,6 +128,7 @@ export const OpenAuctionReserveNotMetWithBids = {
   sale: {
     isClosed: false,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: true,
@@ -142,6 +149,7 @@ export const OpenAuctionReserveMetWithBids = {
   sale: {
     isClosed: false,
     isLiveOpen: false,
+    isWithBuyersPremium: true,
   },
   saleArtwork: {
     isWithReserve: true,
@@ -197,7 +205,7 @@ export const OpenAuctionReserveMetWithMyLosingBid = {
 
 export const LiveAuctionInProgeress = {
   slug: "artwork_from_live_auction",
-  sale: { isClosed: false, isLiveOpen: true },
+  sale: { isClosed: false, isLiveOpen: true, isWithBuyersPremium: true },
   saleArtwork: {
     isWithReserve: false,
     reserveMessage: null,

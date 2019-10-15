@@ -10,9 +10,21 @@ export type ShowEventSectionTestsQueryResponse = {
         } | null> | null;
     } | null;
 };
+export type ShowEventSectionTestsQueryRawResponse = {
+    readonly show: ({
+        readonly events: ReadonlyArray<({
+            readonly event_type: string | null;
+            readonly description: string | null;
+            readonly start_at: string | null;
+            readonly end_at: string | null;
+        }) | null> | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type ShowEventSectionTestsQuery = {
     readonly response: ShowEventSectionTestsQueryResponse;
     readonly variables: ShowEventSectionTestsQueryVariables;
+    readonly rawResponse: ShowEventSectionTestsQueryRawResponse;
 };
 
 
@@ -154,5 +166,5 @@ return {
   }
 };
 })();
-(node as any).hash = '491aa923b8d9aaf54ec5b6b9277b9a5e';
+(node as any).hash = '3fe8531ee27eff7dc3b37c9f2e686dad';
 export default node;

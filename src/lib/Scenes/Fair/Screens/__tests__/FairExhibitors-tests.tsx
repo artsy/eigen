@@ -1,6 +1,5 @@
-import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
-import { renderUntil } from "lib/tests/renderUntil"
-import React from "react"
+import { FairExhibitorsTestsQueryRawResponse } from "__generated__/FairExhibitorsTestsQuery.graphql"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
 import { FairExhibitors } from "../FairExhibitors"
@@ -9,31 +8,26 @@ jest.unmock("react-relay")
 
 // FIXME: Fix fixture data
 xit("renders properly", async () => {
-  const tree = await renderUntil(
-    wrapper => {
-      return wrapper.find("FairExhibitors").length > 0
-    },
-    <MockRelayRenderer
-      Component={FairExhibitors}
-      query={graphql`
-        query FairExhibitorsTestsQuery {
-          fair(id: "art-basel-in-miami-beach-2018") {
-            exhibitors_grouped_by_name: exhibitorsGroupedByName {
-              letter
-              exhibitors {
-                name
-                slug
-                profile_id: profileID
-              }
+  const tree = await renderRelayTree({
+    Component: FairExhibitors,
+    query: graphql`
+      query FairExhibitorsTestsQuery @raw_response_type {
+        fair(id: "art-basel-in-miami-beach-2018") {
+          exhibitors_grouped_by_name: exhibitorsGroupedByName {
+            letter
+            exhibitors {
+              name
+              slug
+              profile_id: profileID
             }
           }
         }
-      `}
-      mockData={{
-        fair: fairFixture,
-      }}
-    />
-  )
+      }
+    `,
+    mockData: {
+      fair: fairFixture,
+    } as FairExhibitorsTestsQueryRawResponse,
+  })
   const htmlDom = tree.text()
 
   // Title

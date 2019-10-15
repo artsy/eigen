@@ -12,9 +12,21 @@ export type FairBMWArtActivationTestsQueryResponse = {
         } | null;
     } | null;
 };
+export type FairBMWArtActivationTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly slug: string;
+        readonly internalID: string;
+        readonly sponsoredContent: ({
+            readonly activationText: string | null;
+            readonly pressReleaseUrl: string | null;
+        }) | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type FairBMWArtActivationTestsQuery = {
     readonly response: FairBMWArtActivationTestsQueryResponse;
     readonly variables: FairBMWArtActivationTestsQueryVariables;
+    readonly rawResponse: FairBMWArtActivationTestsQueryRawResponse;
 };
 
 
@@ -142,5 +154,5 @@ return {
   }
 };
 })();
-(node as any).hash = '9a435ad01c3ab13df103b7660ef56d1b';
+(node as any).hash = '5c2bbcf323d28844b690bcd3e02655dd';
 export default node;

@@ -1,15 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FairDetail_fair$ref } from "./FairDetail_fair.graphql";
-export type FairDetailTestsQueryVariables = {};
-export type FairDetailTestsQueryResponse = {
+import { Fair_fair$ref } from "./Fair_fair.graphql";
+export type FairTestsQueryVariables = {};
+export type FairTestsQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FairDetail_fair$ref;
+        readonly " $fragmentRefs": Fair_fair$ref;
     } | null;
 };
-export type FairDetailTestsQueryRawResponse = {
+export type FairTestsQueryRawResponse = {
     readonly fair: ({
+        readonly id: string;
         readonly slug: string;
         readonly name: string | null;
         readonly formattedOpeningHours: string | null;
@@ -172,23 +173,27 @@ export type FairDetailTestsQueryRawResponse = {
                 }) | null;
             }) | null> | null;
         }) | null;
-        readonly id: string | null;
     }) | null;
 };
-export type FairDetailTestsQuery = {
-    readonly response: FairDetailTestsQueryResponse;
-    readonly variables: FairDetailTestsQueryVariables;
-    readonly rawResponse: FairDetailTestsQueryRawResponse;
+export type FairTestsQuery = {
+    readonly response: FairTestsQueryResponse;
+    readonly variables: FairTestsQueryVariables;
+    readonly rawResponse: FairTestsQueryRawResponse;
 };
 
 
 
 /*
-query FairDetailTestsQuery {
+query FairTestsQuery {
   fair(id: "sofa-chicago-2018") {
-    ...FairDetail_fair
+    ...Fair_fair
     id
   }
+}
+
+fragment Fair_fair on Fair {
+  id
+  ...FairDetail_fair
 }
 
 fragment FairDetail_fair on Fair {
@@ -415,18 +420,25 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v3 = [
+v4 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -435,33 +447,26 @@ v3 = [
     "storageKey": null
   }
 ],
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "internalID",
   "args": null,
   "storageKey": null
 },
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
 v7 = [
-  (v2/*: any*/),
-  (v4/*: any*/),
-  (v1/*: any*/),
+  (v3/*: any*/),
   (v5/*: any*/),
-  (v6/*: any*/)
+  (v2/*: any*/),
+  (v6/*: any*/),
+  (v1/*: any*/)
 ],
 v8 = {
   "kind": "ScalarField",
@@ -492,14 +497,14 @@ v11 = {
   "storageKey": null
 },
 v12 = [
-  (v2/*: any*/),
-  (v6/*: any*/)
+  (v3/*: any*/),
+  (v1/*: any*/)
 ];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "FairDetailTestsQuery",
+    "name": "FairTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -515,7 +520,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "FairDetail_fair",
+            "name": "Fair_fair",
             "args": null
           }
         ]
@@ -524,7 +529,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairDetailTestsQuery",
+    "name": "FairTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -538,6 +543,7 @@ return {
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -592,7 +598,7 @@ return {
             "args": null,
             "concreteType": "Image",
             "plural": false,
-            "selections": (v3/*: any*/)
+            "selections": (v4/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -662,7 +668,7 @@ return {
             "concreteType": "Profile",
             "plural": false,
             "selections": [
-              (v6/*: any*/),
+              (v1/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -687,10 +693,10 @@ return {
                   }
                 ]
               },
-              (v2/*: any*/)
+              (v3/*: any*/)
             ]
           },
-          (v5/*: any*/),
+          (v6/*: any*/),
           (v8/*: any*/),
           {
             "kind": "ScalarField",
@@ -708,8 +714,8 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
+              (v1/*: any*/),
               (v6/*: any*/),
-              (v5/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -870,7 +876,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v6/*: any*/)
+              (v1/*: any*/)
             ]
           },
           {
@@ -997,8 +1003,8 @@ return {
                                 "concreteType": "Artwork",
                                 "plural": false,
                                 "selections": [
+                                  (v2/*: any*/),
                                   (v1/*: any*/),
-                                  (v6/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -1102,7 +1108,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v6/*: any*/)
+                                      (v1/*: any*/)
                                     ]
                                   },
                                   {
@@ -1126,7 +1132,7 @@ return {
                                           (v11/*: any*/)
                                         ]
                                       },
-                                      (v6/*: any*/)
+                                      (v1/*: any*/)
                                     ]
                                   },
                                   {
@@ -1155,15 +1161,15 @@ return {
                                     "plural": false,
                                     "selections": (v12/*: any*/)
                                   },
-                                  (v4/*: any*/)
+                                  (v5/*: any*/)
                                 ]
                               }
                             ]
                           }
                         ]
                       },
-                      (v1/*: any*/),
-                      (v5/*: any*/),
+                      (v2/*: any*/),
+                      (v6/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -1192,15 +1198,15 @@ return {
                         "plural": false,
                         "selections": [
                           (v9/*: any*/),
-                          (v6/*: any*/),
+                          (v1/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
-                              (v2/*: any*/),
-                              (v4/*: any*/),
-                              (v1/*: any*/),
+                              (v3/*: any*/),
                               (v5/*: any*/),
+                              (v2/*: any*/),
+                              (v6/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -1210,9 +1216,9 @@ return {
                                 "concreteType": "Profile",
                                 "plural": false,
                                 "selections": [
-                                  (v6/*: any*/),
                                   (v1/*: any*/),
-                                  (v5/*: any*/),
+                                  (v2/*: any*/),
+                                  (v6/*: any*/),
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
@@ -1234,7 +1240,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": false,
-                        "selections": (v3/*: any*/)
+                        "selections": (v4/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -1246,10 +1252,10 @@ return {
                         "plural": false,
                         "selections": [
                           (v11/*: any*/),
-                          (v6/*: any*/)
+                          (v1/*: any*/)
                         ]
                       },
-                      (v6/*: any*/),
+                      (v1/*: any*/),
                       (v9/*: any*/)
                     ]
                   }
@@ -1265,20 +1271,19 @@ return {
             "handle": "connection",
             "key": "Fair_shows",
             "filters": null
-          },
-          (v6/*: any*/)
+          }
         ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
-    "name": "FairDetailTestsQuery",
-    "id": "b7457bd4f48b1794aed02ed22f67fb87",
+    "name": "FairTestsQuery",
+    "id": "ccccb6105858e650bbb2199609fad828",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '5418c880afa4fd3946fa9954ab686ccb';
+(node as any).hash = '830dfb36fc561a9890e4fb7733c19f2c';
 export default node;

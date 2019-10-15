@@ -8,9 +8,44 @@ export type AuctionPriceTestsQueryResponse = {
         readonly " $fragmentRefs": AuctionPrice_artwork$ref;
     } | null;
 };
+export type AuctionPriceTestsQueryRawResponse = {
+    readonly artwork: ({
+        readonly sale: ({
+            readonly internalID: string;
+            readonly isWithBuyersPremium: boolean | null;
+            readonly isClosed: boolean | null;
+            readonly isLiveOpen: boolean | null;
+            readonly id: string | null;
+        }) | null;
+        readonly saleArtwork: ({
+            readonly reserveMessage: string | null;
+            readonly currentBid: ({
+                readonly display: string | null;
+            }) | null;
+            readonly counts: ({
+                readonly bidderPositions: number | null;
+            }) | null;
+            readonly id: string | null;
+        }) | null;
+        readonly myLotStanding: ReadonlyArray<{
+            readonly activeBid: ({
+                readonly isWinning: boolean | null;
+                readonly id: string | null;
+            }) | null;
+            readonly mostRecentBid: ({
+                readonly maxBid: ({
+                    readonly display: string | null;
+                }) | null;
+                readonly id: string | null;
+            }) | null;
+        }> | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type AuctionPriceTestsQuery = {
     readonly response: AuctionPriceTestsQueryResponse;
     readonly variables: AuctionPriceTestsQueryVariables;
+    readonly rawResponse: AuctionPriceTestsQueryRawResponse;
 };
 
 
@@ -280,5 +315,5 @@ return {
   }
 };
 })();
-(node as any).hash = '5cb00a50595f50c32e89c7b294b6635a';
+(node as any).hash = 'e19a32c63c473884513a6119095fe8ad';
 export default node;

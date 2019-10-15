@@ -12,19 +12,11 @@ export type ShowHeader_show = {
     readonly end_at: string | null;
     readonly exhibition_period: string | null;
     readonly isStubShow: boolean | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
         readonly slug?: string;
         readonly href?: string | null;
-    } & ({
-        readonly name: string | null;
-        readonly slug: string;
-        readonly href: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly images: ReadonlyArray<{
         readonly url: string | null;
         readonly aspect_ratio: number;

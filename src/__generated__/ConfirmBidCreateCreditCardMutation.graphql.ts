@@ -11,7 +11,7 @@ export type ConfirmBidCreateCreditCardMutationVariables = {
 };
 export type ConfirmBidCreateCreditCardMutationResponse = {
     readonly createCreditCard: {
-        readonly creditCardOrError: ({
+        readonly creditCardOrError: {
             readonly creditCard?: {
                 readonly internalID: string;
                 readonly brand: string;
@@ -25,26 +25,7 @@ export type ConfirmBidCreateCreditCardMutationResponse = {
                 readonly message: string | null;
                 readonly detail: string | null;
             } | null;
-        } & ({
-            readonly creditCard: {
-                readonly internalID: string;
-                readonly brand: string;
-                readonly name: string | null;
-                readonly last_digits: string;
-                readonly expiration_month: number;
-                readonly expiration_year: number;
-            } | null;
-        } | {
-            readonly mutationError: {
-                readonly type: string | null;
-                readonly message: string | null;
-                readonly detail: string | null;
-            } | null;
-        } | {
-            /*This will never be '% other', but we need some
-            value in case none of the concrete values match.*/
-            readonly __typename: "%other";
-        })) | null;
+        } | null;
     } | null;
 };
 export type ConfirmBidCreateCreditCardMutation = {

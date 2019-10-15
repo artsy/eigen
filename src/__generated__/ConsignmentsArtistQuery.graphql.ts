@@ -7,23 +7,13 @@ export type ConsignmentsArtistQueryVariables = {
 export type ConsignmentsArtistQueryResponse = {
     readonly searchConnection: {
         readonly edges: ReadonlyArray<{
-            readonly node: ({
+            readonly node: {
                 readonly internalID?: string;
                 readonly name?: string | null;
                 readonly image?: {
                     readonly url: string | null;
                 } | null;
-            } & ({
-                readonly internalID: string;
-                readonly name: string | null;
-                readonly image: {
-                    readonly url: string | null;
-                } | null;
-            } | {
-                /*This will never be '% other', but we need some
-                value in case none of the concrete values match.*/
-                readonly __typename: "%other";
-            })) | null;
+            } | null;
         } | null> | null;
     } | null;
 };

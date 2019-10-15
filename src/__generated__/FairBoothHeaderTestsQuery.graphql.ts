@@ -8,9 +8,44 @@ export type FairBoothHeaderTestsQueryResponse = {
         readonly " $fragmentRefs": FairBoothHeader_show$ref;
     } | null;
 };
+export type FairBoothHeaderTestsQueryRawResponse = {
+    readonly show: ({
+        readonly fair: ({
+            readonly name: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly partner: ({
+            readonly __typename: "Partner";
+            readonly id: string | null;
+            readonly name: string | null;
+            readonly slug: string;
+            readonly internalID: string;
+            readonly href: string | null;
+            readonly profile: ({
+                readonly internalID: string;
+                readonly slug: string;
+                readonly is_followed: boolean | null;
+                readonly id: string | null;
+            }) | null;
+        } | {
+            readonly __typename: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly counts: ({
+            readonly artworks: number | null;
+            readonly artists: number | null;
+        }) | null;
+        readonly location: ({
+            readonly display: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type FairBoothHeaderTestsQuery = {
     readonly response: FairBoothHeaderTestsQueryResponse;
     readonly variables: FairBoothHeaderTestsQueryVariables;
+    readonly rawResponse: FairBoothHeaderTestsQueryRawResponse;
 };
 
 
@@ -265,5 +300,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ae12004335f8c4d530fc3b74a3a8e899';
+(node as any).hash = '3ba373afceda21f082cf206b7bb54f8c';
 export default node;

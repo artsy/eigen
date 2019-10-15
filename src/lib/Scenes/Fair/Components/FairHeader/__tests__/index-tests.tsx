@@ -16,7 +16,7 @@ describe("FairHeader", () => {
         </Theme>
       ),
       query: graphql`
-        query indexTestsFairHeaderQuery {
+        query indexTestsFairHeaderQuery @raw_response_type {
           fair(id: "sofa-chicago-2018") {
             ...FairHeader_fair
           }
@@ -24,7 +24,7 @@ describe("FairHeader", () => {
       `,
       mockData: {
         fair: fairFixture,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as indexTestsFairHeaderQueryRawResponse,
     })
 
     expect(tree.html()).toMatchSnapshot()

@@ -8,9 +8,27 @@ export type ArtistListItemTestsQueryResponse = {
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     } | null;
 };
+export type ArtistListItemTestsQueryRawResponse = {
+    readonly artist: ({
+        readonly id: string;
+        readonly internalID: string;
+        readonly slug: string;
+        readonly name: string | null;
+        readonly initials: string | null;
+        readonly href: string | null;
+        readonly is_followed: boolean | null;
+        readonly nationality: string | null;
+        readonly birthday: string | null;
+        readonly deathday: string | null;
+        readonly image: ({
+            readonly url: string | null;
+        }) | null;
+    }) | null;
+};
 export type ArtistListItemTestsQuery = {
     readonly response: ArtistListItemTestsQueryResponse;
     readonly variables: ArtistListItemTestsQueryVariables;
+    readonly rawResponse: ArtistListItemTestsQueryRawResponse;
 };
 
 
@@ -190,5 +208,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'a82d3fc95c3382d7c4f56d0544e4f879';
+(node as any).hash = '25bd3e587ca4a03f391f96cc7293eb35';
 export default node;

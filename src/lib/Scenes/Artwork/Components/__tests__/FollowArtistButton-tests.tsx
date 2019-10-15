@@ -1,4 +1,6 @@
 import { Theme } from "@artsy/palette"
+import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/FollowArtistButtonTestsErrorQuery.graphql"
+import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -36,13 +38,13 @@ describe("FollowArtistButton", () => {
           </Theme>
         ),
         query: graphql`
-          query FollowArtistButtonTestsQuery {
+          query FollowArtistButtonTestsQuery @raw_response_type {
             artist(id: "artistID") {
               ...FollowArtistButton_artist
             }
           }
         `,
-        mockData: { artist: mockArtistData },
+        mockData: { artist: mockArtistData } as FollowArtistButtonTestsQueryRawResponse,
         mockMutationResults: { followArtist: mockFollowResults },
       })
     }
@@ -110,13 +112,13 @@ describe("FollowArtistButton", () => {
       const followArtistButton = await renderRelayTree({
         Component: FollowArtistButtonFragmentContainer,
         query: graphql`
-          query FollowArtistButtonTestsErrorQuery {
+          query FollowArtistButtonTestsErrorQuery @raw_response_type {
             artist(id: "artistID") {
               ...FollowArtistButton_artist
             }
           }
         `,
-        mockData: { artist: followArtistButtonArtist },
+        mockData: { artist: followArtistButtonArtist } as FollowArtistButtonTestsErrorQueryRawResponse,
         mockMutationResults: {
           FollowArtistButtonFragmentContainer: () => {
             return Promise.reject(new Error("failed to fetch"))

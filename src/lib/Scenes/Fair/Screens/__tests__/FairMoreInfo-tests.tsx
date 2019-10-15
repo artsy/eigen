@@ -1,6 +1,4 @@
-import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
-import { renderUntil } from "lib/tests/renderUntil"
-import React from "react"
+import { FairMoreInfoTestsQueryRawResponse } from "__generated__/FairMoreInfoTestsQuery.graphql"
 import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
 import { FairMoreInfo, shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "../FairMoreInfo"
@@ -11,28 +9,24 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 jest.unmock("react-relay")
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 
 const renderTree = () =>
-  renderUntil(
-    wrapper => {
-      return wrapper.text().includes("Buy tickets")
-    },
-    <MockRelayRenderer
-      Component={FairMoreInfo}
-      query={graphql`
-        query FairMoreInfoTestsQuery {
-          fair(id: "sofa-chicago-2018") {
-            links
-            about
-            ticketsLink
-          }
+  renderRelayTree({
+    Component: FairMoreInfo,
+    query: graphql`
+      query FairMoreInfoTestsQuery @raw_response_type {
+        fair(id: "sofa-chicago-2018") {
+          links
+          about
+          ticketsLink
         }
-      `}
-      mockResolvers={{
-        Fair: () => fairFixture,
-      }}
-    />
-  )
+      }
+    `,
+    mockData: {
+      fair: fairFixture,
+    } as FairMoreInfoTestsQueryRawResponse,
+  })
 
 describe("FairMoreInfo", () => {
   it("renders properly", async () => {

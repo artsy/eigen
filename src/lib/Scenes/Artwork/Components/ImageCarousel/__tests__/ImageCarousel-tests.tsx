@@ -49,7 +49,7 @@ describe("ImageCarouselFragmentContainer", () => {
     return await renderRelayTree({
       Component: ({ artwork: { images } }) => <ImageCarouselFragmentContainer images={images} />,
       query: graphql`
-        query ImageCarouselTestsQuery {
+        query ImageCarouselTestsQuery @raw_response_type {
           artwork(id: "unused") {
             images {
               ...ImageCarousel_images
@@ -59,7 +59,7 @@ describe("ImageCarouselFragmentContainer", () => {
       `,
       mockData: {
         artwork,
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as ImageCarouselTestsQueryRawResponse,
     })
   }
   const getDotOpacity = dot => dot.find(Animated.View).props().style.opacity._value

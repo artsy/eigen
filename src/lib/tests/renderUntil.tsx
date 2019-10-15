@@ -1,36 +1,18 @@
 import { mount, ReactWrapper, RenderUntilPredicate } from "enzyme"
 import * as React from "react"
+import { waitUntil } from "./waitUntil"
 
 function renderUntil<P = {}, S = {}, C extends React.Component = React.Component>(
   this: ReactWrapper,
   predicate: RenderUntilPredicate<P, S, C>
 ) {
-  return new Promise<ReactWrapper<P, S, C>>(resolve => {
-    /**
-     * Continuously lets JS/React continue doing its async work and then check
-     * if the callback matches what the user expects, in which case the tree is
-     * ready to be asserted on.
-     */
-    const wait = () => {
-      if (predicate(this)) {
-        resolve(this)
-      } else {
-        setImmediate(() => {
-          /**
-           * Except for after the initial render, we need to make sure the
-           * tree gets re-rendered to reflect any changes caused by props or
-           * state changes.
-           */
-          this.update()
-          wait()
-        })
-      }
+  return waitUntil(() => {
+    if (!predicate(this)) {
+      this.update()
+      return false
     }
-    /**
-     * Start recursive waiting process.
-     */
-    wait()
-  })
+    return true
+  }).then<ReactWrapper<P, S, C>>(() => this)
 }
 
 // TODO: Depending on this discussion move this upstream

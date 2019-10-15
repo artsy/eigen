@@ -1,7 +1,7 @@
+import { mount } from "enzyme"
 import * as PropTypes from "prop-types"
 import React from "react"
 import { View } from "react-native"
-import * as renderer from "react-test-renderer"
 
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { TimeOffsetProvider } from "../TimeOffsetProvider"
@@ -25,7 +25,7 @@ export class TestConsumer extends React.Component {
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
-it("injects timeOffsetInMilliSeconds as a context", () => {
+it("injects timeOffsetInMilliSeconds as a context", async () => {
   jest.useFakeTimers()
   Date.now = () => dateNow
 
@@ -40,17 +40,14 @@ it("injects timeOffsetInMilliSeconds as a context", () => {
     })
   )
 
-  const component = renderer.create(
+  // There’s no explicit assertion made here, because this test would fail with a timeout if it wouldn’t find a match.
+  await mount(
     <BiddingThemeProvider>
       <TimeOffsetProvider>
         <TestConsumer />
       </TimeOffsetProvider>
     </BiddingThemeProvider>
-  )
-
-  jest.runAllTicks()
-
-  const consumer = component.root.findByType(TestConsumer)
-
-  expect(consumer.instance.context).toEqual({ timeOffsetInMilliSeconds: 10 * MINUTES })
+  ).renderUntil(wrapper => {
+    return wrapper.find(TestConsumer).instance().context.timeOffsetInMilliSeconds === 10 * MINUTES
+  })
 })

@@ -11,7 +11,7 @@ export type FairHeader_fair = {
     readonly endAt: string | null;
     readonly exhibitionPeriod: string | null;
     readonly counts: {
-        readonly artists: any | null;
+        readonly artists: number | null;
     } | null;
     readonly image: {
         readonly url: string | null;

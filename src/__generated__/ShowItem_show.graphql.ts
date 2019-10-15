@@ -12,15 +12,9 @@ export type ShowItem_show = {
     readonly images: ReadonlyArray<{
         readonly url: string | null;
     } | null> | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
-    } & ({
-        readonly name: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly " $refType": ShowItem_show$ref;
 };
 

@@ -8,9 +8,41 @@ export type PartnerCardTestsQueryResponse = {
         readonly " $fragmentRefs": PartnerCard_artwork$ref;
     } | null;
 };
+export type PartnerCardTestsQueryRawResponse = {
+    readonly artwork: ({
+        readonly sale: ({
+            readonly isBenefit: boolean | null;
+            readonly isGalleryAuction: boolean | null;
+            readonly id: string | null;
+        }) | null;
+        readonly partner: ({
+            readonly is_default_profile_public: boolean | null;
+            readonly type: string | null;
+            readonly name: string | null;
+            readonly slug: string;
+            readonly id: string;
+            readonly href: string | null;
+            readonly initials: string | null;
+            readonly profile: ({
+                readonly id: string;
+                readonly internalID: string;
+                readonly is_followed: boolean | null;
+                readonly icon: ({
+                    readonly url: string | null;
+                }) | null;
+            }) | null;
+            readonly locations: ReadonlyArray<({
+                readonly city: string | null;
+                readonly id: string | null;
+            }) | null> | null;
+        }) | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type PartnerCardTestsQuery = {
     readonly response: PartnerCardTestsQueryResponse;
     readonly variables: PartnerCardTestsQueryVariables;
+    readonly rawResponse: PartnerCardTestsQueryRawResponse;
 };
 
 
@@ -272,5 +304,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f7bb14f5ca6683deae224a2681570da9';
+(node as any).hash = 'bfd43b3a2e170f331825991dce9318f2';
 export default node;

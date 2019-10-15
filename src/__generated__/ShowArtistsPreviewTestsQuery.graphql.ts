@@ -8,9 +8,47 @@ export type ShowArtistsPreviewTestsQueryResponse = {
         readonly " $fragmentRefs": ShowArtistsPreview_show$ref;
     } | null;
 };
+export type ShowArtistsPreviewTestsQueryRawResponse = {
+    readonly show: ({
+        readonly internalID: string;
+        readonly slug: string;
+        readonly artists: ReadonlyArray<({
+            readonly id: string;
+            readonly internalID: string;
+            readonly slug: string;
+            readonly href: string | null;
+            readonly name: string | null;
+            readonly initials: string | null;
+            readonly is_followed: boolean | null;
+            readonly nationality: string | null;
+            readonly birthday: string | null;
+            readonly deathday: string | null;
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null> | null;
+        readonly artists_without_artworks: ReadonlyArray<({
+            readonly id: string;
+            readonly internalID: string;
+            readonly slug: string;
+            readonly href: string | null;
+            readonly name: string | null;
+            readonly initials: string | null;
+            readonly is_followed: boolean | null;
+            readonly nationality: string | null;
+            readonly birthday: string | null;
+            readonly deathday: string | null;
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null> | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type ShowArtistsPreviewTestsQuery = {
     readonly response: ShowArtistsPreviewTestsQueryResponse;
     readonly variables: ShowArtistsPreviewTestsQueryVariables;
+    readonly rawResponse: ShowArtistsPreviewTestsQueryRawResponse;
 };
 
 
@@ -237,5 +275,5 @@ return {
   }
 };
 })();
-(node as any).hash = '64a178290c2d0214fc7b8844da6be0a2';
+(node as any).hash = '2508f0f726263c27cb498e2f47cc504c';
 export default node;

@@ -8,9 +8,35 @@ export type MoreInfoTestsQueryResponse = {
         readonly " $fragmentRefs": MoreInfo_show$ref;
     } | null;
 };
+export type MoreInfoTestsQueryRawResponse = {
+    readonly show: ({
+        readonly internalID: string;
+        readonly slug: string;
+        readonly pressReleaseUrl: string | null;
+        readonly openingReceptionText: string | null;
+        readonly partner: ({
+            readonly __typename: "Partner";
+            readonly id: string | null;
+            readonly website: string | null;
+            readonly type: string | null;
+        } | {
+            readonly __typename: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly press_release: string | null;
+        readonly events: ReadonlyArray<({
+            readonly event_type: string | null;
+            readonly description: string | null;
+            readonly start_at: string | null;
+            readonly end_at: string | null;
+        }) | null> | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type MoreInfoTestsQuery = {
     readonly response: MoreInfoTestsQueryResponse;
     readonly variables: MoreInfoTestsQueryVariables;
+    readonly rawResponse: MoreInfoTestsQueryRawResponse;
 };
 
 
@@ -238,5 +264,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'bc9b5b8df734aa249ca91e119888e47e';
+(node as any).hash = '95d9f9f6a8db4f48d036bacb751a5d77';
 export default node;

@@ -179,6 +179,38 @@ export const fairFixture = {
     },
   ],
   filterArtworksConnection: {
+    counts: {
+      total: 10,
+    },
+    edges: [
+      {
+        node: {
+          slug: "watanabe-chiaki-links",
+          title: "Links",
+          date: "2018",
+          sale_message: "Sold",
+          is_in_auction: false,
+          is_biddable: false,
+          is_acquireable: false,
+          is_offerable: true,
+          sale: null,
+          sale_artwork: null,
+          image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/uF3UWRba84Q4wSrRB-BxKA/large.jpg",
+            aspect_ratio: 1.61,
+          },
+          artists: [
+            {
+              name: "Watanabe Chiaki",
+            },
+          ],
+          partner: {
+            name: "TAI Modern",
+          },
+          href: "/artwork/watanabe-chiaki-links",
+        },
+      },
+    ],
     aggregations: [
       {
         slice: "PRICE_RANGE",

@@ -1,6 +1,7 @@
 import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import "moment-timezone"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
