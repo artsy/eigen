@@ -27,7 +27,7 @@ export type CitySectionList_city = {
                     readonly url: string | null;
                 } | null;
                 readonly exhibition_period: string | null;
-                readonly partner: ({
+                readonly partner: {
                     readonly name?: string | null;
                     readonly type?: string | null;
                     readonly profile?: {
@@ -35,19 +35,7 @@ export type CitySectionList_city = {
                             readonly url: string | null;
                         } | null;
                     } | null;
-                } & ({
-                    readonly name: string | null;
-                    readonly type: string | null;
-                    readonly profile: {
-                        readonly image: {
-                            readonly url: string | null;
-                        } | null;
-                    } | null;
-                } | {
-                    /*This will never be '% other', but we need some
-                    value in case none of the concrete values match.*/
-                    readonly __typename: "%other";
-                })) | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;

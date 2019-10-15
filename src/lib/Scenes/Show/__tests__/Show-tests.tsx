@@ -1,37 +1,27 @@
-import React from "react"
+import { ShowTestsQueryRawResponse } from "__generated__/ShowTestsQuery.graphql"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
-
 import { ShowFixture } from "../../../__fixtures__/ShowFixture"
-import { MockRelayRenderer } from "../../../tests/MockRelayRenderer"
-import { renderUntil } from "../../../tests/renderUntil"
-
-import { DetailContainer as ShowDetail } from "../Screens/Detail"
 import { ShowContainer } from "../Show"
 
 jest.unmock("react-relay")
 
 const renderTree = () =>
-  renderUntil(
-    wrapper => wrapper.find(ShowDetail).length > 0,
-    <MockRelayRenderer
-      Component={ShowContainer}
-      query={graphql`
-        query ShowTestsQuery {
-          show(id: "anderson-fine-art-gallery-flickinger-collection") {
-            ...Show_show
-          }
+  renderRelayTree({
+    Component: ShowContainer,
+    query: graphql`
+      query ShowTestsQuery @raw_response_type {
+        show(id: "anderson-fine-art-gallery-flickinger-collection") {
+          ...Show_show
         }
-      `}
-      mockResolvers={{
-        Show: () => ({
-          ...ShowFixture,
-          artists: () => ShowFixture.artists,
-        }),
-      }}
-    />
-  )
+      }
+    `,
+    mockData: {
+      show: ShowFixture,
+    } as ShowTestsQueryRawResponse,
+  })
 
-xit("renders the Show screen", async () => {
+it("renders the Show screen", async () => {
   const tree = await renderTree()
   expect(tree.text()).toContain("Flickinger Collection")
 })

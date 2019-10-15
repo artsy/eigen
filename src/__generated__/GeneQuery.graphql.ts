@@ -11,15 +11,9 @@ export type GeneQueryVariables = {
     readonly price_range?: string | null;
 };
 export type GeneQueryResponse = {
-    readonly node: ({
+    readonly node: {
         readonly " $fragmentRefs": Gene_gene$ref;
-    } & ({
-        readonly " $fragmentRefs": Gene_gene$ref;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
 };
 export type GeneQuery = {
     readonly response: GeneQueryResponse;

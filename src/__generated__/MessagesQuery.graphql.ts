@@ -75,18 +75,12 @@ fragment Messages_conversation_2QE1um on Conversation {
     }
   }
   items {
-    artwork: item {
+    item {
       __typename
       ... on Artwork {
         href
         ...ArtworkPreview_artwork
       }
-      ... on Node {
-        id
-      }
-    }
-    show: item {
-      __typename
       ... on Show {
         href
         ...ShowPreview_show
@@ -613,7 +607,7 @@ return {
                 "selections": [
                   {
                     "kind": "LinkedField",
-                    "alias": "artwork",
+                    "alias": null,
                     "name": "item",
                     "storageKey": null,
                     "args": null,
@@ -661,20 +655,7 @@ return {
                             "selections": (v12/*: any*/)
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "LinkedField",
-                    "alias": "show",
-                    "name": "item",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": null,
-                    "plural": false,
-                    "selections": [
-                      (v9/*: any*/),
-                      (v3/*: any*/),
+                      },
                       {
                         "kind": "InlineFragment",
                         "type": "Show",
@@ -742,7 +723,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "be6a221111166f0d640e0c50728c3499",
+    "id": "32819e85e98dc8cc77fda2a4a9ac6ad0",
     "text": null,
     "metadata": {}
   }

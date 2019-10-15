@@ -12,7 +12,7 @@ export type Gene_gene = {
     readonly internalID: string;
     readonly artworks: {
         readonly counts: {
-            readonly total: any | null;
+            readonly total: number | null;
         } | null;
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;

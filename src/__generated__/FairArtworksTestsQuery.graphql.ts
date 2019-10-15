@@ -2,15 +2,80 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FairArtworks_fair$ref } from "./FairArtworks_fair.graphql";
+export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type FairArtworksTestsQueryVariables = {};
 export type FairArtworksTestsQueryResponse = {
     readonly fair: {
         readonly " $fragmentRefs": FairArtworks_fair$ref;
     } | null;
 };
+export type FairArtworksTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly id: string;
+        readonly internalID: string;
+        readonly slug: string;
+        readonly filterArtworksConnection: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly slug: string;
+                    readonly image: ({
+                        readonly aspectRatio: number;
+                        readonly url: string | null;
+                        readonly aspect_ratio: number;
+                    }) | null;
+                    readonly title: string | null;
+                    readonly date: string | null;
+                    readonly sale_message: string | null;
+                    readonly is_biddable: boolean | null;
+                    readonly is_acquireable: boolean | null;
+                    readonly is_offerable: boolean | null;
+                    readonly sale: ({
+                        readonly is_auction: boolean | null;
+                        readonly is_closed: boolean | null;
+                        readonly display_timely_at: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly sale_artwork: ({
+                        readonly current_bid: ({
+                            readonly display: string | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly artists: ReadonlyArray<({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null> | null;
+                    readonly partner: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly href: string | null;
+                    readonly __typename: "Artwork";
+                }) | null;
+                readonly cursor: string;
+                readonly id: string | null;
+            }) | null> | null;
+            readonly aggregations: ReadonlyArray<({
+                readonly slice: ArtworkAggregation | null;
+                readonly counts: ReadonlyArray<({
+                    readonly name: string;
+                    readonly value: string;
+                }) | null> | null;
+            }) | null> | null;
+            readonly pageInfo: {
+                readonly hasNextPage: boolean;
+                readonly startCursor: string | null;
+                readonly endCursor: string | null;
+            };
+            readonly id: string | null;
+        }) | null;
+    }) | null;
+};
 export type FairArtworksTestsQuery = {
     readonly response: FairArtworksTestsQueryResponse;
     readonly variables: FairArtworksTestsQueryVariables;
+    readonly rawResponse: FairArtworksTestsQueryRawResponse;
 };
 
 
@@ -549,5 +614,5 @@ return {
   }
 };
 })();
-(node as any).hash = '67c630fba06804c3a1536f9e61aae26a';
+(node as any).hash = 'fd580466b03cfd15bf939c43f1c1f425';
 export default node;

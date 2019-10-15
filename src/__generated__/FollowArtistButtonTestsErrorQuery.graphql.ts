@@ -8,9 +8,18 @@ export type FollowArtistButtonTestsErrorQueryResponse = {
         readonly " $fragmentRefs": FollowArtistButton_artist$ref;
     } | null;
 };
+export type FollowArtistButtonTestsErrorQueryRawResponse = {
+    readonly artist: ({
+        readonly id: string;
+        readonly slug: string;
+        readonly internalID: string;
+        readonly is_followed: boolean | null;
+    }) | null;
+};
 export type FollowArtistButtonTestsErrorQuery = {
     readonly response: FollowArtistButtonTestsErrorQueryResponse;
     readonly variables: FollowArtistButtonTestsErrorQueryVariables;
+    readonly rawResponse: FollowArtistButtonTestsErrorQueryRawResponse;
 };
 
 
@@ -121,5 +130,5 @@ return {
   }
 };
 })();
-(node as any).hash = '97921de2506586348cf2e12ac6f5a01f';
+(node as any).hash = '22243b83ad90d479f77e6a5683cc90dc';
 export default node;

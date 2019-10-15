@@ -91,9 +91,9 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
               const {
                 commerceCreateOrderWithArtwork: { orderOrError },
               } = data
-              if (orderOrError.error) {
+              if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
-              } else {
+              } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
               }
             })

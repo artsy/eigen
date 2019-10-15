@@ -1,7 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { FairBoothShowFixture } from "lib/__fixtures__/FairBoothShowFixture"
-import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
-import { renderUntil } from "lib/tests/renderUntil"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
 import { FairBoothHeaderContainer as FairBoothHeader } from "../FairBoothHeader"
@@ -9,28 +8,23 @@ import { FairBoothHeaderContainer as FairBoothHeader } from "../FairBoothHeader"
 jest.unmock("react-relay")
 
 const render = () =>
-  renderUntil(
-    wrapper => {
-      return wrapper.text().includes("Follow gallery")
-    },
-    <MockRelayRenderer
-      Component={({ show }) => (
-        <Theme>
-          <FairBoothHeader onTitlePressed={jest.fn()} show={show} />
-        </Theme>
-      )}
-      query={graphql`
-        query FairBoothHeaderTestsQuery {
-          show(id: "anderson-fine-art-gallery-flickinger-collection") {
-            ...FairBoothHeader_show
-          }
+  renderRelayTree({
+    Component: ({ show }) => (
+      <Theme>
+        <FairBoothHeader onTitlePressed={jest.fn()} show={show} />
+      </Theme>
+    ),
+    query: graphql`
+      query FairBoothHeaderTestsQuery @raw_response_type {
+        show(id: "anderson-fine-art-gallery-flickinger-collection") {
+          ...FairBoothHeader_show
         }
-      `}
-      mockData={{
-        data: FairBoothShowFixture,
-      }}
-    />
-  )
+      }
+    `,
+    mockData: {
+      data: FairBoothShowFixture,
+    }, // Enable/fix this when making large change to these components/fixtures: as FairBoothHeaderTestsQueryRawResponse,
+  })
 
 describe("FairBoothHeader", () => {
   xit("Renders the Fair Booth Header", async () => {

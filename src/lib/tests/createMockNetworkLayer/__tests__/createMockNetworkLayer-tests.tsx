@@ -64,7 +64,7 @@ describe("createMockNetworkLayer", () => {
       })
     } catch (e) {
       expect(e.message).toMatchInlineSnapshot(
-        `"RelayMockNetworkLayerError: A mock for field at path 'artwork/title' of type 'String' was expected but not found."`
+        `"RelayMockNetworkLayerError: A mock for field at path 'artwork/title' of type 'String' was expected for operation 'createMockNetworkLayerTestsQuery', but none was found."`
       )
     }
   })

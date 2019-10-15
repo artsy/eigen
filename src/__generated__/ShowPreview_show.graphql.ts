@@ -13,15 +13,9 @@ export type ShowPreview_show = {
     readonly fair: {
         readonly name: string | null;
     } | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
-    } & ({
-        readonly name: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly " $refType": ShowPreview_show$ref;
 };
 

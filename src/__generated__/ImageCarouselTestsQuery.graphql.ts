@@ -10,9 +10,31 @@ export type ImageCarouselTestsQueryResponse = {
         } | null> | null;
     } | null;
 };
+export type ImageCarouselTestsQueryRawResponse = {
+    readonly artwork: ({
+        readonly images: ReadonlyArray<({
+            readonly url: string | null;
+            readonly width: number | null;
+            readonly height: number | null;
+            readonly deepZoom: ({
+                readonly image: ({
+                    readonly tileSize: number | null;
+                    readonly url: string | null;
+                    readonly format: string | null;
+                    readonly size: ({
+                        readonly width: number | null;
+                        readonly height: number | null;
+                    }) | null;
+                }) | null;
+            }) | null;
+        }) | null> | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type ImageCarouselTestsQuery = {
     readonly response: ImageCarouselTestsQueryResponse;
     readonly variables: ImageCarouselTestsQueryVariables;
+    readonly rawResponse: ImageCarouselTestsQueryRawResponse;
 };
 
 
@@ -225,5 +247,5 @@ return {
   }
 };
 })();
-(node as any).hash = '727b10351e1078ca0fd5594c5aa6d228';
+(node as any).hash = '0f69d35c674ffe60f75fa008371a55c7';
 export default node;

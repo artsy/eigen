@@ -7,9 +7,15 @@ export type FiltersTestsQueryResponse = {
         readonly id: string;
     } | null;
 };
+export type FiltersTestsQueryRawResponse = {
+    readonly show: ({
+        readonly id: string;
+    }) | null;
+};
 export type FiltersTestsQuery = {
     readonly response: FiltersTestsQueryResponse;
     readonly variables: FiltersTestsQueryVariables;
+    readonly rawResponse: FiltersTestsQueryRawResponse;
 };
 
 
@@ -74,5 +80,5 @@ return {
   }
 };
 })();
-(node as any).hash = '6075eaec6480f51930c5169580143212';
+(node as any).hash = '6a8f5448c878b9bd72c34520bb8256d1';
 export default node;

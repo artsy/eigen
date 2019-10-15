@@ -1,41 +1,43 @@
 import { getSubjectArtist } from "../ArtworkCarouselHeader"
 
 describe("getSubjectArtist", () => {
-  function getProps({ followedArtistContext, relatedArtistContext }) {
+  function getProps(context, typename: "HomePageFollowedArtistArtworkModule" | "HomePageRelatedArtistArtworkModule") {
     return {
       rail: {
         title: "A followed artist rail",
         key: "followed_artist",
-        followedArtistContext,
-        relatedArtistContext,
+        context: {
+          ...context,
+          __typename: typename,
+        },
       },
       handleViewAll: () => null,
     }
   }
 
   it("fetches the followed artist", () => {
-    const props = getProps({
-      followedArtistContext: {
+    const props = getProps(
+      {
         artist: {
           internalID: "banksy",
           id: "banksy",
         },
       },
-      relatedArtistContext: {},
-    })
-    expect(getSubjectArtist(props as any)).toEqual(props.rail.followedArtistContext.artist)
+      "HomePageFollowedArtistArtworkModule"
+    )
+    expect(getSubjectArtist(props as any)).toEqual(props.rail.context.artist)
   })
 
   it("fetches the related artist", () => {
-    const props = getProps({
-      relatedArtistContext: {
+    const props = getProps(
+      {
         artist: {
           internalID: "banksy",
           id: "banksy",
         },
       },
-      followedArtistContext: {},
-    })
-    expect(getSubjectArtist(props as any)).toEqual(props.rail.relatedArtistContext.artist)
+      "HomePageRelatedArtistArtworkModule"
+    )
+    expect(getSubjectArtist(props as any)).toEqual(props.rail.context.artist)
   })
 })

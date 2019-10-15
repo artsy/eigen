@@ -8,9 +8,59 @@ export type ArtworksPreviewTestsQueryResponse = {
         readonly " $fragmentRefs": ArtworksPreview_fair$ref;
     } | null;
 };
+export type ArtworksPreviewTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly slug: string;
+        readonly id: string;
+        readonly filterArtworksConnection: ({
+            readonly counts: ({
+                readonly total: number | null;
+            }) | null;
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly image: ({
+                        readonly aspect_ratio: number;
+                        readonly url: string | null;
+                    }) | null;
+                    readonly title: string | null;
+                    readonly date: string | null;
+                    readonly sale_message: string | null;
+                    readonly is_biddable: boolean | null;
+                    readonly is_acquireable: boolean | null;
+                    readonly is_offerable: boolean | null;
+                    readonly slug: string;
+                    readonly sale: ({
+                        readonly is_auction: boolean | null;
+                        readonly is_closed: boolean | null;
+                        readonly display_timely_at: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly sale_artwork: ({
+                        readonly current_bid: ({
+                            readonly display: string | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly artists: ReadonlyArray<({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null> | null;
+                    readonly partner: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly href: string | null;
+                }) | null;
+            }) | null> | null;
+            readonly id: string | null;
+        }) | null;
+    }) | null;
+};
 export type ArtworksPreviewTestsQuery = {
     readonly response: ArtworksPreviewTestsQueryResponse;
     readonly variables: ArtworksPreviewTestsQueryVariables;
+    readonly rawResponse: ArtworksPreviewTestsQueryRawResponse;
 };
 
 
@@ -408,5 +458,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'aecf2b5bf285d58888782cdc930538a5';
+(node as any).hash = '5176e902b27c3a96ac4a9cd569242bcf';
 export default node;

@@ -7,7 +7,7 @@ export type FairBoothHeader_show = {
     readonly fair: {
         readonly name: string | null;
     } | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
         readonly slug?: string;
         readonly internalID?: string;
@@ -18,22 +18,7 @@ export type FairBoothHeader_show = {
             readonly slug: string;
             readonly is_followed: boolean | null;
         } | null;
-    } & ({
-        readonly name: string | null;
-        readonly slug: string;
-        readonly internalID: string;
-        readonly id: string;
-        readonly href: string | null;
-        readonly profile: {
-            readonly internalID: string;
-            readonly slug: string;
-            readonly is_followed: boolean | null;
-        } | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly counts: {
         readonly artworks: number | null;
         readonly artists: number | null;

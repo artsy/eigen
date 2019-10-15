@@ -29,7 +29,7 @@ xdescribe("GlobalMap", () => {
       },
       Component: GlobalMapContainer,
       query: graphql`
-        query GlobalMapTestsQuery($citySlug: String!, $maxInt: Int!) {
+        query GlobalMapTestsQuery($citySlug: String!, $maxInt: Int!) @raw_response_type {
           ...GlobalMap_viewer @arguments(citySlug: $citySlug, maxInt: $maxInt)
         }
       `,
@@ -37,7 +37,7 @@ xdescribe("GlobalMap", () => {
         viewer: {
           city: CityFixture,
         },
-      },
+      }, // Enable/fix this when making large change to these components/fixtures: as GlobalMapTestsQueryRawResponse,
       variables: {
         citySlug: "new-york-ny-usa",
         maxInt: 42,

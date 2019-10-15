@@ -8,9 +8,115 @@ export type FairBoothTestsQueryResponse = {
         readonly " $fragmentRefs": FairBooth_show$ref;
     } | null;
 };
+export type FairBoothTestsQueryRawResponse = {
+    readonly show: ({
+        readonly slug: string;
+        readonly internalID: string;
+        readonly fair: ({
+            readonly name: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly partner: ({
+            readonly __typename: "Partner";
+            readonly id: string | null;
+            readonly name: string | null;
+            readonly slug: string;
+            readonly internalID: string;
+            readonly href: string | null;
+            readonly profile: ({
+                readonly internalID: string;
+                readonly slug: string;
+                readonly is_followed: boolean | null;
+                readonly id: string | null;
+            }) | null;
+        } | {
+            readonly __typename: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly counts: ({
+            readonly artworks: number | null;
+            readonly artists: number | null;
+        }) | null;
+        readonly location: ({
+            readonly display: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly id: string;
+        readonly artworks: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly image: ({
+                        readonly aspect_ratio: number;
+                        readonly url: string | null;
+                    }) | null;
+                    readonly title: string | null;
+                    readonly date: string | null;
+                    readonly sale_message: string | null;
+                    readonly is_biddable: boolean | null;
+                    readonly is_acquireable: boolean | null;
+                    readonly is_offerable: boolean | null;
+                    readonly slug: string;
+                    readonly sale: ({
+                        readonly is_auction: boolean | null;
+                        readonly is_closed: boolean | null;
+                        readonly display_timely_at: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly sale_artwork: ({
+                        readonly current_bid: ({
+                            readonly display: string | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly artists: ReadonlyArray<({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null> | null;
+                    readonly partner: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly href: string | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly artists: ReadonlyArray<({
+            readonly id: string;
+            readonly internalID: string;
+            readonly slug: string;
+            readonly href: string | null;
+            readonly name: string | null;
+            readonly initials: string | null;
+            readonly is_followed: boolean | null;
+            readonly nationality: string | null;
+            readonly birthday: string | null;
+            readonly deathday: string | null;
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null> | null;
+        readonly artists_without_artworks: ReadonlyArray<({
+            readonly id: string;
+            readonly internalID: string;
+            readonly slug: string;
+            readonly href: string | null;
+            readonly name: string | null;
+            readonly initials: string | null;
+            readonly is_followed: boolean | null;
+            readonly nationality: string | null;
+            readonly birthday: string | null;
+            readonly deathday: string | null;
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null> | null;
+    }) | null;
+};
 export type FairBoothTestsQuery = {
     readonly response: FairBoothTestsQueryResponse;
     readonly variables: FairBoothTestsQueryVariables;
+    readonly rawResponse: FairBoothTestsQueryRawResponse;
 };
 
 
@@ -644,5 +750,5 @@ return {
   }
 };
 })();
-(node as any).hash = '3bae7da1e4b0b06fc1939efa39c92e4c';
+(node as any).hash = '7d7d50fb3f7bda26821417ef2f782ff2';
 export default node;

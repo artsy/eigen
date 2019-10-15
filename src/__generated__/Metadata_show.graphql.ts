@@ -9,15 +9,9 @@ export type Metadata_show = {
     readonly exhibition_period: string | null;
     readonly status_update: string | null;
     readonly status: string | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name?: string | null;
-    } & ({
-        readonly name: string | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
+    } | null;
     readonly location: {
         readonly city: string | null;
     } | null;

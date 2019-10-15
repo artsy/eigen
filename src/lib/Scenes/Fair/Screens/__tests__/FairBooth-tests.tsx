@@ -1,9 +1,7 @@
 import { FairBoothShowFixture } from "lib/__fixtures__/FairBoothShowFixture"
-import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
-import { renderUntil } from "lib/tests/renderUntil"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
-import { FairBoothHeaderContainer as FairBoothHeader } from "../../Components/FairBoothHeader"
 import { FairBoothContainer as FairBooth } from "../FairBooth"
 
 jest.unmock("react-relay")
@@ -12,21 +10,18 @@ jest.unmock("react-relay")
 //        to understand exactly what changed. We should switch to snapshotting JSON and determine if the FairBooth
 //        renders correctly atm.
 xit("renders properly", async () => {
-  const tree = await renderUntil(
-    wrapper => wrapper.find(FairBoothHeader).length > 0,
-    <MockRelayRenderer
-      Component={({ show }) => <FairBooth show={show} />}
-      query={graphql`
-        query FairBoothTestsQuery {
-          show(id: "two-palms-two-palms-at-art-basel-miami-beach-2018") {
-            ...FairBooth_show
-          }
+  const tree = await renderRelayTree({
+    Component: ({ show }) => <FairBooth show={show} />,
+    query: graphql`
+      query FairBoothTestsQuery @raw_response_type {
+        show(id: "two-palms-two-palms-at-art-basel-miami-beach-2018") {
+          ...FairBooth_show
         }
-      `}
-      mockResolvers={{
-        Show: () => FairBoothShowFixture,
-      }}
-    />
-  )
+      }
+    `,
+    mockData: {
+      show: FairBoothShowFixture,
+    }, // Enable/fix this when making large change to these components/fixtures: as FairBoothTestsQueryRawResponse,
+  })
   expect(tree.html()).toMatchSnapshot()
 })

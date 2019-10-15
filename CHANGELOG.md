@@ -42,6 +42,7 @@
 
 - Refetches Artwork page query on re-appear - ash & purchase team
 - Add more analytics around auction related actions - ashkan18
+- Update to relay v6 and fix long-standing type bug around unions - alloy
 
 ### 1.17.1
 

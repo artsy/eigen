@@ -9,9 +9,185 @@ export type GlobalMapTestsQueryVariables = {
 export type GlobalMapTestsQueryResponse = {
     readonly " $fragmentRefs": GlobalMap_viewer$ref;
 };
+export type GlobalMapTestsQueryRawResponse = {
+    readonly city: ({
+        readonly name: string | null;
+        readonly slug: string | null;
+        readonly coordinates: ({
+            readonly lat: number | null;
+            readonly lng: number | null;
+        }) | null;
+        readonly sponsoredContent: ({
+            readonly introText: string | null;
+            readonly artGuideUrl: string | null;
+            readonly featuredShows: ReadonlyArray<({
+                readonly slug: string;
+                readonly internalID: string;
+                readonly id: string;
+                readonly name: string | null;
+                readonly status: string | null;
+                readonly isStubShow: boolean | null;
+                readonly href: string | null;
+                readonly is_followed: boolean | null;
+                readonly exhibition_period: string | null;
+                readonly cover_image: ({
+                    readonly url: string | null;
+                }) | null;
+                readonly location: ({
+                    readonly coordinates: ({
+                        readonly lat: number | null;
+                        readonly lng: number | null;
+                    }) | null;
+                    readonly id: string | null;
+                }) | null;
+                readonly type: string | null;
+                readonly start_at: string | null;
+                readonly end_at: string | null;
+                readonly partner: ({
+                    readonly __typename: "Partner";
+                    readonly id: string | null;
+                    readonly name: string | null;
+                    readonly type: string | null;
+                } | {
+                    readonly __typename: string | null;
+                    readonly id: string | null;
+                }) | null;
+            }) | null> | null;
+            readonly shows: ({
+                readonly totalCount: number | null;
+            }) | null;
+        }) | null;
+        readonly upcomingShows: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly slug: string;
+                    readonly internalID: string;
+                    readonly id: string;
+                    readonly isStubShow: boolean | null;
+                    readonly name: string | null;
+                    readonly status: string | null;
+                    readonly href: string | null;
+                    readonly is_followed: boolean | null;
+                    readonly exhibition_period: string | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly coordinates: ({
+                            readonly lat: number | null;
+                            readonly lng: number | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly type: string | null;
+                    readonly start_at: string | null;
+                    readonly end_at: string | null;
+                    readonly partner: ({
+                        readonly __typename: "Partner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                        readonly type: string | null;
+                        readonly profile: ({
+                            readonly image: ({
+                                readonly url: string | null;
+                            }) | null;
+                            readonly id: string | null;
+                        }) | null;
+                    } | {
+                        readonly __typename: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly shows: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly slug: string;
+                    readonly internalID: string;
+                    readonly id: string;
+                    readonly isStubShow: boolean | null;
+                    readonly name: string | null;
+                    readonly status: string | null;
+                    readonly href: string | null;
+                    readonly is_followed: boolean | null;
+                    readonly exhibition_period: string | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly coordinates: ({
+                            readonly lat: number | null;
+                            readonly lng: number | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly type: string | null;
+                    readonly start_at: string | null;
+                    readonly end_at: string | null;
+                    readonly partner: ({
+                        readonly __typename: "Partner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                        readonly type: string | null;
+                        readonly profile: ({
+                            readonly image: ({
+                                readonly url: string | null;
+                            }) | null;
+                            readonly id: string | null;
+                        }) | null;
+                    } | {
+                        readonly __typename: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly fairs: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly slug: string;
+                    readonly name: string | null;
+                    readonly exhibition_period: string | null;
+                    readonly counts: ({
+                        readonly partners: number | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly coordinates: ({
+                            readonly lat: number | null;
+                            readonly lng: number | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly image: ({
+                        readonly image_url: string | null;
+                        readonly aspect_ratio: number;
+                        readonly url: string | null;
+                    }) | null;
+                    readonly profile: ({
+                        readonly icon: ({
+                            readonly internalID: string | null;
+                            readonly href: string | null;
+                            readonly height: number | null;
+                            readonly width: number | null;
+                            readonly url: string | null;
+                        }) | null;
+                        readonly id: string;
+                        readonly slug: string;
+                        readonly name: string | null;
+                    }) | null;
+                    readonly start_at: string | null;
+                    readonly end_at: string | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+    }) | null;
+};
 export type GlobalMapTestsQuery = {
     readonly response: GlobalMapTestsQueryResponse;
     readonly variables: GlobalMapTestsQueryVariables;
+    readonly rawResponse: GlobalMapTestsQueryRawResponse;
 };
 
 
@@ -838,5 +1014,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'bf49486dc911ba83c6b7d2fb95babb83';
+(node as any).hash = '83ca51c960b55edc1c07be5db3197bd4';
 export default node;

@@ -41,28 +41,19 @@ export type Messages_conversation = {
         } | null> | null;
     } | null;
     readonly items: ReadonlyArray<{
-        readonly artwork: ({
-            readonly href?: string | null;
-            readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
-        } & ({
+        readonly item: ({
+            readonly __typename: "Artwork";
             readonly href: string | null;
             readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
         } | {
-            /*This will never be '% other', but we need some
-            value in case none of the concrete values match.*/
-            readonly __typename: "%other";
-        })) | null;
-        readonly show: ({
-            readonly href?: string | null;
-            readonly " $fragmentRefs": ShowPreview_show$ref;
-        } & ({
+            readonly __typename: "Show";
             readonly href: string | null;
             readonly " $fragmentRefs": ShowPreview_show$ref;
         } | {
-            /*This will never be '% other', but we need some
+            /*This will never be '%other', but we need some
             value in case none of the concrete values match.*/
             readonly __typename: "%other";
-        })) | null;
+        }) | null;
     } | null> | null;
     readonly " $refType": Messages_conversation$ref;
 };
@@ -99,6 +90,13 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__typename",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
@@ -285,13 +283,7 @@ return {
                     (v1/*: any*/)
                   ]
                 },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "__typename",
-                  "args": null,
-                  "storageKey": null
-                },
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "Message_message",
@@ -314,41 +306,31 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": "artwork",
+          "alias": null,
           "name": "item",
           "storageKey": null,
           "args": null,
           "concreteType": null,
           "plural": false,
           "selections": [
+            (v4/*: any*/),
             {
               "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
-                (v4/*: any*/),
+                (v5/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ArtworkPreview_artwork",
                   "args": null
                 }
               ]
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": "show",
-          "name": "item",
-          "storageKey": null,
-          "args": null,
-          "concreteType": null,
-          "plural": false,
-          "selections": [
+            },
             {
               "kind": "InlineFragment",
               "type": "Show",
               "selections": [
-                (v4/*: any*/),
+                (v5/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowPreview_show",
@@ -363,5 +345,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ecb2d6daa828b6f1c8b326a8a3cc775f';
+(node as any).hash = 'c84f9ba53f1b3d4026fdd9826aa695aa';
 export default node;

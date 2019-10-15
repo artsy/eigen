@@ -20,6 +20,10 @@ export class FakeNavigator {
     }
   }
 
+  stackSize() {
+    return this.stack.length
+  }
+
   nextStep() {
     const currentRoute = this.stack[this.stack.length - 1]
 

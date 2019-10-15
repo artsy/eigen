@@ -1,4 +1,6 @@
 import { Button } from "@artsy/palette"
+import { CommercialButtonsTestsMutationQueryRawResponse } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
+import { CommercialButtonsTestsRenderQueryRawResponse } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -20,13 +22,13 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,
     query: graphql`
-      query CommercialButtonsTestsMutationQuery {
+      query CommercialButtonsTestsMutationQuery @raw_response_type {
         artwork(id: "artworkID") {
           ...CommercialButtons_artwork
         }
       }
     `,
-    mockData: { artwork: mockArtworkData },
+    mockData: { artwork: mockArtworkData } as CommercialButtonsTestsMutationQueryRawResponse,
     mockMutationResults: {
       commerceCreateOrderWithArtwork: mockOrderMutationResults,
       commerceCreateOfferOrderWithArtwork: mockOfferMutationResults,
@@ -38,13 +40,13 @@ const relayComponent = async ({ artwork }) => {
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,
     query: graphql`
-      query CommercialButtonsTestsRenderQuery {
+      query CommercialButtonsTestsRenderQuery @raw_response_type {
         artwork(id: "artworkID") {
           ...CommercialButtons_artwork
         }
       }
     `,
-    mockData: { artwork },
+    mockData: { artwork } as CommercialButtonsTestsRenderQueryRawResponse,
   })
 }
 

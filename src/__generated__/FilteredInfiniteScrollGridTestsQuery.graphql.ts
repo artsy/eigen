@@ -7,9 +7,15 @@ export type FilteredInfiniteScrollGridTestsQueryResponse = {
         readonly id: string;
     } | null;
 };
+export type FilteredInfiniteScrollGridTestsQueryRawResponse = {
+    readonly show: ({
+        readonly id: string;
+    }) | null;
+};
 export type FilteredInfiniteScrollGridTestsQuery = {
     readonly response: FilteredInfiniteScrollGridTestsQueryResponse;
     readonly variables: FilteredInfiniteScrollGridTestsQueryVariables;
+    readonly rawResponse: FilteredInfiniteScrollGridTestsQueryRawResponse;
 };
 
 
@@ -74,5 +80,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'a6bd516362d59132bf89380c7bba3126';
+(node as any).hash = 'c6ec0db8880f9c9852e9c7b0d455c6ee';
 export default node;

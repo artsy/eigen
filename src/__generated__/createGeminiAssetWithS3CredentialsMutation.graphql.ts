@@ -5,7 +5,7 @@ export type CreateGeminiEntryForAssetInput = {
     readonly sourceKey: string;
     readonly templateKey: string;
     readonly sourceBucket: string;
-    readonly metadata: any;
+    readonly metadata: unknown;
     readonly clientMutationId?: string | null;
 };
 export type createGeminiAssetWithS3CredentialsMutationVariables = {

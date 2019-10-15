@@ -20,7 +20,7 @@ export type ActiveBid_bid = {
                 readonly artist_names: string | null;
             } | null;
             readonly counts: {
-                readonly bidder_positions: any | null;
+                readonly bidder_positions: number | null;
             } | null;
             readonly highest_bid: {
                 readonly display: string | null;

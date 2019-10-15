@@ -6,30 +6,14 @@ export type ArtworkCarouselHeader_rail$ref = typeof _ArtworkCarouselHeader_rail$
 export type ArtworkCarouselHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
-    readonly followedArtistContext: ({
-        readonly artist?: {
-            readonly internalID: string;
-            readonly slug: string;
-        } | null;
-    } & ({
+    readonly context: ({
+        readonly __typename: "HomePageFollowedArtistArtworkModule";
         readonly artist: {
             readonly internalID: string;
             readonly slug: string;
         } | null;
     } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    })) | null;
-    readonly relatedArtistContext: ({
-        readonly artist?: {
-            readonly internalID: string;
-            readonly slug: string;
-        } | null;
-        readonly based_on?: {
-            readonly name: string | null;
-        } | null;
-    } & ({
+        readonly __typename: "HomePageRelatedArtistArtworkModule";
         readonly artist: {
             readonly internalID: string;
             readonly slug: string;
@@ -38,10 +22,10 @@ export type ArtworkCarouselHeader_rail = {
             readonly name: string | null;
         } | null;
     } | {
-        /*This will never be '% other', but we need some
+        /*This will never be '%other', but we need some
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
-    })) | null;
+    }) | null;
     readonly " $refType": ArtworkCarouselHeader_rail$ref;
 };
 
@@ -96,7 +80,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "followedArtistContext",
+      "alias": null,
       "name": "context",
       "storageKey": null,
       "args": null,
@@ -104,23 +88,19 @@ return {
       "plural": false,
       "selections": [
         {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "__typename",
+          "args": null,
+          "storageKey": null
+        },
+        {
           "kind": "InlineFragment",
           "type": "HomePageFollowedArtistArtworkModule",
           "selections": [
             (v0/*: any*/)
           ]
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": "relatedArtistContext",
-      "name": "context",
-      "storageKey": null,
-      "args": null,
-      "concreteType": null,
-      "plural": false,
-      "selections": [
+        },
         {
           "kind": "InlineFragment",
           "type": "HomePageRelatedArtistArtworkModule",
@@ -151,5 +131,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f0d828bdc62cc33269089e3012dbdb18';
+(node as any).hash = '10ec360b5f90309ed8d545432533520f';
 export default node;

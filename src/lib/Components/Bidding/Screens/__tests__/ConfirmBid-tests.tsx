@@ -1,5 +1,5 @@
 import { Button, Serif } from "@artsy/palette"
-import { merge, times } from "lodash"
+import { merge } from "lodash"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import "react-native"
@@ -41,6 +41,7 @@ import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/Confir
 import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { Modal } from "lib/Components/Modal"
+import { waitUntil } from "lib/tests/waitUntil"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { Address } from "../../types"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
@@ -251,7 +252,7 @@ describe("when pressing bid button", () => {
         )
       })
 
-      it("displays an error message on a createBidderPosition mutation failure", () => {
+      it("displays an error message on a createBidderPosition mutation failure", async () => {
         const error = {
           message: 'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
         }
@@ -266,7 +267,7 @@ describe("when pressing bid button", () => {
         component.root.findByType(Checkbox).props.onPress()
         findPlaceBidButton(component).props.onPress()
 
-        jest.runAllTicks()
+        await waitUntil(() => !!nextStep)
 
         expect(nextStep.component).toEqual(BidResultScreen)
         expect(nextStep.passProps).toEqual(
@@ -314,7 +315,7 @@ describe("editing bid amount", () => {
 
 describe("polling to verify bid position", () => {
   describe("bid success", () => {
-    it("polls for new results", () => {
+    it("polls for new results", async () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
@@ -333,9 +334,13 @@ describe("polling to verify bid position", () => {
       })
 
       findPlaceBidButton(component).props.onPress()
-      times(6, () => {
-        jest.runOnlyPendingTimers()
-        jest.runAllTicks()
+      await waitUntil(() => {
+        if (!nextStep) {
+          jest.runOnlyPendingTimers()
+          jest.runAllTicks()
+          return false
+        }
+        return true
       })
 
       expect(nextStep.component).toEqual(BidResultScreen)
@@ -346,7 +351,7 @@ describe("polling to verify bid position", () => {
       )
     })
 
-    it("shows error when polling attempts exceed max", () => {
+    it("shows error when polling attempts exceed max", async () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
@@ -357,10 +362,13 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-
-      times(22, () => {
-        jest.runOnlyPendingTimers()
-        jest.runAllTicks()
+      await waitUntil(() => {
+        if (!nextStep) {
+          jest.runOnlyPendingTimers()
+          jest.runAllTicks()
+          return false
+        }
+        return true
       })
 
       expect(nextStep.component).toEqual(BidResultScreen)
@@ -371,7 +379,7 @@ describe("polling to verify bid position", () => {
       )
     })
 
-    it("shows successful bid result when highest bidder", () => {
+    it("shows successful bid result when highest bidder", async () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
@@ -382,7 +390,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
+      await waitUntil(() => !!nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -392,7 +400,7 @@ describe("polling to verify bid position", () => {
       )
     })
 
-    it("shows outbid bidSuccessResult when outbid", () => {
+    it("shows outbid bidSuccessResult when outbid", async () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
@@ -403,7 +411,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      jest.runAllTicks()
+      await waitUntil(() => !!nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -413,7 +421,7 @@ describe("polling to verify bid position", () => {
       )
     })
 
-    it("shows reserve not met when reserve is not met", () => {
+    it("shows reserve not met when reserve is not met", async () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
@@ -424,7 +432,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      jest.runAllTicks()
+      await waitUntil(() => !!nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -434,7 +442,7 @@ describe("polling to verify bid position", () => {
       )
     })
 
-    it("updates the main auction screen", () => {
+    it("updates the main auction screen", async () => {
       const mockedMockNavigator = { push: jest.fn() }
       const component = mountConfirmBidComponent({
         ...initialProps,
@@ -449,7 +457,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      jest.runAllTicks()
+      await waitUntil(() => mockPostNotificationName.mock.calls.length > 0)
 
       expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
         ARAuctionID: "best-art-sale-in-town",
@@ -498,7 +506,7 @@ describe("polling to verify bid position", () => {
   })
 
   describe("bid failure", () => {
-    it("shows the error screen with a failure", () => {
+    it("shows the error screen with a failure", async () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
@@ -508,7 +516,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      jest.runAllTicks()
+      await waitUntil(() => !!nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -683,7 +691,7 @@ describe("ConfirmBid for unqualified user", () => {
         .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
     })
 
-    it("commits two mutations, createCreditCard followed by createBidderPosition on a successful bid", () => {
+    it("commits two mutations, createCreditCard followed by createBidderPosition on a successful bid", async () => {
       bidderPositionQueryMock
         .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.pending))
         .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
@@ -728,20 +736,26 @@ describe("ConfirmBid for unqualified user", () => {
         })
       )
 
-      jest.runOnlyPendingTimers()
+      await waitUntil(() => {
+        if (bidderPositionQueryMock.mock.calls.length !== 2) {
+          jest.runOnlyPendingTimers()
+          return false
+        }
+        return true
+      })
 
-      expect(bidderPositionQueryMock.mock.calls.length).toEqual(2)
       expect(bidderPositionQueryMock.mock.calls[0][0]).toEqual("bidder-position-id-from-mutation")
       expect(bidderPositionQueryMock.mock.calls[1][0]).toEqual("bidder-position-id-from-polling")
     })
 
-    it("displays an error message on polling failure", () => {
+    it("displays an error message on polling failure", async () => {
       console.error = jest.fn() // Silences component logging.
       bidderPositionQueryMock.mockReturnValueOnce(Promise.reject({ message: "error" }))
 
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
       fillOutFormAndSubmit(component)
+      await waitUntil(() => !!nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(

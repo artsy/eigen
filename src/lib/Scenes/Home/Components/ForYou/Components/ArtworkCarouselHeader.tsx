@@ -65,8 +65,8 @@ class ArtworkCarouselHeader extends Component<Props, State> {
   }
 
   followAnnotation() {
-    const context = this.props.rail.relatedArtistContext
-    if (context && context.based_on) {
+    const context = this.props.rail.context
+    if (context && context.__typename === "HomePageRelatedArtistArtworkModule") {
       return <SerifText style={styles.followAnnotation}>{`Based on ${context.based_on.name}`}</SerifText>
     }
   }
@@ -122,7 +122,15 @@ class ArtworkCarouselHeader extends Component<Props, State> {
 }
 
 export function getSubjectArtist(props: Props) {
-  return props.rail.followedArtistContext.artist || props.rail.relatedArtistContext.artist
+  const context = props.rail.context
+  if (
+    context &&
+    (context.__typename === "HomePageFollowedArtistArtworkModule" ||
+      context.__typename === "HomePageRelatedArtistArtworkModule")
+  ) {
+    return context.artist
+  }
+  return null
 }
 
 interface Styles {
@@ -164,16 +172,14 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
     fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
       title
       key
-      # This aliasing selection of the context is done to work around a type generator bug, see below.
-      followedArtistContext: context {
+      context {
+        __typename
         ... on HomePageFollowedArtistArtworkModule {
           artist {
             internalID
             slug
           }
         }
-      }
-      relatedArtistContext: context {
         ... on HomePageRelatedArtistArtworkModule {
           artist {
             internalID
@@ -184,31 +190,6 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
           }
         }
       }
-      # FIXME: There is a bug in the Relay transformer used before generating Flow types, and thus also our TS type
-      #        generator, that leads to a union selection _with_ a __typename selection being normalized incorrectly.
-      #        What ends up happening is that _only_ the common selection is being omitted from the second fragment,
-      #        i.e. in this case the artist selection is not present in the second fragment.
-      #
-      #        This can be seen much more clear when adding __typename to the context part in ArtworkRail.tsx.
-      #
-      # context {
-      #   __typename
-      #   ... on HomePageModuleContextFollowedArtist {
-      #     artist {
-      #       internalID
-      #       id
-      #     }
-      #   }
-      #   ... on HomePageModuleContextRelatedArtist {
-      #     artist {
-      #       internalID
-      #       id
-      #     }
-      #     based_on {
-      #       name
-      #     }
-      #   }
-      # }
     }
   `,
 })

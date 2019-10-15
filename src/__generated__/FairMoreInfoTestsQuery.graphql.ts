@@ -9,9 +9,18 @@ export type FairMoreInfoTestsQueryResponse = {
         readonly ticketsLink: string | null;
     } | null;
 };
+export type FairMoreInfoTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly links: string | null;
+        readonly about: string | null;
+        readonly ticketsLink: string | null;
+        readonly id: string | null;
+    }) | null;
+};
 export type FairMoreInfoTestsQuery = {
     readonly response: FairMoreInfoTestsQueryResponse;
     readonly variables: FairMoreInfoTestsQueryVariables;
+    readonly rawResponse: FairMoreInfoTestsQueryRawResponse;
 };
 
 
@@ -118,5 +127,5 @@ return {
   }
 };
 })();
-(node as any).hash = '2ed3205d94bc196c8fe618fdc3db1933';
+(node as any).hash = '45ad79039297fa8a746e34a2075ce76d';
 export default node;
