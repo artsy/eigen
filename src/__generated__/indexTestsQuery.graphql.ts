@@ -189,7 +189,7 @@ export type indexTestsQuery = {
 
 /*
 query indexTestsQuery {
-  show(id: "anderson-fine-art-gallery-flickinger-collection") {
+  show(id: "art-gallery-pure-art-of-design-at-art-gallery-pure") {
     ...Show_show
     id
   }
@@ -459,7 +459,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection"
+    "value": "art-gallery-pure-art-of-design-at-art-gallery-pure"
   }
 ],
 v1 = {
@@ -597,7 +597,7 @@ return {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
+        "storageKey": "show(id:\"art-gallery-pure-art-of-design-at-art-gallery-pure\")",
         "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
@@ -620,7 +620,7 @@ return {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
+        "storageKey": "show(id:\"art-gallery-pure-art-of-design-at-art-gallery-pure\")",
         "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
@@ -1266,11 +1266,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "indexTestsQuery",
-    "id": "ccef6a3bd2cbfeb5850e8283cf3ec83b",
+    "id": "f7260a29c62f56c41d728b85f7294a65",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8948d2977a008a920856eb50e9cf57bb';
+(node as any).hash = '4d5caf85a575f4b997a87e1eac05c359';
 export default node;

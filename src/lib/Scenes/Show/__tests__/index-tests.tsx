@@ -11,7 +11,7 @@ it("Renders a show", async () => {
     Component: Show,
     query: graphql`
       query indexTestsQuery @raw_response_type {
-        show(id: "anderson-fine-art-gallery-flickinger-collection") {
+        show(id: "art-gallery-pure-art-of-design-at-art-gallery-pure") {
           ...Show_show
         }
       }
@@ -21,5 +21,5 @@ it("Renders a show", async () => {
     } as indexTestsQueryRawResponse,
   })
 
-  expect(tree.text()).toContain("Flickinger Collection")
+  expect(tree.text()).toContain("ART of DESIGN at Art Gallery Pure")
 })
