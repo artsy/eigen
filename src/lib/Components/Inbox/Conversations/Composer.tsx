@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
+import { Dimensions, NativeModules, StatusBarIOS, TextInput, TouchableWithoutFeedback } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
@@ -49,6 +49,7 @@ interface Props {
 interface State {
   active: boolean
   text: string
+  statusBarHeight: number
 }
 
 const track: Track<Props, State, Schema.Entity> = _track
@@ -57,12 +58,27 @@ const track: Track<Props, State, Schema.Entity> = _track
 export default class Composer extends React.Component<Props, State> {
   input?: TextInput | any
 
+  statusBarListener = null
+
   constructor(props) {
     super(props)
 
     this.state = {
       active: false,
       text: null,
+      statusBarHeight: 0,
+    }
+  }
+
+  componentDidMount() {
+    const { StatusBarManager } = NativeModules
+    if (StatusBarManager && StatusBarManager.getHeight) {
+      StatusBarManager.getHeight(statusBarFrameData => {
+        this.setState({ statusBarHeight: statusBarFrameData.height })
+      })
+      this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
+        this.setState({ statusBarHeight: statusBarData.frame.height })
+      })
     }
   }
 
@@ -83,6 +99,10 @@ export default class Composer extends React.Component<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    this.statusBarListener.remove()
+  }
+
   render() {
     // The TextInput loses its isFocused() callback as a styled component
     const inputStyles = {
@@ -98,7 +118,7 @@ export default class Composer extends React.Component<Props, State> {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     return (
-      <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20}>
+      <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.state.statusBarHeight}>
         {this.props.children}
         <Container active={this.state.active}>
           <TextInput
