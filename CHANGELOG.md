@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.17.8
+
 - Updates AuctionCountDownTimer to handle liveStartAt - lilyfromseattle
 
 ### 1.17.7
