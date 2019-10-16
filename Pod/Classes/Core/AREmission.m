@@ -43,7 +43,7 @@ RCT_EXPORT_MODULE(Emission);
     @"predictionURL": self.predictionURL,
     @"userAgent": self.userAgent,
     @"options": self.options,
-    // production | staging | development | test
+    // production | staging | test
     @"env": self.env,
 
     // Empty is falsy in JS, so these are fine too.
