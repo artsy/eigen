@@ -3,18 +3,19 @@ upcoming:
   date: TBD
   emission_version: 1.17.7
   dev:
-    - 
+    -
   user_facing:
     - Adds killswitch based on Eigen version set in echo - kierangillen
     - Re-enables Auctions Artwork Echo flag - ash
     - Fixes circle badge size on nav when user has messages - kierangillen
+    - Fixes close button position on modal nav bars
 
 releases:
   - version: 5.0.8
     date: TBD
     emission_version: 1.17.7
     dev:
-      - 
+      -
     user_facing:
       - Re-enables Artwork Auctions view to respect Echo flag - ash
       - Re-disables Artwork Auctions view to respect Echo flag - ash
@@ -58,7 +59,7 @@ releases:
   - version: 5.0.6
     date: September 23, 2019
     emission_version: 1.11.6
-      - 
+      -
     user_facing:
       - Fixes crash for iOS 13 users - ash & david
 
