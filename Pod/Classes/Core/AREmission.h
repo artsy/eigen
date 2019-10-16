@@ -6,6 +6,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString *const AREnvProduction;
+extern NSString *const AREnvStaging;
+extern NSString *const AREnvTest;
+
 /// A configuration object for running Emission
 @interface AREmissionConfiguration : NSObject <RCTBridgeModule>
 
@@ -25,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *metaphysicsURL;
 @property (nonatomic, copy, readonly) NSString *userAgent;
 @property (nonatomic, copy, readonly) NSString *predictionURL;
+// env = production | staging | test
+@property (nonatomic, copy, readonly) NSString *env;
+
+
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
@@ -41,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
                      userAgent:(NSString *)userAgent
+                           env:(NSString *)env
                        options:(NSDictionary *)options;
 @end
 

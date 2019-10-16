@@ -12,6 +12,17 @@
 
 #import <SentryReactNative/RNSentry.h>
 
+NSString *const AREnvProduction = @"production";
+NSString *const AREnvStaging = @"staging";
+NSString *const AREnvTest = @"test";
+
+void AREnvAssert(NSString *env) {
+  if ([env isEqualToString:AREnvProduction] || [env isEqualToString:AREnvStaging] || [env isEqualToString:AREnvTest]) {
+    return;
+  }
+  [NSException raise:NSInvalidArgumentException format:@"Invalid AREnv '%@'", env];
+}
+
 @implementation AREmissionConfiguration
 
 RCT_EXPORT_MODULE(Emission);
@@ -32,6 +43,8 @@ RCT_EXPORT_MODULE(Emission);
     @"predictionURL": self.predictionURL,
     @"userAgent": self.userAgent,
     @"options": self.options,
+    // production | staging | test
+    @"env": self.env,
 
     // Empty is falsy in JS, so these are fine too.
     @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
@@ -51,6 +64,7 @@ RCT_EXPORT_MODULE(Emission);
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
                      userAgent:(NSString *)userAgent
+                           env:(NSString *)env
                        options:(NSDictionary *)options
 {
     self = [super init];
@@ -65,6 +79,7 @@ RCT_EXPORT_MODULE(Emission);
     _predictionURL = prediction.copy;
     _userAgent = userAgent.copy;
     _options = options.copy;
+    _env = env;
     return self;
 }
 @end

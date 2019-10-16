@@ -159,6 +159,7 @@ randomBOOL(void)
                                                                      metaphysicsURL:setup.metaphysicsURL
                                                                       predictionURL:setup.predictionURL
                                                                           userAgent:@"Emission Example"
+                                                                                env:setup.inStaging ? AREnvStaging : AREnvProduction
                                                                             options:setup.options];
 
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
@@ -453,4 +454,3 @@ randomBOOL(void)
 }
 
 @end
-

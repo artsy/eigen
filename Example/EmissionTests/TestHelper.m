@@ -106,6 +106,7 @@
                                                                          metaphysicsURL:setup.metaphysicsURL
                                                                           predictionURL:setup.predictionURL
                                                                               userAgent:@"Emission Example"
+                                                                                    env:AREnvTest
                                                                                 options:setup.options];
       return @[config];
     }, setup.jsCodeLocation);
