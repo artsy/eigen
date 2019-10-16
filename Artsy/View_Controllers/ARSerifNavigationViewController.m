@@ -148,9 +148,23 @@ static CGFloat exitButtonDimension = 40;
     ARSerifNavigationBar *navBar = (id)self.navigationBar;
     navBar.needsLiveAuctionsBackgroundColorFix = [NSStringFromClass(viewController.class) containsString:@"LiveAuction"];
 
+    // Just a dummy view to ensure that the navigation bar doesn’t create a new title view.
+    nav.titleView = [UIView new];
+
     if (navigationController.viewControllers.count > 1) {
         nav.leftBarButtonItem = self.backButton;
         [navBar hideNavigationBarShadow:false];
+        if (nav.title) {
+
+            UILabel *label = [ARSerifLabel new];
+            label.font = [UIFont serifFontWithSize:20];
+            label.text = nav.title;
+            label.numberOfLines = 1;
+            // Only make it as wide as necessary, otherwise it might cover the right bar button item.
+            [label sizeToFit];
+
+            nav.titleView = label;
+        }
 
     } else {
         if (nav.title && nav.title.length > 0) {
@@ -177,8 +191,6 @@ static CGFloat exitButtonDimension = 40;
 
             nav.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleMarginWrapper];
         }
-        // Just a dummy view to ensure that the navigation bar doesn’t create a new title view.
-        nav.titleView = [UIView new];
 
         [navBar hideNavigationBarShadow:true];
     }
@@ -246,8 +258,6 @@ static CGFloat exitButtonDimension = 40;
         [self verticallyCenterView:self.topItem.rightBarButtonItems];
     }
 
-    [self nudgeViews:self.topItem.rightBarButtonItems horizontally:10];
-
     if (self.needsLiveAuctionsBackgroundColorFix) {
         // This is a total hack.
         // UIKit inserts a view behind us which, when we're presented in the left side of a split view controller,
@@ -274,19 +284,22 @@ static CGFloat exitButtonDimension = 40;
 
 - (void)centerVertically:(UIView *)viewToCenter
 {
-    CGFloat barMidpoint = roundf(self.frame.size.height / 2);
-    CGFloat viewMidpoint = roundf(viewToCenter.frame.size.height / 2);
+    CGFloat yOffset = 0;
+    if ([viewToCenter isDescendantOfView:self]) {
+        UIView *child = viewToCenter.superview;
+        int safety = 0;
+        while (safety++ < 10 && child != self) {
+            yOffset += child.frame.origin.y;
+            child = child.superview;
+        }
+    }
+
+    CGFloat barHeight = self.frame.size.height;
+    CGFloat viewHeight = viewToCenter.frame.size.height;
 
     CGRect newFrame = viewToCenter.frame;
-    newFrame.origin.y = roundf(barMidpoint - viewMidpoint);
+    newFrame.origin.y = roundf(((barHeight - viewHeight) / 2) - yOffset);
     viewToCenter.frame = newFrame;
-}
-
-- (void)nudgeViews:(NSArray *)buttons horizontally:(CGFloat)offset
-{
-    for (UIBarButtonItem *button in buttons) {
-        button.customView.frame = CGRectOffset(button.customView.frame, offset, 0);
-    }
 }
 
 - (void)hideNavigationBarShadow:(BOOL)hide
