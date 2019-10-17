@@ -3,6 +3,7 @@ import { AppState, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
+import { Theme } from "@artsy/palette"
 import { Schema, screenTrack } from "lib/utils/track"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -118,40 +119,42 @@ export default class Home extends React.Component<Props, State> {
     // be added to Echo's set of features if we want to disable it.
     const showConsignmentsSash = !options.hideConsignmentsSash
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollableTabView
-          initialPage={this.props.initialTab || ForYouTab}
-          ref={tabView => (this.tabView = tabView)}
-          onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
-          renderTabBar={props => (
-            <TabBarContainer>
-              <TabBar spaceEvenly {...props} />
-            </TabBarContainer>
-          )}
-        >
-          {/* FIXME:
+      <Theme>
+        <View style={{ flex: 1 }}>
+          <ScrollableTabView
+            initialPage={this.props.initialTab || ForYouTab}
+            ref={tabView => (this.tabView = tabView)}
+            onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+            renderTabBar={props => (
+              <TabBarContainer>
+                <TabBar spaceEvenly {...props} />
+              </TabBarContainer>
+            )}
+          >
+            {/* FIXME:
       A thin space has been added in front of the tab label names to compensate for trailing space added by the
       wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
-          <Tab tabLabel=" Artists">
-            <WorksForYouRenderer
-              render={renderWithLoadProgress(WorksForYouTrampoline as any)}
-              selectedArtist={this.props.selectedArtist}
+            <Tab tabLabel=" Artists">
+              <WorksForYouRenderer
+                render={renderWithLoadProgress(WorksForYouTrampoline as any)}
+                selectedArtist={this.props.selectedArtist}
+              />
+            </Tab>
+            <Tab tabLabel=" For you">
+              <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
+            </Tab>
+            <Tab tabLabel=" Auctions">
+              <SalesRenderer render={renderWithLoadProgress(SalesTrampoline as any)} />
+            </Tab>
+          </ScrollableTabView>
+          {!!showConsignmentsSash && (
+            <DarkNavigationButton
+              title="Sell works from your collection through Artsy"
+              onPress={this.openLink.bind(this)}
             />
-          </Tab>
-          <Tab tabLabel=" For you">
-            <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
-          </Tab>
-          <Tab tabLabel=" Auctions">
-            <SalesRenderer render={renderWithLoadProgress(SalesTrampoline as any)} />
-          </Tab>
-        </ScrollableTabView>
-        {!!showConsignmentsSash && (
-          <DarkNavigationButton
-            title="Sell works from your collection through Artsy"
-            onPress={this.openLink.bind(this)}
-          />
-        )}
-      </View>
+          )}
+        </View>
+      </Theme>
     )
   }
 

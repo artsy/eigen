@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { View } from "react-native"
@@ -13,7 +14,13 @@ storiesOf("App Style/Buttons")
   .add("FormButton", () => {
     return [<FormButton text="Disabled" key="1" />, <FormButton text="Clickable" onPress={emptyFunc} key="2" />]
   })
-  .add("Navigation Button", () => <NavigationButton title="Default" href="/link/place" />)
+  .add("Navigation Button", () => (
+    <Theme>
+      <NavigationButton title="Default" href="/link/place" />
+    </Theme>
+  ))
   .add("Dark Navigation Button", () => (
-    <DarkNavigationButton title="Default button with some text" href="/link/place" />
+    <Theme>
+      <DarkNavigationButton title="Default button with some text" href="/link/place" />
+    </Theme>
   ))
