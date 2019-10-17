@@ -17,6 +17,7 @@
 ### Master
 
 - Add graphql request duration reporting via volley - ds300
+- Fix showing wrong state for closed auctions - ashkan18
 
 ### 1.17.8
 
