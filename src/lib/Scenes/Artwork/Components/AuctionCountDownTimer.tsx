@@ -31,7 +31,7 @@ export class AuctionCountDownTimer extends React.Component<AuctionCountDownTimer
   countdownValue(sale, auctionState) {
     if (auctionState === "isPreview") {
       return sale.startAt
-    } else if (auctionState === "hasStarted" && sale.liveStartAt) {
+    } else if ((auctionState === "hasStarted" || auctionState === "isLive") && sale.liveStartAt) {
       return sale.liveStartAt
     } else {
       return sale.endAt

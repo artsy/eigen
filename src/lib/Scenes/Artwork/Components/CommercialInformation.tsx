@@ -78,9 +78,12 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { artwork } = this.props
     const { auctionState } = this.state
     const { isInAuction, isForSale } = artwork
-
-    if (isInAuction && isForSale && auctionState !== "isLive") {
-      return <AuctionPrice artwork={artwork} auctionState={auctionState as AuctionState} />
+    if (isInAuction && isForSale) {
+      if (auctionState === "isLive") {
+        return null
+      } else {
+        return <AuctionPrice artwork={artwork} auctionState={auctionState as AuctionState} />
+      }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
       return this.renderEditionSetArtwork()
     } else {
@@ -157,6 +160,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const isInClosedAuction = isInAuction && sale && auctionState === "hasEnded"
     const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
     const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
+    const hidesPriceInformation = isInAuction && isForSale && auctionState === "isLive"
 
     return (
       <>
@@ -165,7 +169,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
           {canTakeCommercialAction &&
             !isInClosedAuction && (
               <>
-                <Spacer mb={2} />
+                {!hidesPriceInformation && <Spacer mb={2} />}
                 <CommercialButtons artwork={artwork} auctionState={auctionState} editionSetID={editionSetID} />
               </>
             )}

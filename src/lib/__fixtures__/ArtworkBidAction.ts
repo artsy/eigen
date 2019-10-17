@@ -1,6 +1,15 @@
+import { DateTime } from "luxon"
+
+const InAuctionForSale = {
+  isInAuction: true,
+  isForSale: true,
+}
+
 export const ArtworkFromAuctionPreview = {
+  ...InAuctionForSale,
   internalID: "artwork_from_preview_auction",
   sale: {
+    isAuction: true,
     registrationStatus: null,
     isPreview: true,
     isOpen: false,
@@ -20,8 +29,10 @@ export const ArtworkFromAuctionPreview = {
 }
 
 export const ArtworkFromTimedAuctionRegistrationOpen = {
+  ...InAuctionForSale,
   internalID: "artwork_from_open_non_live_auction",
   sale: {
+    isAuction: true,
     registrationStatus: null,
     isPreview: false,
     isOpen: true,
@@ -41,8 +52,10 @@ export const ArtworkFromTimedAuctionRegistrationOpen = {
 }
 
 export const ArtworkFromTimedAuctionRegistrationClosed = {
+  ...InAuctionForSale,
   internalID: "artwork_from_open_non_live_auction",
   sale: {
+    isAuction: true,
     registrationStatus: null,
     isPreview: false,
     isOpen: true,
@@ -62,14 +75,23 @@ export const ArtworkFromTimedAuctionRegistrationClosed = {
 }
 
 export const ArtworkFromLiveAuctionRegistrationOpen = {
+  ...InAuctionForSale,
   internalID: "artwork_from_open_live_auction_open_registration",
   sale: {
+    isAuction: true,
     registrationStatus: null,
     isPreview: false,
     isOpen: true,
     isLiveOpen: true,
     isClosed: false,
     isRegistrationClosed: false,
+    liveStartAt: DateTime.fromMillis(Date.now())
+      .minus({ minutes: 1 })
+      .toISO(),
+    startAt: DateTime.fromMillis(Date.now())
+      .minus({ minutes: 10 })
+      .toISO(),
+    endAt: null,
   },
   saleArtwork: {
     increments: [
@@ -83,14 +105,22 @@ export const ArtworkFromLiveAuctionRegistrationOpen = {
 }
 
 export const ArtworkFromLiveAuctionRegistrationClosed = {
+  ...InAuctionForSale,
   internalID: "artwork_from_open_live_auction_closed_registration",
   sale: {
+    isAuction: true,
     registrationStatus: null,
     isPreview: false,
     isOpen: true,
     isLiveOpen: true,
     isClosed: false,
     isRegistrationClosed: true,
+    liveStartAt: DateTime.fromMillis(Date.now())
+      .minus({ minutes: 1 })
+      .toISO(),
+    startAt: DateTime.fromMillis(Date.now())
+      .minus({ minutes: 10 })
+      .toISO(),
   },
   saleArtwork: {
     increments: [
@@ -104,8 +134,10 @@ export const ArtworkFromLiveAuctionRegistrationClosed = {
 }
 
 export const ArtworkFromClosedAuction = {
+  ...InAuctionForSale,
   internalID: "artwork_from_closed_auction",
   sale: {
+    isAuction: true,
     registrationStatus: null,
     isPreview: false,
     isOpen: false,
