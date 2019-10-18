@@ -8,6 +8,7 @@ upcoming:
     - Adds killswitch based on Eigen version set in echo - kierangillen
     - Re-enables Auctions Artwork Echo flag - ash
     - Fixes circle badge size on nav when user has messages - kierangillen
+    - Fixes close button position on modal nav bars
 
 releases:
   - version: 5.0.8
