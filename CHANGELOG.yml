@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.17.7
   dev:
-    -
+    - Update emission, sending the new 'env' parameter
   user_facing:
     - Adds killswitch based on Eigen version set in echo - kierangillen
     - Re-enables Auctions Artwork Echo flag - ash
