@@ -284,6 +284,10 @@ static CGFloat exitButtonDimension = 40;
 
 - (void)centerVertically:(UIView *)viewToCenter
 {
+    // need to calculate the current offset between us and the view
+    // for some reason using the UIView convertPoint/convertRect
+    // methods didn't produce correct results, so we're climbing
+    // the tree and summing the offsets at each step.
     CGFloat yOffset = 0;
     if ([viewToCenter isDescendantOfView:self]) {
         UIView *child = viewToCenter.superview;
