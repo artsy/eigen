@@ -113,7 +113,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [[ARRouter baseMetaphysicsApiURLString] stringByAppendingString:@"/v2"];
-
+  
     NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
 
     // Grab echo features and make that the base of all options
@@ -126,6 +126,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     } else {
         stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
     }
+  
+    NSString *env;
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+      env = AREnvStaging;
+    } else {
+      env = AREnvProduction;
+    }
+  
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
@@ -138,6 +146,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                            metaphysicsURL:metaphysics
                                                                             predictionURL:liveAuctionsURL
                                                                                 userAgent:ARRouter.userAgent
+                                                                                      env:env
                                                                                   options:options];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
@@ -485,4 +494,3 @@ MakeMenuAware(ARFairMoreInfoComponentViewController)
 MakeMenuAware(ARFairArtistsComponentViewController)
 MakeMenuAware(ARFairArtworksComponentViewController)
 MakeMenuAware(ARFairExhibitorsComponentViewController)
-
