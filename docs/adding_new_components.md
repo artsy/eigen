@@ -2,9 +2,9 @@
 
 Emission is a few things:
 
-* A native example app that uses React Native components.
-* A CocoaPod to consume components as `UIViewController` subclasses.
-* An NPM module to manage these components.
+- A native example app that uses React Native components.
+- A CocoaPod to consume components as `UIViewController` subclasses.
+- An NPM module to manage these components.
 
 Adding a new component to Emission to be used in [Eigen][] involves all three! But don't worry, it's not difficult. (You can look at [this pr adding an empty component][pr] for a kind of "Hello World" for this work.)
 
@@ -13,12 +13,12 @@ Adding a new component to Emission to be used in [Eigen][] involves all three! B
 Create a new file in the `src/lib/Components` directory. You'll likely need to create a subdirectory with a good name, too. Create a basic component.
 
 ```tsx
+import { Serif } from "@artsy/palette"
 import React from "react"
-import SerifText from "../../../Components/Text/Serif"
 
 export class MyNewComponent extends React.Component {
   render() {
-    return <SerifText>Hello world!</SerifText>
+    return <Serif size="3t">Hello world!</Serif>
   }
 }
 ```
@@ -39,6 +39,8 @@ storiesOf("MyNewComponent").add("Show default component", () => {
 
 Rerun `yarn start`. This will pick up the new storybook and modify the `storyLoader.js` to add it to Emission's storybooks. You should now be able to run the Emission app and see the component through your storybook browser.
 
+At this point, you could add any props that your component needs. For example, if it's a query renderer then it may need an initial ID of some kind for its query variables.
+
 ## Adding a Native Controller (Optional)
 
 Emission can export components through its CocoaPod to be consumed by Eigen. This isn't necessary for new components like buttons or grids, but will be necessary if any part of Eigen needs to use the new component directly.
@@ -57,14 +59,14 @@ AppRegistry.registerComponent("MyNewComponent", () => MyNewComponent)
 
 This will expose the component as a module that can be loaded in our view controller, which we'll create now.
 
-Create two new files in the `Pod/Classes/ViewControllers` directory, named `ARMyNewComponentViewController.h` and `ARMyNewComponentViewController.m`. You need to include `AR` at the beginning of these file names, and the beginning of your class name. This uses Objective-C, so don't be shy about asking for help in Slack. In the `.h` header file, add something like:
+Create two new files in the `Pod/Classes/ViewControllers` directory, named `ARMyNewComponentViewController.h` and `ARMyNewComponentViewController.m`. You need to include `AR` at the beginning of these file names, and the beginning of your class name. This uses Objective-C, so don't be shy about asking for help in Slack. In the `.h` header file, add something _like_ this.
 
 ```objc
 #import <Emission/ARComponentViewController.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARMyNewComponentViewController : ARComponentViewController
+@interface ARMyNewComponentViewController: ARComponentViewController
 
 - (instancetype)initWithSomeIDThatEmissionNeeds:(NSString *)someID NS_DESIGNATED_INITIALIZER;
 
@@ -72,12 +74,14 @@ NS_ASSUME_NONNULL_BEGIN
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
 
-@property (nonatomic, copy) NSString *someID;
+@property (nonatomic, readonly) NSString *someID;
 
 @end
 
 NS_ASSUME_NONNULL_END
 ```
+
+We say _like_ this because the specifics will depend on your needs. Our `MyNewComponent` React component doesn't have any props, but if it did then we would include those props here as parameters to the initializer, and as Objective-C properties. (Objective-C convention is that any parameters to an object's initializer should be properties, often `readonly` ones.) Look at the other header files in the `Pod/Classes/ViewControllers` for examples.
 
 Okay now for the `.m` implementation file:
 
@@ -98,6 +102,8 @@ Okay now for the `.m` implementation file:
 
 @end
 ```
+
+Again, this will vary depending on the props that you're injecting in. Look for a `.h` file that matches your use case, and then look at its corresponding `.m` file.
 
 Okay. With the new view controllers created, `cd` into the `Example` directory and re-run `bundle exec pod install` to integrate the new view controller into the Example app.
 
@@ -124,7 +130,7 @@ You'll need to add the `jumpToMyNewComponent` method to this file. Let's write t
 }
 ```
 
-Add whatever example props that the controller needs here.
+Add whatever example props that the controller needs here, from our `.h` and `.m` work.
 
 Recompile the app and you _should_ see it listed in the "View Controllers" section of the Emission home screen. Nice!
 
