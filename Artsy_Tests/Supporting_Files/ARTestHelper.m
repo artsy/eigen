@@ -70,6 +70,7 @@
                                                                        metaphysicsURL:metaphysics
                                                                         predictionURL:@""
                                                                             userAgent:@"Eigen Tests"
+                                                                                  env:AREnvTest
                                                                               options:@{}];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];
