@@ -47,8 +47,8 @@ export class ShowItem extends React.Component<Props> {
     const {
       name,
       partner: { name: galleryName },
-      exhibition_period,
-      end_at,
+      exhibitionPeriod,
+      endAt,
     } = show
 
     const placeholder = this.imageURL ? null : <Pin color="white" />
@@ -67,7 +67,7 @@ export class ShowItem extends React.Component<Props> {
               {galleryName}
             </Serif>
             <Serif size="2" color="black60">
-              {ExhibitionDates(exhibition_period, end_at)}
+              {ExhibitionDates(exhibitionPeriod, endAt)}
             </Serif>
           </Flex>
         </Flex>
@@ -82,8 +82,8 @@ export const ShowItemContainer = createFragmentContainer(ShowItem, {
       internalID
       slug
       name
-      exhibition_period: exhibitionPeriod
-      end_at: endAt
+      exhibitionPeriod
+      endAt
       images {
         url
       }

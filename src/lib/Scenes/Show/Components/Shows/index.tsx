@@ -36,6 +36,7 @@ export const ShowsContainer = createFragmentContainer(Shows, {
         edges {
           node {
             id
+            name
             ...ShowItem_show
           }
         }

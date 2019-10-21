@@ -5,8 +5,8 @@ export type ShowItem_show = {
     readonly internalID: string;
     readonly slug: string;
     readonly name: string | null;
-    readonly exhibition_period: string | null;
-    readonly end_at: string | null;
+    readonly exhibitionPeriod: string | null;
+    readonly endAt: string | null;
     readonly images: ReadonlyArray<{
         readonly url: string | null;
     } | null> | null;
@@ -50,14 +50,14 @@ return {
     (v0/*: any*/),
     {
       "kind": "ScalarField",
-      "alias": "exhibition_period",
+      "alias": null,
       "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": "end_at",
+      "alias": null,
       "name": "endAt",
       "args": null,
       "storageKey": null
@@ -101,5 +101,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0e5b8437d01a545b7dafb191fe889a4a';
+(node as any).hash = 'fc4cb3c97a85fb26f0a70d6ffeded1a3';
 export default node;

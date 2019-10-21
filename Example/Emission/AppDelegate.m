@@ -21,6 +21,7 @@
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARArtworkComponentViewController.h>
+#import <Emission/ARPartnerComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
@@ -296,6 +297,10 @@ randomBOOL(void)
   } else if ([route hasPrefix:@"/artwork/"]) {
     NSString *artworkID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:artworkID];
+
+  } else if ([route hasPrefix:@"/partner/"]) {
+    NSString *partnerID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:partnerID];
 
   } else if ([route hasPrefix:@"/gene/"] || [route hasPrefix:@"gene/"]) {
     NSString *geneID = [[[[route componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"?"] firstObject];
