@@ -78,9 +78,12 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { artwork } = this.props
     const { auctionState } = this.state
     const { isInAuction, isForSale } = artwork
-
-    if (isInAuction && isForSale && auctionState !== "isLive") {
-      return <AuctionPrice artwork={artwork} auctionState={auctionState as AuctionState} />
+    if (isInAuction && isForSale) {
+      if (auctionState === "isLive") {
+        return null
+      } else {
+        return <AuctionPrice artwork={artwork} auctionState={auctionState as AuctionState} />
+      }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
       return this.renderEditionSetArtwork()
     } else {
@@ -154,19 +157,22 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
 
     const isBiddableInAuction = isInAuction && sale && auctionState !== "hasEnded" && isForSale
+    const isInClosedAuction = isInAuction && sale && auctionState === "hasEnded"
     const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
     const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
+    const hidesPriceInformation = isInAuction && isForSale && auctionState === "isLive"
 
     return (
       <>
         {this.renderPriceInformation()}
         <Box>
-          {canTakeCommercialAction && (
-            <>
-              <Spacer mb={2} />
-              <CommercialButtons artwork={artwork} auctionState={auctionState} editionSetID={editionSetID} />
-            </>
-          )}
+          {canTakeCommercialAction &&
+            !isInClosedAuction && (
+              <>
+                {!hidesPriceInformation && <Spacer mb={2} />}
+                <CommercialButtons artwork={artwork} auctionState={auctionState} editionSetID={editionSetID} />
+              </>
+            )}
           {isBiddableInAuction && (
             <>
               <Spacer mb={2} />

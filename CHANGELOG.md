@@ -16,8 +16,12 @@
 
 ### Master
 
+### 1.18.0
+
 - Add graphql request duration reporting via volley - ds300
 - Fix showing wrong state for closed auctions - ashkan18
+- Fixes `Contact Gallery` button showing up when artwork auction is closed - sepans
+- Updates CommercialInformation component to properly handle live auctions - sweir27
 
 ### 1.17.8
 
