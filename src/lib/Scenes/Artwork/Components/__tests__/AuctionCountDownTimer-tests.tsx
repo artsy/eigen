@@ -70,6 +70,7 @@ describe("AuctionCountDownTimer", () => {
       const date = timeUntil(startAt, liveStartAt, endAt, auctionState)
       expect(date).toEqual("Starts Aug 16, 8:00am EDT")
     })
+
     it("returns 'Live' string when auction has started but live sale has not", () => {
       const startAt = oneDayAgo
       const liveStartAt = oneDayFromNow
@@ -88,6 +89,7 @@ describe("AuctionCountDownTimer", () => {
       expect(date).toEqual("In progress")
     })
   })
+
   it("renders the correct countdown time and label using endAt if auctionState hasStarted", () => {
     const artwork = {
       ...ArtworkFixture,
@@ -114,7 +116,7 @@ describe("AuctionCountDownTimer", () => {
         sale: {
           startAt: "2019-08-14T19:22:00+00:00",
           liveStartAt: "2019-09-15T19:22:00+00:00",
-          endAt: "2019-10-16T20:20:00+00:00",
+          endAt: null,
         },
       },
     }
@@ -125,6 +127,26 @@ describe("AuctionCountDownTimer", () => {
     )
 
     expect(component.find(TimeRemaining).text()).toContain("31d 07h 22m 00sLive Sep 15, 3:22pm")
+  })
+
+  it("renders the correct countdown time and label when the live portion of the sale has started", () => {
+    const artwork = {
+      ...ArtworkFixture,
+      ...{
+        sale: {
+          startAt: oneYearAgo,
+          liveStartAt: oneDayAgo,
+          endAt: null,
+        },
+      },
+    }
+    const component = mount(
+      <Theme>
+        <AuctionCountDownTimer artwork={artwork} auctionState="isLive" />
+      </Theme>
+    )
+
+    expect(component.find(TimeRemaining).text()).toContain("00d 00h 00m 00sIn progress")
   })
 
   it("doesn't render if sale is null", () => {
