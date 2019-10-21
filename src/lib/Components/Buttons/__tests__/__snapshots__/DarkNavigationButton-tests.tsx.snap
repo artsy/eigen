@@ -2,20 +2,27 @@
 
 exports[`renders properly 1`] = `
 <View
+  px={2}
+  py={1}
   style={
     Array [
       Object {
-        "backgroundColor": "black",
-        "paddingBottom": 9,
+        "paddingBottom": 10,
         "paddingLeft": 20,
-        "paddingRight": 6,
-        "paddingTop": 13,
+        "paddingRight": 20,
+        "paddingTop": 10,
+      },
+      Object {
+        "backgroundColor": "#000",
       },
     ]
   }
 >
   <View
     accessible={true}
+    alignItems="center"
+    flexDirection="row"
+    justifyContent="space-between"
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -25,6 +32,8 @@ exports[`renders properly 1`] = `
     style={
       Array [
         Object {
+          "alignItems": "center",
+          "display": "flex",
           "flexDirection": "row",
           "justifyContent": "space-between",
         },
@@ -32,13 +41,19 @@ exports[`renders properly 1`] = `
     }
   >
     <Text
+      color="#FFF"
+      fontFamily="ReactNativeAGaramondPro-Regular"
+      fontSize="16px"
+      lineHeight="20px"
       style={
         Array [
           Object {
-            "color": "white",
+            "color": "#FFF",
             "fontFamily": "ReactNativeAGaramondPro-Regular",
-            "fontSize": 15,
+            "fontSize": 16,
+            "lineHeight": 20,
           },
+          Object {},
         ]
       }
     >

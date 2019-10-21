@@ -26,6 +26,7 @@ import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
 import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
+import { Theme } from "@artsy/palette"
 import { gravityURL } from "lib/relay/config"
 
 const Title = styled.Text`
@@ -58,36 +59,38 @@ interface Props {
 class Favorites extends React.Component<Props, null> {
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollableTabView
-          onChangeTab={selectedTab => this.fireTabSelectionAnalytics(selectedTab)}
-          renderTabBar={props => (
-            <View>
-              <Title>Saves &amp; Follows</Title>
-              <ScrollableTabBar {...props} />
-            </View>
-          )}
-        >
-          <ScrollableTab tabLabel="Works">
-            <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />
-          </ScrollableTab>
-          <ScrollableTab tabLabel="Artists">
-            <ArtistsRenderer render={renderWithLoadProgress(Artists)} />
-          </ScrollableTab>
-          <ScrollableTab tabLabel="Shows">
-            <ShowsRenderer render={renderWithLoadProgress(Shows)} />
-          </ScrollableTab>
-          <ScrollableTab tabLabel="Categories">
-            <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
-          </ScrollableTab>
-          {!!isTabVisible && ( // @TODO: hides Fairs tab for now. Revert after v1 of Local Discovery is launched.
-            <ScrollableTab tabLabel="Fairs">
-              <FairsRenderer render={renderWithLoadProgress(Fairs)} />
+      <Theme>
+        <View style={{ flex: 1 }}>
+          <ScrollableTabView
+            onChangeTab={selectedTab => this.fireTabSelectionAnalytics(selectedTab)}
+            renderTabBar={props => (
+              <View>
+                <Title>Saves &amp; Follows</Title>
+                <ScrollableTabBar {...props} />
+              </View>
+            )}
+          >
+            <ScrollableTab tabLabel="Works">
+              <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />
             </ScrollableTab>
-          )}
-        </ScrollableTabView>
-        {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
-      </View>
+            <ScrollableTab tabLabel="Artists">
+              <ArtistsRenderer render={renderWithLoadProgress(Artists)} />
+            </ScrollableTab>
+            <ScrollableTab tabLabel="Shows">
+              <ShowsRenderer render={renderWithLoadProgress(Shows)} />
+            </ScrollableTab>
+            <ScrollableTab tabLabel="Categories">
+              <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
+            </ScrollableTab>
+            {!!isTabVisible && ( // @TODO: hides Fairs tab for now. Revert after v1 of Local Discovery is launched.
+              <ScrollableTab tabLabel="Fairs">
+                <FairsRenderer render={renderWithLoadProgress(Fairs)} />
+              </ScrollableTab>
+            )}
+          </ScrollableTabView>
+          {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
+        </View>
+      </Theme>
     )
   }
 
