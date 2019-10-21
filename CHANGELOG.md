@@ -19,6 +19,7 @@
 ### 1.18.0
 
 - Add graphql request duration reporting via volley - ds300
+- Fixes `Contact Gallery` button showing up when artwork auction is closed - sepans
 
 ### 1.17.8
 

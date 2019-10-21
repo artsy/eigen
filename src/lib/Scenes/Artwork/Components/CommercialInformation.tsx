@@ -154,6 +154,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
 
     const isBiddableInAuction = isInAuction && sale && auctionState !== "hasEnded" && isForSale
+    const isInClosedAuction = isInAuction && sale && auctionState === "hasEnded"
     const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
     const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
 
@@ -161,12 +162,13 @@ export class CommercialInformation extends React.Component<CommercialInformation
       <>
         {this.renderPriceInformation()}
         <Box>
-          {canTakeCommercialAction && (
-            <>
-              <Spacer mb={2} />
-              <CommercialButtons artwork={artwork} auctionState={auctionState} editionSetID={editionSetID} />
-            </>
-          )}
+          {canTakeCommercialAction &&
+            !isInClosedAuction && (
+              <>
+                <Spacer mb={2} />
+                <CommercialButtons artwork={artwork} auctionState={auctionState} editionSetID={editionSetID} />
+              </>
+            )}
           {isBiddableInAuction && (
             <>
               <Spacer mb={2} />

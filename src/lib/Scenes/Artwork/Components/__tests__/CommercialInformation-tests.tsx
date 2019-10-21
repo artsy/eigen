@@ -28,10 +28,11 @@ describe("CommercialInformation", () => {
     expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
 
-  it("renders Bidding Closed for auction works when the auction has ended", () => {
+  it("renders Bidding Closed and no CommercialButtons for auction works when the auction has ended", () => {
     const workInEndedAuction = {
       ...CommercialInformationArtwork,
       isInAuction: true,
+      isInquireable: true,
       sale: {
         isAuction: true,
         isClosed: true,
@@ -44,6 +45,7 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("Bidding closed")
+    expect(component.find("CommercialButtons").length).toBe(0)
   })
 
   it("hides seller info for works from closed auctions", () => {
