@@ -1,29 +1,20 @@
 <!--
 
-// Please add your own contribution below inside the Master section, no need to
-// set a version number, that happens during a deploy.
-//
-// These docs are aimed at product people, so please limit technical
-// terminology in here.
-//
-// Things that warrant a CHANGELOG entry:
-//
-//   * New Features
-//   * Bug fixes across releases (not between betas)
-//   * Major dev tool updates
+Please add your own contribution below inside the Master section.
+Always err on the side of adding a changelog entry. More is more.
 
 -->
 
 ### Master
 
+- [ME-62] Centers DarkNavigationButton - kierangillen
+- [PURCHASE-1597] Updates CommercialInformation component to properly handle live auctions - sweir27
+- [PURCHASE-1598] Fix showing wrong state for closed auctions - ashkan18
+
 ### 1.18.0
 
 - Add graphql request duration reporting via volley - ds300
-- Fix showing wrong state for closed auctions - ashkan18
 - Fixes `Contact Gallery` button showing up when artwork auction is closed - sepans
-- Updates CommercialInformation component to properly handle live auctions - sweir27
-- Centers DarkNavigationButton - kierangillen
-- [ME-62] Centers DarkNavigationButton - kierangillen
 
 ### 1.17.8
 
