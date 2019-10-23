@@ -7,7 +7,7 @@ export type FollowShowInput = {
     readonly clientMutationId?: string | null;
 };
 export type EventMutationVariables = {
-    readonly input: FollowShowInput;
+    input: FollowShowInput;
 };
 export type EventMutationResponse = {
     readonly followShow: {

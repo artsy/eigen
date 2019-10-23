@@ -10,7 +10,7 @@ export type CommerceCreateOfferOrderWithArtworkInput = {
     readonly quantity?: number | null;
 };
 export type MakeOfferButtonOrderMutationVariables = {
-    readonly input: CommerceCreateOfferOrderWithArtworkInput;
+    input: CommerceCreateOfferOrderWithArtworkInput;
 };
 export type MakeOfferButtonOrderMutationResponse = {
     readonly commerceCreateOfferOrderWithArtwork: {

@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ArtworkTombstone_artwork$ref } from "./ArtworkTombstone_artwork.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkTombstoneStoryQueryVariables = {};
 export type ArtworkTombstoneStoryQueryResponse = {
     readonly artwork: {
-        readonly " $fragmentRefs": ArtworkTombstone_artwork$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkTombstone_artwork">;
     } | null;
 };
 export type ArtworkTombstoneStoryQuery = {

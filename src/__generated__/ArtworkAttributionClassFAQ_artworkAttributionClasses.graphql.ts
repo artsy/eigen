@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ArtworkAttributionClassFAQ_artworkAttributionClasses$ref: unique symbol;
-export type ArtworkAttributionClassFAQ_artworkAttributionClasses$ref = typeof _ArtworkAttributionClassFAQ_artworkAttributionClasses$ref;
 export type ArtworkAttributionClassFAQ_artworkAttributionClasses = ReadonlyArray<{
     readonly name: string | null;
     readonly longDescription: string | null;
-    readonly " $refType": ArtworkAttributionClassFAQ_artworkAttributionClasses$ref;
+    readonly " $refType": "ArtworkAttributionClassFAQ_artworkAttributionClasses";
 }>;
 
 

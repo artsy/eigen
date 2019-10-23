@@ -9,7 +9,7 @@ export type CreateGeminiEntryForAssetInput = {
     readonly clientMutationId?: string | null;
 };
 export type createGeminiAssetWithS3CredentialsMutationVariables = {
-    readonly input: CreateGeminiEntryForAssetInput;
+    input: CreateGeminiEntryForAssetInput;
 };
 export type createGeminiAssetWithS3CredentialsMutationResponse = {
     readonly createGeminiEntryForAsset: {

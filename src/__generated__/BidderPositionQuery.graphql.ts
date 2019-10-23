@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type BidderPositionQueryVariables = {
-    readonly bidderPositionID: string;
+    bidderPositionID: string;
 };
 export type BidderPositionQueryResponse = {
     readonly me: {

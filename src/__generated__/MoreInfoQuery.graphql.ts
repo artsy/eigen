@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { MoreInfo_show$ref } from "./MoreInfo_show.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type MoreInfoQueryVariables = {
-    readonly showID: string;
+    showID: string;
 };
 export type MoreInfoQueryResponse = {
     readonly show: {
-        readonly " $fragmentRefs": MoreInfo_show$ref;
+        readonly " $fragmentRefs": FragmentRefs<"MoreInfo_show">;
     } | null;
 };
 export type MoreInfoQuery = {

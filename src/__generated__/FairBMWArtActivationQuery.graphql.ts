@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FairBMWArtActivation_fair$ref } from "./FairBMWArtActivation_fair.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type FairBMWArtActivationQueryVariables = {
-    readonly fairID: string;
+    fairID: string;
 };
 export type FairBMWArtActivationQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FairBMWArtActivation_fair$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FairBMWArtActivation_fair">;
     } | null;
 };
 export type FairBMWArtActivationQuery = {

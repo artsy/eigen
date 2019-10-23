@@ -1,10 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Filters_filteredArtworks$ref } from "./Filters_filteredArtworks.graphql";
-import { InfiniteScrollArtworksGrid_connection$ref } from "./InfiniteScrollArtworksGrid_connection.graphql";
-declare const _FilteredInfiniteScrollGrid_entity$ref: unique symbol;
-export type FilteredInfiniteScrollGrid_entity$ref = typeof _FilteredInfiniteScrollGrid_entity$ref;
+import { FragmentRefs } from "relay-runtime";
 export type FilteredInfiniteScrollGrid_entity = {
     readonly id: string;
     readonly filterArtworksConnection: {
@@ -13,9 +10,9 @@ export type FilteredInfiniteScrollGrid_entity = {
                 readonly id: string;
             } | null;
         } | null> | null;
-        readonly " $fragmentRefs": Filters_filteredArtworks$ref & InfiniteScrollArtworksGrid_connection$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Filters_filteredArtworks" | "InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $refType": FilteredInfiniteScrollGrid_entity$ref;
+    readonly " $refType": "FilteredInfiniteScrollGrid_entity";
 };
 
 

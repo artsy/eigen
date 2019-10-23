@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ContextCard_artwork$ref: unique symbol;
-export type ContextCard_artwork$ref = typeof _ContextCard_artwork$ref;
 export type ContextCard_artwork = {
     readonly id: string;
     readonly context: ({
@@ -42,7 +40,7 @@ export type ContextCard_artwork = {
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
     }) | null;
-    readonly " $refType": ContextCard_artwork$ref;
+    readonly " $refType": "ContextCard_artwork";
 };
 
 

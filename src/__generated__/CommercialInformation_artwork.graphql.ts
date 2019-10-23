@@ -1,14 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkExtraLinks_artwork$ref } from "./ArtworkExtraLinks_artwork.graphql";
-import { AuctionCountDownTimer_artwork$ref } from "./AuctionCountDownTimer_artwork.graphql";
-import { AuctionPrice_artwork$ref } from "./AuctionPrice_artwork.graphql";
-import { CommercialButtons_artwork$ref } from "./CommercialButtons_artwork.graphql";
-import { CommercialEditionSetInformation_artwork$ref } from "./CommercialEditionSetInformation_artwork.graphql";
-import { CommercialPartnerInformation_artwork$ref } from "./CommercialPartnerInformation_artwork.graphql";
-declare const _CommercialInformation_artwork$ref: unique symbol;
-export type CommercialInformation_artwork$ref = typeof _CommercialInformation_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type CommercialInformation_artwork = {
     readonly isAcquireable: boolean | null;
     readonly isOfferable: boolean | null;
@@ -32,8 +25,8 @@ export type CommercialInformation_artwork = {
         readonly endAt: string | null;
         readonly startAt: string | null;
     } | null;
-    readonly " $fragmentRefs": CommercialButtons_artwork$ref & CommercialPartnerInformation_artwork$ref & CommercialEditionSetInformation_artwork$ref & AuctionCountDownTimer_artwork$ref & ArtworkExtraLinks_artwork$ref & AuctionPrice_artwork$ref;
-    readonly " $refType": CommercialInformation_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_artwork" | "CommercialPartnerInformation_artwork" | "CommercialEditionSetInformation_artwork" | "AuctionCountDownTimer_artwork" | "ArtworkExtraLinks_artwork" | "AuctionPrice_artwork">;
+    readonly " $refType": "CommercialInformation_artwork";
 };
 
 

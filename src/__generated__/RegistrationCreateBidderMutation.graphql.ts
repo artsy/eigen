@@ -6,7 +6,7 @@ export type CreateBidderInput = {
     readonly clientMutationId?: string | null;
 };
 export type RegistrationCreateBidderMutationVariables = {
-    readonly input: CreateBidderInput;
+    input: CreateBidderInput;
 };
 export type RegistrationCreateBidderMutationResponse = {
     readonly createBidder: {

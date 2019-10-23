@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { CityBMWList_city$ref } from "./CityBMWList_city.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type QueryRenderersCityBMWListQueryVariables = {
-    readonly citySlug: string;
+    citySlug: string;
 };
 export type QueryRenderersCityBMWListQueryResponse = {
     readonly city: {
-        readonly " $fragmentRefs": CityBMWList_city$ref;
+        readonly " $fragmentRefs": FragmentRefs<"CityBMWList_city">;
     } | null;
 };
 export type QueryRenderersCityBMWListQuery = {

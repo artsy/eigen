@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ConversationSnippet_conversation$ref } from "./ConversationSnippet_conversation.graphql";
-declare const _Conversations_me$ref: unique symbol;
-export type Conversations_me$ref = typeof _Conversations_me$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Conversations_me = {
     readonly conversations: {
         readonly pageInfo: {
@@ -14,11 +12,11 @@ export type Conversations_me = {
             readonly node: {
                 readonly internalID: string | null;
                 readonly last_message: string | null;
-                readonly " $fragmentRefs": ConversationSnippet_conversation$ref;
+                readonly " $fragmentRefs": FragmentRefs<"ConversationSnippet_conversation">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": Conversations_me$ref;
+    readonly " $refType": "Conversations_me";
 };
 
 

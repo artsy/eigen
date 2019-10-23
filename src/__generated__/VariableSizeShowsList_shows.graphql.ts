@@ -1,13 +1,11 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtistShow_show$ref } from "./ArtistShow_show.graphql";
-declare const _VariableSizeShowsList_shows$ref: unique symbol;
-export type VariableSizeShowsList_shows$ref = typeof _VariableSizeShowsList_shows$ref;
+import { FragmentRefs } from "relay-runtime";
 export type VariableSizeShowsList_shows = ReadonlyArray<{
     readonly id: string;
-    readonly " $fragmentRefs": ArtistShow_show$ref;
-    readonly " $refType": VariableSizeShowsList_shows$ref;
+    readonly " $fragmentRefs": FragmentRefs<"ArtistShow_show">;
+    readonly " $refType": "VariableSizeShowsList_shows";
 }>;
 
 

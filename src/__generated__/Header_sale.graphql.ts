@@ -1,11 +1,9 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Header_sale$ref: unique symbol;
-export type Header_sale$ref = typeof _Header_sale$ref;
 export type Header_sale = {
     readonly name: string | null;
-    readonly " $refType": Header_sale$ref;
+    readonly " $refType": "Header_sale";
 };
 
 

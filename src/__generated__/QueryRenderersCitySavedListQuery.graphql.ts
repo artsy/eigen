@@ -1,12 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { CitySavedList_viewer$ref } from "./CitySavedList_viewer.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type QueryRenderersCitySavedListQueryVariables = {
-    readonly citySlug: string;
+    citySlug: string;
 };
 export type QueryRenderersCitySavedListQueryResponse = {
-    readonly " $fragmentRefs": CitySavedList_viewer$ref;
+    readonly " $fragmentRefs": FragmentRefs<"CitySavedList_viewer">;
 };
 export type QueryRenderersCitySavedListQuery = {
     readonly response: QueryRenderersCitySavedListQueryResponse;

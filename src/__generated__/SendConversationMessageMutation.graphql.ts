@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Message_message$ref } from "./Message_message.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type SendConversationMessageMutationInput = {
     readonly id: string;
     readonly from: string;
@@ -10,7 +10,7 @@ export type SendConversationMessageMutationInput = {
     readonly clientMutationId?: string | null;
 };
 export type SendConversationMessageMutationVariables = {
-    readonly input: SendConversationMessageMutationInput;
+    input: SendConversationMessageMutationInput;
 };
 export type SendConversationMessageMutationResponse = {
     readonly sendConversationMessage: {
@@ -20,7 +20,7 @@ export type SendConversationMessageMutationResponse = {
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
                 readonly id: string;
-                readonly " $fragmentRefs": Message_message$ref;
+                readonly " $fragmentRefs": FragmentRefs<"Message_message">;
             } | null;
         } | null;
     } | null;

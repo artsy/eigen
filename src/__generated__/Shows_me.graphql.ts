@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ShowItemRow_show$ref } from "./ShowItemRow_show.graphql";
-declare const _Shows_me$ref: unique symbol;
-export type Shows_me$ref = typeof _Shows_me$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Shows_me = {
     readonly followsAndSaves: {
         readonly shows: {
@@ -16,12 +14,12 @@ export type Shows_me = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly id: string;
-                    readonly " $fragmentRefs": ShowItemRow_show$ref;
+                    readonly " $fragmentRefs": FragmentRefs<"ShowItemRow_show">;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": Shows_me$ref;
+    readonly " $refType": "Shows_me";
 };
 
 

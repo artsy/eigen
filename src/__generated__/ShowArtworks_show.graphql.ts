@@ -1,15 +1,13 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FilteredInfiniteScrollGrid_entity$ref } from "./FilteredInfiniteScrollGrid_entity.graphql";
-declare const _ShowArtworks_show$ref: unique symbol;
-export type ShowArtworks_show$ref = typeof _ShowArtworks_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ShowArtworks_show = {
     readonly id: string;
     readonly slug: string;
     readonly internalID: string;
-    readonly " $fragmentRefs": FilteredInfiniteScrollGrid_entity$ref;
-    readonly " $refType": ShowArtworks_show$ref;
+    readonly " $fragmentRefs": FragmentRefs<"FilteredInfiniteScrollGrid_entity">;
+    readonly " $refType": "ShowArtworks_show";
 };
 
 

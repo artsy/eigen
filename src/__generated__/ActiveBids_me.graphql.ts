@@ -1,17 +1,15 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ActiveBid_bid$ref } from "./ActiveBid_bid.graphql";
-declare const _ActiveBids_me$ref: unique symbol;
-export type ActiveBids_me$ref = typeof _ActiveBids_me$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ActiveBids_me = {
     readonly lot_standings: ReadonlyArray<{
         readonly most_recent_bid: {
             readonly id: string;
         } | null;
-        readonly " $fragmentRefs": ActiveBid_bid$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ActiveBid_bid">;
     } | null> | null;
-    readonly " $refType": ActiveBids_me$ref;
+    readonly " $refType": "ActiveBids_me";
 };
 
 

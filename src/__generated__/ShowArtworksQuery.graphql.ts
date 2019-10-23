@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ShowArtworksQueryVariables = {
-    readonly showID: string;
+    showID: string;
 };
 export type ShowArtworksQueryResponse = {
     readonly show: {
-        readonly " $fragmentRefs": ShowArtworks_show$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ShowArtworks_show">;
     } | null;
 };
 export type ShowArtworksQuery = {

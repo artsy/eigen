@@ -1,17 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { AboutArtist_artwork$ref } from "./AboutArtist_artwork.graphql";
-import { AboutWork_artwork$ref } from "./AboutWork_artwork.graphql";
-import { ArtworkDetails_artwork$ref } from "./ArtworkDetails_artwork.graphql";
-import { ArtworkHeader_artwork$ref } from "./ArtworkHeader_artwork.graphql";
-import { ArtworkHistory_artwork$ref } from "./ArtworkHistory_artwork.graphql";
-import { CommercialInformation_artwork$ref } from "./CommercialInformation_artwork.graphql";
-import { ContextCard_artwork$ref } from "./ContextCard_artwork.graphql";
-import { OtherWorks_artwork$ref } from "./OtherWorks_artwork.graphql";
-import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
-declare const _Artwork_artwork$ref: unique symbol;
-export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Artwork_artwork = {
     readonly additional_information: string | null;
     readonly description: string | null;
@@ -74,8 +64,8 @@ export type Artwork_artwork = {
     readonly is_biddable: boolean | null;
     readonly is_inquireable: boolean | null;
     readonly availability: string | null;
-    readonly " $fragmentRefs": PartnerCard_artwork$ref & AboutWork_artwork$ref & OtherWorks_artwork$ref & AboutArtist_artwork$ref & ArtworkDetails_artwork$ref & ContextCard_artwork$ref & ArtworkHeader_artwork$ref & CommercialInformation_artwork$ref & ArtworkHistory_artwork$ref;
-    readonly " $refType": Artwork_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"PartnerCard_artwork" | "AboutWork_artwork" | "OtherWorks_artwork" | "AboutArtist_artwork" | "ArtworkDetails_artwork" | "ContextCard_artwork" | "ArtworkHeader_artwork" | "CommercialInformation_artwork" | "ArtworkHistory_artwork">;
+    readonly " $refType": "Artwork_artwork";
 };
 
 

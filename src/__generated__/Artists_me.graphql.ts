@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Artists_me$ref: unique symbol;
-export type Artists_me$ref = typeof _Artists_me$ref;
 export type Artists_me = {
     readonly followsAndSaves: {
         readonly artists: {
@@ -20,7 +18,7 @@ export type Artists_me = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": Artists_me$ref;
+    readonly " $refType": "Artists_me";
 };
 
 

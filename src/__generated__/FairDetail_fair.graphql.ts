@@ -1,11 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FairBoothPreview_show$ref } from "./FairBoothPreview_show.graphql";
-import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
-import { LocationMap_location$ref } from "./LocationMap_location.graphql";
-declare const _FairDetail_fair$ref: unique symbol;
-export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
+import { FragmentRefs } from "relay-runtime";
 export type FairDetail_fair = {
     readonly slug: string;
     readonly internalID: string;
@@ -17,7 +13,7 @@ export type FairDetail_fair = {
             readonly lat: number | null;
             readonly lng: number | null;
         } | null;
-        readonly " $fragmentRefs": LocationMap_location$ref;
+        readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
     } | null;
     readonly organizer: {
         readonly website: string | null;
@@ -45,12 +41,12 @@ export type FairDetail_fair = {
                         } | null;
                     } | null> | null;
                 } | null;
-                readonly " $fragmentRefs": FairBoothPreview_show$ref;
+                readonly " $fragmentRefs": FragmentRefs<"FairBoothPreview_show">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FairHeader_fair$ref;
-    readonly " $refType": FairDetail_fair$ref;
+    readonly " $fragmentRefs": FragmentRefs<"FairHeader_fair">;
+    readonly " $refType": "FairDetail_fair";
 };
 
 

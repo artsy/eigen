@@ -1,14 +1,12 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ConfirmBid_me$ref: unique symbol;
-export type ConfirmBid_me$ref = typeof _ConfirmBid_me$ref;
 export type ConfirmBid_me = {
     readonly has_qualified_credit_cards: boolean | null;
     readonly bidders: ReadonlyArray<{
         readonly id: string;
     } | null> | null;
-    readonly " $refType": ConfirmBid_me$ref;
+    readonly " $refType": "ConfirmBid_me";
 };
 
 

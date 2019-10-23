@@ -1,11 +1,9 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _MockRelayRendererFixtures_artworkMetadata$ref: unique symbol;
-export type MockRelayRendererFixtures_artworkMetadata$ref = typeof _MockRelayRendererFixtures_artworkMetadata$ref;
 export type MockRelayRendererFixtures_artworkMetadata = {
     readonly title: string | null;
-    readonly " $refType": MockRelayRendererFixtures_artworkMetadata$ref;
+    readonly " $refType": "MockRelayRendererFixtures_artworkMetadata";
 };
 
 

@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ArtworkActions_artwork$ref: unique symbol;
-export type ArtworkActions_artwork$ref = typeof _ArtworkActions_artwork$ref;
 export type ArtworkActions_artwork = {
     readonly id: string;
     readonly internalID: string;
@@ -23,7 +21,7 @@ export type ArtworkActions_artwork = {
     } | null;
     readonly widthCm: number | null;
     readonly heightCm: number | null;
-    readonly " $refType": ArtworkActions_artwork$ref;
+    readonly " $refType": "ArtworkActions_artwork";
 };
 
 

@@ -1,17 +1,15 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ConfirmBid_sale_artwork$ref } from "./ConfirmBid_sale_artwork.graphql";
-declare const _SelectMaxBid_sale_artwork$ref: unique symbol;
-export type SelectMaxBid_sale_artwork$ref = typeof _SelectMaxBid_sale_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type SelectMaxBid_sale_artwork = {
     readonly id: string;
     readonly increments: ReadonlyArray<{
         readonly display: string | null;
         readonly cents: number | null;
     } | null> | null;
-    readonly " $fragmentRefs": ConfirmBid_sale_artwork$ref;
-    readonly " $refType": SelectMaxBid_sale_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_sale_artwork">;
+    readonly " $refType": "SelectMaxBid_sale_artwork";
 };
 
 

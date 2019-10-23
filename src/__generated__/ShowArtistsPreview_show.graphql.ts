@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
-declare const _ShowArtistsPreview_show$ref: unique symbol;
-export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ShowArtistsPreview_show = {
     readonly internalID: string;
     readonly slug: string;
@@ -12,16 +10,16 @@ export type ShowArtistsPreview_show = {
         readonly internalID: string;
         readonly slug: string;
         readonly href: string | null;
-        readonly " $fragmentRefs": ArtistListItem_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
     } | null> | null;
     readonly artists_without_artworks: ReadonlyArray<{
         readonly id: string;
         readonly internalID: string;
         readonly slug: string;
         readonly href: string | null;
-        readonly " $fragmentRefs": ArtistListItem_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
     } | null> | null;
-    readonly " $refType": ShowArtistsPreview_show$ref;
+    readonly " $refType": "ShowArtistsPreview_show";
 };
 
 

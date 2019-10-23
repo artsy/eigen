@@ -1,14 +1,12 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ShowEventSection_event$ref: unique symbol;
-export type ShowEventSection_event$ref = typeof _ShowEventSection_event$ref;
 export type ShowEventSection_event = {
     readonly event_type: string | null;
     readonly description: string | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
-    readonly " $refType": ShowEventSection_event$ref;
+    readonly " $refType": "ShowEventSection_event";
 };
 
 

@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _AuctionPrice_artwork$ref: unique symbol;
-export type AuctionPrice_artwork$ref = typeof _AuctionPrice_artwork$ref;
 export type AuctionPrice_artwork = {
     readonly sale: {
         readonly internalID: string;
@@ -29,7 +27,7 @@ export type AuctionPrice_artwork = {
             } | null;
         } | null;
     }> | null;
-    readonly " $refType": AuctionPrice_artwork$ref;
+    readonly " $refType": "AuctionPrice_artwork";
 };
 
 

@@ -7,8 +7,8 @@ export type FollowArtistInput = {
     readonly clientMutationId?: string | null;
 };
 export type ArtistRailFollowMutationVariables = {
-    readonly input: FollowArtistInput;
-    readonly excludeArtistIDs: ReadonlyArray<string | null>;
+    input: FollowArtistInput;
+    excludeArtistIDs: ReadonlyArray<string | null>;
 };
 export type ArtistRailFollowMutationResponse = {
     readonly followArtist: {

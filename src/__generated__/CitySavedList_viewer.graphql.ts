@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _CitySavedList_viewer$ref: unique symbol;
-export type CitySavedList_viewer$ref = typeof _CitySavedList_viewer$ref;
 export type CitySavedList_viewer = {
     readonly city: {
         readonly name: string | null;
@@ -47,7 +45,7 @@ export type CitySavedList_viewer = {
             } | null;
         } | null;
     } | null;
-    readonly " $refType": CitySavedList_viewer$ref;
+    readonly " $refType": "CitySavedList_viewer";
 };
 
 

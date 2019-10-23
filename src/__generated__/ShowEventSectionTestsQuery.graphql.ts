@@ -1,12 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ShowEventSectionTestsQueryVariables = {};
 export type ShowEventSectionTestsQueryResponse = {
     readonly show: {
         readonly events: ReadonlyArray<{
-            readonly " $fragmentRefs": ShowEventSection_event$ref;
+            readonly " $fragmentRefs": FragmentRefs<"ShowEventSection_event">;
         } | null> | null;
     } | null;
 };

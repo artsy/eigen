@@ -7,7 +7,7 @@ export type RequestCredentialsForAssetUploadInput = {
     readonly clientMutationId?: string | null;
 };
 export type getGeminiCredentialsForEnvironmentMutationVariables = {
-    readonly input: RequestCredentialsForAssetUploadInput;
+    input: RequestCredentialsForAssetUploadInput;
 };
 export type getGeminiCredentialsForEnvironmentMutationResponse = {
     readonly requestCredentialsForAssetUpload: {

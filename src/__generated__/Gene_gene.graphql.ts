@@ -1,12 +1,8 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { About_gene$ref } from "./About_gene.graphql";
-import { Header_gene$ref } from "./Header_gene.graphql";
-import { InfiniteScrollArtworksGrid_connection$ref } from "./InfiniteScrollArtworksGrid_connection.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
-declare const _Gene_gene$ref: unique symbol;
-export type Gene_gene$ref = typeof _Gene_gene$ref;
 export type Gene_gene = {
     readonly id: string;
     readonly internalID: string;
@@ -27,10 +23,10 @@ export type Gene_gene = {
                 readonly id: string;
             } | null;
         } | null> | null;
-        readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
+        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $fragmentRefs": Header_gene$ref & About_gene$ref;
-    readonly " $refType": Gene_gene$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Header_gene" | "About_gene">;
+    readonly " $refType": "Gene_gene";
 };
 
 

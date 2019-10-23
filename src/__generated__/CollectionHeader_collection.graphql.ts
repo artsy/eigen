@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _CollectionHeader_collection$ref: unique symbol;
-export type CollectionHeader_collection$ref = typeof _CollectionHeader_collection$ref;
 export type CollectionHeader_collection = {
     readonly title: string;
     readonly description: string | null;
-    readonly " $refType": CollectionHeader_collection$ref;
+    readonly " $refType": "CollectionHeader_collection";
 };
 
 

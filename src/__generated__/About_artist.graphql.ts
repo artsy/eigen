@@ -1,11 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Articles_articles$ref } from "./Articles_articles.graphql";
-import { Biography_artist$ref } from "./Biography_artist.graphql";
-import { RelatedArtists_artists$ref } from "./RelatedArtists_artists.graphql";
-declare const _About_artist$ref: unique symbol;
-export type About_artist$ref = typeof _About_artist$ref;
+import { FragmentRefs } from "relay-runtime";
 export type About_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
@@ -14,7 +10,7 @@ export type About_artist = {
         readonly artists: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly " $fragmentRefs": RelatedArtists_artists$ref;
+                    readonly " $fragmentRefs": FragmentRefs<"RelatedArtists_artists">;
                 } | null;
             } | null> | null;
         } | null;
@@ -22,12 +18,12 @@ export type About_artist = {
     readonly articles: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": Articles_articles$ref;
+                readonly " $fragmentRefs": FragmentRefs<"Articles_articles">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": Biography_artist$ref;
-    readonly " $refType": About_artist$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Biography_artist">;
+    readonly " $refType": "About_artist";
 };
 
 

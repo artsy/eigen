@@ -1,20 +1,20 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { CitySectionList_city$ref } from "./CitySectionList_city.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type EventStatus = "CLOSED" | "CLOSING_SOON" | "CURRENT" | "RUNNING" | "RUNNING_AND_UPCOMING" | "UPCOMING" | "%future added value";
 export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
 export type ShowSorts = "END_AT_ASC" | "END_AT_DESC" | "FEATURED_ASC" | "FEATURED_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "SORTABLE_NAME_ASC" | "SORTABLE_NAME_DESC" | "START_AT_ASC" | "START_AT_DESC" | "UPDATED_AT_ASC" | "UPDATED_AT_DESC" | "%future added value";
 export type QueryRenderersCitySectionListQueryVariables = {
-    readonly citySlug: string;
-    readonly partnerType?: PartnerShowPartnerType | null;
-    readonly status?: EventStatus | null;
-    readonly dayThreshold?: number | null;
-    readonly sort?: ShowSorts | null;
+    citySlug: string;
+    partnerType?: PartnerShowPartnerType | null;
+    status?: EventStatus | null;
+    dayThreshold?: number | null;
+    sort?: ShowSorts | null;
 };
 export type QueryRenderersCitySectionListQueryResponse = {
     readonly city: {
-        readonly " $fragmentRefs": CitySectionList_city$ref;
+        readonly " $fragmentRefs": FragmentRefs<"CitySectionList_city">;
     } | null;
 };
 export type QueryRenderersCitySectionListQuery = {

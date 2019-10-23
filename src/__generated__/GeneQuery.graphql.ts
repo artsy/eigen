@@ -1,18 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Gene_gene$ref } from "./Gene_gene.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type GeneQueryVariables = {
-    readonly id: string;
-    readonly count: number;
-    readonly cursor?: string | null;
-    readonly sort?: string | null;
-    readonly medium?: string | null;
-    readonly price_range?: string | null;
+    id: string;
+    count: number;
+    cursor?: string | null;
+    sort?: string | null;
+    medium?: string | null;
+    price_range?: string | null;
 };
 export type GeneQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": Gene_gene$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Gene_gene">;
     } | null;
 };
 export type GeneQuery = {

@@ -1725,10 +1725,10 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
-"@types/react-relay@5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-5.0.1.tgz#a369e04e7c1862359c1c4a0f428518c30b342d4a"
-  integrity sha512-nvLlSmkQN/OBu9hLvJGtE8KmN5TviKZIWyU7IKUa0X6OPvl21Qf6gUFPEYWcNL+ql/490kPxSzJzZCeVrw3yQg==
+"@types/react-relay@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-6.0.1.tgz#f9fbe5493f86cffe0ce1cc491b3898bd1cd40cdd"
+  integrity sha512-aM0z3/7pNU/n9+pK9NKHTTTowQZ/bvQitKJX8bRpnHrApxFNhJVH1t8dqecjCz5POKIxJmIRP6k12ZaYv5YvCw==
   dependencies:
     "@types/react" "*"
     "@types/relay-runtime" "*"
@@ -1755,10 +1755,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/relay-runtime@*", "@types/relay-runtime@6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-6.0.1.tgz#c304373d185bf4d9f601a696d27df02ac38b7ea7"
-  integrity sha512-jM+vW47/Uux1dvSdzIsGvrY9yieNMXuI0iUyoESebFhI70VOJOSmVnQqLDtI5wHTNP6WQzJARv2UWrZn3Qr8lQ==
+"@types/relay-runtime@*", "@types/relay-runtime@6.0.7":
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-6.0.7.tgz#2c63bca39c47a4919a7e1530814b64a68c868895"
+  integrity sha512-WNJEWhJI/H1cYy8n3tvyeIVbiDFmnBiQn7c4hptWfYA/zUsERxiwTYv+H+zzRIvWTt1tWLRWeVvGcXtfZy9y7Q==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -3426,9 +3426,9 @@ babel-preset-fbjs@^3.0.0, babel-preset-fbjs@^3.0.1:
     babel-plugin-syntax-trailing-function-commas "^7.0.0-beta.0"
 
 babel-preset-fbjs@^3.1.2:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/babel-preset-fbjs/-/babel-preset-fbjs-3.2.0.tgz#c0e6347d3e0379ed84b3c2434d3467567aa05297"
-  integrity sha512-5Jo+JeWiVz2wHUUyAlvb/sSYnXNig9r+HqGAOSfh5Fzxp7SnAaR/tEGRJ1ZX7C77kfk82658w6R5Z+uPATTD9g==
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/babel-preset-fbjs/-/babel-preset-fbjs-3.3.0.tgz#a6024764ea86c8e06a22d794ca8b69534d263541"
+  integrity sha512-7QTLTCd2gwB2qGoi5epSULMHugSVgpcVt5YAeiFO9ABLrutDQzKfGwzxgZHLpugq8qMdg/DhRZDZ5CLKxBkEbw==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.0.0"
     "@babel/plugin-proposal-object-rest-spread" "^7.0.0"
@@ -13312,10 +13312,10 @@ relateurl@0.2.x:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-relay-compiler-language-typescript@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-6.0.0.tgz#a283f0916ae070e18086e64bc429de9203e442eb"
-  integrity sha512-y2p2vmf7vmYQtVo/t/LLjE5rWW8HWic2C3pzjdcxTYgf47XIn7iu4F2BzTkWIsoVn/NR8vDf6YqCikIWyk3XIA==
+relay-compiler-language-typescript@9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-9.0.0.tgz#670acae85ee4e24865d1ac69ab291a7e19817db0"
+  integrity sha512-HUTMa92Da3fyJleD7BDIq5eph/nnBA/BSNA358X81cb9Xg8p8TLr6FCE8H9N6+tPEytXKANvYQ6crN8U2lUS3w==
   dependencies:
     immutable "^4.0.0-rc.12"
     invariant "^2.2.4"
@@ -15175,10 +15175,10 @@ typescript-template-language-service-decorator@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
 
-typescript@3.3.3333:
-  version "3.3.3333"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3333.tgz#171b2c5af66c59e9431199117a3bcadc66fdcfd6"
-  integrity sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
+typescript@3.6.4:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
+  integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
 
 typical@^2.6.1:
   version "2.6.1"

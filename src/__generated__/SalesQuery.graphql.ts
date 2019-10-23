@@ -1,10 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Sales_query$ref } from "./Sales_query.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type SalesQueryVariables = {};
 export type SalesQueryResponse = {
-    readonly " $fragmentRefs": Sales_query$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Sales_query">;
 };
 export type SalesQuery = {
     readonly response: SalesQueryResponse;

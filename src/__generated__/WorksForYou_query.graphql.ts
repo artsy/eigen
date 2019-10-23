@@ -1,10 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-import { Notification_notification$ref } from "./Notification_notification.graphql";
-declare const _WorksForYou_query$ref: unique symbol;
-export type WorksForYou_query$ref = typeof _WorksForYou_query$ref;
+import { FragmentRefs } from "relay-runtime";
 export type WorksForYou_query = {
     readonly me: {
         readonly followsAndSaves: {
@@ -16,7 +13,7 @@ export type WorksForYou_query = {
                 readonly edges: ReadonlyArray<{
                     readonly node: {
                         readonly id: string;
-                        readonly " $fragmentRefs": Notification_notification$ref;
+                        readonly " $fragmentRefs": FragmentRefs<"Notification_notification">;
                     } | null;
                 } | null> | null;
             } | null;
@@ -34,12 +31,12 @@ export type WorksForYou_query = {
         readonly artworks: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                    readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": WorksForYou_query$ref;
+    readonly " $refType": "WorksForYou_query";
 };
 
 

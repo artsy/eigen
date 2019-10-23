@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _GlobalMap_viewer$ref: unique symbol;
-export type GlobalMap_viewer$ref = typeof _GlobalMap_viewer$ref;
 export type GlobalMap_viewer = {
     readonly city: {
         readonly name: string | null;
@@ -156,7 +154,7 @@ export type GlobalMap_viewer = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": GlobalMap_viewer$ref;
+    readonly " $refType": "GlobalMap_viewer";
 };
 
 

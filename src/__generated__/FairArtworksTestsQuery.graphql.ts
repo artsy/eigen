@@ -1,12 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FairArtworks_fair$ref } from "./FairArtworks_fair.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type FairArtworksTestsQueryVariables = {};
 export type FairArtworksTestsQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FairArtworks_fair$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FairArtworks_fair">;
     } | null;
 };
 export type FairArtworksTestsQueryRawResponse = {

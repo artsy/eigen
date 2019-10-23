@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _FairsRail_fairs_module$ref: unique symbol;
-export type FairsRail_fairs_module$ref = typeof _FairsRail_fairs_module$ref;
 export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<{
         readonly id: string;
@@ -14,7 +12,7 @@ export type FairsRail_fairs_module = {
             readonly url: string | null;
         } | null;
     } | null>;
-    readonly " $refType": FairsRail_fairs_module$ref;
+    readonly " $refType": "FairsRail_fairs_module";
 };
 
 

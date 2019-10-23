@@ -7,7 +7,7 @@ export type FollowProfileInput = {
     readonly clientMutationId?: string | null;
 };
 export type FairBoothPreviewMutationVariables = {
-    readonly input: FollowProfileInput;
+    input: FollowProfileInput;
 };
 export type FairBoothPreviewMutationResponse = {
     readonly followProfile: {

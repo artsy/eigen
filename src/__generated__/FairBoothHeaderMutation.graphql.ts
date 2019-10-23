@@ -7,7 +7,7 @@ export type FollowProfileInput = {
     readonly clientMutationId?: string | null;
 };
 export type FairBoothHeaderMutationVariables = {
-    readonly input: FollowProfileInput;
+    input: FollowProfileInput;
 };
 export type FairBoothHeaderMutationResponse = {
     readonly followProfile: {

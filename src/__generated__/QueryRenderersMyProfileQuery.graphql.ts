@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { MyProfile_me$ref } from "./MyProfile_me.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type QueryRenderersMyProfileQueryVariables = {};
 export type QueryRenderersMyProfileQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": MyProfile_me$ref;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfile_me">;
     } | null;
 };
 export type QueryRenderersMyProfileQuery = {

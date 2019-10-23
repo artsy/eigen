@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Collection_collection$ref } from "./Collection_collection.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type QueryRenderersCollectionQueryVariables = {
-    readonly collectionID: string;
+    collectionID: string;
 };
 export type QueryRenderersCollectionQueryResponse = {
     readonly collection: {
-        readonly " $fragmentRefs": Collection_collection$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Collection_collection">;
     } | null;
 };
 export type QueryRenderersCollectionQuery = {

@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConfirmBidRefetchQueryVariables = {
-    readonly saleID: string;
+    saleID: string;
 };
 export type ConfirmBidRefetchQueryResponse = {
     readonly me: {

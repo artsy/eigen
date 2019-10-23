@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { BidButton_artwork$ref } from "./BidButton_artwork.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type BidButtonTestsQueryVariables = {};
 export type BidButtonTestsQueryResponse = {
     readonly artwork: {
-        readonly " $fragmentRefs": BidButton_artwork$ref;
+        readonly " $fragmentRefs": FragmentRefs<"BidButton_artwork">;
     } | null;
 };
 export type BidButtonTestsQueryRawResponse = {

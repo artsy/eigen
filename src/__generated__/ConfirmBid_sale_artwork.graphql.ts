@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { BidResult_sale_artwork$ref } from "./BidResult_sale_artwork.graphql";
-declare const _ConfirmBid_sale_artwork$ref: unique symbol;
-export type ConfirmBid_sale_artwork$ref = typeof _ConfirmBid_sale_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ConfirmBid_sale_artwork = {
     readonly internalID: string;
     readonly sale: {
@@ -21,8 +19,8 @@ export type ConfirmBid_sale_artwork = {
         } | null;
     } | null;
     readonly lot_label: string | null;
-    readonly " $fragmentRefs": BidResult_sale_artwork$ref;
-    readonly " $refType": ConfirmBid_sale_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"BidResult_sale_artwork">;
+    readonly " $refType": "ConfirmBid_sale_artwork";
 };
 
 

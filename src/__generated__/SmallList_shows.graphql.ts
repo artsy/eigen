@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtistShow_show$ref } from "./ArtistShow_show.graphql";
-declare const _SmallList_shows$ref: unique symbol;
-export type SmallList_shows$ref = typeof _SmallList_shows$ref;
+import { FragmentRefs } from "relay-runtime";
 export type SmallList_shows = ReadonlyArray<{
-    readonly " $fragmentRefs": ArtistShow_show$ref;
-    readonly " $refType": SmallList_shows$ref;
+    readonly " $fragmentRefs": FragmentRefs<"ArtistShow_show">;
+    readonly " $refType": "SmallList_shows";
 }>;
 
 

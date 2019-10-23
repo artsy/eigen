@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Registration_me$ref } from "./Registration_me.graphql";
-declare const _RegistrationFlow_me$ref: unique symbol;
-export type RegistrationFlow_me$ref = typeof _RegistrationFlow_me$ref;
+import { FragmentRefs } from "relay-runtime";
 export type RegistrationFlow_me = {
-    readonly " $fragmentRefs": Registration_me$ref;
-    readonly " $refType": RegistrationFlow_me$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Registration_me">;
+    readonly " $refType": "RegistrationFlow_me";
 };
 
 

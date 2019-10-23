@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _PartnerCard_artwork$ref: unique symbol;
-export type PartnerCard_artwork$ref = typeof _PartnerCard_artwork$ref;
 export type PartnerCard_artwork = {
     readonly sale: {
         readonly isBenefit: boolean | null;
@@ -28,7 +26,7 @@ export type PartnerCard_artwork = {
             readonly city: string | null;
         } | null> | null;
     } | null;
-    readonly " $refType": PartnerCard_artwork$ref;
+    readonly " $refType": "PartnerCard_artwork";
 };
 
 

@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { InfiniteScrollArtworksGrid_connection$ref } from "./InfiniteScrollArtworksGrid_connection.graphql";
-declare const _ArtistNotForSaleArtworksGrid_artist$ref: unique symbol;
-export type ArtistNotForSaleArtworksGrid_artist$ref = typeof _ArtistNotForSaleArtworksGrid_artist$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ArtistNotForSaleArtworksGrid_artist = {
     readonly id: string;
     readonly notForSaleArtworks: {
@@ -12,9 +10,9 @@ export type ArtistNotForSaleArtworksGrid_artist = {
                 readonly id: string;
             } | null;
         } | null> | null;
-        readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
+        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $refType": ArtistNotForSaleArtworksGrid_artist$ref;
+    readonly " $refType": "ArtistNotForSaleArtworksGrid_artist";
 };
 
 

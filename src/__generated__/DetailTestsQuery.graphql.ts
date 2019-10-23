@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Detail_show$ref } from "./Detail_show.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type DetailTestsQueryVariables = {};
 export type DetailTestsQueryResponse = {
     readonly show: {
-        readonly " $fragmentRefs": Detail_show$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Detail_show">;
     } | null;
 };
 export type DetailTestsQueryRawResponse = {

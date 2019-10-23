@@ -1,17 +1,17 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FilteredInfiniteScrollGrid_entity$ref } from "./FilteredInfiniteScrollGrid_entity.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type FilteredInfiniteScrollGridQueryVariables = {
-    readonly id: string;
-    readonly count: number;
-    readonly cursor?: string | null;
-    readonly medium?: string | null;
-    readonly priceRange?: string | null;
+    id: string;
+    count: number;
+    cursor?: string | null;
+    medium?: string | null;
+    priceRange?: string | null;
 };
 export type FilteredInfiniteScrollGridQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FilteredInfiniteScrollGrid_entity$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FilteredInfiniteScrollGrid_entity">;
     } | null;
 };
 export type FilteredInfiniteScrollGridQuery = {

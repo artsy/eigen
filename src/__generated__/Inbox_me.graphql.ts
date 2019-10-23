@@ -1,10 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ActiveBids_me$ref } from "./ActiveBids_me.graphql";
-import { Conversations_me$ref } from "./Conversations_me.graphql";
-declare const _Inbox_me$ref: unique symbol;
-export type Inbox_me$ref = typeof _Inbox_me$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Inbox_me = {
     readonly lot_standings: ReadonlyArray<{
         readonly most_recent_bid: {
@@ -18,8 +15,8 @@ export type Inbox_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": Conversations_me$ref & ActiveBids_me$ref;
-    readonly " $refType": Inbox_me$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Conversations_me" | "ActiveBids_me">;
+    readonly " $refType": "Inbox_me";
 };
 
 

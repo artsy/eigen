@@ -1,16 +1,12 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
-import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
-import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
-declare const _FairBooth_show$ref: unique symbol;
-export type FairBooth_show$ref = typeof _FairBooth_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type FairBooth_show = {
     readonly slug: string;
     readonly internalID: string;
-    readonly " $fragmentRefs": FairBoothHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref;
-    readonly " $refType": FairBooth_show$ref;
+    readonly " $fragmentRefs": FragmentRefs<"FairBoothHeader_show" | "ShowArtworksPreview_show" | "ShowArtistsPreview_show">;
+    readonly " $refType": "FairBooth_show";
 };
 
 

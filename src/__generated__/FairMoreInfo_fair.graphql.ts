@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _FairMoreInfo_fair$ref: unique symbol;
-export type FairMoreInfo_fair$ref = typeof _FairMoreInfo_fair$ref;
 export type FairMoreInfo_fair = {
     readonly organizer: {
         readonly website: string | null;
@@ -11,7 +9,7 @@ export type FairMoreInfo_fair = {
     readonly internalID: string;
     readonly about: string | null;
     readonly ticketsLink: string | null;
-    readonly " $refType": FairMoreInfo_fair$ref;
+    readonly " $refType": "FairMoreInfo_fair";
 };
 
 

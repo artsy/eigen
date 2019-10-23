@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { MockRelayRendererFixtures_artist$ref } from "./MockRelayRendererFixtures_artist.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type MockRelayRendererFixturesArtistQueryVariables = {
-    readonly id: string;
+    id: string;
 };
 export type MockRelayRendererFixturesArtistQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": MockRelayRendererFixtures_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"MockRelayRendererFixtures_artist">;
     } | null;
 };
 export type MockRelayRendererFixturesArtistQuery = {

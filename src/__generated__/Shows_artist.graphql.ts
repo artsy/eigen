@@ -1,40 +1,37 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { SmallList_shows$ref } from "./SmallList_shows.graphql";
-import { VariableSizeShowsList_shows$ref } from "./VariableSizeShowsList_shows.graphql";
-declare const _Shows_artist$ref: unique symbol;
-export type Shows_artist$ref = typeof _Shows_artist$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Shows_artist = {
     readonly currentShows: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+                readonly " $fragmentRefs": FragmentRefs<"VariableSizeShowsList_shows">;
             } | null;
         } | null> | null;
     } | null;
     readonly upcomingShows: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+                readonly " $fragmentRefs": FragmentRefs<"VariableSizeShowsList_shows">;
             } | null;
         } | null> | null;
     } | null;
     readonly pastSmallShows?: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": SmallList_shows$ref;
+                readonly " $fragmentRefs": FragmentRefs<"SmallList_shows">;
             } | null;
         } | null> | null;
     } | null;
     readonly pastLargeShows?: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+                readonly " $fragmentRefs": FragmentRefs<"VariableSizeShowsList_shows">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": Shows_artist$ref;
+    readonly " $refType": "Shows_artist";
 };
 
 

@@ -1,18 +1,16 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtistCard_artist$ref } from "./ArtistCard_artist.graphql";
-declare const _ArtistRail_rail$ref: unique symbol;
-export type ArtistRail_rail$ref = typeof _ArtistRail_rail$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ArtistRail_rail = {
     readonly id: string;
     readonly key: string | null;
     readonly results: ReadonlyArray<{
         readonly id: string;
         readonly internalID: string;
-        readonly " $fragmentRefs": ArtistCard_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistCard_artist">;
     } | null> | null;
-    readonly " $refType": ArtistRail_rail$ref;
+    readonly " $refType": "ArtistRail_rail";
 };
 
 

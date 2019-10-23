@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Registration_sale$ref: unique symbol;
-export type Registration_sale$ref = typeof _Registration_sale$ref;
 export type Registration_sale = {
     readonly slug: string;
     readonly end_at: string | null;
@@ -10,7 +8,7 @@ export type Registration_sale = {
     readonly live_start_at: string | null;
     readonly name: string | null;
     readonly start_at: string | null;
-    readonly " $refType": Registration_sale$ref;
+    readonly " $refType": "Registration_sale";
 };
 
 

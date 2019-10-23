@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FairMoreInfo_fair$ref } from "./FairMoreInfo_fair.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type FairMoreInfoQueryVariables = {
-    readonly fairID: string;
+    fairID: string;
 };
 export type FairMoreInfoQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FairMoreInfo_fair$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FairMoreInfo_fair">;
     } | null;
 };
 export type FairMoreInfoQuery = {
