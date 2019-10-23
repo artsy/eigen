@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
-declare const _InfiniteScrollArtworksGrid_connection$ref: unique symbol;
-export type InfiniteScrollArtworksGrid_connection$ref = typeof _InfiniteScrollArtworksGrid_connection$ref;
+import { FragmentRefs } from "relay-runtime";
 export type InfiniteScrollArtworksGrid_connection = {
     readonly pageInfo: {
         readonly hasNextPage: boolean;
@@ -17,10 +15,10 @@ export type InfiniteScrollArtworksGrid_connection = {
             readonly image: {
                 readonly aspectRatio: number;
             } | null;
-            readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
+            readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">;
         } | null;
     } | null> | null;
-    readonly " $refType": InfiniteScrollArtworksGrid_connection$ref;
+    readonly " $refType": "InfiniteScrollArtworksGrid_connection";
 };
 
 

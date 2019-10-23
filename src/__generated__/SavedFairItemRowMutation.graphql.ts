@@ -7,7 +7,7 @@ export type FollowProfileInput = {
     readonly clientMutationId?: string | null;
 };
 export type SavedFairItemRowMutationVariables = {
-    readonly input: FollowProfileInput;
+    input: FollowProfileInput;
 };
 export type SavedFairItemRowMutationResponse = {
     readonly followProfile: {

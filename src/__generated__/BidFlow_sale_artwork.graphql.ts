@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { SelectMaxBid_sale_artwork$ref } from "./SelectMaxBid_sale_artwork.graphql";
-declare const _BidFlow_sale_artwork$ref: unique symbol;
-export type BidFlow_sale_artwork$ref = typeof _BidFlow_sale_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type BidFlow_sale_artwork = {
-    readonly " $fragmentRefs": SelectMaxBid_sale_artwork$ref;
-    readonly " $refType": BidFlow_sale_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_sale_artwork">;
+    readonly " $refType": "BidFlow_sale_artwork";
 };
 
 

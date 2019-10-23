@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Metadata_show$ref } from "./Metadata_show.graphql";
-declare const _ArtistShow_show$ref: unique symbol;
-export type ArtistShow_show$ref = typeof _ArtistShow_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ArtistShow_show = {
     readonly slug: string;
     readonly href: string | null;
@@ -11,8 +9,8 @@ export type ArtistShow_show = {
     readonly cover_image: {
         readonly url: string | null;
     } | null;
-    readonly " $fragmentRefs": Metadata_show$ref;
-    readonly " $refType": ArtistShow_show$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Metadata_show">;
+    readonly " $refType": "ArtistShow_show";
 };
 
 

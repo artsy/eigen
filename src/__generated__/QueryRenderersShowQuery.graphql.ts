@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Show_show$ref } from "./Show_show.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type QueryRenderersShowQueryVariables = {
-    readonly showID: string;
+    showID: string;
 };
 export type QueryRenderersShowQueryResponse = {
     readonly show: {
-        readonly " $fragmentRefs": Show_show$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Show_show">;
     } | null;
 };
 export type QueryRenderersShowQuery = {

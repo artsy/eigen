@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Detail_show$ref } from "./Detail_show.graphql";
-declare const _Show_show$ref: unique symbol;
-export type Show_show$ref = typeof _Show_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Show_show = {
-    readonly " $fragmentRefs": Detail_show$ref;
-    readonly " $refType": Show_show$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Detail_show">;
+    readonly " $refType": "Show_show";
 };
 
 

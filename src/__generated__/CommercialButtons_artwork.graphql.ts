@@ -1,11 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { BidButton_artwork$ref } from "./BidButton_artwork.graphql";
-import { BuyNowButton_artwork$ref } from "./BuyNowButton_artwork.graphql";
-import { MakeOfferButton_artwork$ref } from "./MakeOfferButton_artwork.graphql";
-declare const _CommercialButtons_artwork$ref: unique symbol;
-export type CommercialButtons_artwork$ref = typeof _CommercialButtons_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type CommercialButtons_artwork = {
     readonly slug: string;
     readonly isAcquireable: boolean | null;
@@ -20,8 +16,8 @@ export type CommercialButtons_artwork = {
     readonly sale: {
         readonly isClosed: boolean | null;
     } | null;
-    readonly " $fragmentRefs": BuyNowButton_artwork$ref & BidButton_artwork$ref & MakeOfferButton_artwork$ref;
-    readonly " $refType": CommercialButtons_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"BuyNowButton_artwork" | "BidButton_artwork" | "MakeOfferButton_artwork">;
+    readonly " $refType": "CommercialButtons_artwork";
 };
 
 

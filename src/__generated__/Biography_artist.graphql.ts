@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Biography_artist$ref: unique symbol;
-export type Biography_artist$ref = typeof _Biography_artist$ref;
 export type Biography_artist = {
     readonly bio: string | null;
     readonly blurb: string | null;
-    readonly " $refType": Biography_artist$ref;
+    readonly " $refType": "Biography_artist";
 };
 
 

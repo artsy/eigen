@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _BuyNowButton_artwork$ref: unique symbol;
-export type BuyNowButton_artwork$ref = typeof _BuyNowButton_artwork$ref;
 export type BuyNowButton_artwork = {
     readonly internalID: string;
     readonly saleMessage: string | null;
-    readonly " $refType": BuyNowButton_artwork$ref;
+    readonly " $refType": "BuyNowButton_artwork";
 };
 
 

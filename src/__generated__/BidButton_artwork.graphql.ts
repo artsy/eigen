@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _BidButton_artwork$ref: unique symbol;
-export type BidButton_artwork$ref = typeof _BidButton_artwork$ref;
 export type BidButton_artwork = {
     readonly slug: string;
     readonly sale: {
@@ -27,7 +25,7 @@ export type BidButton_artwork = {
             readonly cents: number | null;
         } | null> | null;
     } | null;
-    readonly " $refType": BidButton_artwork$ref;
+    readonly " $refType": "BidButton_artwork";
 };
 
 

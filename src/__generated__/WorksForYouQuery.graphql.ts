@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { WorksForYou_query$ref } from "./WorksForYou_query.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type WorksForYouQueryVariables = {
-    readonly count: number;
-    readonly cursor?: string | null;
+    count: number;
+    cursor?: string | null;
 };
 export type WorksForYouQueryResponse = {
-    readonly " $fragmentRefs": WorksForYou_query$ref;
+    readonly " $fragmentRefs": FragmentRefs<"WorksForYou_query">;
 };
 export type WorksForYouQuery = {
     readonly response: WorksForYouQueryResponse;

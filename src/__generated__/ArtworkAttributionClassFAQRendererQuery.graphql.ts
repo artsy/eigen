@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ArtworkAttributionClassFAQ_artworkAttributionClasses$ref } from "./ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkAttributionClassFAQRendererQueryVariables = {};
 export type ArtworkAttributionClassFAQRendererQueryResponse = {
     readonly artworkAttributionClasses: ReadonlyArray<{
-        readonly " $fragmentRefs": ArtworkAttributionClassFAQ_artworkAttributionClasses$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkAttributionClassFAQ_artworkAttributionClasses">;
     } | null> | null;
 };
 export type ArtworkAttributionClassFAQRendererQuery = {

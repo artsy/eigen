@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { MockRelayRendererFixtures_artworkMetadata$ref } from "./MockRelayRendererFixtures_artworkMetadata.graphql";
-declare const _MockRelayRendererFixtures_artwork$ref: unique symbol;
-export type MockRelayRendererFixtures_artwork$ref = typeof _MockRelayRendererFixtures_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type MockRelayRendererFixtures_artwork = {
     readonly image: {
         readonly url: string | null;
@@ -11,8 +9,8 @@ export type MockRelayRendererFixtures_artwork = {
     readonly artist: {
         readonly slug: string;
     } | null;
-    readonly " $fragmentRefs": MockRelayRendererFixtures_artworkMetadata$ref;
-    readonly " $refType": MockRelayRendererFixtures_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"MockRelayRendererFixtures_artworkMetadata">;
+    readonly " $refType": "MockRelayRendererFixtures_artwork";
 };
 
 

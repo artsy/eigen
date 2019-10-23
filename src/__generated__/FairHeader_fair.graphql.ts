@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _FairHeader_fair$ref: unique symbol;
-export type FairHeader_fair$ref = typeof _FairHeader_fair$ref;
 export type FairHeader_fair = {
     readonly slug: string;
     readonly name: string | null;
@@ -40,7 +38,7 @@ export type FairHeader_fair = {
             readonly url: string | null;
         } | null;
     } | null;
-    readonly " $refType": FairHeader_fair$ref;
+    readonly " $refType": "FairHeader_fair";
 };
 
 

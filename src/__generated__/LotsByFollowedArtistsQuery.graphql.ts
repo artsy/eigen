@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { LotsByFollowedArtists_query$ref } from "./LotsByFollowedArtists_query.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type LotsByFollowedArtistsQueryVariables = {
-    readonly count: number;
-    readonly cursor?: string | null;
+    count: number;
+    cursor?: string | null;
 };
 export type LotsByFollowedArtistsQueryResponse = {
-    readonly " $fragmentRefs": LotsByFollowedArtists_query$ref;
+    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_query">;
 };
 export type LotsByFollowedArtistsQuery = {
     readonly response: LotsByFollowedArtistsQueryResponse;

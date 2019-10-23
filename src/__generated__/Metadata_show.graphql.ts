@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Metadata_show$ref: unique symbol;
-export type Metadata_show$ref = typeof _Metadata_show$ref;
 export type Metadata_show = {
     readonly kind: string | null;
     readonly name: string | null;
@@ -15,7 +13,7 @@ export type Metadata_show = {
     readonly location: {
         readonly city: string | null;
     } | null;
-    readonly " $refType": Metadata_show$ref;
+    readonly " $refType": "Metadata_show";
 };
 
 

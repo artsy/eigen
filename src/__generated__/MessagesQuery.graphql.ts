@@ -1,16 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Messages_conversation$ref } from "./Messages_conversation.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type MessagesQueryVariables = {
-    readonly conversationID: string;
-    readonly count: number;
-    readonly after?: string | null;
+    conversationID: string;
+    count: number;
+    after?: string | null;
 };
 export type MessagesQueryResponse = {
     readonly me: {
         readonly conversation: {
-            readonly " $fragmentRefs": Messages_conversation$ref;
+            readonly " $fragmentRefs": FragmentRefs<"Messages_conversation">;
         } | null;
     } | null;
 };

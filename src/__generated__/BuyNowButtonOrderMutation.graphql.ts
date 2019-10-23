@@ -9,7 +9,7 @@ export type CommerceCreateOrderWithArtworkInput = {
     readonly quantity?: number | null;
 };
 export type BuyNowButtonOrderMutationVariables = {
-    readonly input: CommerceCreateOrderWithArtworkInput;
+    input: CommerceCreateOrderWithArtworkInput;
 };
 export type BuyNowButtonOrderMutationResponse = {
     readonly commerceCreateOrderWithArtwork: {

@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FairBoothPreview_show$ref } from "./FairBoothPreview_show.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type indexTestsFairBothPreviewQueryVariables = {};
 export type indexTestsFairBothPreviewQueryResponse = {
     readonly show: {
-        readonly " $fragmentRefs": FairBoothPreview_show$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FairBoothPreview_show">;
     } | null;
 };
 export type indexTestsFairBothPreviewQueryRawResponse = {

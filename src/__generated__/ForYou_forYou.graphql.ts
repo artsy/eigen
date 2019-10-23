@@ -1,24 +1,20 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtistRail_rail$ref } from "./ArtistRail_rail.graphql";
-import { ArtworkCarousel_rail$ref } from "./ArtworkCarousel_rail.graphql";
-import { FairsRail_fairs_module$ref } from "./FairsRail_fairs_module.graphql";
-declare const _ForYou_forYou$ref: unique symbol;
-export type ForYou_forYou$ref = typeof _ForYou_forYou$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ForYou_forYou = {
     readonly artwork_modules: ReadonlyArray<{
         readonly id: string;
-        readonly " $fragmentRefs": ArtworkCarousel_rail$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkCarousel_rail">;
     } | null> | null;
     readonly artist_modules: ReadonlyArray<{
         readonly id: string;
-        readonly " $fragmentRefs": ArtistRail_rail$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistRail_rail">;
     } | null> | null;
     readonly fairs_module: {
-        readonly " $fragmentRefs": FairsRail_fairs_module$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairs_module">;
     } | null;
-    readonly " $refType": ForYou_forYou$ref;
+    readonly " $refType": "ForYou_forYou";
 };
 
 

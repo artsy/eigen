@@ -7,7 +7,7 @@ export type UpdateConversationMutationInput = {
     readonly clientMutationId?: string | null;
 };
 export type UpdateConversationMutationVariables = {
-    readonly input: UpdateConversationMutationInput;
+    input: UpdateConversationMutationInput;
 };
 export type UpdateConversationMutationResponse = {
     readonly updateConversation: {

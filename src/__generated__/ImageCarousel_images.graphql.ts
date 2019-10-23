@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ImageCarousel_images$ref: unique symbol;
-export type ImageCarousel_images$ref = typeof _ImageCarousel_images$ref;
 export type ImageCarousel_images = ReadonlyArray<{
     readonly url: string | null;
     readonly width: number | null;
@@ -18,7 +16,7 @@ export type ImageCarousel_images = ReadonlyArray<{
             } | null;
         } | null;
     } | null;
-    readonly " $refType": ImageCarousel_images$ref;
+    readonly " $refType": "ImageCarousel_images";
 }>;
 
 

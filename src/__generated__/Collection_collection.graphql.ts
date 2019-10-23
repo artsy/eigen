@@ -1,12 +1,10 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { CollectionHeader_collection$ref } from "./CollectionHeader_collection.graphql";
-declare const _Collection_collection$ref: unique symbol;
-export type Collection_collection$ref = typeof _Collection_collection$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Collection_collection = {
-    readonly " $fragmentRefs": CollectionHeader_collection$ref;
-    readonly " $refType": Collection_collection$ref;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection">;
+    readonly " $refType": "Collection_collection";
 };
 
 

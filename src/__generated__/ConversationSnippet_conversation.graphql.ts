@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ConversationSnippet_conversation$ref: unique symbol;
-export type ConversationSnippet_conversation$ref = typeof _ConversationSnippet_conversation$ref;
 export type ConversationSnippet_conversation = {
     readonly internalID: string | null;
     readonly to: {
@@ -35,7 +33,7 @@ export type ConversationSnippet_conversation = {
             readonly __typename: "%other";
         }) | null;
     } | null> | null;
-    readonly " $refType": ConversationSnippet_conversation$ref;
+    readonly " $refType": "ConversationSnippet_conversation";
 };
 
 

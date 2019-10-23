@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _FairBoothPreview_show$ref: unique symbol;
-export type FairBoothPreview_show$ref = typeof _FairBoothPreview_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type FairBoothPreview_show = {
     readonly slug: string;
     readonly internalID: string;
@@ -32,11 +30,11 @@ export type FairBoothPreview_show = {
     readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": FairBoothPreview_show$ref;
+    readonly " $refType": "FairBoothPreview_show";
 };
 
 

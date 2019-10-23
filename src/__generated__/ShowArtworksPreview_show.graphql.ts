@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _ShowArtworksPreview_show$ref: unique symbol;
-export type ShowArtworksPreview_show$ref = typeof _ShowArtworksPreview_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ShowArtworksPreview_show = {
     readonly id: string;
     readonly counts: {
@@ -12,11 +10,11 @@ export type ShowArtworksPreview_show = {
     readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": ShowArtworksPreview_show$ref;
+    readonly " $refType": "ShowArtworksPreview_show";
 };
 
 

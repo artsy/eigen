@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ShowItemRow_show$ref: unique symbol;
-export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
 export type ShowItemRow_show = {
     readonly id: string;
     readonly slug: string;
@@ -26,7 +24,7 @@ export type ShowItemRow_show = {
     } | null;
     readonly is_fair_booth: boolean | null;
     readonly end_at: string | null;
-    readonly " $refType": ShowItemRow_show$ref;
+    readonly " $refType": "ShowItemRow_show";
 };
 
 

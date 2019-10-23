@@ -7,7 +7,7 @@ export type FollowProfileInput = {
     readonly clientMutationId?: string | null;
 };
 export type PartnerCardFollowMutationVariables = {
-    readonly input: FollowProfileInput;
+    input: FollowProfileInput;
 };
 export type PartnerCardFollowMutationResponse = {
     readonly followProfile: {

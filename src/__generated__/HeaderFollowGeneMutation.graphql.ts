@@ -6,7 +6,7 @@ export type FollowGeneInput = {
     readonly clientMutationId?: string | null;
 };
 export type HeaderFollowGeneMutationVariables = {
-    readonly input: FollowGeneInput;
+    input: FollowGeneInput;
 };
 export type HeaderFollowGeneMutationResponse = {
     readonly followGene: {

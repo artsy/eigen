@@ -1,12 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type ShowArtworksTestsQueryVariables = {};
 export type ShowArtworksTestsQueryResponse = {
     readonly show: {
-        readonly " $fragmentRefs": ShowArtworks_show$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ShowArtworks_show">;
     } | null;
 };
 export type ShowArtworksTestsQueryRawResponse = {

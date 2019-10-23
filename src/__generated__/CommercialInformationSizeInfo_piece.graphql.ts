@@ -1,15 +1,13 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _CommercialInformationSizeInfo_piece$ref: unique symbol;
-export type CommercialInformationSizeInfo_piece$ref = typeof _CommercialInformationSizeInfo_piece$ref;
 export type CommercialInformationSizeInfo_piece = {
     readonly dimensions: {
         readonly in: string | null;
         readonly cm: string | null;
     } | null;
     readonly editionOf: string | null;
-    readonly " $refType": CommercialInformationSizeInfo_piece$ref;
+    readonly " $refType": "CommercialInformationSizeInfo_piece";
 };
 
 

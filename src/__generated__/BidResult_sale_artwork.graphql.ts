@@ -1,15 +1,13 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _BidResult_sale_artwork$ref: unique symbol;
-export type BidResult_sale_artwork$ref = typeof _BidResult_sale_artwork$ref;
 export type BidResult_sale_artwork = {
     readonly sale: {
         readonly liveStartAt: string | null;
         readonly endAt: string | null;
         readonly slug: string;
     } | null;
-    readonly " $refType": BidResult_sale_artwork$ref;
+    readonly " $refType": "BidResult_sale_artwork";
 };
 
 

@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FollowArtistButton_artist$ref } from "./FollowArtistButton_artist.graphql";
-declare const _ArtworkTombstone_artwork$ref: unique symbol;
-export type ArtworkTombstone_artwork$ref = typeof _ArtworkTombstone_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkTombstone_artwork = {
     readonly title: string | null;
     readonly isInAuction: boolean | null;
@@ -23,7 +21,7 @@ export type ArtworkTombstone_artwork = {
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
-        readonly " $fragmentRefs": FollowArtistButton_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FollowArtistButton_artist">;
     } | null> | null;
     readonly dimensions: {
         readonly in: string | null;
@@ -33,7 +31,7 @@ export type ArtworkTombstone_artwork = {
     readonly attribution_class: {
         readonly shortDescription: string | null;
     } | null;
-    readonly " $refType": ArtworkTombstone_artwork$ref;
+    readonly " $refType": "ArtworkTombstone_artwork";
 };
 
 

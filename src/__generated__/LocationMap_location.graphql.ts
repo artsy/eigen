@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _LocationMap_location$ref: unique symbol;
-export type LocationMap_location$ref = typeof _LocationMap_location$ref;
 export type LocationMap_location = {
     readonly id: string;
     readonly internalID: string;
@@ -27,7 +25,7 @@ export type LocationMap_location = {
         } | null> | null;
         readonly text?: string | null;
     } | null;
-    readonly " $refType": LocationMap_location$ref;
+    readonly " $refType": "LocationMap_location";
 };
 
 

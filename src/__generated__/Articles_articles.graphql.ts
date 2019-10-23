@@ -1,13 +1,11 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Article_article$ref } from "./Article_article.graphql";
-declare const _Articles_articles$ref: unique symbol;
-export type Articles_articles$ref = typeof _Articles_articles$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Articles_articles = ReadonlyArray<{
     readonly id: string;
-    readonly " $fragmentRefs": Article_article$ref;
-    readonly " $refType": Articles_articles$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Article_article">;
+    readonly " $refType": "Articles_articles";
 }>;
 
 

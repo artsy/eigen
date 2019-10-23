@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _FairBMWArtActivation_fair$ref: unique symbol;
-export type FairBMWArtActivation_fair$ref = typeof _FairBMWArtActivation_fair$ref;
 export type FairBMWArtActivation_fair = {
     readonly slug: string;
     readonly internalID: string;
@@ -10,7 +8,7 @@ export type FairBMWArtActivation_fair = {
         readonly activationText: string | null;
         readonly pressReleaseUrl: string | null;
     } | null;
-    readonly " $refType": FairBMWArtActivation_fair$ref;
+    readonly " $refType": "FairBMWArtActivation_fair";
 };
 
 

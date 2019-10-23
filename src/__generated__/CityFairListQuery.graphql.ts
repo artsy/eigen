@@ -1,15 +1,15 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { CityFairList_city$ref } from "./CityFairList_city.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type CityFairListQueryVariables = {
-    readonly count: number;
-    readonly cursor?: string | null;
-    readonly citySlug: string;
+    count: number;
+    cursor?: string | null;
+    citySlug: string;
 };
 export type CityFairListQueryResponse = {
     readonly city: {
-        readonly " $fragmentRefs": CityFairList_city$ref;
+        readonly " $fragmentRefs": FragmentRefs<"CityFairList_city">;
     } | null;
 };
 export type CityFairListQuery = {

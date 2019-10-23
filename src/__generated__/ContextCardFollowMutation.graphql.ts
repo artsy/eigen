@@ -7,7 +7,7 @@ export type FollowShowInput = {
     readonly clientMutationId?: string | null;
 };
 export type ContextCardFollowMutationVariables = {
-    readonly input: FollowShowInput;
+    input: FollowShowInput;
 };
 export type ContextCardFollowMutationResponse = {
     readonly followShow: {

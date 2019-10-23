@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ForYou_forYou$ref } from "./ForYou_forYou.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ForYouRefetchQueryVariables = {};
 export type ForYouRefetchQueryResponse = {
     readonly forYou: {
-        readonly " $fragmentRefs": ForYou_forYou$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ForYou_forYou">;
     } | null;
 };
 export type ForYouRefetchQuery = {

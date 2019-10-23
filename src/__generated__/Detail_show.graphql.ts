@@ -1,13 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { LocationMap_location$ref } from "./LocationMap_location.graphql";
-import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
-import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
-import { ShowHeader_show$ref } from "./ShowHeader_show.graphql";
-import { Shows_show$ref } from "./Shows_show.graphql";
-declare const _Detail_show$ref: unique symbol;
-export type Detail_show$ref = typeof _Detail_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Detail_show = {
     readonly internalID: string;
     readonly slug: string;
@@ -20,7 +14,7 @@ export type Detail_show = {
             } | null> | null;
             readonly text?: string | null;
         } | null;
-        readonly " $fragmentRefs": LocationMap_location$ref;
+        readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
     } | null;
     readonly artistsWithoutArtworks: ReadonlyArray<{
         readonly slug: string;
@@ -33,8 +27,8 @@ export type Detail_show = {
         readonly name?: string | null;
         readonly type?: string | null;
     } | null;
-    readonly " $fragmentRefs": ShowHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & Shows_show$ref;
-    readonly " $refType": Detail_show$ref;
+    readonly " $fragmentRefs": FragmentRefs<"ShowHeader_show" | "ShowArtworksPreview_show" | "ShowArtistsPreview_show" | "Shows_show">;
+    readonly " $refType": "Detail_show";
 };
 
 

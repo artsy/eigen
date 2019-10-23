@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _FairBoothHeader_show$ref: unique symbol;
-export type FairBoothHeader_show$ref = typeof _FairBoothHeader_show$ref;
 export type FairBoothHeader_show = {
     readonly fair: {
         readonly name: string | null;
@@ -26,7 +24,7 @@ export type FairBoothHeader_show = {
     readonly location: {
         readonly display: string | null;
     } | null;
-    readonly " $refType": FairBoothHeader_show$ref;
+    readonly " $refType": "FairBoothHeader_show";
 };
 
 

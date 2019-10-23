@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _SaleListItem_sale$ref: unique symbol;
-export type SaleListItem_sale$ref = typeof _SaleListItem_sale$ref;
 export type SaleListItem_sale = {
     readonly name: string | null;
     readonly href: string | null;
@@ -12,7 +10,7 @@ export type SaleListItem_sale = {
     readonly coverImage: {
         readonly url: string | null;
     } | null;
-    readonly " $refType": SaleListItem_sale$ref;
+    readonly " $refType": "SaleListItem_sale";
 };
 
 

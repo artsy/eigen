@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Article_article$ref: unique symbol;
-export type Article_article$ref = typeof _Article_article$ref;
 export type Article_article = {
     readonly thumbnail_title: string | null;
     readonly href: string | null;
@@ -12,7 +10,7 @@ export type Article_article = {
     readonly thumbnail_image: {
         readonly url: string | null;
     } | null;
-    readonly " $refType": Article_article$ref;
+    readonly " $refType": "Article_article";
 };
 
 

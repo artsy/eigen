@@ -1,17 +1,17 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ArtistForSaleArtworksGrid_artist$ref } from "./ArtistForSaleArtworksGrid_artist.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ArtistArtworksFilters = "IS_FOR_SALE" | "IS_NOT_FOR_SALE" | "%future added value";
 export type ArtistForSaleArtworksGridQueryVariables = {
-    readonly id: string;
-    readonly count: number;
-    readonly cursor?: string | null;
-    readonly filter?: ReadonlyArray<ArtistArtworksFilters | null> | null;
+    id: string;
+    count: number;
+    cursor?: string | null;
+    filter?: ReadonlyArray<ArtistArtworksFilters | null> | null;
 };
 export type ArtistForSaleArtworksGridQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": ArtistForSaleArtworksGrid_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistForSaleArtworksGrid_artist">;
     } | null;
 };
 export type ArtistForSaleArtworksGridQuery = {

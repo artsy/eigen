@@ -1,14 +1,14 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Categories_me$ref } from "./Categories_me.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type CategoriesMeQueryVariables = {
-    readonly count: number;
-    readonly cursor?: string | null;
+    count: number;
+    cursor?: string | null;
 };
 export type CategoriesMeQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": Categories_me$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Categories_me">;
     } | null;
 };
 export type CategoriesMeQuery = {

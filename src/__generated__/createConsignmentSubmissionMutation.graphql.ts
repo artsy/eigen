@@ -28,7 +28,7 @@ export type CreateSubmissionMutationInput = {
     readonly clientMutationId?: string | null;
 };
 export type createConsignmentSubmissionMutationVariables = {
-    readonly input: CreateSubmissionMutationInput;
+    input: CreateSubmissionMutationInput;
 };
 export type createConsignmentSubmissionMutationResponse = {
     readonly createConsignmentSubmission: {

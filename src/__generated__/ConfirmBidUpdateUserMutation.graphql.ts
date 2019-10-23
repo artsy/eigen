@@ -22,7 +22,7 @@ export type EditableLocation = {
     readonly stateCode?: string | null;
 };
 export type ConfirmBidUpdateUserMutationVariables = {
-    readonly input: UpdateMyProfileInput;
+    input: UpdateMyProfileInput;
 };
 export type ConfirmBidUpdateUserMutationResponse = {
     readonly updateMyUserProfile: {

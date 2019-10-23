@@ -1,17 +1,13 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkActions_artwork$ref } from "./ArtworkActions_artwork.graphql";
-import { ArtworkTombstone_artwork$ref } from "./ArtworkTombstone_artwork.graphql";
-import { ImageCarousel_images$ref } from "./ImageCarousel_images.graphql";
-declare const _ArtworkHeader_artwork$ref: unique symbol;
-export type ArtworkHeader_artwork$ref = typeof _ArtworkHeader_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkHeader_artwork = {
     readonly images: ReadonlyArray<{
-        readonly " $fragmentRefs": ImageCarousel_images$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
     } | null> | null;
-    readonly " $fragmentRefs": ArtworkActions_artwork$ref & ArtworkTombstone_artwork$ref;
-    readonly " $refType": ArtworkHeader_artwork$ref;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkActions_artwork" | "ArtworkTombstone_artwork">;
+    readonly " $refType": "ArtworkHeader_artwork";
 };
 
 

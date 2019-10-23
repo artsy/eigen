@@ -1,13 +1,11 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FairDetail_fair$ref } from "./FairDetail_fair.graphql";
-declare const _Fair_fair$ref: unique symbol;
-export type Fair_fair$ref = typeof _Fair_fair$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Fair_fair = {
     readonly id: string;
-    readonly " $fragmentRefs": FairDetail_fair$ref;
-    readonly " $refType": Fair_fair$ref;
+    readonly " $fragmentRefs": FragmentRefs<"FairDetail_fair">;
+    readonly " $refType": "Fair_fair";
 };
 
 

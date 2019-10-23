@@ -8,7 +8,7 @@ export type AddAssetToConsignmentSubmissionInput = {
     readonly clientMutationId?: string | null;
 };
 export type addAssetToConsignmentMutationVariables = {
-    readonly input: AddAssetToConsignmentSubmissionInput;
+    input: AddAssetToConsignmentSubmissionInput;
 };
 export type addAssetToConsignmentMutationResponse = {
     readonly addAssetToConsignmentSubmission: {

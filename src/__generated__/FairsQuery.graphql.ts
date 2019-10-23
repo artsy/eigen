@@ -1,14 +1,14 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Fairs_me$ref } from "./Fairs_me.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type FairsQueryVariables = {
-    readonly count: number;
-    readonly cursor?: string | null;
+    count: number;
+    cursor?: string | null;
 };
 export type FairsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": Fairs_me$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Fairs_me">;
     } | null;
 };
 export type FairsQuery = {

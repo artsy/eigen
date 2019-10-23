@@ -2,14 +2,12 @@
 
 import { ReaderFragment } from "relay-runtime";
 export type InvoiceState = "PAID" | "REFUNDED" | "UNPAID" | "VOID" | "%future added value";
-declare const _InvoicePreview_invoice$ref: unique symbol;
-export type InvoicePreview_invoice$ref = typeof _InvoicePreview_invoice$ref;
 export type InvoicePreview_invoice = {
     readonly payment_url: string | null;
     readonly state: InvoiceState | null;
     readonly total: string | null;
     readonly lewitt_invoice_id: string;
-    readonly " $refType": InvoicePreview_invoice$ref;
+    readonly " $refType": "InvoicePreview_invoice";
 };
 
 

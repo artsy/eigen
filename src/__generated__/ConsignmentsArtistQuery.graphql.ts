@@ -2,7 +2,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentsArtistQueryVariables = {
-    readonly query: string;
+    query: string;
 };
 export type ConsignmentsArtistQueryResponse = {
     readonly searchConnection: {

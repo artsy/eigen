@@ -1,14 +1,12 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _FollowArtistButton_artist$ref: unique symbol;
-export type FollowArtistButton_artist$ref = typeof _FollowArtistButton_artist$ref;
 export type FollowArtistButton_artist = {
     readonly id: string;
     readonly slug: string;
     readonly internalID: string;
     readonly is_followed: boolean | null;
-    readonly " $refType": FollowArtistButton_artist$ref;
+    readonly " $refType": "FollowArtistButton_artist";
 };
 
 

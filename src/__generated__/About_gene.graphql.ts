@@ -1,16 +1,13 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Biography_gene$ref } from "./Biography_gene.graphql";
-import { RelatedArtists_artists$ref } from "./RelatedArtists_artists.graphql";
-declare const _About_gene$ref: unique symbol;
-export type About_gene$ref = typeof _About_gene$ref;
+import { FragmentRefs } from "relay-runtime";
 export type About_gene = {
     readonly trending_artists: ReadonlyArray<{
-        readonly " $fragmentRefs": RelatedArtists_artists$ref;
+        readonly " $fragmentRefs": FragmentRefs<"RelatedArtists_artists">;
     } | null> | null;
-    readonly " $fragmentRefs": Biography_gene$ref;
-    readonly " $refType": About_gene$ref;
+    readonly " $fragmentRefs": FragmentRefs<"Biography_gene">;
+    readonly " $refType": "About_gene";
 };
 
 

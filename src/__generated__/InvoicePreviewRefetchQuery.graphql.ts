@@ -1,15 +1,15 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { InvoicePreview_invoice$ref } from "./InvoicePreview_invoice.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type InvoicePreviewRefetchQueryVariables = {
-    readonly conversationId: string;
-    readonly invoiceId: string;
+    conversationId: string;
+    invoiceId: string;
 };
 export type InvoicePreviewRefetchQueryResponse = {
     readonly me: {
         readonly invoice: {
-            readonly " $fragmentRefs": InvoicePreview_invoice$ref;
+            readonly " $fragmentRefs": FragmentRefs<"InvoicePreview_invoice">;
         } | null;
     } | null;
 };

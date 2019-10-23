@@ -1,11 +1,9 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _AttachmentPreview_attachment$ref: unique symbol;
-export type AttachmentPreview_attachment$ref = typeof _AttachmentPreview_attachment$ref;
 export type AttachmentPreview_attachment = {
     readonly internalID: string;
-    readonly " $refType": AttachmentPreview_attachment$ref;
+    readonly " $refType": "AttachmentPreview_attachment";
 };
 
 

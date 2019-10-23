@@ -1,16 +1,14 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
-declare const _GenericGrid_artworks$ref: unique symbol;
-export type GenericGrid_artworks$ref = typeof _GenericGrid_artworks$ref;
+import { FragmentRefs } from "relay-runtime";
 export type GenericGrid_artworks = ReadonlyArray<{
     readonly id: string;
     readonly image: {
         readonly aspect_ratio: number;
     } | null;
-    readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
-    readonly " $refType": GenericGrid_artworks$ref;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">;
+    readonly " $refType": "GenericGrid_artworks";
 }>;
 
 

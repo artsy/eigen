@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Inquiry_artwork$ref } from "./Inquiry_artwork.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type QueryRenderersInquiryQueryVariables = {
-    readonly artworkID: string;
+    artworkID: string;
 };
 export type QueryRenderersInquiryQueryResponse = {
     readonly artwork: {
-        readonly " $fragmentRefs": Inquiry_artwork$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Inquiry_artwork">;
     } | null;
 };
 export type QueryRenderersInquiryQuery = {

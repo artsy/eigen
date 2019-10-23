@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Fairs_me$ref: unique symbol;
-export type Fairs_me$ref = typeof _Fairs_me$ref;
 export type Fairs_me = {
     readonly followsAndSaves: {
         readonly fairs: {
@@ -27,7 +25,7 @@ export type Fairs_me = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": Fairs_me$ref;
+    readonly " $refType": "Fairs_me";
 };
 
 

@@ -1,12 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ImageCarousel_images$ref } from "./ImageCarousel_images.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ImageCarouselTestsQueryVariables = {};
 export type ImageCarouselTestsQueryResponse = {
     readonly artwork: {
         readonly images: ReadonlyArray<{
-            readonly " $fragmentRefs": ImageCarousel_images$ref;
+            readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
         } | null> | null;
     } | null;
 };

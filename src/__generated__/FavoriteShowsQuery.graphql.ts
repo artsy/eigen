@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Shows_me$ref } from "./Shows_me.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type FavoriteShowsQueryVariables = {};
 export type FavoriteShowsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": Shows_me$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Shows_me">;
     } | null;
 };
 export type FavoriteShowsQuery = {

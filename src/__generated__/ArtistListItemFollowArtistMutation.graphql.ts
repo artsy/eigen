@@ -7,7 +7,7 @@ export type FollowArtistInput = {
     readonly clientMutationId?: string | null;
 };
 export type ArtistListItemFollowArtistMutationVariables = {
-    readonly input: FollowArtistInput;
+    input: FollowArtistInput;
 };
 export type ArtistListItemFollowArtistMutationResponse = {
     readonly followArtist: {

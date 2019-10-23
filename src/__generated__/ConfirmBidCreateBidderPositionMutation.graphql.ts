@@ -8,7 +8,7 @@ export type BidderPositionInput = {
     readonly clientMutationId?: string | null;
 };
 export type ConfirmBidCreateBidderPositionMutationVariables = {
-    readonly input: BidderPositionInput;
+    input: BidderPositionInput;
 };
 export type ConfirmBidCreateBidderPositionMutationResponse = {
     readonly createBidderPosition: {

@@ -7,7 +7,7 @@ export type FollowShowInput = {
     readonly clientMutationId?: string | null;
 };
 export type ShowItemRowMutationVariables = {
-    readonly input: FollowShowInput;
+    input: FollowShowInput;
 };
 export type ShowItemRowMutationResponse = {
     readonly followShow: {

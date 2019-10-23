@@ -1,11 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ImagePreview_attachment$ref } from "./ImagePreview_attachment.graphql";
-import { InvoicePreview_invoice$ref } from "./InvoicePreview_invoice.graphql";
-import { PDFPreview_attachment$ref } from "./PDFPreview_attachment.graphql";
-declare const _Message_message$ref: unique symbol;
-export type Message_message$ref = typeof _Message_message$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Message_message = {
     readonly body: string | null;
     readonly created_at: string | null;
@@ -16,7 +12,7 @@ export type Message_message = {
     } | null;
     readonly invoice: {
         readonly payment_url: string | null;
-        readonly " $fragmentRefs": InvoicePreview_invoice$ref;
+        readonly " $fragmentRefs": FragmentRefs<"InvoicePreview_invoice">;
     } | null;
     readonly attachments: ReadonlyArray<{
         readonly id: string;
@@ -24,9 +20,9 @@ export type Message_message = {
         readonly content_type: string;
         readonly download_url: string;
         readonly file_name: string;
-        readonly " $fragmentRefs": ImagePreview_attachment$ref & PDFPreview_attachment$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment">;
     } | null> | null;
-    readonly " $refType": Message_message$ref;
+    readonly " $refType": "Message_message";
 };
 
 

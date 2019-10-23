@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { Messages_conversation$ref } from "./Messages_conversation.graphql";
-declare const _Conversation_me$ref: unique symbol;
-export type Conversation_me$ref = typeof _Conversation_me$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Conversation_me = {
     readonly conversation: {
         readonly internalID: string | null;
@@ -16,9 +14,9 @@ export type Conversation_me = {
         readonly from: {
             readonly email: string;
         };
-        readonly " $fragmentRefs": Messages_conversation$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Messages_conversation">;
     } | null;
-    readonly " $refType": Conversation_me$ref;
+    readonly " $refType": "Conversation_me";
 };
 
 

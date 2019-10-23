@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { SelectMaxBid_sale_artwork$ref } from "./SelectMaxBid_sale_artwork.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type SelectMaxBidRefetchQueryVariables = {
-    readonly saleArtworkNodeID: string;
+    saleArtworkNodeID: string;
 };
 export type SelectMaxBidRefetchQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": SelectMaxBid_sale_artwork$ref;
+        readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_sale_artwork">;
     } | null;
 };
 export type SelectMaxBidRefetchQuery = {

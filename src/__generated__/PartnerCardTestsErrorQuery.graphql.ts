@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { PartnerCard_artwork$ref } from "./PartnerCard_artwork.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type PartnerCardTestsErrorQueryVariables = {};
 export type PartnerCardTestsErrorQueryResponse = {
     readonly artwork: {
-        readonly " $fragmentRefs": PartnerCard_artwork$ref;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerCard_artwork">;
     } | null;
 };
 export type PartnerCardTestsErrorQueryRawResponse = {

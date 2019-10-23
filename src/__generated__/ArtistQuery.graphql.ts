@@ -1,14 +1,14 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Artist_artist$ref } from "./Artist_artist.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type ArtistQueryVariables = {
-    readonly artistID: string;
-    readonly isPad: boolean;
+    artistID: string;
+    isPad: boolean;
 };
 export type ArtistQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": Artist_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"Artist_artist">;
     } | null;
 };
 export type ArtistQuery = {

@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ArtworkCarouselHeader_rail$ref: unique symbol;
-export type ArtworkCarouselHeader_rail$ref = typeof _ArtworkCarouselHeader_rail$ref;
 export type ArtworkCarouselHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
@@ -26,7 +24,7 @@ export type ArtworkCarouselHeader_rail = {
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
     }) | null;
-    readonly " $refType": ArtworkCarouselHeader_rail$ref;
+    readonly " $refType": "ArtworkCarouselHeader_rail";
 };
 
 

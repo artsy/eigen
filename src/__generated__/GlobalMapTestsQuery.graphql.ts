@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { GlobalMap_viewer$ref } from "./GlobalMap_viewer.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type GlobalMapTestsQueryVariables = {
-    readonly citySlug: string;
-    readonly maxInt: number;
+    citySlug: string;
+    maxInt: number;
 };
 export type GlobalMapTestsQueryResponse = {
-    readonly " $fragmentRefs": GlobalMap_viewer$ref;
+    readonly " $fragmentRefs": FragmentRefs<"GlobalMap_viewer">;
 };
 export type GlobalMapTestsQueryRawResponse = {
     readonly city: ({

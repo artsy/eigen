@@ -1,10 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkCarouselHeader_rail$ref } from "./ArtworkCarouselHeader_rail.graphql";
-import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _ArtworkCarousel_rail$ref: unique symbol;
-export type ArtworkCarousel_rail$ref = typeof _ArtworkCarousel_rail$ref;
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkCarousel_rail = {
     readonly id: string;
     readonly key: string | null;
@@ -19,10 +16,10 @@ export type ArtworkCarousel_rail = {
         readonly href?: string | null;
     } | null;
     readonly results: ReadonlyArray<{
-        readonly " $fragmentRefs": GenericGrid_artworks$ref;
+        readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
     } | null> | null;
-    readonly " $fragmentRefs": ArtworkCarouselHeader_rail$ref;
-    readonly " $refType": ArtworkCarousel_rail$ref;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkCarouselHeader_rail">;
+    readonly " $refType": "ArtworkCarousel_rail";
 };
 
 

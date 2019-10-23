@@ -1,13 +1,11 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ArtworkHistory_artwork$ref: unique symbol;
-export type ArtworkHistory_artwork$ref = typeof _ArtworkHistory_artwork$ref;
 export type ArtworkHistory_artwork = {
     readonly provenance: string | null;
     readonly exhibition_history: string | null;
     readonly literature: string | null;
-    readonly " $refType": ArtworkHistory_artwork$ref;
+    readonly " $refType": "ArtworkHistory_artwork";
 };
 
 

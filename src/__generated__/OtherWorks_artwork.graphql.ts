@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _OtherWorks_artwork$ref: unique symbol;
-export type OtherWorks_artwork$ref = typeof _OtherWorks_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type OtherWorks_artwork = {
     readonly contextGrids: ReadonlyArray<{
         readonly __typename: string;
@@ -13,12 +11,12 @@ export type OtherWorks_artwork = {
         readonly artworks: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                    readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
                 } | null;
             } | null> | null;
         } | null;
     } | null> | null;
-    readonly " $refType": OtherWorks_artwork$ref;
+    readonly " $refType": "OtherWorks_artwork";
 };
 
 

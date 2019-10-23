@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ArtworkGridItem_artwork$ref: unique symbol;
-export type ArtworkGridItem_artwork$ref = typeof _ArtworkGridItem_artwork$ref;
 export type ArtworkGridItem_artwork = {
     readonly title: string | null;
     readonly date: string | null;
@@ -32,7 +30,7 @@ export type ArtworkGridItem_artwork = {
         readonly name: string | null;
     } | null;
     readonly href: string | null;
-    readonly " $refType": ArtworkGridItem_artwork$ref;
+    readonly " $refType": "ArtworkGridItem_artwork";
 };
 
 

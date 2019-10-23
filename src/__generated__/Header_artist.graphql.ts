@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Header_artist$ref: unique symbol;
-export type Header_artist$ref = typeof _Header_artist$ref;
 export type Header_artist = {
     readonly id: string;
     readonly internalID: string;
@@ -14,7 +12,7 @@ export type Header_artist = {
     readonly counts: {
         readonly follows: number | null;
     } | null;
-    readonly " $refType": Header_artist$ref;
+    readonly " $refType": "Header_artist";
 };
 
 

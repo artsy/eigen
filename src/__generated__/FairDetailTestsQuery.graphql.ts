@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FairDetail_fair$ref } from "./FairDetail_fair.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type FairDetailTestsQueryVariables = {};
 export type FairDetailTestsQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FairDetail_fair$ref;
+        readonly " $fragmentRefs": FragmentRefs<"FairDetail_fair">;
     } | null;
 };
 export type FairDetailTestsQueryRawResponse = {

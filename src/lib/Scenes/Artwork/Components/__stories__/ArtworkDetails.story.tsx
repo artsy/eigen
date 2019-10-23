@@ -9,7 +9,6 @@ storiesOf("Artwork/Components").add("Details", () => {
         " $refType": null,
         category: "Oil on canvas",
         conditionDescription: null,
-        signature: null,
         signatureInfo: null,
         certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Included" },
         framed: { label: "Framed", details: "Not included" },

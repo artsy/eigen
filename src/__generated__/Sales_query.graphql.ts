@@ -1,21 +1,18 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { LotsByFollowedArtists_query$ref } from "./LotsByFollowedArtists_query.graphql";
-import { SaleListItem_sale$ref } from "./SaleListItem_sale.graphql";
-declare const _Sales_query$ref: unique symbol;
-export type Sales_query$ref = typeof _Sales_query$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Sales_query = {
     readonly salesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly live_start_at: string | null;
-                readonly " $fragmentRefs": SaleListItem_sale$ref;
+                readonly " $fragmentRefs": FragmentRefs<"SaleListItem_sale">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": LotsByFollowedArtists_query$ref;
-    readonly " $refType": Sales_query$ref;
+    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_query">;
+    readonly " $refType": "Sales_query";
 };
 
 

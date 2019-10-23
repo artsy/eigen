@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _Notification_notification$ref: unique symbol;
-export type Notification_notification$ref = typeof _Notification_notification$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Notification_notification = {
     readonly summary: string | null;
     readonly artists: string | null;
@@ -13,7 +11,7 @@ export type Notification_notification = {
                 readonly artists: ReadonlyArray<{
                     readonly href: string | null;
                 } | null> | null;
-                readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
             } | null;
         } | null> | null;
     } | null;
@@ -22,7 +20,7 @@ export type Notification_notification = {
             readonly url: string | null;
         } | null;
     } | null;
-    readonly " $refType": Notification_notification$ref;
+    readonly " $refType": "Notification_notification";
 };
 
 

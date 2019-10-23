@@ -1,18 +1,16 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
-declare const _AboutArtist_artwork$ref: unique symbol;
-export type AboutArtist_artwork$ref = typeof _AboutArtist_artwork$ref;
+import { FragmentRefs } from "relay-runtime";
 export type AboutArtist_artwork = {
     readonly artists: ReadonlyArray<{
         readonly id: string;
         readonly biography_blurb: {
             readonly text: string | null;
         } | null;
-        readonly " $fragmentRefs": ArtistListItem_artist$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
     } | null> | null;
-    readonly " $refType": AboutArtist_artwork$ref;
+    readonly " $refType": "AboutArtist_artwork";
 };
 
 

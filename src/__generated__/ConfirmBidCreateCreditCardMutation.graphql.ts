@@ -7,7 +7,7 @@ export type CreditCardInput = {
     readonly clientMutationId?: string | null;
 };
 export type ConfirmBidCreateCreditCardMutationVariables = {
-    readonly input: CreditCardInput;
+    input: CreditCardInput;
 };
 export type ConfirmBidCreateCreditCardMutationResponse = {
     readonly createCreditCard: {

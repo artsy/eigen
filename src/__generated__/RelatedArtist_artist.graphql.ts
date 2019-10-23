@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _RelatedArtist_artist$ref: unique symbol;
-export type RelatedArtist_artist$ref = typeof _RelatedArtist_artist$ref;
 export type RelatedArtist_artist = {
     readonly href: string | null;
     readonly name: string | null;
@@ -13,7 +11,7 @@ export type RelatedArtist_artist = {
     readonly image: {
         readonly url: string | null;
     } | null;
-    readonly " $refType": RelatedArtist_artist$ref;
+    readonly " $refType": "RelatedArtist_artist";
 };
 
 

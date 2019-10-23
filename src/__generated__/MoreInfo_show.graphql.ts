@@ -1,9 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
-declare const _MoreInfo_show$ref: unique symbol;
-export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
+import { FragmentRefs } from "relay-runtime";
 export type MoreInfo_show = {
     readonly internalID: string;
     readonly slug: string;
@@ -15,9 +13,9 @@ export type MoreInfo_show = {
     } | null;
     readonly press_release: string | null;
     readonly events: ReadonlyArray<{
-        readonly " $fragmentRefs": ShowEventSection_event$ref;
+        readonly " $fragmentRefs": FragmentRefs<"ShowEventSection_event">;
     } | null> | null;
-    readonly " $refType": MoreInfo_show$ref;
+    readonly " $refType": "MoreInfo_show";
 };
 
 

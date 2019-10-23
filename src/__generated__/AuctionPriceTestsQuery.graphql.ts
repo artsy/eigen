@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { AuctionPrice_artwork$ref } from "./AuctionPrice_artwork.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type AuctionPriceTestsQueryVariables = {};
 export type AuctionPriceTestsQueryResponse = {
     readonly artwork: {
-        readonly " $fragmentRefs": AuctionPrice_artwork$ref;
+        readonly " $fragmentRefs": FragmentRefs<"AuctionPrice_artwork">;
     } | null;
 };
 export type AuctionPriceTestsQueryRawResponse = {

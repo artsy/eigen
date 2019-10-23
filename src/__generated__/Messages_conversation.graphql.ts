@@ -1,11 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
-import { Message_message$ref } from "./Message_message.graphql";
-import { ShowPreview_show$ref } from "./ShowPreview_show.graphql";
-declare const _Messages_conversation$ref: unique symbol;
-export type Messages_conversation$ref = typeof _Messages_conversation$ref;
+import { FragmentRefs } from "relay-runtime";
 export type Messages_conversation = {
     readonly id: string;
     readonly internalID: string | null;
@@ -36,7 +32,7 @@ export type Messages_conversation = {
                 readonly attachments: ReadonlyArray<{
                     readonly internalID: string;
                 } | null> | null;
-                readonly " $fragmentRefs": Message_message$ref;
+                readonly " $fragmentRefs": FragmentRefs<"Message_message">;
             } | null;
         } | null> | null;
     } | null;
@@ -44,18 +40,18 @@ export type Messages_conversation = {
         readonly item: ({
             readonly __typename: "Artwork";
             readonly href: string | null;
-            readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
+            readonly " $fragmentRefs": FragmentRefs<"ArtworkPreview_artwork">;
         } | {
             readonly __typename: "Show";
             readonly href: string | null;
-            readonly " $fragmentRefs": ShowPreview_show$ref;
+            readonly " $fragmentRefs": FragmentRefs<"ShowPreview_show">;
         } | {
             /*This will never be '%other', but we need some
             value in case none of the concrete values match.*/
             readonly __typename: "%other";
         }) | null;
     } | null> | null;
-    readonly " $refType": Messages_conversation$ref;
+    readonly " $refType": "Messages_conversation";
 };
 
 

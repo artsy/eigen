@@ -1,15 +1,13 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _Header_gene$ref: unique symbol;
-export type Header_gene$ref = typeof _Header_gene$ref;
 export type Header_gene = {
     readonly internalID: string;
     readonly slug: string;
     readonly id: string;
     readonly isFollowed: boolean | null;
     readonly name: string | null;
-    readonly " $refType": Header_gene$ref;
+    readonly " $refType": "Header_gene";
 };
 
 

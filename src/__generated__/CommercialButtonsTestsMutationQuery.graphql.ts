@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { CommercialButtons_artwork$ref } from "./CommercialButtons_artwork.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type CommercialButtonsTestsMutationQueryVariables = {};
 export type CommercialButtonsTestsMutationQueryResponse = {
     readonly artwork: {
-        readonly " $fragmentRefs": CommercialButtons_artwork$ref;
+        readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_artwork">;
     } | null;
 };
 export type CommercialButtonsTestsMutationQueryRawResponse = {

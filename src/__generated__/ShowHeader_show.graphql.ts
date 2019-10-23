@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _ShowHeader_show$ref: unique symbol;
-export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
     readonly slug: string;
     readonly internalID: string;
@@ -39,7 +37,7 @@ export type ShowHeader_show = {
         readonly slug: string;
         readonly internalID: string;
     } | null> | null;
-    readonly " $refType": ShowHeader_show$ref;
+    readonly " $refType": "ShowHeader_show";
 };
 
 

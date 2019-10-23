@@ -1,15 +1,13 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _AuctionCountDownTimer_artwork$ref: unique symbol;
-export type AuctionCountDownTimer_artwork$ref = typeof _AuctionCountDownTimer_artwork$ref;
 export type AuctionCountDownTimer_artwork = {
     readonly sale: {
         readonly startAt: string | null;
         readonly endAt: string | null;
         readonly liveStartAt: string | null;
     } | null;
-    readonly " $refType": AuctionCountDownTimer_artwork$ref;
+    readonly " $refType": "AuctionCountDownTimer_artwork";
 };
 
 

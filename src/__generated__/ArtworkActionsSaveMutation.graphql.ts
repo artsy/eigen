@@ -7,7 +7,7 @@ export type SaveArtworkInput = {
     readonly clientMutationId?: string | null;
 };
 export type ArtworkActionsSaveMutationVariables = {
-    readonly input: SaveArtworkInput;
+    input: SaveArtworkInput;
 };
 export type ArtworkActionsSaveMutationResponse = {
     readonly saveArtwork: {

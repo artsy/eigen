@@ -1,19 +1,17 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { InfiniteScrollArtworksGrid_connection$ref } from "./InfiniteScrollArtworksGrid_connection.graphql";
-declare const _LotsByFollowedArtists_query$ref: unique symbol;
-export type LotsByFollowedArtists_query$ref = typeof _LotsByFollowedArtists_query$ref;
+import { FragmentRefs } from "relay-runtime";
 export type LotsByFollowedArtists_query = {
     readonly me: {
         readonly lotsByFollowedArtistsConnection: {
             readonly edges: ReadonlyArray<{
                 readonly cursor: string | null;
             } | null> | null;
-            readonly " $fragmentRefs": InfiniteScrollArtworksGrid_connection$ref;
+            readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
         } | null;
     } | null;
-    readonly " $refType": LotsByFollowedArtists_query$ref;
+    readonly " $refType": "LotsByFollowedArtists_query";
 };
 
 
