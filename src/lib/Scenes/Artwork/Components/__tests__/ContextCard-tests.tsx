@@ -127,7 +127,7 @@ describe("ContextCard", () => {
         ...auctionContextArtwork,
         context: {
           ...auctionContextArtwork.context,
-          isLiveOpen: true,
+          formattedStartDateTime: "In progress",
         },
       }
       const component = mount(

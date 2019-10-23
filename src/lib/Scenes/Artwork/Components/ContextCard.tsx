@@ -138,7 +138,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
       switch (context.__typename) {
         case "Sale":
           header = "In auction"
-          meta = context.isLiveOpen ? "In progress" : context.formattedStartDateTime
+          meta = context.formattedStartDateTime
           imageUrl = context.coverImage && context.coverImage.url ? context.coverImage.url : ""
           break
         case "Fair":
