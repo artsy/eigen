@@ -1725,7 +1725,7 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
-"@types/react-relay@^6.0.1":
+"@types/react-relay@6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-6.0.1.tgz#f9fbe5493f86cffe0ce1cc491b3898bd1cd40cdd"
   integrity sha512-aM0z3/7pNU/n9+pK9NKHTTTowQZ/bvQitKJX8bRpnHrApxFNhJVH1t8dqecjCz5POKIxJmIRP6k12ZaYv5YvCw==

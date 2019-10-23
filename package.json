@@ -120,7 +120,7 @@
     "@types/query-string": "5.0.1",
     "@types/react": "16.8.10",
     "@types/react-native": "0.57.42",
-    "@types/react-relay": "^6.0.1",
+    "@types/react-relay": "6.0.1",
     "@types/react-test-renderer": "16.8.1",
     "@types/react-tracking": "7.0.1",
     "@types/relay-runtime": "6.0.7",
