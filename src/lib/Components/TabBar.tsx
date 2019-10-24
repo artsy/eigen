@@ -43,6 +43,8 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   justify-content: center;
   padding-top: 5;
   flex-grow: 1;
+  padding-left: 20px;
+  padding-right: 20px;
   ${p => p.spaceEvenly && `flex: 1;`};
   ${p =>
     !p.spaceEvenly &&

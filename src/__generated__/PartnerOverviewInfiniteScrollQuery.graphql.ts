@@ -51,18 +51,6 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     edges {
       node {
         id
-        internalID
-        slug
-        name
-        initials
-        href
-        is_followed: isFollowed
-        nationality
-        birthday
-        deathday
-        image {
-          url
-        }
         ...ArtistListItem_artist
         __typename
       }
@@ -427,7 +415,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "a3a886f900142ba29b50d98d327cb92a",
+    "id": "e0ecbb60fd2047dd862b44ec3615cecb",
     "text": null,
     "metadata": {}
   }

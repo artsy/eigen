@@ -1,11 +1,11 @@
-import { Box, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ShowItem } from "lib/Scenes/Show/Components/Shows/Components/ShowItem"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
-import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { FlatList, ImageBackground, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import styled from "styled-components/native"
 
 const PAGE_SIZE = 6
 
@@ -17,19 +17,26 @@ export const PartnerShows: React.FC<{
   const currentAndUpcomingShows = partner.currentAndUpcomingShows && partner.currentAndUpcomingShows.edges
   const pastShows = partner.pastShows && partner.pastShows.edges
 
-  const ShowGridItem = node => {
+  const ShowGridItem = (node, itemIndex) => {
     const { show } = node
-    console.log("show", show)
-    const showImage = show.coverImage
+    const showImage = show.coverImage || ""
+    const styles = itemIndex % 2 === 0 ? { paddingLeft: space(1) } : { paddingRight: space(1) }
     return (
-      <TouchableWithoutFeedback onPress={null}>
-        <>
-          {showImage && <OpaqueImageView aspectRatio={showImage.aspectRatio} imageURL={showImage.url} />}
-          <Spacer mb={2} />
-          <Serif size="3">{show.name}</Serif>
-          <Sans size="2">{show.exhibitionPeriod}</Sans>
-        </>
-      </TouchableWithoutFeedback>
+      <GridItem>
+        <TouchableWithoutFeedback onPress={null}>
+          <Box style={styles}>
+            {showImage ? (
+              <BackgroundImage style={{ resizeMode: "cover" }} source={{ uri: showImage.url }} />
+            ) : (
+              <EmptyImage />
+            )}
+            <Spacer mb={0.5} />
+            <Sans size="2">{show.name}</Sans>
+            <Serif size="2">{show.exhibitionPeriod}</Serif>
+          </Box>
+        </TouchableWithoutFeedback>
+        <Spacer mb={2} />
+      </GridItem>
     )
   }
 
@@ -55,7 +62,6 @@ export const PartnerShows: React.FC<{
               <Sans size="3t" weight="medium">
                 Current and upcoming shows
               </Sans>
-              <Spacer mb={2} />
               <FlatList
                 horizontal
                 data={currentAndUpcomingShows}
@@ -65,7 +71,6 @@ export const PartnerShows: React.FC<{
                   return <ShowItem show={item.node as any} />
                 }}
               />
-              <Spacer mb={3} />
             </>
           )}
         {pastShows &&
@@ -75,10 +80,12 @@ export const PartnerShows: React.FC<{
                 Past shows
               </Sans>
               <Spacer mb={2} />
-              {pastShows.map(show => {
-                const node = show.node
-                return <ShowGridItem key={node.id} show={node} />
-              })}
+              <Flex flexDirection="row" flexWrap="wrap">
+                {pastShows.map((show, index) => {
+                  const node = show.node
+                  return <ShowGridItem itemIndex={index} key={node.id} show={node} />
+                })}
+              </Flex>
               <Spacer mb={3} />
             </>
           )}
@@ -169,3 +176,16 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
     `,
   }
 )
+
+const BackgroundImage = styled(ImageBackground)`
+  height: 120;
+`
+
+const GridItem = styled(Box)`
+  width: 50%;
+`
+
+const EmptyImage = styled(Box)`
+  height: 120;
+  background-color: ${color("black30")};
+`

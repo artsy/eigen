@@ -85,18 +85,6 @@ fragment PartnerOverview_partner on Partner {
     edges {
       node {
         id
-        internalID
-        slug
-        name
-        initials
-        href
-        is_followed: isFollowed
-        nationality
-        birthday
-        deathday
-        image {
-          url
-        }
         ...ArtistListItem_artist
         __typename
       }
@@ -970,7 +958,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "55a24f955662396889b331d873cba4f7",
+    "id": "f00a6ca51485a37120bfc216587ba891",
     "text": null,
     "metadata": {}
   }

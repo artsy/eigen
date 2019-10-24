@@ -1,6 +1,6 @@
 import { Box, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.graphql"
-import { ArtistListItem } from "lib/Components/ArtistListItem"
+import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
 import { get } from "lib/utils/get"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -40,6 +40,7 @@ export const PartnerOverview: React.FC<{
       if (!node) {
         return null
       }
+      console.log("node", node)
       return (
         <Box key={node.id}>
           <ArtistListItem artist={node} />
@@ -127,18 +128,6 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
-              internalID
-              slug
-              name
-              initials
-              href
-              is_followed: isFollowed
-              nationality
-              birthday
-              deathday
-              image {
-                url
-              }
               ...ArtistListItem_artist
             }
           }

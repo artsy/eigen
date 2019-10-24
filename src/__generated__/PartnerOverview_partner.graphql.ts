@@ -20,18 +20,6 @@ export type PartnerOverview_partner = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly internalID: string;
-                readonly slug: string;
-                readonly name: string | null;
-                readonly initials: string | null;
-                readonly href: string | null;
-                readonly is_followed: boolean | null;
-                readonly nationality: string | null;
-                readonly birthday: string | null;
-                readonly deathday: string | null;
-                readonly image: {
-                    readonly url: string | null;
-                } | null;
                 readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
             } | null;
         } | null> | null;
@@ -41,15 +29,7 @@ export type PartnerOverview_partner = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "PartnerOverview_partner",
   "type": "Partner",
@@ -80,7 +60,13 @@ return {
     }
   ],
   "selections": [
-    (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -201,81 +187,6 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                (v0/*: any*/),
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "slug",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "name",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "initials",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "href",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": "is_followed",
-                  "name": "isFollowed",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "nationality",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "birthday",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "deathday",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": null,
-                      "storageKey": null
-                    }
-                  ]
-                },
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -303,6 +214,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = 'efb9fd65a71bc8640309422a26f3e7dc';
+(node as any).hash = '3183a7d64f77cf9c64530065159c1b55';
 export default node;
