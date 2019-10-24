@@ -150,7 +150,10 @@ exports[`renders properly 1`] = `
                 }
                 textAlign="center"
               >
-                Registration is free. Artsy will never charge this card without your permission, and you are not required to use this card to pay if you win.
+                Registration is free.
+                
+
+                A credit card is required to bid. Artsy will never charge this card without your permission, and you are not required to use this card to pay if you win.
               </Text>
             </View>
           </View>

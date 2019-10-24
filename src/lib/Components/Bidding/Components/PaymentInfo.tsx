@@ -8,7 +8,6 @@ import { CreditCardForm } from "../Screens/CreditCardForm"
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
-import { Sans } from "@artsy/palette"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { FlexProps } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
@@ -82,10 +81,6 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
           />
 
           <Divider />
-
-          <Sans mt="5" size="3t" color="black60" textAlign="center">
-            A valid credit card is required for bidding.
-          </Sans>
         </View>
       </BiddingThemeProvider>
     )

@@ -13364,6 +13364,23 @@ relay-runtime@6.0.0:
     "@babel/runtime" "^7.0.0"
     fbjs "^1.0.0"
 
+relay-runtime@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-7.0.0.tgz#49642c0e16096cd4e5f435fcbdd63ffd8da54090"
+  integrity sha512-w0TPq5xvL6dlxD8+tBR19gGep3kFsx0fJ2Xr4hsxpDFKskH2oOmsMSp6gNVsUd2T1zf/DYll5eJqjoiQc5nB1A==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    fbjs "^1.0.0"
+
+relay-test-utils@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/relay-test-utils/-/relay-test-utils-7.0.0.tgz#65637ca7e233fb6b64dbdb44445158e9953d53c9"
+  integrity sha512-5AHo7NBMg4WPZOZKtK7u6EHVDQ9oqxQ07crTaO96lwpvwaWUi6JPYcNa47I2lCbo/Q0QybIHP5Fw379FRKUrog==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    fbjs "^1.0.0"
+    relay-runtime "7.0.0"
+
 remark-parse@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/remark-parse/-/remark-parse-5.0.0.tgz#4c077f9e499044d1d5c13f80d7a98cf7b9285d95"

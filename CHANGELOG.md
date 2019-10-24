@@ -10,6 +10,7 @@ Always err on the side of adding a changelog entry. More is more.
 - [ME-62] Centers DarkNavigationButton - kierangillen
 - [PURCHASE-1597] Updates CommercialInformation component to properly handle live auctions - sweir27
 - [PURCHASE-1598] Fix showing wrong state for closed auctions - ashkan18
+- Add price summary to the confirm bid screen - yuki24
 
 ### 1.18.0
 

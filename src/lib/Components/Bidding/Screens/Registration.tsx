@@ -303,14 +303,19 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             </Flex>
 
             {this.state.requiresPaymentInformation ? (
-              <PaymentInfo
-                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-                billingAddress={this.state.billingAddress}
-                creditCardFormParams={this.state.creditCardFormParams}
-                creditCardToken={this.state.creditCardToken}
-              />
+              <>
+                <PaymentInfo
+                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                  billingAddress={this.state.billingAddress}
+                  creditCardFormParams={this.state.creditCardFormParams}
+                  creditCardToken={this.state.creditCardToken}
+                />
+                <Sans mt="5" size="3t" color="black60" textAlign="center">
+                  A valid credit card is required for bidding.
+                </Sans>
+              </>
             ) : (
               <Sans mx={6} size="4t" color="black60" textAlign="center">
                 To complete your registration, please confirm that you agree to the Conditions of Sale.

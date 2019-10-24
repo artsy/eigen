@@ -103,7 +103,13 @@ exports[`renders properly 1`] = `
           </Text>
         </View>
       </View>
-      <View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
         <View
           alignItems="center"
           m={4}
@@ -358,19 +364,27 @@ exports[`renders properly 1`] = `
           border={1}
           borderBottomWidth={0}
           borderColor="black10"
-          mb={9}
+          mb={2}
           style={
             Array [
               Object {
                 "borderColor": "#E5E5E5",
                 "borderStyle": "solid",
                 "borderWidth": 1,
-                "marginBottom": 120,
+                "marginBottom": 5,
                 "width": "100%",
               },
             ]
           }
           width="100%"
+        />
+        <ARSpinner
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+          testID="relay-loading"
         />
         <View
           style={
@@ -818,13 +832,35 @@ exports[`renders properly 1`] = `
       </View>
     </View>
   </RCTScrollView>
-  <View>
+  <View
+    style={
+      Array [
+        Object {},
+      ]
+    }
+  >
+    <View
+      border={1}
+      borderBottomWidth={0}
+      borderColor="black10"
+      style={
+        Array [
+          Object {
+            "borderColor": "#E5E5E5",
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "width": "100%",
+          },
+        ]
+      }
+      width="100%"
+    />
     <View
       accessible={true}
       alignItems="center"
       flexDirection="row"
       justifyContent="center"
-      mt={3}
+      mt={4}
       onPress={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -835,7 +871,7 @@ exports[`renders properly 1`] = `
       style={
         Array [
           Object {
-            "marginTop": 10,
+            "marginTop": 20,
           },
         ]
       }

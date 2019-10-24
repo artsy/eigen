@@ -38,6 +38,7 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
+  id
   internalID
   sale {
     slug
@@ -305,7 +306,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidFlowSelectMaxBidRendererQuery",
-    "id": "68a741547d6fd3c8ce5fb06b17401c60",
+    "id": "72daf769b93eb156e67aae36a46da1fe",
     "text": null,
     "metadata": {}
   }

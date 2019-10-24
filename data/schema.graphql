@@ -784,6 +784,40 @@ type ArtistMeta {
   title: String
 }
 
+# A connection to a list of items.
+type ArtistPartnerConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtistPartnerEdge]
+  pageCursors: PageCursors
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtistPartnerEdge {
+  # The item at the end of the edge
+  node: Artist
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  artist: Artist
+  biography: String
+  counts: PartnerArtistCounts
+  isDisplayOnPartnerProfile: Boolean
+  representedBy: Boolean
+  isUseDefaultBiography: Boolean
+  partner: Partner
+  sortableID: String
+}
+
 type ArtistRelatedData {
   genes(after: String, first: Int, before: String, last: Int): GeneConnection
   artistsConnection(
@@ -814,6 +848,12 @@ type ArtistRelatedData {
     before: String
     last: Int
   ): ArtistConnection
+}
+
+enum ArtistSorts {
+  SORTABLE_ID_ASC
+  SORTABLE_ID_DESC
+  TRENDING_DESC
 }
 
 type ArtistStatuses {
@@ -1462,6 +1502,30 @@ type BuyersPremium {
   ): String
   cents: Int
   percent: Float
+}
+
+type BuyersPremiumAmount {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+type CalculatedCost {
+  buyersPremium: BuyersPremiumAmount
+  subtotal: SubtotalAmount
 }
 
 type City {
@@ -3510,10 +3574,6 @@ enum EventStatus {
   RUNNING_AND_UPCOMING
 }
 
-type ExactPrice {
-  priceCents: Int!
-}
-
 type ExternalPartner {
   # A globally unique ID.
   id: ID!
@@ -4460,7 +4520,7 @@ type LatLng {
   lng: Float
 }
 
-union ListPrice = PriceRange | ExactPrice
+union ListPrice = PriceRange | Money
 
 type Location {
   # A globally unique ID.
@@ -4539,16 +4599,28 @@ type MarketingCollection {
   updatedAt: MarketingDateTime!
 
   # Suggested average price for included works
-  price_guidance: Float
+  price_guidance: Float @deprecated(reason: "Prefer priceGuidance")
+
+  # Suggested average price for included works
+  priceGuidance: Float
 
   # Collection can be surfaced on editorial pages
-  show_on_editorial: Boolean!
+  show_on_editorial: Boolean! @deprecated(reason: "Prefer showOnEditorial")
+
+  # Collection can be surfaced on editorial pages
+  showOnEditorial: Boolean!
 
   # Collection has prioritized connection to artist
-  is_featured_artist_content: Boolean!
+  is_featured_artist_content: Boolean! @deprecated(reason: "Prefer isFeaturedArtistContent")
+
+  # Collection has prioritized connection to artist
+  isFeaturedArtistContent: Boolean!
 
   # CollectionGroups of this collection
   linkedCollections: [MarketingCollectionGroup!]!
+
+  # IDs of artists that should be excluded from Featured Artists for this collection
+  featuredArtistExclusionIds: [String!]
   relatedCollections: [MarketingCollection!]!
 }
 
@@ -4558,6 +4630,7 @@ type MarketingCollectionCategory {
 }
 
 type MarketingCollectionGroup {
+  internalID: ID
   groupType: MarketingGroupTypes!
   name: String!
   members: [MarketingCollection!]!
@@ -4567,32 +4640,49 @@ type MarketingCollectionQuery {
   internalID: ID
   acquireable: Boolean
   aggregations: [String!]
-  artist_ids: [String!]
-  artist_id: String
-  at_auction: Boolean
+  artist_ids: [String!] @deprecated(reason: "Prefer artistIDs")
+  artistIDs: [String!]
+  artist_id: String @deprecated(reason: "Prefer artistID")
+  artistID: String
+  at_auction: Boolean @deprecated(reason: "Prefer atAuction")
+  atAuction: Boolean
   color: String
-  dimension_range: String
-  extra_aggregation_gene_ids: [String!]
-  include_artworks_by_followed_artists: Boolean
-  include_medium_filter_in_aggregation: Boolean
-  inquireable_only: Boolean
-  for_sale: Boolean
-  gene_id: String
-  gene_ids: [String!]
+  dimension_range: String @deprecated(reason: "Prefer dimensionRange")
+  dimensionRange: String
+  extra_aggregation_gene_ids: [String!] @deprecated(reason: "prefer extraAggregationGeneIDs")
+  extraAggregationGeneIDs: [String!]
+  include_artworks_by_followed_artists: Boolean @deprecated(reason: "Prefer includeArtworksByFollowedArtists")
+  includeArtworksByFollowedArtists: Boolean
+  include_medium_filter_in_aggregation: Boolean @deprecated(reason: "Prefer includeMediumFilterInAggregation")
+  includeMediumFilterInAggregation: Boolean
+  inquireable_only: Boolean @deprecated(reason: "Prefer inquireableOnly")
+  inquireableOnly: Boolean
+  for_sale: Boolean @deprecated(reason: "Prefer forSale")
+  forSale: Boolean
+  gene_id: String @deprecated(reason: "Prefer geneID")
+  geneID: String
+  gene_ids: [String!] @deprecated(reason: "Prefer geneIDs")
+  geneIDs: [String!]
   height: String
   width: String
   medium: String
   period: String
   periods: [String!]
-  major_periods: [String!]
-  partner_id: ID
-  partner_cities: [String!]
-  price_range: String
+  major_periods: [String!] @deprecated(reason: "Prefer majorPeriods")
+  majorPeriods: [String!]
+  partner_id: ID @deprecated(reason: "Prefer partnerID")
+  partnerID: ID
+  partner_cities: [String!] @deprecated(reason: "Prefer partnerCities")
+  partnerCities: [String!]
+  price_range: String @deprecated(reason: "Prefer priceRange")
+  priceRange: String
   page: Int
-  sale_id: ID
+  sale_id: ID @deprecated(reason: "Prefer saleID")
+  saleID: ID
   size: Int
   sort: String
-  tag_id: String
+  tag_id: String @deprecated(reason: "Prefer tagID")
+  tagID: String
   keyword: String
 }
 
@@ -4798,6 +4888,20 @@ type MetaphysicsService {
   environment: String!
 }
 
+type Money {
+  # An amount of money expressed in minor units (like cents).
+  minor: Int!
+
+  # The ISO-4217 alphabetic currency code, as per https://en.wikipedia.org/wiki/ISO_4217
+  currencyCode: String!
+
+  # A pre-formatted price.
+  display: String
+
+  # An amount of money expressed in major units (like dollars).
+  major: Float!
+}
+
 type Mutation {
   # Create a bidder
   createBidder(input: CreateBidderInput!): CreateBidderPayload
@@ -4969,6 +5073,16 @@ type Partner implements Node {
   internalID: ID!
   cached: Int
 
+  # A connection of artists at a partner.
+  artistsConnection(
+    sort: ArtistSorts
+    representedBy: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistPartnerConnection
+
   # A connection of artworks from a Partner.
   artworksConnection(
     forSale: Boolean
@@ -4992,6 +5106,9 @@ type Partner implements Node {
   locations(size: Int = 25): [Location]
   name: String
   profile: Profile
+
+  # A connection of shows from a Partner.
+  showsConnection(sort: ShowSorts, after: String, first: Int, before: String, last: Int): ShowConnection
   type: String
 
   # The gallery partner's web address
@@ -5012,7 +5129,7 @@ type PartnerArtist {
   biography: String
   counts: PartnerArtistCounts
   isDisplayOnPartnerProfile: Boolean
-  isRepresentedBy: Boolean
+  representedBy: Boolean
   isUseDefaultBiography: Boolean
   partner: Partner
   sortableID: String
@@ -5057,7 +5174,7 @@ type PartnerArtistEdge {
   biography: String
   counts: PartnerArtistCounts
   isDisplayOnPartnerProfile: Boolean
-  isRepresentedBy: Boolean
+  representedBy: Boolean
   isUseDefaultBiography: Boolean
   partner: Partner
   sortableID: String
@@ -5213,8 +5330,9 @@ type PopularArtists {
 }
 
 type PriceRange {
-  minPriceCents: Int!
-  maxPriceCents: Int!
+  display: String
+  minPrice: Money
+  maxPrice: Money
 }
 
 type Profile {
@@ -5291,6 +5409,12 @@ type Query {
     # The globally unique ID of the node.
     id: ID!
   ): Node
+
+  # A Partner
+  partner(
+    # The slug or ID of the Partner
+    id: String!
+  ): Partner
 
   # A Sale
   sale(
@@ -5656,6 +5780,10 @@ type SaleArtwork implements Node & ArtworkEdgeInterface {
   reserveStatus: String
   saleID: String
   sale: Sale
+  calculatedCost(
+    # Max bid price for the sale artwork
+    bidAmountCents: Int
+  ): CalculatedCost
 
   # Currency symbol (e.g. "$")
   symbol: String
@@ -6423,6 +6551,25 @@ enum SubmissionStateAggregation {
   REJECTED
 }
 
+type SubtotalAmount {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
 type System {
   # The schema for difference micro-service settings
   services: Services
@@ -6707,6 +6854,12 @@ type Viewer {
     # The globally unique ID of the node.
     id: ID!
   ): Node
+
+  # A Partner
+  partner(
+    # The slug or ID of the Partner
+    id: String!
+  ): Partner
 
   # A Sale
   sale(

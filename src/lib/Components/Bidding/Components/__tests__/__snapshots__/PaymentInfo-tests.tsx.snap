@@ -300,28 +300,5 @@ exports[`renders properly 1`] = `
     }
     width="100%"
   />
-  <Text
-    color="black60"
-    fontFamily="Unica77LL-Regular"
-    fontSize="14px"
-    lineHeight="20px"
-    mt="5"
-    style={
-      Array [
-        Object {
-          "color": "#666",
-          "fontFamily": "Unica77LL-Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
-          "marginTop": 30,
-          "textAlign": "center",
-        },
-        Object {},
-      ]
-    }
-    textAlign="center"
-  >
-    A valid credit card is required for bidding.
-  </Text>
 </View>
 `;

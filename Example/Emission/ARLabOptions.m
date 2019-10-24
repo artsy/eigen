@@ -22,7 +22,7 @@ static NSDictionary *options = nil;
     // object.
     //
     options = @{
-       @"nothingYet": @"No feature flags available"
+       @"enablePriceTransparency": @"Price tranparency"
     };
   });
 

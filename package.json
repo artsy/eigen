@@ -163,6 +163,7 @@
     "relay-compiler-language-typescript": "9.0.0",
     "relay-config": "6.0.0",
     "relay-mock-network-layer": "2.0.0",
+    "relay-test-utils": "^7.0.0",
     "snapshot-diff": "0.2.2",
     "stylelint": "9.8.0",
     "stylelint-config-standard": "18.2.0",

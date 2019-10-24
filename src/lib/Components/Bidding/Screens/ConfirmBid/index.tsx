@@ -1,7 +1,7 @@
 import { Box, Button, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { Image, NativeModules, ScrollView, View, ViewProperties } from "react-native"
+import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
@@ -17,6 +17,7 @@ import { Title } from "lib/Components/Bidding/Components/Title"
 import { Flex } from "lib/Components/Bidding/Elements/Flex"
 import { BidResultScreen } from "lib/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSummary"
 import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
 import { LinkText } from "lib/Components/Text/LinkText"
@@ -412,9 +413,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   render() {
-    const { artwork, lot_label, sale } = this.props.sale_artwork
+    const { id, artwork, lot_label, sale } = this.props.sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
     const artworkImage = artwork.image
+    const enablePriceTransparency =
+      NativeModules.Emission && NativeModules.Emission.options && NativeModules.Emission.options.enablePriceTransparency
 
     return (
       <BiddingThemeProvider>
@@ -425,7 +428,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               <Timer liveStartsAt={sale.live_start_at} endsAt={sale.end_at} />
             </Flex>
 
-            <View>
+            <Box>
               <Flex m={4} alignItems="center">
                 {artworkImage && (
                   <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
@@ -462,8 +465,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   creditCardToken={this.state.creditCardToken}
                 />
               ) : (
-                <Divider mb={9} />
+                <Divider mb={2} />
               )}
+
+              {enablePriceTransparency && <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />}
 
               <Modal
                 visible={this.state.errorModalVisible}
@@ -471,13 +476,15 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 detailText={this.state.errorModalDetailText}
                 closeModal={this.closeModal.bind(this)}
               />
-            </View>
+            </Box>
           </ScrollView>
 
-          <View>
+          <Box>
+            <Divider />
+
             {requiresCheckbox ? (
               <Checkbox
-                mt={3}
+                mt={4}
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
@@ -513,7 +520,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 Bid
               </Button>
             </Box>
-          </View>
+          </Box>
         </Flex>
       </BiddingThemeProvider>
     )
@@ -536,6 +543,7 @@ export const ConfirmBidScreen = createRefetchContainer(
   {
     sale_artwork: graphql`
       fragment ConfirmBid_sale_artwork on SaleArtwork {
+        id
         internalID
         sale {
           slug

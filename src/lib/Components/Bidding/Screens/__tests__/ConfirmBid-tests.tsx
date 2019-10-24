@@ -1,4 +1,8 @@
-import { Button, Serif } from "@artsy/palette"
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+}))
+
+import { Button, Sans, Serif } from "@artsy/palette"
 import { merge } from "lodash"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
@@ -41,7 +45,10 @@ import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/Confir
 import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { Modal } from "lib/Components/Modal"
+import Spinner from "lib/Components/Spinner"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { waitUntil } from "lib/tests/waitUntil"
+
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { Address } from "../../types"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
@@ -69,6 +76,11 @@ beforeEach(() => {
   bidderPositionQueryMock.mockReset()
   mockPostNotificationName.mockReset()
   NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
+  NativeModules.Emission = {
+    options: {
+      enablePriceTransparency: true,
+    },
+  }
 })
 
 it("renders properly", () => {
@@ -108,6 +120,55 @@ it("displays the artwork title correctly without date", () => {
   )
 
   expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork.title},`)
+})
+
+it("can load and display price summary", () => {
+  const component = mountConfirmBidComponent(initialProps)
+
+  expect(component.root.findAllByType(Spinner).length).toEqual(1)
+  ;(defaultEnvironment as any).mock.resolveMostRecentOperation(() => ({
+    data: {
+      node: {
+        __typename: "SaleArtwork",
+        calculatedCost: {
+          buyersPremium: {
+            display: "$9,000.00",
+          },
+          subtotal: {
+            display: "$54,000.00",
+          },
+        },
+      },
+    },
+  }))
+
+  expect(component.root.findAllByType(Spinner).length).toEqual(0)
+
+  const sansText = component.root
+    .findAllByType(Sans)
+    .map(sansComponent => sansComponent.props.children as string)
+    .join(" ")
+
+  expect(sansText).toContain("Your max bid $45,000.00")
+  expect(sansText).toContain("Buyer’s premium $9,000.00")
+  expect(sansText).toContain("Subtotal $54,000.00")
+})
+
+it("does not display price summary when the feature flag is off", () => {
+  NativeModules.Emission.options.enablePriceTransparency = false
+
+  const component = mountConfirmBidComponent(initialProps)
+
+  expect(component.root.findAllByType(Spinner).length).toEqual(0)
+
+  const sansText = component.root
+    .findAllByType(Sans)
+    .map(sansComponent => sansComponent.props.children as string)
+    .join(" ")
+
+  expect(sansText).not.toContain("Your max bid $45,000.00")
+  expect(sansText).not.toContain("Buyer’s premium $9,000.00")
+  expect(sansText).not.toContain("Subtotal $54,000.00")
 })
 
 describe("checkbox and payment info display", () => {
@@ -480,6 +541,7 @@ describe("polling to verify bid position", () => {
           refreshBidderInfo: expect.anything(),
           refreshSaleArtwork: expect.anything(),
           sale_artwork: {
+            id: "node-id",
             internalID: "internal-id",
             " $fragmentRefs": null,
             " $refType": null,
@@ -778,6 +840,7 @@ const serifChildren = comp =>
     .join(" ")
 
 const saleArtwork: ConfirmBid_sale_artwork = {
+  id: "node-id",
   internalID: "internal-id",
   artwork: {
     slug: "meteor-shower",

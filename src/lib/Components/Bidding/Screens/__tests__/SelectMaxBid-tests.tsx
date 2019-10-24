@@ -1,3 +1,7 @@
+jest.mock("lib/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
+  PriceSummary: () => null,
+}))
+
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"

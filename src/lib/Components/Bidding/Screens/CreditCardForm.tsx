@@ -123,8 +123,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                     </Sans>
                   )}
                   <Sans mt="6" size="3" color="black60" textAlign="center">
-                    Registration is free. Artsy will never charge this card without your permission, and you are not
-                    required to use this card to pay if you win.
+                    Registration is free.
+                    {"\n"}A credit card is required to bid. Artsy will never charge this card without your permission,
+                    and you are not required to use this card to pay if you win.
                   </Sans>
                 </Box>
               </View>

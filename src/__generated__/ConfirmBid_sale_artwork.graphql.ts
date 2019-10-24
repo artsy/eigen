@@ -3,6 +3,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ConfirmBid_sale_artwork = {
+    readonly id: string;
     readonly internalID: string;
     readonly sale: {
         readonly slug: string;
@@ -40,6 +41,13 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -145,5 +153,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '26b5726ebac448f15bdcfd1fdd7cded7';
+(node as any).hash = '8d479a1aa00dfaa40cc119e04a6b9df4';
 export default node;
