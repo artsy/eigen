@@ -83,7 +83,7 @@
 
     // Bump the index and repeat if it's past the top
     self.index++;
-    if (self.index > self.states.count) {
+    if (self.index >= self.states.count) {
         self.index = 0;
     }
 
