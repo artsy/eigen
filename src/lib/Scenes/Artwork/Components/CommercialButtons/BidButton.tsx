@@ -1,17 +1,17 @@
 import { Button, color, Sans } from "@artsy/palette"
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
+import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
-import { AuctionState } from "../CommercialInformation"
 
 export const PREDICTION_URL = "https://live.artsy.net"
 
 export interface BidButtonProps {
   artwork: BidButton_artwork
-  auctionState: AuctionState
+  auctionState: AuctionTimerState
   relay: RelayProp
 }
 
@@ -121,9 +121,9 @@ export class BidButton extends React.Component<BidButtonProps> {
     const myLotStanding = getMyLotStanding(artwork)
     const hasBid = getHasBid(myLotStanding)
 
-    if (auctionState === "isPreview") {
+    if (auctionState === AuctionTimerState.PREVIEW) {
       return this.renderIsPreview(registrationAttempted, registeredToBid)
-    } else if (auctionState === "isLive") {
+    } else if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
       return this.renderIsLiveOpen()
     } else if (registrationAttempted && !registeredToBid) {
       return (

@@ -271,7 +271,6 @@ fragment CommercialInformation_artwork on Artwork {
   ...CommercialButtons_artwork
   ...CommercialPartnerInformation_artwork
   ...CommercialEditionSetInformation_artwork
-  ...AuctionCountDownTimer_artwork
   ...ArtworkExtraLinks_artwork
   ...AuctionPrice_artwork
 }
@@ -328,15 +327,6 @@ fragment CommercialEditionSetInformation_artwork on Artwork {
     }
   }
   ...CommercialPartnerInformation_artwork
-}
-
-fragment AuctionCountDownTimer_artwork on Artwork {
-  sale {
-    startAt
-    endAt
-    liveStartAt
-    id
-  }
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
@@ -1897,7 +1887,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "f364cd9103ae9c4231b066430ab114bb",
+    "id": "fbcaf54aba7a15bc13bcf4575cfa5a0d",
     "text": null,
     "metadata": {}
   }

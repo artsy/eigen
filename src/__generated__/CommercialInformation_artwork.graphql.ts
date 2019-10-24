@@ -25,7 +25,7 @@ export type CommercialInformation_artwork = {
         readonly endAt: string | null;
         readonly startAt: string | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_artwork" | "CommercialPartnerInformation_artwork" | "CommercialEditionSetInformation_artwork" | "AuctionCountDownTimer_artwork" | "ArtworkExtraLinks_artwork" | "AuctionPrice_artwork">;
+    readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_artwork" | "CommercialPartnerInformation_artwork" | "CommercialEditionSetInformation_artwork" | "ArtworkExtraLinks_artwork" | "AuctionPrice_artwork">;
     readonly " $refType": "CommercialInformation_artwork";
 };
 
@@ -200,11 +200,6 @@ const node: ReaderFragment = {
     },
     {
       "kind": "FragmentSpread",
-      "name": "AuctionCountDownTimer_artwork",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
       "name": "ArtworkExtraLinks_artwork",
       "args": null
     },
@@ -215,5 +210,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '227b2c6a0eccaf9b4375600216a99f62';
+(node as any).hash = 'ca265ee2cc67de8f0b62792fd7737f8d';
 export default node;

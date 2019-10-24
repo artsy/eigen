@@ -1,10 +1,10 @@
 import { Button, Spacer } from "@artsy/palette"
 import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
+import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { AuctionState } from "../CommercialInformation"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 import { BuyNowButtonFragmentContainer as BuyNowButton } from "./BuyNowButton"
 import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOfferButton"
@@ -14,7 +14,7 @@ export interface CommercialButtonProps {
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
-  auctionState: AuctionState
+  auctionState: AuctionTimerState
 }
 
 const track: Track<CommercialButtonProps> = _track
@@ -35,7 +35,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, isForSale } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
 
-    if (isInAuction && artwork.sale && auctionState !== "hasEnded" && isForSale) {
+    if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
       return (
         <>
           {isBuyNowable && noEditions ? (

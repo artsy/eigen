@@ -82,7 +82,7 @@ exports[`renders properly 1`] = `
               ]
             }
           >
-            NaNd  NaNh  NaNm  NaNs
+            00d  00h  00m  00s
           </Text>
           <Text
             fontFamily="Unica77LL-Medium"

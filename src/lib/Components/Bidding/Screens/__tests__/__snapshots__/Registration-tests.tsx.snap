@@ -97,7 +97,7 @@ exports[`renders properly for a user with a credit card 1`] = `
             ]
           }
         >
-          Starts Jun 10, 9 PM
+          Starts Jun 10, 9 PM EDT
         </Text>
       </View>
       <Text
@@ -1127,7 +1127,7 @@ exports[`renders properly for a user without a credit card 1`] = `
             ]
           }
         >
-          Starts Jun 10, 9 PM
+          Starts Jun 10, 9 PM EDT
         </Text>
       </View>
       <Text

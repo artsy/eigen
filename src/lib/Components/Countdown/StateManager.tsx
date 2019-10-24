@@ -1,15 +1,15 @@
-import moment from "moment"
 import React from "react"
+import { CountdownProps } from "../Bidding/Components/Timer"
 import { DurationProvider } from "./DurationProvider"
 
 export interface TickerState {
-  label: string
+  label?: string
   date?: string
   state: string
 }
 
 interface Props {
-  CountdownComponent: React.ComponentType<{ label: string; duration: moment.Duration }>
+  CountdownComponent: React.ComponentType<CountdownProps>
   timeOffsetInMilliseconds?: number
   onCurrentTickerState: () => TickerState
   onNextTickerState: (currentState: TickerState) => TickerState
@@ -30,9 +30,9 @@ export class StateManager extends React.Component<Props, State> {
   }
 
   render() {
-    const { CountdownComponent, timeOffsetInMilliseconds } = this.props
+    const { CountdownComponent, timeOffsetInMilliseconds, ...props } = this.props
     const {
-      tickerState: { label, date },
+      tickerState: { label, date, state },
     } = this.state
 
     return (
@@ -41,7 +41,7 @@ export class StateManager extends React.Component<Props, State> {
         timeOffsetInMilliseconds={timeOffsetInMilliseconds}
         onDurationEnd={this.handleDurationEnd}
       >
-        <CountdownComponent label={label} duration={null} />
+        <CountdownComponent label={label} duration={null} timerState={state} {...props} />
       </DurationProvider>
     )
   }

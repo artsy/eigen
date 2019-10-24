@@ -1,15 +1,15 @@
 import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import { AuctionPrice_artwork } from "__generated__/AuctionPrice_artwork.graphql"
+import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { AuctionState } from "./CommercialInformation"
 
 interface AuctionPriceProps {
   artwork: AuctionPrice_artwork
-  auctionState: AuctionState
+  auctionState: AuctionTimerState
 }
 
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
@@ -41,10 +41,10 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const { artwork, auctionState } = this.props
     const { sale, saleArtwork } = artwork
 
-    if (auctionState === "isLive") {
+    if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
       // We do not have reliable Bid info for artworks in Live sales in progress
       return null
-    } else if (auctionState === "hasEnded") {
+    } else if (auctionState === AuctionTimerState.CLOSED) {
       return (
         <Sans size="4t" weight="medium" color="black100">
           Bidding closed

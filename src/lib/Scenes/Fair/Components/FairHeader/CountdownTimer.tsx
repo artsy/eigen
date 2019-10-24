@@ -1,6 +1,6 @@
 import { Flex, Sans, Spacer } from "@artsy/palette"
+import { CountdownProps } from "lib/Components/Bidding/Components/Timer"
 import { LabeledTicker, StateManager as CountdownStateManager } from "lib/Components/Countdown"
-import moment from "moment"
 import React from "react"
 
 interface Props {
@@ -45,12 +45,7 @@ function currentState({ startAt, endAt }: Props) {
   }
 }
 
-interface CountdownTextProps {
-  duration: moment.Duration
-  label: string
-}
-
-const CountdownText: React.SFC<CountdownTextProps> = ({ duration, label }) =>
+const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) =>
   label !== "Closed" && (
     <Flex justifyContent="center" alignItems="center">
       <LabeledTicker

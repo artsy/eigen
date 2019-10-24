@@ -12,6 +12,12 @@ describe("SimpleTicker", () => {
     const comp = render(<SimpleTicker duration={duration} separator="  " size="5" />)
     expect(comp.text()).toEqual("00d  00h  00m  01s")
   })
+
+  it("renders properly when duration is over", () => {
+    const zeroDuration = moment.duration(null)
+    const comp = render(<SimpleTicker duration={zeroDuration} separator="  " size="5" />)
+    expect(comp.text()).toEqual("00d  00h  00m  00s")
+  })
 })
 
 describe("LabeledTicker", () => {
