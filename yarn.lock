@@ -13372,7 +13372,7 @@ relay-runtime@7.0.0:
     "@babel/runtime" "^7.0.0"
     fbjs "^1.0.0"
 
-relay-test-utils@^7.0.0:
+relay-test-utils@7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/relay-test-utils/-/relay-test-utils-7.0.0.tgz#65637ca7e233fb6b64dbdb44445158e9953d53c9"
   integrity sha512-5AHo7NBMg4WPZOZKtK7u6EHVDQ9oqxQ07crTaO96lwpvwaWUi6JPYcNa47I2lCbo/Q0QybIHP5Fw379FRKUrog==
