@@ -22,7 +22,6 @@ it(@"makes sure that settings are merged correctly", ^{
       @"ARDisableReactNativeBidFlow": @(NO),
       @"ipad_vir": @(NO),
       @"iphone_vir": @(YES),
-      @"enableBuyNowMakeOffer":@(YES),
       @"AREnableBuyNowFlow": @(YES),
       @"Debug AR View in Room": @(YES),
       @"Disable Native Live Auctions": @(YES)
