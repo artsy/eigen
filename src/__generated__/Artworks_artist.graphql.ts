@@ -3,59 +3,153 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Artworks_artist = {
-    readonly counts: {
-        readonly artworks: number | null;
-        readonly for_sale_artworks: number | null;
+    readonly id: string;
+    readonly artworks: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+            } | null;
+        } | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistForSaleArtworksGrid_artist" | "ArtistNotForSaleArtworksGrid_artist">;
     readonly " $refType": "Artworks_artist";
 };
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "Artworks_artist",
   "type": "Artist",
-  "metadata": null,
-  "argumentDefinitions": [],
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "artworks"
+        ]
+      }
+    ]
+  },
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "count",
+      "type": "Int",
+      "defaultValue": 10
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "cursor",
+      "type": "String",
+      "defaultValue": null
+    }
+  ],
   "selections": [
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "counts",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "ArtistCounts",
+      "alias": "artworks",
+      "name": "__ArtistArtworksGrid_artworks_connection",
+      "storageKey": "__ArtistArtworksGrid_artworks_connection(aggregations:[\"TOTAL\"],sort:\"-decayed_merch\")",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "aggregations",
+          "value": [
+            "TOTAL"
+          ]
+        },
+        {
+          "kind": "Literal",
+          "name": "sort",
+          "value": "-decayed_merch"
+        }
+      ],
+      "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
+          "kind": "LinkedField",
           "alias": null,
-          "name": "artworks",
+          "name": "edges",
+          "storageKey": null,
           "args": null,
-          "storageKey": null
+          "concreteType": "FilterArtworksEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artwork",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         },
         {
-          "kind": "ScalarField",
-          "alias": "for_sale_artworks",
-          "name": "forSaleArtworks",
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
           "args": null,
-          "storageKey": null
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "InfiniteScrollArtworksGrid_connection",
+          "args": null
         }
       ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ArtistForSaleArtworksGrid_artist",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ArtistNotForSaleArtworksGrid_artist",
-      "args": null
     }
   ]
 };
-(node as any).hash = '514384b94d84db0ae79f6560249e55f3';
+})();
+(node as any).hash = 'ece8cb9ea3dba718803b76f4f9d9660b';
 export default node;

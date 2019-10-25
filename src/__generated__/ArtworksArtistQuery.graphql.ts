@@ -2,25 +2,25 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistNotForSaleArtworksGridQueryVariables = {
+export type ArtworksArtistQueryVariables = {
     id: string;
     count: number;
     cursor?: string | null;
 };
-export type ArtistNotForSaleArtworksGridQueryResponse = {
+export type ArtworksArtistQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtistNotForSaleArtworksGrid_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"Artworks_artist">;
     } | null;
 };
-export type ArtistNotForSaleArtworksGridQuery = {
-    readonly response: ArtistNotForSaleArtworksGridQueryResponse;
-    readonly variables: ArtistNotForSaleArtworksGridQueryVariables;
+export type ArtworksArtistQuery = {
+    readonly response: ArtworksArtistQueryResponse;
+    readonly variables: ArtworksArtistQueryVariables;
 };
 
 
 
 /*
-query ArtistNotForSaleArtworksGridQuery(
+query ArtworksArtistQuery(
   $id: ID!
   $count: Int!
   $cursor: String
@@ -28,15 +28,15 @@ query ArtistNotForSaleArtworksGridQuery(
   node(id: $id) {
     __typename
     ... on Artist {
-      ...ArtistNotForSaleArtworksGrid_artist_1G22uz
+      ...Artworks_artist_1G22uz
     }
     id
   }
 }
 
-fragment ArtistNotForSaleArtworksGrid_artist_1G22uz on Artist {
+fragment Artworks_artist_1G22uz on Artist {
   id
-  notForSaleArtworks: filterArtworksConnection(first: $count, after: $cursor, forSale: false, sort: "-decayed_merch", aggregations: [TOTAL]) {
+  artworks: filterArtworksConnection(first: $count, after: $cursor, sort: "-decayed_merch", aggregations: [TOTAL]) {
     edges {
       node {
         id
@@ -173,11 +173,6 @@ v4 = [
   },
   {
     "kind": "Literal",
-    "name": "forSale",
-    "value": false
-  },
-  {
-    "kind": "Literal",
     "name": "sort",
     "value": "-decayed_merch"
   }
@@ -196,7 +191,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistNotForSaleArtworksGridQuery",
+    "name": "ArtworksArtistQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -216,7 +211,7 @@ return {
             "selections": [
               {
                 "kind": "FragmentSpread",
-                "name": "ArtistNotForSaleArtworksGrid_artist",
+                "name": "Artworks_artist",
                 "args": [
                   {
                     "kind": "Variable",
@@ -238,7 +233,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistNotForSaleArtworksGridQuery",
+    "name": "ArtworksArtistQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -258,7 +253,7 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": "notForSaleArtworks",
+                "alias": "artworks",
                 "name": "filterArtworksConnection",
                 "storageKey": null,
                 "args": (v4/*: any*/),
@@ -517,13 +512,12 @@ return {
               },
               {
                 "kind": "LinkedHandle",
-                "alias": "notForSaleArtworks",
+                "alias": "artworks",
                 "name": "filterArtworksConnection",
                 "args": (v4/*: any*/),
                 "handle": "connection",
-                "key": "ArtistNotForSaleArtworksGrid_notForSaleArtworks",
+                "key": "ArtistArtworksGrid_artworks",
                 "filters": [
-                  "forSale",
                   "sort",
                   "aggregations"
                 ]
@@ -536,12 +530,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtistNotForSaleArtworksGridQuery",
-    "id": "7aa124fb2fe8762332e5f962f0a84218",
+    "name": "ArtworksArtistQuery",
+    "id": "3c0ede2a6ebb6df958bc095193d33047",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd588d24027e6181b1ac449121e0996c6';
+(node as any).hash = '7e1699280a0967915ce67e713b631765';
 export default node;
