@@ -78,7 +78,7 @@ beforeEach(() => {
   NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
   NativeModules.Emission = {
     options: {
-      enablePriceTransparency: true,
+      AROptionsPriceTransparency: true,
     },
   }
 })
@@ -155,7 +155,7 @@ it("can load and display price summary", () => {
 })
 
 it("does not display price summary when the feature flag is off", () => {
-  NativeModules.Emission.options.enablePriceTransparency = false
+  NativeModules.Emission.options.AROptionsPriceTransparency = false
 
   const component = mountConfirmBidComponent(initialProps)
 
