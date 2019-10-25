@@ -29,7 +29,7 @@ if (branch === "master") {
 }
 
 /** @type {String[]} */
-const changedFiles = reverseSh(`git diff --name-only HEAD $(git merge-base HEAD origin/master)`).split("\n")
+const changedFiles = reverseSh(`git diff --name-only HEAD origin/master`).split("\n")
 if (changedFiles.filter(file => file.startsWith("Pod/") || file.startsWith("Example/")).length > 0) {
   throw new Error("Native files have been changed, not skipping.")
 }

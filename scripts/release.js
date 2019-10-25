@@ -3,17 +3,11 @@
 const fs = require("fs")
 const path = require("path")
 const spawnSync = require("child_process").spawnSync
-const chalk = require("chalk")
-
-const versionChange = process.argv[2]
-if (!versionChange) {
-  console.log("Usage: $ npm run release -- [patch|minor|major]")
-  process.exit(1)
-}
+const chalk = require("chalk").default
 
 function sh(command, canFail = false) {
   console.log("$ " + command)
-  const task = spawnSync(command, { shell: true })
+  const task = spawnSync(command, { shell: true, stdio: "inherit" })
   if (!canFail && task.status != 0) {
     console.log(String(task.stdout))
     console.error(chalk.red(String(task.stderr)))
@@ -27,7 +21,7 @@ function publishPodspec(podspec) {
   const packagePath = path.join(podspecDir, "package.json")
 
   const name = path.basename(podspec, ".podspec")
-  const version = JSON.parse(fs.readFileSync(packagePath)).version
+  const version = JSON.parse(fs.readFileSync(packagePath).toString()).version
 
   const specRepo = path.join(process.env.HOME, ".cocoapods/repos/artsy")
   const relativeSpecPath = path.join(name, version, name + ".podspec.json")
@@ -59,30 +53,21 @@ sh("npm --version")
 console.log(chalk.green("=> Creating release bundle."))
 sh("npm run relay")
 sh("npm run bundle")
-sh("cd Example && bundle exec pod install && cd ..")
+sh("cd Example && bundle exec pod install")
 sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
+sh("yarn run auto changelog --very-verbose")
+
 console.log(chalk.green("=> Creating version bump commit and tag."))
-sh("npm version " + versionChange)
+sh(`npm version $(npx auto version) --message '%s [skip ci]'`)
 
-console.log(chalk.green("=> Updating Changelog"))
-const changelog = fs.readFileSync("CHANGELOG.md", "utf8")
-const newCHANGELOG = changelog.replace(
-  "### Master",
-  `### Master
-### ${JSON.parse(fs.readFileSync("package.json", "utf8")).version}
-`
-)
-fs.writeFileSync("CHANGELOG.md", newCHANGELOG, "utf8")
-sh("yarn prettier --write CHANGELOG.md")
-sh("git add CHANGELOG.md")
-sh("git commit -m 'Updated CHANGELOG for new release' --allow-empty")
-
-sh("git push")
+sh("git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)")
 sh("git push --tags")
+
+sh("yarn run auto release --very-verbose")
 
 console.log(chalk.green("=> Pushing Podspec"))
 publishPodspec("Emission.podspec")
 
-console.log(chalk.green("=> Updating Metaphysics"))
-sh("npm run merge-graphql-query-map")
+console.log(chalk.green("=> Updating Metaphysics and eigen"))
+sh("npm run update-metaphysics-and-eigen")
