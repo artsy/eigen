@@ -53,14 +53,6 @@ return {
       "name": "cursor",
       "type": "String",
       "defaultValue": null
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "filter",
-      "type": "[ArtistArtworksFilters]",
-      "defaultValue": [
-        "IS_FOR_SALE"
-      ]
     }
   ],
   "selections": [
@@ -69,20 +61,27 @@ return {
       "kind": "LinkedField",
       "alias": "forSaleArtworks",
       "name": "__ArtistForSaleArtworksGrid_forSaleArtworks_connection",
-      "storageKey": null,
+      "storageKey": "__ArtistForSaleArtworksGrid_forSaleArtworks_connection(aggregations:[\"TOTAL\"],forSale:true,sort:\"-decayed_merch\")",
       "args": [
         {
-          "kind": "Variable",
-          "name": "filter",
-          "variableName": "filter"
+          "kind": "Literal",
+          "name": "aggregations",
+          "value": [
+            "TOTAL"
+          ]
+        },
+        {
+          "kind": "Literal",
+          "name": "forSale",
+          "value": true
         },
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "PARTNER_UPDATED_AT_DESC"
+          "value": "-decayed_merch"
         }
       ],
-      "concreteType": "ArtworkConnection",
+      "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
         {
@@ -91,7 +90,7 @@ return {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "ArtworkEdge",
+          "concreteType": "FilterArtworksEdge",
           "plural": true,
           "selections": [
             {
@@ -157,5 +156,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b094fe013531ce6c76f3384fe4b385e6';
+(node as any).hash = '69671348bdd99c3c36ec2da3e9fec4ae';
 export default node;

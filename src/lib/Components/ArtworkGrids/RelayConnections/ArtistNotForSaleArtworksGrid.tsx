@@ -27,11 +27,12 @@ export const ArtistNotForSaleArtworksGridContainer = createPaginationContainer(
           filter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_NOT_FOR_SALE] }
         ) {
         id
-        notForSaleArtworks: artworksConnection(
+        notForSaleArtworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          filter: $filter
-          sort: PARTNER_UPDATED_AT_DESC
+          forSale: false
+          sort: "-decayed_merch"
+          aggregations: [TOTAL]
         ) @connection(key: "ArtistNotForSaleArtworksGrid_notForSaleArtworks") {
           edges {
             node {
@@ -63,15 +64,10 @@ export const ArtistNotForSaleArtworksGridContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtistNotForSaleArtworksGridQuery(
-        $id: ID!
-        $count: Int!
-        $cursor: String
-        $filter: [ArtistArtworksFilters]
-      ) {
+      query ArtistNotForSaleArtworksGridQuery($id: ID!, $count: Int!, $cursor: String) {
         node(id: $id) {
           ... on Artist {
-            ...ArtistNotForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
+            ...ArtistNotForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor)
           }
         }
       }

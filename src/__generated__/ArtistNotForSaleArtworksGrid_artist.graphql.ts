@@ -69,20 +69,27 @@ return {
       "kind": "LinkedField",
       "alias": "notForSaleArtworks",
       "name": "__ArtistNotForSaleArtworksGrid_notForSaleArtworks_connection",
-      "storageKey": null,
+      "storageKey": "__ArtistNotForSaleArtworksGrid_notForSaleArtworks_connection(aggregations:[\"TOTAL\"],forSale:false,sort:\"-decayed_merch\")",
       "args": [
         {
-          "kind": "Variable",
-          "name": "filter",
-          "variableName": "filter"
+          "kind": "Literal",
+          "name": "aggregations",
+          "value": [
+            "TOTAL"
+          ]
+        },
+        {
+          "kind": "Literal",
+          "name": "forSale",
+          "value": false
         },
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "PARTNER_UPDATED_AT_DESC"
+          "value": "-decayed_merch"
         }
       ],
-      "concreteType": "ArtworkConnection",
+      "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
         {
@@ -91,7 +98,7 @@ return {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "ArtworkEdge",
+          "concreteType": "FilterArtworksEdge",
           "plural": true,
           "selections": [
             {
@@ -157,5 +164,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd7bdb4613266fb97d1f2a964b63ad1da';
+(node as any).hash = '96e82603acff0761d49ada48ddb50c5d';
 export default node;

@@ -20,17 +20,14 @@ export const ArtistForSaleArtworksGridContainer = createPaginationContainer(
   {
     artist: graphql`
       fragment ArtistForSaleArtworksGrid_artist on Artist
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
-          filter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_FOR_SALE] }
-        ) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
-        forSaleArtworks: artworksConnection(
+        forSaleArtworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          filter: $filter
-          sort: PARTNER_UPDATED_AT_DESC
+          forSale: true
+          sort: "-decayed_merch"
+          aggregations: [TOTAL]
         ) @connection(key: "ArtistForSaleArtworksGrid_forSaleArtworks") {
           # TODO: Just here to satisfy the relay compiler, can we get rid of this need?
           edges {
@@ -63,10 +60,10 @@ export const ArtistForSaleArtworksGridContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtistForSaleArtworksGridQuery($id: ID!, $count: Int!, $cursor: String, $filter: [ArtistArtworksFilters]) {
+      query ArtistForSaleArtworksGridQuery($id: ID!, $count: Int!, $cursor: String) {
         node(id: $id) {
           ... on Artist {
-            ...ArtistForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
+            ...ArtistForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor)
           }
         }
       }

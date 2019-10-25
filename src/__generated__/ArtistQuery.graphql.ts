@@ -129,7 +129,7 @@ fragment Artworks_artist on Artist {
 
 fragment ArtistForSaleArtworksGrid_artist on Artist {
   id
-  forSaleArtworks: artworksConnection(first: 10, filter: [IS_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
+  forSaleArtworks: filterArtworksConnection(first: 10, forSale: true, sort: "-decayed_merch", aggregations: [TOTAL]) {
     edges {
       node {
         id
@@ -142,12 +142,13 @@ fragment ArtistForSaleArtworksGrid_artist on Artist {
       endCursor
       hasNextPage
     }
+    id
   }
 }
 
 fragment ArtistNotForSaleArtworksGrid_artist on Artist {
   id
-  notForSaleArtworks: artworksConnection(first: 10, filter: [IS_NOT_FOR_SALE], sort: PARTNER_UPDATED_AT_DESC) {
+  notForSaleArtworks: filterArtworksConnection(first: 10, forSale: false, sort: "-decayed_merch", aggregations: [TOTAL]) {
     edges {
       node {
         id
@@ -160,6 +161,7 @@ fragment ArtistNotForSaleArtworksGrid_artist on Artist {
       endCursor
       hasNextPage
     }
+    id
   }
 }
 
@@ -521,28 +523,34 @@ v21 = [
 ],
 v22 = {
   "kind": "Literal",
-  "name": "sort",
-  "value": "PARTNER_UPDATED_AT_DESC"
+  "name": "aggregations",
+  "value": [
+    "TOTAL"
+  ]
 },
-v23 = [
+v23 = {
+  "kind": "Literal",
+  "name": "sort",
+  "value": "-decayed_merch"
+},
+v24 = [
+  (v22/*: any*/),
+  (v9/*: any*/),
   {
     "kind": "Literal",
-    "name": "filter",
-    "value": [
-      "IS_FOR_SALE"
-    ]
+    "name": "forSale",
+    "value": true
   },
-  (v9/*: any*/),
-  (v22/*: any*/)
+  (v23/*: any*/)
 ],
-v24 = [
+v25 = [
   {
     "kind": "LinkedField",
     "alias": null,
     "name": "edges",
     "storageKey": null,
     "args": null,
-    "concreteType": "ArtworkEdge",
+    "concreteType": "FilterArtworksEdge",
     "plural": true,
     "selections": [
       {
@@ -758,24 +766,25 @@ v24 = [
         "storageKey": null
       }
     ]
-  }
-],
-v25 = [
-  "filter",
-  "sort"
+  },
+  (v4/*: any*/)
 ],
 v26 = [
-  {
-    "kind": "Literal",
-    "name": "filter",
-    "value": [
-      "IS_NOT_FOR_SALE"
-    ]
-  },
-  (v9/*: any*/),
-  (v22/*: any*/)
+  "forSale",
+  "sort",
+  "aggregations"
 ],
 v27 = [
+  (v22/*: any*/),
+  (v9/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "forSale",
+    "value": false
+  },
+  (v23/*: any*/)
+],
+v28 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -1117,40 +1126,40 @@ return {
           {
             "kind": "LinkedField",
             "alias": "forSaleArtworks",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(filter:[\"IS_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
-            "args": (v23/*: any*/),
-            "concreteType": "ArtworkConnection",
+            "name": "filterArtworksConnection",
+            "storageKey": "filterArtworksConnection(aggregations:[\"TOTAL\"],first:10,forSale:true,sort:\"-decayed_merch\")",
+            "args": (v24/*: any*/),
+            "concreteType": "FilterArtworksConnection",
             "plural": false,
-            "selections": (v24/*: any*/)
+            "selections": (v25/*: any*/)
           },
           {
             "kind": "LinkedHandle",
             "alias": "forSaleArtworks",
-            "name": "artworksConnection",
-            "args": (v23/*: any*/),
+            "name": "filterArtworksConnection",
+            "args": (v24/*: any*/),
             "handle": "connection",
             "key": "ArtistForSaleArtworksGrid_forSaleArtworks",
-            "filters": (v25/*: any*/)
+            "filters": (v26/*: any*/)
           },
           {
             "kind": "LinkedField",
             "alias": "notForSaleArtworks",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(filter:[\"IS_NOT_FOR_SALE\"],first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
-            "args": (v26/*: any*/),
-            "concreteType": "ArtworkConnection",
+            "name": "filterArtworksConnection",
+            "storageKey": "filterArtworksConnection(aggregations:[\"TOTAL\"],first:10,forSale:false,sort:\"-decayed_merch\")",
+            "args": (v27/*: any*/),
+            "concreteType": "FilterArtworksConnection",
             "plural": false,
-            "selections": (v24/*: any*/)
+            "selections": (v25/*: any*/)
           },
           {
             "kind": "LinkedHandle",
             "alias": "notForSaleArtworks",
-            "name": "artworksConnection",
-            "args": (v26/*: any*/),
+            "name": "filterArtworksConnection",
+            "args": (v27/*: any*/),
             "handle": "connection",
             "key": "ArtistNotForSaleArtworksGrid_notForSaleArtworks",
-            "filters": (v25/*: any*/)
+            "filters": (v26/*: any*/)
           },
           {
             "kind": "Condition",
@@ -1162,7 +1171,7 @@ return {
                 "alias": "pastSmallShows",
                 "name": "showsConnection",
                 "storageKey": "showsConnection(first:20,status:\"closed\")",
-                "args": (v27/*: any*/),
+                "args": (v28/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
                 "selections": [
@@ -1214,7 +1223,7 @@ return {
                 "alias": "pastLargeShows",
                 "name": "showsConnection",
                 "storageKey": "showsConnection(first:20,status:\"closed\")",
-                "args": (v27/*: any*/),
+                "args": (v28/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
                 "selections": (v21/*: any*/)
@@ -1228,7 +1237,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistQuery",
-    "id": "15be4e9ef408a4aa7c0853c99a726b68",
+    "id": "cdf107c1e1e53be4d6fa2d845d678c92",
     "text": null,
     "metadata": {}
   }
