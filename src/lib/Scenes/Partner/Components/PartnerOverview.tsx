@@ -1,16 +1,17 @@
-import { Box, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Sans, Spacer } from "@artsy/palette"
 import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
+import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
 import { get } from "lib/utils/get"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import { union } from "lodash"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 import { PartnerOverviewWebsite } from "./PartnerOverviewWebsite"
 
-const textLimit = 50
+const textLimit = truncatedTextLimit()
 const PAGE_SIZE = 10
 
 export const PartnerOverview: React.FC<{
@@ -21,7 +22,7 @@ export const PartnerOverview: React.FC<{
   const artists = partner.artists && partner.artists.edges
 
   const fetchNextPage = () => {
-    if (fetchingNextPage) {
+    if (fetchingNextPage || !partner.artists.pageInfo.endCursor) {
       return
     }
     setFetchingNextPage(true)
@@ -40,7 +41,6 @@ export const PartnerOverview: React.FC<{
       if (!node) {
         return null
       }
-      console.log("node", node)
       return (
         <Box key={node.id}>
           <ArtistListItem artist={node} />
@@ -50,23 +50,11 @@ export const PartnerOverview: React.FC<{
     })
   }
 
-  const createLocationsString = locations => {
-    const cities = []
-    locations.forEach(location => {
-      return cities.push(location.city)
-    })
-    const uniqCities = union(cities)
-    return uniqCities.join("  •  ")
-  }
-
-  const partnerLocations = get(partner, p => p.locations)
-  const locationsString = createLocationsString(partnerLocations)
-
   const aboutText = get(partner, p => p.profile.bio)
   return (
     <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>
       <Box px={2} py={3}>
-        {aboutText && (
+        {!!aboutText && (
           <>
             <Sans size="3t" weight="medium">
               About
@@ -76,20 +64,9 @@ export const PartnerOverview: React.FC<{
             <Spacer mb={3} />
           </>
         )}
-        {locationsString && (
-          <>
-            <Sans size="3t" weight="medium">
-              Locations
-            </Sans>
-            <Spacer mb={2} />
-            <Flex flexDirection="row">
-              <Serif size="2">{locationsString}</Serif>
-            </Flex>
-            <Spacer mb={3} />
-          </>
-        )}
-        {partner.website && <PartnerOverviewWebsite website={partner.website} />}
-        {artists && (
+        <PartnerLocationSection partner={partner} />
+        {!!partner.website && <PartnerOverviewWebsite website={partner.website} />}
+        {!!artists && (
           <>
             <Sans size="3t" weight="medium">
               Artists
@@ -112,6 +89,7 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         internalID
         website
+        name
         locations {
           city
         }
@@ -132,6 +110,8 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
             }
           }
         }
+
+        ...PartnerLocationSection_partner
       }
     `,
   },

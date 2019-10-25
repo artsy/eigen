@@ -122,7 +122,7 @@
   [sectionData addCellData:self.jumpToCollection];
   [sectionData addCellData:self.jumpToArtwork];
   [sectionData addCellData:self.jumpToPartner];
-    [sectionData addCellData:self.jumpToPartner2];
+  [sectionData addCellData:self.jumpToPartner2];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -252,7 +252,7 @@
 - (ARCellData *)jumpToPartner
 {
   return [self tappableCellDataWithTitle:@"Partner" selection:^{
-    id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"dr-jorn-gunther-rare-books"];
+    id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"joseph-fine-art"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

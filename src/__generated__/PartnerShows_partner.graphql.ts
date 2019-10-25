@@ -20,7 +20,7 @@ export type PartnerShows_partner = {
                 readonly partner: {
                     readonly name?: string | null;
                 } | null;
-                readonly " $fragmentRefs": FragmentRefs<"ShowItem_show">;
+                readonly " $fragmentRefs": FragmentRefs<"PartnerShowRailItem_show">;
             } | null;
         } | null> | null;
     } | null;
@@ -129,7 +129,7 @@ return {
       "kind": "LinkedField",
       "alias": "currentAndUpcomingShows",
       "name": "showsConnection",
-      "storageKey": "showsConnection(first:10,sort:\"START_AT_ASC\")",
+      "storageKey": "showsConnection(first:10,sort:\"END_AT_ASC\",status:\"CURRENT\")",
       "args": [
         {
           "kind": "Literal",
@@ -139,7 +139,12 @@ return {
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "START_AT_ASC"
+          "value": "END_AT_ASC"
+        },
+        {
+          "kind": "Literal",
+          "name": "status",
+          "value": "CURRENT"
         }
       ],
       "concreteType": "ShowConnection",
@@ -207,7 +212,7 @@ return {
                 },
                 {
                   "kind": "FragmentSpread",
-                  "name": "ShowItem_show",
+                  "name": "PartnerShowRailItem_show",
                   "args": null
                 }
               ]
@@ -220,12 +225,17 @@ return {
       "kind": "LinkedField",
       "alias": "pastShows",
       "name": "__Partner_pastShows_connection",
-      "storageKey": "__Partner_pastShows_connection(sort:\"END_AT_ASC\")",
+      "storageKey": "__Partner_pastShows_connection(sort:\"END_AT_DESC\",status:\"CLOSED\")",
       "args": [
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "END_AT_ASC"
+          "value": "END_AT_DESC"
+        },
+        {
+          "kind": "Literal",
+          "name": "status",
+          "value": "CLOSED"
         }
       ],
       "concreteType": "ShowConnection",
@@ -334,5 +344,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '225da493cf4bc4c6b37475eb913b4e66';
+(node as any).hash = 'd3cf0f37bb279248ad66651fc250ccf5';
 export default node;

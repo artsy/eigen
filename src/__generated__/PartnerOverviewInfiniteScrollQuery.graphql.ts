@@ -34,6 +34,7 @@ query PartnerOverviewInfiniteScrollQuery(
 fragment PartnerOverview_partner_1G22uz on Partner {
   internalID
   website
+  name
   locations {
     city
     id
@@ -58,6 +59,7 @@ fragment PartnerOverview_partner_1G22uz on Partner {
       id
     }
   }
+  ...PartnerLocationSection_partner
 }
 
 fragment ArtistListItem_artist on Artist {
@@ -73,6 +75,14 @@ fragment ArtistListItem_artist on Artist {
   deathday
   image {
     url
+  }
+}
+
+fragment PartnerLocationSection_partner on Partner {
+  name
+  locations {
+    city
+    id
   }
 }
 */
@@ -115,11 +125,18 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = [
+v5 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -201,6 +218,7 @@ return {
             "args": null,
             "storageKey": null
           },
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -217,7 +235,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v4/*: any*/)
             ]
           },
           {
@@ -236,7 +254,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v4/*: any*/)
             ]
           },
           {
@@ -244,7 +262,7 @@ return {
             "alias": "artists",
             "name": "artistsConnection",
             "storageKey": null,
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "concreteType": "ArtistPartnerConnection",
             "plural": false,
             "selections": [
@@ -298,7 +316,7 @@ return {
                     "concreteType": "Artist",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       (v2/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -307,13 +325,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "name",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -390,7 +402,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ]
               }
             ]
@@ -399,7 +411,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "artists",
             "name": "artistsConnection",
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "handle": "connection",
             "key": "Partner_artists",
             "filters": [
@@ -407,7 +419,7 @@ return {
               "sort"
             ]
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ]
       }
     ]
@@ -415,7 +427,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "e0ecbb60fd2047dd862b44ec3615cecb",
+    "id": "ddb242e14330393501460c5fbccfe078",
     "text": null,
     "metadata": {}
   }

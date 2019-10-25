@@ -2,7 +2,7 @@ import { Box, Button, color, Flex, Sans, Serif } from "@artsy/palette"
 import { EventMutation } from "__generated__/EventMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
+import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
@@ -151,7 +151,7 @@ export class Event extends React.Component<Props, State> {
               </Serif>
               {!!exhibition_period && (
                 <Sans size="2" color={color("black60")}>
-                  {ExhibitionDates(exhibition_period, end_at)}
+                  {exhibitionDates(exhibition_period, end_at)}
                 </Sans>
               )}
             </TextContainer>

@@ -4,7 +4,7 @@ import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShow
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
+import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { uniq } from "lodash"
 import React from "react"
@@ -148,7 +148,7 @@ export class ShowHeader extends React.Component<Props, State> {
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
-          {!!exhibition_period && <Sans size="3">{ExhibitionDates(exhibition_period, end_at)}</Sans>}
+          {!!exhibition_period && <Sans size="3">{exhibitionDates(exhibition_period, end_at)}</Sans>}
         </Box>
         {!!hasImages &&
           !singleImage && (

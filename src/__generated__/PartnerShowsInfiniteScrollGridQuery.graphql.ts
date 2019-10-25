@@ -34,7 +34,7 @@ query PartnerShowsInfiniteScrollGridQuery(
 fragment PartnerShows_partner_1G22uz on Partner {
   slug
   internalID
-  currentAndUpcomingShows: showsConnection(sort: START_AT_ASC, first: 10) {
+  currentAndUpcomingShows: showsConnection(status: CURRENT, sort: END_AT_ASC, first: 10) {
     edges {
       node {
         id
@@ -58,11 +58,11 @@ fragment PartnerShows_partner_1G22uz on Partner {
             id
           }
         }
-        ...ShowItem_show
+        ...PartnerShowRailItem_show
       }
     }
   }
-  pastShows: showsConnection(sort: END_AT_ASC, first: $count, after: $cursor) {
+  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       startCursor
@@ -86,7 +86,7 @@ fragment PartnerShows_partner_1G22uz on Partner {
   }
 }
 
-fragment ShowItem_show on Show {
+fragment PartnerShowRailItem_show on Show {
   internalID
   slug
   name
@@ -94,18 +94,6 @@ fragment ShowItem_show on Show {
   endAt
   images {
     url
-  }
-  partner {
-    __typename
-    ... on Partner {
-      name
-    }
-    ... on Node {
-      id
-    }
-    ... on ExternalPartner {
-      id
-    }
   }
 }
 */
@@ -201,7 +189,12 @@ v9 = [
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "END_AT_ASC"
+    "value": "END_AT_DESC"
+  },
+  {
+    "kind": "Literal",
+    "name": "status",
+    "value": "CLOSED"
   }
 ];
 return {
@@ -262,7 +255,7 @@ return {
             "kind": "LinkedField",
             "alias": "currentAndUpcomingShows",
             "name": "showsConnection",
-            "storageKey": "showsConnection(first:10,sort:\"START_AT_ASC\")",
+            "storageKey": "showsConnection(first:10,sort:\"END_AT_ASC\",status:\"CURRENT\")",
             "args": [
               {
                 "kind": "Literal",
@@ -272,7 +265,12 @@ return {
               {
                 "kind": "Literal",
                 "name": "sort",
-                "value": "START_AT_ASC"
+                "value": "END_AT_ASC"
+              },
+              {
+                "kind": "Literal",
+                "name": "status",
+                "value": "CURRENT"
               }
             ],
             "concreteType": "ShowConnection",
@@ -457,6 +455,7 @@ return {
             "handle": "connection",
             "key": "Partner_pastShows",
             "filters": [
+              "status",
               "sort"
             ]
           },
@@ -468,7 +467,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsInfiniteScrollGridQuery",
-    "id": "1b6774c3d0f30c8a01daea3291e75d20",
+    "id": "721a70e5e2bbeda0fa4532f6d8b954e5",
     "text": null,
     "metadata": {}
   }

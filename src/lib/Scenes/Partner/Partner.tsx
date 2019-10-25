@@ -1,4 +1,4 @@
-import { Box, Flex, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Flex, Spacer, Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
@@ -7,58 +7,60 @@ import TabBar from "lib/Components/TabBar"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import React, { useState } from "react"
+import { track } from "lib/utils/track"
+import React from "react"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
+import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Components/PartnerOverview"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/PartnerShows"
 
 const INITIAL_TAB = 1
 
-export const Partner: React.FC<{
+interface Props {
   partner: Partner_partner
   relay: RelayRefetchProp
-}> = ({ partner }) => {
-  const [selectedTab, setSelectedTab] = useState(INITIAL_TAB)
+}
 
-  console.log("selectedTab", selectedTab)
+@track()
+class Partner extends React.Component<Props> {
+  state = {
+    selectedTab: INITIAL_TAB,
+    scrollY: 0,
+  }
 
-  return (
-    <Theme>
-      <Flex style={{ flex: 1 }}>
-        <Spacer mt={50} />
-        <Flex flexDirection="row" justifyContent="center">
-          <Box px={2}>
-            <Serif style={{ textAlign: "center" }} size="6">
-              {partner.name}
-            </Serif>
-          </Box>
+  render() {
+    const { partner } = this.props
+    return (
+      <Theme>
+        <Flex style={{ flex: 1 }}>
+          <PartnerHeader partner={partner} scrollY={this.state.scrollY} />
+          <Spacer mb={1} />
+          <ScrollableTabView
+            initialPage={INITIAL_TAB}
+            prerenderingSiblingsNumber={2}
+            onChangeTab={tab => this.setState({ selectedTab: tab })}
+            renderTabBar={props => (
+              <Box>
+                <TabBar spaceEvenly {...props} />
+              </Box>
+            )}
+          >
+            <ScrollableTab tabLabel="Overview" key="overviewTab">
+              <PartnerOverview partner={partner} />
+            </ScrollableTab>
+            <ScrollableTab tabLabel="Artwork" key="artworkTab">
+              <PartnerArtwork partner={partner} onScrollY={scrollY => this.setState({ scrollY })} />
+            </ScrollableTab>
+            <ScrollableTab tabLabel="Shows" key="showsTab">
+              <PartnerShows partner={partner} />
+            </ScrollableTab>
+          </ScrollableTabView>
         </Flex>
-        <Spacer mb={2} />
-        <ScrollableTabView
-          initialPage={INITIAL_TAB}
-          prerenderingSiblingsNumber={2}
-          onChangeTab={tab => setSelectedTab(tab)}
-          renderTabBar={props => (
-            <Box>
-              <TabBar spaceEvenly {...props} />
-            </Box>
-          )}
-        >
-          <ScrollableTab tabLabel="Overview" key="overviewTab">
-            <PartnerOverview partner={partner} />
-          </ScrollableTab>
-          <ScrollableTab tabLabel="Artwork" key="artworkTab">
-            <PartnerArtwork partner={partner} />
-          </ScrollableTab>
-          <ScrollableTab tabLabel="Shows" key="showsTab">
-            <PartnerShows partner={partner} />
-          </ScrollableTab>
-        </ScrollableTabView>
-      </Flex>
-    </Theme>
-  )
+      </Theme>
+    )
+  }
 }
 
 export const PartnerContainer = createRefetchContainer(
@@ -67,7 +69,6 @@ export const PartnerContainer = createRefetchContainer(
     partner: graphql`
       fragment Partner_partner on Partner {
         id
-        name
         slug
         profile {
           id
@@ -81,6 +82,7 @@ export const PartnerContainer = createRefetchContainer(
         ...PartnerArtwork_partner
         ...PartnerOverview_partner
         ...PartnerShows_partner
+        ...PartnerHeader_partner
       }
     `,
   },

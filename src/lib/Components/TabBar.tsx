@@ -45,7 +45,6 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
     !p.spaceEvenly &&
     p.active &&
     `
-    background-color: red;
     border-color: ${color("black100")};
     border-bottom-width: 1px;
     margin-bottom: -1px;

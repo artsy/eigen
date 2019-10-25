@@ -3,7 +3,7 @@ import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
+import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
@@ -47,8 +47,8 @@ export class ShowItem extends React.Component<Props> {
     const {
       name,
       partner: { name: galleryName },
-      exhibitionPeriod,
-      endAt,
+      exhibition_period,
+      end_at,
     } = show
 
     const placeholder = this.imageURL ? null : <Pin color="white" />
@@ -67,7 +67,7 @@ export class ShowItem extends React.Component<Props> {
               {galleryName}
             </Serif>
             <Serif size="2" color="black60">
-              {ExhibitionDates(exhibitionPeriod, endAt)}
+              {exhibitionDates(exhibition_period, end_at)}
             </Serif>
           </Flex>
         </Flex>
@@ -82,8 +82,8 @@ export const ShowItemContainer = createFragmentContainer(ShowItem, {
       internalID
       slug
       name
-      exhibitionPeriod
-      endAt
+      exhibition_period: exhibitionPeriod
+      end_at: endAt
       images {
         url
       }

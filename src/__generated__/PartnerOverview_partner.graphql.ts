@@ -5,6 +5,7 @@ import { FragmentRefs } from "relay-runtime";
 export type PartnerOverview_partner = {
     readonly internalID: string;
     readonly website: string | null;
+    readonly name: string | null;
     readonly locations: ReadonlyArray<{
         readonly city: string | null;
     } | null> | null;
@@ -24,6 +25,7 @@ export type PartnerOverview_partner = {
             } | null;
         } | null> | null;
     } | null;
+    readonly " $fragmentRefs": FragmentRefs<"PartnerLocationSection_partner">;
     readonly " $refType": "PartnerOverview_partner";
 };
 
@@ -71,6 +73,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "website",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "name",
       "args": null,
       "storageKey": null
     },
@@ -211,8 +220,13 @@ const node: ReaderFragment = {
           ]
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "PartnerLocationSection_partner",
+      "args": null
     }
   ]
 };
-(node as any).hash = '3183a7d64f77cf9c64530065159c1b55';
+(node as any).hash = '7068ed67e1153f50a2e5c5f80c899c20';
 export default node;

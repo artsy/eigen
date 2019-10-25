@@ -4,7 +4,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Partner_partner = {
     readonly id: string;
-    readonly name: string | null;
     readonly slug: string;
     readonly profile: {
         readonly id: string;
@@ -14,7 +13,7 @@ export type Partner_partner = {
     readonly locations: ReadonlyArray<{
         readonly city: string | null;
     } | null> | null;
-    readonly " $fragmentRefs": FragmentRefs<"PartnerArtwork_partner" | "PartnerOverview_partner" | "PartnerShows_partner">;
+    readonly " $fragmentRefs": FragmentRefs<"PartnerArtwork_partner" | "PartnerOverview_partner" | "PartnerShows_partner" | "PartnerHeader_partner">;
     readonly " $refType": "Partner_partner";
 };
 
@@ -36,13 +35,6 @@ return {
   "argumentDefinitions": [],
   "selections": [
     (v0/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -108,9 +100,14 @@ return {
       "kind": "FragmentSpread",
       "name": "PartnerShows_partner",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "PartnerHeader_partner",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = 'cd31ee0097fe03c4a02dc0ae3500f61f';
+(node as any).hash = '34c6ba6e290efe6e161e6f93823e8ba2';
 export default node;
