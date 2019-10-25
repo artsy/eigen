@@ -9,6 +9,7 @@ upcoming:
     - Re-enables Auctions Artwork Echo flag - ash
     - Fixes circle badge size on nav when user has messages - kierangillen
     - Fixes close button position on modal nav bars
+    - Fixes intermittent crash during Augmented Reality View-in-Room - ash
 
 releases:
   - version: 5.0.8
