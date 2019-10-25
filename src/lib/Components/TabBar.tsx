@@ -2,8 +2,7 @@ import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-import { color, Sans } from "@artsy/palette"
-import colors from "lib/data/colors"
+import { Box, color, Sans, space } from "@artsy/palette"
 
 /**
  * Nearly all props are given by the ScrollableTabView,
@@ -34,8 +33,6 @@ const Tabs = styled.View`
   height: 50px;
   flex-direction: row;
   justify-content: space-around;
-  border-color: ${colors["gray-medium"]};
-  border-bottom-width: 1px;
 `
 
 const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
@@ -43,13 +40,12 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   justify-content: center;
   padding-top: 5;
   flex-grow: 1;
-  padding-left: 20px;
-  padding-right: 20px;
   ${p => p.spaceEvenly && `flex: 1;`};
   ${p =>
     !p.spaceEvenly &&
     p.active &&
     `
+    background-color: red;
     border-color: ${color("black100")};
     border-bottom-width: 1px;
     margin-bottom: -1px;
@@ -80,7 +76,7 @@ export default class TabBar extends React.Component<TabBarProps, null> {
             ellipsizeMode="tail"
             weight="medium"
             size="3"
-            color={isTabActive ? "black" : colors["gray-medium"]}
+            color={isTabActive ? "black" : color("black30")}
           >
             {name}
           </Sans>
@@ -90,7 +86,7 @@ export default class TabBar extends React.Component<TabBarProps, null> {
   }
 
   render() {
-    const containerWidth = this.props.containerWidth
+    const containerWidth = this.props.containerWidth - space(4)
     const numberOfTabs = this.props.tabs.length
 
     const translateX = this.props.scrollValue.interpolate({
@@ -99,30 +95,37 @@ export default class TabBar extends React.Component<TabBarProps, null> {
     })
 
     return (
-      <Tabs>
-        {this.props.tabs.map((name, page) => {
-          const isTabActive = this.props.activeTab === page
-          return this.renderTab(name, page, isTabActive, this.props.goToPage)
-        })}
-        {this.props.spaceEvenly ? (
-          <Underline
-            style={[
-              {
-                position: "absolute",
-                width: containerWidth / numberOfTabs,
-                height: 1,
-                backgroundColor: "black",
-                bottom: -1,
-                left: 0,
-                right: 0,
-              },
-              {
-                transform: [{ translateX }],
-              },
-            ]}
-          />
-        ) : null}
-      </Tabs>
+      <Wrapper px={2}>
+        <Tabs>
+          {this.props.tabs.map((name, page) => {
+            const isTabActive = this.props.activeTab === page
+            return this.renderTab(name, page, isTabActive, this.props.goToPage)
+          })}
+          {this.props.spaceEvenly ? (
+            <Underline
+              style={[
+                {
+                  position: "absolute",
+                  width: containerWidth / numberOfTabs,
+                  height: 1,
+                  backgroundColor: "black",
+                  bottom: -1,
+                  left: 0,
+                  right: 0,
+                },
+                {
+                  transform: [{ translateX }],
+                },
+              ]}
+            />
+          ) : null}
+        </Tabs>
+      </Wrapper>
     )
   }
 }
+
+const Wrapper = styled(Box)`
+  border-bottom-width: 1px;
+  border-bottom-color: ${color("black30")};
+`
