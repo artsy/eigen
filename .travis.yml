@@ -1,6 +1,6 @@
 cache: yarn
 language: node_js
-node_js: '12.13.0'
+node_js: '11.15.0'
 
 matrix:
   include:
