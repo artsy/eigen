@@ -15,6 +15,7 @@ extern NSString *const AROptionsRNArtworkAlways;
 extern NSString *const AROptionsRNArtworkNonCommerical;
 extern NSString *const AROptionsRNArtworkNSOInquiry;
 extern NSString *const AROptionsRNArtworkAuctions;
+extern NSString *const AROptionsPriceTransparency;
 
 @interface AROptions : NSObject
 

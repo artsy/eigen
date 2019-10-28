@@ -306,6 +306,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
     [options addEntriesFromDictionary:labOptions];
+
+    options[@"AROptionsPriceTransparency"] = @([labOptions[AROptionsPriceTransparency] boolValue]);
+
     return options;
 }
 
