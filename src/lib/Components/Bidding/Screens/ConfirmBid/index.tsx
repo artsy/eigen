@@ -417,7 +417,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
     const artworkImage = artwork.image
     const enablePriceTransparency =
-      NativeModules.Emission && NativeModules.Emission.options && NativeModules.Emission.options.enablePriceTransparency
+      NativeModules.Emission &&
+      NativeModules.Emission.options &&
+      NativeModules.Emission.options.AROptionsPriceTransparency
 
     return (
       <BiddingThemeProvider>
