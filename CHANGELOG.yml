@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.18.23
   dev:
-    - 
+    - Add a new flag for Price Transparency to Echo - yuki24
   user_facing:
     - Updates profile and mutable view controllers to use default background if not fair - kierangillen
 
