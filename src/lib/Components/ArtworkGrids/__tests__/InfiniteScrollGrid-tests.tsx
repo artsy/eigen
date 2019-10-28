@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import { renderWithLayout } from "../../../tests/renderWithLayout"
 
-import { ArtistForSaleArtworksGridContainer as ArtistForSaleArtworksGrid } from "../RelayConnections/ArtistForSaleArtworksGrid"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../InfiniteScrollArtworksGrid"
 import artwork from "./__fixtures__/artwork"
 
 // FIXME: This needs a Relay based test
@@ -14,6 +14,9 @@ xit("renders properly", () => {
     },
   }
 
-  const grid = renderWithLayout(<ArtistForSaleArtworksGrid artist={artist as any} />, { width: 768 })
+  const grid = renderWithLayout(
+    <InfiniteScrollArtworksGrid connection={artist as any} loadMore={() => null} componentRef={{} as any} />,
+    { width: 768 }
+  )
   expect(grid).toMatchSnapshot()
 })

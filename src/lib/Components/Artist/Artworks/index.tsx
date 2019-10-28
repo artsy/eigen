@@ -1,130 +1,71 @@
-import React, { Component } from "react"
-import { StyleSheet, View } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-
-import { ArtistForSaleArtworksGridContainer as ArtistForSaleArtworksGrid } from "../../ArtworkGrids/RelayConnections/ArtistForSaleArtworksGrid"
-import { ArtistNotForSaleArtworksGridContainer as ArtistNotForSaleArtworksGrid } from "../../ArtworkGrids/RelayConnections/ArtistNotForSaleArtworksGrid"
-
-import Separator from "lib/Components/Separator"
-import SerifText from "lib/Components/Text/Serif"
-
-import colors from "lib/data/colors"
-
 import { Artworks_artist } from "__generated__/Artworks_artist.graphql"
+import {
+  InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
+  Props as InfiniteScrollGridProps,
+} from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import React from "react"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-interface RenderSectionParams {
-  title: string
-  count: number
-  filter: string
-  onComplete: () => void | null
-  Component: any
-  mapPropsToArtworksConnection: (Props) => any
-}
-
-interface Props {
-  relay: RelayProp
+interface Props extends InfiniteScrollGridProps {
   artist: Artworks_artist
+  relay: RelayPaginationProp
 }
 
-interface State {
-  completedForSaleWorks: boolean
-}
+const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
+  <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
+)
 
-class Artworks extends Component<Props, State> {
-  state = {
-    completedForSaleWorks: false,
-  }
-
-  render() {
-    const forSaleCount = this.props.artist.counts.for_sale_artworks
-    const otherCount = (this.props.artist.counts.artworks as number) - (forSaleCount as number)
-    if (forSaleCount === 0) {
-      return this.renderSection({
-        title: "Works",
-        count: otherCount,
-        filter: "IS_NOT_FOR_SALE",
-        onComplete: null,
-        Component: ArtistNotForSaleArtworksGrid,
-        mapPropsToArtworksConnection: props => props.artist.notForSaleArtworks,
-      })
-    } else {
-      const otherWorks: any[] = []
-      const showOtherWorks = otherCount > 0 && (forSaleCount < 10 || this.state.completedForSaleWorks)
-      if (showOtherWorks) {
-        otherWorks.push(<Separator style={styles.sectionSeparator} key="separator" />)
-        otherWorks.push(
-          this.renderSection({
-            title: "Other Works",
-            count: otherCount,
-            filter: "IS_NOT_FOR_SALE",
-            onComplete: null,
-            Component: ArtistNotForSaleArtworksGrid,
-            mapPropsToArtworksConnection: props => props.artist.notForSaleArtworks,
-          })
-        )
+export default createPaginationContainer(
+  ArtworksGrid,
+  {
+    artist: graphql`
+      fragment Artworks_artist on Artist
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        id
+        artworks: filterArtworksConnection(
+          first: $count
+          after: $cursor
+          sort: "-decayed_merch"
+          aggregations: [TOTAL]
+        ) @connection(key: "ArtistArtworksGrid_artworks") {
+          # TODO: Just here to satisfy the relay compiler, can we get rid of this need?
+          edges {
+            node {
+              id
+            }
+          }
+          ...InfiniteScrollArtworksGrid_connection
+        }
       }
-      return (
-        <View style={styles.section}>
-          {this.renderSection({
-            title: "Works for Sale",
-            count: forSaleCount as number,
-            filter: "IS_FOR_SALE",
-            onComplete: () => this.setState({ completedForSaleWorks: true }),
-            Component: ArtistForSaleArtworksGrid,
-            mapPropsToArtworksConnection: props => props.artist.forSaleArtworks,
-          })}
-          {otherWorks}
-        </View>
-      )
-    }
-  }
-  // tslint:disable-next-line:no-shadowed-variable
-  renderSection({ title, count, filter, onComplete, Component, mapPropsToArtworksConnection }: RenderSectionParams) {
-    const countStyles = [styles.text, styles.count]
-    return (
-      <View key={title}>
-        <SerifText style={styles.heading}>
-          <SerifText style={styles.text}>{title}</SerifText> <SerifText style={countStyles}>({count})</SerifText>
-        </SerifText>
-        <Component
-          artist={this.props.artist}
-          filter={filter}
-          onComplete={onComplete}
-          mapPropsToArtworksConnection={mapPropsToArtworksConnection}
-        />
-      </View>
-    )
-  }
-}
-
-const styles = StyleSheet.create({
-  heading: {
-    marginBottom: 20,
+    `,
   },
-  text: {
-    fontSize: 20,
-  },
-  count: {
-    color: colors["gray-semibold"],
-  },
-  section: {
-    marginBottom: 40,
-  },
-  sectionSeparator: {
-    marginTop: 40, // FIXME: This is because the above `section.marginBottom` didn’t work before the separator.
-    marginBottom: 20,
-  },
-})
-
-export default createFragmentContainer(Artworks, {
-  artist: graphql`
-    fragment Artworks_artist on Artist {
-      counts {
-        artworks
-        for_sale_artworks: forSaleArtworks
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.artist && props.artist.artworks
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
       }
-      ...ArtistForSaleArtworksGrid_artist
-      ...ArtistNotForSaleArtworksGrid_artist
-    }
-  `,
-})
+    },
+    getVariables(props, { count, cursor }, { filter }) {
+      return {
+        id: props.artist.id,
+        count,
+        cursor,
+        filter,
+      }
+    },
+    query: graphql`
+      query ArtworksArtistQuery($id: ID!, $count: Int!, $cursor: String) {
+        node(id: $id) {
+          ... on Artist {
+            ...Artworks_artist @arguments(count: $count, cursor: $cursor)
+          }
+        }
+      }
+    `,
+  }
+)
