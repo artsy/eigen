@@ -1,3 +1,15 @@
+# v1.18.4 (Mon Oct 28 2019)
+
+#### 🐛  Bug Fix
+
+- ME-58 fix saved artworks zero state [#1940](https://github.com/artsy/emission/pull/1940) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.18.3 (Mon Oct 28 2019)
 
 #### 🐛  Bug Fix
