@@ -1,15 +1,21 @@
 # v1.18.1 (Mon Oct 28 2019)
 
-#### ⚠️  Pushed to master
+#### ⚠️ Pushed to master
 
-- [Pod] Update release artefacts.  (it@artsymail.com)
-- downgrade node  (d.j.sheldrick@gmail.com)
-- Updated CHANGELOG for new release  (d.j.sheldrick@gmail.com)
+- downgrade node (d.j.sheldrick@gmail.com)
+- Updated CHANGELOG for new release (d.j.sheldrick@gmail.com)
+- [ME-62] Centers DarkNavigationButton - kierangillen
+- [PURCHASE-1597] Updates CommercialInformation component to properly handle live auctions - sweir27
+- [PURCHASE-1598] Fix showing wrong state for closed auctions - ashkan18
+- Add price summary to the confirm bid screen - yuki24
 
-#### Authors: 2
+#### Authors: 5
 
-- artsyit (it@artsymail.com)
 - David Sheldrick (d.j.sheldrick@gmail.com)
+- Kieran Gillen
+- Sarah Weir
+- Yuki Nishijima
+- Ashkan Nasseri
 
 ---
 
