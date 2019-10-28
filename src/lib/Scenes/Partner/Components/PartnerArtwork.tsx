@@ -19,11 +19,9 @@ export const PartnerArtwork: React.FC<{
   const artworks = get(partner, p => p.artworks)
 
   const fetchNextPage = () => {
-    console.log("fetching next page 1")
     if (fetchingNextPage) {
       return
     }
-    console.log("fetching next page 2")
     setFetchingNextPage(true)
     relay.loadMore(PAGE_SIZE, error => {
       if (error) {
