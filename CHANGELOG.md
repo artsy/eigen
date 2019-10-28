@@ -1,3 +1,15 @@
+# v1.18.5 (Mon Oct 28 2019)
+
+#### 🐛  Bug Fix
+
+- [ME-65] Migrate Artist page to use same sort as web [#1937](https://github.com/artsy/emission/pull/1937) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.18.4 (Mon Oct 28 2019)
 
 #### 🐛  Bug Fix
