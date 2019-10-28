@@ -50,13 +50,14 @@ console.log(chalk.green("=> Validating your tools."))
 sh("bundle --version")
 sh("npm --version")
 
+console.log(chalk.green("=> Updating changelog."))
+sh("yarn run auto changelog --very-verbose")
+
 console.log(chalk.green("=> Creating release bundle."))
 sh("npm run relay")
 sh("npm run bundle")
 sh("cd Example && bundle exec pod install")
-sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
-
-sh("yarn run auto changelog --very-verbose")
+sh('git add . && git commit -m "[Pod] Update release artefacts. [skip ci]"', true)
 
 console.log(chalk.green("=> Creating version bump commit and tag."))
 sh(`npm version $(npx auto version) --message '%s [skip ci]'`)
