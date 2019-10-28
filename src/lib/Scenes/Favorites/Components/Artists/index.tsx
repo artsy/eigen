@@ -4,7 +4,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
-import ZeroState from "lib/Components/States/ZeroState"
+import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 

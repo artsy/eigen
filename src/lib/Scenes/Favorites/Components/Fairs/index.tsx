@@ -1,6 +1,6 @@
 import SavedFairItemRow from "lib/Components/Lists/SavedFairItemRow"
 import Spinner from "lib/Components/Spinner"
-import ZeroState from "lib/Components/States/ZeroState"
+import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
 import { FlatList, RefreshControl } from "react-native"

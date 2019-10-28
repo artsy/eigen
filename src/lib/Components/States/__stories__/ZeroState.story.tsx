@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
-import ZeroState from "../ZeroState"
+import { ZeroState } from "../ZeroState"
 
 storiesOf("States")
   .add("Zero State for works", () => (
