@@ -1,3 +1,20 @@
+# v1.18.2 (Mon Oct 28 2019)
+
+#### 🐛  Bug Fix
+
+- Pin dependencies [#1938](https://github.com/artsy/emission/pull/1938) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### ⚠️  Pushed to master
+
+- update changelog before updating release artefacts  (d.j.sheldrick@gmail.com)
+
+#### Authors: 2
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+- David Sheldrick (d.j.sheldrick@gmail.com)
+
+---
+
 # v1.18.1 (Mon Oct 28 2019)
 
 #### ⚠️ Pushed to master
