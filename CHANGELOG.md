@@ -1,3 +1,15 @@
+# v1.18.3 (Mon Oct 28 2019)
+
+#### 🐛  Bug Fix
+
+- Add artsy open source footer [#1939](https://github.com/artsy/emission/pull/1939) ([@jonallured](https://github.com/jonallured))
+
+#### Authors: 1
+
+- Jon Allured ([@jonallured](https://github.com/jonallured))
+
+---
+
 # v1.18.2 (Mon Oct 28 2019)
 
 #### 🐛  Bug Fix
