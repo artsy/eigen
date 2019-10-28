@@ -1,3 +1,18 @@
+# v1.18.1 (Mon Oct 28 2019)
+
+#### ⚠️  Pushed to master
+
+- [Pod] Update release artefacts.  (it@artsymail.com)
+- downgrade node  (d.j.sheldrick@gmail.com)
+- Updated CHANGELOG for new release  (d.j.sheldrick@gmail.com)
+
+#### Authors: 2
+
+- artsyit (it@artsymail.com)
+- David Sheldrick (d.j.sheldrick@gmail.com)
+
+---
+
 ### 1.18.0
 
 - Add graphql request duration reporting via volley - ds300
