@@ -15,7 +15,6 @@ const modified = danger.git.modified_files
 const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 
 // Custom modifiers for people submitting PRs to be able to say "skip this"
-const trivialPR = bodyAndTitle.includes("#trivial")
 const acceptedNoTests = bodyAndTitle.includes("#skip_new_tests")
 const acceptedNoNativeChanges = bodyAndTitle.includes("#native_no_changes")
 
@@ -39,18 +38,6 @@ const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/componen
 // If it's not a branch PR
 if (pr.base.repo.full_name !== pr.head.repo.full_name) {
   warn("This PR comes from a fork, and won't get JS generated for QA testing this PR inside the Emission Example app.")
-}
-
-// When there are app-changes and it's not a PR marked as trivial, expect
-// there to be CHANGELOG changes.
-const changelogChanges = includes(modified, "CHANGELOG.md")
-if (modifiedAppFiles.length > 0 && !trivialPR && !changelogChanges) {
-  fail("No CHANGELOG added.")
-}
-
-// Check that the changelog contains only H3's
-if (changelogChanges && fs.readFileSync("CHANGELOG.md", "utf8").includes("\n## ")) {
-  fail("Changelog must only contain H3's, but contains H2's.")
 }
 
 // Check that every file touched has a corresponding test file
