@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components/native"
 
+import { Spacer } from "@artsy/palette"
 import { Fonts } from "lib/data/fonts"
 
 const Container = styled.View`
@@ -10,11 +11,9 @@ const Container = styled.View`
   margin-right: 20px;
   justify-content: center;
   align-items: center;
-`
-
-const AlignUpSlightly = styled.View`
-  padding-bottom: 60px;
-  max-width: 320px;
+  padding-bottom: 30px;
+  padding-right: 30px;
+  padding-left: 30px;
 `
 
 const Title = styled.Text`
@@ -36,21 +35,19 @@ interface ZeroStateProps {
   title: string
   subtitle?: string
   separators?: boolean
+  callToAction?: JSX.Element
 }
 
-const render = (props: ZeroStateProps) => (
+export const ZeroState = (props: ZeroStateProps) => (
   <Container>
-    <AlignUpSlightly>
-      <Title>{props.title}</Title>
+    <Title>{props.title}</Title>
 
-      <Subtitle numberOfLines={0}>{props.subtitle}</Subtitle>
-    </AlignUpSlightly>
+    <Subtitle numberOfLines={0}>{props.subtitle}</Subtitle>
+    {props.callToAction && (
+      <>
+        <Spacer mb={4} />
+        {props.callToAction}
+      </>
+    )}
   </Container>
 )
-
-// TODO: Remove post RN 0.50
-export default class ZeroState extends React.Component<ZeroStateProps, null> {
-  render() {
-    return render(this.props)
-  }
-}
