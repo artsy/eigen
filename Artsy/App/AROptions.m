@@ -24,7 +24,7 @@ NSString *const AROptionsRNArtworkAlways = @"New RN Artwork view (Always)";
 NSString *const AROptionsRNArtworkNonCommerical = @"New RN Artwork view (Non-commerical)";
 NSString *const AROptionsRNArtworkNSOInquiry = @"New RN Artwork view (NSO&Inquiry)";
 NSString *const AROptionsRNArtworkAuctions = @"New RN Artwork view (Auctions)";
-NSString *const AROptionsPriceTransparency = @"Price Transpareny";
+NSString *const AROptionsPriceTransparency = @"Price Transparency";
 
 @implementation AROptions
 
