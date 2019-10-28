@@ -1,16 +1,52 @@
-<!--
+# v1.18.3 (Mon Oct 28 2019)
 
-Please add your own contribution below inside the Master section.
-Always err on the side of adding a changelog entry. More is more.
+#### 🐛  Bug Fix
 
--->
+- Add artsy open source footer [#1939](https://github.com/artsy/emission/pull/1939) ([@jonallured](https://github.com/jonallured))
 
-### Master
+#### Authors: 1
 
+- Jon Allured ([@jonallured](https://github.com/jonallured))
+
+---
+
+# v1.18.2 (Mon Oct 28 2019)
+
+#### 🐛  Bug Fix
+
+- Pin dependencies [#1938](https://github.com/artsy/emission/pull/1938) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### ⚠️  Pushed to master
+
+- update changelog before updating release artefacts  (d.j.sheldrick@gmail.com)
+
+#### Authors: 2
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+- David Sheldrick (d.j.sheldrick@gmail.com)
+
+---
+
+# v1.18.1 (Mon Oct 28 2019)
+
+#### ⚠️ Pushed to master
+
+- downgrade node (d.j.sheldrick@gmail.com)
+- Updated CHANGELOG for new release (d.j.sheldrick@gmail.com)
 - [ME-62] Centers DarkNavigationButton - kierangillen
 - [PURCHASE-1597] Updates CommercialInformation component to properly handle live auctions - sweir27
 - [PURCHASE-1598] Fix showing wrong state for closed auctions - ashkan18
 - Add price summary to the confirm bid screen - yuki24
+
+#### Authors: 5
+
+- David Sheldrick (d.j.sheldrick@gmail.com)
+- Kieran Gillen
+- Sarah Weir
+- Yuki Nishijima
+- Ashkan Nasseri
+
+---
 
 ### 1.18.0
 

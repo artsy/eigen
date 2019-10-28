@@ -3,11 +3,13 @@ import { RefreshControl, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
-import ZeroState from "lib/Components/States/ZeroState"
+import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
+import { Button } from "@artsy/palette"
 import { Artworks_me } from "__generated__/Artworks_me.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 interface Props {
   me: Artworks_me
@@ -66,8 +68,19 @@ export class SavedWorks extends Component<Props, State> {
     if (artworks.length === 0) {
       return (
         <ZeroState
-          title="You haven’t followed any artists yet"
-          subtitle="Follow artists to get notified about new works that have been added to Artsy."
+          title="You haven’t saved any works yet"
+          subtitle="Tap the heart on an artwork to save for later."
+          callToAction={
+            <Button
+              variant="secondaryOutline"
+              size="large"
+              onPress={() => {
+                SwitchBoard.presentNavigationViewController(this, "/")
+              }}
+            >
+              Browse works for you
+            </Button>
+          }
         />
       )
     }

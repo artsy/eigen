@@ -555,51 +555,43 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
               "justifyContent": "center",
               "marginLeft": 20,
               "marginRight": 20,
+              "paddingBottom": 30,
+              "paddingLeft": 30,
+              "paddingRight": 30,
             },
           ]
         }
       >
-        <View
+        <Text
           style={
             Array [
               Object {
-                "maxWidth": 320,
-                "paddingBottom": 60,
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 30,
+                "marginLeft": 10,
+                "marginRight": 10,
+                "textAlign": "center",
               },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 30,
-                  "marginLeft": 10,
-                  "marginRight": 10,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            You haven’t followed any artists yet.
-          </Text>
-          <Text
-            numberOfLines={0}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 18,
-                  "marginTop": 10,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            Follow artists to see new works that have been added to Artsy
-          </Text>
-        </View>
+          You haven’t followed any artists yet.
+        </Text>
+        <Text
+          numberOfLines={0}
+          style={
+            Array [
+              Object {
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 18,
+                "marginTop": 10,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Follow artists to see new works that have been added to Artsy
+        </Text>
       </View>
     </View>
   </View>
@@ -643,51 +635,43 @@ exports[`without notifications lays out correctly on small screens 1`] = `
               "justifyContent": "center",
               "marginLeft": 20,
               "marginRight": 20,
+              "paddingBottom": 30,
+              "paddingLeft": 30,
+              "paddingRight": 30,
             },
           ]
         }
       >
-        <View
+        <Text
           style={
             Array [
               Object {
-                "maxWidth": 320,
-                "paddingBottom": 60,
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 30,
+                "marginLeft": 10,
+                "marginRight": 10,
+                "textAlign": "center",
               },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 30,
-                  "marginLeft": 10,
-                  "marginRight": 10,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            You haven’t followed any artists yet.
-          </Text>
-          <Text
-            numberOfLines={0}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 18,
-                  "marginTop": 10,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            Follow artists to see new works that have been added to Artsy
-          </Text>
-        </View>
+          You haven’t followed any artists yet.
+        </Text>
+        <Text
+          numberOfLines={0}
+          style={
+            Array [
+              Object {
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 18,
+                "marginTop": 10,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Follow artists to see new works that have been added to Artsy
+        </Text>
       </View>
     </View>
   </View>
