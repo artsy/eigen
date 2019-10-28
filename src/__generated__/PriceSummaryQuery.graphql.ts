@@ -1,15 +1,15 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { PriceSummary_calculatedCost$ref } from "./PriceSummary_calculatedCost.graphql";
+import { FragmentRefs } from "relay-runtime";
 export type PriceSummaryQueryVariables = {
-    readonly saleArtworkId: string;
-    readonly bidAmountCents: number;
+    saleArtworkId: string;
+    bidAmountCents: number;
 };
 export type PriceSummaryQueryResponse = {
     readonly node: {
         readonly calculatedCost?: {
-            readonly " $fragmentRefs": PriceSummary_calculatedCost$ref;
+            readonly " $fragmentRefs": FragmentRefs<"PriceSummary_calculatedCost">;
         } | null;
     } | null;
 };

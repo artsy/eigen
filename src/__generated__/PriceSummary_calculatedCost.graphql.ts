@@ -1,8 +1,6 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-declare const _PriceSummary_calculatedCost$ref: unique symbol;
-export type PriceSummary_calculatedCost$ref = typeof _PriceSummary_calculatedCost$ref;
 export type PriceSummary_calculatedCost = {
     readonly buyersPremium: {
         readonly display: string | null;
@@ -10,7 +8,7 @@ export type PriceSummary_calculatedCost = {
     readonly subtotal: {
         readonly display: string | null;
     } | null;
-    readonly " $refType": PriceSummary_calculatedCost$ref;
+    readonly " $refType": "PriceSummary_calculatedCost";
 };
 
 
