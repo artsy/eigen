@@ -1,3 +1,15 @@
+# v1.18.6 (Mon Oct 28 2019)
+
+#### 🐛  Bug Fix
+
+- Rename enablePriceTransparency to AROptionsPriceTransparency for consistency [#1936](https://github.com/artsy/emission/pull/1936) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
 # v1.18.5 (Mon Oct 28 2019)
 
 #### 🐛  Bug Fix
