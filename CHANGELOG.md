@@ -1,3 +1,15 @@
+# v1.18.7 (Mon Oct 28 2019)
+
+#### 🐛  Bug Fix
+
+- Adds react-native Partner view [#1927](https://github.com/artsy/emission/pull/1927) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.6 (Mon Oct 28 2019)
 
 #### 🐛  Bug Fix
