@@ -166,6 +166,7 @@ fragment Shows_show on Show {
     edges {
       node {
         id
+        name
         ...ShowItem_show
       }
     }
@@ -884,9 +885,9 @@ return {
                     "plural": false,
                     "selections": [
                       (v4/*: any*/),
+                      (v5/*: any*/),
                       (v2/*: any*/),
                       (v3/*: any*/),
-                      (v5/*: any*/),
                       (v8/*: any*/),
                       (v7/*: any*/),
                       {
@@ -1106,7 +1107,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersShowQuery",
-    "id": "ea21177513a76534df734d1651dae71b",
+    "id": "8263a78f7ff738c06e546cd1bc086b39",
     "text": null,
     "metadata": {}
   }

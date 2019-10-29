@@ -124,9 +124,9 @@ export type ShowTestsQueryRawResponse = {
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
+                    readonly name: string | null;
                     readonly internalID: string;
                     readonly slug: string;
-                    readonly name: string | null;
                     readonly exhibition_period: string | null;
                     readonly end_at: string | null;
                     readonly images: ReadonlyArray<({
@@ -334,6 +334,7 @@ fragment Shows_show on Show {
     edges {
       node {
         id
+        name
         ...ShowItem_show
       }
     }
@@ -1044,9 +1045,9 @@ return {
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
+                      (v4/*: any*/),
                       (v1/*: any*/),
                       (v2/*: any*/),
-                      (v4/*: any*/),
                       (v7/*: any*/),
                       (v6/*: any*/),
                       {
@@ -1266,7 +1267,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowTestsQuery",
-    "id": "7a320775c865ac2e6c2eea5f54b81ebc",
+    "id": "dc778a340c6b55fedecb122ca2d11163",
     "text": null,
     "metadata": {}
   }

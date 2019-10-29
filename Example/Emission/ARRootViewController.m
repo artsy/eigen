@@ -18,22 +18,23 @@
 #import <Emission/ARGraphQLQueryCache.h>
 
 #import <Emission/ARArtistComponentViewController.h>
-#import <Emission/ARArtworkComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
-#import <Emission/ARHomeComponentViewController.h>
-#import <Emission/ARGeneComponentViewController.h>
-#import <Emission/ARWorksForYouComponentViewController.h>
-#import <Emission/ARComponentViewController.h>
+#import <Emission/ARArtworkComponentViewController.h>
+#import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARCollectionComponentViewController.h>
+#import <Emission/ARComponentViewController.h>
+#import <Emission/ARFairComponentViewController.h>
+#import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARGeneComponentViewController.h>
+#import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARInquiryComponentViewController.h>
-#import <Emission/ARFavoritesComponentViewController.h>
-#import <Emission/ARMyProfileViewController.h>
-#import <Emission/ARShowConsignmentsFlowViewController.h>
-#import <Emission/ARBidFlowViewController.h>
-#import <Emission/ARFairComponentViewController.h>
-#import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
+#import <Emission/ARMyProfileViewController.h>
+#import <Emission/ARPartnerComponentViewController.h>
+#import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARWorksForYouComponentViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -120,13 +121,8 @@
   [sectionData addCellData:self.jumpToMap];
   [sectionData addCellData:self.jumpToCollection];
   [sectionData addCellData:self.jumpToArtwork];
-  [sectionData addCellData:self.jumpToArtworkWithInquireable];
-  [sectionData addCellData:self.jumpToArtworkWithBNMO];
-  [sectionData addCellData:self.jumpToArtworkWithBNMOWithEdition];
-  [sectionData addCellData:self.jumpToArtworkInAuction];
-  [sectionData addCellData:self.jumpToArtworkWithMultipleImages];
-  [sectionData addCellData:self.jumpToArtworkWithInstitutionPartner];
-  [sectionData addCellData:self.jumpToArtworkAttributionClassFAQ];
+  [sectionData addCellData:self.jumpToPartner];
+  [sectionData addCellData:self.jumpToPartner2];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -253,60 +249,18 @@
   }];
 }
 
-- (ARCellData *)jumpToArtworkWithBNMO
+- (ARCellData *)jumpToPartner
 {
-  return [self tappableCellDataWithTitle:@"Artwork With BNMO" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"josh-reames-columbo-ii"];
+  return [self tappableCellDataWithTitle:@"Partner" selection:^{
+    id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"joseph-fine-art"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
 
-- (ARCellData *)jumpToArtworkWithBNMOWithEdition
+- (ARCellData *)jumpToPartner2
 {
-  return [self tappableCellDataWithTitle:@"Artwork With BNMO Edition Sets" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"terry-oneill-faye-dunaway-the-beverly-hills-hilton-los-angeles-the-morning-after-her-network-oscar-1"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-- (ARCellData *)jumpToArtworkWithInquireable
-{
-  return [self tappableCellDataWithTitle:@"Artwork With Inquireable" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"ryan-hewett-la-femme-iv"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-- (ARCellData *)jumpToArtworkInAuction
-{
-  return [self tappableCellDataWithTitle:@"Artwork In Auction" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"lucha-rodriguez-untitled"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-
-- (ARCellData *)jumpToArtworkWithMultipleImages
-{
-  return [self tappableCellDataWithTitle:@"Artwork With Multiple Images" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"francis-bacon-study-after-velazquez"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-- (ARCellData *)jumpToArtworkWithInstitutionPartner
-{
-  return [self tappableCellDataWithTitle:@"Artwork With Institution Partner" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"jean-leon-gerome-the-guard"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-
-- (ARCellData *)jumpToArtworkAttributionClassFAQ
-{
-  return [self tappableCellDataWithTitle:@"Artwork Attribution Class FAQ" selection:^{
-    id viewController = [[ARArtworkAttributionClassFAQViewController alloc] init];
+  return [self tappableCellDataWithTitle:@"Partner2" selection:^{
+    id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"gagosian-gallery"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

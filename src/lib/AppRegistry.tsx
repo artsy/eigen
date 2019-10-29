@@ -43,6 +43,7 @@ import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
+import { PartnerRenderer } from "./Scenes/Partner"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
@@ -86,6 +87,14 @@ interface ArtworkProps {
 }
 
 const Artwork: React.SFC<ArtworkProps> = props => <ArtworkRenderer {...props} />
+
+interface PartnerProps {
+  partnerID: string
+  safeAreaInsets: SafeAreaInsets
+  isVisible: boolean
+}
+
+const Partner: React.SFC<PartnerProps> = props => <PartnerRenderer {...props} />
 
 const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
@@ -343,6 +352,7 @@ AppRegistry.registerComponent("MyProfileEdit", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
+AppRegistry.registerComponent("Partner", () => Partner)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)

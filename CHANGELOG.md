@@ -73,6 +73,7 @@
 - [PURCHASE-1597] Updates CommercialInformation component to properly handle live auctions - sweir27
 - [PURCHASE-1598] Fix showing wrong state for closed auctions - ashkan18
 - Add price summary to the confirm bid screen - yuki24
+- Adds Partner view - kierangillen
 
 #### Authors: 5
 

@@ -7,6 +7,7 @@ export type Shows_show = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly name: string | null;
                 readonly " $fragmentRefs": FragmentRefs<"ShowItem_show">;
             } | null;
         } | null> | null;
@@ -64,6 +65,13 @@ const node: ReaderFragment = {
                   "storageKey": null
                 },
                 {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "name",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
                   "kind": "FragmentSpread",
                   "name": "ShowItem_show",
                   "args": null
@@ -76,5 +84,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'db0e2a398e2cae8f10c5f68acf339624';
+(node as any).hash = 'dca670dd1195194baa7999eb1fd510bb';
 export default node;

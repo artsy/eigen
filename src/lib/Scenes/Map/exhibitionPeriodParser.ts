@@ -1,6 +1,6 @@
 import moment from "moment"
 
-export const ExhibitionDates = (dateRange: string, endDate: string) => {
+export const exhibitionDates = (dateRange: string, endDate: string) => {
   const oneYearFromToday = moment()
     .add(2, "years")
     .utc()
