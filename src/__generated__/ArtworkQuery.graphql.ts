@@ -44,9 +44,9 @@ fragment Artwork_artwork on Artwork {
     id
   }
   sale {
+    id
     isBenefit
     isGalleryAuction
-    id
   }
   category
   conditionDescription {
@@ -995,6 +995,7 @@ return {
             "concreteType": "Sale",
             "plural": false,
             "selections": [
+              (v2/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1009,7 +1010,6 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/),
               (v10/*: any*/),
               {
                 "kind": "ScalarField",
@@ -1887,7 +1887,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "fbcaf54aba7a15bc13bcf4575cfa5a0d",
+    "id": "24fc9e1c3645faedf2924c7da372285c",
     "text": null,
     "metadata": {}
   }

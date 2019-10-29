@@ -243,6 +243,7 @@ export const ArtworkContainer = createRefetchContainer(
           }
         }
         sale {
+          id
           isBenefit
           isGalleryAuction
         }
@@ -314,7 +315,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
 }) => {
   return (
     <RetryErrorBoundary
-      render={() => {
+      render={({ isRetry }) => {
         return (
           <QueryRenderer<ArtworkQuery>
             environment={defaultEnvironment}
@@ -325,12 +326,10 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
                 }
               }
             `}
-            variables={{
-              artworkID,
-            }}
+            variables={{ artworkID }}
             cacheConfig={{
               // Bypass Relay cache on retries.
-              force: true,
+              ...(isRetry && { force: true }),
             }}
             render={renderWithLoadProgress(ArtworkContainer, others)}
           />

@@ -43,6 +43,7 @@ export class CommercialInformationTimerWrapper extends React.Component<
         startAt: startsAt,
         endAt: endsAt,
       } = this.props.artwork.sale
+
       return (
         <TimeOffsetProvider>
           <CountdownStateManager
