@@ -25,7 +25,7 @@ export class MyNewComponent extends React.Component {
 
 ## Add the Component to Storybooks
 
-You'll want to add your component to our storybooks so it can be rapidly iterated upon. In the directory that your new component lives in, create another directory called `__stores__` and add a file named something like `MyNewComponent.story.tsx`. Then add something _like_ the following:
+You'll want to add your component to our storybooks so it can be rapidly iterated upon. In the directory that your new component lives in, create another directory called `__stories__` and add a file named something like `MyNewComponent.story.tsx`. Then add something _like_ the following:
 
 ```tsx
 import { storiesOf } from "@storybook/react-native"
