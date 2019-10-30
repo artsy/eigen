@@ -1,3 +1,20 @@
+# v1.18.11 (Wed Oct 30 2019)
+
+#### 🐛  Bug Fix
+
+- ME-42 Make sure artists feed is up-to-date on refresh [#1943](https://github.com/artsy/emission/pull/1943) ([@ds300](https://github.com/ds300))
+
+#### 🏠  Internal
+
+- Minor typo in docs: `stores` -> `stories` [#1941](https://github.com/artsy/emission/pull/1941) ([@pepopowitz](https://github.com/pepopowitz))
+
+#### Authors: 2
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+- Steven Hicks ([@pepopowitz](https://github.com/pepopowitz))
+
+---
+
 # v1.18.10 (Wed Oct 30 2019)
 
 #### 🐛  Bug Fix
