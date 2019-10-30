@@ -270,7 +270,7 @@ static ARAppDelegate *_sharedInstance = nil;
         NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
         NSString *buildVersion = infoDictionary[@"CFBundleShortVersionString"];
 
-        if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedDescending) {
+        if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedAscending) {
             UIAlertController *alert = [UIAlertController
                                          alertControllerWithTitle:@"New app version required"
                                          message:@"Please update your Artsy app to continue."
