@@ -1,3 +1,15 @@
+# v1.18.10 (Wed Oct 30 2019)
+
+#### 🐛  Bug Fix
+
+- PURCHASE-1599: Consolidates Auction State across Artwork and Bid pages [#1934](https://github.com/artsy/emission/pull/1934) ([@sweir27](https://github.com/sweir27))
+
+#### Authors: 1
+
+- Sarah Weir ([@sweir27](https://github.com/sweir27))
+
+---
+
 # v1.18.9 (Tue Oct 29 2019)
 
 
