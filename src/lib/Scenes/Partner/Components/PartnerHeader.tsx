@@ -4,11 +4,11 @@ import { get } from "lib/utils/get"
 import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
 
 const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner
-  scrollY: number
 }> = ({ partner }) => {
   const followsCount = get(partner, p => p.profile.counts.follows)
   const eligibleArtworks = get(partner, p => p.counts.eligibleArtworks)
@@ -22,8 +22,7 @@ const PartnerHeader: React.FC<{
           </Serif>
           {(followsCount || eligibleArtworks) && (
             <>
-              <Spacer mb={0.5} />
-              <Text style={{ textAlign: "center" }}>
+              <TextWrapper style={{ textAlign: "center" }}>
                 {eligibleArtworks && (
                   <>
                     <Sans size="2" weight="medium">
@@ -46,7 +45,7 @@ const PartnerHeader: React.FC<{
                     <Sans size="2"> Followers</Sans>
                   </>
                 )}
-              </Text>
+              </TextWrapper>
             </>
           )}
           <Spacer mb={2} />
@@ -73,3 +72,5 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
     }
   `,
 })
+
+export const TextWrapper = styled(Text)``

@@ -13,8 +13,7 @@ const PAGE_SIZE = 6
 export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner
   relay: RelayPaginationProp
-  onScrollY: (scrollY: number) => void
-}> = ({ partner, relay, onScrollY }) => {
+}> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
   const artworks = get(partner, p => p.artworks)
@@ -36,7 +35,6 @@ export const PartnerArtwork: React.FC<{
   const handleInfiniteScroll = useCallback(isCloseToBottom(fetchNextPage), [])
 
   const onScroll = e => {
-    onScrollY(e.nativeEvent.contentOffset.y)
     handleInfiniteScroll(e)
   }
 

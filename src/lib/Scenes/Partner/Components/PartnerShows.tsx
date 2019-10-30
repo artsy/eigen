@@ -165,3 +165,5 @@ const EmptyImage = styled(Box)`
   height: 120;
   background-color: ${color("black10")};
 `
+
+GridItem.displayName = "GridItem"

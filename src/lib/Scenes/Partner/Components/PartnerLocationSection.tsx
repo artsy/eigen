@@ -17,7 +17,7 @@ const createLocationsString = (partner: PartnerLocationSection_partner) => {
   if (cityLength > 1) {
     lastUniqCity = uniqCities.pop()
   }
-  const joinedCities = uniqCities.join(",  ")
+  const joinedCities = uniqCities.join(", ")
   const locationCountText = `${partner.name} has ${cityLength} ${cityLength < 2 ? "location" : "locations"} in`
   return { locationText: locationCountText, cityText: joinedCities, lastCity: lastUniqCity }
 }

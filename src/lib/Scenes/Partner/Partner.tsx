@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, Theme } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
@@ -35,8 +35,7 @@ class Partner extends React.Component<Props> {
     return (
       <Theme>
         <Flex style={{ flex: 1 }}>
-          <PartnerHeader partner={partner} scrollY={this.state.scrollY} />
-          <Spacer mb={1} />
+          <PartnerHeader partner={partner} />
           <ScrollableTabView
             initialPage={INITIAL_TAB}
             prerenderingSiblingsNumber={2}
@@ -51,7 +50,7 @@ class Partner extends React.Component<Props> {
               <PartnerOverview partner={partner} />
             </ScrollableTab>
             <ScrollableTab tabLabel="Artwork" key="artworkTab">
-              <PartnerArtwork partner={partner} onScrollY={scrollY => this.setState({ scrollY })} />
+              <PartnerArtwork partner={partner} />
             </ScrollableTab>
             <ScrollableTab tabLabel="Shows" key="showsTab">
               <PartnerShows partner={partner} />
