@@ -48,9 +48,7 @@ export class WorksForYou extends React.Component<Props, State> {
       notifications.unshift(this.formattedSpecialNotification())
     }
 
-    const dataSource =
-      notifications.length &&
-      new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }).cloneWithRows(notifications)
+    const dataSource = createDataSource(notifications)
 
     this.state = {
       dataSource,
@@ -128,7 +126,9 @@ export class WorksForYou extends React.Component<Props, State> {
         // FIXME: Handle error
         console.error("WorksForYou.tsx #handleRefresh", error.message)
       }
-      this.setState({ isRefreshing: false })
+      // update data source from scratch
+      const notifications: object[] = this.props.query.me.followsAndSaves.notifications.edges.map(edge => edge.node)
+      this.setState({ isRefreshing: false, dataSource: createDataSource(notifications) })
     })
   }
 
@@ -284,5 +284,9 @@ const WorksForYouContainer = createPaginationContainer(
     `,
   }
 )
+
+const createDataSource = (notifications: object[]) =>
+  notifications.length &&
+  new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }).cloneWithRows(notifications)
 
 export default WorksForYouContainer
