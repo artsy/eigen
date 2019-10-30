@@ -243,6 +243,7 @@ export const ArtworkContainer = createRefetchContainer(
           }
         }
         sale {
+          id
           isBenefit
           isGalleryAuction
         }
@@ -325,9 +326,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
                 }
               }
             `}
-            variables={{
-              artworkID,
-            }}
+            variables={{ artworkID }}
             cacheConfig={{
               // Bypass Relay cache on retries.
               ...(isRetry && { force: true }),

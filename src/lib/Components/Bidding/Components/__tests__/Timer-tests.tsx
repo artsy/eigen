@@ -169,7 +169,7 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
     </BiddingThemeProvider>
   )
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM")
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM PDT")
 })
 
 it("displays the minutes when the sale does not end on the hour", () => {
@@ -181,7 +181,7 @@ it("displays the minutes when the sale does not end on the hour", () => {
     </BiddingThemeProvider>
   )
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:01 PM")
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:01 PM EDT")
 
   timer = renderer.create(
     <BiddingThemeProvider>
@@ -189,7 +189,7 @@ it("displays the minutes when the sale does not end on the hour", () => {
     </BiddingThemeProvider>
   )
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:30 PM")
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:30 PM EDT")
 })
 
 it("omits the minutes when the sale ends on the hour", () => {
@@ -201,7 +201,7 @@ it("omits the minutes when the sale ends on the hour", () => {
     </BiddingThemeProvider>
   )
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4 PM")
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4 PM EDT")
 })
 
 describe("timer transitions", () => {

@@ -44,9 +44,9 @@ fragment Artwork_artwork on Artwork {
     id
   }
   sale {
+    id
     isBenefit
     isGalleryAuction
-    id
   }
   category
   conditionDescription {
@@ -271,7 +271,6 @@ fragment CommercialInformation_artwork on Artwork {
   ...CommercialButtons_artwork
   ...CommercialPartnerInformation_artwork
   ...CommercialEditionSetInformation_artwork
-  ...AuctionCountDownTimer_artwork
   ...ArtworkExtraLinks_artwork
   ...AuctionPrice_artwork
 }
@@ -328,15 +327,6 @@ fragment CommercialEditionSetInformation_artwork on Artwork {
     }
   }
   ...CommercialPartnerInformation_artwork
-}
-
-fragment AuctionCountDownTimer_artwork on Artwork {
-  sale {
-    startAt
-    endAt
-    liveStartAt
-    id
-  }
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
@@ -1005,6 +995,7 @@ return {
             "concreteType": "Sale",
             "plural": false,
             "selections": [
+              (v2/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1019,7 +1010,6 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/),
               (v10/*: any*/),
               {
                 "kind": "ScalarField",
@@ -1897,7 +1887,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "f364cd9103ae9c4231b066430ab114bb",
+    "id": "24fc9e1c3645faedf2924c7da372285c",
     "text": null,
     "metadata": {}
   }

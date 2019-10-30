@@ -1,4 +1,4 @@
-import { Button, Sans, TimeRemaining } from "@artsy/palette"
+import { Button, Sans } from "@artsy/palette"
 import { mount } from "enzyme"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
@@ -7,13 +7,13 @@ import {
   RegisteredBidder,
 } from "lib/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { merge } from "lodash"
 import React from "react"
 import { RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Artwork } from "../Artwork"
 import { ArtworkHeader } from "../Components/ArtworkHeader"
-import { AuctionCountDownTimer } from "../Components/AuctionCountDownTimer"
 import { BidButton } from "../Components/CommercialButtons/BidButton"
 import { CommercialPartnerInformation } from "../Components/CommercialPartnerInformation"
 import { ContextCard } from "../Components/ContextCard"
@@ -83,8 +83,14 @@ describe("Artwork", () => {
         <Artwork artwork={liveAuctionArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
       )
       expect(component.find(CommercialPartnerInformation).length).toEqual(0)
-      expect(component.find(AuctionCountDownTimer).length).toEqual(1)
-      expect(component.find(TimeRemaining).text()).toContain("00d 00h 00m 00sIn progress")
+      expect(component.find(Countdown).length).toEqual(1)
+      expect(
+        component
+          .find(Countdown)
+          .find(Sans)
+          .at(1)
+          .text()
+      ).toContain("In progress")
       expect(component.find(BidButton).text()).toContain("Enter live bidding")
     })
 
@@ -94,8 +100,14 @@ describe("Artwork", () => {
         <Artwork artwork={liveAuctionArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
       )
       expect(component.find(CommercialPartnerInformation).length).toEqual(0)
-      expect(component.find(AuctionCountDownTimer).length).toEqual(1)
-      expect(component.find(TimeRemaining).text()).toContain("00d 00h 00m 00sIn progress")
+      expect(component.find(Countdown).length).toEqual(1)
+      expect(
+        component
+          .find(Countdown)
+          .find(Sans)
+          .at(1)
+          .text()
+      ).toContain("In progress")
       expect(
         component
           .find(BidButton)
@@ -117,8 +129,21 @@ describe("Artwork", () => {
         <Artwork artwork={liveAuctionArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
       )
       expect(component.find(CommercialPartnerInformation).length).toEqual(0)
-      expect(component.find(AuctionCountDownTimer).length).toEqual(1)
-      expect(component.find(TimeRemaining).text()).toContain("00d 00h 00m 00sIn progress")
+      expect(component.find(Countdown).length).toEqual(1)
+      expect(
+        component
+          .find(Countdown)
+          .find(Sans)
+          .at(1)
+          .text()
+      ).toContain("In progress")
+      expect(
+        component
+          .find(Countdown)
+          .find(Sans)
+          .at(0)
+          .text()
+      ).toContain("00d  00h  00m  00s")
       expect(component.find(BidButton).text()).toContain("Enter live bidding")
     })
   })

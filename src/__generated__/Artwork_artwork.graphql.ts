@@ -18,6 +18,7 @@ export type Artwork_artwork = {
         } | null;
     } | null;
     readonly sale: {
+        readonly id: string;
         readonly isBenefit: boolean | null;
         readonly isGalleryAuction: boolean | null;
     } | null;
@@ -186,6 +187,7 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -464,5 +466,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '77983ec5c4357af4d3c5b399c468a784';
+(node as any).hash = '4f72243ca17c2ac49bfd7d1874075056';
 export default node;

@@ -4,7 +4,13 @@ import moment from "moment-timezone"
 import * as PropTypes from "prop-types"
 import React from "react"
 
-enum AuctionTimerState {
+// Possible states for an auction:
+// - PREVIEW: Auction is open for registration but artworks cannot be bid on. This occurs when the current time is before any auction's startAt.
+// - CLOSING: Timed auction has started
+// - LIVE_INTEGRATION_UPCOMING: Auction is open for pre-bidding, live portion has not started
+// - LIVE_INTEGRATION_ONGOING: Live auction is in progress
+// - CLOSED: Auction is over
+export enum AuctionTimerState {
   PREVIEW = "PREVIEW",
   LIVE_INTEGRATION_UPCOMING = "LIVE_INTEGRATION_UPCOMING",
   LIVE_INTEGRATION_ONGOING = "LIVE_INTEGRATION_ONGOING",
@@ -21,12 +27,12 @@ interface Props {
 }
 function formatDate(date: string) {
   const dateInMoment = moment(date, moment.ISO_8601).tz(moment.tz.guess(true))
-  const format = dateInMoment.minutes() === 0 ? "MMM D, h A" : "MMM D, h:mm A"
+  const format = dateInMoment.minutes() === 0 ? "MMM D, h A z" : "MMM D, h:mm A z"
 
   return dateInMoment.format(format)
 }
 
-function relevantStateData(currentState: AuctionTimerState, { liveStartsAt, startsAt, endsAt }: Props) {
+export function relevantStateData(currentState: AuctionTimerState, { liveStartsAt, startsAt, endsAt }: Props) {
   switch (currentState) {
     case AuctionTimerState.PREVIEW: {
       if (!startsAt) {
@@ -49,7 +55,7 @@ function relevantStateData(currentState: AuctionTimerState, { liveStartsAt, star
   }
 }
 
-function nextTimerState(currentState: AuctionTimerState, { liveStartsAt }: Props) {
+export function nextTimerState(currentState: AuctionTimerState, { liveStartsAt }: Props) {
   switch (currentState) {
     case AuctionTimerState.PREVIEW: {
       if (liveStartsAt) {
@@ -76,7 +82,7 @@ function nextTimerState(currentState: AuctionTimerState, { liveStartsAt }: Props
   }
 }
 
-function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) {
+export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) {
   if (isPreview) {
     return AuctionTimerState.PREVIEW
   } else if (isClosed) {
@@ -93,25 +99,28 @@ function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) {
   }
 }
 
-interface CountdownProps {
+export interface CountdownProps {
   duration: moment.Duration
-  label: string
+  label?: string
+  [propName: string]: {}
 }
 
-const Countdown: React.SFC<CountdownProps> = ({ duration, label }) => (
-  <Flex alignItems="center">
-    <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
-    <Sans size="2" weight="medium">
-      {label}
-    </Sans>
-  </Flex>
-)
+export const Countdown: React.SFC<CountdownProps> = ({ duration, label }) => {
+  return (
+    <Flex alignItems="center">
+      <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
+      <Sans size="2" weight="medium">
+        {label}
+      </Sans>
+    </Flex>
+  )
+}
 
 interface TimeOffsetProviderProps {
   children: React.ReactElement<any>
 }
 
-class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps> {
+export class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps> {
   static contextTypes = {
     timeOffsetInMilliSeconds: PropTypes.number,
   }

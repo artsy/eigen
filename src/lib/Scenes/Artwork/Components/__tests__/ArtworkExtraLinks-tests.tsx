@@ -14,9 +14,9 @@ jest.unmock("react-tracking")
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
+import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { mockTracking } from "lib/tests/mockTracking"
-import { AuctionState } from "../CommercialInformation"
 
 describe("ArtworkExtraLinks", () => {
   it("redirects to consignments flow when consignments link is clicked", () => {
@@ -232,7 +232,7 @@ describe("ArtworkExtraLinks", () => {
 
     const Component = mockTracking(() => (
       <Theme>
-        <ArtworkExtraLinks artwork={artwork} auctionState={"inProgress" as AuctionState} />
+        <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
       </Theme>
     ))
     const component = mount(<Component />)
@@ -282,19 +282,37 @@ describe("ArtworkExtraLinks", () => {
       expect(componentWithNoLink.find(Sans).length).toEqual(0)
     })
 
-    it("hides auction links when auctionState hasEnded", () => {
+    it("hides auction links when auctionState is closed", () => {
       const componentWithEndedAuctionState = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={"hasEnded" as AuctionState} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSED} />
         </Theme>
       )
       expect(componentWithEndedAuctionState.text()).not.toContain("By placing a bid you agree to")
     })
 
+    it("displays auction links when auctionState is closing", () => {
+      const componentWithEndedAuctionState = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+        </Theme>
+      )
+      expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
+    })
+
+    it("displays auction links when auctionState is live_integration_upcoming", () => {
+      const componentWithEndedAuctionState = mount(
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+        </Theme>
+      )
+      expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
+    })
+
     it("displays auction links when auctionState is inProgress", () => {
       const componentWithEndedAuctionState = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={"inProgress" as AuctionState} />
+          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
         </Theme>
       )
       expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")

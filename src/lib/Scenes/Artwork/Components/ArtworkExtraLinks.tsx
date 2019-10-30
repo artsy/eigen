@@ -1,16 +1,16 @@
 import { Sans, Spacer } from "@artsy/palette"
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
+import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Linking, Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { AuctionState } from "./CommercialInformation"
 
 export interface ArtworkExtraLinksProps {
   artwork: ArtworkExtraLinks_artwork
-  auctionState: AuctionState
+  auctionState: AuctionTimerState
 }
 
 @track()
@@ -66,7 +66,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
       auctionState,
     } = this.props
 
-    if (isInAuction && sale && isForSale && auctionState !== "hasEnded") {
+    if (isInAuction && sale && isForSale && auctionState !== AuctionTimerState.CLOSED) {
       return (
         <>
           <Sans size="2" color="black60">

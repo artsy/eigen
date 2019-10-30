@@ -17,7 +17,6 @@ export class DurationProvider extends React.Component<Props, State> {
 
   constructor(props) {
     super(props)
-
     this.state = { timeLeftInMilliseconds: Date.parse(props.startAt) - Date.now() }
   }
 
@@ -74,9 +73,8 @@ export class DurationProvider extends React.Component<Props, State> {
   render() {
     const { timeLeftInMilliseconds } = this.state
     const { timeOffsetInMilliseconds, children } = this.props
-
     return React.cloneElement(children, {
-      duration: moment.duration(timeLeftInMilliseconds + (timeOffsetInMilliseconds || 0)),
+      duration: moment.duration(timeLeftInMilliseconds + (timeOffsetInMilliseconds || 0) || 0),
       timeLeftInMilliseconds,
     })
   }
