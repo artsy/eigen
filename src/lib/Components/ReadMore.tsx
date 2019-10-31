@@ -1,4 +1,4 @@
-import { Flex, Sans, Serif } from "@artsy/palette"
+import { Color, Flex, Sans, Serif } from "@artsy/palette"
 import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
@@ -6,6 +6,7 @@ import _ from "lodash"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"
+import { ResponsiveValue } from "styled-system"
 import { LinkText } from "./Text/LinkText"
 
 interface Props {
@@ -14,59 +15,64 @@ interface Props {
   presentLinksModally?: boolean
   contextModule?: string
   trackingFlow?: string
+  color?: ResponsiveValue<Color>
+  sans?: boolean
 }
 
-export const ReadMore = React.memo(({ content, maxChars, presentLinksModally, trackingFlow, contextModule }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const tracking = useTracking()
-  const basicRules = defaultRules(presentLinksModally)
-  const rules = {
-    ...basicRules,
-    paragraph: {
-      ...basicRules.paragraph,
-      react: (node, output, state) => {
-        return (
-          <Serif size="3t" color="black100" key={state.key}>
-            {!isExpanded && Number(state.key) > 0 ? "⁠ — " : null}
-            {output(node.content, state)}
-          </Serif>
-        )
+export const ReadMore = React.memo(
+  ({ content, maxChars, presentLinksModally, color, trackingFlow, contextModule, sans }: Props) => {
+    const [isExpanded, setIsExpanded] = useState(false)
+    const tracking = useTracking()
+    const basicRules = defaultRules(presentLinksModally)
+    const TextComponent = !!sans ? Sans : Serif
+    const rules = {
+      ...basicRules,
+      paragraph: {
+        ...basicRules.paragraph,
+        react: (node, output, state) => {
+          return (
+            <TextComponent size="3t" color={color || "black100"} key={state.key}>
+              {!isExpanded && Number(state.key) > 0 ? "⁠ — " : null}
+              {output(node.content, state)}
+            </TextComponent>
+          )
+        },
       },
-    },
-  }
-  const root = renderMarkdown(content, rules)
-  // Removes the last empty space in the markdown array
-  if (Array.isArray(root)) {
-    while (root.length && root[root.length - 1] && root[root.length - 1].type === Text) {
-      root.pop()
     }
+    const root = renderMarkdown(content, rules)
+    // Removes the last empty space in the markdown array
+    if (Array.isArray(root)) {
+      while (root.length && root[root.length - 1] && root[root.length - 1].type === Text) {
+        root.pop()
+      }
+    }
+
+    const plainTextVersion = plainTextFromTree(root)
+    const isAlreadyExpanded = isExpanded || plainTextVersion.length <= maxChars
+
+    return isAlreadyExpanded ? (
+      root
+    ) : (
+      <Flex>
+        <Text>
+          {truncate({
+            root,
+            maxChars,
+            onExpand: () => {
+              tracking.trackEvent({
+                action_name: Schema.ActionNames.ReadMore,
+                action_type: Schema.ActionTypes.Tap,
+                context_module: contextModule ? contextModule : null,
+                flow: trackingFlow ? trackingFlow : null,
+              })
+              setIsExpanded(true)
+            },
+          })}
+        </Text>
+      </Flex>
+    )
   }
-
-  const plainTextVersion = plainTextFromTree(root)
-  const isAlreadyExpanded = isExpanded || plainTextVersion.length <= maxChars
-
-  return isAlreadyExpanded ? (
-    root
-  ) : (
-    <Flex>
-      <Text>
-        {truncate({
-          root,
-          maxChars,
-          onExpand: () => {
-            tracking.trackEvent({
-              action_name: Schema.ActionNames.ReadMore,
-              action_type: Schema.ActionTypes.Tap,
-              context_module: contextModule ? contextModule : null,
-              flow: trackingFlow ? trackingFlow : null,
-            })
-            setIsExpanded(true)
-          },
-        })}
-      </Text>
-    </Flex>
-  )
-})
+)
 
 /**
  * In-order traverses the shallowly-rendered markdown returned from SimpleMarkdown's parser
