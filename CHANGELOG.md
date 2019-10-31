@@ -1,3 +1,15 @@
+# v1.18.13 (Thu Oct 31 2019)
+
+#### 🐛  Bug Fix
+
+- [PURCHASE-1545] All artwork details subfields have a ReadMore link [#1944](https://github.com/artsy/emission/pull/1944) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.18.12 (Thu Oct 31 2019)
 
 #### 🐛  Bug Fix
