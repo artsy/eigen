@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.18.14",
+  "version": "1.18.15",
   "native-code-version": 38,
   "description": "Artsy React(Native) components.",
   "engines": {
