@@ -1,5 +1,6 @@
 import { Box, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
+import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Separator from "lib/Components/Separator"
@@ -11,7 +12,7 @@ import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { FlatList } from "react-native"
 import { RefreshControl } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -79,10 +80,15 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount() {
+    this.markArtworkAsRecentlyViewed()
+  }
+
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
       this.forceRefetch()
+      this.markArtworkAsRecentlyViewed()
     }
   }
 
@@ -115,6 +121,23 @@ export class Artwork extends React.Component<Props, State> {
 
     this.setState({ refreshing: true })
     this.forceRefetch(() => this.setState({ refreshing: false }))
+  }
+
+  markArtworkAsRecentlyViewed = () => {
+    commitMutation<ArtworkMarkAsRecentlyViewedQuery>(this.props.relay.environment, {
+      mutation: graphql`
+        mutation ArtworkMarkAsRecentlyViewedQuery($input: RecordArtworkViewInput!) {
+          recordArtworkView(input: $input) {
+            artworkId
+          }
+        }
+      `,
+      variables: {
+        input: {
+          artwork_id: this.props.artwork.slug,
+        },
+      },
+    })
   }
 
   forceRefetch = (onComplete?: () => void) => {
