@@ -10,6 +10,7 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { merge } from "lodash"
 import React from "react"
+import relay from "react-relay"
 import { RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Artwork } from "../Artwork"
@@ -36,6 +37,18 @@ describe("Artwork", () => {
       <Artwork isVisible artwork={ArtworkFixture as any} relay={{ environment: {} } as RelayRefetchProp} />
     )
     expect(component.find(ArtworkHeader).length).toEqual(1)
+  })
+
+  it("marks the artwork as viewed", () => {
+    const commitMutationMock = jest.fn()
+    relay.commitMutation = commitMutationMock
+    mount(<Artwork isVisible artwork={ArtworkFixture as any} relay={{ environment: {} } as RelayRefetchProp} />)
+    expect(commitMutationMock).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        variables: { input: { artwork_id: ArtworkFixture.slug } },
+      })
+    )
   })
 
   it("refetches on re-appear", () => {
