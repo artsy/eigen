@@ -14,9 +14,10 @@ exports[`Artwork renders a snapshot 1`] = `
       "commercialInformation",
       "aboutWork",
       "details",
+      "history",
       "aboutArtist",
-      "partnerCard",
       "contextCard",
+      "otherWorks",
     ]
   }
   disableVirtualization={false}
@@ -72,6 +73,166 @@ exports[`Artwork renders a snapshot 1`] = `
           }
         />
         <View
+          style={
+            Array [
+              Object {
+                "display": "flex",
+              },
+            ]
+          }
+        >
+          <RCTScrollView
+            data={
+              Array [
+                Object {
+                  "deepZoom": Object {
+                    "image": Object {
+                      "format": "<mock-value-for-field-\\"format\\">",
+                      "size": Object {
+                        "height": "<mock-value-for-field-\\"height\\">",
+                        "width": "<mock-value-for-field-\\"width\\">",
+                      },
+                      "tileSize": "<mock-value-for-field-\\"tileSize\\">",
+                      "url": "<mock-value-for-field-\\"url\\">",
+                    },
+                  },
+                  "height": NaN,
+                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=NaN&height=NaN&quality=80&src=%3Cmock-value-for-field-%22url%22%3E",
+                  "width": NaN,
+                },
+              ]
+            }
+            decelerationRate="fast"
+            disableVirtualization={false}
+            getItem={[Function]}
+            getItemCount={[Function]}
+            getItemLayout={[Function]}
+            horizontal={true}
+            initialNumToRender={1}
+            keyExtractor={[Function]}
+            maxToRenderPerBatch={10}
+            numColumns={1}
+            onContentSizeChange={[Function]}
+            onEndReachedThreshold={2}
+            onLayout={[Function]}
+            onMomentumScrollEnd={[Function]}
+            onResponderRelease={[Function]}
+            onScroll={[Function]}
+            onScrollBeginDrag={[Function]}
+            onScrollEndDrag={[Function]}
+            removeClippedSubviews={false}
+            renderItem={[Function]}
+            scrollEnabled={false}
+            scrollEventThrottle={50}
+            showsHorizontalScrollIndicator={false}
+            snapToOffsets={
+              Array [
+                0,
+              ]
+            }
+            stickyHeaderIndices={Array []}
+            updateCellsBatchingPeriod={50}
+            viewabilityConfigCallbackPairs={Array []}
+            windowSize={21}
+          >
+            <View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexDirection": "row",
+                    },
+                    null,
+                  ]
+                }
+              >
+                <View
+                  accessible={true}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "height": NaN,
+                        "width": NaN,
+                      },
+                      Array [
+                        Object {
+                          "height": NaN,
+                          "marginBottom": NaN,
+                          "marginLeft": NaN,
+                          "marginRight": NaN,
+                          "marginTop": NaN,
+                          "width": NaN,
+                        },
+                        Object {
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "height": NaN,
+                        "position": "absolute",
+                        "width": NaN,
+                      }
+                    }
+                  >
+                    <AROpaqueImageView
+                      aspectRatio={NaN}
+                      highPriority={true}
+                      imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=NaN&height=NaN&quality=80&src=%3Cmock-value-for-field-%22url%22%3E"
+                      noAnimation={true}
+                      onLoad={[Function]}
+                      style={
+                        Object {
+                          "height": NaN,
+                          "width": NaN,
+                        }
+                      }
+                      useRawURL={true}
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "backgroundColor": "white",
+                        "flex": 1,
+                        "height": NaN,
+                        "opacity": 1,
+                        "position": "absolute",
+                        "width": NaN,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "backgroundColor": "#F8F8F8",
+                          "flex": 1,
+                          "justifyContent": "center",
+                          "opacity": 0,
+                        }
+                      }
+                    >
+                      <ARSpinner />
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </RCTScrollView>
+        </View>
+        <View
           alignItems="center"
           mt={2}
           style={
@@ -96,6 +257,180 @@ exports[`Artwork renders a snapshot 1`] = `
                 ]
               }
             >
+              <View
+                accessible={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                pr={3}
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "justifyContent": "flex-start",
+                      "paddingRight": 30,
+                    },
+                  ]
+                }
+              >
+                <View
+                  mr={0.5}
+                  style={
+                    Array [
+                      Object {
+                        "marginRight": 5,
+                      },
+                    ]
+                  }
+                >
+                  <RNSVGSvgView
+                    align="xMidYMid"
+                    bbHeight="18px"
+                    bbWidth="18px"
+                    className="Iconios__Icon-z4d8jr-0 cjvLsm"
+                    fill="purple100"
+                    height="18px"
+                    meetOrSlice={0}
+                    minX={0}
+                    minY={0}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderWidth": 0,
+                        },
+                        undefined,
+                        null,
+                        Object {
+                          "flex": 0,
+                          "height": 18,
+                          "width": 18,
+                        },
+                      ]
+                    }
+                    vbHeight={18}
+                    vbWidth={18}
+                    width="18px"
+                  >
+                    <RNSVGGroup
+                      fill={
+                        Array [
+                          0,
+                          4286578816,
+                        ]
+                      }
+                      fillOpacity={1}
+                      fillRule={1}
+                      font={Object {}}
+                      matrix={
+                        Array [
+                          1,
+                          0,
+                          0,
+                          1,
+                          0,
+                          0,
+                        ]
+                      }
+                      opacity={1}
+                      originX={0}
+                      originY={0}
+                      propList={
+                        Array [
+                          "fill",
+                        ]
+                      }
+                      rotation={0}
+                      scaleX={1}
+                      scaleY={1}
+                      skewX={0}
+                      skewY={0}
+                      stroke={null}
+                      strokeDasharray={null}
+                      strokeDashoffset={null}
+                      strokeLinecap={0}
+                      strokeLinejoin={0}
+                      strokeMiterlimit={4}
+                      strokeOpacity={1}
+                      strokeWidth={1}
+                      vectorEffect={0}
+                      x={0}
+                      y={0}
+                    >
+                      <RNSVGPath
+                        d="M12 3a4 4 0 0 0-2.83 1.17L9 4.34l-.17-.17a4.002 4.002 0 0 0-5.66 5.66l5.48 5.47a.48.48 0 0 0 .7 0l5.48-5.47A4 4 0 0 0 12 3z"
+                        fill={
+                          Array [
+                            0,
+                            4285406975,
+                          ]
+                        }
+                        fillOpacity={1}
+                        fillRule={1}
+                        matrix={
+                          Array [
+                            1,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0,
+                          ]
+                        }
+                        opacity={1}
+                        originX={0}
+                        originY={0}
+                        propList={
+                          Array [
+                            "fill",
+                            "fillRule",
+                          ]
+                        }
+                        rotation={0}
+                        scaleX={1}
+                        scaleY={1}
+                        skewX={0}
+                        skewY={0}
+                        stroke={null}
+                        strokeDasharray={null}
+                        strokeDashoffset={null}
+                        strokeLinecap={0}
+                        strokeLinejoin={0}
+                        strokeMiterlimit={4}
+                        strokeOpacity={1}
+                        strokeWidth={1}
+                        vectorEffect={0}
+                        x={0}
+                        y={0}
+                      />
+                    </RNSVGGroup>
+                  </RNSVGSvgView>
+                </View>
+                <Text
+                  color="#6E1EFF"
+                  fontFamily="Unica77LL-Regular"
+                  fontSize="14px"
+                  lineHeight="24px"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6E1EFF",
+                        "fontFamily": "Unica77LL-Regular",
+                        "fontSize": 14,
+                        "lineHeight": 24,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  Saved
+                </Text>
+              </View>
               <View
                 accessible={true}
                 onResponderGrant={[Function]}
@@ -201,8 +536,7 @@ exports[`Artwork renders a snapshot 1`] = `
                       x={0}
                       y={0}
                     >
-                      <RNSVGPath
-                        d="M12 3a4 4 0 0 0-2.83 1.17L9 4.34l-.17-.17a4.002 4.002 0 0 0-5.66 5.66l5.48 5.47a.48.48 0 0 0 .7 0l5.48-5.47A4 4 0 0 0 12 3zm2.12 6.12L9 14.24 3.88 9.12a3 3 0 1 1 4.24-4.24l.53.52.35.36.35-.36.53-.52a3 3 0 0 1 4.24 4.24z"
+                      <RNSVGGroup
                         fill={
                           Array [
                             0,
@@ -211,6 +545,7 @@ exports[`Artwork renders a snapshot 1`] = `
                         }
                         fillOpacity={1}
                         fillRule={1}
+                        font={Object {}}
                         matrix={
                           Array [
                             1,
@@ -245,19 +580,100 @@ exports[`Artwork renders a snapshot 1`] = `
                         vectorEffect={0}
                         x={0}
                         y={0}
-                      />
+                      >
+                        <RNSVGPath
+                          d="M2.249 8.462a.56.56 0 0 0 .016.601C4.172 11.9 6.406 13.286 9 13.286c2.594 0 4.828-1.387 6.736-4.225a.56.56 0 0 0 .017-.6C14.038 5.56 11.808 4.144 9.01 4.144S3.975 5.56 2.25 8.463zm-1.011-.574C3.163 4.652 5.77 3 9.01 3c3.241 0 5.843 1.653 7.755 4.89.331.561.31 1.257-.053 1.798-2.109 3.139-4.69 4.74-7.713 4.74-3.021 0-5.602-1.6-7.711-4.738a1.681 1.681 0 0 1-.05-1.802z"
+                          fill={
+                            Array [
+                              0,
+                              4278190080,
+                            ]
+                          }
+                          fillOpacity={1}
+                          fillRule={1}
+                          matrix={
+                            Array [
+                              1,
+                              0,
+                              0,
+                              1,
+                              0,
+                              0,
+                            ]
+                          }
+                          opacity={1}
+                          originX={0}
+                          originY={0}
+                          propList={Array []}
+                          rotation={0}
+                          scaleX={1}
+                          scaleY={1}
+                          skewX={0}
+                          skewY={0}
+                          stroke={null}
+                          strokeDasharray={null}
+                          strokeDashoffset={null}
+                          strokeLinecap={0}
+                          strokeLinejoin={0}
+                          strokeMiterlimit={4}
+                          strokeOpacity={1}
+                          strokeWidth={1}
+                          vectorEffect={0}
+                          x={0}
+                          y={0}
+                        />
+                        <RNSVGPath
+                          d="M9 11.571a2.857 2.857 0 1 1 0-5.714 2.857 2.857 0 0 1 0 5.714zm0-1.142A1.714 1.714 0 1 0 9 7a1.714 1.714 0 0 0 0 3.429z"
+                          fill={
+                            Array [
+                              0,
+                              4278190080,
+                            ]
+                          }
+                          fillOpacity={1}
+                          fillRule={1}
+                          matrix={
+                            Array [
+                              1,
+                              0,
+                              0,
+                              1,
+                              0,
+                              0,
+                            ]
+                          }
+                          opacity={1}
+                          originX={0}
+                          originY={0}
+                          propList={Array []}
+                          rotation={0}
+                          scaleX={1}
+                          scaleY={1}
+                          skewX={0}
+                          skewY={0}
+                          stroke={null}
+                          strokeDasharray={null}
+                          strokeDashoffset={null}
+                          strokeLinecap={0}
+                          strokeLinejoin={0}
+                          strokeMiterlimit={4}
+                          strokeOpacity={1}
+                          strokeWidth={1}
+                          vectorEffect={0}
+                          x={0}
+                          y={0}
+                        />
+                      </RNSVGGroup>
                     </RNSVGGroup>
                   </RNSVGSvgView>
                 </View>
                 <Text
-                  color="#000"
                   fontFamily="Unica77LL-Regular"
                   fontSize="14px"
                   lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "color": "#000",
                         "fontFamily": "Unica77LL-Regular",
                         "fontSize": 14,
                         "lineHeight": 24,
@@ -266,7 +682,7 @@ exports[`Artwork renders a snapshot 1`] = `
                     ]
                   }
                 >
-                  Save
+                  View in Room
                 </Text>
               </View>
               <View
@@ -487,9 +903,16 @@ exports[`Artwork renders a snapshot 1`] = `
             >
               <Text>
                 <Text
+                  accessible={true}
                   fontFamily="ReactNativeAGaramondPro-Semibold"
                   fontSize="18px"
                   lineHeight="22px"
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Array [
                       Object {
@@ -501,7 +924,7 @@ exports[`Artwork renders a snapshot 1`] = `
                     ]
                   }
                 >
-                  Abbas Kiarostami
+                  &lt;mock-value-for-field-"name"&gt;
                 </Text>
                 <Text
                   fontFamily="ReactNativeAGaramondPro-Semibold"
@@ -546,7 +969,7 @@ exports[`Artwork renders a snapshot 1`] = `
                     ]
                   }
                 >
-                  Follow
+                  Following
                 </Text>
               </Text>
             </View>
@@ -605,7 +1028,26 @@ exports[`Artwork renders a snapshot 1`] = `
                     ]
                   }
                 >
-                  Untitled
+                  &lt;mock-value-for-field-"title"&gt;, 
+                </Text>
+                <Text
+                  color="black60"
+                  fontFamily="ReactNativeAGaramondPro-Regular"
+                  fontSize="16px"
+                  lineHeight="20px"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#666",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "fontSize": 16,
+                        "lineHeight": 20,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  &lt;mock-value-for-field-"date"&gt;
                 </Text>
               </Text>
             </View>
@@ -626,7 +1068,82 @@ exports[`Artwork renders a snapshot 1`] = `
                 ]
               }
             >
-              59 × 84 cm
+              &lt;mock-value-for-field-"medium"&gt;
+            </Text>
+            <Text
+              color="black60"
+              fontFamily="ReactNativeAGaramondPro-Regular"
+              fontSize="16px"
+              lineHeight="20px"
+              style={
+                Array [
+                  Object {
+                    "color": "#666",
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              &lt;mock-value-for-field-"cm"&gt;
+            </Text>
+            <Text
+              color="black60"
+              fontFamily="ReactNativeAGaramondPro-Regular"
+              fontSize="16px"
+              lineHeight="20px"
+              style={
+                Array [
+                  Object {
+                    "color": "#666",
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              &lt;mock-value-for-field-"edition_of"&gt;
+            </Text>
+            <Text
+              color="black60"
+              fontFamily="ReactNativeAGaramondPro-Regular"
+              fontSize="16px"
+              lineHeight="20px"
+              mt={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#666",
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 20,
+                    "marginTop": 10,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "textDecorationLine": "underline",
+                  }
+                }
+              >
+                &lt;mock-value-for-field-"shortDescription"&gt;
+              </Text>
+              .
             </Text>
           </View>
         </View>
@@ -679,9 +1196,17 @@ exports[`Artwork renders a snapshot 1`] = `
         }
       >
         <View
+          flexDirection="row"
+          flexWrap="nowrap"
+          justifyContent="space-between"
           style={
             Array [
-              Object {},
+              Object {
+                "display": "flex",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "space-between",
+              },
             ]
           }
         >
@@ -700,7 +1225,364 @@ exports[`Artwork renders a snapshot 1`] = `
               ]
             }
           >
-            For sale
+            Starting bid
+          </Text>
+          <Text
+            fontFamily="Unica77LL-Medium"
+            fontSize="16px"
+            lineHeight="22px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                Object {},
+              ]
+            }
+          >
+            <Text>
+              <RNSVGSvgView
+                align="xMidYMid"
+                bbHeight="16"
+                bbWidth="18px"
+                className="Iconios__Icon-z4d8jr-0 cjvLsm"
+                fill="green100"
+                height="16"
+                meetOrSlice={0}
+                minX={0}
+                minY={0}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "borderWidth": 0,
+                    },
+                    undefined,
+                    null,
+                    Object {
+                      "flex": 0,
+                      "height": 16,
+                      "width": 18,
+                    },
+                  ]
+                }
+                vbHeight={18}
+                vbWidth={18}
+                width="18px"
+              >
+                <RNSVGGroup
+                  fill={
+                    Array [
+                      0,
+                      4278222848,
+                    ]
+                  }
+                  fillOpacity={1}
+                  fillRule={1}
+                  font={Object {}}
+                  matrix={
+                    Array [
+                      1,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                    ]
+                  }
+                  opacity={1}
+                  originX={0}
+                  originY={0}
+                  propList={
+                    Array [
+                      "fill",
+                    ]
+                  }
+                  rotation={0}
+                  scaleX={1}
+                  scaleY={1}
+                  skewX={0}
+                  skewY={0}
+                  stroke={null}
+                  strokeDasharray={null}
+                  strokeDashoffset={null}
+                  strokeLinecap={0}
+                  strokeLinejoin={0}
+                  strokeMiterlimit={4}
+                  strokeOpacity={1}
+                  strokeWidth={1}
+                  vectorEffect={0}
+                  x={0}
+                  y={0}
+                >
+                  <RNSVGPath
+                    d="M9 1.889A7.111 7.111 0 1 1 9 16.11 7.111 7.111 0 0 1 9 1.89zM9 1a8 8 0 1 0 0 16A8 8 0 0 0 9 1zm4.32 5.796l-.764-.783-4.81 4.765-2.302-2.25-.782.783 3.085 3.067 5.573-5.582z"
+                    fill={
+                      Array [
+                        0,
+                        4279163523,
+                      ]
+                    }
+                    fillOpacity={1}
+                    fillRule={1}
+                    matrix={
+                      Array [
+                        1,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                      ]
+                    }
+                    opacity={1}
+                    originX={0}
+                    originY={0}
+                    propList={
+                      Array [
+                        "fill",
+                        "fillRule",
+                      ]
+                    }
+                    rotation={0}
+                    scaleX={1}
+                    scaleY={1}
+                    skewX={0}
+                    skewY={0}
+                    stroke={null}
+                    strokeDasharray={null}
+                    strokeDashoffset={null}
+                    strokeLinecap={0}
+                    strokeLinejoin={0}
+                    strokeMiterlimit={4}
+                    strokeOpacity={1}
+                    strokeWidth={1}
+                    vectorEffect={0}
+                    x={0}
+                    y={0}
+                  />
+                </RNSVGGroup>
+              </RNSVGSvgView>
+               
+            </Text>
+            &lt;mock-value-for-field-"display"&gt;
+          </Text>
+        </View>
+        <View
+          flexDirection="row"
+          flexWrap="nowrap"
+          justifyContent="space-between"
+          style={
+            Array [
+              Object {
+                "display": "flex",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "space-between",
+              },
+            ]
+          }
+        >
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="12px"
+            lineHeight="16px"
+            pr={1}
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                  "paddingRight": 10,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"reserveMessage"&gt;
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="12px"
+            lineHeight="16px"
+            pl={1}
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                  "paddingLeft": 10,
+                },
+                Object {},
+              ]
+            }
+          >
+            Your max: 
+            &lt;mock-value-for-field-"display"&gt;
+          </Text>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 10,
+              },
+            ]
+          }
+        />
+        <Text
+          color="black60"
+          fontFamily="Unica77LL-Regular"
+          fontSize="14px"
+          lineHeight="20px"
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 14,
+                "lineHeight": 20,
+              },
+              Object {},
+            ]
+          }
+        >
+          This work has a
+           
+          <Text
+            onPress={[Function]}
+            style={
+              Object {
+                "textDecorationLine": "underline",
+              }
+            }
+          >
+            buyer's premium
+          </Text>
+          .
+        </Text>
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <View
+            mb={2}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+              ]
+            }
+          />
+          <View
+            mb={2}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+              ]
+            }
+          />
+          <View
+            alignItems="center"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                },
+              ]
+            }
+          >
+            <Text
+              fontFamily="Unica77LL-Medium"
+              fontSize="16px"
+              lineHeight="22px"
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              00d  00h  00m  00s
+            </Text>
+            <Text
+              fontFamily="Unica77LL-Medium"
+              fontSize="12px"
+              lineHeight="16px"
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Starts Invalid date
+            </Text>
+          </View>
+          <View
+            mb={2}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+              ]
+            }
+          />
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="12px"
+            lineHeight="16px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                },
+                Object {},
+              ]
+            }
+          >
+            By placing a bid you agree to Artsy's
+             
+            <Text
+              onPress={[Function]}
+              style={
+                Object {
+                  "textDecorationLine": "underline",
+                }
+              }
+            >
+              Conditions of Sale
+            </Text>
+            .
           </Text>
           <View
             mb={1}
@@ -715,32 +1597,81 @@ exports[`Artwork renders a snapshot 1`] = `
           <Text
             color="black60"
             fontFamily="Unica77LL-Regular"
-            fontSize="14px"
-            lineHeight="20px"
+            fontSize="12px"
+            lineHeight="16px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
+                  "fontSize": 12,
+                  "lineHeight": 16,
                 },
                 Object {},
               ]
             }
           >
-            At
+            Have a question?
              
-            CAMA Gallery
+            <Text
+              onPress={[Function]}
+              style={
+                Object {
+                  "textDecorationLine": "underline",
+                }
+              }
+            >
+              Read our auction FAQs
+            </Text>
+             
+            or
+             
+            <Text
+              onPress={[Function]}
+              style={
+                Object {
+                  "textDecorationLine": "underline",
+                }
+              }
+            >
+              ask a specialist
+            </Text>
+            .
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="12px"
+            lineHeight="16px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                },
+                Object {},
+              ]
+            }
+          >
+            Want to sell a work by 
+            &lt;mock-value-for-field-"name"&gt;
+            ?
+             
+            <Text
+              onPress={[Function]}
+              style={
+                Object {
+                  "textDecorationLine": "underline",
+                }
+              }
+            >
+              Consign with Artsy
+            </Text>
+            .
           </Text>
         </View>
-        <View
-          style={
-            Array [
-              Object {},
-            ]
-          }
-        />
       </View>
       <View
         mx={2}
@@ -833,8 +1764,47 @@ exports[`Artwork renders a snapshot 1`] = `
             ]
           }
         >
-          This artwork is unique.
+          &lt;mock-value-for-field-"additional_information"&gt;
         </Text>
+        <View
+          mb={2}
+          style={
+            Array [
+              Object {
+                "marginBottom": 20,
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            Array [
+              Object {
+                "display": "flex",
+              },
+            ]
+          }
+        >
+          <Text
+            color="black100"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"description"&gt;
+          </Text>
+        </View>
       </View>
       <View
         mx={2}
@@ -952,7 +1922,54 @@ exports[`Artwork renders a snapshot 1`] = `
               ]
             }
           >
-            Photography
+            &lt;mock-value-for-field-"category"&gt;
+          </Text>
+          <View
+            my={1}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 10,
+                  "marginTop": 10,
+                },
+              ]
+            }
+          />
+          <Text
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Condition
+          </Text>
+          <Text
+            color="gray"
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "gray",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"details"&gt;
           </Text>
           <View
             my={1}
@@ -999,7 +2016,7 @@ exports[`Artwork renders a snapshot 1`] = `
               ]
             }
           >
-            Signed by artist on Back
+            &lt;mock-value-for-field-"details"&gt;
           </Text>
           <View
             my={1}
@@ -1013,40 +2030,238 @@ exports[`Artwork renders a snapshot 1`] = `
             }
           />
           <Text
-            fontFamily="Unica77LL-Regular"
-            fontSize="14px"
-            lineHeight="20px"
+            onPress={[Function]}
             style={
               Array [
                 Object {
-                  "fontFamily": "Unica77LL-Regular",
+                  "textDecorationLine": "underline",
+                },
+              ]
+            }
+          >
+            <Text
+              fontFamily="Unica77LL-Regular"
+              fontSize="14px"
+              lineHeight="20px"
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Show more artwork details
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View
+        mx={2}
+        my={3}
+        px={2}
+        style={
+          Array [
+            Object {
+              "marginBottom": 30,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 30,
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "marginLeft": -40,
+                "marginRight": -40,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        px={2}
+        style={
+          Array [
+            Object {
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <Text
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="24px"
+            pb={2}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
+                  "paddingBottom": 20,
                 },
                 Object {},
               ]
             }
           >
-            Image rights
+            Provenance
           </Text>
           <Text
-            color="gray"
-            fontFamily="Unica77LL-Regular"
-            fontSize="14px"
+            color="black100"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
             lineHeight="20px"
             style={
               Array [
                 Object {
-                  "color": "gray",
-                  "fontFamily": "Unica77LL-Regular",
-                  "fontSize": 14,
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
                   "lineHeight": 20,
                 },
                 Object {},
               ]
             }
           >
-            All rights reserved by CAMA Gallery
+            &lt;mock-value-for-field-"provenance"&gt;
+          </Text>
+        </View>
+        <View
+          pb={3}
+          style={
+            Array [
+              Object {
+                "paddingBottom": 30,
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <Text
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="24px"
+            pb={2}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
+                  "paddingBottom": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Exhibition History
+          </Text>
+          <Text
+            color="black100"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"exhibition_history"&gt;
+          </Text>
+        </View>
+        <View
+          pb={3}
+          style={
+            Array [
+              Object {
+                "paddingBottom": 30,
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <Text
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="24px"
+            pb={2}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
+                  "paddingBottom": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Bibliography
+          </Text>
+          <Text
+            color="black100"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"literature"&gt;
           </Text>
         </View>
       </View>
@@ -1167,7 +2382,7 @@ exports[`Artwork renders a snapshot 1`] = `
                 size="xs"
                 source={
                   Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/JX1xE4T_amcdrv2nFunIHw/tall.jpg",
+                    "uri": "<mock-value-for-field-\\"url\\">",
                   }
                 }
                 style={
@@ -1213,7 +2428,7 @@ exports[`Artwork renders a snapshot 1`] = `
                   ]
                 }
               >
-                Abbas Kiarostami
+                &lt;mock-value-for-field-"name"&gt;
               </Text>
               <Text
                 color="black60"
@@ -1234,7 +2449,7 @@ exports[`Artwork renders a snapshot 1`] = `
                   ]
                 }
               >
-                Iranian, 1940-2016
+                &lt;mock-value-for-field-"nationality"&gt;, &lt;mock-value-for-field-"birthday"&gt;-&lt;mock-value-for-field-"deathday"&gt;
               </Text>
             </View>
             <View
@@ -1290,9 +2505,9 @@ exports[`Artwork renders a snapshot 1`] = `
                         "width": "auto",
                       },
                       Object {
-                        "backgroundColor": "rgba(0, 0, 0, 1)",
-                        "borderColor": "rgba(0, 0, 0, 1)",
-                        "color": "rgba(255, 255, 255, 1)",
+                        "backgroundColor": "rgba(255, 255, 255, 1)",
+                        "borderColor": "rgba(229, 229, 229, 1)",
+                        "color": "rgba(0, 0, 0, 1)",
                         "height": 26,
                         "opacity": 1,
                       },
@@ -1523,7 +2738,7 @@ exports[`Artwork renders a snapshot 1`] = `
                       },
                     }
                   }
-                  variant="primaryBlack"
+                  variant="secondaryOutline"
                 >
                   <View
                     style={
@@ -1541,14 +2756,14 @@ exports[`Artwork renders a snapshot 1`] = `
                     }
                   >
                     <Text
-                      color="#FFF"
+                      color="#000"
                       fontFamily="Unica77LL-Medium"
                       fontSize="12px"
                       lineHeight="16px"
                       style={
                         Array [
                           Object {
-                            "color": "#FFF",
+                            "color": "#000",
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 12,
                             "lineHeight": 16,
@@ -1557,7 +2772,7 @@ exports[`Artwork renders a snapshot 1`] = `
                         ]
                       }
                     >
-                      Follow
+                      Following
                     </Text>
                   </View>
                   <Text
@@ -1612,126 +2827,8 @@ exports[`Artwork renders a snapshot 1`] = `
               ]
             }
           >
-            This is a biography of the artist
+            &lt;mock-value-for-field-"text"&gt;
           </Text>
-        </View>
-      </View>
-      <View
-        mx={2}
-        my={3}
-        px={2}
-        style={
-          Array [
-            Object {
-              "marginBottom": 30,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 30,
-              "paddingLeft": 20,
-              "paddingRight": 20,
-            },
-          ]
-        }
-      >
-        <View
-          style={
-            Array [
-              Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
-              },
-              undefined,
-            ]
-          }
-        />
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View
-        px={2}
-        style={
-          Array [
-            Object {
-              "paddingLeft": 20,
-              "paddingRight": 20,
-            },
-          ]
-        }
-      >
-        <View
-          style={
-            Array [
-              Object {
-                "display": "flex",
-              },
-            ]
-          }
-        >
-          <View
-            accessible={true}
-            flexDirection="row"
-            flexWrap="nowrap"
-            justifyContent="space-between"
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Array [
-                Object {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
-                  "justifyContent": "space-between",
-                },
-              ]
-            }
-          >
-            <View
-              flexGrow={1}
-              justifyContent="center"
-              style={
-                Array [
-                  Object {
-                    "display": "flex",
-                    "flexGrow": 1,
-                    "justifyContent": "center",
-                    "width": "0%",
-                  },
-                ]
-              }
-              width={0}
-            >
-              <Text
-                color="black100"
-                ellipsizeMode="tail"
-                fontFamily="ReactNativeAGaramondPro-Regular"
-                fontSize="16px"
-                lineHeight="20px"
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "color": "#000",
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
-                      "fontSize": 16,
-                      "lineHeight": 20,
-                    },
-                    Object {},
-                  ]
-                }
-              >
-                CAMA Gallery
-              </Text>
-            </View>
-          </View>
         </View>
       </View>
       <View
@@ -1843,6 +2940,36 @@ exports[`Artwork renders a snapshot 1`] = `
             }
           >
             <View
+              justifyContent="center"
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "justifyContent": "center",
+                    "marginRight": 10,
+                  },
+                ]
+              }
+            >
+              <Image
+                resizeMode="stretch"
+                size="xs"
+                source={
+                  Object {
+                    "uri": "<mock-value-for-field-\\"url\\">",
+                  }
+                }
+                style={
+                  Object {
+                    "borderRadius": 22.5,
+                    "height": 45,
+                    "width": 45,
+                  }
+                }
+              />
+            </View>
+            <View
               flexGrow={1}
               justifyContent="center"
               style={
@@ -1875,8 +3002,307 @@ exports[`Artwork renders a snapshot 1`] = `
                     Object {},
                   ]
                 }
-              />
+              >
+                &lt;mock-value-for-field-"name"&gt;
+              </Text>
+              <Text
+                color="black60"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Regular"
+                fontSize="12px"
+                lineHeight="16px"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                &lt;mock-value-for-field-"formattedStartDateTime"&gt;
+              </Text>
             </View>
+          </View>
+        </View>
+      </View>
+      <View
+        mx={2}
+        my={3}
+        px={2}
+        style={
+          Array [
+            Object {
+              "marginBottom": 30,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 30,
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "marginLeft": -40,
+                "marginRight": -40,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        px={2}
+        style={
+          Array [
+            Object {
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
+        }
+      >
+        <View
+          flexDirection="column"
+          style={
+            Array [
+              Object {
+                "display": "flex",
+                "flexDirection": "column",
+              },
+            ]
+          }
+        >
+          <Text
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="22px"
+            lineHeight="28px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 22,
+                  "lineHeight": 28,
+                  "textAlign": "left",
+                },
+                Object {},
+              ]
+            }
+            textAlign="left"
+          >
+            &lt;mock-value-for-field-"title"&gt;
+          </Text>
+        </View>
+        <View
+          mb={3}
+          style={
+            Array [
+              Object {
+                "marginBottom": 30,
+              },
+            ]
+          }
+        />
+        <View
+          onLayout={[Function]}
+        >
+          <View
+            accessibilityLabel="Artworks Content View"
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          />
+        </View>
+        <View
+          mt={2}
+          style={
+            Array [
+              Object {
+                "marginTop": 20,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            alignContent="center"
+            flexDirection="row"
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {
+                  "alignContent": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                },
+              ]
+            }
+          >
+            <Text
+              fontFamily="Unica77LL-Medium"
+              fontSize="14px"
+              lineHeight="24px"
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 14,
+                    "lineHeight": 24,
+                    "textAlign": "left",
+                  },
+                  Object {},
+                ]
+              }
+              textAlign="left"
+            >
+              &lt;mock-value-for-field-"ctaTitle"&gt;
+            </Text>
+            <RNSVGSvgView
+              align="xMidYMid"
+              bbHeight="18px"
+              bbWidth="18px"
+              className="Iconios__Icon-z4d8jr-0 ihTyDP"
+              fill="black30"
+              height="18px"
+              meetOrSlice={0}
+              minX={0}
+              minY={0}
+              ml={1}
+              mt={0.3}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderWidth": 0,
+                  },
+                  undefined,
+                  null,
+                  Object {
+                    "flex": 0,
+                    "height": 18,
+                    "width": 18,
+                  },
+                ]
+              }
+              vbHeight={18}
+              vbWidth={18}
+              width="18px"
+            >
+              <RNSVGGroup
+                fill={
+                  Array [
+                    0,
+                    4278190080,
+                  ]
+                }
+                fillOpacity={1}
+                fillRule={1}
+                font={Object {}}
+                matrix={
+                  Array [
+                    1,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                  ]
+                }
+                opacity={1}
+                originX={0}
+                originY={0}
+                propList={
+                  Array [
+                    "fill",
+                  ]
+                }
+                rotation={0}
+                scaleX={1}
+                scaleY={1}
+                skewX={0}
+                skewY={0}
+                stroke={null}
+                strokeDasharray={null}
+                strokeDashoffset={null}
+                strokeLinecap={0}
+                strokeLinejoin={0}
+                strokeMiterlimit={4}
+                strokeOpacity={1}
+                strokeWidth={1}
+                vectorEffect={0}
+                x={0}
+                y={0}
+              >
+                <RNSVGPath
+                  d="M5.94 15.94l-.88-.88L11.12 9 5.06 2.94l.88-.88L12.88 9z"
+                  fill={
+                    Array [
+                      0,
+                      4290953922,
+                    ]
+                  }
+                  fillOpacity={1}
+                  fillRule={0}
+                  matrix={
+                    Array [
+                      1,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                    ]
+                  }
+                  opacity={1}
+                  originX={0}
+                  originY={0}
+                  propList={
+                    Array [
+                      "fill",
+                      "fillRule",
+                    ]
+                  }
+                  rotation={0}
+                  scaleX={1}
+                  scaleY={1}
+                  skewX={0}
+                  skewY={0}
+                  stroke={null}
+                  strokeDasharray={null}
+                  strokeDashoffset={null}
+                  strokeLinecap={0}
+                  strokeLinejoin={0}
+                  strokeMiterlimit={4}
+                  strokeOpacity={1}
+                  strokeWidth={1}
+                  vectorEffect={0}
+                  x={0}
+                  y={0}
+                />
+              </RNSVGGroup>
+            </RNSVGSvgView>
           </View>
         </View>
       </View>
