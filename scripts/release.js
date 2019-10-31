@@ -4,6 +4,7 @@ const fs = require("fs")
 const path = require("path")
 const spawnSync = require("child_process").spawnSync
 const chalk = require("chalk").default
+const awaitPreviousBuilds = require("./await-previous-builds")
 
 function sh(command, canFail = false) {
   console.log("$ " + command)
@@ -46,29 +47,38 @@ function publishPodspec(podspec) {
   }
 }
 
-console.log(chalk.green("=> Validating your tools."))
-sh("bundle --version")
-sh("npm --version")
+async function main() {
+  await awaitPreviousBuilds()
 
-console.log(chalk.green("=> Updating changelog."))
-sh("yarn run auto changelog --very-verbose")
+  console.log(chalk.green("=> Validating your tools."))
+  sh("bundle --version")
+  sh("npm --version")
 
-console.log(chalk.green("=> Creating release bundle."))
-sh("npm run relay")
-sh("npm run bundle")
-sh("cd Example && bundle exec pod install")
-sh('git add . && git commit -m "[Pod] Update release artefacts. [skip ci]"', true)
+  console.log(chalk.green("=> Updating changelog."))
+  sh("yarn run auto changelog --very-verbose")
 
-console.log(chalk.green("=> Creating version bump commit and tag."))
-sh(`npm version $(npx auto version) --message '%s [skip ci]'`)
+  console.log(chalk.green("=> Creating release bundle."))
+  sh("npm run relay")
+  sh("npm run bundle")
+  sh("cd Example && bundle exec pod install")
+  sh('git add . && git commit -m "[Pod] Update release artefacts. [skip ci]"', true)
 
-sh("git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)")
-sh("git push --tags")
+  console.log(chalk.green("=> Creating version bump commit and tag."))
+  sh(`npm version $(npx auto version) --message '%s [skip ci]'`)
 
-sh("yarn run auto release --very-verbose")
+  sh("git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)")
+  sh("git push --tags")
 
-console.log(chalk.green("=> Pushing Podspec"))
-publishPodspec("Emission.podspec")
+  sh("yarn run auto release --very-verbose")
 
-console.log(chalk.green("=> Updating Metaphysics and eigen"))
-sh("npm run update-metaphysics-and-eigen")
+  console.log(chalk.green("=> Pushing Podspec"))
+  publishPodspec("Emission.podspec")
+
+  console.log(chalk.green("=> Updating Metaphysics and eigen"))
+  sh("npm run update-metaphysics-and-eigen")
+}
+
+main().catch(e => {
+  console.error(e)
+  process.exit(1)
+})
