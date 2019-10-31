@@ -1,3 +1,15 @@
+# v1.18.15 (Thu Oct 31 2019)
+
+#### 🐛  Bug Fix
+
+- [ME-77] Marks artworks as recently viewed [#1949](https://github.com/artsy/emission/pull/1949) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.18.14 (Thu Oct 31 2019)
 
 
