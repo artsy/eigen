@@ -55,7 +55,7 @@ async function getNumberOfPreviousActiveBuilds() {
     { headers: { Accept: "application/json" } }
   )
   if (res.status >= 400) {
-    throw new Error("Failed to fetch circle build data")
+    throw new Error("Failed to fetch circle build data. Make sure CIRCLE_TOKEN is a project token with `scope: all`. See https://circleci.com/docs/2.0/managing-api-tokens/#creating-a-project-api-token")
   }
   const data = await res.json()
   const activeBuilds = data
