@@ -19,7 +19,7 @@ async function awaitPreviousBuilds({ pollInterval = 5000, logInterval = 30000 } 
 
   if (!CIRCLE_TOKEN) {
     throw new Error(
-      "Please add CIRCLE_TOKEN in env. Must have read access for the project. See https://circleci.com/docs/api/#authentication (make sure it's scope: all)"
+      "Please add CIRCLE_TOKEN in env. This should be a project token with `scope: all`. See https://circleci.com/docs/2.0/managing-api-tokens/#creating-a-project-api-token"
     )
   }
 
