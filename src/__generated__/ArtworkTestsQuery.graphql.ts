@@ -796,6 +796,114 @@ v27 = {
   "name": "saleMessage",
   "args": null,
   "storageKey": null
+},
+v28 = {
+  "type": "Artwork",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v29 = {
+  "type": "ID",
+  "enumValues": null,
+  "plural": false,
+  "nullable": false
+},
+v30 = {
+  "type": "String",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v31 = {
+  "type": "Partner",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v32 = {
+  "type": "Sale",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v33 = {
+  "type": "ArtworkInfoRow",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v34 = {
+  "type": "Boolean",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v35 = {
+  "type": "ID",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v36 = {
+  "type": "ArtistBlurb",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v37 = {
+  "type": "String",
+  "enumValues": null,
+  "plural": false,
+  "nullable": false
+},
+v38 = {
+  "type": "Artist",
+  "enumValues": null,
+  "plural": true,
+  "nullable": true
+},
+v39 = {
+  "type": "Image",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v40 = {
+  "type": "Float",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v41 = {
+  "type": "SaleArtwork",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v42 = {
+  "type": "dimensions",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v43 = {
+  "type": "Int",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v44 = {
+  "type": "SaleArtworkCurrentBid",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v45 = {
+  "type": "BidderPosition",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
 };
 return {
   "kind": "Request",
@@ -1877,9 +1985,319 @@ return {
     "name": "ArtworkTestsQuery",
     "id": "4cc44fb5ad0b4e92d5e585464c34d68b",
     "text": null,
-    "metadata": {}
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "artwork": (v28/*: any*/),
+        "artwork.id": (v29/*: any*/),
+        "artwork.additional_information": (v30/*: any*/),
+        "artwork.description": (v30/*: any*/),
+        "artwork.provenance": (v30/*: any*/),
+        "artwork.exhibition_history": (v30/*: any*/),
+        "artwork.literature": (v30/*: any*/),
+        "artwork.partner": (v31/*: any*/),
+        "artwork.artist": {
+          "type": "Artist",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.sale": (v32/*: any*/),
+        "artwork.category": (v30/*: any*/),
+        "artwork.conditionDescription": (v33/*: any*/),
+        "artwork.signature": (v30/*: any*/),
+        "artwork.signatureInfo": (v33/*: any*/),
+        "artwork.certificateOfAuthenticity": (v33/*: any*/),
+        "artwork.framed": (v33/*: any*/),
+        "artwork.series": (v30/*: any*/),
+        "artwork.publisher": (v30/*: any*/),
+        "artwork.manufacturer": (v30/*: any*/),
+        "artwork.image_rights": (v30/*: any*/),
+        "artwork.context": {
+          "type": "ArtworkContext",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.contextGrids": {
+          "type": "ArtworkContextGrid",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
+        "artwork.slug": (v29/*: any*/),
+        "artwork.internalID": (v29/*: any*/),
+        "artwork.is_acquireable": (v34/*: any*/),
+        "artwork.is_offerable": (v34/*: any*/),
+        "artwork.is_biddable": (v34/*: any*/),
+        "artwork.is_inquireable": (v34/*: any*/),
+        "artwork.availability": (v30/*: any*/),
+        "artwork.partner.type": (v30/*: any*/),
+        "artwork.partner.id": (v35/*: any*/),
+        "artwork.artist.biography_blurb": (v36/*: any*/),
+        "artwork.artist.id": (v35/*: any*/),
+        "artwork.sale.id": (v35/*: any*/),
+        "artwork.sale.isBenefit": (v34/*: any*/),
+        "artwork.sale.isGalleryAuction": (v34/*: any*/),
+        "artwork.conditionDescription.details": (v30/*: any*/),
+        "artwork.signatureInfo.details": (v30/*: any*/),
+        "artwork.certificateOfAuthenticity.details": (v30/*: any*/),
+        "artwork.framed.details": (v30/*: any*/),
+        "artwork.context.__typename": (v37/*: any*/),
+        "artwork.contextGrids.artworks": {
+          "type": "ArtworkConnection",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.isInAuction": (v34/*: any*/),
+        "artwork.artists": (v38/*: any*/),
+        "artwork.images": {
+          "type": "Image",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
+        "artwork.isAcquireable": (v34/*: any*/),
+        "artwork.isOfferable": (v34/*: any*/),
+        "artwork.isInquireable": (v34/*: any*/),
+        "artwork.saleMessage": (v30/*: any*/),
+        "artwork.isForSale": (v34/*: any*/),
+        "artwork.editionSets": {
+          "type": "EditionSet",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
+        "artwork.artist.biography_blurb.text": (v30/*: any*/),
+        "artwork.context.isAuction": (v34/*: any*/),
+        "artwork.context.id": (v35/*: any*/),
+        "artwork.contextGrids.artworks.edges": {
+          "type": "ArtworkEdge",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
+        "artwork.partner.is_default_profile_public": (v34/*: any*/),
+        "artwork.partner.name": (v30/*: any*/),
+        "artwork.partner.slug": (v29/*: any*/),
+        "artwork.partner.href": (v30/*: any*/),
+        "artwork.partner.initials": (v30/*: any*/),
+        "artwork.partner.profile": {
+          "type": "Profile",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.partner.locations": {
+          "type": "Location",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
+        "artwork.contextGrids.__typename": (v37/*: any*/),
+        "artwork.contextGrids.title": (v30/*: any*/),
+        "artwork.contextGrids.ctaTitle": (v30/*: any*/),
+        "artwork.contextGrids.ctaHref": (v30/*: any*/),
+        "artwork.artists.id": (v29/*: any*/),
+        "artwork.artists.biography_blurb": (v36/*: any*/),
+        "artwork.conditionDescription.label": (v30/*: any*/),
+        "artwork.signatureInfo.label": (v30/*: any*/),
+        "artwork.certificateOfAuthenticity.label": (v30/*: any*/),
+        "artwork.framed.label": (v30/*: any*/),
+        "artwork.title": (v30/*: any*/),
+        "artwork.href": (v30/*: any*/),
+        "artwork.is_saved": (v34/*: any*/),
+        "artwork.is_hangable": (v34/*: any*/),
+        "artwork.image": (v39/*: any*/),
+        "artwork.widthCm": (v40/*: any*/),
+        "artwork.heightCm": (v40/*: any*/),
+        "artwork.medium": (v30/*: any*/),
+        "artwork.date": (v30/*: any*/),
+        "artwork.cultural_maker": (v30/*: any*/),
+        "artwork.saleArtwork": (v41/*: any*/),
+        "artwork.dimensions": (v42/*: any*/),
+        "artwork.edition_of": (v30/*: any*/),
+        "artwork.attribution_class": {
+          "type": "AttributionClass",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.artists.isConsignable": (v34/*: any*/),
+        "artwork.editionSets.id": (v29/*: any*/),
+        "artwork.sale.isClosed": (v34/*: any*/),
+        "artwork.sale.isAuction": (v34/*: any*/),
+        "artwork.sale.isLiveOpen": (v34/*: any*/),
+        "artwork.sale.isPreview": (v34/*: any*/),
+        "artwork.sale.liveStartAt": (v30/*: any*/),
+        "artwork.sale.endAt": (v30/*: any*/),
+        "artwork.sale.startAt": (v30/*: any*/),
+        "artwork.isBuyNowable": (v34/*: any*/),
+        "artwork.shippingOrigin": (v30/*: any*/),
+        "artwork.shippingInfo": (v30/*: any*/),
+        "artwork.priceIncludesTaxDisplay": (v30/*: any*/),
+        "artwork.myLotStanding": {
+          "type": "LotStanding",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
+        "artwork.contextGrids.artworks.edges.node": (v28/*: any*/),
+        "artwork.partner.profile.id": (v29/*: any*/),
+        "artwork.partner.profile.internalID": (v29/*: any*/),
+        "artwork.partner.profile.is_followed": (v34/*: any*/),
+        "artwork.partner.profile.icon": (v39/*: any*/),
+        "artwork.partner.locations.city": (v30/*: any*/),
+        "artwork.partner.locations.id": (v35/*: any*/),
+        "artwork.artists.biography_blurb.text": (v30/*: any*/),
+        "artwork.artists.internalID": (v29/*: any*/),
+        "artwork.artists.slug": (v29/*: any*/),
+        "artwork.artists.name": (v30/*: any*/),
+        "artwork.artists.initials": (v30/*: any*/),
+        "artwork.artists.href": (v30/*: any*/),
+        "artwork.artists.is_followed": (v34/*: any*/),
+        "artwork.artists.nationality": (v30/*: any*/),
+        "artwork.artists.birthday": (v30/*: any*/),
+        "artwork.artists.deathday": (v30/*: any*/),
+        "artwork.artists.image": (v39/*: any*/),
+        "artwork.context.name": (v30/*: any*/),
+        "artwork.context.isLiveOpen": (v34/*: any*/),
+        "artwork.context.href": (v30/*: any*/),
+        "artwork.context.formattedStartDateTime": (v30/*: any*/),
+        "artwork.context.coverImage": (v39/*: any*/),
+        "artwork.context.exhibitionPeriod": (v30/*: any*/),
+        "artwork.context.image": (v39/*: any*/),
+        "artwork.context.internalID": (v29/*: any*/),
+        "artwork.context.slug": (v29/*: any*/),
+        "artwork.context.isFollowed": (v34/*: any*/),
+        "artwork.image.url": (v30/*: any*/),
+        "artwork.saleArtwork.lotLabel": (v30/*: any*/),
+        "artwork.saleArtwork.estimate": (v30/*: any*/),
+        "artwork.saleArtwork.id": (v35/*: any*/),
+        "artwork.dimensions.in": (v30/*: any*/),
+        "artwork.dimensions.cm": (v30/*: any*/),
+        "artwork.attribution_class.shortDescription": (v30/*: any*/),
+        "artwork.attribution_class.id": (v35/*: any*/),
+        "artwork.images.url": (v30/*: any*/),
+        "artwork.images.width": (v43/*: any*/),
+        "artwork.images.height": (v43/*: any*/),
+        "artwork.images.deepZoom": {
+          "type": "DeepZoom",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.editionSets.internalID": (v29/*: any*/),
+        "artwork.editionSets.saleMessage": (v30/*: any*/),
+        "artwork.editionSets.editionOf": (v30/*: any*/),
+        "artwork.editionSets.dimensions": (v42/*: any*/),
+        "artwork.artist.name": (v30/*: any*/),
+        "artwork.sale.internalID": (v29/*: any*/),
+        "artwork.sale.isWithBuyersPremium": (v34/*: any*/),
+        "artwork.saleArtwork.reserveMessage": (v30/*: any*/),
+        "artwork.saleArtwork.currentBid": (v44/*: any*/),
+        "artwork.saleArtwork.counts": {
+          "type": "SaleArtworkCounts",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.myLotStanding.activeBid": (v45/*: any*/),
+        "artwork.myLotStanding.mostRecentBid": (v45/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.id": (v29/*: any*/),
+        "artwork.partner.profile.icon.url": (v30/*: any*/),
+        "artwork.artists.image.url": (v30/*: any*/),
+        "artwork.context.coverImage.url": (v30/*: any*/),
+        "artwork.context.image.url": (v30/*: any*/),
+        "artwork.images.deepZoom.image": {
+          "type": "DeepZoomImage",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.sale.slug": (v29/*: any*/),
+        "artwork.sale.registrationStatus": {
+          "type": "Bidder",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.sale.isRegistrationClosed": (v34/*: any*/),
+        "artwork.saleArtwork.increments": {
+          "type": "BidIncrementsFormatted",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
+        "artwork.editionSets.dimensions.in": (v30/*: any*/),
+        "artwork.editionSets.dimensions.cm": (v30/*: any*/),
+        "artwork.saleArtwork.currentBid.display": (v30/*: any*/),
+        "artwork.saleArtwork.counts.bidderPositions": {
+          "type": "FormattedNumber",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.myLotStanding.activeBid.isWinning": (v34/*: any*/),
+        "artwork.myLotStanding.activeBid.id": (v35/*: any*/),
+        "artwork.myLotStanding.mostRecentBid.maxBid": {
+          "type": "BidderPositionMaxBid",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.myLotStanding.mostRecentBid.id": (v35/*: any*/),
+        "artwork.images.deepZoom.image.tileSize": (v43/*: any*/),
+        "artwork.images.deepZoom.image.url": (v30/*: any*/),
+        "artwork.images.deepZoom.image.format": (v30/*: any*/),
+        "artwork.images.deepZoom.image.size": {
+          "type": "DeepZoomImageSize",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "artwork.sale.registrationStatus.qualifiedForBidding": (v34/*: any*/),
+        "artwork.sale.registrationStatus.id": (v35/*: any*/),
+        "artwork.saleArtwork.increments.cents": (v40/*: any*/),
+        "artwork.myLotStanding.mostRecentBid.maxBid.display": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.image": (v39/*: any*/),
+        "artwork.images.deepZoom.image.size.width": (v43/*: any*/),
+        "artwork.images.deepZoom.image.size.height": (v43/*: any*/),
+        "artwork.myLotStanding.mostRecentBid.maxBid.cents": (v40/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.image.aspect_ratio": {
+          "type": "Float",
+          "enumValues": null,
+          "plural": false,
+          "nullable": false
+        },
+        "artwork.contextGrids.artworks.edges.node.title": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.date": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale_message": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.is_biddable": (v34/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.is_acquireable": (v34/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.is_offerable": (v34/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.slug": (v29/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale": (v32/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale_artwork": (v41/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.artists": (v38/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.partner": (v31/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.href": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale.is_auction": (v34/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale.is_closed": (v34/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale.display_timely_at": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale.id": (v35/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale_artwork.current_bid": (v44/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale_artwork.id": (v35/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.image.url": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.artists.name": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.artists.id": (v35/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.partner.name": (v30/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.partner.id": (v35/*: any*/),
+        "artwork.contextGrids.artworks.edges.node.sale_artwork.current_bid.display": (v30/*: any*/)
+      }
+    }
   }
 };
 })();
-(node as any).hash = '1657785c89d63aeb5bf10983f7cd1b75';
+(node as any).hash = '42f05c48bd7612199a2c94fa48e5ddef';
 export default node;

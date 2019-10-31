@@ -125,6 +125,7 @@
     "@types/react-test-renderer": "16.8.1",
     "@types/react-tracking": "7.0.1",
     "@types/relay-runtime": "6.0.7",
+    "@types/relay-test-utils": "^6.0.1",
     "@types/styled-components": "4.0.3",
     "@types/styled-system": "3.2.2",
     "@types/supercluster": "5.0.0",
