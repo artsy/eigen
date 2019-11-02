@@ -4,7 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type PriceSummaryQueryVariables = {
     saleArtworkId: string;
-    bidAmountCents: number;
+    bidAmountMinor: number;
 };
 export type PriceSummaryQueryResponse = {
     readonly node: {
@@ -23,12 +23,12 @@ export type PriceSummaryQuery = {
 /*
 query PriceSummaryQuery(
   $saleArtworkId: ID!
-  $bidAmountCents: Int!
+  $bidAmountMinor: Int!
 ) {
   node(id: $saleArtworkId) {
     __typename
     ... on SaleArtwork {
-      calculatedCost(bidAmountCents: $bidAmountCents) {
+      calculatedCost(bidAmountMinor: $bidAmountMinor) {
         ...PriceSummary_calculatedCost
       }
     }
@@ -56,7 +56,7 @@ var v0 = [
   },
   {
     "kind": "LocalArgument",
-    "name": "bidAmountCents",
+    "name": "bidAmountMinor",
     "type": "Int!",
     "defaultValue": null
   }
@@ -71,8 +71,8 @@ v1 = [
 v2 = [
   {
     "kind": "Variable",
-    "name": "bidAmountCents",
-    "variableName": "bidAmountCents"
+    "name": "bidAmountMinor",
+    "variableName": "bidAmountMinor"
   }
 ],
 v3 = [
@@ -175,7 +175,7 @@ return {
                     "name": "buyersPremium",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "BuyersPremiumAmount",
+                    "concreteType": "Money",
                     "plural": false,
                     "selections": (v3/*: any*/)
                   },
@@ -185,7 +185,7 @@ return {
                     "name": "subtotal",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "SubtotalAmount",
+                    "concreteType": "Money",
                     "plural": false,
                     "selections": (v3/*: any*/)
                   }
@@ -200,11 +200,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PriceSummaryQuery",
-    "id": "810fe4219c35f8c1198fcbd6bdbed29e",
+    "id": "7af9de55f980032273aebd3520659b05",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '6bd12ff3ff6cb31c9ff8cc68c244fe31';
+(node as any).hash = '3128ecf4576bceace268984d3b56f9c4';
 export default node;
