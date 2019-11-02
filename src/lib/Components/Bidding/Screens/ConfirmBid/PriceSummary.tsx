@@ -15,7 +15,7 @@ interface PriceSummaryViewProps {
 }
 
 const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
-  <Box mt={4} mx={4}>
+  <Box mx={4}>
     <Serif mb={1} size="4" weight="semibold" color="black100">
       Summary
     </Serif>

@@ -378,14 +378,25 @@ exports[`renders properly 1`] = `
           }
           width="100%"
         />
-        <ARSpinner
+        <View
+          mt={4}
           style={
-            Object {
-              "flex": 1,
-            }
+            Array [
+              Object {
+                "marginTop": 20,
+              },
+            ]
           }
-          testID="relay-loading"
-        />
+        >
+          <ARSpinner
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
+            testID="relay-loading"
+          />
+        </View>
         <View
           style={
             Object {

@@ -3,6 +3,7 @@
 #### 🐛  Bug Fix
 
 - [ME-77] Marks artworks as recently viewed [#1949](https://github.com/artsy/emission/pull/1949) ([@ashfurrow](https://github.com/ashfurrow))
+- [AUCT-692] Adds margin top to position the loader at a more appropriate location in `<PriceSummary>` [#1952](https://github.com/artsy/emission/pull/1952) ([@yuki24](https://github.com/yuki2))
 
 #### Authors: 1
 
