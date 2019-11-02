@@ -470,7 +470,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <Divider mb={2} />
               )}
 
-              {enablePriceTransparency && <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />}
+              {enablePriceTransparency && (
+                <Box mt={4}>
+                  <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
+                </Box>
+              )}
 
               <Modal
                 visible={this.state.errorModalVisible}
