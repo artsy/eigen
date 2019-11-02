@@ -1,3 +1,15 @@
+# v1.18.16 (Fri Nov 01 2019)
+
+#### 🐛  Bug Fix
+
+- Repalce bidAmountMinor bidAmountCents [#1951](https://github.com/artsy/emission/pull/1951) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
 # v1.18.15 (Thu Oct 31 2019)
 
 #### 🐛  Bug Fix
