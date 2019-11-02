@@ -1,3 +1,15 @@
+# v1.18.17 (Sat Nov 02 2019)
+
+#### 🐛  Bug Fix
+
+- Adjust the loader position for <PriceSummary> [#1952](https://github.com/artsy/emission/pull/1952) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
 # v1.18.16 (Fri Nov 01 2019)
 
 #### 🐛  Bug Fix
