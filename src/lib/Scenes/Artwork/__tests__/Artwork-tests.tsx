@@ -150,60 +150,59 @@ describe("Artwork", () => {
   })
 
   describe("Live Auction States", () => {
-    it("has the correct state for a work that is in an auction that is currently live, for which I am registered", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+    describe("has the correct state for a work that is in an auction that is currently live", () => {
+      it("for which I am registered", () => {
+        const tree = ReactTestRenderer.create(<TestRenderer />)
 
-      environment.mock.resolveMostRecentOperation(operation => {
-        const result = MockPayloadGenerator.generate(operation, {
-          Artwork() {
-            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, RegisteredBidder)
-          },
+        environment.mock.resolveMostRecentOperation(operation => {
+          return MockPayloadGenerator.generate(operation, {
+            Artwork() {
+              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, RegisteredBidder)
+            },
+          })
         })
-        return result
+
+        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
+        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
       })
 
-      expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
-      expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-      expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-      expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
-    })
+      it("for which I am not registered and registration is open", () => {
+        const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    it("has the correct state for a work that is in an auction that is currently live, for which I am not registered and registration is open", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-
-      environment.mock.resolveMostRecentOperation(operation => {
-        const result = MockPayloadGenerator.generate(operation, {
-          Artwork() {
-            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
-          },
+        environment.mock.resolveMostRecentOperation(operation => {
+          return MockPayloadGenerator.generate(operation, {
+            Artwork() {
+              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
+            },
+          })
         })
-        return result
+
+        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
+        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Watch live bidding")
       })
 
-      expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
-      expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-      expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-      expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
-      expect(extractText(tree.root.findByType(BidButton))).toContain("Watch live bidding")
-    })
+      it("for which I am not registered and registration is closed", () => {
+        const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    it("has the correct state for a work that is in an auction that is currently live, for which I am not registered and registration is closed", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-
-      environment.mock.resolveMostRecentOperation(operation => {
-        const result = MockPayloadGenerator.generate(operation, {
-          Artwork() {
-            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
-          },
+        environment.mock.resolveMostRecentOperation(operation => {
+          return MockPayloadGenerator.generate(operation, {
+            Artwork() {
+              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
+            },
+          })
         })
-        return result
-      })
 
-      expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
-      expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-      expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-      expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
-      expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
+        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+      })
     })
   })
 })
