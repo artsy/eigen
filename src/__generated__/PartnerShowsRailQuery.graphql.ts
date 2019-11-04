@@ -2,25 +2,25 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PartnerShowsInfiniteScrollGridQueryVariables = {
+export type PartnerShowsRailQueryVariables = {
     id: string;
     cursor?: string | null;
     count: number;
 };
-export type PartnerShowsInfiniteScrollGridQueryResponse = {
+export type PartnerShowsRailQueryResponse = {
     readonly partner: {
         readonly " $fragmentRefs": FragmentRefs<"PartnerShows_partner">;
     } | null;
 };
-export type PartnerShowsInfiniteScrollGridQuery = {
-    readonly response: PartnerShowsInfiniteScrollGridQueryResponse;
-    readonly variables: PartnerShowsInfiniteScrollGridQueryVariables;
+export type PartnerShowsRailQuery = {
+    readonly response: PartnerShowsRailQueryResponse;
+    readonly variables: PartnerShowsRailQueryVariables;
 };
 
 
 
 /*
-query PartnerShowsInfiniteScrollGridQuery(
+query PartnerShowsRailQuery(
   $id: String!
   $cursor: String
   $count: Int!
@@ -273,7 +273,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "PartnerShowsInfiniteScrollGridQuery",
+    "name": "PartnerShowsRailQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -309,7 +309,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "PartnerShowsInfiniteScrollGridQuery",
+    "name": "PartnerShowsRailQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -494,12 +494,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "PartnerShowsInfiniteScrollGridQuery",
-    "id": "ff736afa43e047a3b31d54a14bb98d72",
+    "name": "PartnerShowsRailQuery",
+    "id": "c976d84702e6cf09fb5d695fc74f4431",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '5693725793e322d2ab9fa67980502e06';
+(node as any).hash = 'b275d7559458864d6602513d383c3ecb';
 export default node;

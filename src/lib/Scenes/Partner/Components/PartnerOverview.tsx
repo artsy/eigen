@@ -10,7 +10,6 @@ import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
-import { PartnerOverviewWebsite } from "./PartnerOverviewWebsite"
 
 const textLimit = truncatedTextLimit()
 const PAGE_SIZE = 10

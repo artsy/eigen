@@ -2,10 +2,9 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PartnerShows_partner = {
-    readonly slug: string;
+export type PartnerShowsRail_partner = {
     readonly internalID: string;
-    readonly pastShows: {
+    readonly currentAndUpcomingShows: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
@@ -14,19 +13,22 @@ export type PartnerShows_partner = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly name: string | null;
+                readonly internalID: string;
                 readonly slug: string;
+                readonly name: string | null;
                 readonly exhibitionPeriod: string | null;
-                readonly coverImage: {
+                readonly endAt: string | null;
+                readonly images: ReadonlyArray<{
                     readonly url: string | null;
-                    readonly aspectRatio: number;
+                } | null> | null;
+                readonly partner: {
+                    readonly name?: string | null;
                 } | null;
-                readonly href: string | null;
+                readonly " $fragmentRefs": FragmentRefs<"PartnerShowRailItem_show">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"PartnerShowsRail_partner">;
-    readonly " $refType": "PartnerShows_partner";
+    readonly " $refType": "PartnerShowsRail_partner";
 };
 
 
@@ -35,13 +37,20 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Fragment",
-  "name": "PartnerShows_partner",
+  "name": "PartnerShowsRail_partner",
   "type": "Partner",
   "metadata": {
     "connection": [
@@ -50,7 +59,7 @@ return {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "pastShows"
+          "currentAndUpcomingShows"
         ]
       }
     ]
@@ -72,27 +81,20 @@ return {
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
-      "alias": "pastShows",
-      "name": "__Partner_pastShows_connection",
-      "storageKey": "__Partner_pastShows_connection(sort:\"END_AT_DESC\",status:\"CLOSED\")",
+      "alias": "currentAndUpcomingShows",
+      "name": "__Partner_currentAndUpcomingShows_connection",
+      "storageKey": "__Partner_currentAndUpcomingShows_connection(sort:\"END_AT_ASC\",status:\"CURRENT\")",
       "args": [
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "END_AT_DESC"
+          "value": "END_AT_ASC"
         },
         {
           "kind": "Literal",
           "name": "status",
-          "value": "CLOSED"
+          "value": "CURRENT"
         }
       ],
       "concreteType": "ShowConnection",
@@ -155,14 +157,15 @@ return {
                   "args": null,
                   "storageKey": null
                 },
+                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "name",
+                  "name": "slug",
                   "args": null,
                   "storageKey": null
                 },
-                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -171,13 +174,20 @@ return {
                   "storageKey": null
                 },
                 {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "endAt",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "coverImage",
+                  "name": "images",
                   "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
-                  "plural": false,
+                  "plural": true,
                   "selections": [
                     {
                       "kind": "ScalarField",
@@ -185,22 +195,26 @@ return {
                       "name": "url",
                       "args": null,
                       "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspectRatio",
-                      "args": null,
-                      "storageKey": null
                     }
                   ]
                 },
                 {
-                  "kind": "ScalarField",
+                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "href",
+                  "name": "partner",
+                  "storageKey": null,
                   "args": null,
-                  "storageKey": null
+                  "concreteType": null,
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "InlineFragment",
+                      "type": "Partner",
+                      "selections": [
+                        (v1/*: any*/)
+                      ]
+                    }
+                  ]
                 },
                 {
                   "kind": "ScalarField",
@@ -208,6 +222,11 @@ return {
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "PartnerShowRailItem_show",
+                  "args": null
                 }
               ]
             },
@@ -221,14 +240,9 @@ return {
           ]
         }
       ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "PartnerShowsRail_partner",
-      "args": null
     }
   ]
 };
 })();
-(node as any).hash = '916ec13b1668f03a6d124e5739f130f0';
+(node as any).hash = '73826a2107efa5621889affe2d0eaed1';
 export default node;
