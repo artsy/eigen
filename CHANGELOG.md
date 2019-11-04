@@ -1,3 +1,15 @@
+# v1.18.18 (Mon Nov 04 2019)
+
+#### 🐛  Bug Fix
+
+- Update dep @artsy/palette from 5.1.4 to v5.1.5 [#1953](https://github.com/artsy/emission/pull/1953) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.18.17 (Sat Nov 02 2019)
 
 #### 🐛  Bug Fix
