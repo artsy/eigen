@@ -1710,6 +1710,11 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.91.tgz#794611b28056d16b5436059c6d800b39d573cd3a"
   integrity sha512-k+nc3moSlAaXacyvz4/c6D9lnUeI6AKsLvkXFuNzUEEqMw7sjDnLW2GqlJ4nyFgMX/p+QzvVG6zRoDo4lJIV5g==
 
+"@types/luxon@^1.15.2":
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-1.15.2.tgz#528f11f7d6dc08cec0445d4bea8065a5bb6989b2"
+  integrity sha512-zHPoyVrLvNaiMRYdhmh88Rn489ZgAgbc6iLxR5Yi0VCNfeNYHcszbhJV2vDHLNrVGy35BPtWBRn4OP2F9BBvFw==
+
 "@types/moment-timezone@0.5.4":
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/@types/moment-timezone/-/moment-timezone-0.5.4.tgz#b600e033f871f3074c283e2bd26fe4f4ec3949d4"
@@ -1750,6 +1755,14 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
+"@types/react-relay@*":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-7.0.0.tgz#8cf289096732bbdbd4be1a55dd2ba8b819bc8e99"
+  integrity sha512-AixNjK8SR+8SZPOTS5XNfhXYjEPrCNI+2sIH1n7NRDdOtk/t8HlzWWByy8a5lFT4D81lTjgmP0WjwQCo9uWTPw==
+  dependencies:
+    "@types/react" "*"
+    "@types/relay-runtime" "*"
+
 "@types/react-relay@6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-6.0.1.tgz#f9fbe5493f86cffe0ce1cc491b3898bd1cd40cdd"
@@ -1784,6 +1797,15 @@
   version "6.0.7"
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-6.0.7.tgz#2c63bca39c47a4919a7e1530814b64a68c868895"
   integrity sha512-WNJEWhJI/H1cYy8n3tvyeIVbiDFmnBiQn7c4hptWfYA/zUsERxiwTYv+H+zzRIvWTt1tWLRWeVvGcXtfZy9y7Q==
+
+"@types/relay-test-utils@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-6.0.1.tgz#3a06fe64c298aa79a01b36572b6385316c020989"
+  integrity sha512-8Wp1t9xk1l0vCQEmx7pHQ4fVL1gsEJU7r8E5n8au2JOhuUxeHkEQXPNSie9OT7RmDmDaKmh5hbzRNzu3aSihKg==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-relay" "*"
+    "@types/relay-runtime" "*"
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"

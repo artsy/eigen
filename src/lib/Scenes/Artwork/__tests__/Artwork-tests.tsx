@@ -1,5 +1,4 @@
-import { Button, Sans } from "@artsy/palette"
-import { mount } from "enzyme"
+import { ArtworkTestsQuery } from "__generated__/ArtworkTestsQuery.graphql"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -10,154 +9,210 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { merge } from "lodash"
 import React from "react"
-import relay from "react-relay"
-import { RelayRefetchProp } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { Artwork } from "../Artwork"
-import { ArtworkHeader } from "../Components/ArtworkHeader"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { ArtworkContainer } from "../Artwork"
 import { BidButton } from "../Components/CommercialButtons/BidButton"
 import { CommercialPartnerInformation } from "../Components/CommercialPartnerInformation"
 import { ContextCard } from "../Components/ContextCard"
 
 const trackEvent = jest.fn()
 
+jest.unmock("react-relay")
+
 describe("Artwork", () => {
+  let environment: ReturnType<typeof createMockEnvironment>
+  const TestRenderer = ({ isVisible = true }) => (
+    <QueryRenderer<ArtworkTestsQuery>
+      environment={environment}
+      query={graphql`
+        query ArtworkTestsQuery @relay_test_operation {
+          artwork(id: "doesn't matter") {
+            ...Artwork_artwork
+          }
+        }
+      `}
+      variables={{ hello: true }}
+      render={({ props, error }) => {
+        if (props) {
+          return <ArtworkContainer artwork={props.artwork} isVisible={isVisible} />
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
+
   beforeEach(() => {
+    environment = createMockEnvironment()
     ;(useTracking as jest.Mock).mockImplementation(() => {
       return {
         trackEvent,
       }
     })
   })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
+
   it("renders a snapshot", () => {
-    const component = mount(
-      <Artwork isVisible artwork={ArtworkFixture as any} relay={{ environment: {} } as RelayRefetchProp} />
-    )
-    expect(component.find(ArtworkHeader).length).toEqual(1)
+    const renderer = ReactTestRenderer.create(<TestRenderer />)
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation)
+    })
+    expect(renderer.toJSON()).toMatchSnapshot()
   })
 
   it("marks the artwork as viewed", () => {
-    const commitMutationMock = jest.fn()
-    relay.commitMutation = commitMutationMock
-    mount(<Artwork isVisible artwork={ArtworkFixture as any} relay={{ environment: {} } as RelayRefetchProp} />)
-    expect(commitMutationMock).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        variables: { input: { artwork_id: ArtworkFixture.slug } },
+    ReactTestRenderer.create(<TestRenderer />)
+    const slug = "test artwork id"
+
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation, {
+        Artwork() {
+          return { slug }
+        },
       })
-    )
+    })
+
+    expect(environment.mock.getMostRecentOperation()).toMatchObject({
+      request: {
+        variables: {
+          input: {
+            artwork_id: slug,
+          },
+        },
+      },
+    })
   })
 
   it("refetches on re-appear", () => {
-    const refetchMock = jest.fn()
-    const component = mount(
-      <Artwork
-        artwork={ArtworkFixture as any}
-        relay={({ environment: {}, refetch: refetchMock } as unknown) as RelayRefetchProp}
-        isVisible
-      />
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+
+    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtworkTestsQuery")
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation)
+    })
+
+    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "ArtworkMarkAsRecentlyViewedQuery"
     )
-    component.setProps({ isVisible: false })
-    component.setProps({ isVisible: true })
-    expect(refetchMock).toHaveBeenCalled()
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation)
+    })
+
+    expect(environment.mock.getAllOperations()).toHaveLength(0)
+
+    tree.update(<TestRenderer isVisible={false} />)
+    tree.update(<TestRenderer isVisible={true} />)
+
+    expect(environment.mock.getAllOperations()).toHaveLength(2)
+
+    expect(environment.mock.getAllOperations().map(op => op.request.node.operation.name)).toEqual([
+      "ArtworkRefetchQuery",
+      "ArtworkMarkAsRecentlyViewedQuery",
+    ])
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", () => {
-    const nonAuctionSaleArtwork = {
-      ...ArtworkFixture,
-      context: {
-        __typename: "Sale",
-        isAuction: false,
-      },
-    }
+    const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    const component = mount(
-      <Artwork artwork={nonAuctionSaleArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
-    )
-    expect(component.find(ContextCard).length).toEqual(0)
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation, {
+        Sale() {
+          return {
+            isAuction: false,
+          }
+        },
+      })
+    })
+
+    expect(tree.root.findAllByType(ContextCard)).toHaveLength(0)
   })
 
   it("does show a contextCard if the work is in an auction", () => {
-    const auctionSaleArtwork = { ...ArtworkFixture, context: { __typename: "Sale", isAuction: true } }
+    const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    const component = mount(
-      <Artwork artwork={auctionSaleArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
-    )
-    expect(component.find(ContextCard).length).toEqual(1)
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation, {
+        Sale() {
+          return {
+            isAuction: true,
+          }
+        },
+      })
+    })
+
+    expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {
-    it("has the correct state for a work that is in an auction that is currently live, for which I am registered", () => {
-      const liveAuctionArtwork = merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, RegisteredBidder)
-      const component = mount(
-        <Artwork artwork={liveAuctionArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
-      )
-      expect(component.find(CommercialPartnerInformation).length).toEqual(0)
-      expect(component.find(Countdown).length).toEqual(1)
-      expect(
-        component
-          .find(Countdown)
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("In progress")
-      expect(component.find(BidButton).text()).toContain("Enter live bidding")
-    })
+    describe("has the correct state for a work that is in an auction that is currently live", () => {
+      it("for which I am registered", () => {
+        const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    it("has the correct state for a work that is in an auction that is currently live, for which I am not registered and registration is open", () => {
-      const liveAuctionArtwork = merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
-      const component = mount(
-        <Artwork artwork={liveAuctionArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
-      )
-      expect(component.find(CommercialPartnerInformation).length).toEqual(0)
-      expect(component.find(Countdown).length).toEqual(1)
-      expect(
-        component
-          .find(Countdown)
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("In progress")
-      expect(
-        component
-          .find(BidButton)
-          .find(Button)
-          .text()
-      ).toContain("Watch live bidding")
-      expect(
-        component
-          .find(BidButton)
-          .find(Sans)
-          .at(0)
-          .text()
-      ).toContain("Registration closed")
-    })
+        environment.mock.resolveMostRecentOperation(operation => {
+          return MockPayloadGenerator.generate(operation, {
+            Artwork() {
+              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, RegisteredBidder)
+            },
+          })
+        })
 
-    it("has the correct state for a work that is in an auction that is currently live, for which I am not registered and registration is closed", () => {
-      const liveAuctionArtwork = merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
-      const component = mount(
-        <Artwork artwork={liveAuctionArtwork as any} relay={{ environment: {} } as RelayRefetchProp} isVisible />
-      )
-      expect(component.find(CommercialPartnerInformation).length).toEqual(0)
-      expect(component.find(Countdown).length).toEqual(1)
-      expect(
-        component
-          .find(Countdown)
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("In progress")
-      expect(
-        component
-          .find(Countdown)
-          .find(Sans)
-          .at(0)
-          .text()
-      ).toContain("00d  00h  00m  00s")
-      expect(component.find(BidButton).text()).toContain("Enter live bidding")
+        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
+        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+      })
+
+      it("for which I am not registered and registration is open", () => {
+        const tree = ReactTestRenderer.create(<TestRenderer />)
+
+        environment.mock.resolveMostRecentOperation(operation => {
+          return MockPayloadGenerator.generate(operation, {
+            Artwork() {
+              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
+            },
+          })
+        })
+
+        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
+        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Watch live bidding")
+      })
+
+      it("for which I am not registered and registration is closed", () => {
+        const tree = ReactTestRenderer.create(<TestRenderer />)
+
+        environment.mock.resolveMostRecentOperation(operation => {
+          return MockPayloadGenerator.generate(operation, {
+            Artwork() {
+              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
+            },
+          })
+        })
+
+        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
+        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
+        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+      })
     })
   })
 })
+
+const extractText = root => {
+  let result = ""
+  root.findAll(el => {
+    if (el.type === "Text") {
+      result += el.children[0]
+    }
+  })
+  return result
+}
