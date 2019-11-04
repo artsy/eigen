@@ -92,13 +92,11 @@ describe("Artwork", () => {
   it("refetches on re-appear", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    // resolve initial query
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtworkTestsQuery")
     environment.mock.resolveMostRecentOperation(operation => {
       return MockPayloadGenerator.generate(operation)
     })
 
-    // resolve 'viewed artwork' mutation
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "ArtworkMarkAsRecentlyViewedQuery"
     )
