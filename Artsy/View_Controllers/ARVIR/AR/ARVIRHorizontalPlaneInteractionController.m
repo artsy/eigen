@@ -300,7 +300,20 @@ NSInteger attempt = 0;
             SCNNode *pointNode = [SCNNode nodeWithGeometry:pointSphere];
             pointNode.position = vector;
 
-            [self.pointCloudNode addChildNode:pointNode];
+            // Grab the 4th column of the transform, which indicates its scale factor
+            // This is required to compute the distance (in centimetres) from the camera. See: https://stackoverflow.com/questions/50937214/arkit-getting-distance-from-camera-to-anchor
+            simd_float4 cameraTransform = frame.camera.transform.columns[3];
+            simd_float4 anchorTransform = pointNode.simdTransform.columns[3];
+            float distance = simd_length(cameraTransform - anchorTransform);
+
+            // In iOS 13, the rawFeaturePoints point cloud includes some points that are really close to the camera.
+            // Not sure why that is. The docs say rawFeaturePoints is useful for debugging, but doesn't indicate to
+            // not sure it to users.
+            // Points that are too close look bad and obscure the larger point cloud, which we use as a pseudo-indicator
+            // for world-mapping status. So we'll ignore any that are <20cm from the camera (value picked after experimenting a bit).
+            if (distance > 0.2) {
+                [self.pointCloudNode addChildNode:pointNode];
+            }
         }
     }
 }
