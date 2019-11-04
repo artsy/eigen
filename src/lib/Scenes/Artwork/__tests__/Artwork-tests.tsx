@@ -111,8 +111,10 @@ describe("Artwork", () => {
 
     expect(environment.mock.getAllOperations()).toHaveLength(2)
 
-    expect(environment.mock.getAllOperations()[0].request.node.operation.name).toBe("ArtworkRefetchQuery")
-    expect(environment.mock.getAllOperations()[1].request.node.operation.name).toBe("ArtworkMarkAsRecentlyViewedQuery")
+    expect(environment.mock.getAllOperations().map(op => op.request.node.operation.name)).toEqual([
+      "ArtworkRefetchQuery",
+      "ArtworkMarkAsRecentlyViewedQuery",
+    ])
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", () => {
