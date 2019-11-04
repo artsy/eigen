@@ -1710,7 +1710,7 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.91.tgz#794611b28056d16b5436059c6d800b39d573cd3a"
   integrity sha512-k+nc3moSlAaXacyvz4/c6D9lnUeI6AKsLvkXFuNzUEEqMw7sjDnLW2GqlJ4nyFgMX/p+QzvVG6zRoDo4lJIV5g==
 
-"@types/luxon@^1.15.2":
+"@types/luxon@1.15.2":
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-1.15.2.tgz#528f11f7d6dc08cec0445d4bea8065a5bb6989b2"
   integrity sha512-zHPoyVrLvNaiMRYdhmh88Rn489ZgAgbc6iLxR5Yi0VCNfeNYHcszbhJV2vDHLNrVGy35BPtWBRn4OP2F9BBvFw==
@@ -1798,7 +1798,7 @@
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-6.0.7.tgz#2c63bca39c47a4919a7e1530814b64a68c868895"
   integrity sha512-WNJEWhJI/H1cYy8n3tvyeIVbiDFmnBiQn7c4hptWfYA/zUsERxiwTYv+H+zzRIvWTt1tWLRWeVvGcXtfZy9y7Q==
 
-"@types/relay-test-utils@^6.0.1":
+"@types/relay-test-utils@6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-6.0.1.tgz#3a06fe64c298aa79a01b36572b6385316c020989"
   integrity sha512-8Wp1t9xk1l0vCQEmx7pHQ4fVL1gsEJU7r8E5n8au2JOhuUxeHkEQXPNSie9OT7RmDmDaKmh5hbzRNzu3aSihKg==
