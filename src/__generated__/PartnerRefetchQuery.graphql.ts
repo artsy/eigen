@@ -67,7 +67,6 @@ fragment PartnerArtwork_partner on Partner {
 
 fragment PartnerOverview_partner on Partner {
   internalID
-  website
   name
   locations {
     city
@@ -158,6 +157,9 @@ fragment PartnerHeader_partner on Partner {
       follows
     }
     id
+  }
+  counts {
+    eligibleArtworks
   }
   ...PartnerFollowButton_partner
 }
@@ -731,13 +733,6 @@ return {
                 "key": "Partner_artworks",
                 "filters": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "website",
-                "args": null,
-                "storageKey": null
-              },
               (v9/*: any*/),
               {
                 "kind": "LinkedField",
@@ -996,6 +991,24 @@ return {
                   "status",
                   "sort"
                 ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PartnerCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "eligibleArtworks",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               }
             ]
           }
@@ -1006,7 +1019,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "c62dad5bf953e86ea1eca060d7f420ab",
+    "id": "28bcdd929742075af3ab9f55c927733d",
     "text": null,
     "metadata": {}
   }

@@ -5,6 +5,7 @@ import React, { useState } from "react"
 import { FlatList, ImageBackground, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
+import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerShowRailItemContainer as RailItem } from "./PartnerShowRailItem"
 
 const PAGE_SIZE = 6
@@ -56,6 +57,10 @@ export const PartnerShows: React.FC<{
 
   const currentAndUpcomingShows = partner.currentAndUpcomingShows && partner.currentAndUpcomingShows.edges
   const pastShows = partner.pastShows && partner.pastShows.edges
+
+  if (!pastShows && !currentAndUpcomingShows) {
+    return <PartnerEmptyState text="There are no shows from this gallery yet" />
+  }
 
   return (
     <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>

@@ -11,6 +11,7 @@ const PartnerHeader: React.FC<{
   scrollY: number
 }> = ({ partner }) => {
   const followsCount = get(partner, p => p.profile.counts.follows)
+  const eligibleArtworks = get(partner, p => p.counts.eligibleArtworks)
   return (
     <>
       <Box style={{ height: 50 }} />
@@ -19,14 +20,32 @@ const PartnerHeader: React.FC<{
           <Serif style={{ textAlign: "center" }} size="6">
             {partner.name}
           </Serif>
-          {followsCount && (
+          {(followsCount || eligibleArtworks) && (
             <>
               <Spacer mb={0.5} />
               <Text style={{ textAlign: "center" }}>
-                <Sans size="2" weight="medium">
-                  {followsCount.toLocaleString()}
-                </Sans>
-                <Sans size="2"> Followers</Sans>
+                {eligibleArtworks && (
+                  <>
+                    <Sans size="2" weight="medium">
+                      {eligibleArtworks.toLocaleString()}
+                    </Sans>
+                    <Sans size="2"> Works for sale</Sans>
+                  </>
+                )}
+                {followsCount &&
+                  eligibleArtworks && (
+                    <Sans size="2">
+                      {"  "}•{"  "}
+                    </Sans>
+                  )}
+                {followsCount && (
+                  <>
+                    <Sans size="2" weight="medium">
+                      {followsCount.toLocaleString()}
+                    </Sans>
+                    <Sans size="2"> Followers</Sans>
+                  </>
+                )}
               </Text>
             </>
           )}
@@ -46,6 +65,9 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
         counts {
           follows
         }
+      }
+      counts {
+        eligibleArtworks
       }
       ...PartnerFollowButton_partner
     }

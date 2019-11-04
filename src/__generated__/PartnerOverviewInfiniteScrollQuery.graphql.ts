@@ -33,7 +33,6 @@ query PartnerOverviewInfiniteScrollQuery(
 
 fragment PartnerOverview_partner_1G22uz on Partner {
   internalID
-  website
   name
   locations {
     city
@@ -211,13 +210,6 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "website",
-            "args": null,
-            "storageKey": null
-          },
           (v3/*: any*/),
           {
             "kind": "LinkedField",
@@ -427,7 +419,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "ddb242e14330393501460c5fbccfe078",
+    "id": "6bc54589c4292b9bbe4601960343af80",
     "text": null,
     "metadata": {}
   }

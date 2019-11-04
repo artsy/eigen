@@ -8,6 +8,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 import { PartnerOverviewWebsite } from "./PartnerOverviewWebsite"
 
@@ -51,6 +52,11 @@ export const PartnerOverview: React.FC<{
   }
 
   const aboutText = get(partner, p => p.profile.bio)
+
+  if (!aboutText && !artists && !partner.locations) {
+    return <PartnerEmptyState text="There is no information for this gallery yet" />
+  }
+
   return (
     <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>
       <Box px={2} py={3}>
@@ -65,7 +71,6 @@ export const PartnerOverview: React.FC<{
           </>
         )}
         <PartnerLocationSection partner={partner} />
-        {!!partner.website && <PartnerOverviewWebsite website={partner.website} />}
         {!!artists && (
           <>
             <Sans size="3t" weight="medium">
@@ -88,7 +93,6 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
       fragment PartnerOverview_partner on Partner
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         internalID
-        website
         name
         locations {
           city
