@@ -1258,14 +1258,14 @@ exports[`Artwork renders a snapshot 1`] = `
             Medium
           </Text>
           <Text
-            color="gray"
+            color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
             lineHeight="20px"
             style={
               Array [
                 Object {
-                  "color": "gray",
+                  "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
                   "lineHeight": 20,
@@ -1305,14 +1305,14 @@ exports[`Artwork renders a snapshot 1`] = `
             Condition
           </Text>
           <Text
-            color="gray"
+            color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
             lineHeight="20px"
             style={
               Array [
                 Object {
-                  "color": "gray",
+                  "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
                   "lineHeight": 20,
@@ -1352,14 +1352,14 @@ exports[`Artwork renders a snapshot 1`] = `
             Signature
           </Text>
           <Text
-            color="gray"
+            color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
             lineHeight="20px"
             style={
               Array [
                 Object {
-                  "color": "gray",
+                  "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
                   "lineHeight": 20,
@@ -1382,32 +1382,275 @@ exports[`Artwork renders a snapshot 1`] = `
             }
           />
           <Text
-            onPress={[Function]}
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
             style={
               Array [
                 Object {
-                  "textDecorationLine": "underline",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
                 },
+                Object {},
               ]
             }
           >
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
-              style={
-                Array [
-                  Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
-                  },
-                  Object {},
-                ]
-              }
-            >
-              Show more artwork details
-            </Text>
+            Certificate of Authenticity
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"details"&gt;
+          </Text>
+          <View
+            my={1}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 10,
+                  "marginTop": 10,
+                },
+              ]
+            }
+          />
+          <Text
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Frame
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"details"&gt;
+          </Text>
+          <View
+            my={1}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 10,
+                  "marginTop": 10,
+                },
+              ]
+            }
+          />
+          <Text
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Series
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"series"&gt;
+          </Text>
+          <View
+            my={1}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 10,
+                  "marginTop": 10,
+                },
+              ]
+            }
+          />
+          <Text
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Publisher
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"publisher"&gt;
+          </Text>
+          <View
+            my={1}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 10,
+                  "marginTop": 10,
+                },
+              ]
+            }
+          />
+          <Text
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Manufacturer
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"manufacturer"&gt;
+          </Text>
+          <View
+            my={1}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 10,
+                  "marginTop": 10,
+                },
+              ]
+            }
+          />
+          <Text
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            Image rights
+          </Text>
+          <Text
+            color="black60"
+            fontFamily="Unica77LL-Regular"
+            fontSize="14px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"image_rights"&gt;
           </Text>
         </View>
       </View>

@@ -1,32 +1,23 @@
 import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
+import { ReadMore } from "lib/Components/ReadMore"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { LinkText } from "../../../Components/Text/LinkText"
+import { truncatedTextLimit } from "../hardware"
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork
 }
 
-interface ArtworkDetailsState {
-  showAll: boolean
-}
-
 @track()
-export class ArtworkDetails extends React.Component<ArtworkDetailsProps, ArtworkDetailsState> {
-  state = { showAll: false }
-
+export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
   @track(() => ({
     action_name: Schema.ActionNames.ShowMoreArtworksDetails,
     action_type: Schema.ActionTypes.Tap,
     flow: Schema.Flow.ArtworkDetails,
     context_module: Schema.ContextModules.ArtworkDetails,
   }))
-  showAllArtworks() {
-    this.setState({ showAll: true })
-  }
-
   render() {
     const listItems = [
       { title: "Medium", value: this.props.artwork.category },
@@ -48,40 +39,27 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps, Artwork
 
     const displayItems = listItems.filter(i => i.value != null && i.value !== "")
 
-    let truncatedDisplayItems = displayItems
-
-    if (!this.state.showAll && displayItems.length > 3) {
-      truncatedDisplayItems = displayItems.slice(0, 3)
-    }
-
     return (
       <Box>
         <Join separator={<Spacer my={1} />}>
           <Sans size="3t" weight="medium">
             Artwork details
           </Sans>
-          {truncatedDisplayItems.map(({ title, value }, index) => (
+          {displayItems.map(({ title, value }, index) => (
             <React.Fragment key={index}>
               <Sans size="3t" weight="regular">
                 {title}
               </Sans>
-              <Sans size="3t" weight="regular" color="gray">
-                {value}
-              </Sans>
+              <ReadMore
+                content={value}
+                color="black60"
+                sans
+                maxChars={truncatedTextLimit()}
+                trackingFlow={Schema.Flow.ArtworkDetails}
+                contextModule={Schema.ContextModules.ArtworkDetails}
+              />
             </React.Fragment>
           ))}
-          {!this.state.showAll &&
-            (displayItems.length > 3 && (
-              <LinkText
-                onPress={() => {
-                  this.showAllArtworks()
-                }}
-              >
-                <Sans size="3t" weight="regular">
-                  Show more artwork details
-                </Sans>
-              </LinkText>
-            ))}
         </Join>
       </Box>
     )

@@ -36,7 +36,7 @@ return {
       "name": "buyersPremium",
       "storageKey": null,
       "args": null,
-      "concreteType": "BuyersPremiumAmount",
+      "concreteType": "Money",
       "plural": false,
       "selections": (v0/*: any*/)
     },
@@ -46,7 +46,7 @@ return {
       "name": "subtotal",
       "storageKey": null,
       "args": null,
-      "concreteType": "SubtotalAmount",
+      "concreteType": "Money",
       "plural": false,
       "selections": (v0/*: any*/)
     }

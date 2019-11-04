@@ -15,7 +15,7 @@ interface PriceSummaryViewProps {
 }
 
 const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
-  <Box mt={4} mx={4}>
+  <Box mx={4}>
     <Serif mb={1} size="4" weight="semibold" color="black100">
       Summary
     </Serif>
@@ -74,10 +74,10 @@ export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
   <QueryRenderer<PriceSummaryQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query PriceSummaryQuery($saleArtworkId: ID!, $bidAmountCents: Int!) {
+      query PriceSummaryQuery($saleArtworkId: ID!, $bidAmountMinor: Int!) {
         node(id: $saleArtworkId) {
           ... on SaleArtwork {
-            calculatedCost(bidAmountCents: $bidAmountCents) {
+            calculatedCost(bidAmountMinor: $bidAmountMinor) {
               ...PriceSummary_calculatedCost
             }
           }
@@ -86,7 +86,7 @@ export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
     `}
     variables={{
       saleArtworkId,
-      bidAmountCents: bid.cents,
+      bidAmountMinor: bid.cents,
     }}
     render={renderWithLoadProgress(({ node }) => (
       <PriceSummaryFragmentContainer bid={bid} {...node} />

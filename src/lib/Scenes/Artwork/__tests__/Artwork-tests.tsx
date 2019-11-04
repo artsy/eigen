@@ -66,9 +66,42 @@ describe("Artwork", () => {
     expect(renderer.toJSON()).toMatchSnapshot()
   })
 
+  it("marks the artwork as viewed", () => {
+    ReactTestRenderer.create(<TestRenderer />)
+    const slug = "test artwork id"
+
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation, {
+        Artwork() {
+          return { slug }
+        },
+      })
+    })
+
+    expect(environment.mock.getMostRecentOperation()).toMatchObject({
+      request: {
+        variables: {
+          input: {
+            artwork_id: slug,
+          },
+        },
+      },
+    })
+  })
+
   it("refetches on re-appear", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
 
+    // resolve initial query
+    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtworkTestsQuery")
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation)
+    })
+
+    // resolve 'viewed artwork' mutation
+    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "ArtworkMarkAsRecentlyViewedQuery"
+    )
     environment.mock.resolveMostRecentOperation(operation => {
       return MockPayloadGenerator.generate(operation)
     })
@@ -78,7 +111,10 @@ describe("Artwork", () => {
     tree.update(<TestRenderer isVisible={false} />)
     tree.update(<TestRenderer isVisible={true} />)
 
-    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtworkRefetchQuery")
+    expect(environment.mock.getAllOperations()).toHaveLength(2)
+
+    expect(environment.mock.getAllOperations()[0].request.node.operation.name).toBe("ArtworkRefetchQuery")
+    expect(environment.mock.getAllOperations()[1].request.node.operation.name).toBe("ArtworkMarkAsRecentlyViewedQuery")
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", () => {

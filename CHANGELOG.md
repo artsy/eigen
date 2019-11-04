@@ -1,3 +1,58 @@
+# v1.18.17 (Sat Nov 02 2019)
+
+#### 🐛  Bug Fix
+
+- Adjust the loader position for <PriceSummary> [#1952](https://github.com/artsy/emission/pull/1952) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
+# v1.18.16 (Fri Nov 01 2019)
+
+#### 🐛  Bug Fix
+
+- Repalce bidAmountMinor bidAmountCents [#1951](https://github.com/artsy/emission/pull/1951) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
+# v1.18.15 (Thu Oct 31 2019)
+
+#### 🐛  Bug Fix
+
+- [ME-77] Marks artworks as recently viewed [#1949](https://github.com/artsy/emission/pull/1949) ([@ashfurrow](https://github.com/ashfurrow))
+- [AUCT-692] Adds margin top to position the loader at a more appropriate location in `<PriceSummary>` [#1952](https://github.com/artsy/emission/pull/1952) ([@yuki24](https://github.com/yuki2))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
+# v1.18.14 (Thu Oct 31 2019)
+
+
+
+---
+
+# v1.18.13 (Thu Oct 31 2019)
+
+#### 🐛  Bug Fix
+
+- [PURCHASE-1545] All artwork details subfields have a ReadMore link [#1944](https://github.com/artsy/emission/pull/1944) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.18.12 (Thu Oct 31 2019)
 
 #### 🐛  Bug Fix

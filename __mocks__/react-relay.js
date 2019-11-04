@@ -9,6 +9,6 @@ module.exports = {
   createRefetchContainer: component => component,
   graphql: Relay.graphql,
   commitMutation: (environment, { onCompleted, onError }) => {
-    onCompleted()
+    onCompleted && onCompleted()
   },
 }
