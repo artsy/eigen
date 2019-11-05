@@ -12,6 +12,7 @@ upcoming:
     - Fixes close button position on modal nav bars
     - Fixes intermittent crash during Augmented Reality View-in-Room - ash
     - (ME-1) Fixes ARKit showing some random circles during setup on iOS 13 - ash
+    - (ME-83) Infrastructure for new search UI - ash
 
 releases:
   - version: 5.0.8
