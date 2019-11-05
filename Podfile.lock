@@ -105,28 +105,28 @@ PODS:
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
-  - Extraction (1.2.4):
-    - Extraction/ARAnimationContinuation (= 1.2.4)
-    - Extraction/ARLoadFailureView (= 1.2.4)
-    - Extraction/ARSpinner (= 1.2.4)
-    - Extraction/ARSwitchView (= 1.2.4)
-    - "Extraction/UILabel+Typography (= 1.2.4)"
-    - "Extraction/UIView+ARSpinner (= 1.2.4)"
-  - Extraction/ARAnimationContinuation (1.2.4)
-  - Extraction/ARLoadFailureView (1.2.4):
+  - Extraction (1.2.6):
+    - Extraction/ARAnimationContinuation (= 1.2.6)
+    - Extraction/ARLoadFailureView (= 1.2.6)
+    - Extraction/ARSpinner (= 1.2.6)
+    - Extraction/ARSwitchView (= 1.2.6)
+    - "Extraction/UILabel+Typography (= 1.2.6)"
+    - "Extraction/UIView+ARSpinner (= 1.2.6)"
+  - Extraction/ARAnimationContinuation (1.2.6)
+  - Extraction/ARLoadFailureView (1.2.6):
     - Artsy-UIButtons
     - "Extraction/UILabel+Typography"
     - ORStackView (< 3)
-  - Extraction/ARSpinner (1.2.4):
+  - Extraction/ARSpinner (1.2.6):
     - "Extraction/UIView+ARSpinner"
     - "UIView+BooleanAnimations"
-  - Extraction/ARSwitchView (1.2.4):
+  - Extraction/ARSwitchView (1.2.6):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 1.1.0)"
     - FLKAutoLayout
     - "UIView+BooleanAnimations"
-  - "Extraction/UILabel+Typography (1.2.4)"
-  - "Extraction/UIView+ARSpinner (1.2.4)":
+  - "Extraction/UILabel+Typography (1.2.6)"
+  - "Extraction/UIView+ARSpinner (1.2.6)":
     - Extraction/ARAnimationContinuation
   - FBSDKCoreKit (4.37.0):
     - Bolts (~> 1.7)
@@ -546,7 +546,7 @@ SPEC CHECKSUMS:
   Emission: 474232d24e70edcd4ca4837429d083dabec6f6d9
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
-  Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
+  Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
   FBSDKCoreKit: fe5f3474499a81963e11e3f3a5c753d0a95ca2b4
   FBSDKLoginKit: 2f7249686d1e30ce8a5ef5400eedf50b3e3df332
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
