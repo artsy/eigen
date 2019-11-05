@@ -9,6 +9,9 @@ export type PartnerHeader_partner = {
             readonly follows: number | null;
         } | null;
     } | null;
+    readonly counts: {
+        readonly eligibleArtworks: number | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"PartnerFollowButton_partner">;
     readonly " $refType": "PartnerHeader_partner";
 };
@@ -59,11 +62,29 @@ const node: ReaderFragment = {
       ]
     },
     {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "PartnerCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "eligibleArtworks",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "PartnerFollowButton_partner",
       "args": null
     }
   ]
 };
-(node as any).hash = '45725bc51d942b9c146740523a741fb1';
+(node as any).hash = '0d2e014272c15fcda2efb36ab9941791';
 export default node;

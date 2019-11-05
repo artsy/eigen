@@ -2,10 +2,11 @@ import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
-import { FlatList, ImageBackground, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { ImageBackground, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
-import { PartnerShowRailItemContainer as RailItem } from "./PartnerShowRailItem"
+import { PartnerEmptyState } from "./PartnerEmptyState"
+import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
 
 const PAGE_SIZE = 6
 
@@ -13,6 +14,7 @@ export const PartnerShows: React.FC<{
   partner: PartnerShows_partner
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
+  const [hasRecentShows, setHasRecentShows] = useState(false)
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
   const ShowGridItem = (node, itemIndex) => {
@@ -54,30 +56,15 @@ export const PartnerShows: React.FC<{
     })
   }
 
-  const currentAndUpcomingShows = partner.currentAndUpcomingShows && partner.currentAndUpcomingShows.edges
   const pastShows = partner.pastShows && partner.pastShows.edges
+  if (!pastShows && !hasRecentShows) {
+    return <PartnerEmptyState text="There are no shows from this gallery yet" />
+  }
 
   return (
     <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>
       <Box px={2} py={3}>
-        {!!currentAndUpcomingShows &&
-          !!currentAndUpcomingShows.length && (
-            <>
-              <Sans size="3t" weight="medium">
-                Current and upcoming shows
-              </Sans>
-              <FlatList
-                horizontal
-                data={currentAndUpcomingShows}
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={item => item.node.id}
-                renderItem={({ item }) => {
-                  return <RailItem show={item.node} />
-                }}
-              />
-              <Spacer mb={2} />
-            </>
-          )}
+        <PartnerShowsRail partner={partner} setHasRecentShows={setHasRecentShows} />
         {!!pastShows &&
           !!pastShows.length && (
             <>
@@ -107,28 +94,6 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
         slug
         internalID
-        currentAndUpcomingShows: showsConnection(status: CURRENT, sort: END_AT_ASC, first: 10) {
-          edges {
-            node {
-              id
-              internalID
-              slug
-              name
-              exhibitionPeriod
-              endAt
-              images {
-                url
-              }
-              partner {
-                ... on Partner {
-                  name
-                }
-              }
-
-              ...PartnerShowRailItem_show
-            }
-          }
-        }
         pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: $count, after: $cursor)
           @connection(key: "Partner_pastShows") {
           pageInfo {
@@ -151,6 +116,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
             }
           }
         }
+        ...PartnerShowsRail_partner
       }
     `,
   },

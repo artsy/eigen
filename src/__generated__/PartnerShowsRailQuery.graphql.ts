@@ -2,47 +2,38 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PartnerOverviewInfiniteScrollQueryVariables = {
+export type PartnerShowsRailQueryVariables = {
     id: string;
     cursor?: string | null;
     count: number;
 };
-export type PartnerOverviewInfiniteScrollQueryResponse = {
+export type PartnerShowsRailQueryResponse = {
     readonly partner: {
-        readonly " $fragmentRefs": FragmentRefs<"PartnerOverview_partner">;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerShowsRail_partner">;
     } | null;
 };
-export type PartnerOverviewInfiniteScrollQuery = {
-    readonly response: PartnerOverviewInfiniteScrollQueryResponse;
-    readonly variables: PartnerOverviewInfiniteScrollQueryVariables;
+export type PartnerShowsRailQuery = {
+    readonly response: PartnerShowsRailQueryResponse;
+    readonly variables: PartnerShowsRailQueryVariables;
 };
 
 
 
 /*
-query PartnerOverviewInfiniteScrollQuery(
+query PartnerShowsRailQuery(
   $id: String!
   $cursor: String
   $count: Int!
 ) {
   partner(id: $id) {
-    ...PartnerOverview_partner_1G22uz
+    ...PartnerShowsRail_partner_1G22uz
     id
   }
 }
 
-fragment PartnerOverview_partner_1G22uz on Partner {
+fragment PartnerShowsRail_partner_1G22uz on Partner {
   internalID
-  name
-  locations {
-    city
-    id
-  }
-  profile {
-    bio
-    id
-  }
-  artists: artistsConnection(representedBy: true, sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
+  currentAndUpcomingShows: showsConnection(status: CURRENT, sort: END_AT_ASC, first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       startCursor
@@ -51,37 +42,42 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     edges {
       node {
         id
-        ...ArtistListItem_artist
+        internalID
+        slug
+        name
+        exhibitionPeriod
+        endAt
+        images {
+          url
+        }
+        partner {
+          __typename
+          ... on Partner {
+            name
+          }
+          ... on Node {
+            id
+          }
+          ... on ExternalPartner {
+            id
+          }
+        }
+        ...PartnerShowRailItem_show
         __typename
       }
       cursor
-      id
     }
   }
-  ...PartnerLocationSection_partner
 }
 
-fragment ArtistListItem_artist on Artist {
-  id
+fragment PartnerShowRailItem_show on Show {
   internalID
   slug
   name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
+  exhibitionPeriod
+  endAt
+  images {
     url
-  }
-}
-
-fragment PartnerLocationSection_partner on Partner {
-  name
-  locations {
-    city
-    id
   }
 }
 */
@@ -121,21 +117,7 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v5 = [
+v3 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -148,20 +130,41 @@ v5 = [
   },
   {
     "kind": "Literal",
-    "name": "representedBy",
-    "value": true
+    "name": "sort",
+    "value": "END_AT_ASC"
   },
   {
     "kind": "Literal",
-    "name": "sort",
-    "value": "SORTABLE_ID_ASC"
+    "name": "status",
+    "value": "CURRENT"
   }
-];
+],
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__typename",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "PartnerOverviewInfiniteScrollQuery",
+    "name": "PartnerShowsRailQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -177,7 +180,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "PartnerOverview_partner",
+            "name": "PartnerShowsRail_partner",
             "args": [
               {
                 "kind": "Variable",
@@ -197,7 +200,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "PartnerOverviewInfiniteScrollQuery",
+    "name": "PartnerShowsRailQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -210,52 +213,13 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
-          (v3/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "locations",
+            "alias": "currentAndUpcomingShows",
+            "name": "showsConnection",
             "storageKey": null,
-            "args": null,
-            "concreteType": "Location",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "city",
-                "args": null,
-                "storageKey": null
-              },
-              (v4/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "profile",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "bio",
-                "args": null,
-                "storageKey": null
-              },
-              (v4/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": "artists",
-            "name": "artistsConnection",
-            "storageKey": null,
-            "args": (v5/*: any*/),
-            "concreteType": "ArtistPartnerConnection",
+            "args": (v3/*: any*/),
+            "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
               {
@@ -296,7 +260,7 @@ return {
                 "name": "edges",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "ArtistPartnerEdge",
+                "concreteType": "ShowEdge",
                 "plural": true,
                 "selections": [
                   {
@@ -305,7 +269,7 @@ return {
                     "name": "node",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "Artist",
+                    "concreteType": "Show",
                     "plural": false,
                     "selections": [
                       (v4/*: any*/),
@@ -317,57 +281,29 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "initials",
+                        "name": "exhibitionPeriod",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "href",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_followed",
-                        "name": "isFollowed",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "nationality",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "birthday",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "deathday",
+                        "name": "endAt",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "image",
+                        "name": "images",
                         "storageKey": null,
                         "args": null,
                         "concreteType": "Image",
-                        "plural": false,
+                        "plural": true,
                         "selections": [
                           {
                             "kind": "ScalarField",
@@ -379,12 +315,26 @@ return {
                         ]
                       },
                       {
-                        "kind": "ScalarField",
+                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "__typename",
+                        "name": "partner",
+                        "storageKey": null,
                         "args": null,
-                        "storageKey": null
-                      }
+                        "concreteType": null,
+                        "plural": false,
+                        "selections": [
+                          (v6/*: any*/),
+                          (v4/*: any*/),
+                          {
+                            "kind": "InlineFragment",
+                            "type": "Partner",
+                            "selections": [
+                              (v5/*: any*/)
+                            ]
+                          }
+                        ]
+                      },
+                      (v6/*: any*/)
                     ]
                   },
                   {
@@ -393,21 +343,20 @@ return {
                     "name": "cursor",
                     "args": null,
                     "storageKey": null
-                  },
-                  (v4/*: any*/)
+                  }
                 ]
               }
             ]
           },
           {
             "kind": "LinkedHandle",
-            "alias": "artists",
-            "name": "artistsConnection",
-            "args": (v5/*: any*/),
+            "alias": "currentAndUpcomingShows",
+            "name": "showsConnection",
+            "args": (v3/*: any*/),
             "handle": "connection",
-            "key": "Partner_artists",
+            "key": "Partner_currentAndUpcomingShows",
             "filters": [
-              "representedBy",
+              "status",
               "sort"
             ]
           },
@@ -418,12 +367,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "6bc54589c4292b9bbe4601960343af80",
+    "name": "PartnerShowsRailQuery",
+    "id": "4e60ca02970f8c4f761881ab7d9986d2",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd39e18b52536fe2f514f24133076a1ac';
+(node as any).hash = 'c5147b600df2db327e7c318ad30e3168';
 export default node;
