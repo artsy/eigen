@@ -44,6 +44,7 @@ import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { PartnerRenderer } from "./Scenes/Partner"
+import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
@@ -339,6 +340,18 @@ const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
   )
 }
 
+interface SearchWithTrackingProps {
+  safeAreaInsets: SafeAreaInsets
+}
+const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithTrackingProps>(() => {
+  return {
+    context_screen: Schema.PageNames.Search,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
+  }
+})(props => {
+  return <Search {...props} />
+})
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Artwork", () => Artwork)
@@ -363,6 +376,7 @@ AppRegistry.registerComponent("FairArtists", () => FairArtists)
 AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
 AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
 AppRegistry.registerComponent("FairBMWArtActivation", () => FairBMWArtActivation)
+AppRegistry.registerComponent("Search", () => SearchWithTracking)
 AppRegistry.registerComponent("Show", () => Show)
 AppRegistry.registerComponent("ShowArtists", () => ShowArtists)
 AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)
