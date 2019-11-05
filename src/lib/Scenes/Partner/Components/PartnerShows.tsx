@@ -14,6 +14,7 @@ export const PartnerShows: React.FC<{
   partner: PartnerShows_partner
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
+  const [hasRecentShows, setHasRecentShows] = useState(false)
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
   const ShowGridItem = (node, itemIndex) => {
@@ -56,16 +57,14 @@ export const PartnerShows: React.FC<{
   }
 
   const pastShows = partner.pastShows && partner.pastShows.edges
-
-  // FIXME: this needs to include upcoming + current shows too
-  if (!pastShows) {
+  if (!pastShows && !hasRecentShows) {
     return <PartnerEmptyState text="There are no shows from this gallery yet" />
   }
 
   return (
     <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>
       <Box px={2} py={3}>
-        <PartnerShowsRail partner={partner} />
+        <PartnerShowsRail partner={partner} setHasRecentShows={setHasRecentShows} />
         {!!pastShows &&
           !!pastShows.length && (
             <>
