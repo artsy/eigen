@@ -50,6 +50,7 @@ function loadStories() {
   require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story');
   require('../src/lib/Scenes/Home/__stories__/Home.story');
   require('../src/lib/Scenes/Map/__stories__/Map.story');
+  require('../src/lib/Scenes/Search/__stories__/Search.story');
   require('../src/lib/Scenes/Settings/__stories__/Settings.story');
   require('../src/lib/Scenes/Show/__stories__/Show.story');
   
@@ -101,6 +102,7 @@ const stories = [
   '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story',
   '../src/lib/Scenes/Home/__stories__/Home.story',
   '../src/lib/Scenes/Map/__stories__/Map.story',
+  '../src/lib/Scenes/Search/__stories__/Search.story',
   '../src/lib/Scenes/Settings/__stories__/Settings.story',
   '../src/lib/Scenes/Show/__stories__/Show.story',
   

@@ -24,6 +24,7 @@
 #import <Emission/ARCollectionComponentViewController.h>
 #import <Emission/ARComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
+#import <Emission/ARSearchComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
@@ -116,6 +117,7 @@
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"View Controllers"];
 
+  [sectionData addCellData:self.jumpToSearch];
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
@@ -239,6 +241,14 @@
     id viewController = [[InternalWebViewController alloc] initWithURL:url];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
+}
+
+- (ARCellData *)jumpToSearch
+{
+    return [self tappableCellDataWithTitle:@"Search" selection:^{
+        id viewController = [[ARSearchComponentViewController alloc] init];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }];
 }
 
 - (ARCellData *)jumpToArtwork
