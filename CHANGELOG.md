@@ -1,3 +1,15 @@
+# v1.18.22 (Tue Nov 05 2019)
+
+#### 🐛  Bug Fix
+
+- Adds EmptyState, Horizontal Pagination and Artwork Counts to Partner also adds isCloseToEdge util [#1956](https://github.com/artsy/emission/pull/1956) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.21 (Tue Nov 05 2019)
 
 #### 🐛  Bug Fix
