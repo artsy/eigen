@@ -113,7 +113,7 @@ export const PartnerShowsRailContainer = createPaginationContainer(
     query: graphql`
       query PartnerShowsRailQuery($id: String!, $cursor: String, $count: Int!) {
         partner(id: $id) {
-          ...PartnerShows_partner @arguments(count: $count, cursor: $cursor)
+          ...PartnerShowsRail_partner @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
