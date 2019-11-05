@@ -30,7 +30,7 @@ interface ArtworkActionsProps {
 export const shareContent = (title, href, artists: ArtworkActions_artwork["artists"]) => {
   let computedTitle: string | null
   if (artists && artists.length) {
-    const names = take(artists, 3).map(arist => arist.name)
+    const names = take(artists, 3).map(artist => artist.name)
     computedTitle = `${title} by ${names.join(", ")} on Artsy`
   } else if (title) {
     computedTitle = `${title} on Artsy`
