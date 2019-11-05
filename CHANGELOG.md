@@ -1,3 +1,17 @@
+# v1.18.21 (Tue Nov 05 2019)
+
+#### 🐛  Bug Fix
+
+- [ME-83] Adds empty View Controller for upcoming Search work [#1958](https://github.com/artsy/emission/pull/1958) ([@ashfurrow](https://github.com/ashfurrow))
+- Updates Extraction #trivial [#1957](https://github.com/artsy/emission/pull/1957) ([@ashfurrow](https://github.com/ashfurrow))
+- [ME-37] Fixes iOS Share Sheet invocation [#1950](https://github.com/artsy/emission/pull/1950) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.18.20 (Mon Nov 04 2019)
 
 #### 🐛  Bug Fix
