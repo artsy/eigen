@@ -13,6 +13,7 @@ import {
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { Schema, track } from "lib/utils/track"
+import { take } from "lodash"
 import React from "react"
 import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -26,22 +27,19 @@ interface ArtworkActionsProps {
   relay?: RelayProp
 }
 
-export const shareMessage = (title, href, artists) => {
-  let message
+export const shareContent = (title, href, artists: ArtworkActions_artwork["artists"]) => {
+  let computedTitle: string | null
   if (artists && artists.length) {
-    const names = []
-    artists.forEach((artist, i) => {
-      if (i < 3) {
-        names.push(artist.name)
-      }
-    })
-    message = `${title} by ${names.join(", ")} on Artsy https://artsy.net${href}`
+    const names = take(artists, 3).map(artist => artist.name)
+    computedTitle = `${title} by ${names.join(", ")} on Artsy`
   } else if (title) {
-    message = `${title} on Artsy https://artsy.net${href}`
-  } else {
-    message = `https://artsy.net${href}`
+    computedTitle = `${title} on Artsy`
   }
-  return message
+  return {
+    title: computedTitle,
+    message: computedTitle,
+    url: `https://artsy.net${href}`,
+  }
 }
 
 @track()
@@ -79,9 +77,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   async handleArtworkShare() {
     const { title, href, artists } = this.props.artwork
     try {
-      await Share.share({
-        message: shareMessage(title, href, artists),
-      })
+      await Share.share(shareContent(title, href, artists))
     } catch (error) {
       console.error("ArtworkActions.tsx", error)
     }
