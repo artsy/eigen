@@ -187,6 +187,22 @@ export const LocationMapContainer = createFragmentContainer(LocationMap, {
         lat
         lng
       }
+      day_schedules: daySchedules {
+        start_time: startTime
+        end_time: endTime
+        day_of_week: dayOfWeek
+      }
+      openingHours {
+        ... on OpeningHoursArray {
+          schedules {
+            days
+            hours
+          }
+        }
+        ... on OpeningHoursText {
+          text
+        }
+      }
     }
   `,
 })
