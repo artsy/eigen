@@ -1,3 +1,15 @@
+# v1.18.23 (Wed Nov 06 2019)
+
+#### 🐛  Bug Fix
+
+- AUCT-677 update buyer's premium copy [#1959](https://github.com/artsy/emission/pull/1959) ([@bhoggard](https://github.com/bhoggard))
+
+#### Authors: 1
+
+- Barry Hoggard ([@bhoggard](https://github.com/bhoggard))
+
+---
+
 # v1.18.22 (Tue Nov 05 2019)
 
 #### 🐛  Bug Fix
