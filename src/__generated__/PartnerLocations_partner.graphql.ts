@@ -1,31 +1,25 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-export type PartnerLocationSection_partner = {
-    readonly slug: string;
+import { FragmentRefs } from "relay-runtime";
+export type PartnerLocations_partner = {
     readonly name: string | null;
     readonly locations: ReadonlyArray<{
-        readonly city: string | null;
+        readonly id: string;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerMap_location">;
     } | null> | null;
-    readonly " $refType": "PartnerLocationSection_partner";
+    readonly " $refType": "PartnerLocations_partner";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "PartnerLocationSection_partner",
+  "name": "PartnerLocations_partner",
   "type": "Partner",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -45,13 +39,18 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "city",
+          "name": "id",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "PartnerMap_location",
+          "args": null
         }
       ]
     }
   ]
 };
-(node as any).hash = '812505e385e7179d9a26c1325e7b7231';
+(node as any).hash = '76b746517c6bf86690fa996d09e2731b';
 export default node;

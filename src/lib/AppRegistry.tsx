@@ -44,6 +44,7 @@ import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { PartnerRenderer } from "./Scenes/Partner"
+import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
@@ -96,6 +97,13 @@ interface PartnerProps {
 }
 
 const Partner: React.SFC<PartnerProps> = props => <PartnerRenderer {...props} />
+
+interface PartnerLocationsProps {
+  partnerID: string
+  safeAreaInsets: SafeAreaInsets
+  isVisible: boolean
+}
+const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsRenderer {...props} />
 
 const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
@@ -366,6 +374,7 @@ AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Partner", () => Partner)
+AppRegistry.registerComponent("PartnerLocations", () => PartnerLocations)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)

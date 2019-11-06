@@ -78,6 +78,7 @@ fragment ArtistListItem_artist on Artist {
 }
 
 fragment PartnerLocationSection_partner on Partner {
+  slug
   name
   locations {
     city
@@ -156,7 +157,14 @@ v5 = [
     "name": "sort",
     "value": "SORTABLE_ID_ASC"
   }
-];
+],
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -310,13 +318,7 @@ return {
                     "selections": [
                       (v4/*: any*/),
                       (v2/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "slug",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v6/*: any*/),
                       (v3/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -411,6 +413,7 @@ return {
               "sort"
             ]
           },
+          (v6/*: any*/),
           (v4/*: any*/)
         ]
       }
@@ -419,7 +422,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "6bc54589c4292b9bbe4601960343af80",
+    "id": "e5968754092798866f0d230f1a0e9eba",
     "text": null,
     "metadata": {}
   }

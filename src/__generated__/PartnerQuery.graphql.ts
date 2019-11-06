@@ -213,6 +213,7 @@ fragment ArtistListItem_artist on Artist {
 }
 
 fragment PartnerLocationSection_partner on Partner {
+  slug
   name
   locations {
     city
@@ -1036,7 +1037,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "a0e63140d50731bb5118463342a9366f",
+    "id": "770aaf55cb4049ca6e090bc9d4c5d2b0",
     "text": null,
     "metadata": {}
   }

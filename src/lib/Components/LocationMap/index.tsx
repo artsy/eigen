@@ -33,6 +33,63 @@ interface Props {
   partnerName?: string
 }
 
+export const cityAndPostalCode = (city, postalCode) => {
+  if (city && postalCode) {
+    return city + ", " + postalCode
+  } else if (city) {
+    return city
+  } else if (postalCode) {
+    return postalCode
+  }
+}
+
+export const tappedOnMap = (address, summary, partnerName, city, postalCode, lat, lng) => {
+  // Fairs only have a "summary", so we need to
+  // be quite conservative about what parts of the address we
+  // send to the different services
+  const firstLineAddress = address || summary
+  const lastLine = cityAndPostalCode(city, postalCode)
+  const suffix = lastLine && !firstLineAddress.includes(lastLine) ? `, ${lastLine}` : ""
+  const title = `${firstLineAddress}${suffix}`
+  const addressOrName = address || partnerName
+
+  ActionSheetIOS.showActionSheetWithOptions(
+    {
+      title,
+      options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],
+      cancelButtonIndex: 0,
+    },
+    buttonIndex => {
+      if (buttonIndex === 1) {
+        // Apple Maps
+        // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
+        Linking.openURL(`http://maps.apple.com/?addr="${addressOrName}${suffix}"&near=${lat},${lng}`)
+      } else if (buttonIndex === 2) {
+        // City Mapper
+        // https://citymapper.com/tools/1053/launch-citymapper-for-directions
+
+        Linking.openURL(
+          `https://citymapper.com/directions?endcoord=${lat},${lng}&endname=${partnerName}&endaddress=${address}`
+        )
+      } else if (buttonIndex === 3) {
+        // Google Maps
+        // https://developers.google.com/maps/documentation/urls/guide
+        const appDirectionsURL = `comgooglemaps-x-callback://?daddr=${addressOrName}${suffix}&x-success=artsy://?resume=true&x-source=Artsy`
+        // https://developers.google.com/maps/documentation/urls/ios-urlscheme
+        const googleSearchHrefURL = `https://www.google.com/maps/search/?api=1&query=${addressOrName},${lat}%2C${lng}`
+        if (Linking.canOpenURL(appDirectionsURL)) {
+          Linking.openURL(appDirectionsURL)
+        } else {
+          Linking.openURL(googleSearchHrefURL)
+        }
+      } else if (buttonIndex === 4) {
+        // Copy to pasteboard
+        Clipboard.setString(title)
+      }
+    }
+  )
+}
+
 export class LocationMap extends React.Component<Props> {
   render() {
     const { location, partnerName } = this.props
@@ -41,16 +98,6 @@ export class LocationMap extends React.Component<Props> {
 
     if (!lat || !lng) {
       return null
-    }
-
-    const cityAndPostalCode = () => {
-      if (city && postal_code) {
-        return city + ", " + postal_code
-      } else if (city) {
-        return city
-      } else if (postal_code) {
-        return postal_code
-      }
     }
 
     const renderSummaryAddress = () => {
@@ -88,7 +135,7 @@ export class LocationMap extends React.Component<Props> {
           )}
           {(!!city || !!postal_code) && (
             <Serif size="3t" color="black60" textAlign="center">
-              {cityAndPostalCode()}
+              {cityAndPostalCode(city, postal_code)}
             </Serif>
           )}
         </Box>
@@ -103,55 +150,8 @@ export class LocationMap extends React.Component<Props> {
       }
     }
 
-    const tappedOnMap = () => {
-      // Fairs only have a "summary", so we need to
-      // be quite conservative about what parts of the address we
-      // send to the different services
-      const firstLineAddress = address || summary
-      const lastLine = cityAndPostalCode()
-      const suffix = lastLine && !firstLineAddress.includes(lastLine) ? `, ${lastLine}` : ""
-      const title = `${firstLineAddress}${suffix}`
-      const addressOrName = address || partnerName
-
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          title,
-          options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],
-          cancelButtonIndex: 0,
-        },
-        buttonIndex => {
-          if (buttonIndex === 1) {
-            // Apple Maps
-            // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
-            Linking.openURL(`http://maps.apple.com/?addr="${addressOrName}${suffix}"&near=${lat},${lng}`)
-          } else if (buttonIndex === 2) {
-            // City Mapper
-            // https://citymapper.com/tools/1053/launch-citymapper-for-directions
-
-            Linking.openURL(
-              `https://citymapper.com/directions?endcoord=${lat},${lng}&endname=${partnerName}&endaddress=${address}`
-            )
-          } else if (buttonIndex === 3) {
-            // Google Maps
-            // https://developers.google.com/maps/documentation/urls/guide
-            const appDirectionsURL = `comgooglemaps-x-callback://?daddr=${addressOrName}${suffix}&x-success=artsy://?resume=true&x-source=Artsy`
-            // https://developers.google.com/maps/documentation/urls/ios-urlscheme
-            const googleSearchHrefURL = `https://www.google.com/maps/search/?api=1&query=${addressOrName},${lat}%2C${lng}`
-            if (Linking.canOpenURL(appDirectionsURL)) {
-              Linking.openURL(appDirectionsURL)
-            } else {
-              Linking.openURL(googleSearchHrefURL)
-            }
-          } else if (buttonIndex === 4) {
-            // Copy to pasteboard
-            Clipboard.setString(title)
-          }
-        }
-      )
-    }
-
     return (
-      <TouchableOpacity onPress={tappedOnMap}>
+      <TouchableOpacity onPress={() => tappedOnMap(address, summary, partnerName, city, postal_code, lat, lng)}>
         <MapWrapper>
           <Map
             key={lng}
@@ -186,22 +186,6 @@ export const LocationMapContainer = createFragmentContainer(LocationMap, {
       coordinates {
         lat
         lng
-      }
-      day_schedules: daySchedules {
-        start_time: startTime
-        end_time: endTime
-        day_of_week: dayOfWeek
-      }
-      openingHours {
-        ... on OpeningHoursArray {
-          schedules {
-            days
-            hours
-          }
-        }
-        ... on OpeningHoursText {
-          text
-        }
       }
     }
   `,

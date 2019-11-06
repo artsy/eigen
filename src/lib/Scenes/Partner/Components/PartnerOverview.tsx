@@ -61,10 +61,6 @@ export const PartnerOverview: React.FC<{
       <Box px={2} py={3}>
         {!!aboutText && (
           <>
-            <Sans size="3t" weight="medium">
-              About
-            </Sans>
-            <Spacer mb={2} />
             <ReadMore content={aboutText} maxChars={textLimit} />
             <Spacer mb={3} />
           </>

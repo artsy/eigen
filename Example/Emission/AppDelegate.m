@@ -22,6 +22,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARArtworkComponentViewController.h>
 #import <Emission/ARPartnerComponentViewController.h>
+#import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
@@ -298,7 +299,11 @@ randomBOOL(void)
     NSString *artworkID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:artworkID];
 
-  } else if ([route hasPrefix:@"/partner/"]) {
+  } else if ([route hasPrefix:@"/partner-locations"]) {
+    NSString *partnerID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARPartnerLocationsComponentViewController alloc] initWithPartnerID:partnerID];
+
+  } else if ([route hasPrefix:@"/partner"]) {
     NSString *partnerID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:partnerID];
 
