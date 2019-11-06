@@ -100,11 +100,12 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
           <>
             <Spacer mb={1} />
             <Sans size="3t" color="black60">
-              This work has a{" "}
+              This auction has a{" "}
               <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleBuyersPremiumTap()}>
                 buyer's premium
               </Text>
-              .
+              .{"\n"}
+              Shipping, taxes, and additional fees may apply.
             </Sans>
           </>
         )}
