@@ -11,14 +11,14 @@ import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRai
 const PAGE_SIZE = 6
 
 const ShowGridItem = ({ show, itemIndex }) => {
-  const showImage = show.coverImage || ""
+  const showImageURL = show.coverImage && show.coverImage.url
   const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
   return (
     <GridItem key={show.id}>
       <TouchableWithoutFeedback onPress={null}>
         <Box style={styles}>
-          {showImage ? (
-            <BackgroundImage key={show.id} style={{ resizeMode: "cover" }} source={{ uri: showImage.url }} />
+          {showImageURL ? (
+            <BackgroundImage key={show.id} style={{ resizeMode: "cover" }} source={{ uri: showImageURL }} />
           ) : (
             <EmptyImage />
           )}
