@@ -1,7 +1,7 @@
 upcoming:
   version: 6.0.0
   date: TBD
-  emission_version: 1.18.17
+  emission_version: 1.18.23
   dev:
     - Update emission, sending the new 'env' parameter
     - Add a feature flag for the new Price Transparency work - yuki24
