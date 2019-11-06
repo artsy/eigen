@@ -10,37 +10,36 @@ import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRai
 
 const PAGE_SIZE = 6
 
+const ShowGridItem = ({ show, itemIndex }) => {
+  const showImage = show.coverImage || ""
+  const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
+  return (
+    <GridItem key={show.id}>
+      <TouchableWithoutFeedback onPress={null}>
+        <Box style={styles}>
+          {showImage ? (
+            <BackgroundImage key={show.id} style={{ resizeMode: "cover" }} source={{ uri: showImage.url }} />
+          ) : (
+            <EmptyImage />
+          )}
+          <Spacer mb={0.5} />
+          <Sans size="2">{show.name}</Sans>
+          <Serif size="2" color="black60">
+            {show.exhibitionPeriod}
+          </Serif>
+        </Box>
+      </TouchableWithoutFeedback>
+      <Spacer mb={2} />
+    </GridItem>
+  )
+}
+
 export const PartnerShows: React.FC<{
   partner: PartnerShows_partner
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [hasRecentShows, setHasRecentShows] = useState(false)
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
-
-  const ShowGridItem = (node, itemIndex) => {
-    const { show } = node
-    const showImage = show.coverImage || ""
-    const styles = itemIndex % 2 === 0 ? { paddingLeft: space(1) } : { paddingRight: space(1) }
-    return (
-      <GridItem key={node.id}>
-        <TouchableWithoutFeedback onPress={null}>
-          <Box style={styles}>
-            {showImage ? (
-              <BackgroundImage key={node.id} style={{ resizeMode: "cover" }} source={{ uri: showImage.url }} />
-            ) : (
-              <EmptyImage />
-            )}
-            <Spacer mb={0.5} />
-            <Sans size="2">{show.name}</Sans>
-            <Serif size="2" color="black60">
-              {show.exhibitionPeriod}
-            </Serif>
-          </Box>
-        </TouchableWithoutFeedback>
-        <Spacer mb={2} />
-      </GridItem>
-    )
-  }
 
   const fetchNextPage = () => {
     if (fetchingNextPage) {
