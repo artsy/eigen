@@ -53,6 +53,7 @@ mutation MakeOfferButtonOrderMutation(
           __typename
           internalID
           mode
+          id
         }
       }
       ... on CommerceOrderWithMutationFailure {
@@ -235,7 +236,14 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v3/*: any*/),
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "id",
+                        "args": null,
+                        "storageKey": null
+                      }
                     ]
                   }
                 ]
@@ -250,7 +258,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "MakeOfferButtonOrderMutation",
-    "id": "7d9a8d2edf5e67ad757ac629a5251ae0",
+    "id": "e9ace281deea637ec868fe49043633f2",
     "text": null,
     "metadata": {}
   }

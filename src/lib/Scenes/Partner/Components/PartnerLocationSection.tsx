@@ -2,7 +2,6 @@ import { Button, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
-import { union } from "lodash"
 import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -11,13 +10,9 @@ interface Props {
   partner: PartnerLocationSection_partner
 }
 
-const createLocationsString = (locations, partner) => {
-  const cities = []
+const createLocationsString = (partner: PartnerLocationSection_partner) => {
   let lastUniqCity
-  locations.forEach(location => {
-    return cities.push(location.city)
-  })
-  const uniqCities = union(cities)
+  const uniqCities = partner.cities.slice(0)
   const cityLength = uniqCities.length
   if (cityLength > 1) {
     lastUniqCity = uniqCities.pop()
@@ -33,8 +28,11 @@ class PartnerLocationSection extends React.Component<Props> {
     const handleSeeAllLocations = () => {
       SwitchBoard.presentNavigationViewController(this, `/partner-locations/${partner.slug}`)
     }
-    const partnerLocations = get(partner, p => p.locations)
-    const { locationText, cityText, lastCity } = createLocationsString(partnerLocations, partner)
+    const cities = get(partner, p => p.cities)
+    if (!cities) {
+      return null
+    }
+    const { locationText, cityText, lastCity } = createLocationsString(partner)
     const renderComponent = !!locationText && !!cityText
 
     return (
@@ -74,9 +72,7 @@ export const PartnerLocationSectionContainer = createFragmentContainer(PartnerLo
     fragment PartnerLocationSection_partner on Partner {
       slug
       name
-      locations {
-        city
-      }
+      cities
     }
   `,
 })

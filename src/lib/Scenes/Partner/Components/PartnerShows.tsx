@@ -10,7 +10,13 @@ import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRai
 
 const PAGE_SIZE = 6
 
-const ShowGridItem = ({ show, itemIndex }) => {
+const ShowGridItem = ({
+  show,
+  itemIndex,
+}: {
+  show: PartnerShows_partner["pastShows"]["edges"][0]["node"]
+  itemIndex: number
+}) => {
   const showImageURL = show.coverImage && show.coverImage.url
   const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
   return (

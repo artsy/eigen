@@ -2,7 +2,6 @@ import { Button, EntityHeader, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { filterLocations } from "lib/utils/filterLocations"
 import { get } from "lib/utils/get"
 import { limitWithCount } from "lib/utils/limitWithCount"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -97,7 +96,7 @@ export class PartnerCard extends React.Component<Props, State> {
     }
     const { isFollowedChanging } = this.state
     const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
-    const locationNames = get(partner, p => limitWithCount(filterLocations(p.locations), 2), []).join(", ")
+    const locationNames = get(partner, p => limitWithCount(p.cities, 2), []).join(", ")
     const showPartnerType =
       partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"
     const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"
@@ -146,6 +145,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         isGalleryAuction
       }
       partner {
+        cities
         is_default_profile_public: isDefaultProfilePublic
         type
         name
@@ -160,9 +160,6 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
           icon {
             url(version: "square140")
           }
-        }
-        locations {
-          city
         }
       }
     }

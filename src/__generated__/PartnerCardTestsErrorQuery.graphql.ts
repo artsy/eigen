@@ -16,6 +16,7 @@ export type PartnerCardTestsErrorQueryRawResponse = {
             readonly id: string | null;
         }) | null;
         readonly partner: ({
+            readonly cities: ReadonlyArray<string | null> | null;
             readonly is_default_profile_public: boolean | null;
             readonly type: string | null;
             readonly name: string | null;
@@ -31,10 +32,6 @@ export type PartnerCardTestsErrorQueryRawResponse = {
                     readonly url: string | null;
                 }) | null;
             }) | null;
-            readonly locations: ReadonlyArray<({
-                readonly city: string | null;
-                readonly id: string | null;
-            }) | null> | null;
         }) | null;
         readonly id: string | null;
     }) | null;
@@ -62,6 +59,7 @@ fragment PartnerCard_artwork on Artwork {
     id
   }
   partner {
+    cities
     is_default_profile_public: isDefaultProfilePublic
     type
     name
@@ -76,10 +74,6 @@ fragment PartnerCard_artwork on Artwork {
       icon {
         url(version: "square140")
       }
-    }
-    locations {
-      city
-      id
     }
   }
 }
@@ -178,6 +172,13 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
+                "alias": null,
+                "name": "cities",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
                 "alias": "is_default_profile_public",
                 "name": "isDefaultProfilePublic",
                 "args": null,
@@ -268,25 +269,6 @@ return {
                     ]
                   }
                 ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "locations",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Location",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "city",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  (v1/*: any*/)
-                ]
               }
             ]
           },
@@ -298,7 +280,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerCardTestsErrorQuery",
-    "id": "f5f85978663c562454138f0af5b1fa37",
+    "id": "8207876052c2dd48e797c2c005ea9c8a",
     "text": null,
     "metadata": {}
   }

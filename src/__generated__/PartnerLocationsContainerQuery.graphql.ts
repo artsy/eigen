@@ -2,35 +2,39 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PartnerLocationsQueryVariables = {
-    partnerID: string;
+export type PartnerLocationsContainerQueryVariables = {
+    id: string;
+    cursor?: string | null;
+    count: number;
 };
-export type PartnerLocationsQueryResponse = {
+export type PartnerLocationsContainerQueryResponse = {
     readonly partner: {
         readonly " $fragmentRefs": FragmentRefs<"PartnerLocations_partner">;
     } | null;
 };
-export type PartnerLocationsQuery = {
-    readonly response: PartnerLocationsQueryResponse;
-    readonly variables: PartnerLocationsQueryVariables;
+export type PartnerLocationsContainerQuery = {
+    readonly response: PartnerLocationsContainerQueryResponse;
+    readonly variables: PartnerLocationsContainerQueryVariables;
 };
 
 
 
 /*
-query PartnerLocationsQuery(
-  $partnerID: String!
+query PartnerLocationsContainerQuery(
+  $id: String!
+  $cursor: String
+  $count: Int!
 ) {
-  partner(id: $partnerID) {
-    ...PartnerLocations_partner
+  partner(id: $id) {
+    ...PartnerLocations_partner_1G22uz
     id
   }
 }
 
-fragment PartnerLocations_partner on Partner {
+fragment PartnerLocations_partner_1G22uz on Partner {
   name
   internalID
-  locations: locationsConnection(first: 4) {
+  locations: locationsConnection(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       startCursor
@@ -66,8 +70,20 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "partnerID",
+    "name": "id",
     "type": "String!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
     "defaultValue": null
   }
 ],
@@ -75,7 +91,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "partnerID"
+    "variableName": "id"
   }
 ],
 v2 = {
@@ -87,9 +103,14 @@ v2 = {
 },
 v3 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 4
+    "variableName": "count"
   }
 ],
 v4 = {
@@ -103,7 +124,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "PartnerLocationsQuery",
+    "name": "PartnerLocationsContainerQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -120,7 +141,18 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "PartnerLocations_partner",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
+            ]
           }
         ]
       }
@@ -128,7 +160,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "PartnerLocationsQuery",
+    "name": "PartnerLocationsContainerQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -152,7 +184,7 @@ return {
             "kind": "LinkedField",
             "alias": "locations",
             "name": "locationsConnection",
-            "storageKey": "locationsConnection(first:4)",
+            "storageKey": null,
             "args": (v3/*: any*/),
             "concreteType": "LocationConnection",
             "plural": false,
@@ -305,12 +337,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "PartnerLocationsQuery",
-    "id": "16a661de86b8ebb41a3deda7eebf1ce7",
+    "name": "PartnerLocationsContainerQuery",
+    "id": "77c2a2076ce8827b675ac2c7ccefe932",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8c0169823cc4cc8238e18e15801a6857';
+(node as any).hash = 'e4bbed93b33e165c5d9ce61a9d2d40f2';
 export default node;

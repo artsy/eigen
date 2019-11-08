@@ -35,10 +35,6 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  locations {
-    city
-    id
-  }
   ...PartnerArtwork_partner
   ...PartnerOverview_partner
   ...PartnerShows_partner
@@ -67,10 +63,7 @@ fragment PartnerArtwork_partner on Partner {
 fragment PartnerOverview_partner on Partner {
   internalID
   name
-  locations {
-    city
-    id
-  }
+  cities
   profile {
     bio
     id
@@ -215,10 +208,7 @@ fragment ArtistListItem_artist on Artist {
 fragment PartnerLocationSection_partner on Partner {
   slug
   name
-  locations {
-    city
-    id
-  }
+  cities
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -526,25 +516,6 @@ return {
               }
             ]
           },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "locations",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Location",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "city",
-                "args": null,
-                "storageKey": null
-              },
-              (v2/*: any*/)
-            ]
-          },
           (v4/*: any*/),
           {
             "kind": "LinkedField",
@@ -757,6 +728,13 @@ return {
             "filters": null
           },
           (v8/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "cities",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": "artists",
@@ -1037,7 +1015,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "770aaf55cb4049ca6e090bc9d4c5d2b0",
+    "id": "a988f4bbfc61d4c717a13136e184dcad",
     "text": null,
     "metadata": {}
   }

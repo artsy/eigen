@@ -23,6 +23,7 @@ query QueryRenderersCollectionQuery(
 ) {
   collection: marketingCollection(slug: $collectionID) {
     ...Collection_collection
+    id
   }
 }
 
@@ -106,6 +107,13 @@ return {
             "name": "description",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -114,7 +122,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "18fe2187f5a732516ea47696a1ef21df",
+    "id": "a901ccb56feb91c6979c2eeb7cfefad2",
     "text": null,
     "metadata": {}
   }

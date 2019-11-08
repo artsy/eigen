@@ -10,9 +10,6 @@ export type Partner_partner = {
         readonly isFollowed: boolean | null;
         readonly internalID: string;
     } | null;
-    readonly locations: ReadonlyArray<{
-        readonly city: string | null;
-    } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"PartnerArtwork_partner" | "PartnerOverview_partner" | "PartnerShows_partner" | "PartnerHeader_partner">;
     readonly " $refType": "Partner_partner";
 };
@@ -69,24 +66,6 @@ return {
       ]
     },
     {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "locations",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Location",
-      "plural": true,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "city",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
       "kind": "FragmentSpread",
       "name": "PartnerArtwork_partner",
       "args": null
@@ -109,5 +88,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '34c6ba6e290efe6e161e6f93823e8ba2';
+(node as any).hash = 'c93ba06a716a1769cdf06620c209b063';
 export default node;

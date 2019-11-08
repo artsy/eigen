@@ -34,10 +34,7 @@ query PartnerOverviewInfiniteScrollQuery(
 fragment PartnerOverview_partner_1G22uz on Partner {
   internalID
   name
-  locations {
-    city
-    id
-  }
+  cities
   profile {
     bio
     id
@@ -80,10 +77,7 @@ fragment ArtistListItem_artist on Artist {
 fragment PartnerLocationSection_partner on Partner {
   slug
   name
-  locations {
-    city
-    id
-  }
+  cities
 }
 */
 
@@ -220,23 +214,11 @@ return {
           (v2/*: any*/),
           (v3/*: any*/),
           {
-            "kind": "LinkedField",
+            "kind": "ScalarField",
             "alias": null,
-            "name": "locations",
-            "storageKey": null,
+            "name": "cities",
             "args": null,
-            "concreteType": "Location",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "city",
-                "args": null,
-                "storageKey": null
-              },
-              (v4/*: any*/)
-            ]
+            "storageKey": null
           },
           {
             "kind": "LinkedField",
@@ -422,7 +404,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "e5968754092798866f0d230f1a0e9eba",
+    "id": "65b6115cd91471b23617109775fd6729",
     "text": null,
     "metadata": {}
   }

@@ -36,10 +36,6 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  locations {
-    city
-    id
-  }
   ...PartnerArtwork_partner
   ...PartnerOverview_partner
   ...PartnerShows_partner
@@ -68,10 +64,7 @@ fragment PartnerArtwork_partner on Partner {
 fragment PartnerOverview_partner on Partner {
   internalID
   name
-  locations {
-    city
-    id
-  }
+  cities
   profile {
     bio
     id
@@ -216,10 +209,7 @@ fragment ArtistListItem_artist on Artist {
 fragment PartnerLocationSection_partner on Partner {
   slug
   name
-  locations {
-    city
-    id
-  }
+  cities
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -532,25 +522,6 @@ return {
                   }
                 ]
               },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "locations",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Location",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "city",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  (v3/*: any*/)
-                ]
-              },
               (v5/*: any*/),
               {
                 "kind": "LinkedField",
@@ -763,6 +734,13 @@ return {
                 "filters": null
               },
               (v9/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cities",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "LinkedField",
                 "alias": "artists",
@@ -1045,7 +1023,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "535d4cce7418f215a8a54d83a706b5ff",
+    "id": "7ac751f0d82a10475cb56d4384324ad8",
     "text": null,
     "metadata": {}
   }

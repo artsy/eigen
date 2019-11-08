@@ -52,7 +52,7 @@ export const PartnerOverview: React.FC<{
 
   const aboutText = get(partner, p => p.profile.bio)
 
-  if (!aboutText && !artists && !partner.locations) {
+  if (!aboutText && !artists && !partner.cities) {
     return <PartnerEmptyState text="There is no information for this gallery yet" />
   }
 
@@ -90,9 +90,7 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         internalID
         name
-        locations {
-          city
-        }
+        cities
         profile {
           bio
         }

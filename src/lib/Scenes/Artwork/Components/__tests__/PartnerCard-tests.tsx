@@ -256,7 +256,7 @@ describe("PartnerCard", () => {
         mockFollowResults: unfollowResponse,
       })
 
-      const followButton = partnerCard.find(Button).at(0)
+      const followButton = partnerCard.find(Button)
       expect(followButton.text()).toMatchInlineSnapshot(`"FollowingFollowing"`)
 
       await partnerCard
@@ -361,23 +361,7 @@ const PartnerCardArtwork = {
         url: "https://d32dm0rphc51dk.cloudfront.net/YciR5levjrhp2JnFYlPxpw/square140.png",
       },
     },
-    locations: [
-      {
-        city: "Miami",
-      },
-      {
-        city: "New York",
-      },
-      {
-        city: "Hong Kong",
-      },
-      {
-        city: "London",
-      },
-      {
-        city: "Boston",
-      },
-    ],
+    cities: ["Miami", "New York", "Hong Kong", "London", "Boston"],
     " $refType": null,
     " $fragmentRefs": null,
   },

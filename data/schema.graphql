@@ -506,7 +506,7 @@ type ArticleConnection {
 
   # A list of edges.
   edges: [ArticleEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
@@ -714,6 +714,7 @@ type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInt
   statuses: ArtistStatuses
   highlights: ArtistHighlights
   years: String
+  marketingCollections(size: Int): [MarketingCollection]
 }
 
 type ArtistArtworkGrid implements ArtworkContextGrid {
@@ -747,7 +748,7 @@ type ArtistConnection {
 
   # A list of edges.
   edges: [ArtistEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
@@ -839,7 +840,7 @@ type ArtistPartnerConnection {
 
   # A list of edges.
   edges: [ArtistPartnerEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
@@ -1054,7 +1055,6 @@ type Artwork implements Node & Searchable & Sellable {
   saleMessage: String
   series(format: Format): String
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
-  v2Shows(size: Int, active: Boolean, atAFair: Boolean, sort: ShowSorts): [Show]
   shows(size: Int, active: Boolean, atAFair: Boolean, sort: ShowSorts): [Show]
   signature(format: Format): String
   title: String
@@ -1107,11 +1107,12 @@ type ArtworkConnection implements ArtworkConnectionInterface {
 
   # A list of edges.
   edges: [ArtworkEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
 interface ArtworkConnectionInterface {
+  pageCursors: PageCursors!
   pageInfo: PageInfo!
   edges: [ArtworkEdgeInterface]
 }
@@ -1370,7 +1371,7 @@ type AuctionResultConnection {
 
   # A list of edges.
   edges: [AuctionResultEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
@@ -1763,6 +1764,7 @@ type CommerceBuyOrder implements CommerceOrder {
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
+  id: ID!
   internalID: ID!
 
   # Item total in cents, for Offer Orders this field reflects current offer
@@ -2065,6 +2067,7 @@ type CommerceFulfillment {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  id: ID!
   internalID: ID!
   notes: String
   trackingId: String
@@ -2130,6 +2133,7 @@ type CommerceLineItem {
     # Returns the last _n_ elements from the list.
     last: Int
   ): CommerceFulfillmentConnection
+  id: ID!
   internalID: ID!
   listPriceCents: Int!
   order: CommerceOrder!
@@ -2208,6 +2212,7 @@ type CommerceOffer {
   currencyCode: String!
   from: CommerceOrderPartyUnion!
   fromParticipant: CommerceOrderParticipantEnum
+  id: ID!
   internalID: ID!
   note: String
   order: CommerceOrder!
@@ -2297,6 +2302,7 @@ type CommerceOfferOrder implements CommerceOrder {
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
+  id: ID!
   internalID: ID!
 
   # Item total in cents, for Offer Orders this field reflects current offer
@@ -2477,6 +2483,7 @@ interface CommerceOrder {
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
+  id: ID!
   internalID: ID!
 
   # Item total in cents, for Offer Orders this field reflects current offer
@@ -3468,6 +3475,19 @@ type dimensions {
   cm: String
 }
 
+type DoNotUseThisPartner {
+  displayName: String
+  display_name: String @deprecated(reason: "Use displayName")
+  givenName: String
+  given_name: String @deprecated(reason: "Use givenName")
+  id: ID!
+  relativeSize: Int
+  relative_size: Int @deprecated(reason: "Use relativeSize")
+  slug: String
+  subscriptionState: String
+  subscription_state: String @deprecated(reason: "Use subscriptionState")
+}
+
 input EditableLocation {
   # First line of an address
   address: String
@@ -3758,7 +3778,7 @@ type FairConnection {
 
   # A list of edges.
   edges: [FairEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
@@ -3857,11 +3877,12 @@ type FilterArtworksConnection implements Node & ArtworkConnectionInterface {
   counts: FilterArtworksCounts
 
   # Artwork results.
-  hits: [Artwork]
+  hits: [Artwork] @deprecated(reason: "Prefer to use `edges`. [Will be removed in v2]")
 
   # Returns a list of merchandisable artists sorted by merch score.
   merchandisableArtists: [Artist]
   facet: ArtworkFilterFacet
+  pageCursors: PageCursors!
 }
 
 type FilterArtworksCounts {
@@ -3951,7 +3972,7 @@ type FollowArtistPayload {
 
     # Number of results to return
     size: Int
-  ): PopularArtists
+  ): [Artist]
   clientMutationId: String
 }
 
@@ -4162,7 +4183,10 @@ type GeminiEntry {
   token: String!
 }
 
-type Gene implements Node {
+type Gene implements Node & Searchable {
+  displayLabel: String
+  imageUrl: String
+
   # A globally unique ID.
   id: ID!
 
@@ -4294,6 +4318,23 @@ type HighestBid {
   ): String
   cents: Int
   display: String
+}
+
+type Highlights {
+  # Popular artists
+  popularArtists(
+    # If true, will exclude followed artists for the user
+    excludeFollowedArtists: Boolean
+
+    # Exclude these ids from results, may result in all artists being excluded.
+    excludeArtistIDs: [String]
+
+    # Number of results to return
+    size: Int
+  ): [Artist]
+
+  # List of curated genes that are broad collecting. (Meant for e.g. suggestions in on-boarding.)
+  broadCollectingGenes: [Gene]
 }
 
 type HomePage {
@@ -4578,6 +4619,26 @@ type Location {
   summary: String
 }
 
+# A connection to a list of items.
+type LocationConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [LocationEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type LocationEdge {
+  # The item at the end of the edge
+  node: Location
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 type LotStanding {
   # Your bid if it is currently winning
   activeBid: BidderPosition
@@ -4597,6 +4658,7 @@ type LotStanding {
 
 # Object representing a collection page
 type MarketingCollection {
+  id: ID!
   internalID: ID!
 
   # slug version of title, used for pretty URLs (e.g. `kaws-prints` for Kaws Prints
@@ -4652,6 +4714,46 @@ type MarketingCollection {
   # IDs of artists that should be excluded from Featured Artists for this collection
   featuredArtistExclusionIds: [String!]
   relatedCollections: [MarketingCollection!]!
+  artworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+    marketable: Boolean
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
 }
 
 type MarketingCollectionCategory {
@@ -4667,6 +4769,7 @@ type MarketingCollectionGroup {
 }
 
 type MarketingCollectionQuery {
+  id: ID
   internalID: ID
   acquireable: Boolean
   aggregations: [String!]
@@ -4726,7 +4829,7 @@ enum MarketingGroupTypes {
 }
 
 type MarketingImage {
-  internalID: ID!
+  id: ID!
   small: String!
   medium: String!
   large: String!
@@ -5126,6 +5229,9 @@ type Partner implements Node {
   categories: [PartnerCategory]
   collectingInstitution: String
   counts: PartnerCounts
+
+  # A list of the partners unique city locations
+  cities(size: Int = 25): [String]
   defaultProfileID: String
   hasFairPartnership: Boolean
   href: String
@@ -5133,7 +5239,9 @@ type Partner implements Node {
   isDefaultProfilePublic: Boolean
   isLinkable: Boolean
   isPreQualify: Boolean
-  locations(size: Int = 25): [Location]
+
+  # A connection of locations from a Partner.
+  locationsConnection(after: String, first: Int, before: String, last: Int): LocationConnection
   name: String
   profile: Profile
 
@@ -5367,10 +5475,6 @@ enum PartnersSortType {
 
 union PartnerTypes = Partner | ExternalPartner
 
-type PopularArtists {
-  artists: [Artist]
-}
-
 type PriceRange {
   display: String
   minPrice: Money
@@ -5417,11 +5521,77 @@ type Query {
     id: String!
   ): Artwork
 
+  # Artworks Elastic Search results
+  artworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+
   # An Artist
   artist(
     # The slug or ID of the Artist
     id: String!
   ): Artist
+
+  # A list of Artists
+  artists(
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    page: Int = 1
+    size: Int
+    sort: ArtistSorts
+  ): [Artist]
 
   # A city-based entry point for local discovery
   city(
@@ -5432,6 +5602,12 @@ type Query {
     near: Near
   ): City
 
+  # A user's credit card
+  creditCard(
+    # The ID of the Credit Card
+    id: String!
+  ): CreditCard
+
   # A Fair
   fair(
     # The slug or ID of the Fair
@@ -5441,6 +5617,18 @@ type Query {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Genes
+  genes(
+    size: Int
+
+    #
+    #         Only return genes matching specified slugs.
+    #         Accepts list of slugs.
+    #
+    slugs: [String]
+  ): [Gene]
+  highlights: Highlights
 
   # Home screen content
   homePage: HomePage
@@ -5515,10 +5703,35 @@ type Query {
 
   # Fields related to internal systems.
   system: System
+  tag(
+    # The slug or ID of the Tag
+    id: String!
+  ): Tag
+  user(
+    # Email to search for user by
+    email: String
+
+    # ID of the user
+    id: String
+  ): User
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
     @deprecated(reason: "Viewer has been deprecated in V2. Rely on root fields instead. [Will be removed in v2]")
+
+  # Autocomplete resolvers.
+  _unused_gravity_matchPartners(matchType: String, page: Int = 1, size: Int = 5, term: String!): [DoNotUseThisPartner!]
+
+  # Autocomplete resolvers.
+  _unused_gravity_match_partners(
+    match_type: String
+    page: Int = 1
+    size: Int = 5
+    term: String!
+  ): [DoNotUseThisPartner!] @deprecated(reason: "Use matchPartners")
+
+  # Find partners by IDs
+  _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
 
   # Find list of competing orders
   commerceCompetingOrders(
@@ -6014,6 +6227,8 @@ type SaleArtworksConnection implements ArtworkConnectionInterface {
 
   # A list of edges.
   edges: [SaleArtwork]
+  pageCursors: PageCursors!
+  totalCount: Int
 
   # Returns aggregation counts for the given filter query.
   aggregations: [SaleArtworksAggregationResults]
@@ -6027,7 +6242,7 @@ type SaleConnection {
 
   # A list of edges.
   edges: [SaleEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
@@ -6075,7 +6290,7 @@ type SavedArtworksConnection {
 
   # A list of edges.
   edges: [SavedArtworksEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
   description: String!
   default: Boolean!
@@ -6106,7 +6321,7 @@ type SearchableConnection {
 
   # A list of edges.
   edges: [SearchableEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 
   # Returns aggregation counts for the given filter query.
@@ -6457,7 +6672,7 @@ type ShowConnection {
 
   # A list of edges.
   edges: [ShowEdge]
-  pageCursors: PageCursors
+  pageCursors: PageCursors!
   totalCount: Int
 }
 
@@ -6631,6 +6846,54 @@ type Tag implements Node {
   href: String
   image: Image
   count: Int
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
 }
 
 type TrendingArtists {
@@ -6843,11 +7106,77 @@ type Viewer {
     id: String!
   ): Artwork
 
+  # Artworks Elastic Search results
+  artworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+
   # An Artist
   artist(
     # The slug or ID of the Artist
     id: String!
   ): Artist
+
+  # A list of Artists
+  artists(
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    page: Int = 1
+    size: Int
+    sort: ArtistSorts
+  ): [Artist]
 
   # A city-based entry point for local discovery
   city(
@@ -6858,6 +7187,12 @@ type Viewer {
     near: Near
   ): City
 
+  # A user's credit card
+  creditCard(
+    # The ID of the Credit Card
+    id: String!
+  ): CreditCard
+
   # A Fair
   fair(
     # The slug or ID of the Fair
@@ -6867,6 +7202,18 @@ type Viewer {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Genes
+  genes(
+    size: Int
+
+    #
+    #         Only return genes matching specified slugs.
+    #         Accepts list of slugs.
+    #
+    slugs: [String]
+  ): [Gene]
+  highlights: Highlights
 
   # Home screen content
   homePage: HomePage
@@ -6941,4 +7288,15 @@ type Viewer {
 
   # Fields related to internal systems.
   system: System
+  tag(
+    # The slug or ID of the Tag
+    id: String!
+  ): Tag
+  user(
+    # Email to search for user by
+    email: String
+
+    # ID of the user
+    id: String
+  ): User
 }

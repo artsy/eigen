@@ -110,6 +110,7 @@ fragment PartnerCard_artwork on Artwork {
     id
   }
   partner {
+    cities
     is_default_profile_public: isDefaultProfilePublic
     type
     name
@@ -124,10 +125,6 @@ fragment PartnerCard_artwork on Artwork {
       icon {
         url(version: "square140")
       }
-    }
-    locations {
-      city
-      id
     }
   }
 }
@@ -1000,6 +997,13 @@ return {
               (v1/*: any*/),
               {
                 "kind": "ScalarField",
+                "alias": null,
+                "name": "cities",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
                 "alias": "is_default_profile_public",
                 "name": "isDefaultProfilePublic",
                 "args": null,
@@ -1045,25 +1049,6 @@ return {
                       }
                     ]
                   }
-                ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "locations",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Location",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "city",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  (v1/*: any*/)
                 ]
               }
             ]
@@ -1983,7 +1968,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTestsQuery",
-    "id": "4cc44fb5ad0b4e92d5e585464c34d68b",
+    "id": "ad4a242e5cf9fbc360c4a174e6b40392",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -2077,6 +2062,12 @@ return {
           "plural": true,
           "nullable": true
         },
+        "artwork.partner.cities": {
+          "type": "String",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
         "artwork.partner.is_default_profile_public": (v34/*: any*/),
         "artwork.partner.name": (v30/*: any*/),
         "artwork.partner.slug": (v29/*: any*/),
@@ -2086,12 +2077,6 @@ return {
           "type": "Profile",
           "enumValues": null,
           "plural": false,
-          "nullable": true
-        },
-        "artwork.partner.locations": {
-          "type": "Location",
-          "enumValues": null,
-          "plural": true,
           "nullable": true
         },
         "artwork.contextGrids.__typename": (v37/*: any*/),
@@ -2147,8 +2132,6 @@ return {
         "artwork.partner.profile.internalID": (v29/*: any*/),
         "artwork.partner.profile.is_followed": (v34/*: any*/),
         "artwork.partner.profile.icon": (v39/*: any*/),
-        "artwork.partner.locations.city": (v30/*: any*/),
-        "artwork.partner.locations.id": (v35/*: any*/),
         "artwork.artists.biography_blurb.text": (v30/*: any*/),
         "artwork.artists.internalID": (v29/*: any*/),
         "artwork.artists.slug": (v29/*: any*/),
