@@ -15870,10 +15870,10 @@ voca@^1.4.0:
   resolved "https://registry.yarnpkg.com/voca/-/voca-1.4.0.tgz#e15ac58b38290b72acc0c330366b6cc7984924d7"
   integrity sha512-8Xz4H3vhYRGbFupLtl6dHwMx0ojUcjt0HYkqZ9oBCfipd/5mD7Md58m2/dq7uPuZU/0T3Gb1m66KS9jn+I+14Q==
 
-vscode-apollo-relay@1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/vscode-apollo-relay/-/vscode-apollo-relay-1.4.3.tgz#fb3a778c44d077b305964b3b41aef9e7f21e904f"
-  integrity sha512-U9ZXGEtRYpkr/wt60E65olUxxjXGibtAqDEdRg08/5RlNyKt4fyN1Luq35up3aHdMPC7ht9/KhElwUBbf967ww==
+vscode-apollo-relay@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/vscode-apollo-relay/-/vscode-apollo-relay-1.5.0.tgz#cd427a49093c3c055ef0f0028bd46deb1e225fc0"
+  integrity sha512-NWOEEmB0s1PZgIntLlpHPuRA95TPvVJfw4bSePphr+rY0e+4XvuvVvxe+EE/9BirM8G2cGY1UM4yukWpP778Qg==
 
 vscode-css-languageservice@^3.0.12:
   version "3.0.12"
