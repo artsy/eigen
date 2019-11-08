@@ -1,3 +1,15 @@
+# v1.18.25 (Fri Nov 08 2019)
+
+#### 🐛  Bug Fix
+
+- Update dep vscode-apollo-relay from 1.4.3 to v1.5.0 [#1962](https://github.com/artsy/emission/pull/1962) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.18.24 (Wed Nov 06 2019)
 
 #### 🐛  Bug Fix
