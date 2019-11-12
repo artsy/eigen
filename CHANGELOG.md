@@ -1,3 +1,15 @@
+# v1.18.26 (Tue Nov 12 2019)
+
+#### 🐛  Bug Fix
+
+- hide artists list when no artists [#1963](https://github.com/artsy/emission/pull/1963) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.18.25 (Fri Nov 08 2019)
 
 #### 🐛  Bug Fix
