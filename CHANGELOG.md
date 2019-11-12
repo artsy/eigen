@@ -1,3 +1,15 @@
+# v1.18.27 (Tue Nov 12 2019)
+
+#### 🐛  Bug Fix
+
+- Condenses partner header [#1964](https://github.com/artsy/emission/pull/1964) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.26 (Tue Nov 12 2019)
 
 #### 🐛  Bug Fix
