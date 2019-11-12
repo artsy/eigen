@@ -68,7 +68,7 @@ fragment PartnerOverview_partner on Partner {
     bio
     id
   }
-  artists: artistsConnection(representedBy: true, sort: SORTABLE_ID_ASC, first: 10) {
+  artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
       hasNextPage
       startCursor
@@ -369,11 +369,6 @@ v13 = [
     "kind": "Literal",
     "name": "first",
     "value": 10
-  },
-  {
-    "kind": "Literal",
-    "name": "representedBy",
-    "value": true
   },
   {
     "kind": "Literal",
@@ -739,7 +734,7 @@ return {
             "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
-            "storageKey": "artistsConnection(first:10,representedBy:true,sort:\"SORTABLE_ID_ASC\")",
+            "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
             "args": (v13/*: any*/),
             "concreteType": "ArtistPartnerConnection",
             "plural": false,
@@ -830,7 +825,6 @@ return {
             "handle": "connection",
             "key": "Partner_artists",
             "filters": [
-              "representedBy",
               "sort"
             ]
           },
@@ -1015,7 +1009,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "a988f4bbfc61d4c717a13136e184dcad",
+    "id": "27192ea11da9d1f14822cf0d303445c6",
     "text": null,
     "metadata": {}
   }

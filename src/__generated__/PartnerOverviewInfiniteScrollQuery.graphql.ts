@@ -39,7 +39,7 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     bio
     id
   }
-  artists: artistsConnection(representedBy: true, sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
+  artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       startCursor
@@ -140,11 +140,6 @@ v5 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
-  },
-  {
-    "kind": "Literal",
-    "name": "representedBy",
-    "value": true
   },
   {
     "kind": "Literal",
@@ -391,7 +386,6 @@ return {
             "handle": "connection",
             "key": "Partner_artists",
             "filters": [
-              "representedBy",
               "sort"
             ]
           },
@@ -404,7 +398,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "65b6115cd91471b23617109775fd6729",
+    "id": "beea7adba6a872a5455ad40c530f7611",
     "text": null,
     "metadata": {}
   }

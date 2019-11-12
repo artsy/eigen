@@ -102,13 +102,8 @@ const node: ReaderFragment = {
       "kind": "LinkedField",
       "alias": "artists",
       "name": "__Partner_artists_connection",
-      "storageKey": "__Partner_artists_connection(representedBy:true,sort:\"SORTABLE_ID_ASC\")",
+      "storageKey": "__Partner_artists_connection(sort:\"SORTABLE_ID_ASC\")",
       "args": [
-        {
-          "kind": "Literal",
-          "name": "representedBy",
-          "value": true
-        },
         {
           "kind": "Literal",
           "name": "sort",
@@ -207,5 +202,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a305d6829e723bcbe93dded28c9d647b';
+(node as any).hash = 'd60da13a7aca9f4da98941cd217c5fa6';
 export default node;
