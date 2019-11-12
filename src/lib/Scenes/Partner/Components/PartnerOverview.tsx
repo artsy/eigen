@@ -70,16 +70,17 @@ export const PartnerOverview: React.FC<{
           </>
         )}
         <PartnerLocationSection partner={partner} />
-        {!!artists && (
-          <>
-            <Sans size="3t" weight="medium">
-              Artists
-            </Sans>
-            <Spacer mb={2} />
-            {renderArtists()}
-            <Spacer mb={3} />
-          </>
-        )}
+        {!!artists &&
+          artists.length > 0 && (
+            <>
+              <Sans size="3t" weight="medium">
+                Artists
+              </Sans>
+              <Spacer mb={2} />
+              {renderArtists()}
+              <Spacer mb={3} />
+            </>
+          )}
       </Box>
     </ScrollView>
   )
