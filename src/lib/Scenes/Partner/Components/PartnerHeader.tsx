@@ -14,10 +14,10 @@ const PartnerHeader: React.FC<{
   const eligibleArtworks = get(partner, p => p.counts.eligibleArtworks)
   return (
     <>
-      <Box style={{ height: 50 }} />
+      <Box mb={1} />
       <Flex flexDirection="row" justifyContent="center">
         <Box px={2}>
-          <Serif style={{ textAlign: "center" }} size="6">
+          <Serif style={{ textAlign: "center" }} size="5">
             {partner.name}
           </Serif>
           {(followsCount || eligibleArtworks) && (
