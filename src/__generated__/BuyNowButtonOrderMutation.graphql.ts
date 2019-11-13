@@ -52,6 +52,7 @@ mutation BuyNowButtonOrderMutation(
           __typename
           internalID
           mode
+          id
         }
       }
       ... on CommerceOrderWithMutationFailure {
@@ -234,7 +235,14 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v3/*: any*/),
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "id",
+                        "args": null,
+                        "storageKey": null
+                      }
                     ]
                   }
                 ]
@@ -249,7 +257,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "BuyNowButtonOrderMutation",
-    "id": "f00c41abf4aff4738987ff9a680cd41c",
+    "id": "34ab3ef70b965ef3274c41c840eff5b7",
     "text": null,
     "metadata": {}
   }

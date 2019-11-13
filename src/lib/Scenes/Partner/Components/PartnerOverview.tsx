@@ -52,7 +52,7 @@ export const PartnerOverview: React.FC<{
 
   const aboutText = get(partner, p => p.profile.bio)
 
-  if (!aboutText && !artists && !partner.locations) {
+  if (!aboutText && !artists && !partner.cities) {
     return <PartnerEmptyState text="There is no information for this gallery yet" />
   }
 
@@ -61,10 +61,6 @@ export const PartnerOverview: React.FC<{
       <Box px={2} py={3}>
         {!!aboutText && (
           <>
-            <Sans size="3t" weight="medium">
-              About
-            </Sans>
-            <Spacer mb={2} />
             <ReadMore content={aboutText} maxChars={textLimit} />
             <Spacer mb={3} />
           </>
@@ -94,13 +90,11 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         internalID
         name
-        locations {
-          city
-        }
+        cities
         profile {
           bio
         }
-        artists: artistsConnection(representedBy: true, sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
+        artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
           @connection(key: "Partner_artists") {
           pageInfo {
             hasNextPage

@@ -75,9 +75,6 @@ export const PartnerContainer = createRefetchContainer(
           isFollowed
           internalID
         }
-        locations {
-          city
-        }
 
         ...PartnerArtwork_partner
         ...PartnerOverview_partner

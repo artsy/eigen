@@ -2,44 +2,35 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PartnerOverviewInfiniteScrollQueryVariables = {
-    id: string;
-    cursor?: string | null;
-    count: number;
+export type PartnerLocationsQueryVariables = {
+    partnerID: string;
 };
-export type PartnerOverviewInfiniteScrollQueryResponse = {
+export type PartnerLocationsQueryResponse = {
     readonly partner: {
-        readonly " $fragmentRefs": FragmentRefs<"PartnerOverview_partner">;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerLocations_partner">;
     } | null;
 };
-export type PartnerOverviewInfiniteScrollQuery = {
-    readonly response: PartnerOverviewInfiniteScrollQueryResponse;
-    readonly variables: PartnerOverviewInfiniteScrollQueryVariables;
+export type PartnerLocationsQuery = {
+    readonly response: PartnerLocationsQueryResponse;
+    readonly variables: PartnerLocationsQueryVariables;
 };
 
 
 
 /*
-query PartnerOverviewInfiniteScrollQuery(
-  $id: String!
-  $cursor: String
-  $count: Int!
+query PartnerLocationsQuery(
+  $partnerID: String!
 ) {
-  partner(id: $id) {
-    ...PartnerOverview_partner_1G22uz
+  partner(id: $partnerID) {
+    ...PartnerLocations_partner
     id
   }
 }
 
-fragment PartnerOverview_partner_1G22uz on Partner {
-  internalID
+fragment PartnerLocations_partner on Partner {
   name
-  cities
-  profile {
-    bio
-    id
-  }
-  artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
+  internalID
+  locations: locationsConnection(first: 4) {
     pageInfo {
       hasNextPage
       startCursor
@@ -48,36 +39,26 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     edges {
       node {
         id
-        ...ArtistListItem_artist
+        ...PartnerMap_location
         __typename
       }
       cursor
-      id
     }
   }
-  ...PartnerLocationSection_partner
 }
 
-fragment ArtistListItem_artist on Artist {
+fragment PartnerMap_location on Location {
   id
   internalID
-  slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
+  city
+  address
+  address2
+  postalCode
+  summary
+  coordinates {
+    lat
+    lng
   }
-}
-
-fragment PartnerLocationSection_partner on Partner {
-  slug
-  name
-  cities
 }
 */
 
@@ -85,20 +66,8 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "id",
+    "name": "partnerID",
     "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
     "defaultValue": null
   }
 ],
@@ -106,7 +75,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id"
+    "variableName": "partnerID"
   }
 ],
 v2 = {
@@ -116,41 +85,17 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 4
+  }
+],
 v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v5 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
-  {
-    "kind": "Variable",
-    "name": "first",
-    "variableName": "count"
-  },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "SORTABLE_ID_ASC"
-  }
-],
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
   "args": null,
   "storageKey": null
 };
@@ -158,7 +103,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "PartnerOverviewInfiniteScrollQuery",
+    "name": "PartnerLocationsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -174,19 +119,8 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "PartnerOverview_partner",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "count",
-                "variableName": "count"
-              },
-              {
-                "kind": "Variable",
-                "name": "cursor",
-                "variableName": "cursor"
-              }
-            ]
+            "name": "PartnerLocations_partner",
+            "args": null
           }
         ]
       }
@@ -194,7 +128,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "PartnerOverviewInfiniteScrollQuery",
+    "name": "PartnerLocationsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -206,41 +140,21 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "cities",
+            "name": "name",
             "args": null,
             "storageKey": null
           },
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "profile",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "bio",
-                "args": null,
-                "storageKey": null
-              },
-              (v4/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": "artists",
-            "name": "artistsConnection",
-            "storageKey": null,
-            "args": (v5/*: any*/),
-            "concreteType": "ArtistPartnerConnection",
+            "alias": "locations",
+            "name": "locationsConnection",
+            "storageKey": "locationsConnection(first:4)",
+            "args": (v3/*: any*/),
+            "concreteType": "LocationConnection",
             "plural": false,
             "selections": [
               {
@@ -281,7 +195,7 @@ return {
                 "name": "edges",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "ArtistPartnerEdge",
+                "concreteType": "LocationEdge",
                 "plural": true,
                 "selections": [
                   {
@@ -290,68 +204,66 @@ return {
                     "name": "node",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "Artist",
+                    "concreteType": "Location",
                     "plural": false,
                     "selections": [
                       (v4/*: any*/),
                       (v2/*: any*/),
-                      (v6/*: any*/),
-                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "initials",
+                        "name": "city",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "href",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_followed",
-                        "name": "isFollowed",
+                        "name": "address",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "nationality",
+                        "name": "address2",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "birthday",
+                        "name": "postalCode",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "deathday",
+                        "name": "summary",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "image",
+                        "name": "coordinates",
                         "storageKey": null,
                         "args": null,
-                        "concreteType": "Image",
+                        "concreteType": "LatLng",
                         "plural": false,
                         "selections": [
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "url",
+                            "name": "lat",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "lng",
                             "args": null,
                             "storageKey": null
                           }
@@ -372,24 +284,20 @@ return {
                     "name": "cursor",
                     "args": null,
                     "storageKey": null
-                  },
-                  (v4/*: any*/)
+                  }
                 ]
               }
             ]
           },
           {
             "kind": "LinkedHandle",
-            "alias": "artists",
-            "name": "artistsConnection",
-            "args": (v5/*: any*/),
+            "alias": "locations",
+            "name": "locationsConnection",
+            "args": (v3/*: any*/),
             "handle": "connection",
-            "key": "Partner_artists",
-            "filters": [
-              "sort"
-            ]
+            "key": "Partner_locations",
+            "filters": null
           },
-          (v6/*: any*/),
           (v4/*: any*/)
         ]
       }
@@ -397,12 +305,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "beea7adba6a872a5455ad40c530f7611",
+    "name": "PartnerLocationsQuery",
+    "id": "16a661de86b8ebb41a3deda7eebf1ce7",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd39e18b52536fe2f514f24133076a1ac';
+(node as any).hash = '8c0169823cc4cc8238e18e15801a6857';
 export default node;

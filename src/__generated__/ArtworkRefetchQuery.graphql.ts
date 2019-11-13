@@ -115,6 +115,7 @@ fragment PartnerCard_artwork on Artwork {
     id
   }
   partner {
+    cities
     is_default_profile_public: isDefaultProfilePublic
     type
     name
@@ -129,10 +130,6 @@ fragment PartnerCard_artwork on Artwork {
       icon {
         url(version: "square140")
       }
-    }
-    locations {
-      city
-      id
     }
   }
 }
@@ -911,6 +908,13 @@ return {
                   (v3/*: any*/),
                   {
                     "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cities",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
                     "alias": "is_default_profile_public",
                     "name": "isDefaultProfilePublic",
                     "args": null,
@@ -956,25 +960,6 @@ return {
                           }
                         ]
                       }
-                    ]
-                  },
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "locations",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Location",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "city",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      (v3/*: any*/)
                     ]
                   }
                 ]
@@ -1895,7 +1880,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "02bb13a7a1c60de991293487a40187b9",
+    "id": "fc8838c7ae1c86eaff80460d2bbe5c6b",
     "text": null,
     "metadata": {}
   }

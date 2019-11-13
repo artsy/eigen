@@ -2589,7 +2589,7 @@ exports[`Artwork renders a snapshot 1`] = `
                   ]
                 }
               >
-                &lt;mock-value-for-field-"city"&gt;
+                &lt;mock-value-for-field-"cities"&gt;
               </Text>
             </View>
             <View

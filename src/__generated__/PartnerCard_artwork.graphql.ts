@@ -7,6 +7,7 @@ export type PartnerCard_artwork = {
         readonly isGalleryAuction: boolean | null;
     } | null;
     readonly partner: {
+        readonly cities: ReadonlyArray<string | null> | null;
         readonly is_default_profile_public: boolean | null;
         readonly type: string | null;
         readonly name: string | null;
@@ -22,9 +23,6 @@ export type PartnerCard_artwork = {
                 readonly url: string | null;
             } | null;
         } | null;
-        readonly locations: ReadonlyArray<{
-            readonly city: string | null;
-        } | null> | null;
     } | null;
     readonly " $refType": "PartnerCard_artwork";
 };
@@ -80,6 +78,13 @@ return {
       "concreteType": "Partner",
       "plural": false,
       "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "cities",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": "is_default_profile_public",
@@ -172,29 +177,11 @@ return {
               ]
             }
           ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "locations",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Location",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "city",
-              "args": null,
-              "storageKey": null
-            }
-          ]
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '662a4f1df0e12f9ce31dd37f8a512346';
+(node as any).hash = 'b2e7b624ea9963228683e0eda30525c1';
 export default node;

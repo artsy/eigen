@@ -2,14 +2,10 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type PartnerOverview_partner = {
-    readonly internalID: string;
+export type PartnerLocations_partner = {
     readonly name: string | null;
-    readonly cities: ReadonlyArray<string | null> | null;
-    readonly profile: {
-        readonly bio: string | null;
-    } | null;
-    readonly artists: {
+    readonly internalID: string;
+    readonly locations: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
@@ -18,19 +14,18 @@ export type PartnerOverview_partner = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
+                readonly " $fragmentRefs": FragmentRefs<"PartnerMap_location">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"PartnerLocationSection_partner">;
-    readonly " $refType": "PartnerOverview_partner";
+    readonly " $refType": "PartnerLocations_partner";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "PartnerOverview_partner",
+  "name": "PartnerLocations_partner",
   "type": "Partner",
   "metadata": {
     "connection": [
@@ -39,7 +34,7 @@ const node: ReaderFragment = {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "artists"
+          "locations"
         ]
       }
     ]
@@ -49,7 +44,7 @@ const node: ReaderFragment = {
       "kind": "LocalArgument",
       "name": "count",
       "type": "Int",
-      "defaultValue": 10
+      "defaultValue": 4
     },
     {
       "kind": "LocalArgument",
@@ -62,13 +57,6 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "name",
       "args": null,
       "storageKey": null
@@ -76,41 +64,17 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "cities",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "profile",
+      "alias": "locations",
+      "name": "__Partner_locations_connection",
       "storageKey": null,
       "args": null,
-      "concreteType": "Profile",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "bio",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": "artists",
-      "name": "__Partner_artists_connection",
-      "storageKey": "__Partner_artists_connection(sort:\"SORTABLE_ID_ASC\")",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "sort",
-          "value": "SORTABLE_ID_ASC"
-        }
-      ],
-      "concreteType": "ArtistPartnerConnection",
+      "concreteType": "LocationConnection",
       "plural": false,
       "selections": [
         {
@@ -151,7 +115,7 @@ const node: ReaderFragment = {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "ArtistPartnerEdge",
+          "concreteType": "LocationEdge",
           "plural": true,
           "selections": [
             {
@@ -160,7 +124,7 @@ const node: ReaderFragment = {
               "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "Artist",
+              "concreteType": "Location",
               "plural": false,
               "selections": [
                 {
@@ -179,7 +143,7 @@ const node: ReaderFragment = {
                 },
                 {
                   "kind": "FragmentSpread",
-                  "name": "ArtistListItem_artist",
+                  "name": "PartnerMap_location",
                   "args": null
                 }
               ]
@@ -194,13 +158,8 @@ const node: ReaderFragment = {
           ]
         }
       ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "PartnerLocationSection_partner",
-      "args": null
     }
   ]
 };
-(node as any).hash = 'd60da13a7aca9f4da98941cd217c5fa6';
+(node as any).hash = 'eac6aef905fc4ad24b28f7354ede2f1d';
 export default node;

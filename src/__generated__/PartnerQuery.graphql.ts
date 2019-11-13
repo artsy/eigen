@@ -35,10 +35,6 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  locations {
-    city
-    id
-  }
   ...PartnerArtwork_partner
   ...PartnerOverview_partner
   ...PartnerShows_partner
@@ -67,15 +63,12 @@ fragment PartnerArtwork_partner on Partner {
 fragment PartnerOverview_partner on Partner {
   internalID
   name
-  locations {
-    city
-    id
-  }
+  cities
   profile {
     bio
     id
   }
-  artists: artistsConnection(representedBy: true, sort: SORTABLE_ID_ASC, first: 10) {
+  artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
       hasNextPage
       startCursor
@@ -213,11 +206,9 @@ fragment ArtistListItem_artist on Artist {
 }
 
 fragment PartnerLocationSection_partner on Partner {
+  slug
   name
-  locations {
-    city
-    id
-  }
+  cities
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -381,11 +372,6 @@ v13 = [
   },
   {
     "kind": "Literal",
-    "name": "representedBy",
-    "value": true
-  },
-  {
-    "kind": "Literal",
     "name": "sort",
     "value": "SORTABLE_ID_ASC"
   }
@@ -523,25 +509,6 @@ return {
                   }
                 ]
               }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "locations",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Location",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "city",
-                "args": null,
-                "storageKey": null
-              },
-              (v2/*: any*/)
             ]
           },
           (v4/*: any*/),
@@ -757,10 +724,17 @@ return {
           },
           (v8/*: any*/),
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "cities",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
-            "storageKey": "artistsConnection(first:10,representedBy:true,sort:\"SORTABLE_ID_ASC\")",
+            "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
             "args": (v13/*: any*/),
             "concreteType": "ArtistPartnerConnection",
             "plural": false,
@@ -851,7 +825,6 @@ return {
             "handle": "connection",
             "key": "Partner_artists",
             "filters": [
-              "representedBy",
               "sort"
             ]
           },
@@ -1036,7 +1009,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "a0e63140d50731bb5118463342a9366f",
+    "id": "27192ea11da9d1f14822cf0d303445c6",
     "text": null,
     "metadata": {}
   }
