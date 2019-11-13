@@ -1,3 +1,15 @@
+# v1.18.28 (Wed Nov 13 2019)
+
+#### 🐛  Bug Fix
+
+- ME-89 - Adds partner locations view to partner view [#1960](https://github.com/artsy/emission/pull/1960) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.27 (Tue Nov 12 2019)
 
 #### 🐛  Bug Fix
