@@ -4828,13 +4828,6 @@ enum MarketingGroupTypes {
   OtherCollections
 }
 
-type MarketingImage {
-  id: ID!
-  small: String!
-  medium: String!
-  large: String!
-}
-
 type Me implements Node {
   # A globally unique ID.
   id: ID!
@@ -5239,6 +5232,10 @@ type Partner implements Node {
   isDefaultProfilePublic: Boolean
   isLinkable: Boolean
   isPreQualify: Boolean
+
+  # This field is deprecated and is being used in Eigen release predating the 6.0 release
+  locations(size: Int = 25): [Location]
+    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, first: Int, before: String, last: Int): LocationConnection
