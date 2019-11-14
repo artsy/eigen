@@ -27,20 +27,20 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
     return (
       <Flex flexGrow={1}>
         {title && (
-          <Serif mb="0.5" size="3">
+          <Serif mb={0.5} size="3">
             {title}
             {required && <Required>*</Required>}
           </Serif>
         )}
         {description && (
-          <Serif color="black60" mb="1" size="2">
+          <Serif color="black60" mb={1} size="2">
             {description}
           </Serif>
         )}
         <TouchableWithoutFeedback onPressIn={() => input.current.focus()}>
           <InputWrapper focused={focused} disabled={disabled} error={!!error}>
             {icon}
-            {icon && <Spacer ml={2} />}
+            {icon && <Spacer ml={1} />}
             <StyledInput
               ref={input}
               placeholderTextColor={color("black60")}

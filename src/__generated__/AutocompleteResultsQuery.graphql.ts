@@ -11,6 +11,7 @@ export type AutocompleteResultsQueryResponse = {
                 readonly imageUrl: string | null;
                 readonly href: string | null;
                 readonly displayLabel: string | null;
+                readonly displayType?: string | null;
             } | null;
         } | null> | null;
     } | null;
@@ -33,6 +34,9 @@ query AutocompleteResultsQuery(
         imageUrl
         href
         displayLabel
+        ... on SearchableItem {
+          displayType
+        }
         ... on Node {
           id
         }
@@ -88,6 +92,19 @@ v4 = {
   "name": "displayLabel",
   "args": null,
   "storageKey": null
+},
+v5 = {
+  "kind": "InlineFragment",
+  "type": "SearchableItem",
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "displayType",
+      "args": null,
+      "storageKey": null
+    }
+  ]
 };
 return {
   "kind": "Request",
@@ -127,7 +144,8 @@ return {
                 "selections": [
                   (v2/*: any*/),
                   (v3/*: any*/),
-                  (v4/*: any*/)
+                  (v4/*: any*/),
+                  (v5/*: any*/)
                 ]
               }
             ]
@@ -184,7 +202,8 @@ return {
                     "name": "id",
                     "args": null,
                     "storageKey": null
-                  }
+                  },
+                  (v5/*: any*/)
                 ]
               }
             ]
@@ -196,11 +215,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutocompleteResultsQuery",
-    "id": "f5351f75b395e33dba601429f847945d",
+    "id": "65d02c8c96ef75511908c6befe7c96b4",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '95ce606c8c7a4d1633cd1a1498f2a0ee';
+(node as any).hash = 'aaf2f393720f2fae13b75daedb06b6dc';
 export default node;

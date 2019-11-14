@@ -1,8 +1,12 @@
-import { Flex, Serif } from "@artsy/palette"
+import { Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { AutocompleteResultsQuery } from "__generated__/AutocompleteResultsQuery.graphql"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useEffect, useState } from "react"
+import { throttle } from "lodash"
+import { useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import Sentry from "react-native-sentry"
 import { fetchQuery, graphql } from "react-relay"
 
@@ -20,6 +24,9 @@ async function fetchResults(query: string): Promise<AutocompleteResult[]> {
                 imageUrl
                 href
                 displayLabel
+                ... on SearchableItem {
+                  displayType
+                }
               }
             }
           }
@@ -35,7 +42,7 @@ async function fetchResults(query: string): Promise<AutocompleteResult[]> {
 
     return data.searchConnection.edges.map(e => e.node)
   } catch (e) {
-    Sentry.captureMessage(e.message)
+    Sentry.captureMessage(e.stack)
     console.error(e)
     return []
   }
@@ -43,22 +50,60 @@ async function fetchResults(query: string): Promise<AutocompleteResult[]> {
 
 export const AutocompleteResults: React.FC<{ query: string }> = ({ query }) => {
   const [results, setResults] = useState<AutocompleteResult[]>([])
-  // const throttledFetchResults = useMemo(() => throttle(fetchResults, 800, { leading: false, trailing: true }), [])
+  const throttledFetchResults = useMemo(
+    () => throttle(async (q: string) => setResults(await fetchResults(q)), 400, { leading: false, trailing: true }),
+    []
+  )
   useEffect(
     () => {
-      if (query.trim()) {
-        fetchResults(query).then(setResults)
+      if (query) {
+        throttledFetchResults(query)
+      } else {
+        setResults([])
       }
     },
     [query]
   )
+  const navRef = useRef<any>()
   return (
-    <Flex>
-      {results.map(({ displayLabel, href }) => (
-        <Serif size="4" key={href}>
-          {displayLabel}
-        </Serif>
+    <Flex ref={navRef}>
+      {results.map(({ displayLabel, href, imageUrl, displayType }) => (
+        <TouchableOpacity
+          key={href}
+          onPress={() => {
+            SwitchBoard.presentNavigationViewController(navRef.current, href)
+          }}
+        >
+          <Flex flexDirection="row" p={2} pb={0} alignItems="center">
+            <OpaqueImageView imageURL={imageUrl} style={{ width: 36, height: 36 }} />
+            <Spacer ml={1} />
+            <Flex>
+              <Serif size="3">{highlight(displayLabel, query)}</Serif>
+              {displayType && (
+                <Sans size="2" color="black60">
+                  {displayType}
+                </Sans>
+              )}
+            </Flex>
+          </Flex>
+        </TouchableOpacity>
       ))}
     </Flex>
+  )
+}
+
+function highlight(displayLabel: string, query: string) {
+  const i = displayLabel.toLowerCase().indexOf(query.toLowerCase())
+  if (i === -1) {
+    return displayLabel
+  }
+  return (
+    <>
+      {displayLabel.slice(0, i)}
+      <Serif size="3" weight="semibold">
+        {displayLabel.slice(i, i + query.length)}
+      </Serif>
+      {displayLabel.slice(i + query.length)}
+    </>
   )
 }
