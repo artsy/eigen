@@ -1,6 +1,7 @@
-import { Box } from "@artsy/palette"
+import { Box, Flex } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import Spinner from "lib/Components/Spinner"
 import { get } from "lib/utils/get"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useCallback, useState } from "react"
@@ -46,6 +47,13 @@ export const PartnerArtwork: React.FC<{
     <ScrollView onScroll={e => onScroll(e)}>
       <Box px={2} py={3}>
         {artworks && <GenericGrid artworks={artworks.edges.map(({ node }) => node)} />}
+        {fetchingNextPage && (
+          <Box p={2} style={{ height: 50 }}>
+            <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          </Box>
+        )}
       </Box>
     </ScrollView>
   )

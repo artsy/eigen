@@ -1,7 +1,8 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
+import Spinner from "lib/Components/Spinner"
 import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
 import { get } from "lib/utils/get"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -74,6 +75,13 @@ export const PartnerOverview: React.FC<{
               </Sans>
               <Spacer mb={2} />
               {renderArtists()}
+              {fetchingNextPage && (
+                <Box p={2} style={{ height: 50 }}>
+                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                    <Spinner />
+                  </Flex>
+                </Box>
+              )}
               <Spacer mb={3} />
             </>
           )}

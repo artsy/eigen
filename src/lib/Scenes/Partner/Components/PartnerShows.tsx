@@ -1,5 +1,6 @@
 import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
+import Spinner from "lib/Components/Spinner"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { ImageBackground, ScrollView, TouchableWithoutFeedback } from "react-native"
@@ -83,6 +84,13 @@ export const PartnerShows: React.FC<{
                   return <ShowGridItem itemIndex={index} key={node.id} show={node} />
                 })}
               </Flex>
+              {fetchingNextPage && (
+                <Box p={2} style={{ height: 50 }}>
+                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                    <Spinner />
+                  </Flex>
+                </Box>
+              )}
               <Spacer mb={3} />
             </>
           )}
