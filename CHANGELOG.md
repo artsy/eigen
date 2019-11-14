@@ -1,3 +1,15 @@
+# v1.18.31 (Thu Nov 14 2019)
+
+#### 🐛  Bug Fix
+
+- Adds spinners to partner page [#1968](https://github.com/artsy/emission/pull/1968) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.30 (Thu Nov 14 2019)
 
 #### 🐛  Bug Fix
