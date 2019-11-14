@@ -38,6 +38,6 @@ describe("PartnerArtwork", () => {
     const grid = wrapper.find(GenericGrid)
     expect(grid.props().artworks.length).toBe(10)
     expect(grid.length).toBe(1)
-    expect(wrapper).toMatchSnapshot()
+    expect(wrapper.html()).toMatchSnapshot()
   })
 })
