@@ -2,7 +2,7 @@ import { color, Flex, Sans, Theme } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
 import React, { useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { AutocompleteResults } from "./AutocompleteResults"
+import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
 
 export const Search: React.FC = () => {
@@ -39,7 +39,7 @@ export const Search: React.FC = () => {
             </Flex>
           </TouchableWithoutFeedback>
         </Flex>
-        <AutocompleteResults query={query} />
+        <AutosuggestResults query={query} />
       </Flex>
     </Theme>
   )

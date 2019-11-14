@@ -1,10 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type AutocompleteResultsQueryVariables = {
+export type AutosuggestResultsQueryVariables = {
     query: string;
 };
-export type AutocompleteResultsQueryResponse = {
+export type AutosuggestResultsQueryResponse = {
     readonly searchConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -16,15 +16,15 @@ export type AutocompleteResultsQueryResponse = {
         } | null> | null;
     } | null;
 };
-export type AutocompleteResultsQuery = {
-    readonly response: AutocompleteResultsQueryResponse;
-    readonly variables: AutocompleteResultsQueryVariables;
+export type AutosuggestResultsQuery = {
+    readonly response: AutosuggestResultsQueryResponse;
+    readonly variables: AutosuggestResultsQueryVariables;
 };
 
 
 
 /*
-query AutocompleteResultsQuery(
+query AutosuggestResultsQuery(
   $query: String!
 ) {
   searchConnection(query: $query, mode: AUTOSUGGEST, first: 5) {
@@ -110,7 +110,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "AutocompleteResultsQuery",
+    "name": "AutosuggestResultsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -156,7 +156,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "AutocompleteResultsQuery",
+    "name": "AutosuggestResultsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -214,12 +214,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "AutocompleteResultsQuery",
-    "id": "65d02c8c96ef75511908c6befe7c96b4",
+    "name": "AutosuggestResultsQuery",
+    "id": "12f6b52ac05a984fee9358bfb139c213",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'aaf2f393720f2fae13b75daedb06b6dc';
+(node as any).hash = 'df1324149fa22b112d3bcf141f3249a9';
 export default node;

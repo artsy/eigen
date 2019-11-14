@@ -1,5 +1,5 @@
 import { Flex, Sans, Serif, Spacer } from "@artsy/palette"
-import { AutocompleteResultsQuery } from "__generated__/AutocompleteResultsQuery.graphql"
+import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -10,14 +10,14 @@ import { TouchableOpacity } from "react-native"
 import Sentry from "react-native-sentry"
 import { fetchQuery, graphql } from "react-relay"
 
-type AutocompleteResult = AutocompleteResultsQuery["response"]["searchConnection"]["edges"][0]["node"]
+type AutosuggestResult = AutosuggestResultsQuery["response"]["searchConnection"]["edges"][0]["node"]
 
-async function fetchResults(query: string): Promise<AutocompleteResult[]> {
+async function fetchResults(query: string): Promise<AutosuggestResult[]> {
   try {
-    const data = await fetchQuery<AutocompleteResultsQuery>(
+    const data = await fetchQuery<AutosuggestResultsQuery>(
       defaultEnvironment,
       graphql`
-        query AutocompleteResultsQuery($query: String!) {
+        query AutosuggestResultsQuery($query: String!) {
           searchConnection(query: $query, mode: AUTOSUGGEST, first: 5) {
             edges {
               node {
@@ -48,8 +48,8 @@ async function fetchResults(query: string): Promise<AutocompleteResult[]> {
   }
 }
 
-export const AutocompleteResults: React.FC<{ query: string }> = ({ query }) => {
-  const [results, setResults] = useState<AutocompleteResult[]>([])
+export const AutosuggestResults: React.FC<{ query: string }> = ({ query }) => {
+  const [results, setResults] = useState<AutosuggestResult[]>([])
   const throttledFetchResults = useMemo(
     () => throttle(async (q: string) => setResults(await fetchResults(q)), 400, { leading: false, trailing: true }),
     []
