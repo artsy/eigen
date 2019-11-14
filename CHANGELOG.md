@@ -1,3 +1,15 @@
+# v1.18.30 (Thu Nov 14 2019)
+
+#### 🐛  Bug Fix
+
+- Fixes it(It... [#1967](https://github.com/artsy/emission/pull/1967) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.29 (Thu Nov 14 2019)
 
 #### 🐛  Bug Fix
