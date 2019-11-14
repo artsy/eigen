@@ -79,7 +79,7 @@ describe("callbacks", () => {
 })
 
 describe("state", () => {
-  it("it defaults to Submitting", () => {
+  it("defaults to Submitting", () => {
     const artist = new Confirmation(emptyProps)
     expect(artist.state).toEqual({ submissionState: "Submitting" })
   })

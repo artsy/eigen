@@ -38,13 +38,13 @@ describe("PartnerHeader", () => {
       },
     })
 
-  it("It renders the followers and artwork counts", async () => {
+  it("renders the followers and artwork counts", async () => {
     const wrapper = await getWrapper(PartnerHeaderFixture)
 
     expect(wrapper.find(TextWrapper).text()).toContain("1,231 Works for sale  •  136,999 Followers")
   })
 
-  it("It renders the partner name", async () => {
+  it("renders the partner name", async () => {
     const wrapper = await getWrapper(PartnerHeaderFixture)
 
     expect(
@@ -55,7 +55,7 @@ describe("PartnerHeader", () => {
     ).toContain("Gagosian")
   })
 
-  it("It renders the follow button", async () => {
+  it("renders the follow button", async () => {
     const wrapper = await getWrapper(PartnerHeaderFixture)
 
     expect(wrapper.find(Button).text()).toContain("Follow")

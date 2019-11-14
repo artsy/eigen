@@ -42,7 +42,7 @@ it("Shows a zero state when there are no bids/conversations", () => {
   expect(tree).toContain("BUYING ART ON ARTSY IS SIMPLE")
 })
 
-it("It requests a relay refetch when fetchData is called in ZeroState", () => {
+it("requests a relay refetch when fetchData is called in ZeroState", () => {
   const relayEmptyProps = {
     me: emptyMeProps,
     isVisible: true,

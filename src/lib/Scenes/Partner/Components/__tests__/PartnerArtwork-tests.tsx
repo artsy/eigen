@@ -33,7 +33,7 @@ describe("PartnerArtwork", () => {
       },
     })
 
-  it("It renders the artworks", async () => {
+  it("renders the artworks", async () => {
     const wrapper = await getWrapper(PartnerArtworkFixture as any)
     const grid = wrapper.find(GenericGrid)
     expect(grid.props().artworks.length).toBe(10)

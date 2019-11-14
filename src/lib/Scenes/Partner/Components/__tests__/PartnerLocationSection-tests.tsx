@@ -38,7 +38,7 @@ describe("PartnerLoationSection", () => {
       },
     })
 
-  it("It renders the locations text correctly", async () => {
+  it("renders the locations text correctly", async () => {
     const partnerWithLocations = {
       ...PartnerLocationSectionFixture,
       cities,
