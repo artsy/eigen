@@ -1,21 +1,29 @@
 upcoming:
-  version: 6.0.0
+  version: 6.0.1
   date: TBD
   emission_version: 1.18.23
   dev:
-    - Add new partner page behind feature flag
-    - Update emission, sending the new 'env' parameter
-    - Add a feature flag for the new Price Transparency work - yuki24
+    - 
   user_facing:
-    - Adds killswitch based on Eigen version set in echo - kierangillen
-    - Re-enables Auctions Artwork Echo flag - ash
-    - Fixes circle badge size on nav when user has messages - kierangillen
-    - Fixes close button position on modal nav bars
-    - Fixes intermittent crash during Augmented Reality View-in-Room - ash
-    - (ME-1) Fixes ARKit showing some random circles during setup on iOS 13 - ash
-    - (ME-83) Infrastructure for new search UI - ash
+    - 
 
 releases:
+  - version: 6.0.0
+    date: November 14, 2019
+    emission_version: 1.18.23
+    dev:
+      - Add new partner page behind feature flag
+      - Update emission, sending the new 'env' parameter
+      - Add a feature flag for the new Price Transparency work - yuki24
+    user_facing:
+      - Adds killswitch based on Eigen version set in echo - kierangillen
+      - Re-enables Auctions Artwork Echo flag - ash
+      - Fixes circle badge size on nav when user has messages - kierangillen
+      - Fixes close button position on modal nav bars
+      - Fixes intermittent crash during Augmented Reality View-in-Room - ash
+      - (ME-1) Fixes ARKit showing some random circles during setup on iOS 13 - ash
+      - (ME-83) Infrastructure for new search UI - ash
+
   - version: 5.0.8
     date: TBD
     emission_version: 1.17.7
