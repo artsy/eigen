@@ -1,3 +1,15 @@
+# v1.18.29 (Thu Nov 14 2019)
+
+#### 🐛  Bug Fix
+
+- Partner view tests [#1945](https://github.com/artsy/emission/pull/1945) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.28 (Wed Nov 13 2019)
 
 #### 🐛  Bug Fix
