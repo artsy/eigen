@@ -63,7 +63,7 @@ describe("PartnerShows", () => {
       },
     })
 
-  it("It renders the shows correctly", async () => {
+  it("renders the shows correctly", async () => {
     const wrapper = await getWrapper(PartnerShowsFixture as any)
     const railItems = wrapper.find(RailItem)
     const gridItems = wrapper.find("GridItem")

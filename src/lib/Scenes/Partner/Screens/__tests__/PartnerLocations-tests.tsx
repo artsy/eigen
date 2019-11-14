@@ -37,7 +37,7 @@ describe("PartnerLocations", () => {
       },
     })
 
-  it("It looks correct when rendered", async () => {
+  it("looks correct when rendered", async () => {
     const wrapper = await getWrapper(PartnerLocationsFixture as any)
     expect(wrapper.html()).toMatchSnapshot()
   })

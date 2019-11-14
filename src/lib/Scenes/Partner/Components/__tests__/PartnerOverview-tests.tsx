@@ -60,7 +60,7 @@ describe("PartnerOverview", () => {
       },
     })
 
-  it("It renders the artists correctly", async () => {
+  it("renders the artists correctly", async () => {
     const partnerWithArtists = {
       ...PartnerOverviewFixture,
       artists: {
@@ -72,7 +72,7 @@ describe("PartnerOverview", () => {
     expect(lists.length).toBe(3)
   })
 
-  it("It renders the ReadMore component correctly", async () => {
+  it("renders the ReadMore component correctly", async () => {
     const partnerWithBio = {
       ...PartnerOverviewFixture,
       profile: {
@@ -88,7 +88,7 @@ describe("PartnerOverview", () => {
     ).toContain("Nullam quis risus")
   })
 
-  it("It renders the location text correctly", async () => {
+  it("renders the location text correctly", async () => {
     const partnerWithBio = {
       ...PartnerOverviewFixture,
       profile: {
