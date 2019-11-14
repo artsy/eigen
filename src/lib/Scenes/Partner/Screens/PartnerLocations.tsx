@@ -51,7 +51,7 @@ const PartnerLocations: React.FC<{
   )
 }
 
-const PartnerLocationsContainer = createPaginationContainer(
+export const PartnerLocationsContainer = createPaginationContainer(
   PartnerLocations,
   {
     partner: graphql`
