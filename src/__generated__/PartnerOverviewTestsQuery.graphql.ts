@@ -52,6 +52,9 @@ export type PartnerOverviewTestsQueryRawResponse = {
             }) | null> | null;
         }) | null;
         readonly slug: string;
+        readonly locations: ({
+            readonly totalCount: number | null;
+        }) | null;
         readonly id: string | null;
     }) | null;
 };
@@ -107,6 +110,9 @@ fragment PartnerLocationSection_partner on Partner {
   slug
   name
   cities
+  locations: locationsConnection(first: 0) {
+    totalCount
+  }
 }
 */
 
@@ -377,6 +383,30 @@ return {
             ]
           },
           (v7/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": "locations",
+            "name": "locationsConnection",
+            "storageKey": "locationsConnection(first:0)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 0
+              }
+            ],
+            "concreteType": "LocationConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalCount",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           (v6/*: any*/)
         ]
       }
@@ -385,7 +415,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewTestsQuery",
-    "id": "2ab4571bf5c0cc4aa99cc6b34d5e5d2b",
+    "id": "248e41bff40b4bf724b95a9f01af054e",
     "text": null,
     "metadata": {}
   }

@@ -78,6 +78,9 @@ fragment PartnerLocationSection_partner on Partner {
   slug
   name
   cities
+  locations: locationsConnection(first: 0) {
+    totalCount
+  }
 }
 */
 
@@ -390,6 +393,30 @@ return {
             ]
           },
           (v6/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": "locations",
+            "name": "locationsConnection",
+            "storageKey": "locationsConnection(first:0)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 0
+              }
+            ],
+            "concreteType": "LocationConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalCount",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           (v4/*: any*/)
         ]
       }
@@ -398,7 +425,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "beea7adba6a872a5455ad40c530f7611",
+    "id": "f1b5b1039a22b35497dd3fe6b4909c69",
     "text": null,
     "metadata": {}
   }
