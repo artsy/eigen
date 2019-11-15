@@ -210,6 +210,9 @@ fragment PartnerLocationSection_partner on Partner {
   slug
   name
   cities
+  locations: locationsConnection(first: 0) {
+    totalCount
+  }
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -836,6 +839,30 @@ return {
               },
               {
                 "kind": "LinkedField",
+                "alias": "locations",
+                "name": "locationsConnection",
+                "storageKey": "locationsConnection(first:0)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 0
+                  }
+                ],
+                "concreteType": "LocationConnection",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "totalCount",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
                 "alias": "pastShows",
                 "name": "showsConnection",
                 "storageKey": "showsConnection(first:6,sort:\"END_AT_DESC\",status:\"CLOSED\")",
@@ -1017,7 +1044,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "676c630e380dddf989d729a775190a30",
+    "id": "88c6541c1e9e171533348d2a994091bc",
     "text": null,
     "metadata": {}
   }

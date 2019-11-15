@@ -23,7 +23,7 @@ export const PartnerOverview: React.FC<{
   const artists = partner.artists && partner.artists.edges
 
   const fetchNextPage = () => {
-    if (fetchingNextPage || !partner.artists.pageInfo.endCursor) {
+    if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
       return
     }
     setFetchingNextPage(true)

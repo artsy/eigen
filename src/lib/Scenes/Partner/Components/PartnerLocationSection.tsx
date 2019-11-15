@@ -11,6 +11,7 @@ interface Props {
 }
 
 const createLocationsString = (partner: PartnerLocationSection_partner) => {
+  const locationsCount = get(partner, p => p.locations.totalCount)
   let lastUniqCity
   const uniqCities = partner.cities.slice(0)
   const cityLength = uniqCities.length
@@ -18,7 +19,7 @@ const createLocationsString = (partner: PartnerLocationSection_partner) => {
     lastUniqCity = uniqCities.pop()
   }
   const joinedCities = uniqCities.join(", ")
-  const locationCountText = `${partner.name} has ${cityLength} ${cityLength < 2 ? "location" : "locations"} in`
+  const locationCountText = `${partner.name} has ${locationsCount} ${cityLength < 2 ? "location" : "locations"} in`
   return { locationText: locationCountText, cityText: joinedCities, lastCity: lastUniqCity }
 }
 
@@ -73,6 +74,9 @@ export const PartnerLocationSectionContainer = createFragmentContainer(PartnerLo
       slug
       name
       cities
+      locations: locationsConnection(first: 0) {
+        totalCount
+      }
     }
   `,
 })
