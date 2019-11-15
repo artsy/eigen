@@ -11,6 +11,9 @@ const PartnerLocationSectionFixture = {
   internalID: "4d8b92c44eb68a1b2c0004cb",
   name: "Gagosian",
   cities: [],
+  locations: {
+    totalCount: 14,
+  },
   " $fragmentRefs": null,
   " $refType": null,
 }
@@ -30,6 +33,9 @@ describe("PartnerLoationSection", () => {
           partner(id: "gagosian") {
             name
             cities
+            locations: locationsConnection(first: 0) {
+              totalCount
+            }
           }
         }
       `,
@@ -45,7 +51,7 @@ describe("PartnerLoationSection", () => {
     }
     const wrapper = await getWrapper(partnerWithLocations as any)
     expect(wrapper.text()).toContain(
-      "Gagosian has 11 locations in New York, Beverly Hills, San Francisco, London, Paris, Le Bourget, Geneva, Basel, Rome, Athens and Central, Hong Kong"
+      "Gagosian has 14 locations in New York, Beverly Hills, San Francisco, London, Paris, Le Bourget, Geneva, Basel, Rome, Athens and Central, Hong Kong"
     )
   })
 })
