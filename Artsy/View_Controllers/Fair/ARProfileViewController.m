@@ -59,11 +59,6 @@
     }];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
 - (void)loadProfile
 {
     // We have no unique vanity URLs for iPad, so always load the martsy view
@@ -124,6 +119,14 @@
     return [UIDevice isPad];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if (self.childViewControllers.firstObject && [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class]) {
+        return UIStatusBarStyleLightContent;
+    }
+    return UIStatusBarStyleDefault;
+}
+
 - (BOOL)hidesStatusBarBackground
 {
     if (self.childViewControllers.firstObject) {
@@ -131,6 +134,5 @@
     }
     return NO;
 }
-
 
 @end
