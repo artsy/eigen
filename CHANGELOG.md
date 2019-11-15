@@ -1,3 +1,15 @@
+# v1.18.32 (Fri Nov 15 2019)
+
+#### 🐛  Bug Fix
+
+- ME-86 Search Autosuggest [#1966](https://github.com/artsy/emission/pull/1966) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.18.31 (Thu Nov 14 2019)
 
 #### 🐛  Bug Fix
