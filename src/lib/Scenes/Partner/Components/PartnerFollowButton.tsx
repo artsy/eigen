@@ -8,6 +8,14 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 interface Props {
   partner: PartnerFollowButton_partner
   relay: RelayProp
+<<<<<<< HEAD
+=======
+  followersCount?: number
+  size?: ButtonSize
+  block?: boolean
+  inline?: boolean
+  setFollowersCount?: (followersCount: number) => void
+>>>>>>> Updates following button
 }
 
 interface State {
@@ -84,11 +92,12 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     return (
       <Button
-        variant={partner.profile.isFollowed ? "secondaryOutline" : "primaryBlack"}
+        variant="noOutline"
+        inline={this.props.inline}
         onPress={this.handleFollowPartner.bind(this)}
         longestText="Following"
         loading={isFollowedChanging}
-        block
+        block={this.props.block}
         width="100%"
       >
         {partner.profile.isFollowed ? "Following" : "Follow"}
