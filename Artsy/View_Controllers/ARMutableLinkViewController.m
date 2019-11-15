@@ -64,7 +64,10 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    if (self.childViewControllers.firstObject && [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class]) {
+        return UIStatusBarStyleLightContent;
+    }
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)hidesStatusBarBackground

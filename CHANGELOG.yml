@@ -5,7 +5,7 @@ upcoming:
   dev:
     - 
   user_facing:
-    - 
+    - Updates profile and mutable view controllers to use default background if not fair - kierangillen
 
 releases:
   - version: 6.0.0
