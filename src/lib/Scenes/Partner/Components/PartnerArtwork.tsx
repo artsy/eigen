@@ -20,7 +20,7 @@ export const PartnerArtwork: React.FC<{
   const artworks = get(partner, p => p.artworks)
 
   const fetchNextPage = () => {
-    if (fetchingNextPage) {
+    if (fetchingNextPage || !relay.hasMore()) {
       return
     }
     setFetchingNextPage(true)

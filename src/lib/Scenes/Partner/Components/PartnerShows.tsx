@@ -49,7 +49,7 @@ export const PartnerShows: React.FC<{
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
   const fetchNextPage = () => {
-    if (fetchingNextPage) {
+    if (fetchingNextPage || !relay.hasMore()) {
       return
     }
     setFetchingNextPage(true)

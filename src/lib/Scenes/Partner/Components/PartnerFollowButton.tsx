@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button, ButtonSize } from "@artsy/palette"
 import { PartnerFollowButton_partner } from "__generated__/PartnerFollowButton_partner.graphql"
 import { PartnerFollowButtonFollowMutation } from "__generated__/PartnerFollowButtonFollowMutation.graphql"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -8,14 +8,11 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 interface Props {
   partner: PartnerFollowButton_partner
   relay: RelayProp
-<<<<<<< HEAD
-=======
   followersCount?: number
   size?: ButtonSize
   block?: boolean
   inline?: boolean
   setFollowersCount?: (followersCount: number) => void
->>>>>>> Updates following button
 }
 
 interface State {
