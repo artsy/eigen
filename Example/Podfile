@@ -11,6 +11,9 @@ unless Dir.exist? '../node_modules'
   exit(1)
 end
 
+# TODO: Get autolinking working after RN upgrade
+# require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
 require "rbconfig"
 expected_ruby_version = File.read(File.expand_path("../../.ruby-version", __FILE__)).strip
 unless RbConfig::CONFIG["RUBY_PROGRAM_VERSION"] == expected_ruby_version
@@ -37,15 +40,26 @@ sentry_path = File.join(node_modules_path, 'react-native-sentry')
 tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe.podspec')
 mapbox_path = File.join(node_modules_path, '@mapbox/react-native-mapbox-gl')
 react_native_cameraroll_path = File.join(node_modules_path, '@react-native-community/cameraroll')
+react_native_geolocation_path = File.join(node_modules_path, '@react-native-community/geolocation')
 react_native_navigator_ios_path = File.join(node_modules_path, 'react-native-navigator-ios')
 
 target 'Emission' do
   pod 'Emission', path: '../', inhibit_warnings: false
 
   # As this runs dev, we need the developer web socket
-  # pod 'React', path: react_path
+  pod 'React', path: react_path # TODO: should be removed once Eloy has fixed community podspecs, and we've upgraded
   pod 'React-Core', path: react_path
   pod 'React-RCTActionSheet', :path => File.join(react_path, 'Libraries/ActionSheetIOS')
+  pod 'React-RCTAnimation', path: File.join(react_path, 'Libraries/NativeAnimation')
+  pod 'React-RCTImage', path: File.join(react_path, 'Libraries/Image')
+  pod 'React-RCTLinking', path: File.join(react_path, 'Libraries/LinkingIOS')
+  pod 'React-RCTText', path: File.join(react_path, 'Libraries/Text')
+  pod 'React-RCTNetwork', path: File.join(react_path, 'Libraries/Network')
+  pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
+
+
   pod 'React-cxxreact', :path => File.join(react_path, 'ReactCommon/cxxreact')
   pod 'React-jsi', :path => File.join(react_path, 'ReactCommon/jsi')
   pod 'React-jsiexecutor', :path => File.join(react_path, 'ReactCommon/jsiexecutor')
@@ -88,6 +102,7 @@ target 'Emission' do
   pod 'RNSVG', path: '../node_modules/react-native-svg'
 
   pod 'react-native-cameraroll', path: react_native_cameraroll_path
+  pod 'react-native-geolocation', path: react_native_geolocation_path
 
   # Deprecated from React Native, but fine until we support Android
   pod 'react-native-navigator-ios', path: react_native_navigator_ios_path
