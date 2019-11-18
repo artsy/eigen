@@ -114,9 +114,6 @@ PODS:
     - Folly (= 2018.10.22.00)
     - glog
     - React/jsinspector
-  - React/DevSupport (0.59.2):
-    - React/Core
-    - React/RCTWebSocket
   - React/fishhook (0.59.2)
   - React/jsi (0.59.2):
     - DoubleConversion
@@ -175,7 +172,6 @@ PODS:
     - React
     - Stripe (~> 14.0.0)
   - "UIView+BooleanAnimations (1.0.2)"
-  - yoga (0.59.2.React)
 
 DEPENDENCIES:
   - ARGenericTableViewController

@@ -22,7 +22,7 @@
 
     NSString *packagerURL = [defaults stringForKey:ARRNPackagerHostDefault];;
     _gravityURL = @"https://api.artsy.net";
-    _metaphysicsURL = @"https://metaphysics-production.artsy.net";
+    _metaphysicsURL = @"https://metaphysics-production.artsy.net/v2";
     _predictionURL = @"https://live.artsy.net";
 
     BOOL useStaging = [defaults boolForKey:ARUseStagingDefault];

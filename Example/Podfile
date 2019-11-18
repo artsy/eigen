@@ -43,8 +43,16 @@ target 'Emission' do
   pod 'Emission', path: '../', inhibit_warnings: false
 
   # As this runs dev, we need the developer web socket
-  pod 'React', path: react_path, subspecs: %w[DevSupport]
-  pod 'yoga', path: yoga_path
+  # pod 'React', path: react_path
+  pod 'React-Core', path: react_path
+  pod 'React-RCTActionSheet', :path => File.join(react_path, 'Libraries/ActionSheetIOS')
+  pod 'React-cxxreact', :path => File.join(react_path, 'ReactCommon/cxxreact')
+  pod 'React-jsi', :path => File.join(react_path, 'ReactCommon/jsi')
+  pod 'React-jsiexecutor', :path => File.join(react_path, 'ReactCommon/jsiexecutor')
+  pod 'React-jsinspector', :path => File.join(react_path, 'ReactCommon/jsinspector')
+  pod 'ReactCommon/jscallinvoker', :path => File.join(react_path, 'ReactCommon')
+  pod 'ReactCommon/turbomodule/core', :path => File.join(react_path, 'ReactCommon')
+  pod 'Yoga', path: yoga_path
   pod 'Folly', podspec: folly_spec_path
   pod 'DoubleConversion', podspec: double_conversion_spec_path
   pod 'glog', podspec: glog_spec_path
@@ -63,7 +71,7 @@ target 'Emission' do
 
   # Storing Credentials
   pod 'SAMKeychain'
-  
+
   # custom zoom animation for image carousel
   pod 'INTUAnimationEngine'
 
