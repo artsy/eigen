@@ -239,16 +239,10 @@
     [label constrainWidth:@"280" height:@"40"];
     [label alignCenterXWithView:self.view predicate:@"0"];
 
-    // iPhone X support
-    if (@available(iOS 11.0, *)) {
-        CGFloat constant = self.useLargeLayout ? -55 : -10;
-        [NSLayoutConstraint activateConstraints:@[
-              [label.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:constant]
-        ]];
-
-    } else {
-        [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-55" : @"-10"];
-    }
+    CGFloat constant = self.useLargeLayout ? -55 : -10;
+    [NSLayoutConstraint activateConstraints:@[
+          [label.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:constant]
+    ]];
 
     [self hideControls];
     [self finaliseValuesForiPadWithInterfaceOrientation:UIApplication.sharedApplication.statusBarOrientation];

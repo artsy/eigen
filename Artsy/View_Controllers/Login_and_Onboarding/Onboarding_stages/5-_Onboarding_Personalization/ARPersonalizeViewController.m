@@ -249,12 +249,7 @@
 
 - (CGFloat)statusBarHeight
 {
-    // iPhone X support
-    if (@available(iOS 11.0, *)) {
-        return self.view.safeAreaInsets.top;
-    } else {
-        return 20;
-    }
+    return self.view.safeAreaInsets.top;
 }
 
 - (void)finaliseValuesForiPadWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -270,15 +265,11 @@
         }
     }
 
-
-    // iPhone X support for the bottom button
-    if (@available(iOS 11.0, *)) {
-        // It will default to 0 in the init code, but we have to wait until the view is in the heirarchy
-        // before `self.view.safeAreaInsets.bottom` will actually return a useful value
-        if (self.view.safeAreaInsets.bottom && self.navigationItemsBottomConstraint.constant == 0) {
-            self.navigationItemsBottomConstraint.constant = -1 * self.view.safeAreaInsets.bottom;
-        }
-    };
+    // It will default to 0 in the init code, but we have to wait until the view is in the heirarchy
+    // before `self.view.safeAreaInsets.bottom` will actually return a useful value
+    if (self.view.safeAreaInsets.bottom && self.navigationItemsBottomConstraint.constant == 0) {
+        self.navigationItemsBottomConstraint.constant = -1 * self.view.safeAreaInsets.bottom;
+    }
 }
 
 - (void)addTextFields

@@ -262,13 +262,10 @@
         self.backgroundView.alpha = 0;
     }];
 
-    // iPhone X support
-    if (@available(iOS 11.0, *)) {
-        [UIView animateWithDuration:ARAnimationDuration animations:^{
-            self.iPhoneXStatusBarHeightConstraint.constant = self.view.safeAreaInsets.top;
-            [self.view layoutIfNeeded];
-        }];
-    }
+    [UIView animateWithDuration:ARAnimationDuration animations:^{
+        self.iPhoneXStatusBarHeightConstraint.constant = self.view.safeAreaInsets.top;
+        [self.view layoutIfNeeded];
+    }];
 
     [self presentPersonalizationEmail];
 }

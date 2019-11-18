@@ -108,27 +108,24 @@
             config.floorBasedVIR = YES;
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
-            // @available check is to silence compiler warning; it is guaranteed by +canOpenARView.
-            if (@available(iOS 11.3, *)) {
-                if (shouldSkipSetup) {
-                    id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
-                    [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-                } else {
-                    // Currently an empty string, which is interpreted as nil
-                    // When a video is set, go to:
-                    // https://echo-web-production.herokuapp.com/accounts/1/messages
-                    // (Creds in 1pass) and update the ARVIRVideo message with the full URL
-                    //
-                    ArtsyEcho *echo = [[ArtsyEcho alloc] init];
-                    [echo setup];
-                    
-                    Message *setupURL = echo.messages[@"ARVIRVideo"];
-                    
-                    
-                    NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
-                    ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
-                    [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
-                }
+            if (shouldSkipSetup) {
+                id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
+                [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+            } else {
+                // Currently an empty string, which is interpreted as nil
+                // When a video is set, go to:
+                // https://echo-web-production.herokuapp.com/accounts/1/messages
+                // (Creds in 1pass) and update the ARVIRVideo message with the full URL
+                //
+                ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+                [echo setup];
+                
+                Message *setupURL = echo.messages[@"ARVIRVideo"];
+                
+                
+                NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
+                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
+                [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
             }
         }];
     } else {

@@ -37,7 +37,6 @@ API_AVAILABLE(ios(11.0))
 // These wont' show until we migrate the sim to 11.x
 
 SpecBegin(ARAugmentedVIRViewController);
-if (@available(iOS 11.3, *)) {
 
 it(@"defaults to showing info",^{
     ARAugmentedFloorBasedVIRViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:nil];
@@ -63,6 +62,5 @@ it(@"shows the right info when an artwork was placed",^{
     expect(vc.view).to.haveValidSnapshot();
 });
 
-}
 SpecEnd;
 

@@ -8,7 +8,7 @@ end
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '9.0'
+platform :ios, '12.0'
 inhibit_all_warnings!
 
 # Note: These should be reflected _accurately_ in the environment of

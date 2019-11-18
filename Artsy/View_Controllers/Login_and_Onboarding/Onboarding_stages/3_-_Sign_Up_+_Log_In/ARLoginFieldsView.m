@@ -39,9 +39,7 @@
     self.showPasswordButton.hidden = NO;
     self.nameField.hidden = YES;
 
-    if (@available(iOS 12.0, *)) {
-        self.passwordField.textContentType = UITextContentTypePassword;
-    }
+    self.passwordField.textContentType = UITextContentTypePassword;
 }
 
 - (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout
@@ -58,9 +56,7 @@
     self.showPasswordButton.hidden = YES;
     self.nameField.hidden = YES;
 
-    if (@available(iOS 12.0, *)) {
-        self.emailField.textContentType = UITextContentTypeEmailAddress;
-    }
+    self.emailField.textContentType = UITextContentTypeEmailAddress;
 }
 
 - (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout
@@ -74,9 +70,7 @@
     
     NSDictionary *placeholderAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0], NSForegroundColorAttributeName : [UIColor artsyGrayMedium]};
     [self.passwordField setPlaceholder:@"Create a password" withAttributes:placeholderAttributes];
-    if (@available(iOS 12.0, *)) {
-        self.passwordField.textContentType = UITextContentTypeNewPassword;
-    }
+    self.passwordField.textContentType = UITextContentTypeNewPassword;
 }
 
 - (void)setupForNameWithLargeLayout:(BOOL)useLargeLayout
@@ -87,9 +81,7 @@
     self.showPasswordButton.hidden = YES;
     self.nameField.hidden = NO;
 
-    if (@available(iOS 12.0, *)) {
-        self.nameField.textContentType = UITextContentTypeName;
-    }
+    self.nameField.textContentType = UITextContentTypeName;
 }
 
 - (void)commonSetupWithLargeLayout:(BOOL)useLargeLayout

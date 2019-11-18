@@ -69,12 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (!self) return nil;
 
     _config = config;
-
-    if (@available(iOS 11.3, *)) {
-        _sceneView = [[ARSCNView alloc] init];
-
-        _interactionController = [[ARVIRHorizontalPlaneInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
-    }
+    _sceneView = [[ARSCNView alloc] init];
+    _interactionController = [[ARVIRHorizontalPlaneInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
 
     return self;
 }
@@ -153,104 +149,102 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidLoad
 {
-    if (@available(iOS 11.3, *)) {
-        _dateOpenedAR = [NSDate date];
+    _dateOpenedAR = [NSDate date];
 
 #if TARGET_OS_SIMULATOR
-        self.view.backgroundColor = UIColor.artsyPurpleLight;
-        _sceneView.backgroundColor = UIColor.artsyPurpleLight;
+    self.view.backgroundColor = UIColor.artsyPurpleLight;
+    _sceneView.backgroundColor = UIColor.artsyPurpleLight;
 #else
-        self.view.backgroundColor = UIColor.blackColor;
-        _sceneView.backgroundColor = UIColor.blackColor;
+    self.view.backgroundColor = UIColor.blackColor;
+    _sceneView.backgroundColor = UIColor.blackColor;
 #endif
 
-        [super viewDidLoad];
+    [super viewDidLoad];
 
-        [self.view addSubview:self.sceneView];
-        [self.sceneView alignToView:self.view];
+    [self.view addSubview:self.sceneView];
+    [self.sceneView alignToView:self.view];
 
-        // Create a new scene
-        SCNScene *scene = [[SCNScene alloc] init];
+    // Create a new scene
+    SCNScene *scene = [[SCNScene alloc] init];
 
-        // Debugging options
-        if (self.config.debugMode) {
-          self.sceneView.debugOptions = ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
-          self.sceneView.showsStatistics = YES;
-        }
-
-        // Set the view's delegate
-        self.sceneView.delegate = self;
-        self.sceneView.scene = scene;
-        self.sceneView.session.delegate = self;
-
-        UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
-        [self.sceneView addGestureRecognizer:tapGesture];
-
-        UIGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMoved:)];
-        [self.sceneView addGestureRecognizer:panGesture];
-
-        // Back button in the top left
-        ARClearFlatButton *backButton = [[ARClearFlatButton alloc] init];
-        [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
-        [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-        [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-        [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
-        backButton.translatesAutoresizingMaskIntoConstraints = false;
-        [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
-        self.backButton = backButton;
-        [self.view addSubview:backButton];
-
-        backButton.layer.masksToBounds = NO;
-        backButton.layer.shadowColor = [UIColor blackColor].CGColor;
-        backButton.layer.shadowOffset = CGSizeMake(0, 0);
-        backButton.layer.shadowOpacity = 0.4;
-
-        // A beta button in the top right
-        UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
-        betaImage.translatesAutoresizingMaskIntoConstraints = false;
-        self.betaImageView = betaImage;
-        [self.view addSubview:betaImage];
-
-        ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
-        [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];
-        [resetARButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
-        resetARButton.translatesAutoresizingMaskIntoConstraints = false;
-        resetARButton.alpha = 0;
-        [self.view addSubview:resetARButton];
-        self.resetARButton = resetARButton;
-
-        // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
-        BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
-        CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
-
-        [self.view addConstraints: @[
-            [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
-            [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
-            [backButton.heightAnchor constraintEqualToConstant:50.0],
-            [backButton.widthAnchor constraintEqualToConstant:50.0],
-
-            [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
-            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20],
-
-            [resetARButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
-            [resetARButton.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
-            [resetARButton.widthAnchor constraintEqualToConstant:92.0],
-        ]];
-
-        // Create and show the informational interface
-        ARInformationView *informationView = [[ARInformationView alloc] init];
-        [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
-        informationView.alpha = 0;
-        [self.view addSubview:informationView];
-        [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
-        [informationView constrainHeight:@"221"];
-        self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
-        self.informationViewBottomConstraint.constant = 40;
-        self.informationView = informationView;
-
-        // Makes it so that the screen doesn't dim
-        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    // Debugging options
+    if (self.config.debugMode) {
+      self.sceneView.debugOptions = ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
+      self.sceneView.showsStatistics = YES;
     }
+
+    // Set the view's delegate
+    self.sceneView.delegate = self;
+    self.sceneView.scene = scene;
+    self.sceneView.session.delegate = self;
+
+    UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
+    [self.sceneView addGestureRecognizer:tapGesture];
+
+    UIGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMoved:)];
+    [self.sceneView addGestureRecognizer:panGesture];
+
+    // Back button in the top left
+    ARClearFlatButton *backButton = [[ARClearFlatButton alloc] init];
+    [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
+    [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+    [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+    [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
+    backButton.translatesAutoresizingMaskIntoConstraints = false;
+    [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
+    self.backButton = backButton;
+    [self.view addSubview:backButton];
+
+    backButton.layer.masksToBounds = NO;
+    backButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    backButton.layer.shadowOffset = CGSizeMake(0, 0);
+    backButton.layer.shadowOpacity = 0.4;
+
+    // A beta button in the top right
+    UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
+    betaImage.translatesAutoresizingMaskIntoConstraints = false;
+    self.betaImageView = betaImage;
+    [self.view addSubview:betaImage];
+
+    ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
+    [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];
+    [resetARButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
+    resetARButton.translatesAutoresizingMaskIntoConstraints = false;
+    resetARButton.alpha = 0;
+    [self.view addSubview:resetARButton];
+    self.resetARButton = resetARButton;
+
+    // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
+    BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
+    CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
+
+    [self.view addConstraints: @[
+        [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
+        [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
+        [backButton.heightAnchor constraintEqualToConstant:50.0],
+        [backButton.widthAnchor constraintEqualToConstant:50.0],
+
+        [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
+        [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20],
+
+        [resetARButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
+        [resetARButton.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
+        [resetARButton.widthAnchor constraintEqualToConstant:92.0],
+    ]];
+
+    // Create and show the informational interface
+    ARInformationView *informationView = [[ARInformationView alloc] init];
+    [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
+    informationView.alpha = 0;
+    [self.view addSubview:informationView];
+    [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [informationView constrainHeight:@"221"];
+    self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
+    self.informationViewBottomConstraint.constant = 40;
+    self.informationView = informationView;
+
+    // Makes it so that the screen doesn't dim
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 }
 
 - (void)presentInformationalInterface:(BOOL)animated
@@ -452,27 +446,25 @@ NS_ASSUME_NONNULL_BEGIN
     [super viewWillAppear:animated];
 
     // Create a session configuration
-    if (@available(iOS 11.3, *)) {
-        ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
+    ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
-        if (self.hasLoaded) {
+    if (self.hasLoaded) {
+        configuration.planeDetection = ARPlaneDetectionHorizontal;
+        [self.sceneView.session runWithConfiguration:configuration];
+
+        // Reset the delegate
+        [self.interactionController restart];
+    } else {
+        self.hasLoaded = YES;
+
+        // On the 1st time the app launches
+        // Start the AR session, without looking for floors, to delay
+        // floor detection by 1s to give someone time to read the docs.
+        [self.sceneView.session runWithConfiguration:configuration];
+        ar_dispatch_after(1, ^{
             configuration.planeDetection = ARPlaneDetectionHorizontal;
             [self.sceneView.session runWithConfiguration:configuration];
-
-            // Reset the delegate
-            [self.interactionController restart];
-        } else {
-            self.hasLoaded = YES;
-
-            // On the 1st time the app launches
-            // Start the AR session, without looking for floors, to delay
-            // floor detection by 1s to give someone time to read the docs.
-            [self.sceneView.session runWithConfiguration:configuration];
-            ar_dispatch_after(1, ^{
-                configuration.planeDetection = ARPlaneDetectionHorizontal;
-                [self.sceneView.session runWithConfiguration:configuration];
-            });
-        }
+        });
     }
 }
 
