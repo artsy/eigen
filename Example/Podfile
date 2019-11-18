@@ -59,6 +59,12 @@ target 'Emission' do
   pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
   pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
 
+  pod 'React-CoreModules', path: '../node_modules/react-native/React/CoreModules'
+  pod 'ReactCommon/turbomodule/core', path: '../node_modules/react-native/ReactCommon'
+  pod 'FBLazyVector', path: '../node_modules/react-native/Libraries/FBLazyVector'
+  pod 'FBReactNativeSpec', path: '../node_modules/react-native/Libraries/FBReactNativeSpec'
+  pod 'RCTRequired', path: '../node_modules/react-native/Libraries/RCTRequired'
+  pod 'RCTTypeSafety', path: '../node_modules/react-native/Libraries/TypeSafety'
 
   pod 'React-cxxreact', :path => File.join(react_path, 'ReactCommon/cxxreact')
   pod 'React-jsi', :path => File.join(react_path, 'ReactCommon/jsi')

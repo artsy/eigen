@@ -1576,6 +1576,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-2.0.2.tgz#ba8b40f560ead8d014740d1cdea970b33f19312e"
   integrity sha512-tTNXRCgnhJBu79mulQwzabXRpDqfh/uaDqfHVpvF0nX4NTpolpy6mvTRiFg7eWFPGRArsnZz1EYp6rHfJWGgEA==
 
+"@react-native-community/viewpager@^2.0.1":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-2.0.2.tgz#622b190294b1310c4825c98daeaee1c8443f7124"
+  integrity sha512-CKVhIZdX/Cmb80muog8sKpi5vM8npwFp4tx4Dj1IvTBidZweuO22+VH2rDOj7E0LzdV9IYRJ4FGBwcPBD2qUrQ==
+
 "@storybook/addon-actions@^3.3.11":
   version "3.3.11"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-3.3.11.tgz#158a64f01c97fcf6922e7a370c6519d216544bcd"
@@ -12955,11 +12960,12 @@ react-native-parallax-scroll-view@orta/react-native-parallax-scroll-view:
   version "0.18.2"
   resolved "https://codeload.github.com/orta/react-native-parallax-scroll-view/tar.gz/3c4c94ec493b64a6e10840c7457515e37762a5dc"
 
-react-native-scrollable-tab-view@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-0.9.0.tgz#cf8c09018f1e1c88bb26db6a003c90de275a1c6f"
-  integrity sha512-41UYxmiT57+PYKxWbRM8pGNgSapXYvL+bOcj+E7u+vHp0r7nMh1Imvc5J0XGVoPb31xwB0vWj/a88mifQx9p5g==
+react-native-scrollable-tab-view@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-1.0.0.tgz#87319896067f7bb643ecd7fba2cba4d6d8f9e18b"
+  integrity sha512-lpZ9xz+PBdgSzpk93VjCIfxV0zvJDX9iEUP8ImDg3p1QJGHOWbWyfDx+lcx5VCDVrrdZdtuVAAdc0tkYXZyQDw==
   dependencies:
+    "@react-native-community/viewpager" "^2.0.1"
     create-react-class "^15.6.2"
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
