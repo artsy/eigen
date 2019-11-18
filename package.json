@@ -94,7 +94,7 @@
     "react-native-svg": "^9.13.3",
     "react-relay": "6.0.0",
     "react-spring": "8.0.23",
-    "react-tracking": "7.0.1",
+    "react-tracking": "^7.0.1",
     "relay-runtime": "6.0.0",
     "remove-markdown": "0.1.0",
     "simple-markdown": "0.4.4",

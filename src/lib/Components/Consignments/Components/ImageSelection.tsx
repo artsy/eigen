@@ -115,7 +115,7 @@ export default class ImageSelection extends React.Component<Props, State> {
 
   // Whenever props changes we need to be able to set a new version of the datasource
   // see: https://github.com/facebook/react-native/issues/4104
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
       this.setState({
         dataSource: this.dataSourceFromData(nextProps.data, isPad),

@@ -122,7 +122,7 @@ export class InvoicePreview extends React.Component<Props, State> {
   public state = { paid: false }
   private subscription?: EmitterSubscription
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (this.props.invoice.state === "UNPAID") {
       this.subscription = NotificationsManager.addListener(
         "PaymentRequestPaid",

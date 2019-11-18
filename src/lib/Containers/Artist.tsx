@@ -41,7 +41,7 @@ export class Artist extends Component<Props, State> {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState(this.initialTabState())
   }
 
