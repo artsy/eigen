@@ -4,8 +4,10 @@ exports[`SearchLink Renders properly 1`] = `
 <View
   accessible={true}
   background="#F8F8F8"
+  focusable={true}
   height={46}
   mb={1}
+  onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -47,6 +49,7 @@ exports[`SearchLink Renders properly 1`] = `
       align="xMidYMid"
       bbHeight={14}
       bbWidth={14}
+      focusable={false}
       height={14}
       meetOrSlice={0}
       minX={0}
@@ -58,7 +61,9 @@ exports[`SearchLink Renders properly 1`] = `
             "borderWidth": 0,
           },
           undefined,
-          null,
+          Object {
+            "opacity": 1,
+          },
           Object {
             "flex": 0,
             "height": 14,

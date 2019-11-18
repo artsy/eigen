@@ -84,7 +84,9 @@ exports[`Search states:  Looks right when Found four results 1`] = `
     <View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -146,7 +148,9 @@ exports[`Search states:  Looks right when Found four results 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -208,7 +212,9 @@ exports[`Search states:  Looks right when Found four results 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -270,7 +276,9 @@ exports[`Search states:  Looks right when Found four results 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -533,7 +541,9 @@ exports[`Search states:  Looks right when Found one result 1`] = `
     <View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -688,7 +698,9 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
     <View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -837,7 +849,9 @@ exports[`Search states:  Looks right when Found two results 1`] = `
     <View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -899,7 +913,9 @@ exports[`Search states:  Looks right when Found two results 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
         isTVSelectable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}

@@ -94,6 +94,8 @@ exports[`shows trending artists correctly 1`] = `
     >
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -144,6 +146,8 @@ exports[`shows trending artists correctly 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}

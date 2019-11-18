@@ -55,6 +55,8 @@ exports[`renders correctly 1`] = `
       </Text>
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -188,6 +190,8 @@ exports[`renders correctly 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -321,6 +325,8 @@ exports[`renders correctly 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}

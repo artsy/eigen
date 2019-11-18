@@ -15,7 +15,9 @@ exports[`Sets up the right view hierarchy 1`] = `
 >
   <Image
     accessible={true}
+    focusable={true}
     left={10}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}

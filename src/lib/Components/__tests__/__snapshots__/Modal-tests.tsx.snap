@@ -16,6 +16,8 @@ exports[`looks like expected 1`] = `
   >
     <View
       accessible={true}
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -38,6 +40,8 @@ exports[`looks like expected 1`] = `
     >
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -114,6 +118,8 @@ exports[`looks like expected 1`] = `
         <View
           accessible={true}
           flexDirection="row"
+          focusable={true}
+          onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}

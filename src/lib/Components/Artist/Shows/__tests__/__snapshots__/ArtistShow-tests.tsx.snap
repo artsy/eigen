@@ -3,6 +3,8 @@
 exports[`renders properly 1`] = `
 <View
   accessible={true}
+  focusable={true}
+  onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}

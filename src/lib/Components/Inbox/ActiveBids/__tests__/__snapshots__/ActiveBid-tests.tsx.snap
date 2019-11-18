@@ -3,6 +3,8 @@
 exports[`looks right for bids in live auctions that haven't started yet 1`] = `
 <View
   accessible={true}
+  focusable={true}
+  onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -140,6 +142,8 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
 exports[`looks right for bids in live open auctions 1`] = `
 <View
   accessible={true}
+  focusable={true}
+  onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -277,6 +281,8 @@ exports[`looks right for bids in live open auctions 1`] = `
 exports[`renders correctly 1`] = `
 <View
   accessible={true}
+  focusable={true}
+  onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
