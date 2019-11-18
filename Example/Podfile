@@ -48,7 +48,7 @@ target 'Emission' do
 
   # As this runs dev, we need the developer web socket
   pod 'React', path: react_path # TODO: should be removed once Eloy has fixed community podspecs, and we've upgraded
-  pod 'React-Core', path: react_path
+  pod 'React-Core', subspecs: %w(DevSupport), path: react_path
   pod 'React-RCTActionSheet', :path => File.join(react_path, 'Libraries/ActionSheetIOS')
   pod 'React-RCTAnimation', path: File.join(react_path, 'Libraries/NativeAnimation')
   pod 'React-RCTImage', path: File.join(react_path, 'Libraries/Image')

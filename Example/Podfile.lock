@@ -353,7 +353,7 @@ DEPENDENCIES:
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native`)
-  - React-Core (from `../node_modules/react-native`)
+  - React-Core/DevSupport (from `../node_modules/react-native`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
@@ -552,6 +552,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 4b24ba67b47c8dfaea79408deafdea233651e32a
+PODFILE CHECKSUM: a184af5b9382b5b720584b40878319dd0d035c7a
 
 COCOAPODS: 1.7.5
