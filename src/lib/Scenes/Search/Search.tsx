@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
+import { RecentSearches } from "./RecentSearches"
 
 export const Search: React.FC = () => {
   const input = useRef<Input>()
@@ -39,7 +40,7 @@ export const Search: React.FC = () => {
             </Flex>
           </TouchableWithoutFeedback>
         </Flex>
-        <AutosuggestResults query={query} />
+        {query.trim() ? <AutosuggestResults query={query} /> : <RecentSearches />}
       </Flex>
     </Theme>
   )

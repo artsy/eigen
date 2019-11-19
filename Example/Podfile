@@ -38,6 +38,7 @@ tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe
 mapbox_path = File.join(node_modules_path, '@mapbox/react-native-mapbox-gl')
 react_native_cameraroll_path = File.join(node_modules_path, '@react-native-community/cameraroll')
 react_native_navigator_ios_path = File.join(node_modules_path, 'react-native-navigator-ios')
+react_native_async_storage_path = File.join(node_modules_path, '@react-native-community/async-storage')
 
 target 'Emission' do
   pod 'Emission', path: '../', inhibit_warnings: false
@@ -63,7 +64,7 @@ target 'Emission' do
 
   # Storing Credentials
   pod 'SAMKeychain'
-  
+
   # custom zoom animation for image carousel
   pod 'INTUAnimationEngine'
 
@@ -80,6 +81,8 @@ target 'Emission' do
   pod 'RNSVG', path: '../node_modules/react-native-svg'
 
   pod 'react-native-cameraroll', path: react_native_cameraroll_path
+
+  pod 'RNCAsyncStorage', path: react_native_async_storage_path
 
   # Deprecated from React Native, but fine until we support Android
   pod 'react-native-navigator-ios', path: react_native_navigator_ios_path
