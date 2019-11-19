@@ -36,7 +36,7 @@ class Show extends React.Component<Props> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={styles && styles.container}>
           <OpaqueImageView imageURL={imageURL} style={styles && styles.image} />
-          <Metadata show={show as any} style={styles && styles.metadata} />
+          <Metadata show={show} style={styles && styles.metadata} />
         </View>
       </TouchableWithoutFeedback>
     )

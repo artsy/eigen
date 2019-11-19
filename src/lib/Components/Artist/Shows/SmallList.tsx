@@ -1,5 +1,5 @@
 import React from "react"
-import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { FlatList, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import ArtistShow from "./ArtistShow"
@@ -12,34 +12,16 @@ interface Props extends ViewProperties {
   shows: SmallList_shows
 }
 
-interface State {
-  dataSource: ListViewDataSource
-}
-
-class SmallList extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }).cloneWithRows(this.props.shows),
-    }
-  }
-
+class SmallList extends React.Component<Props> {
   render() {
     return (
-      <ListView
-        enableEmptySections={true}
-        dataSource={this.state.dataSource}
-        renderRow={this.renderShow}
+      <FlatList
+        data={this.props.shows}
+        renderItem={({ item }) => <ArtistShow show={item} styles={showStyles} />}
         scrollsToTop={false}
-        renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     )
-  }
-
-  renderShow = (show: any) => {
-    return <ArtistShow show={show} styles={showStyles} /> as React.ReactElement<{}>
   }
 }
 
