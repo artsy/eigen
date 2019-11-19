@@ -20,8 +20,8 @@ interface CollectionHeaderProps {
 }
 
 export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
-  const { title, description, image } = props.collection
-  const url = image.edges[0].node.imageUrl || ""
+  const { title, description, image, headerImage } = props.collection
+  const url = headerImage ? headerImage : image.edges[0].node.imageUrl
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 204
 

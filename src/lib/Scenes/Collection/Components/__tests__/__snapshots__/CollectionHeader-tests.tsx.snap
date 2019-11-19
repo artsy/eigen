@@ -14,7 +14,7 @@ Array [
   >
     <AROpaqueImageView
       height={204}
-      imageURL="https://someimage.cloudfront.net/square.jpg"
+      imageURL="http://imageuploadedbymarketingteam.jpg"
       width={750}
     />
   </View>,
