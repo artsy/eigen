@@ -52,6 +52,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       <Theme>
         <Box>
           <FlatList
+            keyExtractor={(_item, index) => String(index)}
             data={sections}
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
             renderItem={item => (
