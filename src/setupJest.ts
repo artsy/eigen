@@ -188,3 +188,19 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
     useScreenDimensions: () => screenDimensions,
   }
 })
+
+jest.mock("@react-native-community/async-storage", () => {
+  let state = {}
+  return {
+    __resetState() {
+      state = {}
+    },
+    setItem(key, val) {
+      state[key] = val
+      return Promise.resolve()
+    },
+    getItem(key) {
+      return Promise.resolve(state[key])
+    },
+  }
+})

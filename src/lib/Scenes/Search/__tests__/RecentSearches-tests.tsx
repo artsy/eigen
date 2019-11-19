@@ -4,22 +4,6 @@ import { Text, View } from "react-native"
 import { act, create, ReactTestRenderer } from "react-test-renderer"
 import { RecentSearch, useRecentSearches } from "../RecentSearches"
 
-jest.mock("@react-native-community/async-storage", () => {
-  let state = {}
-  return {
-    __resetState() {
-      state = {}
-    },
-    setItem(key, val) {
-      state[key] = val
-      return Promise.resolve()
-    },
-    getItem(key) {
-      return Promise.resolve(state[key])
-    },
-  }
-})
-
 const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
   return <Text>{href}</Text>
 }
