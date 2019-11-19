@@ -28,7 +28,7 @@ interface State {
   lastCursor: string
   loadingMore: boolean
   noMorePhotos: boolean
-  selection: Set<string>
+  selection: string[]
 }
 
 const doneButtonStyles = {
@@ -48,7 +48,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       loadingMore: false,
       lastCursor: "",
       noMorePhotos: false,
-      selection: new Set(hasPhotos ? props.setup.photos.map(p => p.file) : []),
+      selection: hasPhotos ? props.setup.photos.map(p => p.file) : [],
     }
   }
 
@@ -148,9 +148,8 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
               const photo = photos.edges.map(e => e.node)[0]
 
               // Update selection
-              this.state.selection.add(photo.image.uri)
               this.setState({
-                selection: this.state.selection,
+                selection: [...this.state.selection, photo.image.uri],
                 // An item in cameraImage is a subset of the photo that we pass in,
                 // so we `as any` to avoid a compiler error
                 cameraImages: [photo].concat(this.state.cameraImages as any),
@@ -194,7 +193,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       })
   }
 
-  onNewSelectionState = (_state: Set<string>) => this.setState({ selection: this.state.selection })
+  onNewSelectionState = (selection: string[]) => this.setState({ selection })
 
   render() {
     return (
