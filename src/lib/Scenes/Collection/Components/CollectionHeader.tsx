@@ -1,22 +1,12 @@
 import { Box, color, Serif } from "@artsy/palette"
+import { CollectionHeader_collection } from "__generated__/CollectionHeader_collection.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface CollectionHeaderProps {
-  collection: {
-    title: string
-    description: string
-    headerImage: string
-    image: {
-      edges: Array<{
-        node: {
-          imageUrl: string
-        }
-      }>
-    }
-  }
+  collection: CollectionHeader_collection
 }
 
 export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {

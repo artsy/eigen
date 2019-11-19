@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Collection Renders collection  correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {},
+    ]
+  }
+>
+  <RCTScrollView
+    ListHeaderComponent={
+      <CollectionHeader
+        collection={
+          Object {
+            "description": "<p>From <a href=\\"https://www.someartsyimage.net/artist/jean-michel-basquiat\\">Jean-Michel Basquiat</a> to <a href=\\"https://www.someartsyimage.net/artist/shepard-fairey\\">Shepard Fairey</a>, street artists are known for their creative expressions of rebellion.</p>",
+            "headerImage": "http://imageuploadedbymarketingteam.jpg",
+            "image": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "imageUrl": "https://defaultmostmarketableartworkincollectionimage.jpg",
+                  },
+                },
+              ],
+            },
+            "title": "Street Art Now",
+          }
+        }
+      />
+    }
+    data={
+      Array [
+        Object {
+          "data": Object {
+            "artists": Array [],
+          },
+          "type": "featuredArtists",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+      >
+        <View
+          mb={2}
+          style={
+            Array [
+              Object {
+                "marginBottom": 20,
+              },
+            ]
+          }
+        >
+          <AROpaqueImageView
+            height={204}
+            imageURL="http://imageuploadedbymarketingteam.jpg"
+            width={750}
+          />
+        </View>
+        <Text
+          color="#000"
+          fontFamily="ReactNativeAGaramondPro-Regular"
+          fontSize="32px"
+          lineHeight="38px"
+          ml={2}
+          style={
+            Array [
+              Object {
+                "color": "#000",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 32,
+                "lineHeight": 38,
+                "marginLeft": 20,
+              },
+              Object {},
+            ]
+          }
+        >
+          Street Art Now
+        </Text>
+        <Text
+          color="#000"
+          fontFamily="ReactNativeAGaramondPro-Regular"
+          fontSize="18px"
+          lineHeight="26px"
+          mt={2}
+          style={
+            Array [
+              Object {
+                "color": "#000",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 18,
+                "lineHeight": 26,
+                "marginTop": 20,
+              },
+              Object {},
+            ]
+          }
+        >
+          &lt;p&gt;From &lt;a href="https://www.someartsyimage.net/artist/jean-michel-basquiat"&gt;Jean-Michel Basquiat&lt;/a&gt; to &lt;a href="https://www.someartsyimage.net/artist/shepard-fairey"&gt;Shepard Fairey&lt;/a&gt;, street artists are known for their creative expressions of rebellion.&lt;/p&gt;
+        </Text>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          pb={2}
+          px={2}
+          style={
+            Array [
+              Object {
+                "paddingBottom": 20,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {},
+              ]
+            }
+          >
+            <Text
+              fontFamily="Unica77LL-Regular"
+              fontSize="14px"
+              lineHeight="20px"
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Featured Artists
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
