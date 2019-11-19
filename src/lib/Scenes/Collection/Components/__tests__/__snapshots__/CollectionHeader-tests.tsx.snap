@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollectionHeader Renders collection header correctly 1`] = `
+Array [
+  <View
+    mb={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 8,
+        },
+      ]
+    }
+  >
+    <AROpaqueImageView
+      height={204}
+      imageURL="https://someimage.cloudfront.net/square.jpg"
+      width={750}
+    />
+  </View>,
+  <Text
+    color="#000"
+    fontFamily="ReactNativeAGaramondPro-Regular"
+    fontSize="32px"
+    lineHeight="38px"
+    ml={2}
+    style={
+      Array [
+        Object {
+          "color": "#000",
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
+          "fontSize": 32,
+          "lineHeight": 38,
+          "marginLeft": 8,
+        },
+        Object {},
+      ]
+    }
+  >
+    Street Art Now
+  </Text>,
+  <Text
+    color="#000"
+    fontFamily="ReactNativeAGaramondPro-Regular"
+    fontSize="18px"
+    lineHeight="26px"
+    mt={2}
+    style={
+      Array [
+        Object {
+          "color": "#000",
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
+          "fontSize": 18,
+          "lineHeight": 26,
+          "marginTop": 8,
+        },
+        Object {},
+      ]
+    }
+  >
+    &lt;p&gt;From &lt;a href="https://www.someartsyimage.net/artist/jean-michel-basquiat"&gt;Jean-Michel Basquiat&lt;/a&gt; to &lt;a href="https://www.someartsyimage.net/artist/shepard-fairey"&gt;Shepard Fairey&lt;/a&gt;, street artists are known for their creative expressions of rebellion.&lt;/p&gt;
+  </Text>,
+]
+`;
