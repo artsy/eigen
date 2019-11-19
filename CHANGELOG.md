@@ -1,3 +1,15 @@
+# v1.18.34 (Tue Nov 19 2019)
+
+#### 🐛  Bug Fix
+
+- Update dep typescript from 3.6.4 to v3.7.2 [#1973](https://github.com/artsy/emission/pull/1973) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.18.33 (Fri Nov 15 2019)
 
 #### 🐛  Bug Fix
