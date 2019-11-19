@@ -98,7 +98,7 @@ export default class ImageSelection extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      selected: props.selected ? props.selected : new Set(),
+      selected: props.selected ? props.selected : [],
     }
   }
 
