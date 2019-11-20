@@ -12855,6 +12855,11 @@ react-native-parallax-scroll-view@orta/react-native-parallax-scroll-view:
   version "0.18.2"
   resolved "https://codeload.github.com/orta/react-native-parallax-scroll-view/tar.gz/3c4c94ec493b64a6e10840c7457515e37762a5dc"
 
+react-native-reanimated@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"
+  integrity sha512-tO7nSNNP+iRLVbkcSS5GXyDBb7tSI02+XuRL3/S39EAr35rnvUy2JfeLUQG+fWSObJjnMVhasUDEUwlENk8IXw==
+
 react-native-scrollable-tab-view@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-0.9.0.tgz#cf8c09018f1e1c88bb26db6a003c90de275a1c6f"
