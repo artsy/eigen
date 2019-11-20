@@ -14,12 +14,13 @@ const PAGE_SIZE = 6
 export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner
   relay: RelayPaginationProp
-}> = ({ partner, relay }) => {
+  onCloseToBottom(cb: () => void): void
+}> = ({ partner, relay, onCloseToBottom }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
   const artworks = get(partner, p => p.artworks)
 
-  const fetchNextPage = () => {
+  onCloseToBottom(() => {
     if (fetchingNextPage || !relay.hasMore()) {
       return
     }
@@ -31,31 +32,23 @@ export const PartnerArtwork: React.FC<{
       }
       setFetchingNextPage(false)
     })
-  }
-
-  const handleInfiniteScroll = useCallback(isCloseToBottom(fetchNextPage), [])
-
-  const onScroll = e => {
-    handleInfiniteScroll(e)
-  }
+  })
 
   if (!artworks) {
     return <PartnerEmptyState text="There is no artwork from this gallery yet" />
   }
 
   return (
-    <ScrollView onScroll={e => onScroll(e)}>
-      <Box px={2} py={3}>
-        {artworks && <GenericGrid artworks={artworks.edges.map(({ node }) => node)} />}
-        {fetchingNextPage && (
-          <Box p={2} style={{ height: 50 }}>
-            <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          </Box>
-        )}
-      </Box>
-    </ScrollView>
+    <Box px={2} py={3}>
+      {artworks && <GenericGrid artworks={artworks.edges.map(({ node }) => node)} />}
+      {fetchingNextPage && (
+        <Box p={2} style={{ height: 50 }}>
+          <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+            <Spinner />
+          </Flex>
+        </Box>
+      )}
+    </Box>
   )
 }
 

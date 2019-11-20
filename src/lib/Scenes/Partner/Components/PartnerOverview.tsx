@@ -5,9 +5,7 @@ import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
 import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
 import { get } from "lib/utils/get"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
-import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
@@ -18,11 +16,12 @@ const PAGE_SIZE = 10
 export const PartnerOverview: React.FC<{
   partner: PartnerOverview_partner
   relay: RelayPaginationProp
-}> = ({ partner, relay }) => {
+  onCloseToBottom(cb: () => void): void
+}> = ({ partner, relay, onCloseToBottom }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
   const artists = partner.artists && partner.artists.edges
 
-  const fetchNextPage = () => {
+  onCloseToBottom(() => {
     if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
       return
     }
@@ -34,7 +33,7 @@ export const PartnerOverview: React.FC<{
       }
       setFetchingNextPage(false)
     })
-  }
+  })
 
   const renderArtists = () => {
     return artists.map(artist => {
@@ -58,35 +57,33 @@ export const PartnerOverview: React.FC<{
   }
 
   return (
-    <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>
-      <Box px={2} py={3}>
-        {!!aboutText && (
+    <Box px={2} py={3}>
+      {!!aboutText && (
+        <>
+          <ReadMore content={aboutText} maxChars={textLimit} />
+          <Spacer mb={3} />
+        </>
+      )}
+      <PartnerLocationSection partner={partner} />
+      {!!artists &&
+        artists.length > 0 && (
           <>
-            <ReadMore content={aboutText} maxChars={textLimit} />
+            <Sans size="3t" weight="medium">
+              Artists
+            </Sans>
+            <Spacer mb={2} />
+            {renderArtists()}
+            {fetchingNextPage && (
+              <Box p={2} style={{ height: 50 }}>
+                <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              </Box>
+            )}
             <Spacer mb={3} />
           </>
         )}
-        <PartnerLocationSection partner={partner} />
-        {!!artists &&
-          artists.length > 0 && (
-            <>
-              <Sans size="3t" weight="medium">
-                Artists
-              </Sans>
-              <Spacer mb={2} />
-              {renderArtists()}
-              {fetchingNextPage && (
-                <Box p={2} style={{ height: 50 }}>
-                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                    <Spinner />
-                  </Flex>
-                </Box>
-              )}
-              <Spacer mb={3} />
-            </>
-          )}
-      </Box>
-    </ScrollView>
+    </Box>
   )
 }
 

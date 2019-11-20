@@ -1,7 +1,8 @@
 import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
+import { PAGE_END_THRESHOLD } from "lib/utils/isCloseToBottom"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TouchableOpacity, View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 
 const TAB_BAR_HEIGHT = 48
@@ -9,7 +10,7 @@ const TAB_BAR_HEIGHT = 48
 interface Tab {
   initial?: boolean
   title: string
-  renderContent(props: { yOffset: Animated.Node<number> }): React.ReactNode
+  renderContent(props: { onCloseToBottom(cb: () => void): void }): React.ReactNode
 }
 
 export const StickyHeaderScrollView: React.FC<{
@@ -18,6 +19,22 @@ export const StickyHeaderScrollView: React.FC<{
 }> = ({ tabs, headerContent }) => {
   const { width } = useScreenDimensions()
   const [activeTabIndex, setActiveTabIndex] = useState(Math.max(tabs.findIndex(tab => tab.initial), 0))
+  const activeTabIndexNative = useMemo(() => {
+    return new Animated.Value(activeTabIndex)
+  }, [])
+
+  useEffect(
+    () => {
+      Animated.spring(activeTabIndexNative, {
+        ...Animated.SpringUtils.makeDefaultConfig(),
+        stiffness: 600,
+        damping: 120,
+        toValue: activeTabIndex,
+      }).start()
+    },
+    [activeTabIndex]
+  )
+
   const scrollViewRefs: Animated.ScrollView[] = useMemo(
     () => {
       return tabs.map(() => null)
@@ -31,7 +48,6 @@ export const StickyHeaderScrollView: React.FC<{
     [tabs]
   )
 
-  const flatListRef = useRef<FlatList<any>>()
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
   // todo: set header height
 
@@ -56,32 +72,34 @@ export const StickyHeaderScrollView: React.FC<{
   return (
     <View style={{ flex: 1, position: "relative" }}>
       {headerHeight !== null && (
-        <FlatList
-          ref={flatListRef}
-          horizontal
-          data={tabs}
-          scrollEnabled={false}
-          snapToInterval={width}
-          style={{ flex: 1 }}
-          keyExtractor={(_, index) => index.toLocaleString()}
-          renderItem={({ item, index }) => {
-            return (
-              <Animated.ScrollView
-                key={index}
-                style={{ flex: 1, paddingTop: headerHeight + TAB_BAR_HEIGHT, width }}
-                showsVerticalScrollIndicator={false}
-                ref={node => (scrollViewRefs[index] = node)}
-                onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: yOffsets[index] } } }], {
-                  useNativeDriver: true,
-                })}
-                // we want every frame to trigger an update on the native side
-                scrollEventThrottle={0.0000000001}
-              >
-                {item.renderContent({ yOffset: yOffsets[index] })}
-              </Animated.ScrollView>
-            )
+        <Animated.View
+          style={{
+            flex: 1,
+            width: width * 3,
+            flexDirection: "row",
+            transform: [
+              {
+                translateX: Animated.interpolate(activeTabIndexNative, {
+                  inputRange: [0, 1],
+                  outputRange: [0, -width],
+                }) as any,
+              },
+            ],
           }}
-        />
+        >
+          {tabs.map(({ renderContent }, index) => {
+            return (
+              <View style={{ flex: 1, width }}>
+                <TabContent
+                  headerHeight={headerHeight}
+                  renderContent={renderContent}
+                  yOffset={yOffsets[index]}
+                  scrollViewRef={node => (scrollViewRefs[index] = node)}
+                />
+              </View>
+            )
+          })}
+        </Animated.View>
       )}
       <View style={{ width, top: 0, position: "absolute" }}>
         <Animated.View ref={headerContentRef} style={{ transform: [{ translateY: headerContentOffset as any }] }}>
@@ -111,7 +129,6 @@ export const StickyHeaderScrollView: React.FC<{
                       .scrollTo({ y: Math.min(currentTabScrollOffset, headerHeight), animated: false })
                   }
                   setActiveTabIndex(index)
-                  flatListRef.current.scrollToOffset({ animated: true, offset: width * index })
                 }}
               />
             ))}
@@ -158,6 +175,74 @@ const Tab: React.FC<{ label: string; active: boolean; onPress(): void }> = ({ la
         </Box>
       </TouchableOpacity>
     </Flex>
+  )
+}
+
+const TabContent: React.FC<{
+  headerHeight: number
+  scrollViewRef: React.Ref<Animated.ScrollView>
+  yOffset: Animated.Value<number>
+  renderContent(props: { onCloseToBottom(cb: () => void): void }): React.ReactNode
+}> = ({ headerHeight, scrollViewRef, yOffset, renderContent }) => {
+  const contentHeight = useMemo(() => {
+    // start off super high to avoid triggering on initial load
+    return new Animated.Value(+99999999)
+  }, [])
+
+  const layoutHeight = useMemo(() => {
+    return new Animated.Value(0 as number)
+  }, [])
+
+  const isCloseToBottom = useMemo(() => {
+    const bottomYOffset = Animated.sub(contentHeight, layoutHeight)
+    const distanceFromBottom = Animated.sub(bottomYOffset, yOffset)
+    return Animated.lessOrEq(distanceFromBottom, PAGE_END_THRESHOLD)
+  }, [])
+
+  const onCloseToBottom = useRef<() => void>()
+
+  return (
+    <Animated.ScrollView
+      style={{ flex: 1 }}
+      showsVerticalScrollIndicator={false}
+      ref={scrollViewRef}
+      onScroll={Animated.event(
+        [
+          {
+            nativeEvent: {
+              contentOffset: { y: yOffset },
+              contentSize: { height: contentHeight },
+              layoutMeasuremet: { height: layoutHeight },
+            },
+          },
+        ],
+        {
+          useNativeDriver: true,
+        }
+      )}
+      // we want every frame to trigger an update on the native side
+      scrollEventThrottle={0.0000000001}
+    >
+      <Animated.Code>
+        {() =>
+          // TODO: debounce on native side 🤔
+          Animated.cond(
+            isCloseToBottom,
+            Animated.call([], () => {
+              if (onCloseToBottom.current) {
+                onCloseToBottom.current()
+              }
+            })
+          )
+        }
+      </Animated.Code>
+      <Spacer mb={headerHeight + TAB_BAR_HEIGHT} />
+      {renderContent({
+        onCloseToBottom(cb) {
+          onCloseToBottom.current = cb
+        },
+      })}
+    </Animated.ScrollView>
   )
 }
 

@@ -40,20 +40,20 @@ class Partner extends React.Component<Props> {
               tabs={[
                 {
                   title: "Overview",
-                  renderContent() {
-                    return <PartnerOverview partner={partner} />
+                  renderContent({ onCloseToBottom }) {
+                    return <PartnerOverview onCloseToBottom={onCloseToBottom} partner={partner} />
                   },
                 },
                 {
                   title: "Artwork",
-                  renderContent() {
-                    return <PartnerArtwork partner={partner} />
+                  renderContent({ onCloseToBottom }) {
+                    return <PartnerArtwork onCloseToBottom={onCloseToBottom} partner={partner} />
                   },
                 },
                 {
                   title: "Shows",
-                  renderContent() {
-                    return <PartnerShows partner={partner} />
+                  renderContent({ onCloseToBottom }) {
+                    return <PartnerShows onCloseToBottom={onCloseToBottom} partner={partner} />
                   },
                 },
               ]}

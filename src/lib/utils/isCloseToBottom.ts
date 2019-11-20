@@ -17,7 +17,7 @@ import { NativeScrollEvent } from "react-native"
  *  )
  */
 
-const PAGE_END_THRESHOLD = 1000
+export const PAGE_END_THRESHOLD = 1000
 
 type CallBack = () => void
 
