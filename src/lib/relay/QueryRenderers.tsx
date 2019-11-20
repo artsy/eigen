@@ -224,18 +224,16 @@ interface WorksForYouRendererProps extends RendererProps {
   selectedArtist?: string
 }
 
-export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ render, selectedArtist }) => {
+export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ render }) => {
   return (
     <QueryRenderer<QueryRenderersWorksForYouQuery>
       environment={environment}
       query={graphql`
-        query QueryRenderersWorksForYouQuery($selectedArtist: String!) {
-          ...WorksForYou_query @arguments(selectedArtist: $selectedArtist)
+        query QueryRenderersWorksForYouQuery {
+          ...WorksForYou_query
         }
       `}
-      variables={{
-        selectedArtist: selectedArtist || "",
-      }}
+      variables={{}}
       render={render}
     />
   )
