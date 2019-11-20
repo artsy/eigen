@@ -3,9 +3,7 @@ import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.gra
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { get } from "lib/utils/get"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import React, { useCallback, useState } from "react"
-import { ScrollView } from "react-native"
+import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 

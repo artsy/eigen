@@ -49,7 +49,6 @@ export const PartnerShows: React.FC<{
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
   onCloseToBottom(() => {
-    console.log("hit bottom")
     if (fetchingNextPage || !relay.hasMore()) {
       return
     }

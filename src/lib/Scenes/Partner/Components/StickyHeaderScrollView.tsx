@@ -6,6 +6,7 @@ import { TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 
 const TAB_BAR_HEIGHT = 48
+const SHOW_HEADER_VELOCITY = 10
 
 interface Tab {
   initial?: boolean
@@ -23,6 +24,7 @@ export const StickyHeaderScrollView: React.FC<{
     return new Animated.Value(activeTabIndex)
   }, [])
 
+  // update the native tab index using a spring animation to drive the pseudo horizontal flatlist
   useEffect(
     () => {
       Animated.spring(activeTabIndexNative, {
@@ -49,29 +51,63 @@ export const StickyHeaderScrollView: React.FC<{
   )
 
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
-  // todo: set header height
 
-  const stickyContentRef = useRef<Animated.View>()
-  const headerContentRef = useRef<Animated.View>()
+  const headerContentRef = useRef<View>()
 
   useEffect(() => {
-    headerContentRef.current.getNode().measure((_x, _y, _w, height) => {
+    headerContentRef.current.measure((_x, _y, _w, height) => {
       setHeaderHeight(height)
     })
   }, [])
 
   const readYOffsets = useDeref(yOffsets)
 
-  const headerContentOffset = useMemo(
+  const headerContentOffset = useMemo(() => {
+    return new Animated.Value(0 as number)
+  }, [])
+
+  Animated.useCode(
     () => {
-      return Animated.multiply(-1, yOffsets[activeTabIndex])
+      // const freeWheelin = Animated.diffClamp(Animated.multiply(-1, yOffsets[activeTabIndex]), -headerHeight, 0)
+      if (headerHeight === null) {
+        return Animated.eq(0, 0)
+      }
+      const firstEval = new Animated.Value(1)
+      const scrollDiff = Animated.diff(yOffsets[activeTabIndex])
+      const upwardVelocityBreached = Animated.lessOrEq(scrollDiff, -SHOW_HEADER_VELOCITY)
+      const headerIsNotFullyUp = Animated.neq(headerContentOffset, -headerHeight)
+      const nearTheTop = Animated.lessOrEq(yOffsets[activeTabIndex], headerHeight)
+      const notBouncingAtTheTop = Animated.greaterThan(yOffsets[activeTabIndex], 0)
+
+      const updateHeaderOffset = Animated.cond(
+        Animated.and(Animated.greaterThan(scrollDiff, 0), notBouncingAtTheTop),
+        [
+          // y offset got bigger so scrolling down
+          // move headerContentOffset up as far as it'll go
+          Animated.set(headerContentOffset, Animated.max(-headerHeight, Animated.sub(headerContentOffset, scrollDiff))),
+        ],
+        [
+          // y offset got smaller so scrolling up
+          // if velocity is high enough or we're already moving up or we're at the top, move the header down
+          Animated.cond(
+            Animated.and(notBouncingAtTheTop, Animated.or(upwardVelocityBreached, headerIsNotFullyUp, nearTheTop)),
+            [Animated.set(headerContentOffset, Animated.min(0, Animated.sub(headerContentOffset, scrollDiff)))]
+          ),
+        ]
+      )
+
+      // when switching tabs we don't want the header to jump up, so on first eval just
+      // make sure the scrollDiff gets reset to 0 by derefing it
+      return Animated.cond(firstEval, [Animated.set(firstEval, 0), scrollDiff], updateHeaderOffset)
     },
-    [activeTabIndex]
+    [activeTabIndex, headerHeight]
   )
 
   return (
-    <View style={{ flex: 1, position: "relative" }}>
+    <Animated.View style={{ flex: 1, position: "relative" }}>
+      {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
+        // This mimicks a horizontal flat list
         <Animated.View
           style={{
             flex: 1,
@@ -89,7 +125,7 @@ export const StickyHeaderScrollView: React.FC<{
         >
           {tabs.map(({ renderContent }, index) => {
             return (
-              <View style={{ flex: 1, width }}>
+              <View style={{ flex: 1, width }} key={index}>
                 <TabContent
                   headerHeight={headerHeight}
                   renderContent={renderContent}
@@ -101,18 +137,22 @@ export const StickyHeaderScrollView: React.FC<{
           })}
         </Animated.View>
       )}
-      <View style={{ width, top: 0, position: "absolute" }}>
-        <Animated.View ref={headerContentRef} style={{ transform: [{ translateY: headerContentOffset as any }] }}>
+      <Animated.View
+        style={{
+          width,
+          top: 0,
+          position: "absolute",
+          backgroundColor: "white",
+          transform: [{ translateY: headerContentOffset as any }],
+        }}
+      >
+        {/* header */}
+        <View ref={headerContentRef}>
           {headerContent}
           <Spacer mb={1} />
-        </Animated.View>
-        <Animated.View
-          ref={stickyContentRef}
-          style={{
-            transform: [{ translateY: Animated.max(-headerHeight, headerContentOffset) as any }],
-            backgroundColor: "white",
-          }}
-        >
+        </View>
+        {/* sticky content */}
+        <View>
           <TabBar>
             {tabs.map(({ title }, index) => (
               <Tab
@@ -133,9 +173,9 @@ export const StickyHeaderScrollView: React.FC<{
               />
             ))}
           </TabBar>
-        </Animated.View>
-      </View>
-    </View>
+        </View>
+      </Animated.View>
+    </Animated.View>
   )
 }
 
