@@ -1,10 +1,10 @@
-import { color, Flex, Sans, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 
-const TAB_BAR_HEIGHT = 40
+const TAB_BAR_HEIGHT = 48
 
 interface Tab {
   initial?: boolean
@@ -130,7 +130,8 @@ const TabBar: React.FC<{}> = ({ children }) => {
         borderBottomColor: color("black30"),
         height: TAB_BAR_HEIGHT,
         flexDirection: "row",
-        justifyContent: "space-around",
+        paddingRight: space(2),
+        paddingLeft: space(2),
       }}
     >
       {children}
@@ -140,23 +141,23 @@ const TabBar: React.FC<{}> = ({ children }) => {
 
 const Tab: React.FC<{ label: string; active: boolean; onPress(): void }> = ({ label, active, onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Flex
-        style={{
-          position: "relative",
-          top: 1,
-          height: TAB_BAR_HEIGHT - 1,
-          alignItems: "center",
-          justifyContent: "center",
-          borderBottomWidth: 1,
-          borderBottomColor: active ? color("black100") : color("black30"),
-        }}
-      >
-        <Sans size="3" weight={active ? "medium" : "regular"}>
-          {label}
-        </Sans>
-      </Flex>
-    </TouchableOpacity>
+    <Flex style={{ flex: 1, height: TAB_BAR_HEIGHT }}>
+      <TouchableOpacity onPress={onPress}>
+        <Box
+          style={{
+            height: TAB_BAR_HEIGHT,
+            alignItems: "center",
+            justifyContent: "center",
+            borderBottomWidth: 1,
+            borderBottomColor: active ? color("black100") : color("black30"),
+          }}
+        >
+          <Sans size="3" weight={active ? "medium" : "regular"}>
+            {label}
+          </Sans>
+        </Box>
+      </TouchableOpacity>
+    </Flex>
   )
 }
 
