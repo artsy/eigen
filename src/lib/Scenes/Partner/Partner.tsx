@@ -2,6 +2,7 @@ import { Flex, Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -13,7 +14,6 @@ import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Components/PartnerOverview"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/PartnerShows"
-import { StickyHeaderScrollView } from "./Components/StickyHeaderScrollView"
 
 const INITIAL_TAB = 1
 
@@ -35,26 +35,21 @@ class Partner extends React.Component<Props> {
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <StickyHeaderScrollView
+            <StickyTabPage
               headerContent={<PartnerHeader partner={partner} />}
               tabs={[
                 {
                   title: "Overview",
-                  renderContent() {
-                    return <PartnerOverview partner={partner} />
-                  },
+                  content: <PartnerOverview partner={partner} />,
                 },
                 {
                   title: "Artwork",
-                  renderContent() {
-                    return <PartnerArtwork partner={partner} />
-                  },
+                  initial: true,
+                  content: <PartnerArtwork partner={partner} />,
                 },
                 {
                   title: "Shows",
-                  renderContent() {
-                    return <PartnerShows partner={partner} />
-                  },
+                  content: <PartnerShows partner={partner} />,
                 },
               ]}
             />

@@ -2,12 +2,12 @@ import { Box, Flex } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
+import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
 import { get } from "lib/utils/get"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
-import { useStickyTabContext } from "./StickyHeaderScrollView"
 
 const PAGE_SIZE = 6
 

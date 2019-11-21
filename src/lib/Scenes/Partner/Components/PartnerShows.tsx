@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import Spinner from "lib/Components/Spinner"
+import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { ImageBackground, TouchableWithoutFeedback } from "react-native"
@@ -8,7 +9,6 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import styled from "styled-components/native"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
-import { useStickyTabContext } from "./StickyHeaderScrollView"
 
 const PAGE_SIZE = 6
 

@@ -3,6 +3,7 @@ import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.g
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
+import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
 import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
 import { get } from "lib/utils/get"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -10,7 +11,6 @@ import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
-import { useStickyTabContext } from "./StickyHeaderScrollView"
 
 const textLimit = truncatedTextLimit()
 const PAGE_SIZE = 10
