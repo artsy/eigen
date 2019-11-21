@@ -13,27 +13,46 @@ interface Tab {
   renderContent(): React.ReactNode
 }
 
+const SnappyHorizontalRail: React.FC<{ offset: number }> = ({ offset, children }) => {
+  const currentOffset = useAnimatedValue(-offset)
+  const { width } = useScreenDimensions()
+
+  useEffect(
+    () => {
+      Animated.spring(currentOffset, {
+        ...Animated.SpringUtils.makeDefaultConfig(),
+        stiffness: 600,
+        damping: 120,
+        toValue: -offset,
+      }).start()
+    },
+    [offset]
+  )
+
+  return (
+    <Animated.View
+      style={{
+        flex: 1,
+        width: width * 3,
+        flexDirection: "row",
+        transform: [
+          {
+            translateX: currentOffset as any,
+          },
+        ],
+      }}
+    >
+      {children}
+    </Animated.View>
+  )
+}
+
 export const StickyHeaderScrollView: React.FC<{
   tabs: Tab[]
   headerContent: JSX.Element
 }> = ({ tabs, headerContent }) => {
   const { width } = useScreenDimensions()
   const [activeTabIndex, setActiveTabIndex] = useState(Math.max(tabs.findIndex(tab => tab.initial), 0))
-  const activeTabIndexNative = useAnimatedValue(activeTabIndex)
-
-  // update the native tab index using a spring animation to drive the pseudo horizontal flatlist
-  useEffect(
-    () => {
-      Animated.spring(activeTabIndexNative, {
-        ...Animated.SpringUtils.makeDefaultConfig(),
-        stiffness: 600,
-        damping: 120,
-        toValue: activeTabIndex,
-      }).start()
-    },
-    [activeTabIndex]
-  )
-
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
 
   const headerOffsetY = useAnimatedValue(0)
@@ -42,22 +61,7 @@ export const StickyHeaderScrollView: React.FC<{
     <Animated.View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
-        // This mimicks a horizontal flat list
-        <Animated.View
-          style={{
-            flex: 1,
-            width: width * 3,
-            flexDirection: "row",
-            transform: [
-              {
-                translateX: Animated.interpolate(activeTabIndexNative, {
-                  inputRange: [0, 1],
-                  outputRange: [0, -width],
-                }) as any,
-              },
-            ],
-          }}
-        >
+        <SnappyHorizontalRail offset={activeTabIndex * width}>
           {tabs.map(({ renderContent }, index) => {
             return (
               <View style={{ flex: 1, width }} key={index}>
@@ -70,7 +74,7 @@ export const StickyHeaderScrollView: React.FC<{
               </View>
             )
           })}
-        </Animated.View>
+        </SnappyHorizontalRail>
       )}
       <Animated.View
         style={{
@@ -81,26 +85,22 @@ export const StickyHeaderScrollView: React.FC<{
           transform: [{ translateY: headerOffsetY as any }],
         }}
       >
-        {/* header */}
         <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
           {headerContent}
           <Spacer mb={1} />
         </View>
-        {/* sticky content */}
-        <View>
-          <TabBar>
-            {tabs.map(({ title }, index) => (
-              <Tab
-                key={title}
-                label={title}
-                active={activeTabIndex === index}
-                onPress={() => {
-                  setActiveTabIndex(index)
-                }}
-              />
-            ))}
-          </TabBar>
-        </View>
+        <TabBar>
+          {tabs.map(({ title }, index) => (
+            <Tab
+              key={title}
+              label={title}
+              active={activeTabIndex === index}
+              onPress={() => {
+                setActiveTabIndex(index)
+              }}
+            />
+          ))}
+        </TabBar>
       </Animated.View>
     </Animated.View>
   )
