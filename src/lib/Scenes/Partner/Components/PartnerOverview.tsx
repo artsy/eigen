@@ -5,10 +5,12 @@ import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
 import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
 import { get } from "lib/utils/get"
+import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
+import { useStickyTabContext } from "./StickyHeaderScrollView"
 
 const textLimit = truncatedTextLimit()
 const PAGE_SIZE = 10
@@ -16,23 +18,29 @@ const PAGE_SIZE = 10
 export const PartnerOverview: React.FC<{
   partner: PartnerOverview_partner
   relay: RelayPaginationProp
-  onCloseToBottom(cb: () => void): void
-}> = ({ partner, relay, onCloseToBottom }) => {
+}> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
   const artists = partner.artists && partner.artists.edges
 
-  onCloseToBottom(() => {
-    if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
-      return
-    }
-    setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("PartnerArtwork.tsx", error.message)
+  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
+
+  useOnCloseToBottom({
+    contentHeight,
+    scrollOffsetY,
+    layoutHeight,
+    callback: () => {
+      if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
+        return
       }
-      setFetchingNextPage(false)
-    })
+      setFetchingNextPage(true)
+      relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("PartnerOverview.tsx", error.message)
+        }
+        setFetchingNextPage(false)
+      })
+    },
   })
 
   const renderArtists = () => {

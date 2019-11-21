@@ -1,12 +1,14 @@
 import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import Spinner from "lib/Components/Spinner"
+import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { ImageBackground, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
+import { useStickyTabContext } from "./StickyHeaderScrollView"
 
 const PAGE_SIZE = 6
 
@@ -43,23 +45,29 @@ const ShowGridItem = ({
 export const PartnerShows: React.FC<{
   partner: PartnerShows_partner
   relay: RelayPaginationProp
-  onCloseToBottom(cb: () => void): void
-}> = ({ partner, relay, onCloseToBottom }) => {
+}> = ({ partner, relay }) => {
   const [hasRecentShows, setHasRecentShows] = useState(false)
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
-  onCloseToBottom(() => {
-    if (fetchingNextPage || !relay.hasMore()) {
-      return
-    }
-    setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("PartnerShows.tsx", error.message)
+  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
+
+  useOnCloseToBottom({
+    contentHeight,
+    scrollOffsetY,
+    layoutHeight,
+    callback: () => {
+      if (fetchingNextPage || !relay.hasMore()) {
+        return
       }
-      setFetchingNextPage(false)
-    })
+      setFetchingNextPage(true)
+      relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("PartnerShows.tsx", error.message)
+        }
+        setFetchingNextPage(false)
+      })
+    },
   })
 
   const pastShows = partner.pastShows && partner.pastShows.edges

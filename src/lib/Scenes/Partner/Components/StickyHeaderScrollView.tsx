@@ -1,7 +1,6 @@
 import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
-import { PAGE_END_THRESHOLD } from "lib/utils/isCloseToBottom"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 
@@ -11,7 +10,7 @@ const SHOW_HEADER_VELOCITY = 10
 interface Tab {
   initial?: boolean
   title: string
-  renderContent(props: { onCloseToBottom(cb: () => void): void }): React.ReactNode
+  renderContent(): React.ReactNode
 }
 
 export const StickyHeaderScrollView: React.FC<{
@@ -35,68 +34,9 @@ export const StickyHeaderScrollView: React.FC<{
     [activeTabIndex]
   )
 
-  const scrollViewRefs: Animated.ScrollView[] = useMemo(
-    () => {
-      return tabs.map(() => null)
-    },
-    [tabs]
-  )
-  const yOffsets: Array<Animated.Value<number>> = useMemo(
-    () => {
-      return tabs.map(() => new Animated.Value(0))
-    },
-    [tabs]
-  )
-
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
 
-  const headerContentRef = useRef<View>()
-
-  useEffect(() => {
-    headerContentRef.current.measure((_x, _y, _w, height) => {
-      setHeaderHeight(height)
-    })
-  }, [])
-
-  const readYOffsets = useValueReader(yOffsets)
-
-  const headerContentOffset = useAnimatedValue(0)
-
-  Animated.useCode(
-    () => {
-      if (headerHeight === null) {
-        return Animated.eq(0, 0)
-      }
-      const firstEval = new Animated.Value(1)
-      const scrollDiff = Animated.diff(yOffsets[activeTabIndex])
-      const upwardVelocityBreached = Animated.lessOrEq(scrollDiff, -SHOW_HEADER_VELOCITY)
-      const headerIsNotFullyUp = Animated.neq(headerContentOffset, -headerHeight)
-      const nearTheTop = Animated.lessOrEq(yOffsets[activeTabIndex], headerHeight)
-      const notBouncingAtTheTop = Animated.greaterThan(yOffsets[activeTabIndex], 0)
-
-      const updateHeaderOffset = Animated.cond(
-        Animated.and(Animated.greaterThan(scrollDiff, 0), notBouncingAtTheTop),
-        [
-          // y offset got bigger so scrolling down
-          // move headerContentOffset up as far as it'll go
-          Animated.set(headerContentOffset, Animated.max(-headerHeight, Animated.sub(headerContentOffset, scrollDiff))),
-        ],
-        [
-          // y offset got smaller so scrolling up
-          // if velocity is high enough or we're already moving up or we're at the top, move the header down
-          Animated.cond(
-            Animated.and(notBouncingAtTheTop, Animated.or(upwardVelocityBreached, headerIsNotFullyUp, nearTheTop)),
-            [Animated.set(headerContentOffset, Animated.min(0, Animated.sub(headerContentOffset, scrollDiff)))]
-          ),
-        ]
-      )
-
-      // when switching tabs we don't want the header to jump up, so on first eval just
-      // make sure the scrollDiff gets reset to 0 by derefing it
-      return Animated.cond(firstEval, [Animated.set(firstEval, 0), scrollDiff], updateHeaderOffset)
-    },
-    [activeTabIndex, headerHeight]
-  )
+  const headerOffsetY = useAnimatedValue(0)
 
   return (
     <Animated.View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
@@ -124,8 +64,8 @@ export const StickyHeaderScrollView: React.FC<{
                 <TabContent
                   headerHeight={headerHeight}
                   renderContent={renderContent}
-                  yOffset={yOffsets[index]}
-                  scrollViewRef={node => (scrollViewRefs[index] = node)}
+                  headerOffsetY={headerOffsetY}
+                  isActive={index === activeTabIndex}
                 />
               </View>
             )
@@ -138,11 +78,11 @@ export const StickyHeaderScrollView: React.FC<{
           top: 0,
           position: "absolute",
           backgroundColor: "white",
-          transform: [{ translateY: headerContentOffset as any }],
+          transform: [{ translateY: headerOffsetY as any }],
         }}
       >
         {/* header */}
-        <View ref={headerContentRef}>
+        <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
           {headerContent}
           <Spacer mb={1} />
         </View>
@@ -154,20 +94,7 @@ export const StickyHeaderScrollView: React.FC<{
                 key={title}
                 label={title}
                 active={activeTabIndex === index}
-                onPress={async () => {
-                  if (activeTabIndex === index) {
-                    return
-                  }
-                  // we are about to switch tabs, need to make sure that there is no extra padding
-                  // at the top of the page if, e.g. we switch from a tab where the
-                  const ys = await readYOffsets()
-                  const nextTabScrollOffset = ys[index]
-                  const currentTabScrollOffset = ys[activeTabIndex]
-                  if (nextTabScrollOffset < headerHeight) {
-                    scrollViewRefs[index]
-                      .getNode()
-                      .scrollTo({ y: Math.min(currentTabScrollOffset, headerHeight), animated: false })
-                  }
+                onPress={() => {
                   setActiveTabIndex(index)
                 }}
               />
@@ -218,67 +145,87 @@ const Tab: React.FC<{ label: string; active: boolean; onPress(): void }> = ({ la
   )
 }
 
+const StickyHeaderScrollTabContext = React.createContext<{
+  scrollOffsetY: Animated.Node<number>
+  contentHeight: Animated.Node<number>
+  layoutHeight: Animated.Node<number>
+}>(null)
+
+export const useStickyTabContext = () => {
+  return useContext(StickyHeaderScrollTabContext)
+}
+
 const TabContent: React.FC<{
   headerHeight: number
-  scrollViewRef: React.Ref<Animated.ScrollView>
-  yOffset: Animated.Value<number>
-  renderContent(props: { onCloseToBottom(cb: () => void): void }): React.ReactNode
-}> = ({ headerHeight, scrollViewRef, yOffset, renderContent }) => {
-  // start off contentHeight super high to avoid triggering 'close to bottom' callback on initial load
-  // it will be set to a more sensible number as soon as the user starts scrolling
-  const contentHeight = useAnimatedValue(99999999)
+  headerOffsetY: Animated.Value<number>
+  isActive: boolean
+  renderContent(): React.ReactNode
+}> = ({ headerHeight, headerOffsetY, renderContent, isActive }) => {
+  // TODO: Decide if this should go back to 9999
+  const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)
+  const scrollOffsetY = useAnimatedValue(0)
 
-  const isCloseToBottom = useMemo(() => {
-    const bottomYOffset = Animated.sub(contentHeight, layoutHeight)
-    const distanceFromBottom = Animated.sub(bottomYOffset, yOffset)
-    return Animated.lessOrEq(distanceFromBottom, PAGE_END_THRESHOLD)
-  }, [])
+  const { lockHeaderPosition } = useStickyHeaderPositioning({
+    headerOffsetY,
+    contentHeight,
+    layoutHeight,
+    headerHeight,
+    scrollOffsetY,
+  })
 
-  const onCloseToBottom = useRef<() => void>()
+  const scrollViewRef = useRef<Animated.ScrollView>()
+
+  const readVals = useValueReader({ headerOffsetY, scrollOffsetY })
+
+  // make sure that when the tab becomes active it does not have any unsightly padding at the top in cases
+  // where the header has been retracted but this tab is near the top of its content
+  useEffect(
+    () => {
+      // this should only happen once each time the tab becomes active
+      if (isActive) {
+        readVals().then(vals => {
+          if (-vals.headerOffsetY > vals.scrollOffsetY) {
+            scrollViewRef.current.getNode().scrollTo({ y: -vals.headerOffsetY, animated: false })
+          }
+          setTimeout(() => {
+            lockHeaderPosition.setValue(0)
+          }, 10)
+        })
+      } else {
+        lockHeaderPosition.setValue(1)
+      }
+    },
+    [isActive]
+  )
 
   return (
-    <Animated.ScrollView
-      style={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}
-      ref={scrollViewRef}
-      onScroll={Animated.event(
-        [
-          {
-            nativeEvent: {
-              contentOffset: { y: yOffset },
-              contentSize: { height: contentHeight },
-              layoutMeasuremet: { height: layoutHeight },
+    <StickyHeaderScrollTabContext.Provider value={{ contentHeight, layoutHeight, scrollOffsetY }}>
+      <Animated.ScrollView
+        style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        ref={scrollViewRef}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: { y: scrollOffsetY },
+                contentSize: { height: contentHeight },
+                layoutMeasurement: { height: layoutHeight },
+              },
             },
-          },
-        ],
-        {
-          useNativeDriver: true,
-        }
-      )}
-      // we want every frame to trigger an update on the native side
-      scrollEventThrottle={0.0000000001}
-    >
-      <Animated.Code>
-        {() =>
-          // TODO: debounce on native side 🤔
-          Animated.cond(
-            isCloseToBottom,
-            Animated.call([], () => {
-              if (onCloseToBottom.current) {
-                onCloseToBottom.current()
-              }
-            })
-          )
-        }
-      </Animated.Code>
-      <Spacer mb={headerHeight + TAB_BAR_HEIGHT} />
-      {renderContent({
-        onCloseToBottom(cb) {
-          onCloseToBottom.current = cb
-        },
-      })}
-    </Animated.ScrollView>
+          ],
+          {
+            useNativeDriver: true,
+          }
+        )}
+        // we want every frame to trigger an update on the native side
+        scrollEventThrottle={0.0000000001}
+      >
+        <Spacer mb={headerHeight + TAB_BAR_HEIGHT} />
+        {renderContent()}
+      </Animated.ScrollView>
+    </StickyHeaderScrollTabContext.Provider>
   )
 }
 
@@ -290,40 +237,67 @@ const TabContent: React.FC<{
  * @param vals the animated vals to make the reader function for
  * @example
  * const scrollOffset = useMemo(() => new Animated.Value(0), [])
- * const readScrollOffset = useValueReader([scrollOffset])
+ * const readVals = useValueReader({scrollOffset})
  * // later, e.g. in a callback
- * const [scrollOffset] = await readScrollOffset()
+ * const {scrollOffset} = await readVals()
  * console.log(scrollOffset) // => 632
  */
-function useValueReader(vals: ReadonlyArray<Animated.Node<number>>) {
+function useValueReader<T extends { [k: string]: Animated.Adaptable<number> }>(
+  props: T
+): () => Promise<{ [k in keyof T]: number }> {
   // this works by running some reanimated code every time an 'epoch' value
   // is incremented. That code calls a callback with the current values
   // to resolve a promise set up for the consumer
   const epochRef = useRef(0)
   const epoch = useAnimatedValue(0)
+  const lastEpoch = useAnimatedValue(0)
 
   const readCallback = useRef<(vals: ReadonlyArray<number>) => void>()
 
+  const keys = useMemo(
+    () => {
+      return Object.keys(props)
+    },
+    [props]
+  )
+
+  const vals = useMemo(
+    () => {
+      return keys.map(k => props[k])
+    },
+    [keys]
+  )
+
   Animated.useCode(
     () =>
-      Animated.onChange(epoch, [
-        Animated.call(vals, vs => {
+      Animated.cond(Animated.neq(epoch, lastEpoch), [
+        Animated.set(lastEpoch, epoch),
+        Animated.call([...vals], vs => {
           const cb = readCallback.current
           readCallback.current = null
           result.current = null
-          cb(vs)
+          cb(
+            keys.reduce(
+              (acc, k, i) => {
+                acc[k] = vs[i]
+                return acc
+              },
+              {} as any
+            )
+          )
         }),
       ]),
-    []
+    [vals, keys]
   )
 
-  const result = useRef<Promise<ReadonlyArray<number>>>()
+  const result = useRef<Promise<any>>()
 
   return () => {
     if (!result.current) {
-      result.current = new Promise<ReadonlyArray<number>>(resolve => {
+      result.current = new Promise(resolve => {
         readCallback.current = resolve
-        epoch.setValue(++epochRef.current)
+        epochRef.current += 1
+        epoch.setValue(epochRef.current)
       })
     }
     return result.current
@@ -340,4 +314,77 @@ function useAnimatedValue(init: number) {
   return useMemo(() => {
     return new Animated.Value(init)
   }, [])
+}
+
+function useStickyHeaderPositioning({
+  headerHeight,
+  scrollOffsetY,
+  headerOffsetY,
+  contentHeight,
+  layoutHeight,
+}: {
+  headerHeight: number
+  scrollOffsetY: Animated.Node<number>
+  headerOffsetY: Animated.Value<number>
+  contentHeight: Animated.Node<number>
+  layoutHeight: Animated.Node<number>
+}) {
+  const lockHeaderPosition = useAnimatedValue(1)
+  Animated.useCode(
+    () => {
+      // scrollDiff is the amount the header has scrolled since last time this code ran
+      const scrollDiff = Animated.diff(scrollOffsetY)
+
+      const upwardVelocityBreached = Animated.lessOrEq(scrollDiff, -SHOW_HEADER_VELOCITY)
+      const headerIsNotFullyUp = Animated.neq(headerOffsetY, -headerHeight)
+
+      const nearTheTop = Animated.lessOrEq(scrollOffsetY, headerHeight)
+
+      // this is the code which actually performs the update to headerOffsetY, according to which direction
+      // the scrolling is going
+      const updateHeaderOffset = Animated.cond(
+        Animated.greaterThan(scrollDiff, 0),
+        [
+          // y offset got bigger so scrolling down (content travels up the screen)
+          // move the header up (hide it) unconditionally
+          Animated.set(headerOffsetY, Animated.max(-headerHeight, Animated.sub(headerOffsetY, scrollDiff))),
+        ],
+        [
+          // y offset got smaller so scrolling up (content travels down the screen)
+          // if velocity is high enough or we're already moving the header up or we're near the top of the scroll view
+          // then move the header down (show it)
+          Animated.cond(Animated.or(upwardVelocityBreached, headerIsNotFullyUp, nearTheTop), [
+            Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
+          ]),
+        ]
+      )
+
+      // we don't want to manipulate the header position while bouncing at the top or the bottom of the scroll view
+      // cause it feels weeeird
+      const notBouncingAtTheTop = Animated.greaterThan(scrollOffsetY, 0)
+      const notBouncingAtTheBottom = Animated.lessThan(scrollOffsetY, Animated.sub(contentHeight, layoutHeight))
+
+      const updateHeaderOffsetWhenNotBouncingOrLocked = Animated.cond(
+        Animated.and(notBouncingAtTheTop, notBouncingAtTheBottom, Animated.not(lockHeaderPosition)),
+        updateHeaderOffset,
+        // deref scroll diff to prevent diff buildup when ignoring changes
+        scrollDiff
+      )
+
+      // on first eval (when the component mounts) the scroll values will be nonsensical so ignore
+      const firstEval = new Animated.Value(1)
+      return Animated.cond(
+        firstEval,
+        [
+          Animated.set(firstEval, 0),
+          // again, deref scrollDiff to prevent buildup
+          scrollDiff,
+        ],
+        updateHeaderOffsetWhenNotBouncingOrLocked
+      )
+    },
+    [headerHeight]
+  )
+
+  return { lockHeaderPosition }
 }

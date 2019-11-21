@@ -3,33 +3,41 @@ import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.gra
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { get } from "lib/utils/get"
+import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
+import { useStickyTabContext } from "./StickyHeaderScrollView"
 
 const PAGE_SIZE = 6
 
 export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner
   relay: RelayPaginationProp
-  onCloseToBottom(cb: () => void): void
-}> = ({ partner, relay, onCloseToBottom }) => {
+}> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
   const artworks = get(partner, p => p.artworks)
 
-  onCloseToBottom(() => {
-    if (fetchingNextPage || !relay.hasMore()) {
-      return
-    }
-    setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("PartnerArtwork.tsx", error.message)
+  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
+
+  useOnCloseToBottom({
+    contentHeight,
+    scrollOffsetY,
+    layoutHeight,
+    callback: () => {
+      if (fetchingNextPage || !relay.hasMore()) {
+        return
       }
-      setFetchingNextPage(false)
-    })
+      setFetchingNextPage(true)
+      relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("PartnerArtwork.tsx", error.message)
+        }
+        setFetchingNextPage(false)
+      })
+    },
   })
 
   if (!artworks) {
