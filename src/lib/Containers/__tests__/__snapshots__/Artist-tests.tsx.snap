@@ -1,102 +1,128 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`layout works as expected with no tabs 1`] = `
-<RCTScrollView
-  automaticallyAdjustContentInsets={false}
-  scrollsToTop={true}
+<View
+  style={
+    Array [
+      Object {
+        "display": "flex",
+      },
+      Object {
+        "flex": 1,
+      },
+    ]
+  }
 >
-  <View>
-    <View
-      style={
+  <View
+    pt={3}
+    style={
+      Array [
         Object {
-          "paddingLeft": 40,
-          "paddingRight": 40,
-        }
-      }
-    >
-      <Header
-        artist={
-          Object {
-            "birthday": null,
-            "counts": Object {
-              "articles": 0,
-              "artworks": 0,
-              "partner_shows": 0,
-            },
-            "current_shows": null,
-            "has_metadata": false,
-            "id": null,
-            "internalID": null,
-            "name": null,
-            "nationality": null,
-            "past_large_shows": null,
-            "past_small_shows": null,
-            "upcoming_shows": null,
-          }
-        }
-      />
-      <View
-        style={
-          Object {
-            "paddingTop": 30,
-          }
-        }
-      />
-    </View>
-  </View>
-</RCTScrollView>
+          "paddingTop": 30,
+        },
+      ]
+    }
+  />
+</View>
 `;
 
 exports[`layout works as expected with one tab 1`] = `
-<RCTScrollView
-  automaticallyAdjustContentInsets={false}
-  scrollsToTop={true}
+<View
+  style={
+    Array [
+      Object {
+        "display": "flex",
+      },
+      Object {
+        "flex": 1,
+      },
+    ]
+  }
 >
-  <View>
+  <View
+    pt={3}
+    style={
+      Array [
+        Object {
+          "paddingTop": 30,
+        },
+      ]
+    }
+  >
+    <About
+      artist={
+        Object {
+          "birthday": null,
+          "counts": Object {
+            "articles": 0,
+            "artworks": 0,
+            "partner_shows": 0,
+          },
+          "current_shows": null,
+          "has_metadata": true,
+          "id": null,
+          "internalID": null,
+          "name": null,
+          "nationality": null,
+          "past_large_shows": null,
+          "past_small_shows": null,
+          "upcoming_shows": null,
+        }
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`layout works as expected with three tabs 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "display": "flex",
+      },
+      Object {
+        "flex": 1,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
+  >
     <View
       style={
         Object {
-          "paddingLeft": 40,
-          "paddingRight": 40,
+          "backgroundColor": "#FFF",
+          "position": "absolute",
+          "top": 0,
+          "transform": Array [
+            Object {
+              "translateY": Object {
+                "setValue": [Function],
+              },
+            },
+          ],
+          "width": 380,
         }
       }
     >
-      <Header
-        artist={
-          Object {
-            "birthday": null,
-            "counts": Object {
-              "articles": 0,
-              "artworks": 0,
-              "partner_shows": 0,
-            },
-            "current_shows": null,
-            "has_metadata": true,
-            "id": null,
-            "internalID": null,
-            "name": null,
-            "nationality": null,
-            "past_large_shows": null,
-            "past_small_shows": null,
-            "upcoming_shows": null,
-          }
-        }
-      />
       <View
-        style={
-          Object {
-            "paddingTop": 30,
-          }
-        }
+        onLayout={[Function]}
       >
-        <About
+        <Header
           artist={
             Object {
               "birthday": null,
               "counts": Object {
-                "articles": 0,
-                "artworks": 0,
-                "partner_shows": 0,
+                "artworks": 2,
+                "partner_shows": 1,
               },
               "current_shows": null,
               "has_metadata": true,
@@ -110,90 +136,220 @@ exports[`layout works as expected with one tab 1`] = `
             }
           }
         />
-      </View>
-    </View>
-  </View>
-</RCTScrollView>
-`;
-
-exports[`layout works as expected with three tabs 1`] = `
-<RCTScrollView
-  automaticallyAdjustContentInsets={false}
-  scrollsToTop={true}
->
-  <View>
-    <View
-      style={
-        Object {
-          "paddingLeft": 40,
-          "paddingRight": 40,
-        }
-      }
-    >
-      <Header
-        artist={
-          Object {
-            "birthday": null,
-            "counts": Object {
-              "artworks": 2,
-              "partner_shows": 1,
-            },
-            "current_shows": null,
-            "has_metadata": true,
-            "id": null,
-            "internalID": null,
-            "name": null,
-            "nationality": null,
-            "past_large_shows": null,
-            "past_small_shows": null,
-            "upcoming_shows": null,
-          }
-        }
-      />
-      <View>
-        <SwitchView
-          onSelectionChange={[Function]}
-          selectedIndex={1}
+        <View
+          mb={1}
           style={
-            Object {
-              "marginBottom": 30,
-              "marginLeft": 0,
-              "marginRight": 0,
-              "marginTop": 30,
-            }
-          }
-          titles={
             Array [
-              "About",
-              "Works",
-              "Shows",
+              Object {
+                "marginBottom": 10,
+              },
             ]
           }
         />
-        <View>
-          <Artworks
-            artist={
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderBottomColor": "#C2C2C2",
+              "borderBottomWidth": 1,
+              "display": "flex",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
               Object {
-                "birthday": null,
-                "counts": Object {
-                  "artworks": 2,
-                  "partner_shows": 1,
-                },
-                "current_shows": null,
-                "has_metadata": true,
-                "id": null,
-                "internalID": null,
-                "name": null,
-                "nationality": null,
-                "past_large_shows": null,
-                "past_small_shows": null,
-                "upcoming_shows": null,
+                "display": "flex",
+              },
+              Object {
+                "flex": 1,
+                "height": 48,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            isTVSelectable={true}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
               }
             }
-          />
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                  Object {
+                    "alignItems": "center",
+                    "borderBottomColor": "#C2C2C2",
+                    "borderBottomWidth": 1,
+                    "height": 48,
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="24px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 24,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                About
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "display": "flex",
+              },
+              Object {
+                "flex": 1,
+                "height": 48,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            isTVSelectable={true}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                  Object {
+                    "alignItems": "center",
+                    "borderBottomColor": "#000",
+                    "borderBottomWidth": 1,
+                    "height": 48,
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="14px"
+                lineHeight="24px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 14,
+                      "lineHeight": 24,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Artworks
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "display": "flex",
+              },
+              Object {
+                "flex": 1,
+                "height": 48,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            isTVSelectable={true}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                  Object {
+                    "alignItems": "center",
+                    "borderBottomColor": "#C2C2C2",
+                    "borderBottomWidth": 1,
+                    "height": 48,
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="24px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 24,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Shows
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>
   </View>
-</RCTScrollView>
+</View>
 `;

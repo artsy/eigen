@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Box, Button } from "@artsy/palette"
 import { HeaderFollowArtistMutation } from "__generated__/HeaderFollowArtistMutation.graphql"
 import colors from "lib/data/colors"
 import React from "react"
@@ -35,12 +35,12 @@ class Header extends React.Component<Props, State> {
   render() {
     const artist = this.props.artist
     return (
-      <View style={{ paddingTop: 20 }}>
+      <Box px={2} pt={3}>
         <Headline style={[styles.base, styles.headline]}>{artist.name}</Headline>
         {this.renderByline()}
         {this.renderFollowersCount()}
         {this.renderFollowButton()}
-      </View>
+      </Box>
     )
   }
 

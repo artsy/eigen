@@ -1,3 +1,4 @@
+import { Box } from "@artsy/palette"
 import { Artworks_artist } from "__generated__/Artworks_artist.graphql"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -12,7 +13,9 @@ interface Props extends InfiniteScrollGridProps {
 }
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
-  <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
+  <Box px={2} py={3}>
+    <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
+  </Box>
 )
 
 export default createPaginationContainer(

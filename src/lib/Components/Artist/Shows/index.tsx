@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import Separator from "../../Separator"
@@ -7,6 +7,7 @@ import SerifText from "../../Text/Serif"
 import SmallList from "./SmallList"
 import VariableSizeShowsList from "./VariableSizeShowsList"
 
+import { Box } from "@artsy/palette"
 import { Shows_artist } from "__generated__/Shows_artist.graphql"
 
 interface Props {
@@ -15,11 +16,12 @@ interface Props {
 
 class Shows extends React.Component<Props> {
   render() {
+    console.log("artist", this.props.artist)
     return (
-      <View style={styles.container}>
+      <Box px={2} py={3}>
         {this.currentAndUpcomingList()}
         {this.pastShows()}
-      </View>
+      </Box>
     )
   }
 
@@ -73,14 +75,10 @@ class Shows extends React.Component<Props> {
 }
 
 interface Styles {
-  container: ViewStyle
   title: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
-  container: {
-    justifyContent: "flex-start",
-  },
   title: {
     fontSize: 20,
     textAlign: "left",

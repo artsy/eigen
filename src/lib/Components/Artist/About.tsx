@@ -9,6 +9,7 @@ import Separator from "../Separator"
 import Articles from "./Articles"
 import Biography from "./Biography"
 
+import { Box } from "@artsy/palette"
 import { About_artist } from "__generated__/About_artist.graphql"
 
 interface Props {
@@ -18,11 +19,11 @@ interface Props {
 class About extends React.Component<Props> {
   render() {
     return (
-      <View>
+      <Box py={3} px={2}>
         {this.biography()}
         {this.articles()}
         {this.relatedArtists()}
-      </View>
+      </Box>
     )
   }
 
