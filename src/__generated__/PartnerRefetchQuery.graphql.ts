@@ -69,6 +69,9 @@ fragment PartnerOverview_partner on Partner {
     bio
     id
   }
+  counts {
+    artists
+  }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
       hasNextPage
@@ -741,6 +744,31 @@ return {
               },
               {
                 "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PartnerCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "artists",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "eligibleArtworks",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
                 "alias": "artists",
                 "name": "artistsConnection",
                 "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
@@ -1016,24 +1044,6 @@ return {
                 "handle": "connection",
                 "key": "Partner_currentAndUpcomingShows",
                 "filters": (v18/*: any*/)
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PartnerCounts",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "eligibleArtworks",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
               }
             ]
           }
@@ -1044,7 +1054,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "88c6541c1e9e171533348d2a994091bc",
+    "id": "6ac6064c6cea5de2b20d8a061666f08e",
     "text": null,
     "metadata": {}
   }

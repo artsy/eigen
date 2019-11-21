@@ -43,7 +43,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
       },
       () => {
         commitMutation<PartnerFollowButtonFollowMutation>(relay.environment, {
-          onCompleted: () => this.handleShowSuccessfullyUpdated(),
+          onCompleted: () => this.handleShowSuccessfullyUpdated(partnerFollowed),
           onError: e => console.log("errors", e),
           mutation: graphql`
             mutation PartnerFollowButtonFollowMutation($input: FollowProfileInput!) {
@@ -78,7 +78,12 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     )
   }
 
-  handleShowSuccessfullyUpdated() {
+  handleShowSuccessfullyUpdated(partnerFollowed) {
+    const { setFollowersCount, followersCount } = this.props
+    if (setFollowersCount && followersCount) {
+      partnerFollowed ? setFollowersCount(followersCount - 1) : setFollowersCount(followersCount + 1)
+    }
+
     this.setState({
       isFollowedChanging: false,
     })
@@ -89,7 +94,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     return (
       <Button
-        variant="noOutline"
+        variant={partner.profile.isFollowed ? "secondaryOutline" : "primaryBlack"}
         inline={this.props.inline}
         onPress={this.handleFollowPartner.bind(this)}
         longestText="Following"

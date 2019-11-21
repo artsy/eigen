@@ -39,6 +39,9 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     bio
     id
   }
+  counts {
+    artists
+  }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -239,6 +242,24 @@ return {
           },
           {
             "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artists",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
             "storageKey": null,
@@ -425,7 +446,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "f1b5b1039a22b35497dd3fe6b4909c69",
+    "id": "7fbe6ec13b41bc26a2b849bd365f47c8",
     "text": null,
     "metadata": {}
   }

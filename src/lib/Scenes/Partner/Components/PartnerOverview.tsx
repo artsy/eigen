@@ -4,15 +4,14 @@ import { ArtistListItemContainer as ArtistListItem } from "lib/Components/Artist
 import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
 import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
-import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
 import { get } from "lib/utils/get"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
+import { Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
-const textLimit = truncatedTextLimit()
 const PAGE_SIZE = 10
 
 export const PartnerOverview: React.FC<{
@@ -68,17 +67,24 @@ export const PartnerOverview: React.FC<{
     <Box px={2} py={3}>
       {!!aboutText && (
         <>
-          <ReadMore content={aboutText} maxChars={textLimit} />
-          <Spacer mb={3} />
+          <ReadMore content={aboutText} maxChars={300} />
+          <Spacer mb={2} />
         </>
       )}
       <PartnerLocationSection partner={partner} />
       {!!artists &&
         artists.length > 0 && (
           <>
-            <Sans size="3t" weight="medium">
-              Artists
-            </Sans>
+            <Text>
+              <Sans size="3t" weight="medium">
+                Artists
+              </Sans>
+              {partner.counts.artists && (
+                <Sans size="3t" weight="medium">
+                  {` (${partner.counts.artists})`}
+                </Sans>
+              )}
+            </Text>
             <Spacer mb={2} />
             {renderArtists()}
             {fetchingNextPage && (
@@ -106,6 +112,9 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
         cities
         profile {
           bio
+        }
+        counts {
+          artists
         }
         artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
           @connection(key: "Partner_artists") {

@@ -54,15 +54,8 @@ const PartnerHeader: React.FC<{
           )}
         </Box>
       </Flex>
-      <FollowButtonWrapper>
-        <FollowButton
-          size="small"
-          inline
-          partner={partner}
-          followersCount={followersCount}
-          setFollowersCount={setFollowersCount}
-        />
-      </FollowButtonWrapper>
+      <Spacer mb={2} />
+      <FollowButton block partner={partner} followersCount={followersCount} setFollowersCount={setFollowersCount} />
     </Box>
   )
 }
@@ -85,9 +78,3 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
 })
 
 export const TextWrapper = styled(Text)``
-
-const FollowButtonWrapper = styled(Box)`
-  position: absolute;
-  top: 20;
-  right: 20;
-`

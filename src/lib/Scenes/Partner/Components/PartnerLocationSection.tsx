@@ -54,6 +54,7 @@ class PartnerLocationSection extends React.Component<Props> {
                     </Sans>
                   </>
                 )}
+                .
               </Text>
             </Flex>
             <Spacer mb={2} />

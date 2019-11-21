@@ -2,6 +2,7 @@ import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import Spinner from "lib/Components/Spinner"
 import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { ImageBackground, TouchableWithoutFeedback } from "react-native"
@@ -12,34 +13,42 @@ import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRai
 
 const PAGE_SIZE = 6
 
-const ShowGridItem = ({
-  show,
-  itemIndex,
-}: {
+interface ShowGridItemProps {
   show: PartnerShows_partner["pastShows"]["edges"][0]["node"]
   itemIndex: number
-}) => {
-  const showImageURL = show.coverImage && show.coverImage.url
-  const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
-  return (
-    <GridItem key={show.id}>
-      <TouchableWithoutFeedback onPress={null}>
-        <Box style={styles}>
-          {showImageURL ? (
-            <BackgroundImage key={show.id} style={{ resizeMode: "cover" }} source={{ uri: showImageURL }} />
-          ) : (
-            <EmptyImage />
-          )}
-          <Spacer mb={0.5} />
-          <Sans size="2">{show.name}</Sans>
-          <Serif size="2" color="black60">
-            {show.exhibitionPeriod}
-          </Serif>
-        </Box>
-      </TouchableWithoutFeedback>
-      <Spacer mb={2} />
-    </GridItem>
-  )
+}
+
+class ShowGridItem extends React.Component<ShowGridItemProps> {
+  onPress = () => {
+    const { show } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/show/${show.slug}`)
+  }
+
+  render() {
+    const { show, itemIndex } = this.props
+    const showImageURL = show.coverImage && show.coverImage.url
+    const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
+
+    return (
+      <GridItem key={show.id}>
+        <TouchableWithoutFeedback onPress={this.onPress}>
+          <Box style={styles}>
+            {showImageURL ? (
+              <BackgroundImage key={show.id} style={{ resizeMode: "cover" }} source={{ uri: showImageURL }} />
+            ) : (
+              <EmptyImage />
+            )}
+            <Spacer mb={0.5} />
+            <Sans size="2">{show.name}</Sans>
+            <Serif size="2" color="black60">
+              {show.exhibitionPeriod}
+            </Serif>
+          </Box>
+        </TouchableWithoutFeedback>
+        <Spacer mb={2} />
+      </GridItem>
+    )
+  }
 }
 
 export const PartnerShows: React.FC<{

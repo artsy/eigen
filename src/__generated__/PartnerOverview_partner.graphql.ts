@@ -9,6 +9,9 @@ export type PartnerOverview_partner = {
     readonly profile: {
         readonly bio: string | null;
     } | null;
+    readonly counts: {
+        readonly artists: number | null;
+    } | null;
     readonly artists: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -93,6 +96,24 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "alias": null,
           "name": "bio",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "PartnerCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artists",
           "args": null,
           "storageKey": null
         }
@@ -202,5 +223,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd60da13a7aca9f4da98941cd217c5fa6';
+(node as any).hash = 'cd5cebde9ccf122843c16cc0d4dcb0f3';
 export default node;
