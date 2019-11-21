@@ -20,9 +20,7 @@ export const StickyHeaderScrollView: React.FC<{
 }> = ({ tabs, headerContent }) => {
   const { width } = useScreenDimensions()
   const [activeTabIndex, setActiveTabIndex] = useState(Math.max(tabs.findIndex(tab => tab.initial), 0))
-  const activeTabIndexNative = useMemo(() => {
-    return new Animated.Value(activeTabIndex)
-  }, [])
+  const activeTabIndexNative = useAnimatedValue(activeTabIndex)
 
   // update the native tab index using a spring animation to drive the pseudo horizontal flatlist
   useEffect(
@@ -60,15 +58,12 @@ export const StickyHeaderScrollView: React.FC<{
     })
   }, [])
 
-  const readYOffsets = useDeref(yOffsets)
+  const readYOffsets = useValueReader(yOffsets)
 
-  const headerContentOffset = useMemo(() => {
-    return new Animated.Value(0 as number)
-  }, [])
+  const headerContentOffset = useAnimatedValue(0)
 
   Animated.useCode(
     () => {
-      // const freeWheelin = Animated.diffClamp(Animated.multiply(-1, yOffsets[activeTabIndex]), -headerHeight, 0)
       if (headerHeight === null) {
         return Animated.eq(0, 0)
       }
@@ -104,7 +99,7 @@ export const StickyHeaderScrollView: React.FC<{
   )
 
   return (
-    <Animated.View style={{ flex: 1, position: "relative" }}>
+    <Animated.View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
         // This mimicks a horizontal flat list
@@ -160,6 +155,11 @@ export const StickyHeaderScrollView: React.FC<{
                 label={title}
                 active={activeTabIndex === index}
                 onPress={async () => {
+                  if (activeTabIndex === index) {
+                    return
+                  }
+                  // we are about to switch tabs, need to make sure that there is no extra padding
+                  // at the top of the page if, e.g. we switch from a tab where the
                   const ys = await readYOffsets()
                   const nextTabScrollOffset = ys[index]
                   const currentTabScrollOffset = ys[activeTabIndex]
@@ -224,14 +224,10 @@ const TabContent: React.FC<{
   yOffset: Animated.Value<number>
   renderContent(props: { onCloseToBottom(cb: () => void): void }): React.ReactNode
 }> = ({ headerHeight, scrollViewRef, yOffset, renderContent }) => {
-  const contentHeight = useMemo(() => {
-    // start off super high to avoid triggering on initial load
-    return new Animated.Value(+99999999)
-  }, [])
-
-  const layoutHeight = useMemo(() => {
-    return new Animated.Value(0 as number)
-  }, [])
+  // start off contentHeight super high to avoid triggering 'close to bottom' callback on initial load
+  // it will be set to a more sensible number as soon as the user starts scrolling
+  const contentHeight = useAnimatedValue(99999999)
+  const layoutHeight = useAnimatedValue(0)
 
   const isCloseToBottom = useMemo(() => {
     const bottomYOffset = Animated.sub(contentHeight, layoutHeight)
@@ -286,11 +282,25 @@ const TabContent: React.FC<{
   )
 }
 
-function useDeref(vals: ReadonlyArray<Animated.Node<number>>) {
+/**
+ * returns a function which can asynchronously read the value of some native animated nodes
+ * This is useful for values that change frequently on the native side but which you only
+ * want to read occasionally on the JS side. It helps you avoid the perf hit of sending change
+ * events over the bridge.
+ * @param vals the animated vals to make the reader function for
+ * @example
+ * const scrollOffset = useMemo(() => new Animated.Value(0), [])
+ * const readScrollOffset = useValueReader([scrollOffset])
+ * // later, e.g. in a callback
+ * const [scrollOffset] = await readScrollOffset()
+ * console.log(scrollOffset) // => 632
+ */
+function useValueReader(vals: ReadonlyArray<Animated.Node<number>>) {
+  // this works by running some reanimated code every time an 'epoch' value
+  // is incremented. That code calls a callback with the current values
+  // to resolve a promise set up for the consumer
   const epochRef = useRef(0)
-  const epoch = useMemo(() => {
-    return new Animated.Value(0 as number)
-  }, [])
+  const epoch = useAnimatedValue(0)
 
   const readCallback = useRef<(vals: ReadonlyArray<number>) => void>()
 
@@ -318,4 +328,16 @@ function useDeref(vals: ReadonlyArray<Animated.Node<number>>) {
     }
     return result.current
   }
+}
+
+/**
+ * returns a stable Animated.Value instance which starts off with the
+ * given number. Note that the initialization parameter will be ignored
+ * on subsequent renders
+ * @param init
+ */
+function useAnimatedValue(init: number) {
+  return useMemo(() => {
+    return new Animated.Value(init)
+  }, [])
 }
