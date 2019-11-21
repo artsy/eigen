@@ -79,11 +79,12 @@ export const PartnerOverview: React.FC<{
               <Sans size="3t" weight="medium">
                 Artists
               </Sans>
-              {partner.counts.artists && (
-                <Sans size="3t" weight="medium">
-                  {` (${partner.counts.artists})`}
-                </Sans>
-              )}
+              {partner.counts &&
+                partner.counts.artists && (
+                  <Sans size="3t" weight="medium">
+                    {` (${partner.counts.artists})`}
+                  </Sans>
+                )}
             </Text>
             <Spacer mb={2} />
             {renderArtists()}
