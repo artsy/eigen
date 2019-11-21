@@ -1,9 +1,10 @@
 import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import Spinner from "lib/Components/Spinner"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
-import { ImageBackground, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { ImageBackground, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerEmptyState } from "./PartnerEmptyState"
@@ -48,19 +49,26 @@ export const PartnerShows: React.FC<{
   const [hasRecentShows, setHasRecentShows] = useState(false)
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
 
-  const fetchNextPage = () => {
-    if (fetchingNextPage || !relay.hasMore()) {
-      return
-    }
-    setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("PartnerShows.tsx", error.message)
+  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
+
+  useOnCloseToBottom({
+    contentHeight,
+    scrollOffsetY,
+    layoutHeight,
+    callback: () => {
+      if (fetchingNextPage || !relay.hasMore()) {
+        return
       }
-      setFetchingNextPage(false)
-    })
-  }
+      setFetchingNextPage(true)
+      relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("PartnerShows.tsx", error.message)
+        }
+        setFetchingNextPage(false)
+      })
+    },
+  })
 
   const pastShows = partner.pastShows && partner.pastShows.edges
   if (!pastShows && !hasRecentShows) {
@@ -68,34 +76,32 @@ export const PartnerShows: React.FC<{
   }
 
   return (
-    <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>
-      <Box px={2} py={3}>
-        <PartnerShowsRail partner={partner} setHasRecentShows={setHasRecentShows} />
-        {!!pastShows &&
-          !!pastShows.length && (
-            <>
-              <Sans size="3t" weight="medium">
-                Past shows
-              </Sans>
-              <Spacer mb={2} />
-              <Flex flexDirection="row" flexWrap="wrap">
-                {pastShows.map((show, index) => {
-                  const node = show.node
-                  return <ShowGridItem itemIndex={index} key={node.id} show={node} />
-                })}
-              </Flex>
-              {fetchingNextPage && (
-                <Box p={2} style={{ height: 50 }}>
-                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                    <Spinner />
-                  </Flex>
-                </Box>
-              )}
-              <Spacer mb={3} />
-            </>
-          )}
-      </Box>
-    </ScrollView>
+    <Box px={2} py={3}>
+      <PartnerShowsRail partner={partner} setHasRecentShows={setHasRecentShows} />
+      {!!pastShows &&
+        !!pastShows.length && (
+          <>
+            <Sans size="3t" weight="medium">
+              Past shows
+            </Sans>
+            <Spacer mb={2} />
+            <Flex flexDirection="row" flexWrap="wrap">
+              {pastShows.map((show, index) => {
+                const node = show.node
+                return <ShowGridItem itemIndex={index} key={node.id} show={node} />
+              })}
+            </Flex>
+            {fetchingNextPage && (
+              <Box p={2} style={{ height: 50 }}>
+                <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              </Box>
+            )}
+            <Spacer mb={3} />
+          </>
+        )}
+    </Box>
   )
 }
 

@@ -1,15 +1,14 @@
-import { Box, Flex, Theme } from "@artsy/palette"
+import { Flex, Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
-import { ScrollableTab } from "lib/Components/ScrollableTabBar"
-import TabBar from "lib/Components/TabBar"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { track } from "lib/utils/track"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import ScrollableTabView from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
@@ -34,29 +33,28 @@ class Partner extends React.Component<Props> {
     const { partner } = this.props
     return (
       <Theme>
-        <Flex style={{ flex: 1 }}>
-          <PartnerHeader partner={partner} />
-          <ScrollableTabView
-            initialPage={INITIAL_TAB}
-            prerenderingSiblingsNumber={2}
-            onChangeTab={tab => this.setState({ selectedTab: tab })}
-            renderTabBar={props => (
-              <Box>
-                <TabBar spaceEvenly {...props} />
-              </Box>
-            )}
-          >
-            <ScrollableTab tabLabel="Overview" key="overviewTab">
-              <PartnerOverview partner={partner} />
-            </ScrollableTab>
-            <ScrollableTab tabLabel="Artwork" key="artworkTab">
-              <PartnerArtwork partner={partner} />
-            </ScrollableTab>
-            <ScrollableTab tabLabel="Shows" key="showsTab">
-              <PartnerShows partner={partner} />
-            </ScrollableTab>
-          </ScrollableTabView>
-        </Flex>
+        <ProvideScreenDimensions>
+          <Flex style={{ flex: 1 }}>
+            <StickyTabPage
+              headerContent={<PartnerHeader partner={partner} />}
+              tabs={[
+                {
+                  title: "Overview",
+                  content: <PartnerOverview partner={partner} />,
+                },
+                {
+                  title: "Artwork",
+                  initial: true,
+                  content: <PartnerArtwork partner={partner} />,
+                },
+                {
+                  title: "Shows",
+                  content: <PartnerShows partner={partner} />,
+                },
+              ]}
+            />
+          </Flex>
+        </ProvideScreenDimensions>
       </Theme>
     )
   }

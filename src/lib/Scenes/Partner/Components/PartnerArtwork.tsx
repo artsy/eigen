@@ -2,10 +2,10 @@ import { Box, Flex } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
+import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
 import { get } from "lib/utils/get"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import React, { useCallback, useState } from "react"
-import { ScrollView } from "react-native"
+import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
+import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerEmptyState } from "./PartnerEmptyState"
 
@@ -19,43 +19,42 @@ export const PartnerArtwork: React.FC<{
 
   const artworks = get(partner, p => p.artworks)
 
-  const fetchNextPage = () => {
-    if (fetchingNextPage || !relay.hasMore()) {
-      return
-    }
-    setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("PartnerArtwork.tsx", error.message)
+  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
+
+  useOnCloseToBottom({
+    contentHeight,
+    scrollOffsetY,
+    layoutHeight,
+    callback: () => {
+      if (fetchingNextPage || !relay.hasMore()) {
+        return
       }
-      setFetchingNextPage(false)
-    })
-  }
-
-  const handleInfiniteScroll = useCallback(isCloseToBottom(fetchNextPage), [])
-
-  const onScroll = e => {
-    handleInfiniteScroll(e)
-  }
+      setFetchingNextPage(true)
+      relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("PartnerArtwork.tsx", error.message)
+        }
+        setFetchingNextPage(false)
+      })
+    },
+  })
 
   if (!artworks) {
     return <PartnerEmptyState text="There is no artwork from this gallery yet" />
   }
 
   return (
-    <ScrollView onScroll={e => onScroll(e)}>
-      <Box px={2} py={3}>
-        {artworks && <GenericGrid artworks={artworks.edges.map(({ node }) => node)} />}
-        {fetchingNextPage && (
-          <Box p={2} style={{ height: 50 }}>
-            <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          </Box>
-        )}
-      </Box>
-    </ScrollView>
+    <Box px={2} py={3}>
+      {artworks && <GenericGrid artworks={artworks.edges.map(({ node }) => node)} />}
+      {fetchingNextPage && (
+        <Box p={2} style={{ height: 50 }}>
+          <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+            <Spinner />
+          </Flex>
+        </Box>
+      )}
+    </Box>
   )
 }
 

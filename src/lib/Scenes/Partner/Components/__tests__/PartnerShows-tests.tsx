@@ -1,7 +1,9 @@
 import { Theme } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
+import { StickyTabScrollViewContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
+import Animated from "react-native-reanimated"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { PartnerShowRailItem as RailItem } from "../PartnerShowRailItem"
 import { PartnerShowsFragmentContainer as PartnerShows } from "../PartnerShows"
@@ -14,7 +16,15 @@ describe("PartnerShows", () => {
       Component: (props: any) => {
         return (
           <Theme>
-            <PartnerShows partner={{ ...partner }} {...props} relay={{ environment: {} } as RelayPaginationProp} />
+            <StickyTabScrollViewContext.Provider
+              value={{
+                contentHeight: new Animated.Value(0),
+                layoutHeight: new Animated.Value(0),
+                scrollOffsetY: new Animated.Value(0),
+              }}
+            >
+              <PartnerShows partner={{ ...partner }} {...props} relay={{ environment: {} } as RelayPaginationProp} />
+            </StickyTabScrollViewContext.Provider>
           </Theme>
         )
       },
