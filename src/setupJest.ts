@@ -188,3 +188,5 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
     useScreenDimensions: () => screenDimensions,
   }
 })
+
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
