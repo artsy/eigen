@@ -4,7 +4,7 @@ import Animated from "react-native-reanimated"
 import { useAnimatedValue, useValueReader } from "./reanimatedHelpers"
 import { TAB_BAR_HEIGHT } from "./StickyTabPage"
 
-const StickyTabScrollViewContext = React.createContext<{
+export const StickyTabScrollViewContext = React.createContext<{
   scrollOffsetY: Animated.Node<number>
   contentHeight: Animated.Node<number>
   layoutHeight: Animated.Node<number>
