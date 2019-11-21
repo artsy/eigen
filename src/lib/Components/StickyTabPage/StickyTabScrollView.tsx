@@ -14,6 +14,7 @@ export const useStickyTabContext = () => {
   return useContext(StickyTabScrollViewContext)
 }
 
+// how fast you have to be scrolling up to show the header when not near the top of the scroll view
 const SHOW_HEADER_VELOCITY = 10
 
 export const StickyTabScrollView: React.FC<{
@@ -42,15 +43,12 @@ export const StickyTabScrollView: React.FC<{
   // where the header has been retracted but this tab is near the top of its content
   useEffect(
     () => {
-      // this should only happen once each time the tab becomes active
       if (isActive) {
         readVals().then(vals => {
           if (-vals.headerOffsetY > vals.scrollOffsetY) {
             scrollViewRef.current.getNode().scrollTo({ y: -vals.headerOffsetY, animated: false })
           }
-          setTimeout(() => {
-            lockHeaderPosition.setValue(0)
-          }, 10)
+          lockHeaderPosition.setValue(0)
         })
       } else {
         lockHeaderPosition.setValue(1)
@@ -103,6 +101,7 @@ function useStickyHeaderPositioning({
   layoutHeight: Animated.Node<number>
 }) {
   const lockHeaderPosition = useAnimatedValue(1)
+
   Animated.useCode(
     () => {
       // scrollDiff is the amount the header has scrolled since last time this code ran
