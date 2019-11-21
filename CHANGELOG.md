@@ -1,3 +1,15 @@
+# v1.18.35 (Thu Nov 21 2019)
+
+#### 🐛  Bug Fix
+
+- Collection Header [#1971](https://github.com/artsy/emission/pull/1971) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.18.34 (Tue Nov 19 2019)
 
 #### 🐛  Bug Fix
