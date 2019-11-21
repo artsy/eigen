@@ -57,7 +57,7 @@ export const StickyTabPage: React.FC<{
           width,
           top: 0,
           position: "absolute",
-          backgroundColor: "white",
+          backgroundColor: color("white100"),
           transform: [{ translateY: headerOffsetY as any }],
         }}
       >
