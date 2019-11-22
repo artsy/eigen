@@ -4,9 +4,11 @@ upcoming:
   emission_version: 1.18.39
   dev:
     - Add a new flag for Price Transparency to Echo - yuki24
+    - Increases minimum deploy version to iOS 12 - ash
   user_facing:
     - Updates profile and mutable view controllers to use default background if not fair - kierangillen
     - Fixes an issue where confirm bid screen crashses when the Price Transparncy feature is off - yuki24
+    - Increases the minimum iOS version supported by the app to iOS 12 - ash
 
 releases:
   - version: 6.0.0
