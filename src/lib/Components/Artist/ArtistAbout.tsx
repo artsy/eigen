@@ -6,13 +6,13 @@ import Articles from "./Articles"
 import Biography from "./Biography"
 
 import { Box, Separator, Spacer } from "@artsy/palette"
-import { About_artist } from "__generated__/About_artist.graphql"
+import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import { CaretButton } from "../Buttons/CaretButton"
 
 interface Props {
-  artist: About_artist
+  artist: ArtistAbout_artist
 }
 
 class ArtistAbout extends React.Component<Props> {
@@ -78,7 +78,7 @@ class ArtistAbout extends React.Component<Props> {
 
 export default createFragmentContainer(ArtistAbout, {
   artist: graphql`
-    fragment About_artist on Artist {
+    fragment ArtistAbout_artist on Artist {
       has_metadata: hasMetadata
       is_display_auction_link: isDisplayAuctionLink
       slug

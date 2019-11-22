@@ -8,7 +8,7 @@ import styled from "styled-components/native"
 import { Schema, Track, track as _track } from "../../utils/track"
 
 interface Props {
-  artist: Header_artist
+  artist: ArtistHeader_artist
   relay: RelayProp
 }
 
@@ -122,10 +122,10 @@ class Header extends React.Component<Props, State> {
         isFollowedChanging: true,
       },
       () => {
-        commitMutation<HeaderFollowArtistMutation>(relay.environment, {
+        commitMutation<ArtistHeaderFollowArtistMutation>(relay.environment, {
           onCompleted: () => this.successfulFollowChange(),
           mutation: graphql`
-            mutation HeaderFollowArtistMutation($input: FollowArtistInput!) {
+            mutation ArtistHeaderFollowArtistMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
                 artist {
                   id
@@ -185,7 +185,7 @@ class Header extends React.Component<Props, State> {
 
 export default createFragmentContainer(Header, {
   artist: graphql`
-    fragment Header_artist on Artist {
+    fragment ArtistHeader_artist on Artist {
       id
       internalID
       slug

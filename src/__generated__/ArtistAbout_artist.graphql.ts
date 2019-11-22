@@ -2,7 +2,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type About_artist = {
+export type ArtistAbout_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
     readonly slug: string;
@@ -23,14 +23,14 @@ export type About_artist = {
         } | null> | null;
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"Biography_artist">;
-    readonly " $refType": "About_artist";
+    readonly " $refType": "ArtistAbout_artist";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "About_artist",
+  "name": "ArtistAbout_artist",
   "type": "Artist",
   "metadata": null,
   "argumentDefinitions": [],
@@ -162,5 +162,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ddfe77976e34d105920684396fcbd0d5';
+(node as any).hash = 'ec3f668b972f9b12c46d83fbd49c8504';
 export default node;

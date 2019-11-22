@@ -1,5 +1,5 @@
 import { Box } from "@artsy/palette"
-import { Shows_artist } from "__generated__/Shows_artist.graphql"
+import { ArtistShows_artist } from "__generated__/ArtistShows_artist.graphql"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
 import React from "react"
@@ -11,7 +11,7 @@ import SmallList from "./SmallList"
 import VariableSizeShowsList from "./VariableSizeShowsList"
 
 interface Props {
-  artist: Shows_artist
+  artist: ArtistShows_artist
 }
 
 class Shows extends React.Component<Props> {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create<Styles>({
 
 export default createFragmentContainer(Shows, {
   artist: graphql`
-    fragment Shows_artist on Artist {
+    fragment ArtistShows_artist on Artist {
       currentShows: showsConnection(status: "running", first: 10) {
         edges {
           node {

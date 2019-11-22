@@ -92,10 +92,10 @@ export default createFragmentContainer(Artist, {
         related_artists: relatedArtists
         articles
       }
-      ...Header_artist
-      ...About_artist
-      ...Shows_artist
-      ...Artworks_artist
+      ...ArtistHeader_artist
+      ...ArtistAbout_artist
+      ...ArtistShows_artist
+      ...ArtistArtworks_artist
     }
   `,
 })

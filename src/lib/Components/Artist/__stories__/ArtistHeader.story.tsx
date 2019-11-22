@@ -14,7 +14,7 @@ const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
       query={graphql`
         query ArtistHeaderQuery($artistID: String!) {
           artist(id: $artistID) {
-            ...Header_artist
+            ...ArtistHeader_artist
           }
         }
       `}
