@@ -101,7 +101,11 @@ const StickyTabBar = styled(Flex)`
   padding-left: ${space(2)};
 `
 
-const StickyTab: React.FC<{ label: string; active: boolean; onPress(): void }> = ({ label, active, onPress }) => {
+export const StickyTab: React.FC<{ label: string; active: boolean; onPress(): void }> = ({
+  label,
+  active,
+  onPress,
+}) => {
   return (
     <Flex style={{ flex: 1, height: TAB_BAR_HEIGHT }}>
       <TouchableOpacity onPress={onPress}>
