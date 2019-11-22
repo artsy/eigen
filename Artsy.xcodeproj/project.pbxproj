@@ -4831,10 +4831,9 @@
 			};
 			buildConfigurationList = 49BA7DF91655ABE600C06572 /* Build configuration list for PBXProject "Artsy" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
