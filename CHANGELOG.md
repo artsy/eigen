@@ -1,3 +1,17 @@
+# v1.18.37 (Fri Nov 22 2019)
+
+#### 🐛  Bug Fix
+
+- ME-110 - Partner QA [#1976](https://github.com/artsy/emission/pull/1976) ([@kierangillen](https://github.com/kierangillen))
+- Pin dep react-native-reanimated from ^1.4.0 to 1.4.0 [#1975](https://github.com/artsy/emission/pull/1975) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 2
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.18.36 (Thu Nov 21 2019)
 
 #### 🐛  Bug Fix
