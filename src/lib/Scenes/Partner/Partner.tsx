@@ -15,8 +15,6 @@ import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHea
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Components/PartnerOverview"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/PartnerShows"
 
-const INITIAL_TAB = 1
-
 interface Props {
   partner: Partner_partner
   relay: RelayRefetchProp
@@ -24,11 +22,6 @@ interface Props {
 
 @track()
 class Partner extends React.Component<Props> {
-  state = {
-    selectedTab: INITIAL_TAB,
-    scrollY: 0,
-  }
-
   render() {
     const { partner } = this.props
     return (
