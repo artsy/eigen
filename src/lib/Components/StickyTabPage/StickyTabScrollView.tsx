@@ -14,9 +14,6 @@ export const useStickyTabContext = () => {
   return useContext(StickyTabScrollViewContext)
 }
 
-// how fast you have to be scrolling up to show the header when not near the top of the scroll view
-const SHOW_HEADER_VELOCITY = 10
-
 export const StickyTabScrollView: React.FC<{
   headerHeight: number
   headerOffsetY: Animated.Value<number>
@@ -107,7 +104,6 @@ function useStickyHeaderPositioning({
       // scrollDiff is the amount the header has scrolled since last time this code ran
       const scrollDiff = Animated.diff(scrollOffsetY)
 
-      const upwardVelocityBreached = Animated.lessOrEq(scrollDiff, -SHOW_HEADER_VELOCITY)
       const headerIsNotFullyUp = Animated.neq(headerOffsetY, -headerHeight)
 
       const nearTheTop = Animated.lessOrEq(scrollOffsetY, headerHeight)
@@ -125,7 +121,7 @@ function useStickyHeaderPositioning({
           // y offset got smaller so scrolling up (content travels down the screen)
           // if velocity is high enough or we're already moving the header up or we're near the top of the scroll view
           // then move the header down (show it)
-          Animated.cond(Animated.or(upwardVelocityBreached, headerIsNotFullyUp, nearTheTop), [
+          Animated.cond(Animated.or(headerIsNotFullyUp, nearTheTop), [
             Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
           ]),
         ]

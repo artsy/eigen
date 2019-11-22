@@ -68,6 +68,9 @@ fragment PartnerOverview_partner on Partner {
     bio
     id
   }
+  counts {
+    artists
+  }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
       hasNextPage
@@ -735,6 +738,31 @@ return {
           },
           {
             "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artists",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "eligibleArtworks",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
             "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
@@ -1010,24 +1038,6 @@ return {
             "handle": "connection",
             "key": "Partner_currentAndUpcomingShows",
             "filters": (v18/*: any*/)
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "PartnerCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "eligibleArtworks",
-                "args": null,
-                "storageKey": null
-              }
-            ]
           }
         ]
       }
@@ -1036,7 +1046,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "3f01de5826d14644e37ccb61d096ade6",
+    "id": "69dde2a995c6f9ae6b7a2d1d9a042146",
     "text": null,
     "metadata": {}
   }

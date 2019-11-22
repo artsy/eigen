@@ -43,7 +43,7 @@ class Partner extends React.Component<Props> {
                   content: <PartnerOverview partner={partner} />,
                 },
                 {
-                  title: "Artwork",
+                  title: "Artworks",
                   initial: true,
                   content: <PartnerArtwork partner={partner} />,
                 },
