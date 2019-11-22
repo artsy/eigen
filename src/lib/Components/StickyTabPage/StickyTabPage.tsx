@@ -1,8 +1,10 @@
 import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
+import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
 import { TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
@@ -30,8 +32,16 @@ export const StickyTabPage: React.FC<{
   const { width } = useScreenDimensions()
   const [activeTabIndex, setActiveTabIndex] = useState(Math.max(tabs.findIndex(tab => tab.initial), 0))
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
-
+  const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
+
+  const handleTabPress = index => {
+    setActiveTabIndex(index)
+    tracking.trackEvent({
+      action_name: tabs[index].title,
+      action_type: Schema.ActionTypes.Tap,
+    })
+  }
 
   return (
     <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
@@ -71,9 +81,7 @@ export const StickyTabPage: React.FC<{
               key={title}
               label={title}
               active={activeTabIndex === index}
-              onPress={() => {
-                setActiveTabIndex(index)
-              }}
+              onPress={() => handleTabPress(index)}
             />
           ))}
         </StickyTabBar>

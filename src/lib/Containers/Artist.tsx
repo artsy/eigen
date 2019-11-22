@@ -5,8 +5,7 @@ import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { SwitchEvent } from "lib/Components/SwitchView"
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { ViewProperties } from "react-native"
@@ -20,9 +19,12 @@ interface State {
   tabs: any[]
 }
 
-const track: Track<Props, State> = _track
-
-@track()
+@screenTrack((props: Props) => ({
+  context_screen: Schema.PageNames.ArtistPage,
+  context_screen_owner_slug: props.artist.slug,
+  context_screen_owner_id: props.artist.internalID,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+}))
 export class Artist extends React.Component<Props, State> {
   state = {
     tabs: [],
@@ -30,31 +32,6 @@ export class Artist extends React.Component<Props, State> {
 
   componentWillMount = () => {
     this.availableTabs()
-  }
-
-  @track((props, state) => {
-    let actionName
-    switch (state.selectedTabTitle) {
-      case TABS.ABOUT:
-        actionName = Schema.ActionNames.ArtistAbout
-        break
-      case TABS.WORKS:
-        actionName = Schema.ActionNames.ArtistWorks
-        break
-      case TABS.SHOWS:
-        actionName = Schema.ActionNames.ArtistShows
-        break
-    }
-    return {
-      action_name: actionName,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: props.artist.internalID,
-      owner_slug: props.artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    }
-  })
-  tabSelectionDidChange(event: SwitchEvent) {
-    this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex, selectedTabTitle: this.selectedTabTitle() })
   }
 
   availableTabs = () => {
