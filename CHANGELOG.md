@@ -1,3 +1,15 @@
+# v1.18.39 (Fri Nov 22 2019)
+
+#### 🐛  Bug Fix
+
+- Fixes an issue where the feature flag of '0' causes a crash [#1980](https://github.com/artsy/emission/pull/1980) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
 # v1.18.38 (Fri Nov 22 2019)
 
 #### 🐛  Bug Fix
