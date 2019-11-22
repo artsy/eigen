@@ -4783,7 +4783,7 @@
 			attributes = {
 				CLASSPREFIX = AR;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
 					1C40C19B1DF8B1B7003F454F = {
