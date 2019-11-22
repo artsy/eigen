@@ -1,3 +1,16 @@
+# v1.18.38 (Fri Nov 22 2019)
+
+#### 🐛  Bug Fix
+
+- Small cleanup of unused code [#1979](https://github.com/artsy/emission/pull/1979) ([@kierangillen](https://github.com/kierangillen))
+- Adds sort to Partner.artworks [#1978](https://github.com/artsy/emission/pull/1978) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.37 (Fri Nov 22 2019)
 
 #### 🐛  Bug Fix
