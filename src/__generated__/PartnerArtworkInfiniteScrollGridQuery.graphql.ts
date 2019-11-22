@@ -33,7 +33,7 @@ query PartnerArtworkInfiniteScrollGridQuery(
 
 fragment PartnerArtwork_partner_1G22uz on Partner {
   internalID
-  artworks: artworksConnection(first: $count, after: $cursor) {
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       startCursor
@@ -132,6 +132,11 @@ v2 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "PARTNER_UPDATED_AT_DESC"
   }
 ],
 v3 = {
@@ -473,7 +478,9 @@ return {
             "args": (v2/*: any*/),
             "handle": "connection",
             "key": "Partner_artworks",
-            "filters": null
+            "filters": [
+              "sort"
+            ]
           },
           (v3/*: any*/)
         ]
@@ -483,7 +490,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkInfiniteScrollGridQuery",
-    "id": "c36013717d4274c3a6569e1c2d086e9a",
+    "id": "5018bdb927e0d1b089347fa1e3cf8ba7",
     "text": null,
     "metadata": {}
   }

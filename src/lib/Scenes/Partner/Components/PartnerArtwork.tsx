@@ -63,9 +63,13 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerArtwork_partner on Partner
-        @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 6 }
+          cursor: { type: "String" }
+          sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
+        ) {
         internalID
-        artworks: artworksConnection(first: $count, after: $cursor) @connection(key: "Partner_artworks") {
+        artworks: artworksConnection(sort: $sort, first: $count, after: $cursor) @connection(key: "Partner_artworks") {
           pageInfo {
             hasNextPage
             startCursor
