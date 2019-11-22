@@ -1,7 +1,7 @@
 upcoming:
   version: 6.0.1
   date: TBD
-  emission_version: 1.18.23
+  emission_version: 1.18.36
   dev:
     - Add a new flag for Price Transparency to Echo - yuki24
   user_facing:
