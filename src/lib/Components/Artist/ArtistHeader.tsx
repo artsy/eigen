@@ -1,14 +1,11 @@
-import { Box, Button } from "@artsy/palette"
-import { HeaderFollowArtistMutation } from "__generated__/HeaderFollowArtistMutation.graphql"
-import colors from "lib/data/colors"
-import React from "react"
-import { StyleSheet, TextStyle, View } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { Schema, Track, track as _track } from "../../utils/track"
-import Headline from "../Text/Headline"
-import SerifText from "../Text/Serif"
-
+import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
 import { Header_artist } from "__generated__/Header_artist.graphql"
+import { HeaderFollowArtistMutation } from "__generated__/HeaderFollowArtistMutation.graphql"
+import React from "react"
+import { Text } from "react-native"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import styled from "styled-components/native"
+import { Schema, Track, track as _track } from "../../utils/track"
 
 interface Props {
   artist: Header_artist
@@ -33,20 +30,39 @@ class Header extends React.Component<Props, State> {
   }
 
   render() {
-    const artist = this.props.artist
+    const { artist } = this.props
+    const count = this.state.followersCount
+    const followerString = count === 1 ? " Follower" : " Followers"
+    const bylineRequired = artist.nationality || artist.birthday
+
     return (
       <Box px={2} pt={3}>
-        <Headline style={[styles.base, styles.headline]}>{artist.name}</Headline>
-        {this.renderByline()}
-        {this.renderFollowersCount()}
-        {this.renderFollowButton()}
-      </Box>
-    )
-  }
-
-  renderFollowButton() {
-    if (this.props.artist.isFollowed !== null) {
-      return (
+        <Serif style={{ textAlign: "center" }} size="5">
+          {artist.name}
+        </Serif>
+        <Spacer mb={0.5} />
+        {(count || bylineRequired) && (
+          <>
+            <TextWrapper style={{ textAlign: "center" }}>
+              {bylineRequired && <Sans size="2">{this.descriptiveString()}</Sans>}
+              {count &&
+                bylineRequired && (
+                  <Sans size="2">
+                    {"  "}•{"  "}
+                  </Sans>
+                )}
+              {count && (
+                <>
+                  <Sans size="2" weight="medium">
+                    {count.toLocaleString()}
+                  </Sans>
+                  <Sans size="2">{followerString}</Sans>
+                </>
+              )}
+            </TextWrapper>
+          </>
+        )}
+        <Spacer mb={2} />
         <Button
           variant={this.props.artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
           block
@@ -56,28 +72,8 @@ class Header extends React.Component<Props, State> {
         >
           {this.props.artist.isFollowed ? "Following" : "Follow"}
         </Button>
-      )
-    }
-  }
-
-  renderFollowersCount() {
-    const count = this.state.followersCount
-    const followerString = count + (count === 1 ? " Follower" : " Followers")
-    return <SerifText style={[styles.base, styles.followCount]}>{followerString}</SerifText>
-  }
-
-  renderByline() {
-    const artist = this.props.artist
-    const bylineRequired = artist.nationality || artist.birthday
-    if (bylineRequired) {
-      return (
-        <View>
-          <SerifText style={styles.base}>{this.descriptiveString()}</SerifText>
-        </View>
-      )
-    } else {
-      return null
-    }
+      </Box>
+    )
   }
 
   descriptiveString() {
@@ -187,25 +183,6 @@ class Header extends React.Component<Props, State> {
   }
 }
 
-interface Styles {
-  base: TextStyle
-  headline: TextStyle
-  followCount: TextStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  base: {
-    textAlign: "center",
-  },
-  headline: {
-    fontSize: 14,
-  },
-  followCount: {
-    color: colors["gray-semibold"],
-    marginBottom: 30,
-  },
-})
-
 export default createFragmentContainer(Header, {
   artist: graphql`
     fragment Header_artist on Artist {
@@ -222,3 +199,5 @@ export default createFragmentContainer(Header, {
     }
   `,
 })
+
+export const TextWrapper = styled(Text)``

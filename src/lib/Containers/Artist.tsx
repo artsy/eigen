@@ -1,48 +1,35 @@
-import { Box, Flex, Theme } from "@artsy/palette"
+import { Flex, Theme } from "@artsy/palette"
 import { Artist_artist } from "__generated__/Artist_artist.graphql"
-import About from "lib/Components/Artist/About"
-import Artworks from "lib/Components/Artist/Artworks"
-import Header from "lib/Components/Artist/Header"
-import Shows from "lib/Components/Artist/Shows"
+import ArtistAbout from "lib/Components/Artist/ArtistAbout"
+import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
+import ArtistHeader from "lib/Components/Artist/ArtistHeader"
+import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { SwitchEvent } from "lib/Components/SwitchView"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { Component } from "react"
+import React from "react"
 import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-const TABS = {
-  ABOUT: "About",
-  WORKS: "Works",
-  SHOWS: "Shows",
-}
 
 interface Props extends ViewProperties {
   artist: Artist_artist
 }
 
 interface State {
-  selectedTabIndex: number
-  selectedTabTitle: string
+  tabs: any[]
 }
 
 const track: Track<Props, State> = _track
 
 @track()
-export class Artist extends Component<Props, State> {
-  initialTabState() {
-    const tabs = this.availableTabs()
-    const worksTab = tabs.indexOf(TABS.WORKS)
-    if (worksTab > -1) {
-      return { selectedTabIndex: worksTab, selectedTabTitle: TABS.WORKS }
-    } else {
-      return { selectedTabIndex: 0, selectedTabTitle: tabs[0] }
-    }
+export class Artist extends React.Component<Props, State> {
+  state = {
+    tabs: [],
   }
 
-  componentWillMount() {
-    this.setState(this.initialTabState())
+  componentWillMount = () => {
+    this.availableTabs()
   }
 
   @track((props, state) => {
@@ -71,74 +58,45 @@ export class Artist extends Component<Props, State> {
   }
 
   availableTabs = () => {
-    const tabs: string[] = []
+    const tabs = []
     const artist = this.props.artist
     const displayAboutSection = artist.has_metadata || artist.counts.articles > 0 || artist.counts.related_artists > 0
 
     if (displayAboutSection) {
-      tabs.push(TABS.ABOUT)
+      tabs.push({
+        title: "About",
+        content: <ArtistAbout artist={artist} />,
+      })
     }
 
     if (artist.counts.artworks) {
-      tabs.push(TABS.WORKS)
+      tabs.push({
+        title: "Artworks",
+        initial: true,
+        content: <ArtistArtworks artist={artist} />,
+      })
     }
 
     if (artist.counts.partner_shows) {
-      tabs.push(TABS.SHOWS)
+      tabs.push({
+        title: "Shows",
+        content: <ArtistShows artist={artist} />,
+      })
     }
-    return tabs
-  }
 
-  selectedTabTitle = () => {
-    return this.availableTabs()[this.state.selectedTabIndex]
-  }
-
-  renderSelectedTab = () => {
-    switch (this.selectedTabTitle()) {
-      case TABS.ABOUT:
-        return <About artist={this.props.artist} />
-      case TABS.WORKS:
-        return <Artworks artist={this.props.artist} />
-      case TABS.SHOWS:
-        return <Shows artist={this.props.artist} />
-    }
-  }
-
-  renderTabView() {
-    const { artist } = this.props
-    return (
-      <StickyTabPage
-        headerContent={<Header artist={artist} />}
-        tabs={[
-          {
-            title: "About",
-            content: <About artist={artist} />,
-          },
-          {
-            title: "Artworks",
-            initial: true,
-            content: <Artworks artist={artist} />,
-          },
-          {
-            title: "Shows",
-            content: <Shows artist={artist} />,
-          },
-        ]}
-      />
-    )
-  }
-
-  renderSingleTab() {
-    return <Box pt={3}>{this.renderSelectedTab()}</Box>
+    this.setState({ tabs })
   }
 
   render() {
-    const displayTabView = this.availableTabs().length > 1
+    const { artist } = this.props
+    const { tabs } = this.state
 
     return (
       <Theme>
         <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>{displayTabView ? this.renderTabView() : this.renderSingleTab()}</Flex>
+          <Flex style={{ flex: 1 }}>
+            <StickyTabPage headerContent={<ArtistHeader artist={artist} />} tabs={tabs} />
+          </Flex>
         </ProvideScreenDimensions>
       </Theme>
     )

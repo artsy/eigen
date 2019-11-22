@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import { renderWithLayout } from "../../../../tests/renderWithLayout"
 
-import ArtistArtworksGridContainer from "../../../Artist/Artworks"
+import ArtistArtworksGridContainer from "../../../Artist/ArtistArtworks"
 import artwork from "../../__tests__/__fixtures__/artwork"
 
 // FIXME: This needs a Relay based test

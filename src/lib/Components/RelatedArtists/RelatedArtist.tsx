@@ -1,14 +1,10 @@
-import React, { Component } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View } from "react-native"
-
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import ImageView from "../OpaqueImageView/OpaqueImageView"
-
+import { color, Sans, Serif, Spacer } from "@artsy/palette"
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React, { Component } from "react"
+import { TouchableWithoutFeedback, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import ImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface Props {
   artist: RelatedArtist_artist
@@ -30,8 +26,11 @@ class RelatedArtist extends Component<Props> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ margin: 5, paddingBottom: 20, width: this.props.imageSize.width }}>
           <ImageView style={this.props.imageSize} imageURL={imageURL} />
-          <Text style={styles.sansSerifText}>{artist.name.toUpperCase()}</Text>
-          <Text style={styles.serifText}>{this.artworksString(artist.counts)}</Text>
+          <Spacer mb={0.5} />
+          <Sans size="2">{artist.name}</Sans>
+          <Serif size="2" color={color("black60")}>
+            {this.artworksString(artist.counts)}
+          </Serif>
         </View>
       </TouchableWithoutFeedback>
     )
@@ -50,26 +49,6 @@ class RelatedArtist extends Component<Props> {
     return forSale ? forSale : totalWorks
   }
 }
-
-interface Styles {
-  sansSerifText: TextStyle
-  serifText: TextStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  sansSerifText: {
-    fontSize: 12,
-    textAlign: "left",
-    marginTop: 10,
-    fontFamily: fonts["avant-garde-regular"],
-  },
-  serifText: {
-    fontFamily: "AGaramondPro-Regular",
-    fontSize: 16,
-    marginTop: 5,
-    color: colors["gray-semibold"],
-  },
-})
 
 export default createFragmentContainer(RelatedArtist, {
   artist: graphql`

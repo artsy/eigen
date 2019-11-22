@@ -1,22 +1,21 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Dimensions, StyleSheet, View } from "react-native"
-
-import NavButton from "../Buttons/NavigationButton"
 import RelatedArtists from "../RelatedArtists"
-import Separator from "../Separator"
 import Articles from "./Articles"
 import Biography from "./Biography"
 
-import { Box } from "@artsy/palette"
+import { Box, Separator, Spacer } from "@artsy/palette"
 import { About_artist } from "__generated__/About_artist.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { get } from "lib/utils/get"
+import { CaretButton } from "../Buttons/CaretButton"
 
 interface Props {
   artist: About_artist
 }
 
-class About extends React.Component<Props> {
+class ArtistAbout extends React.Component<Props> {
   render() {
     return (
       <Box py={3} px={2}>
@@ -30,22 +29,23 @@ class About extends React.Component<Props> {
   biography() {
     if (this.props.artist.has_metadata) {
       return (
-        <View>
+        <Box>
           <Biography artist={this.props.artist as any} />
           {this.auctionResults()}
-          <Separator style={styles.sectionSeparator} />
-        </View>
+          <Separator />
+        </Box>
       )
     }
   }
 
   auctionResults() {
     if (this.props.artist.is_display_auction_link) {
-      // Keeps the same margins as the bio text
-      const sideMargin = Dimensions.get("window").width > 700 ? 50 : 20
       const url = `/artist/${this.props.artist.slug}/auction-results`
       return (
-        <NavButton title="Auction results" href={url} style={{ marginLeft: sideMargin, marginRight: sideMargin }} />
+        <>
+          <CaretButton onPress={() => SwitchBoard.presentNavigationViewController(this, url)} text="Auction results" />
+          <Spacer mb={3} />
+        </>
       )
     }
   }
@@ -53,28 +53,30 @@ class About extends React.Component<Props> {
   articles() {
     if (this.props.artist.articles.edges.length) {
       return (
-        <View>
-          <Articles articles={this.props.artist.articles.edges.map(({ node }) => node)} />
-          <Separator style={styles.sectionSeparator} />
-        </View>
+        <>
+          <Box my={3}>
+            <Articles articles={this.props.artist.articles.edges.map(({ node }) => node)} />
+          </Box>
+          <Separator />
+        </>
       )
     }
   }
 
   relatedArtists() {
-    return this.props.artist.related.artists.edges.length ? (
-      <RelatedArtists artists={this.props.artist.related.artists.edges.map(({ node }) => node)} />
-    ) : null
+    const relatedArtistsPresent = get(this.props, p => p.artist.related.artists.edges[0])
+
+    return (
+      relatedArtistsPresent && (
+        <Box my={3}>
+          <RelatedArtists artists={this.props.artist.related.artists.edges.map(({ node }) => node)} />
+        </Box>
+      )
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  sectionSeparator: {
-    marginBottom: 20,
-  },
-})
-
-export default createFragmentContainer(About, {
+export default createFragmentContainer(ArtistAbout, {
   artist: graphql`
     fragment About_artist on Artist {
       has_metadata: hasMetadata
