@@ -49,6 +49,12 @@ const node: ReaderFragment = {
       "name": "cursor",
       "type": "String",
       "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "sort",
+      "type": "ArtworkSorts",
+      "defaultValue": "PARTNER_UPDATED_AT_DESC"
     }
   ],
   "selections": [
@@ -64,7 +70,13 @@ const node: ReaderFragment = {
       "alias": "artworks",
       "name": "__Partner_artworks_connection",
       "storageKey": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "sort",
+          "variableName": "sort"
+        }
+      ],
       "concreteType": "ArtworkConnection",
       "plural": false,
       "selections": [
@@ -145,5 +157,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '031f3327f313310a8eec9d9f81e6284d';
+(node as any).hash = 'b89b1f4eda37d98bd54dd927b250470c';
 export default node;
