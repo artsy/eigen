@@ -100,6 +100,7 @@ target 'Artsy' do
   pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.4.0'
   pod 'react-native-navigator-ios', git: 'https://github.com/ashfurrow/react-native-navigator-ios', branch: 'license_podspec'
   pod 'react-native-cameraroll', git: 'https://github.com/react-native-community/react-native-cameraroll', tag: 'v1.0.5'
+  pod 'RNReanimated', git: 'https://github.com/software-mansion/react-native-reanimated', tag: '1.4.0'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'
