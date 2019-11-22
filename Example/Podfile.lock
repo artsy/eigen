@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Emission (1.18.34):
+  - Emission (1.18.36):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -313,6 +313,8 @@ PODS:
     - React-cxxreact (= 0.61.4)
     - React-jsi (= 0.61.4)
     - ReactCommon/jscallinvoker (= 0.61.4)
+  - RNReanimated (1.4.0):
+    - React
   - RNSVG (9.13.3):
     - React
   - SAMKeychain (1.5.3)
@@ -378,6 +380,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SAMKeychain
   - Sentry/Core
@@ -480,6 +483,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   SentryReactNative:
@@ -507,8 +512,8 @@ SPEC CHECKSUMS:
   "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: 7060a25c83ae41669dfc0edc756d11cf29e2ab80
+  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  Emission: 727c2f3f10cbf106d83ad49653f37201cc9b5ec4
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
   FBLazyVector: feb35a6b7f7b50f367be07f34012f34a79282fa3
@@ -548,6 +553,7 @@ SPEC CHECKSUMS:
   React-RCTText: 21934e0a51d522abcd0a275407e80af45d6fd9ec
   React-RCTVibration: 0f76400ee3cec6edb9c125da49fed279340d145a
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
+  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
@@ -559,6 +565,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 68628a0c87bfa79998ca4e162f8f02a3acb6051e
+PODFILE CHECKSUM: 78bf264bed2681da1437b7d3091f81aaca6ab983
 
 COCOAPODS: 1.7.5

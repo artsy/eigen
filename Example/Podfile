@@ -43,6 +43,7 @@ react_native_netinfo_path = File.join(node_modules_path, '@react-native-communit
 react_native_cameraroll_path = File.join(node_modules_path, '@react-native-community/cameraroll')
 react_native_geolocation_path = File.join(node_modules_path, '@react-native-community/geolocation')
 react_native_navigator_ios_path = File.join(node_modules_path, 'react-native-navigator-ios')
+react_native_reanimated_path =File.join(node_modules_path, 'react-native-reanimated')
 
 target 'Emission' do
   pod 'Emission', path: '../', inhibit_warnings: false
@@ -114,6 +115,8 @@ target 'Emission' do
 
   # Deprecated from React Native, but fine until we support Android
   pod 'react-native-navigator-ios', path: react_native_navigator_ios_path
+
+  pod 'RNReanimated', path: react_native_reanimated_path
 
   # Bottom Sheet view controller for Map view
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'

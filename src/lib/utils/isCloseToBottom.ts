@@ -1,5 +1,7 @@
 import { isFunction } from "lodash"
+import { useMemo, useRef } from "react"
 import { NativeScrollEvent } from "react-native"
+import Animated from "react-native-reanimated"
 
 /**
  * Detects if a <ScrollView /> has scrolled to the bottom. Taken from from RN’s ListView.js
@@ -50,4 +52,58 @@ export function isCloseToBottom(onScrollEnd: CallBack, pageEndThreshold: number 
       }
     }
   }
+}
+
+/**
+ * Given the appropriate reanimated values for a particular scroll view, this hook
+ * calls the given callback whenever the scroll view fires a scroll event and it is
+ * near to its end.
+ * @param param
+ */
+export function useOnCloseToBottom({
+  contentHeight,
+  layoutHeight,
+  scrollOffsetY,
+  callback,
+}: {
+  layoutHeight: Animated.Adaptable<number>
+  contentHeight: Animated.Adaptable<number>
+  scrollOffsetY: Animated.Adaptable<number>
+  callback: () => void
+}) {
+  const callbackRef = useRef(callback)
+  callbackRef.current = callback
+
+  const scrollViewisCloseToBottom = useMemo(
+    () => {
+      const bottomOffsetY = Animated.sub(contentHeight, layoutHeight)
+      const distanceFromBottom = Animated.sub(bottomOffsetY, scrollOffsetY)
+      return Animated.lessOrEq(distanceFromBottom, PAGE_END_THRESHOLD)
+    },
+    [layoutHeight, scrollOffsetY, contentHeight]
+  )
+
+  // scroll view values are nonsensical until the user actually scrolls so ignore first invocation which happens
+  // on mount
+  const isFirstInvocation = useMemo(() => new Animated.Value(1), [])
+
+  Animated.useCode(
+    () =>
+      Animated.cond(
+        isFirstInvocation,
+        [Animated.set(isFirstInvocation, 0)],
+        [
+          Animated.cond(
+            scrollViewisCloseToBottom,
+            Animated.call([], () => {
+              // TODO: debounce on native side? 🤔
+              if (callbackRef.current) {
+                callbackRef.current()
+              }
+            })
+          ),
+        ]
+      ),
+    []
+  )
 }
