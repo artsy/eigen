@@ -89,7 +89,7 @@ export const PartnerOverview: React.FC<{
             <Spacer mb={2} />
             {renderArtists()}
             {fetchingNextPage && (
-              <Box p={2} style={{ height: 50 }}>
+              <Box p={2}>
                 <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
                   <Spinner />
                 </Flex>
