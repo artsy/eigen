@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
+import { StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import fonts from "lib/data/fonts"

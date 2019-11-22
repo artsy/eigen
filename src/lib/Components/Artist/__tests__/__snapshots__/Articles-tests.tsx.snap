@@ -3,31 +3,38 @@
 exports[`renders properly 1`] = `
 <View>
   <Text
-    numberOfLines={1}
+    fontFamily="Unica77LL-Medium"
+    fontSize="14px"
+    lineHeight="20px"
     style={
       Array [
         Object {
-          "fontSize": 17,
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 14,
+          "lineHeight": 20,
         },
-        Object {
-          "fontSize": 20,
-          "marginBottom": 12,
-        },
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-        },
+        Object {},
       ]
     }
   >
-    Featured Articles
+    Featured articles
   </Text>
+  <View
+    mb={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 20,
+        },
+      ]
+    }
+  />
   <RCTScrollView
     horizontal={true}
     scrollsToTop={false}
     showsHorizontalScrollIndicator={false}
     style={
       Object {
-        "marginBottom": 40,
         "overflow": "visible",
       }
     }
@@ -64,30 +71,41 @@ exports[`renders properly 1`] = `
             }
           />
           <Text
-            numberOfLines={5}
+            ellipsizeMode="tail"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="24px"
             style={
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
-                "marginTop": 10,
-                "width": 275,
-              }
+              Array [
+                Object {
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 24,
+                },
+                Object {},
+              ]
             }
           >
             Something Happened
           </Text>
           <Text
+            color="#666"
+            fontFamily="Unica77LL-Regular"
+            fontSize="12px"
+            lineHeight="16px"
             style={
-              Object {
-                "color": "grey",
-                "fontFamily": "AvantGardeGothicITC",
-                "fontSize": 10,
-                "marginTop": 5,
-                "textAlign": "left",
-              }
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                },
+                Object {},
+              ]
             }
           >
-            JOHN BERGER
+            John Berger
           </Text>
         </View>
       </View>
@@ -122,30 +140,41 @@ exports[`renders properly 1`] = `
             }
           />
           <Text
-            numberOfLines={5}
+            ellipsizeMode="tail"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="24px"
             style={
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
-                "marginTop": 10,
-                "width": 275,
-              }
+              Array [
+                Object {
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 24,
+                },
+                Object {},
+              ]
             }
           >
             Something Happened
           </Text>
           <Text
+            color="#666"
+            fontFamily="Unica77LL-Regular"
+            fontSize="12px"
+            lineHeight="16px"
             style={
-              Object {
-                "color": "grey",
-                "fontFamily": "AvantGardeGothicITC",
-                "fontSize": 10,
-                "marginTop": 5,
-                "textAlign": "left",
-              }
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                },
+                Object {},
+              ]
             }
           >
-            JOHN BERGER
+            John Berger
           </Text>
         </View>
       </View>

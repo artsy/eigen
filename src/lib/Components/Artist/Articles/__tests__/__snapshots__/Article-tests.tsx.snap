@@ -32,30 +32,41 @@ exports[`renders properly 1`] = `
       }
     />
     <Text
-      numberOfLines={5}
+      ellipsizeMode="tail"
+      fontFamily="ReactNativeAGaramondPro-Regular"
+      fontSize="16px"
+      lineHeight="24px"
       style={
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 16,
-          "marginTop": 10,
-          "width": 275,
-        }
+        Array [
+          Object {
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 16,
+            "lineHeight": 24,
+          },
+          Object {},
+        ]
       }
     >
       Something Happened
     </Text>
     <Text
+      color="#666"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
       style={
-        Object {
-          "color": "grey",
-          "fontFamily": "AvantGardeGothicITC",
-          "fontSize": 10,
-          "marginTop": 5,
-          "textAlign": "left",
-        }
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          Object {},
+        ]
       }
     >
-      JOHN BERGER
+      John Berger
     </Text>
   </View>
 </View>

@@ -39,18 +39,18 @@ describe("availableTabs", () => {
   })
 })
 
-describe("after rendering", () => {
-  it("mounts with Works tab selected if works exist", () => {
-    const artist = new Artist(artistProps(false, { artworks: 5 }))
-    const worksTabIndex = artist.availableTabs().indexOf("Works")
-    expect(artist.initialTabState()).toEqual({ selectedTabIndex: worksTabIndex, selectedTabTitle: "Works" })
-  })
+// describe("after rendering", () => {
+//   it("mounts with Works tab selected if works exist", () => {
+//     const artist = new Artist(artistProps(false, { artworks: 5 }))
+//     const worksTabIndex = artist.availableTabs().indexOf("Works")
+//     expect(artist.initialTabState()).toEqual({ selectedTabIndex: worksTabIndex, selectedTabTitle: "Works" })
+//   })
 
-  it("mounts at the first tab index if artist has no works", () => {
-    const artist = new Artist(artistProps(true, { partner_shows: 1 }))
-    expect(artist.initialTabState()).toEqual({ selectedTabIndex: 0, selectedTabTitle: "About" })
-  })
-})
+//   it("mounts at the first tab index if artist has no works", () => {
+//     const artist = new Artist(artistProps(true, { partner_shows: 1 }))
+//     expect(artist.initialTabState()).toEqual({ selectedTabIndex: 0, selectedTabTitle: "About" })
+//   })
+// })
 
 describe("layout", () => {
   it("works as expected with no tabs", () => {

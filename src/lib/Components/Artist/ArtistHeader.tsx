@@ -1,6 +1,6 @@
 import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
-import { Header_artist } from "__generated__/Header_artist.graphql"
-import { HeaderFollowArtistMutation } from "__generated__/HeaderFollowArtistMutation.graphql"
+import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
+import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import React from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

@@ -10,22 +10,32 @@ exports[`renders properly 1`] = `
   }
 >
   <Text
+    fontFamily="Unica77LL-Medium"
+    fontSize="14px"
+    lineHeight="20px"
     style={
       Array [
         Object {
-          "fontSize": 12,
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 14,
+          "lineHeight": 20,
         },
-        Object {
-          "fontFamily": "AvantGardeGothicITC",
-        },
+        Object {},
+      ]
+    }
+  >
+    Biography
+  </Text>
+  <View
+    mb={2}
+    style={
+      Array [
         Object {
           "marginBottom": 20,
         },
       ]
     }
-  >
-    BIOGRAPHY
-  </Text>
+  />
   <Text
     numberOfLines={0}
     style={
@@ -56,7 +66,7 @@ exports[`renders properly 1`] = `
         Object {
           "fontSize": 16,
           "lineHeight": 20,
-          "marginBottom": 40,
+          "marginBottom": 20,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
