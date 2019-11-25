@@ -41,17 +41,17 @@ class Header extends React.Component<Props, State> {
           {artist.name}
         </Serif>
         <Spacer mb={0.5} />
-        {(count || bylineRequired) && (
+        {(!!count || bylineRequired) && (
           <>
             <TextWrapper style={{ textAlign: "center" }}>
               {bylineRequired && <Sans size="2">{this.descriptiveString()}</Sans>}
-              {count &&
+              {!!count &&
                 bylineRequired && (
                   <Sans size="2">
                     {"  "}•{"  "}
                   </Sans>
                 )}
-              {count && (
+              {!!count && (
                 <>
                   <Sans size="2" weight="medium">
                     {count.toLocaleString()}
