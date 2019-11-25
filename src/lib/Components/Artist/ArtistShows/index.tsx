@@ -1,7 +1,5 @@
 import { Box } from "@artsy/palette"
 import { ArtistShows_artist } from "__generated__/ArtistShows_artist.graphql"
-import { TabEmptyState } from "lib/Components/TabEmptyState"
-import { get } from "lib/utils/get"
 import React from "react"
 import { StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -16,16 +14,6 @@ interface Props {
 
 class Shows extends React.Component<Props> {
   render() {
-    const { artist } = this.props
-    const currentShows = get(artist, a => a.currentShows.edges[0])
-    const upcomingShows = get(artist, a => a.upcomingShows.edges[0])
-    const pastSmallShows = get(artist, a => a.pastSmallShows.edges[0])
-    const pastLargeShows = get(artist, a => a.pastLargeShows.edges[0])
-    const displayEmptyState = !currentShows && !upcomingShows && !pastSmallShows && !pastLargeShows
-    if (displayEmptyState) {
-      return <TabEmptyState text="There are no shows with this artist yet" />
-    }
-
     return (
       <Box px={2} py={3}>
         {this.currentAndUpcomingList()}
