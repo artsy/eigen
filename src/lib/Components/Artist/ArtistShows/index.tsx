@@ -1,25 +1,24 @@
+import { Box } from "@artsy/palette"
+import { ArtistShows_artist } from "__generated__/ArtistShows_artist.graphql"
 import React from "react"
-import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
 import Separator from "../../Separator"
 import SerifText from "../../Text/Serif"
 import SmallList from "./SmallList"
 import VariableSizeShowsList from "./VariableSizeShowsList"
 
-import { Shows_artist } from "__generated__/Shows_artist.graphql"
-
 interface Props {
-  artist: Shows_artist
+  artist: ArtistShows_artist
 }
 
 class Shows extends React.Component<Props> {
   render() {
     return (
-      <View style={styles.container}>
+      <Box px={2} py={3}>
         {this.currentAndUpcomingList()}
         {this.pastShows()}
-      </View>
+      </Box>
     )
   }
 
@@ -65,7 +64,7 @@ class Shows extends React.Component<Props> {
       return (
         <View style={{ marginBottom: 20 }}>
           <SerifText style={styles.title}>Current & Upcoming Shows</SerifText>
-          <VariableSizeShowsList showSize={"large"} shows={shows} />
+          <VariableSizeShowsList showSize="large" shows={shows} />
         </View>
       )
     }
@@ -73,14 +72,10 @@ class Shows extends React.Component<Props> {
 }
 
 interface Styles {
-  container: ViewStyle
   title: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
-  container: {
-    justifyContent: "flex-start",
-  },
   title: {
     fontSize: 20,
     textAlign: "left",
@@ -90,7 +85,7 @@ const styles = StyleSheet.create<Styles>({
 
 export default createFragmentContainer(Shows, {
   artist: graphql`
-    fragment Shows_artist on Artist {
+    fragment ArtistShows_artist on Artist {
       currentShows: showsConnection(status: "running", first: 10) {
         edges {
           node {

@@ -6,10 +6,10 @@ export type FollowArtistInput = {
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
-export type HeaderFollowArtistMutationVariables = {
+export type ArtistHeaderFollowArtistMutationVariables = {
     input: FollowArtistInput;
 };
-export type HeaderFollowArtistMutationResponse = {
+export type ArtistHeaderFollowArtistMutationResponse = {
     readonly followArtist: {
         readonly artist: {
             readonly id: string;
@@ -17,15 +17,15 @@ export type HeaderFollowArtistMutationResponse = {
         } | null;
     } | null;
 };
-export type HeaderFollowArtistMutation = {
-    readonly response: HeaderFollowArtistMutationResponse;
-    readonly variables: HeaderFollowArtistMutationVariables;
+export type ArtistHeaderFollowArtistMutation = {
+    readonly response: ArtistHeaderFollowArtistMutationResponse;
+    readonly variables: ArtistHeaderFollowArtistMutationVariables;
 };
 
 
 
 /*
-mutation HeaderFollowArtistMutation(
+mutation ArtistHeaderFollowArtistMutation(
   $input: FollowArtistInput!
 ) {
   followArtist(input: $input) {
@@ -94,7 +94,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "HeaderFollowArtistMutation",
+    "name": "ArtistHeaderFollowArtistMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -102,18 +102,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "HeaderFollowArtistMutation",
+    "name": "ArtistHeaderFollowArtistMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
-    "name": "HeaderFollowArtistMutation",
-    "id": "94e40972daf378665e3b505de12b0b43",
+    "name": "ArtistHeaderFollowArtistMutation",
+    "id": "ab85a2eccf1a38b11df8fe6fa1f4f700",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'ff78930855c1e839ab6a5c31afb53947';
+(node as any).hash = '3ef30681f32ef143c1d431a5c309ceef';
 export default node;

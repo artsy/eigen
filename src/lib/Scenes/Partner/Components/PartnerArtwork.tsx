@@ -3,11 +3,11 @@ import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.gra
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { PartnerEmptyState } from "./PartnerEmptyState"
 
 const PAGE_SIZE = 6
 
@@ -41,7 +41,7 @@ export const PartnerArtwork: React.FC<{
   })
 
   if (!artworks) {
-    return <PartnerEmptyState text="There is no artwork from this gallery yet" />
+    return <TabEmptyState text="There is no artwork from this gallery yet" />
   }
 
   return (

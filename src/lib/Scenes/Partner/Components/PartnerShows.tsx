@@ -2,13 +2,13 @@ import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import Spinner from "lib/Components/Spinner"
 import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { TabEmptyState } from "lib/Components/TabEmptyState"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { ImageBackground, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
-import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
 
 const PAGE_SIZE = 6
@@ -81,7 +81,7 @@ export const PartnerShows: React.FC<{
 
   const pastShows = partner.pastShows && partner.pastShows.edges
   if (!pastShows && !hasRecentShows) {
-    return <PartnerEmptyState text="There are no shows from this gallery yet" />
+    return <TabEmptyState text="There are no shows from this gallery yet" />
   }
 
   return (

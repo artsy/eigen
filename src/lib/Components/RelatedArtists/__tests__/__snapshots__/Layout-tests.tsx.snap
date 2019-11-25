@@ -10,23 +10,32 @@ exports[`lays out correctly 1`] = `
   }
 >
   <Text
-    numberOfLines={1}
+    fontFamily="Unica77LL-Medium"
+    fontSize="14px"
+    lineHeight="20px"
     style={
       Array [
         Object {
-          "fontSize": 17,
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 14,
+          "lineHeight": 20,
         },
-        Object {
-          "fontSize": 20,
-        },
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-        },
+        Object {},
       ]
     }
   >
-    Related Artists
+    Related artists
   </Text>
+  <View
+    mb={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 8,
+        },
+      ]
+    }
+  />
   <View
     style={
       Object {
@@ -36,7 +45,6 @@ exports[`lays out correctly 1`] = `
         "justifyContent": "space-around",
         "marginLeft": -10,
         "marginRight": -10,
-        "marginTop": 12,
       }
     }
   >
@@ -64,26 +72,48 @@ exports[`lays out correctly 1`] = `
           }
         }
       />
-      <Text
+      <View
+        mb={0.5}
         style={
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-            "fontSize": 12,
-            "marginTop": 10,
-            "textAlign": "left",
-          }
+          Array [
+            Object {
+              "marginBottom": 0.5,
+            },
+          ]
+        }
+      />
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="12px"
+        lineHeight="16px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 12,
+              "lineHeight": 16,
+            },
+            Object {},
+          ]
         }
       >
-        SARAH SCOTT
+        Sarah Scott
       </Text>
       <Text
+        color="#666"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="14px"
+        lineHeight="18px"
         style={
-          Object {
-            "color": "#666666",
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 16,
-            "marginTop": 5,
-          }
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 14,
+              "lineHeight": 18,
+            },
+            Object {},
+          ]
         }
       >
         4 works

@@ -4,12 +4,12 @@ import { ArtistListItemContainer as ArtistListItem } from "lib/Components/Artist
 import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
 import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
 const PAGE_SIZE = 10
@@ -60,7 +60,7 @@ export const PartnerOverview: React.FC<{
   const aboutText = get(partner, p => p.profile.bio)
 
   if (!aboutText && !artists && !partner.cities) {
-    return <PartnerEmptyState text="There is no information for this gallery yet" />
+    return <TabEmptyState text="There is no information for this gallery yet" />
   }
 
   return (

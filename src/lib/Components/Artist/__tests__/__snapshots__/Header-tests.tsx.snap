@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders properly 1`] = `
-<Header
+<ArtistHeader
   artist={
     Object {
       "birthday": "11/17/1992",

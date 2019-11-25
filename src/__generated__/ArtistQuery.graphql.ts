@@ -39,13 +39,13 @@ fragment Artist_artist on Artist {
     related_artists: relatedArtists
     articles
   }
-  ...Header_artist
-  ...About_artist
-  ...Shows_artist
-  ...Artworks_artist
+  ...ArtistHeader_artist
+  ...ArtistAbout_artist
+  ...ArtistShows_artist
+  ...ArtistArtworks_artist
 }
 
-fragment Header_artist on Artist {
+fragment ArtistHeader_artist on Artist {
   id
   internalID
   slug
@@ -58,7 +58,7 @@ fragment Header_artist on Artist {
   }
 }
 
-fragment About_artist on Artist {
+fragment ArtistAbout_artist on Artist {
   has_metadata: hasMetadata
   is_display_auction_link: isDisplayAuctionLink
   slug
@@ -83,7 +83,7 @@ fragment About_artist on Artist {
   }
 }
 
-fragment Shows_artist on Artist {
+fragment ArtistShows_artist on Artist {
   currentShows: showsConnection(status: "running", first: 10) {
     edges {
       node {
@@ -118,7 +118,7 @@ fragment Shows_artist on Artist {
   }
 }
 
-fragment Artworks_artist on Artist {
+fragment ArtistArtworks_artist on Artist {
   id
   artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", aggregations: [TOTAL]) {
     edges {
@@ -1163,7 +1163,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistQuery",
-    "id": "2f140254fe8e97826fc63ea6995e5472",
+    "id": "97fa832d753f37da5c36ce61ead791f6",
     "text": null,
     "metadata": {}
   }

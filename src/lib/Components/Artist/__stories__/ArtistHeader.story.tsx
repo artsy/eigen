@@ -1,8 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
+import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import React from "react"
 import { View } from "react-native"
-
-import Header from "../Header"
 
 // TODO: Move to metametaphysics after Relay Modern migration
 import { ArtistHeaderQuery } from "__generated__/ArtistHeaderQuery.graphql"
@@ -15,7 +14,7 @@ const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
       query={graphql`
         query ArtistHeaderQuery($artistID: String!) {
           artist(id: $artistID) {
-            ...Header_artist
+            ...ArtistHeader_artist
           }
         }
       `}
@@ -34,13 +33,13 @@ const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
   )
 }
 
-storiesOf("Artist/Header")
+storiesOf("Artist/ArtistHeader")
   .addDecorator(story => <View style={{ marginLeft: 20, marginRight: 20 }}>{story()}</View>)
   .add("Real Artist - Glenn Brown", () => {
-    return <RootContainer Component={Header} artistID="glenn-brown" />
+    return <RootContainer Component={ArtistHeader} artistID="glenn-brown" />
   })
   .add("Real Artist - Leda Catunda", () => {
-    return <RootContainer Component={Header} artistID="leda-catunda" />
+    return <RootContainer Component={ArtistHeader} artistID="leda-catunda" />
   })
 // TODO: Move to metametaphysics after Relay Modern migration
 //

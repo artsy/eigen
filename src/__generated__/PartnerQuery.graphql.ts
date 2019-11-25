@@ -29,6 +29,7 @@ query PartnerQuery(
 
 fragment Partner_partner on Partner {
   id
+  internalID
   slug
   profile {
     id
@@ -287,14 +288,14 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -480,6 +481,7 @@ return {
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -497,7 +499,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v4/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -525,7 +527,6 @@ return {
               }
             ]
           },
-          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworks",
@@ -628,7 +629,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -798,8 +799,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v4/*: any*/),
                       (v3/*: any*/),
+                      (v4/*: any*/),
                       (v8/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -919,7 +920,7 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v8/*: any*/),
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       (v18/*: any*/),
                       {
                         "kind": "LinkedField",
@@ -987,8 +988,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v4/*: any*/),
                       (v3/*: any*/),
+                      (v4/*: any*/),
                       (v8/*: any*/),
                       (v18/*: any*/),
                       {
@@ -1052,7 +1053,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "b83266bcd0cdc346d2df05caf005755a",
+    "id": "05d5c5699ddf0637e9549767448111ea",
     "text": null,
     "metadata": {}
   }

@@ -1,11 +1,9 @@
-import React, { Component } from "react"
-import { ScrollView, StyleSheet, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import SerifText from "../../Text/Serif"
-import Article from "./Article"
-
+import { Sans, Spacer } from "@artsy/palette"
 import { Articles_articles } from "__generated__/Articles_articles.graphql"
+import React, { Component } from "react"
+import { ScrollView, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import Article from "./Article"
 
 interface Props {
   articles: Articles_articles
@@ -16,32 +14,24 @@ class Articles extends Component<Props> {
     const articles = this.props.articles
     return (
       <View>
-        <SerifText style={styles.heading}>Featured Articles</SerifText>
+        <Sans size="3t" weight="medium">
+          Featured articles
+        </Sans>
+        <Spacer mb={2} />
         <ScrollView
-          horizontal={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
           scrollsToTop={false}
-          style={{ overflow: "visible", marginBottom: 40 }}
+          style={{ overflow: "visible" }}
         >
           {articles.map(article => (
-            <Article key={article.id} article={article as any} style={styles.article} />
+            <Article key={article.id} article={article} />
           ))}
         </ScrollView>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  heading: {
-    marginBottom: 12,
-    fontSize: 20,
-  },
-  article: {
-    // TODO: Why doesn’t this work? Currently working around it by making the Article internal view 20pt wider.
-    // marginRight: 20,
-  },
-})
 
 export default createFragmentContainer(Articles, {
   articles: graphql`

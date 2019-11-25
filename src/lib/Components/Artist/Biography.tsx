@@ -4,9 +4,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import removeMarkdown from "remove-markdown"
 
-import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
+import { Sans, Spacer } from "@artsy/palette"
 import { Biography_artist } from "__generated__/Biography_artist.graphql"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
@@ -24,7 +24,10 @@ class Biography extends React.Component<Props> {
 
     return (
       <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
-        <Headline style={{ marginBottom: 20 }}>Biography</Headline>
+        <Sans size="3t" weight="medium">
+          Biography
+        </Sans>
+        <Spacer mb={2} />
         {this.blurb(artist)}
         <SerifText style={styles.bio} numberOfLines={0}>
           {this.bioText()}
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
   bio: {
     fontSize: 16,
     lineHeight: 20,
-    marginBottom: 40,
+    marginBottom: 20,
   },
 })
 

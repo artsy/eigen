@@ -1,12 +1,13 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
+import { StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { color, Sans, Serif } from "@artsy/palette"
 import { Article_article } from "__generated__/Article_article.graphql"
 
 interface Props extends ViewProperties {
@@ -20,17 +21,20 @@ class Article extends React.Component<Props> {
 
   render() {
     const article = this.props.article
-    const author = article.author && <Text style={styles.sansSerifText}>{article.author.name.toUpperCase()}</Text>
     const imageURL = article.thumbnail_image && article.thumbnail_image.url
     return (
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
           <View style={styles.touchableContent}>
             {imageURL && <ImageView style={styles.image} imageURL={article.thumbnail_image.url} />}
-            <Text style={styles.serifText} numberOfLines={5}>
+            <Serif ellipsizeMode="tail" size="3">
               {article.thumbnail_title}
-            </Text>
-            {author}
+            </Serif>
+            {article.author && (
+              <Sans size="2" color={color("black60")}>
+                {article.author.name}
+              </Sans>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </View>

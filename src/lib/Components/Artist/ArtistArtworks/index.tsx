@@ -1,4 +1,5 @@
-import { Artworks_artist } from "__generated__/Artworks_artist.graphql"
+import { Box } from "@artsy/palette"
+import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
@@ -7,19 +8,21 @@ import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface Props extends InfiniteScrollGridProps {
-  artist: Artworks_artist
+  artist: ArtistArtworks_artist
   relay: RelayPaginationProp
 }
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
-  <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
+  <Box px={2} py={3}>
+    <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
+  </Box>
 )
 
 export default createPaginationContainer(
   ArtworksGrid,
   {
     artist: graphql`
-      fragment Artworks_artist on Artist
+      fragment ArtistArtworks_artist on Artist
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
         artworks: filterArtworksConnection(
@@ -59,10 +62,10 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtworksArtistQuery($id: ID!, $count: Int!, $cursor: String) {
+      query ArtistArtworksQuery($id: ID!, $count: Int!, $cursor: String) {
         node(id: $id) {
           ... on Artist {
-            ...Artworks_artist @arguments(count: $count, cursor: $cursor)
+            ...ArtistArtworks_artist @arguments(count: $count, cursor: $cursor)
           }
         }
       }

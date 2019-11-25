@@ -7,7 +7,7 @@ export type ArtistHeaderQueryVariables = {
 };
 export type ArtistHeaderQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": FragmentRefs<"Header_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist">;
     } | null;
 };
 export type ArtistHeaderQuery = {
@@ -22,12 +22,12 @@ query ArtistHeaderQuery(
   $artistID: String!
 ) {
   artist(id: $artistID) {
-    ...Header_artist
+    ...ArtistHeader_artist
     id
   }
 }
 
-fragment Header_artist on Artist {
+fragment ArtistHeader_artist on Artist {
   id
   internalID
   slug
@@ -77,7 +77,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Header_artist",
+            "name": "ArtistHeader_artist",
             "args": null
           }
         ]
@@ -172,11 +172,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistHeaderQuery",
-    "id": "f5acd6385f4c2064ac1b44f5f3530ddf",
+    "id": "f6728fe62c23c54a28254f68598c01d6",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e7898450d087c728259c6cf89d6d7ce0';
+(node as any).hash = '9d67f6d99e866cf2cc2a3e4cf640aa90';
 export default node;

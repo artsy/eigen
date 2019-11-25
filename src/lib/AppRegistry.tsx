@@ -74,13 +74,9 @@ interface ArtistProps {
   isPad: boolean
 }
 
-const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
-  return {
-    context_screen: Schema.PageNames.ArtistPage,
-    context_screen_owner_slug: props.artistID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-  }
-})(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
+const Artist: React.SFC<ArtistProps> = props => (
+  <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
+)
 
 interface ArtworkProps {
   artworkID: string

@@ -2,7 +2,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Shows_artist = {
+export type ArtistShows_artist = {
     readonly currentShows: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -31,7 +31,7 @@ export type Shows_artist = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "Shows_artist";
+    readonly " $refType": "ArtistShows_artist";
 };
 
 
@@ -85,7 +85,7 @@ v2 = [
 ];
 return {
   "kind": "Fragment",
-  "name": "Shows_artist",
+  "name": "ArtistShows_artist",
   "type": "Artist",
   "metadata": null,
   "argumentDefinitions": [
@@ -195,5 +195,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '21beda31cfe5fcb85d3015382a0dd69d';
+(node as any).hash = 'a035e8faabf7860638dbb32efb5fcbed';
 export default node;

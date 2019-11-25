@@ -2,28 +2,268 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersArtistQueryVariables = {
-    artistID: string;
+export type ArtistTestsQueryVariables = {
     isPad: boolean;
 };
-export type QueryRenderersArtistQueryResponse = {
+export type ArtistTestsQueryResponse = {
     readonly artist: {
         readonly " $fragmentRefs": FragmentRefs<"Artist_artist">;
     } | null;
 };
-export type QueryRenderersArtistQuery = {
-    readonly response: QueryRenderersArtistQueryResponse;
-    readonly variables: QueryRenderersArtistQueryVariables;
+export type ArtistTestsQueryRawResponse = {
+    readonly artist: ({
+        readonly internalID: string;
+        readonly slug: string;
+        readonly has_metadata: boolean | null;
+        readonly counts: ({
+            readonly artworks: number | null;
+            readonly partner_shows: number | null;
+            readonly related_artists: number | null;
+            readonly articles: number | null;
+            readonly follows: number | null;
+        }) | null;
+        readonly id: string;
+        readonly isFollowed: boolean | null;
+        readonly name: string | null;
+        readonly nationality: string | null;
+        readonly birthday: string | null;
+        readonly is_display_auction_link: boolean | null;
+        readonly bio: string | null;
+        readonly blurb: string | null;
+        readonly related: ({
+            readonly artists: ({
+                readonly edges: ReadonlyArray<({
+                    readonly node: ({
+                        readonly id: string;
+                        readonly href: string | null;
+                        readonly name: string | null;
+                        readonly counts: ({
+                            readonly forSaleArtworks: number | null;
+                            readonly artworks: number | null;
+                        }) | null;
+                        readonly image: ({
+                            readonly url: string | null;
+                        }) | null;
+                    }) | null;
+                }) | null> | null;
+            }) | null;
+        }) | null;
+        readonly articles: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly thumbnail_title: string | null;
+                    readonly href: string | null;
+                    readonly author: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly thumbnail_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly currentShows: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly slug: string;
+                    readonly href: string | null;
+                    readonly is_fair_booth: boolean | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly kind: string | null;
+                    readonly name: string | null;
+                    readonly exhibition_period: string | null;
+                    readonly status_update: string | null;
+                    readonly status: string | null;
+                    readonly partner: ({
+                        readonly __typename: "Partner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: "ExternalPartner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly city: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly upcomingShows: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly slug: string;
+                    readonly href: string | null;
+                    readonly is_fair_booth: boolean | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly kind: string | null;
+                    readonly name: string | null;
+                    readonly exhibition_period: string | null;
+                    readonly status_update: string | null;
+                    readonly status: string | null;
+                    readonly partner: ({
+                        readonly __typename: "Partner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: "ExternalPartner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly city: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly artworks: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly slug: string;
+                    readonly image: ({
+                        readonly aspectRatio: number;
+                        readonly url: string | null;
+                        readonly aspect_ratio: number;
+                    }) | null;
+                    readonly title: string | null;
+                    readonly date: string | null;
+                    readonly sale_message: string | null;
+                    readonly is_biddable: boolean | null;
+                    readonly is_acquireable: boolean | null;
+                    readonly is_offerable: boolean | null;
+                    readonly sale: ({
+                        readonly is_auction: boolean | null;
+                        readonly is_closed: boolean | null;
+                        readonly display_timely_at: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly sale_artwork: ({
+                        readonly current_bid: ({
+                            readonly display: string | null;
+                        }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly artists: ReadonlyArray<({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null> | null;
+                    readonly partner: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly href: string | null;
+                    readonly __typename: "Artwork";
+                }) | null;
+                readonly cursor: string;
+                readonly id: string | null;
+            }) | null> | null;
+            readonly pageInfo: {
+                readonly hasNextPage: boolean;
+                readonly startCursor: string | null;
+                readonly endCursor: string | null;
+            };
+            readonly id: string | null;
+        }) | null;
+        readonly pastSmallShows?: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly slug: string;
+                    readonly href: string | null;
+                    readonly is_fair_booth: boolean | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly kind: string | null;
+                    readonly name: string | null;
+                    readonly exhibition_period: string | null;
+                    readonly status_update: string | null;
+                    readonly status: string | null;
+                    readonly partner: ({
+                        readonly __typename: "Partner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: "ExternalPartner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly city: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly id: string | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+        readonly pastLargeShows?: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly slug: string;
+                    readonly href: string | null;
+                    readonly is_fair_booth: boolean | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly kind: string | null;
+                    readonly name: string | null;
+                    readonly exhibition_period: string | null;
+                    readonly status_update: string | null;
+                    readonly status: string | null;
+                    readonly partner: ({
+                        readonly __typename: "Partner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: "ExternalPartner";
+                        readonly id: string | null;
+                        readonly name: string | null;
+                    } | {
+                        readonly __typename: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly city: string | null;
+                        readonly id: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
+    }) | null;
+};
+export type ArtistTestsQuery = {
+    readonly response: ArtistTestsQueryResponse;
+    readonly variables: ArtistTestsQueryVariables;
+    readonly rawResponse: ArtistTestsQueryRawResponse;
 };
 
 
 
 /*
-query QueryRenderersArtistQuery(
-  $artistID: String!
+query ArtistTestsQuery(
   $isPad: Boolean!
 ) {
-  artist(id: $artistID) {
+  artist(id: "andy-warhol") {
     ...Artist_artist
     id
   }
@@ -282,12 +522,6 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "artistID",
-    "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
     "name": "isPad",
     "type": "Boolean!",
     "defaultValue": null
@@ -295,9 +529,9 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "artistID"
+    "value": "andy-warhol"
   }
 ],
 v2 = {
@@ -524,7 +758,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersArtistQuery",
+    "name": "ArtistTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -533,7 +767,7 @@ return {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
-        "storageKey": null,
+        "storageKey": "artist(id:\"andy-warhol\")",
         "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
@@ -549,14 +783,14 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersArtistQuery",
+    "name": "ArtistTestsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
-        "storageKey": null,
+        "storageKey": "artist(id:\"andy-warhol\")",
         "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
@@ -1162,12 +1396,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersArtistQuery",
-    "id": "c4b5e3f0425c51cef2a616e96f4f20cc",
+    "name": "ArtistTestsQuery",
+    "id": "7d7098d94a1abc48285b0aa2b68cbe58",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4f96ab0eb841e4e302758c475a4c3561';
+(node as any).hash = '845b9534ea8b9c3b6feb24cf11c76504';
 export default node;

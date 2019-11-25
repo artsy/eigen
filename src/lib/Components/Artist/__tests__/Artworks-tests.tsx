@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Artworks from "../Artworks"
+import Artworks from "../ArtistArtworks"
 
 import { Theme } from "@artsy/palette"
 

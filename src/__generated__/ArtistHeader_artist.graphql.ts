@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-export type Header_artist = {
+export type ArtistHeader_artist = {
     readonly id: string;
     readonly internalID: string;
     readonly slug: string;
@@ -12,14 +12,14 @@ export type Header_artist = {
     readonly counts: {
         readonly follows: number | null;
     } | null;
-    readonly " $refType": "Header_artist";
+    readonly " $refType": "ArtistHeader_artist";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Header_artist",
+  "name": "ArtistHeader_artist",
   "type": "Artist",
   "metadata": null,
   "argumentDefinitions": [],
@@ -93,5 +93,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b42c4f730bc52308e5cfac3737bcad5b';
+(node as any).hash = 'b17f000df837524cef9488bdb683406d';
 export default node;

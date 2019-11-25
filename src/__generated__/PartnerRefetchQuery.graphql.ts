@@ -30,6 +30,7 @@ query PartnerRefetchQuery(
 
 fragment Partner_partner on Partner {
   id
+  internalID
   slug
   profile {
     id
@@ -295,14 +296,14 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -486,6 +487,7 @@ return {
             "type": "Partner",
             "selections": [
               (v4/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -503,7 +505,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v5/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -531,7 +533,6 @@ return {
                   }
                 ]
               },
-              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "artworks",
@@ -634,7 +635,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -804,8 +805,8 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v5/*: any*/),
                           (v4/*: any*/),
+                          (v5/*: any*/),
                           (v9/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -925,7 +926,7 @@ return {
                         "selections": [
                           (v3/*: any*/),
                           (v9/*: any*/),
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           (v18/*: any*/),
                           {
                             "kind": "LinkedField",
@@ -993,8 +994,8 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v5/*: any*/),
                           (v4/*: any*/),
+                          (v5/*: any*/),
                           (v9/*: any*/),
                           (v18/*: any*/),
                           {
@@ -1060,7 +1061,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "49b00fe30311f057cde9b11f6af5c5b6",
+    "id": "9c7a01a3a409c5e660d81de8f88c1a48",
     "text": null,
     "metadata": {}
   }
