@@ -1,3 +1,15 @@
+# v1.18.40 (Mon Nov 25 2019)
+
+#### 🐛  Bug Fix
+
+- ME-108 - Updates Artist page to use new design system and spec [#1977](https://github.com/artsy/emission/pull/1977) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.18.39 (Fri Nov 22 2019)
 
 #### 🐛  Bug Fix
