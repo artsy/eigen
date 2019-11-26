@@ -181,10 +181,31 @@ function useStickyHeaderPositioning({
       const notBouncingAtTheTop = Animated.greaterThan(scrollOffsetY, 0)
       const notBouncingAtTheBottom = Animated.lessThan(scrollOffsetY, Animated.sub(contentHeight, layoutHeight))
 
-      const updateHeaderOffsetWhenNotBouncingOrLocked = Animated.cond(
-        Animated.and(notBouncingAtTheTop, notBouncingAtTheBottom, Animated.not(lockHeaderPosition)),
+      const updateHeaderOffsetWhenNotBouncing = Animated.cond(
+        Animated.and(notBouncingAtTheTop, notBouncingAtTheBottom),
         updateHeaderOffset,
-        // deref scroll diff to prevent diff buildup when ignoring changes
+        [
+          // deref scroll diff to prevent diff buildup when ignoring changes
+          scrollDiff,
+          // max out header position to avoid dropped diffs when the last frame was below a bounce threshold
+          Animated.cond(
+            notBouncingAtTheTop,
+            [
+              // bouncing at the bottom, keep the header fully hidden
+              Animated.set(headerOffsetY, negative(headerHeight)),
+            ],
+            [
+              // bouncing at the top, keep the header fully open
+              Animated.set(headerOffsetY, 0),
+            ]
+          ),
+        ]
+      )
+
+      const updateHeaderOffsetWhenNotLocked = Animated.cond(
+        Animated.not(lockHeaderPosition),
+        updateHeaderOffsetWhenNotBouncing,
+        // scroll diff to prevent diff buildup when ignoring changes
         scrollDiff
       )
 
@@ -197,7 +218,7 @@ function useStickyHeaderPositioning({
           // again, deref scrollDiff to prevent buildup
           scrollDiff,
         ],
-        updateHeaderOffsetWhenNotBouncingOrLocked
+        updateHeaderOffsetWhenNotLocked
       )
     },
     [headerHeight]
