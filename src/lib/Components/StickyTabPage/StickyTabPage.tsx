@@ -7,8 +7,8 @@ import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
+import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
-import { StickyTabScrollView } from "./StickyTabScrollView"
 
 interface TabProps {
   initial?: boolean
@@ -32,7 +32,7 @@ export const StickyTabPage: React.FC<{
   const { width } = useScreenDimensions()
   const initialTabIndex = useMemo(() => Math.max(tabs.findIndex(tab => tab.initial), 0), [])
   const activeTabIndex = useAnimatedValue(initialTabIndex)
-  const headerHeight = useAnimatedValue(0)
+  const [headerHeight, setHeaderHeightNativeWrapper] = useState<Animated.Value<number>>(null)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>()
@@ -41,17 +41,20 @@ export const StickyTabPage: React.FC<{
     <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
-        <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width}>
+        <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
           {tabs.map(({ content }, index) => {
             return (
               <View style={{ flex: 1, width }} key={index}>
-                <StickyTabScrollView
-                  tabIndex={index}
-                  headerHeight={headerHeight}
-                  headerOffsetY={headerOffsetY}
-                  content={content}
-                  activeTabIndex={activeTabIndex}
-                />
+                <StickyTabPageFlatListContext.Provider
+                  value={{
+                    tabIndex: index,
+                    headerHeight,
+                    headerOffsetY,
+                    activeTabIndex,
+                  }}
+                >
+                  {content}
+                </StickyTabPageFlatListContext.Provider>
               </View>
             )
           })}
@@ -66,7 +69,15 @@ export const StickyTabPage: React.FC<{
           transform: [{ translateY: headerOffsetY as any }],
         }}
       >
-        <View onLayout={e => headerHeight.setValue(e.nativeEvent.layout.height)}>
+        <View
+          onLayout={e => {
+            if (headerHeight) {
+              headerHeight.setValue(e.nativeEvent.layout.height)
+            } else {
+              setHeaderHeightNativeWrapper(new Animated.Value(e.nativeEvent.layout.height))
+            }
+          }}
+        >
           {headerContent}
           <Spacer mb={1} />
         </View>

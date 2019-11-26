@@ -1,28 +1,40 @@
-import React, { useContext, useRef } from "react"
-import { FlatList } from "react-native"
+import { space } from "@artsy/palette"
+import React, { useContext, useMemo, useRef } from "react"
+import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
 
-export const StickyTabScrollViewContext = React.createContext<{
-  scrollOffsetY: Animated.Node<number>
-  contentHeight: Animated.Node<number>
-  layoutHeight: Animated.Node<number>
-}>(null)
-
-export const useStickyTabContext = () => {
-  return useContext(StickyTabScrollViewContext)
-}
-
-const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
-
-export const StickyTabScrollView: React.FC<{
+interface FlatListRequiredContext {
   headerHeight: Animated.Node<number>
   headerOffsetY: Animated.Value<number>
   tabIndex: number
   activeTabIndex: Animated.Node<number>
-  content: React.ReactNode
-}> = ({ headerHeight, headerOffsetY, content, tabIndex, activeTabIndex }) => {
+}
+export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(null)
+
+const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
+  headerHeight: new Animated.Value(0),
+  headerOffsetY: new Animated.Value(0),
+  tabIndex: 0,
+  activeTabIndex: new Animated.Value(0),
+})
+
+const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
+export interface StickyTabSection {
+  /* key must be unique per-tab */
+  key: string
+  content: JSX.Element
+}
+export interface StickyTabFlatListProps
+  extends Omit<FlatListProps<any>, "onScroll" | "data" | "scrollEventThrottle" | "ListHeaderComponent" | "renderItem"> {
+  data: StickyTabSection[]
+}
+
+export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => {
+  const { headerHeight, headerOffsetY, tabIndex, activeTabIndex } =
+    process.env.NODE_ENV === "test" ? MOCK_CONTEXT() : useContext(StickyTabPageFlatListContext)
+
   const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)
   const scrollOffsetY = useAnimatedValue(0)
@@ -72,35 +84,52 @@ export const StickyTabScrollView: React.FC<{
     []
   )
 
-  return (
-    <StickyTabScrollViewContext.Provider value={{ contentHeight, layoutHeight, scrollOffsetY }}>
-      <AnimatedFlatList
-        style={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}
-        ref={flatListRef as any}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: { y: scrollOffsetY },
-                contentSize: { height: contentHeight },
-                layoutMeasurement: { height: layoutHeight },
-              },
-            },
-          ],
-          {
-            useNativeDriver: true,
-          }
-        )}
-        // we want every frame to trigger an update on the native side
-        scrollEventThrottle={0.0000000001}
-        ListHeaderComponent={() => (
-          <Animated.View style={{ flex: 1, height: Animated.add(headerHeight, TAB_BAR_HEIGHT) }} />
-        )}
-        data={[{ content, key: "the_content" }]}
-        renderItem={({ item }) => <>{item.content}</>}
+  const ListHeaderComponent = useMemo(
+    () => () => (
+      <Animated.View
+        style={{
+          flex: 1,
+          height: Animated.add(
+            headerHeight,
+            TAB_BAR_HEIGHT,
+            // standard top padding, might want to override in future?
+            space(3)
+          ),
+        }}
       />
-    </StickyTabScrollViewContext.Provider>
+    ),
+    [headerHeight]
+  )
+
+  return (
+    <AnimatedFlatList
+      style={{
+        flex: 1,
+        // standard h padding, might want to override in future?
+        paddingHorizontal: space(2),
+      }}
+      showsVerticalScrollIndicator={false}
+      ref={flatListRef as any}
+      onScroll={Animated.event(
+        [
+          {
+            nativeEvent: {
+              contentOffset: { y: scrollOffsetY },
+              contentSize: { height: contentHeight },
+              layoutMeasurement: { height: layoutHeight },
+            },
+          },
+        ],
+        {
+          useNativeDriver: true,
+        }
+      )}
+      // we want every frame to trigger an update on the native side
+      scrollEventThrottle={0.0000000001}
+      ListHeaderComponent={ListHeaderComponent}
+      renderItem={({ item }) => <>{item.content}</>}
+      {...props}
+    />
   )
 }
 

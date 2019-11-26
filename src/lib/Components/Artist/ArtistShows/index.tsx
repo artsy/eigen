@@ -1,5 +1,6 @@
 import { Box } from "@artsy/palette"
 import { ArtistShows_artist } from "__generated__/ArtistShows_artist.graphql"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
 import { StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,10 +16,10 @@ interface Props {
 class Shows extends React.Component<Props> {
   render() {
     return (
-      <Box px={2} py={3}>
+      <StickyTabPageScrollView>
         {this.currentAndUpcomingList()}
         {this.pastShows()}
-      </Box>
+      </StickyTabPageScrollView>
     )
   }
 

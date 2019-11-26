@@ -2,10 +2,9 @@ import { Box, Flex } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
-import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
-import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -19,33 +18,32 @@ export const PartnerArtwork: React.FC<{
 
   const artworks = get(partner, p => p.artworks)
 
-  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
-
-  useOnCloseToBottom({
-    contentHeight,
-    scrollOffsetY,
-    layoutHeight,
-    callback: () => {
-      if (fetchingNextPage || !relay.hasMore()) {
-        return
-      }
-      setFetchingNextPage(true)
-      relay.loadMore(PAGE_SIZE, error => {
-        if (error) {
-          // FIXME: Handle error
-          console.error("PartnerArtwork.tsx", error.message)
-        }
-        setFetchingNextPage(false)
-      })
-    },
-  })
-
   if (!artworks) {
-    return <TabEmptyState text="There is no artwork from this gallery yet" />
+    return (
+      <StickyTabPageScrollView>
+        <TabEmptyState text="There is no artwork from this gallery yet" />
+      </StickyTabPageScrollView>
+    )
   }
 
   return (
-    <Box px={2} py={3}>
+    // TODO: switch to StickyTabPageFlatList
+    <StickyTabPageScrollView
+      onEndReachedThreshold={0}
+      onEndReached={() => {
+        if (fetchingNextPage || !relay.hasMore()) {
+          return
+        }
+        setFetchingNextPage(true)
+        relay.loadMore(PAGE_SIZE, error => {
+          if (error) {
+            // FIXME: Handle error
+            console.error("PartnerArtwork.tsx", error.message)
+          }
+          setFetchingNextPage(false)
+        })
+      }}
+    >
       {artworks && <GenericGrid artworks={artworks.edges.map(({ node }) => node)} />}
       {fetchingNextPage && (
         <Box p={2} style={{ height: 50 }}>
@@ -54,7 +52,7 @@ export const PartnerArtwork: React.FC<{
           </Flex>
         </Box>
       )}
-    </Box>
+    </StickyTabPageScrollView>
   )
 }
 

@@ -1,4 +1,3 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useImperativeHandle, useRef } from "react"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
@@ -8,10 +7,8 @@ export interface SnappyHorizontalRail {
 }
 export const SnappyHorizontalRail = React.forwardRef<
   SnappyHorizontalRail,
-  React.PropsWithChildren<{ initialOffset?: number }>
->(({ children, initialOffset = 0 }, ref) => {
-  const { width } = useScreenDimensions()
-
+  React.PropsWithChildren<{ initialOffset?: number; width: number }>
+>(({ children, initialOffset = 0, width }, ref) => {
   const currentOffset = useAnimatedValue(-initialOffset)
   const currentAnimation = useRef<Animated.BackwardCompatibleWrapper>()
 
@@ -41,7 +38,7 @@ export const SnappyHorizontalRail = React.forwardRef<
     <Animated.View
       style={{
         flex: 1,
-        width: width * 3,
+        width,
         flexDirection: "row",
         transform: [
           {

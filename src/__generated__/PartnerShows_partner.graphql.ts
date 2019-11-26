@@ -5,6 +5,13 @@ import { FragmentRefs } from "relay-runtime";
 export type PartnerShows_partner = {
     readonly slug: string;
     readonly internalID: string;
+    readonly recentShows: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly pastShows: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -36,6 +43,13 @@ var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -77,6 +91,51 @@ return {
       "name": "internalID",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": "recentShows",
+      "name": "showsConnection",
+      "storageKey": "showsConnection(first:1,status:\"CURRENT\")",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        },
+        {
+          "kind": "Literal",
+          "name": "status",
+          "value": "CURRENT"
+        }
+      ],
+      "concreteType": "ShowConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ShowEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Show",
+              "plural": false,
+              "selections": [
+                (v1/*: any*/)
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "kind": "LinkedField",
@@ -148,13 +207,7 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "id",
-                  "args": null,
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -230,5 +283,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '916ec13b1668f03a6d124e5739f130f0';
+(node as any).hash = 'f062046792dc4973501d67a57e428bc6';
 export default node;
