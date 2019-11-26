@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from "react"
+import { FlatList } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
@@ -12,6 +13,8 @@ export const StickyTabScrollViewContext = React.createContext<{
 export const useStickyTabContext = () => {
   return useContext(StickyTabScrollViewContext)
 }
+
+const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
 
 export const StickyTabScrollView: React.FC<{
   headerHeight: Animated.Node<number>
@@ -34,7 +37,7 @@ export const StickyTabScrollView: React.FC<{
     scrollOffsetY,
   })
 
-  const scrollViewRef = useRef<Animated.ScrollView>()
+  const flatListRef = useRef<{ getNode(): FlatList<any> }>()
 
   const lastIsActive = useAnimatedValue(-1)
 
@@ -52,12 +55,12 @@ export const StickyTabScrollView: React.FC<{
             Animated.cond(
               Animated.greaterThan(Animated.multiply(-1, headerOffsetY), scrollOffsetY),
               Animated.call([headerOffsetY], ([y]) => {
-                if (!scrollViewRef.current) {
+                if (!flatListRef.current) {
                   throw new Error(
                     "Please make sure that tab content is wrapped with a StickyTabPageFlatList or a StickyTabPageScrollView"
                   )
                 }
-                scrollViewRef.current.getNode().scrollTo({ y: -y, animated: false })
+                flatListRef.current.getNode().scrollToOffset({ offset: -y, animated: false })
                 lockHeaderPosition.setValue(0)
               }),
               Animated.set(lockHeaderPosition, 0)
@@ -71,10 +74,10 @@ export const StickyTabScrollView: React.FC<{
 
   return (
     <StickyTabScrollViewContext.Provider value={{ contentHeight, layoutHeight, scrollOffsetY }}>
-      <Animated.ScrollView
+      <AnimatedFlatList
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        ref={scrollViewRef}
+        ref={flatListRef as any}
         onScroll={Animated.event(
           [
             {
@@ -91,10 +94,12 @@ export const StickyTabScrollView: React.FC<{
         )}
         // we want every frame to trigger an update on the native side
         scrollEventThrottle={0.0000000001}
-      >
-        <Animated.View style={{ flex: 1, height: Animated.add(headerHeight, TAB_BAR_HEIGHT) }} />
-        {content}
-      </Animated.ScrollView>
+        ListHeaderComponent={() => (
+          <Animated.View style={{ flex: 1, height: Animated.add(headerHeight, TAB_BAR_HEIGHT) }} />
+        )}
+        data={[{ content, key: "the_content" }]}
+        renderItem={({ item }) => <>{item.content}</>}
+      />
     </StickyTabScrollViewContext.Provider>
   )
 }
