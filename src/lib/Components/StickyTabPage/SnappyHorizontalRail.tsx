@@ -1,22 +1,40 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useEffect } from "react"
+import React, { useImperativeHandle, useRef } from "react"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
 
-export const SnappyHorizontalRail: React.FC<{ offset: number }> = ({ offset, children }) => {
-  const currentOffset = useAnimatedValue(-offset)
+export interface SnappyHorizontalRail {
+  setOffset(offset: number): void
+}
+export const SnappyHorizontalRail = React.forwardRef<
+  SnappyHorizontalRail,
+  React.PropsWithChildren<{ initialOffset?: number }>
+>(({ children, initialOffset = 0 }, ref) => {
   const { width } = useScreenDimensions()
 
-  useEffect(
-    () => {
-      Animated.spring(currentOffset, {
-        ...Animated.SpringUtils.makeDefaultConfig(),
-        stiffness: 600,
-        damping: 120,
-        toValue: -offset,
-      }).start()
-    },
-    [offset]
+  const currentOffset = useAnimatedValue(-initialOffset)
+  const currentAnimation = useRef<Animated.BackwardCompatibleWrapper>()
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setOffset(offset) {
+        if (currentAnimation.current) {
+          currentAnimation.current.stop()
+        }
+        currentAnimation.current = Animated.spring(currentOffset, {
+          ...Animated.SpringUtils.makeDefaultConfig(),
+          stiffness: 600,
+          damping: 120,
+          toValue: -offset,
+        })
+
+        currentAnimation.current.start(() => {
+          currentAnimation.current = null
+        })
+      },
+    }),
+    []
   )
 
   return (
@@ -35,4 +53,4 @@ export const SnappyHorizontalRail: React.FC<{ offset: number }> = ({ offset, chi
       {children}
     </Animated.View>
   )
-}
+})

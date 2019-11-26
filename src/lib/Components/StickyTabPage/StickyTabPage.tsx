@@ -1,7 +1,7 @@
 import { color, Spacer } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useMemo, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
@@ -30,17 +30,18 @@ export const StickyTabPage: React.FC<{
   headerContent: JSX.Element
 }> = ({ tabs, headerContent }) => {
   const { width } = useScreenDimensions()
-  const initialActiveIndex = useMemo(() => Math.max(tabs.findIndex(tab => tab.initial), 0), [])
-  const [activeTabIndex, setActiveTabIndex] = useState(initialActiveIndex)
+  const initialTabIndex = useMemo(() => Math.max(tabs.findIndex(tab => tab.initial), 0), [])
+  const [activeTabIndex, setActiveTabIndex] = useState(initialTabIndex)
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
+  const railRef = useRef<SnappyHorizontalRail>()
 
   return (
     <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
-        <SnappyHorizontalRail offset={activeTabIndex * width}>
+        <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width}>
           {tabs.map(({ content }, index) => {
             return (
               <View style={{ flex: 1, width }} key={index}>
@@ -70,9 +71,10 @@ export const StickyTabPage: React.FC<{
         </View>
         <StickyTabPageTabBar
           labels={tabs.map(({ title }) => title)}
-          initialActiveIndex={initialActiveIndex}
+          initialActiveIndex={initialTabIndex}
           onIndexChange={index => {
             setActiveTabIndex(index)
+            railRef.current.setOffset(index * width)
             tracking.trackEvent({
               action_name: tabs[index].title,
               action_type: Schema.ActionTypes.Tap,
