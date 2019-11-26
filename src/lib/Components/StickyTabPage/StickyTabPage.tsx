@@ -31,8 +31,8 @@ export const StickyTabPage: React.FC<{
 }> = ({ tabs, headerContent }) => {
   const { width } = useScreenDimensions()
   const initialTabIndex = useMemo(() => Math.max(tabs.findIndex(tab => tab.initial), 0), [])
-  const [activeTabIndex, setActiveTabIndex] = useState(initialTabIndex)
-  const [headerHeight, setHeaderHeight] = useState<null | number>(null)
+  const activeTabIndex = useAnimatedValue(initialTabIndex)
+  const headerHeight = useAnimatedValue(0)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>()
@@ -46,10 +46,11 @@ export const StickyTabPage: React.FC<{
             return (
               <View style={{ flex: 1, width }} key={index}>
                 <StickyTabScrollView
+                  tabIndex={index}
                   headerHeight={headerHeight}
-                  content={content}
                   headerOffsetY={headerOffsetY}
-                  isActive={index === activeTabIndex}
+                  content={content}
+                  activeTabIndex={activeTabIndex}
                 />
               </View>
             )
@@ -65,7 +66,7 @@ export const StickyTabPage: React.FC<{
           transform: [{ translateY: headerOffsetY as any }],
         }}
       >
-        <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
+        <View onLayout={e => headerHeight.setValue(e.nativeEvent.layout.height)}>
           {headerContent}
           <Spacer mb={1} />
         </View>
@@ -73,7 +74,7 @@ export const StickyTabPage: React.FC<{
           labels={tabs.map(({ title }) => title)}
           initialActiveIndex={initialTabIndex}
           onIndexChange={index => {
-            setActiveTabIndex(index)
+            activeTabIndex.setValue(index)
             railRef.current.setOffset(index * width)
             tracking.trackEvent({
               action_name: tabs[index].title,

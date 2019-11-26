@@ -1,7 +1,6 @@
-import { Spacer } from "@artsy/palette"
-import React, { useContext, useEffect, useRef } from "react"
+import React, { useContext, useRef } from "react"
 import Animated from "react-native-reanimated"
-import { useAnimatedValue, useValueReader } from "./reanimatedHelpers"
+import { useAnimatedValue } from "./reanimatedHelpers"
 import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
 
 export const StickyTabScrollViewContext = React.createContext<{
@@ -15,14 +14,17 @@ export const useStickyTabContext = () => {
 }
 
 export const StickyTabScrollView: React.FC<{
-  headerHeight: number
+  headerHeight: Animated.Node<number>
   headerOffsetY: Animated.Value<number>
-  isActive: boolean
+  tabIndex: number
+  activeTabIndex: Animated.Node<number>
   content: React.ReactNode
-}> = ({ headerHeight, headerOffsetY, content, isActive }) => {
+}> = ({ headerHeight, headerOffsetY, content, tabIndex, activeTabIndex }) => {
   const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)
   const scrollOffsetY = useAnimatedValue(0)
+
+  const isActive = Animated.eq(tabIndex, activeTabIndex)
 
   const { lockHeaderPosition } = useStickyHeaderPositioning({
     headerOffsetY,
@@ -34,24 +36,37 @@ export const StickyTabScrollView: React.FC<{
 
   const scrollViewRef = useRef<Animated.ScrollView>()
 
-  const readVals = useValueReader({ headerOffsetY, scrollOffsetY })
+  const lastIsActive = useAnimatedValue(-1)
 
-  // make sure that when the tab becomes active it does not have any unsightly padding at the top in cases
-  // where the header has been retracted but this tab is near the top of its content
-  useEffect(
-    () => {
-      if (isActive) {
-        readVals().then(vals => {
-          if (-vals.headerOffsetY > vals.scrollOffsetY) {
-            scrollViewRef.current.getNode().scrollTo({ y: -vals.headerOffsetY, animated: false })
-          }
-          lockHeaderPosition.setValue(0)
-        })
-      } else {
-        lockHeaderPosition.setValue(1)
-      }
-    },
-    [isActive]
+  // prevent this tab from manipulating the header position when it is not active
+  Animated.useCode(
+    () =>
+      // when the active state changes
+      Animated.cond(Animated.neq(lastIsActive, isActive), [
+        Animated.set(lastIsActive, isActive),
+        Animated.cond(
+          isActive,
+          [
+            // the tab just became active so we might need to adjust the scroll offset to avoid unwanted
+            // white space before allowing the scroll offset to affect the header position
+            Animated.cond(
+              Animated.greaterThan(Animated.multiply(-1, headerOffsetY), scrollOffsetY),
+              Animated.call([headerOffsetY], ([y]) => {
+                if (!scrollViewRef.current) {
+                  throw new Error(
+                    "Please make sure that tab content is wrapped with a StickyTabPageFlatList or a StickyTabPageScrollView"
+                  )
+                }
+                scrollViewRef.current.getNode().scrollTo({ y: -y, animated: false })
+                lockHeaderPosition.setValue(0)
+              }),
+              Animated.set(lockHeaderPosition, 0)
+            ),
+          ],
+          Animated.set(lockHeaderPosition, 1)
+        ),
+      ]),
+    []
   )
 
   return (
@@ -77,7 +92,7 @@ export const StickyTabScrollView: React.FC<{
         // we want every frame to trigger an update on the native side
         scrollEventThrottle={0.0000000001}
       >
-        <Spacer mb={headerHeight + TAB_BAR_HEIGHT} />
+        <Animated.View style={{ flex: 1, height: Animated.add(headerHeight, TAB_BAR_HEIGHT) }} />
         {content}
       </Animated.ScrollView>
     </StickyTabScrollViewContext.Provider>
@@ -91,7 +106,7 @@ function useStickyHeaderPositioning({
   contentHeight,
   layoutHeight,
 }: {
-  headerHeight: number
+  headerHeight: Animated.Node<number>
   scrollOffsetY: Animated.Node<number>
   headerOffsetY: Animated.Value<number>
   contentHeight: Animated.Node<number>
@@ -104,7 +119,7 @@ function useStickyHeaderPositioning({
       // scrollDiff is the amount the header has scrolled since last time this code ran
       const scrollDiff = Animated.diff(scrollOffsetY)
 
-      const headerIsNotFullyUp = Animated.neq(headerOffsetY, -headerHeight)
+      const headerIsNotFullyUp = Animated.neq(headerOffsetY, negative(headerHeight))
 
       const nearTheTop = Animated.lessOrEq(scrollOffsetY, headerHeight)
 
@@ -115,7 +130,7 @@ function useStickyHeaderPositioning({
         [
           // y offset got bigger so scrolling down (content travels up the screen)
           // move the header up (hide it) unconditionally
-          Animated.set(headerOffsetY, Animated.max(-headerHeight, Animated.sub(headerOffsetY, scrollDiff))),
+          Animated.set(headerOffsetY, Animated.max(negative(headerHeight), Animated.sub(headerOffsetY, scrollDiff))),
         ],
         [
           // y offset got smaller so scrolling up (content travels down the screen)
@@ -156,3 +171,5 @@ function useStickyHeaderPositioning({
 
   return { lockHeaderPosition }
 }
+
+const negative = (node: Animated.Node<number>) => Animated.multiply(-1, node)
