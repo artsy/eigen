@@ -2,7 +2,7 @@ import { Spacer } from "@artsy/palette"
 import React, { useContext, useEffect, useRef } from "react"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue, useValueReader } from "./reanimatedHelpers"
-import { TAB_BAR_HEIGHT } from "./StickyTabPage"
+import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
 
 export const StickyTabScrollViewContext = React.createContext<{
   scrollOffsetY: Animated.Node<number>
