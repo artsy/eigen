@@ -4,7 +4,6 @@ import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import Animated from "react-native-reanimated"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "../PartnerOverview"
 

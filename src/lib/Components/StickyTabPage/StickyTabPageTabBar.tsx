@@ -21,7 +21,7 @@ export const StickyTabPageTabBar: React.FC<{
       }}
     >
       {labels.map((label, index) => (
-        <Tab
+        <StickyTab
           key={index}
           label={label}
           active={index === activeIndex}
@@ -35,7 +35,11 @@ export const StickyTabPageTabBar: React.FC<{
   )
 }
 
-const Tab: React.FC<{ label: string; active: boolean; onPress(): void }> = ({ label, active, onPress }) => {
+export const StickyTab: React.FC<{ label: string; active: boolean; onPress(): void }> = ({
+  label,
+  active,
+  onPress,
+}) => {
   return (
     <Flex style={{ flex: 1, height: TAB_BAR_HEIGHT }}>
       <TouchableOpacity onPress={onPress}>
