@@ -1,14 +1,15 @@
 import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useState } from "react"
-import { TouchableOpacity, View } from "react-native"
+import React, { useRef, useState } from "react"
+import { findNodeHandle, NativeModules, TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabScrollView } from "./StickyTabScrollView"
+const { ARSwitchBoardModule } = NativeModules
 
 interface TabProps {
   initial?: boolean
@@ -34,6 +35,32 @@ export const StickyTabPage: React.FC<{
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
+  const viewControllerRef = useRef(null)
+
+  /*
+  Add functions to show/hide back butotn on native, invokve from here.
+  */
+
+  const shouldShowBackButton = Animated.eq(0, headerOffsetY)
+
+  Animated.useCode(
+    () =>
+      Animated.onChange(
+        shouldShowBackButton,
+        Animated.call([shouldShowBackButton], ([shouldShow]) => {
+          if (shouldShow) {
+            console.log("showing")
+          } else {
+            console.log("hiding")
+          }
+          console.log("viewControllerRef: ", viewControllerRef.current)
+          if (viewControllerRef.current) {
+            ARSwitchBoardModule.updateShouldHideBackButton(findNodeHandle(viewControllerRef.current), shouldShow)
+          }
+        })
+      ),
+    []
+  )
 
   const handleTabPress = index => {
     setActiveTabIndex(index)
@@ -44,7 +71,7 @@ export const StickyTabPage: React.FC<{
   }
 
   return (
-    <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+    <View style={{ flex: 1, position: "relative", overflow: "hidden" }} ref={viewControllerRef}>
       {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
         <SnappyHorizontalRail offset={activeTabIndex * width}>
