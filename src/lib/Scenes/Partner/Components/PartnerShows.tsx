@@ -1,11 +1,17 @@
 import { Box, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import Spinner from "lib/Components/Spinner"
-import { StickyTabPageFlatList, StickyTabSection } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
+import {
+  StickyTabPageFlatList,
+  StickyTabPageFlatListContext,
+  StickyTabSection,
+} from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useMemo, useState } from "react"
+import React, { useContext, useMemo, useState } from "react"
 import { ImageBackground, TouchableWithoutFeedback } from "react-native"
+import Animated from "react-native-reanimated"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
@@ -93,7 +99,7 @@ export const PartnerShows: React.FC<{
 
         // chunk needs to be even to get seamless columns
         const chunkSize = 8
-        for (let i = 0; i <= partner.pastShows.edges.length; i += chunkSize) {
+        for (let i = 0; i < partner.pastShows.edges.length; i += chunkSize) {
           const chunk = partner.pastShows.edges.slice(i, i + chunkSize)
           const actualChunkSize = chunk.length
           result.push({
@@ -114,10 +120,17 @@ export const PartnerShows: React.FC<{
     [partner.pastShows.edges, hasRecentShows, pastShows]
   )
 
+  const tabContext = useContext(StickyTabPageFlatListContext)
+
+  const tabIsActive = Boolean(useNativeValue(Animated.eq(tabContext.activeTabIndex, tabContext.tabIndex), 0))
+
   return (
     <StickyTabPageFlatList
       data={sections}
-      onEndReachedThreshold={0.5}
+      // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
+      onEndReachedThreshold={tabIsActive ? 1 : 0}
+      initialNumToRender={1}
+      windowSize={tabIsActive ? 5 : 1}
       onEndReached={() => {
         if (isLoadingMore || !relay.hasMore()) {
           return
@@ -146,7 +159,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerShows_partner on Partner
-        @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 32 }, cursor: { type: "String" }) {
         slug
         internalID
         # need to know whether there are any current shows

@@ -102,7 +102,7 @@ fragment PartnerShows_partner on Partner {
       }
     }
   }
-  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: 6) {
+  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: 32) {
     pageInfo {
       hasNextPage
       startCursor
@@ -415,7 +415,11 @@ v17 = {
   "value": "CURRENT"
 },
 v18 = [
-  (v6/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 32
+  },
   {
     "kind": "Literal",
     "name": "sort",
@@ -949,7 +953,7 @@ return {
                 "kind": "LinkedField",
                 "alias": "pastShows",
                 "name": "showsConnection",
-                "storageKey": "showsConnection(first:6,sort:\"END_AT_DESC\",status:\"CLOSED\")",
+                "storageKey": "showsConnection(first:32,sort:\"END_AT_DESC\",status:\"CLOSED\")",
                 "args": (v18/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
@@ -1110,7 +1114,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "15f6e54c939d3138f9ee5875c1a1a6ef",
+    "id": "b26192b383f56c32a35ac3e5ec26c9f2",
     "text": null,
     "metadata": {}
   }
