@@ -11,12 +11,11 @@ import { TabEmptyState } from "lib/Components/TabEmptyState"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useContext, useMemo, useState } from "react"
 import { ImageBackground, TouchableWithoutFeedback } from "react-native"
-import Animated from "react-native-reanimated"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
 
-const PAGE_SIZE = 6
+const PAGE_SIZE = 32
 
 interface ShowGridItemProps {
   show: PartnerShows_partner["pastShows"]["edges"][0]["node"]
@@ -122,14 +121,15 @@ export const PartnerShows: React.FC<{
 
   const tabContext = useContext(StickyTabPageFlatListContext)
 
-  const tabIsActive = Boolean(useNativeValue(Animated.eq(tabContext.activeTabIndex, tabContext.tabIndex), 0))
+  const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
 
   return (
     <StickyTabPageFlatList
       data={sections}
       // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
       onEndReachedThreshold={tabIsActive ? 1 : 0}
-      initialNumToRender={1}
+      // render up to the first chunk on initial mount
+      initialNumToRender={sections.findIndex(section => section.key.startsWith("chunk")) + 1}
       windowSize={tabIsActive ? 5 : 1}
       onEndReached={() => {
         if (isLoadingMore || !relay.hasMore()) {

@@ -47,10 +47,9 @@ export const StickyTabPage: React.FC<{
               <View style={{ flex: 1, width }} key={index}>
                 <StickyTabPageFlatListContext.Provider
                   value={{
-                    tabIndex: index,
+                    tabIsActive: Animated.eq(index, activeTabIndex),
                     headerHeight,
                     headerOffsetY,
-                    activeTabIndex,
                   }}
                 >
                   {content}

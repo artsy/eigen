@@ -8,19 +8,21 @@ import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
 interface FlatListRequiredContext {
   headerHeight: Animated.Node<number>
   headerOffsetY: Animated.Value<number>
-  tabIndex: number
-  activeTabIndex: Animated.Node<number>
+  tabIsActive: Animated.Node<number>
 }
-export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(null)
 
 const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
   headerHeight: new Animated.Value(0),
   headerOffsetY: new Animated.Value(0),
-  tabIndex: 0,
-  activeTabIndex: new Animated.Value(0),
+  tabIsActive: new Animated.Value(1),
 })
 
+export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(
+  process.env.NODE_ENV === "test" ? MOCK_CONTEXT() : null
+)
+
 const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
+
 export interface StickyTabSection {
   /* key must be unique per-tab */
   key: string
@@ -32,14 +34,11 @@ export interface StickyTabFlatListProps
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => {
-  const { headerHeight, headerOffsetY, tabIndex, activeTabIndex } =
-    process.env.NODE_ENV === "test" ? MOCK_CONTEXT() : useContext(StickyTabPageFlatListContext)
+  const { headerHeight, headerOffsetY, tabIsActive } = useContext(StickyTabPageFlatListContext)
 
   const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)
   const scrollOffsetY = useAnimatedValue(0)
-
-  const isActive = Animated.eq(tabIndex, activeTabIndex)
 
   const { lockHeaderPosition } = useStickyHeaderPositioning({
     headerOffsetY,
@@ -57,10 +56,10 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
   Animated.useCode(
     () =>
       // when the active state changes
-      Animated.cond(Animated.neq(lastIsActive, isActive), [
-        Animated.set(lastIsActive, isActive),
+      Animated.cond(Animated.neq(lastIsActive, tabIsActive), [
+        Animated.set(lastIsActive, tabIsActive),
         Animated.cond(
-          isActive,
+          tabIsActive,
           [
             // the tab just became active so we might need to adjust the scroll offset to avoid unwanted
             // white space before allowing the scroll offset to affect the header position
