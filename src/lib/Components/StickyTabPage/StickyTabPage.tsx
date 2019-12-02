@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
-import { findNodeHandle, NativeModules, TouchableOpacity, View } from "react-native"
+import { NativeModules, TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -37,25 +37,15 @@ export const StickyTabPage: React.FC<{
   const headerOffsetY = useAnimatedValue(0)
   const viewControllerRef = useRef(null)
 
-  /*
-  Add functions to show/hide back butotn on native, invokve from here.
-  */
-
-  const shouldShowBackButton = Animated.eq(0, headerOffsetY)
+  const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
 
   Animated.useCode(
     () =>
       Animated.onChange(
-        shouldShowBackButton,
-        Animated.call([shouldShowBackButton], ([shouldShow]) => {
-          if (shouldShow) {
-            console.log("showing")
-          } else {
-            console.log("hiding")
-          }
-          console.log("viewControllerRef: ", viewControllerRef.current)
+        shouldHideBackButton,
+        Animated.call([shouldHideBackButton], ([shouldHide]) => {
           if (viewControllerRef.current) {
-            ARSwitchBoardModule.updateShouldHideBackButton(findNodeHandle(viewControllerRef.current), shouldShow)
+            ARSwitchBoardModule.updateShouldHideBackButton(shouldHide)
           }
         })
       ),
