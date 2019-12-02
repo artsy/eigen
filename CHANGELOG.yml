@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.18.39
   dev:
     - Add a new flag for Price Transparency to Echo - yuki24
+    - Adds option to show a collection view controller - ash
   user_facing:
     - Updates profile and mutable view controllers to use default background if not fair - kierangillen
     - Fixes an issue where confirm bid screen crashses when the Price Transparncy feature is off - yuki24
