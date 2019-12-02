@@ -123,6 +123,8 @@ exports[`messaging inbox looks correct when rendered 1`] = `
       >
         <View
           accessible={true}
+          focusable={true}
+          onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -352,6 +354,8 @@ exports[`messaging inbox looks correct when rendered 1`] = `
       >
         <View
           accessible={true}
+          focusable={true}
+          onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}

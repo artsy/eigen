@@ -169,7 +169,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     })
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       ({ endCoordinates }) => (this.keyboardHeight = endCoordinates.height)

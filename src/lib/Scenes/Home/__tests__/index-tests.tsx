@@ -1,5 +1,19 @@
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 jest.mock("lib/options", () => ({ options: {} }))
+jest.mock("@react-native-community/netinfo", () => {
+  return {
+    addEventListener: jest.fn(),
+    isConnected: {
+      fetch: () => {
+        return new Promise(accept => {
+          accept(false)
+        })
+      },
+      addEventListener: jest.fn(),
+    },
+  }
+})
+
 import { options } from "lib/options"
 
 import { shallow } from "enzyme"

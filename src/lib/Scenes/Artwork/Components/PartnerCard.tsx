@@ -95,8 +95,11 @@ export class PartnerCard extends React.Component<Props, State> {
       return null
     }
     const { isFollowedChanging } = this.state
+    let locationNames = null
     const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
-    const locationNames = get(partner, p => limitWithCount(p.cities, 2), []).join(", ")
+    if (partner.cities) {
+      locationNames = get(partner, p => limitWithCount(p.cities, 2), []).join(", ")
+    }
     const showPartnerType =
       partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"
     const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"

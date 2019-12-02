@@ -239,8 +239,10 @@ exports[`renders properly 1`] = `
           accessible={true}
           alignItems="center"
           flexDirection="row"
+          focusable={true}
           justifyContent="space-between"
           mb={1}
+          onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -412,6 +414,8 @@ exports[`renders properly 1`] = `
           >
             <View
               accessible={true}
+              focusable={true}
+              onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -434,6 +438,8 @@ exports[`renders properly 1`] = `
             >
               <View
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -510,6 +516,8 @@ exports[`renders properly 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -870,8 +878,10 @@ exports[`renders properly 1`] = `
       accessible={true}
       alignItems="center"
       flexDirection="row"
+      focusable={true}
       justifyContent="center"
       mt={4}
+      onClick={[Function]}
       onPress={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -969,6 +979,8 @@ exports[`renders properly 1`] = `
       <View
         accessible={true}
         flexDirection="row"
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}

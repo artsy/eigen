@@ -42,19 +42,18 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'INTUAnimationEngine'
 
   # React, and the subspecs we have to use
-  s.dependency 'React/Core', react_native_version
-  s.dependency 'React/CxxBridge', react_native_version
-  s.dependency 'React/RCTAnimation', react_native_version
-  s.dependency 'React/RCTCameraRoll', react_native_version
-  s.dependency 'React/RCTImage', react_native_version
-  s.dependency 'React/RCTLinkingIOS', react_native_version
-  s.dependency 'React/RCTNetwork', react_native_version
-  s.dependency 'React/RCTText', react_native_version
-  s.dependency 'React/RCTGeolocation', react_native_version
-  s.dependency 'React/RCTActionSheet', react_native_version
+  s.dependency 'React-Core', react_native_version
+  s.dependency 'React-cxxreact', react_native_version
+  s.dependency 'React-RCTAnimation', react_native_version
+  s.dependency 'React-RCTImage', react_native_version
+  s.dependency 'React-RCTLinking', react_native_version
+  s.dependency 'React-RCTNetwork', react_native_version
+  s.dependency 'React-RCTText', react_native_version
+  # s.dependency 'React-RCTGeolocation', react_native_version
+  s.dependency 'React-RCTActionSheet', react_native_version
 
   # React's Dependencies
-  s.dependency 'yoga', "#{react_native_version}.React"
+  # s.dependency 'Yoga', "#{react_native_version}.React"
   react_podspecs = [
     'node_modules/react-native/third-party-podspecs/DoubleConversion.podspec',
     'node_modules/react-native/third-party-podspecs/Folly.podspec',
@@ -68,7 +67,9 @@ podspec = Pod::Spec.new do |s|
     'node_modules/react-native-sentry/SentryReactNative.podspec',
     'node_modules/react-native-svg/RNSVG.podspec',
     'node_modules/react-native-navigator-ios/react-native-navigator-ios.podspec',
-    'node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec'
+    'node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec',
+    'node_modules/@react-native-community/netinfo/react-native-netinfo.podspec',
+    'node_modules/@react-native-community/geolocation/react-native-geolocation.podspec'
   ]
 
   # Ties the exact versions so host apps don't need to guess the version

@@ -389,6 +389,8 @@ exports[`looks correct when rendered 1`] = `
             >
               <View
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -515,6 +517,8 @@ exports[`looks correct when rendered 1`] = `
               </View>
               <View
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}

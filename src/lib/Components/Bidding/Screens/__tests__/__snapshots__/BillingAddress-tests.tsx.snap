@@ -16,7 +16,9 @@ exports[`renders properly 1`] = `
 >
   <Image
     accessible={true}
+    focusable={true}
     left={10}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -605,7 +607,9 @@ exports[`renders properly 1`] = `
             accessible={true}
             border={1}
             borderColor="black10"
+            focusable={true}
             mb={3}
+            onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
             onResponderRelease={[Function]}
@@ -653,6 +657,8 @@ exports[`renders properly 1`] = `
         <View
           accessible={true}
           flexDirection="row"
+          focusable={true}
+          onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}

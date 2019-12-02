@@ -5,14 +5,13 @@ import * as renderer from "react-test-renderer"
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
+const realAlert = Alert.alert
+const realLinking = Linking.openURL
 
 jest.mock("lib/NativeModules/triggerCamera", () => ({ triggerCamera: jest.fn() }))
 import { Theme } from "@artsy/palette"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 const triggerMock = triggerCamera as jest.Mock<any>
-
-jest.mock("Alert", () => ({ alert: jest.fn() }))
-jest.mock("Linking", () => ({ openURL: jest.fn() }))
 
 const nav = {} as any
 const route = {} as any
@@ -22,6 +21,16 @@ const emptyProps = {
   setup: { photos: [] },
   updateWithPhotos: () => "",
 }
+
+beforeAll(() => {
+  Alert.alert = jest.fn()
+  Linking.openURL = jest.fn()
+})
+
+afterAll(() => {
+  Alert.alert = realAlert
+  Linking.openURL = realLinking
+})
 
 it("Sets up the right view hierarchy", () => {
   const tree = renderer

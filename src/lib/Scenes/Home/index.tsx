@@ -96,7 +96,7 @@ export default class Home extends React.Component<Props, State> {
   // https://github.com/artsy/emission/issues/930
   // This is called when the overall home component appears in Eigen
   // We use it to dispatch screen events at that point
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     // Only if we weren't visible, but we are now, should we fire analytics for this.
     if (newProps.isVisible && !this.props.isVisible) {
       this.fireHomeScreenViewAnalytics()
