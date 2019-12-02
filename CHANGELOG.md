@@ -1,3 +1,17 @@
+# v1.19.0 (Mon Dec 02 2019)
+
+#### 🚀  Enhancement
+
+- [ME-113] Upgrade RN [#1970](https://github.com/artsy/emission/pull/1970) ([@kierangillen](https://github.com/kierangillen) [@ashfurrow](https://github.com/ashfurrow) [@ds300](https://github.com/ds300))
+
+#### Authors: 3
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.18.40 (Mon Nov 25 2019)
 
 #### 🐛 Bug Fix
