@@ -1,7 +1,7 @@
 import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { NativeModules, TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
@@ -35,7 +35,6 @@ export const StickyTabPage: React.FC<{
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
-  const viewControllerRef = useRef(null)
 
   const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
 
@@ -44,9 +43,7 @@ export const StickyTabPage: React.FC<{
       Animated.onChange(
         shouldHideBackButton,
         Animated.call([shouldHideBackButton], ([shouldHide]) => {
-          if (viewControllerRef.current) {
-            ARSwitchBoardModule.updateShouldHideBackButton(shouldHide)
-          }
+          ARSwitchBoardModule.updateShouldHideBackButton(shouldHide)
         })
       ),
     []
@@ -61,7 +58,7 @@ export const StickyTabPage: React.FC<{
   }
 
   return (
-    <View style={{ flex: 1, position: "relative", overflow: "hidden" }} ref={viewControllerRef}>
+    <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
         <SnappyHorizontalRail offset={activeTabIndex * width}>
