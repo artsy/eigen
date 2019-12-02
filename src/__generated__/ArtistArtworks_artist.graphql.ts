@@ -2,7 +2,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Artworks_artist = {
+export type ArtistArtworks_artist = {
     readonly id: string;
     readonly artworks: {
         readonly edges: ReadonlyArray<{
@@ -12,7 +12,7 @@ export type Artworks_artist = {
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $refType": "Artworks_artist";
+    readonly " $refType": "ArtistArtworks_artist";
 };
 
 
@@ -27,7 +27,7 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "Artworks_artist",
+  "name": "ArtistArtworks_artist",
   "type": "Artist",
   "metadata": {
     "connection": [
@@ -151,5 +151,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ece8cb9ea3dba718803b76f4f9d9660b';
+(node as any).hash = 'b2d98d9d07e60f9dc200c78703100850';
 export default node;

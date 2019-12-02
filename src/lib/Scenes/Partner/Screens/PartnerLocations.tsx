@@ -1,4 +1,4 @@
-import { Box, Sans, Serif, Theme } from "@artsy/palette"
+import { Box, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -45,6 +45,7 @@ const PartnerLocations: React.FC<{
             <Serif size="5">{partner.name}</Serif>
           </Box>
         )}
+        ListFooterComponent={() => <Spacer mb={2} />}
         renderItem={({ item }) => <PartnerMap location={item.node} />}
       />
     </Theme>

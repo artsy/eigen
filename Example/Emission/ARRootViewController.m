@@ -262,7 +262,7 @@
 - (ARCellData *)jumpToPartner
 {
   return [self tappableCellDataWithTitle:@"Partner" selection:^{
-    id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"joseph-fine-art"];
+    id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"gagosian-gallery"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

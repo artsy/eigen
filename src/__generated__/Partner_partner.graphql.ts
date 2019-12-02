@@ -4,6 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Partner_partner = {
     readonly id: string;
+    readonly internalID: string;
     readonly slug: string;
     readonly profile: {
         readonly id: string;
@@ -23,6 +24,13 @@ var v0 = {
   "name": "id",
   "args": null,
   "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Fragment",
@@ -32,6 +40,7 @@ return {
   "argumentDefinitions": [],
   "selections": [
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -56,13 +65,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "internalID",
-          "args": null,
-          "storageKey": null
-        }
+        (v1/*: any*/)
       ]
     },
     {
@@ -88,5 +91,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c93ba06a716a1769cdf06620c209b063';
+(node as any).hash = '1c1790711f9aa1867fea2a077435e852';
 export default node;

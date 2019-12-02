@@ -12,7 +12,7 @@ export type Artist_artist = {
         readonly related_artists: number | null;
         readonly articles: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Header_artist" | "About_artist" | "Shows_artist" | "Artworks_artist">;
+    readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist" | "ArtistAbout_artist" | "ArtistShows_artist" | "ArtistArtworks_artist">;
     readonly " $refType": "Artist_artist";
 };
 
@@ -87,25 +87,25 @@ const node: ReaderFragment = {
     },
     {
       "kind": "FragmentSpread",
-      "name": "Header_artist",
+      "name": "ArtistHeader_artist",
       "args": null
     },
     {
       "kind": "FragmentSpread",
-      "name": "About_artist",
+      "name": "ArtistAbout_artist",
       "args": null
     },
     {
       "kind": "FragmentSpread",
-      "name": "Shows_artist",
+      "name": "ArtistShows_artist",
       "args": null
     },
     {
       "kind": "FragmentSpread",
-      "name": "Artworks_artist",
+      "name": "ArtistArtworks_artist",
       "args": null
     }
   ]
 };
-(node as any).hash = 'f2549700a51ece10bf3a4ebc5336c666';
+(node as any).hash = 'fdbddf65bd6badfcca6c1bb991f9d51f';
 export default node;

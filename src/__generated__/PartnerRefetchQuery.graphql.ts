@@ -30,6 +30,7 @@ query PartnerRefetchQuery(
 
 fragment Partner_partner on Partner {
   id
+  internalID
   slug
   profile {
     id
@@ -44,7 +45,7 @@ fragment Partner_partner on Partner {
 
 fragment PartnerArtwork_partner on Partner {
   internalID
-  artworks: artworksConnection(first: 6) {
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: 6) {
     pageInfo {
       hasNextPage
       startCursor
@@ -68,6 +69,9 @@ fragment PartnerOverview_partner on Partner {
   profile {
     bio
     id
+  }
+  counts {
+    artists
   }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
@@ -292,14 +296,14 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
@@ -309,7 +313,12 @@ v6 = {
   "value": 6
 },
 v7 = [
-  (v6/*: any*/)
+  (v6/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "PARTNER_UPDATED_AT_DESC"
+  }
 ],
 v8 = {
   "kind": "LinkedField",
@@ -369,6 +378,9 @@ v12 = {
   "storageKey": null
 },
 v13 = [
+  "sort"
+],
+v14 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -380,17 +392,17 @@ v13 = [
     "value": "SORTABLE_ID_ASC"
   }
 ],
-v14 = {
+v15 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
   "args": null,
   "storageKey": null
 },
-v15 = [
-  (v14/*: any*/)
-],
 v16 = [
+  (v15/*: any*/)
+],
+v17 = [
   (v6/*: any*/),
   {
     "kind": "Literal",
@@ -403,18 +415,18 @@ v16 = [
     "value": "CLOSED"
   }
 ],
-v17 = {
+v18 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "exhibitionPeriod",
   "args": null,
   "storageKey": null
 },
-v18 = [
+v19 = [
   "status",
   "sort"
 ],
-v19 = [
+v20 = [
   (v6/*: any*/),
   {
     "kind": "Literal",
@@ -475,6 +487,7 @@ return {
             "type": "Partner",
             "selections": [
               (v4/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -492,7 +505,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v5/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -520,12 +533,11 @@ return {
                   }
                 ]
               },
-              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "artworks",
                 "name": "artworksConnection",
-                "storageKey": "artworksConnection(first:6)",
+                "storageKey": "artworksConnection(first:6,sort:\"PARTNER_UPDATED_AT_DESC\")",
                 "args": (v7/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
@@ -623,7 +635,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -729,7 +741,7 @@ return {
                 "args": (v7/*: any*/),
                 "handle": "connection",
                 "key": "Partner_artworks",
-                "filters": null
+                "filters": (v13/*: any*/)
               },
               (v9/*: any*/),
               {
@@ -741,10 +753,35 @@ return {
               },
               {
                 "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PartnerCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "artists",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "eligibleArtworks",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
                 "alias": "artists",
                 "name": "artistsConnection",
                 "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
-                "args": (v13/*: any*/),
+                "args": (v14/*: any*/),
                 "concreteType": "ArtistPartnerConnection",
                 "plural": false,
                 "selections": [
@@ -768,8 +805,8 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v5/*: any*/),
                           (v4/*: any*/),
+                          (v5/*: any*/),
                           (v9/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -815,7 +852,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": (v15/*: any*/)
+                            "selections": (v16/*: any*/)
                           },
                           (v2/*: any*/)
                         ]
@@ -830,12 +867,10 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artists",
                 "name": "artistsConnection",
-                "args": (v13/*: any*/),
+                "args": (v14/*: any*/),
                 "handle": "connection",
                 "key": "Partner_artists",
-                "filters": [
-                  "sort"
-                ]
+                "filters": (v13/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -866,7 +901,7 @@ return {
                 "alias": "pastShows",
                 "name": "showsConnection",
                 "storageKey": "showsConnection(first:6,sort:\"END_AT_DESC\",status:\"CLOSED\")",
-                "args": (v16/*: any*/),
+                "args": (v17/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
                 "selections": [
@@ -891,8 +926,8 @@ return {
                         "selections": [
                           (v3/*: any*/),
                           (v9/*: any*/),
-                          (v4/*: any*/),
-                          (v17/*: any*/),
+                          (v5/*: any*/),
+                          (v18/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -902,7 +937,7 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              (v14/*: any*/),
+                              (v15/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -925,17 +960,17 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "pastShows",
                 "name": "showsConnection",
-                "args": (v16/*: any*/),
+                "args": (v17/*: any*/),
                 "handle": "connection",
                 "key": "Partner_pastShows",
-                "filters": (v18/*: any*/)
+                "filters": (v19/*: any*/)
               },
               {
                 "kind": "LinkedField",
                 "alias": "currentAndUpcomingShows",
                 "name": "showsConnection",
                 "storageKey": "showsConnection(first:6,sort:\"END_AT_ASC\",status:\"CURRENT\")",
-                "args": (v19/*: any*/),
+                "args": (v20/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
                 "selections": [
@@ -959,10 +994,10 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v5/*: any*/),
                           (v4/*: any*/),
+                          (v5/*: any*/),
                           (v9/*: any*/),
-                          (v17/*: any*/),
+                          (v18/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -978,7 +1013,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": true,
-                            "selections": (v15/*: any*/)
+                            "selections": (v16/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -1012,28 +1047,10 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "currentAndUpcomingShows",
                 "name": "showsConnection",
-                "args": (v19/*: any*/),
+                "args": (v20/*: any*/),
                 "handle": "connection",
                 "key": "Partner_currentAndUpcomingShows",
-                "filters": (v18/*: any*/)
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PartnerCounts",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "eligibleArtworks",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
+                "filters": (v19/*: any*/)
               }
             ]
           }
@@ -1044,7 +1061,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "88c6541c1e9e171533348d2a994091bc",
+    "id": "9c7a01a3a409c5e660d81de8f88c1a48",
     "text": null,
     "metadata": {}
   }

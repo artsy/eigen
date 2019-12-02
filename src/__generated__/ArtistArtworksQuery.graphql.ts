@@ -2,25 +2,25 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworksArtistQueryVariables = {
+export type ArtistArtworksQueryVariables = {
     id: string;
     count: number;
     cursor?: string | null;
 };
-export type ArtworksArtistQueryResponse = {
+export type ArtistArtworksQueryResponse = {
     readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"Artworks_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistArtworks_artist">;
     } | null;
 };
-export type ArtworksArtistQuery = {
-    readonly response: ArtworksArtistQueryResponse;
-    readonly variables: ArtworksArtistQueryVariables;
+export type ArtistArtworksQuery = {
+    readonly response: ArtistArtworksQueryResponse;
+    readonly variables: ArtistArtworksQueryVariables;
 };
 
 
 
 /*
-query ArtworksArtistQuery(
+query ArtistArtworksQuery(
   $id: ID!
   $count: Int!
   $cursor: String
@@ -28,13 +28,13 @@ query ArtworksArtistQuery(
   node(id: $id) {
     __typename
     ... on Artist {
-      ...Artworks_artist_1G22uz
+      ...ArtistArtworks_artist_1G22uz
     }
     id
   }
 }
 
-fragment Artworks_artist_1G22uz on Artist {
+fragment ArtistArtworks_artist_1G22uz on Artist {
   id
   artworks: filterArtworksConnection(first: $count, after: $cursor, sort: "-decayed_merch", aggregations: [TOTAL]) {
     edges {
@@ -191,7 +191,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtworksArtistQuery",
+    "name": "ArtistArtworksQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -211,7 +211,7 @@ return {
             "selections": [
               {
                 "kind": "FragmentSpread",
-                "name": "Artworks_artist",
+                "name": "ArtistArtworks_artist",
                 "args": [
                   {
                     "kind": "Variable",
@@ -233,7 +233,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtworksArtistQuery",
+    "name": "ArtistArtworksQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -530,12 +530,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtworksArtistQuery",
-    "id": "3c0ede2a6ebb6df958bc095193d33047",
+    "name": "ArtistArtworksQuery",
+    "id": "119a98778a076a1308217a437edcabed",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '7e1699280a0967915ce67e713b631765';
+(node as any).hash = 'e4d41246ad6aa4318ae5f6baa82a8341';
 export default node;

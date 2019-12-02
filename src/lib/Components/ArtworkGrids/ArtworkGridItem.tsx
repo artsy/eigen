@@ -1,7 +1,9 @@
 import { color, Flex, Sans, space } from "@artsy/palette"
+import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { get } from "lib/utils/get"
 import { map } from "lodash"
 import React from "react"
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native"
@@ -9,9 +11,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { Schema, Track, track as _track } from "../../utils/track"
 import SerifText from "../Text/Serif"
-
-import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { get } from "lib/utils/get"
 
 const Badges = styled.View`
   position: absolute;

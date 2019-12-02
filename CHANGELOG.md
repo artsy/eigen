@@ -1,3 +1,54 @@
+# v1.18.40 (Mon Nov 25 2019)
+
+#### 🐛  Bug Fix
+
+- ME-108 - Updates Artist page to use new design system and spec [#1977](https://github.com/artsy/emission/pull/1977) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
+# v1.18.39 (Fri Nov 22 2019)
+
+#### 🐛  Bug Fix
+
+- Fixes an issue where the feature flag of '0' causes a crash [#1980](https://github.com/artsy/emission/pull/1980) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
+# v1.18.38 (Fri Nov 22 2019)
+
+#### 🐛  Bug Fix
+
+- Small cleanup of unused code [#1979](https://github.com/artsy/emission/pull/1979) ([@kierangillen](https://github.com/kierangillen))
+- Adds sort to Partner.artworks [#1978](https://github.com/artsy/emission/pull/1978) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
+# v1.18.37 (Fri Nov 22 2019)
+
+#### 🐛  Bug Fix
+
+- ME-110 - Partner QA [#1976](https://github.com/artsy/emission/pull/1976) ([@kierangillen](https://github.com/kierangillen))
+- Pin dep react-native-reanimated from ^1.4.0 to 1.4.0 [#1975](https://github.com/artsy/emission/pull/1975) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 2
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.18.36 (Thu Nov 21 2019)
 
 #### 🐛  Bug Fix

@@ -3,11 +3,11 @@ import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.gra
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
 import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { PartnerEmptyState } from "./PartnerEmptyState"
 
 const PAGE_SIZE = 6
 
@@ -41,7 +41,7 @@ export const PartnerArtwork: React.FC<{
   })
 
   if (!artworks) {
-    return <PartnerEmptyState text="There is no artwork from this gallery yet" />
+    return <TabEmptyState text="There is no artwork from this gallery yet" />
   }
 
   return (
@@ -63,9 +63,13 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerArtwork_partner on Partner
-        @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 6 }
+          cursor: { type: "String" }
+          sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
+        ) {
         internalID
-        artworks: artworksConnection(first: $count, after: $cursor) @connection(key: "Partner_artworks") {
+        artworks: artworksConnection(sort: $sort, first: $count, after: $cursor) @connection(key: "Partner_artworks") {
           pageInfo {
             hasNextPage
             startCursor

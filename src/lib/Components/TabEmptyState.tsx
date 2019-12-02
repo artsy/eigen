@@ -1,7 +1,7 @@
 import { Box, Sans } from "@artsy/palette"
 import React from "react"
 
-export const PartnerEmptyState: React.FC<{
+export const TabEmptyState: React.FC<{
   text: string
 }> = ({ text }) => {
   return (

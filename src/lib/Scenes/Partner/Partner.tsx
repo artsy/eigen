@@ -6,7 +6,7 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -15,20 +15,18 @@ import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHea
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Components/PartnerOverview"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/PartnerShows"
 
-const INITIAL_TAB = 1
-
 interface Props {
   partner: Partner_partner
   relay: RelayRefetchProp
 }
 
-@track()
+@screenTrack((props: Props) => ({
+  context_screen: Schema.PageNames.PartnerPage,
+  context_screen_owner_slug: props.partner.slug,
+  context_screen_owner_id: props.partner.internalID,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
+}))
 class Partner extends React.Component<Props> {
-  state = {
-    selectedTab: INITIAL_TAB,
-    scrollY: 0,
-  }
-
   render() {
     const { partner } = this.props
     return (
@@ -43,7 +41,7 @@ class Partner extends React.Component<Props> {
                   content: <PartnerOverview partner={partner} />,
                 },
                 {
-                  title: "Artwork",
+                  title: "Artworks",
                   initial: true,
                   content: <PartnerArtwork partner={partner} />,
                 },
@@ -66,6 +64,7 @@ export const PartnerContainer = createRefetchContainer(
     partner: graphql`
       fragment Partner_partner on Partner {
         id
+        internalID
         slug
         profile {
           id
