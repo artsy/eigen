@@ -143,14 +143,6 @@ target 'Artsy' do
   end
 end
 
-def edit_pod_file(file, old_code, new_code)
-  code = File.read(file)
-  if code.include?(old_code)
-    FileUtils.chmod('+w', file)
-    File.write(file, code.sub(old_code, new_code))
-  end
-end
-
 post_install do |installer|
   # So we can show some of this stuff in the Admin panel
   emission_podspec_json = installer.pod_targets.find { |f| f.name == "Emission" }.specs[0].to_json
@@ -227,15 +219,6 @@ post_install do |installer|
       file.puts contents
     end
   end
-
-  # # The React Native mapbox SDK relies on a downloaded framework being set up
-  # unless File.exists?("Pods/react-native-mapbox-gl/ios/MapBox.framework")
-  #   puts "Getting the MapBox framework, this might take 20-30 seconds"
-  #   Dir.chdir "Pods/react-native-mapbox-gl" do
-  #     `node scripts/download-mapbox-gl-native-ios-if-on-mac.js 3.7.8`
-  #   end
-  #   puts "Grabbed."
-  # end
 
   # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
   %w[
