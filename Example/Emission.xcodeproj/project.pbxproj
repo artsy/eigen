@@ -454,6 +454,7 @@
 				510DCB0C1CCA69EC0075E8CB /* Resources */,
 				510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */,
 				3531E0CB4D0C66204FFF9D4A /* [CP] Copy Pods Resources */,
+				3CB362FC55CDD77CDAA5F2C2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -669,6 +670,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3CB362FC55CDD77CDAA5F2C2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh",
+				"${PODS_ROOT}/../../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */ = {
