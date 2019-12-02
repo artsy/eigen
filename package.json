@@ -46,7 +46,7 @@
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission --no-repo-update && popd && git add Pod/Assets Example/Podfile.lock",
-    "postinstall": "prettier --write package.json",
+    "postinstall": "prettier --write package.json && node verify-npm-podspecs.js",
     "prestorybook": "rnstl --silent",
     "prepare": "patch-package"
   },

@@ -1,0 +1,116 @@
+{
+  "React": {
+    "podspec": "node_modules/react-native/React.podspec"
+  },
+  "React-Core": {
+    "podspec": "node_modules/react-native/React-Core.podspec",
+    "subspecs": ["DevSupport"]
+  },
+  "React-CoreModules": {
+    "podspec": "node_modules/react-native/React/CoreModules/React-CoreModules.podspec"
+  },
+
+  "React-RCTActionSheet": {
+    "podspec": "node_modules/react-native/Libraries/ActionSheetIOS/React-RCTActionSheet.podspec"
+  },
+  "React-RCTAnimation": {
+    "podspec": "node_modules/react-native/Libraries/NativeAnimation/React-RCTAnimation.podspec"
+  },
+  "React-RCTImage": {
+    "podspec": "node_modules/react-native/Libraries/Image/React-RCTImage.podspec"
+  },
+  "React-RCTLinking": {
+    "podspec": "node_modules/react-native/Libraries/LinkingIOS/React-RCTLinking.podspec"
+  },
+  "React-RCTText": {
+    "podspec": "node_modules/react-native/Libraries/Text/React-RCTText.podspec"
+  },
+  "React-RCTNetwork": {
+    "podspec": "node_modules/react-native/Libraries/Network/React-RCTNetwork.podspec"
+  },
+  "React-RCTSettings": {
+    "podspec": "node_modules/react-native/Libraries/Settings/React-RCTSettings.podspec"
+  },
+  "React-RCTBlob": {
+    "podspec": "node_modules/react-native/Libraries/Blob/React-RCTBlob.podspec"
+  },
+  "React-RCTVibration": {
+    "podspec": "node_modules/react-native/Libraries/Vibration/React-RCTVibration.podspec"
+  },
+  "FBLazyVector": {
+    "podspec": "node_modules/react-native/Libraries/FBLazyVector/FBLazyVector.podspec"
+  },
+  "FBReactNativeSpec": {
+    "podspec": "node_modules/react-native/Libraries/FBReactNativeSpec/FBReactNativeSpec.podspec"
+  },
+  "RCTRequired": {
+    "podspec": "node_modules/react-native/Libraries/RCTRequired/RCTRequired.podspec"
+  },
+  "RCTTypeSafety": {
+    "podspec": "node_modules/react-native/Libraries/TypeSafety/RCTTypeSafety.podspec"
+  },
+
+  "ReactCommon/turbomodule/core": {
+    "podspec": "node_modules/react-native/ReactCommon/ReactCommon.podspec"
+  },
+  "ReactCommon/jscallinvoker": {
+    "podspec": "node_modules/react-native/ReactCommon/ReactCommon.podspec"
+  },
+
+  "React-cxxreact": {
+    "podspec": "node_modules/react-native/ReactCommon/cxxreact/React-cxxreact.podspec"
+  },
+  "React-jsi": {
+    "podspec": "node_modules/react-native/ReactCommon/jsi/React-jsi.podspec"
+  },
+  "React-jsiexecutor": {
+    "podspec": "node_modules/react-native/ReactCommon/jsiexecutor/React-jsiexecutor.podspec"
+  },
+  "React-jsinspector": {
+    "podspec": "node_modules/react-native/ReactCommon/jsinspector/React-jsinspector.podspec"
+  },
+  "Yoga": {
+    "podspec": "node_modules/react-native/ReactCommon/yoga/Yoga.podspec"
+  },
+
+  "Folly": {
+    "podspec": "node_modules/react-native/third-party-podspecs/Folly.podspec"
+  },
+  "DoubleConversion": {
+    "podspec": "node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  },
+  "glog": {
+    "podspec": "node_modules/react-native/third-party-podspecs/glog.podspec"
+  },
+
+  "SentryReactNative": {
+    "podspec": "node_modules/react-native-sentry/SentryReactNative.podspec"
+  },
+
+  "tipsi-stripe": {
+    "podspec": "node_modules/tipsi-stripe/tipsi-stripe.podspec"
+  },
+
+  "react-native-mapbox-gl": {
+    "podspec": "node_modules/@mapbox/react-native-mapbox-gl/react-native-mapbox-gl.podspec"
+  },
+  "RNSVG": {
+    "podspec": "node_modules/react-native-svg/RNSVG.podspec"
+  },
+  "react-native-cameraroll": {
+    "path": "node_modules/@react-native-community/cameraroll"
+  },
+  "react-native-netinfo": {
+    "podspec": "node_modules/@react-native-community/netinfo/react-native-netinfo.podspec"
+  },
+  "react-native-geolocation": {
+    "path": "node_modules/@react-native-community/geolocation"
+  },
+  "react-native-navigator-ios": {
+    "podspec": "node_modules/react-native-navigator-ios/react-native-navigator-ios.podspec"
+  },
+
+  "RNReanimated": {
+    "podspec": "node_modules/react-native-reanimated/RNReanimated.podspec"
+  }
+}
