@@ -1,3 +1,15 @@
+# v1.19.1 (Mon Dec 02 2019)
+
+#### 🐛  Bug Fix
+
+- Pin dependencies [#1984](https://github.com/artsy/emission/pull/1984) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.19.0 (Mon Dec 02 2019)
 
 #### 🚀  Enhancement
