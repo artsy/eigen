@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.18.40):
+  - Emission (1.19.0):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -82,24 +82,23 @@ PODS:
     - INTUAnimationEngine
     - ISO8601DateFormatter
     - Pulley
-    - react-native-cameraroll (= 1.0.5)
-    - react-native-mapbox-gl (= 6.1.4)
+    - React-Core (= 0.61.4)
+    - React-cxxreact (= 0.61.4)
+    - react-native-cameraroll (= 1.3.0)
+    - react-native-geolocation (= 2.0.2)
+    - react-native-mapbox-gl (= 6.1.3)
     - react-native-navigator-ios (= 1.0.0)
-    - React/Core (= 0.59.2)
-    - React/CxxBridge (= 0.59.2)
-    - React/RCTActionSheet (= 0.59.2)
-    - React/RCTAnimation (= 0.59.2)
-    - React/RCTCameraRoll (= 0.59.2)
-    - React/RCTGeolocation (= 0.59.2)
-    - React/RCTImage (= 0.59.2)
-    - React/RCTLinkingIOS (= 0.59.2)
-    - React/RCTNetwork (= 0.59.2)
-    - React/RCTText (= 0.59.2)
-    - RNSVG (= 9.4.0)
+    - react-native-netinfo (= 4.6.1)
+    - React-RCTActionSheet (= 0.61.4)
+    - React-RCTAnimation (= 0.61.4)
+    - React-RCTImage (= 0.61.4)
+    - React-RCTLinking (= 0.61.4)
+    - React-RCTNetwork (= 0.61.4)
+    - React-RCTText (= 0.61.4)
+    - RNSVG (= 9.13.3)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 7.5.0)
-    - yoga (= 0.59.2.React)
   - Expecta (1.0.5)
   - "Expecta+Snapshots (3.0.0)":
     - Expecta (~> 1.0)
@@ -128,6 +127,14 @@ PODS:
   - "Extraction/UILabel+Typography (1.2.6)"
   - "Extraction/UIView+ARSpinner (1.2.6)":
     - Extraction/ARAnimationContinuation
+  - FBLazyVector (0.61.4)
+  - FBReactNativeSpec (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - RCTRequired (= 0.61.4)
+    - RCTTypeSafety (= 0.61.4)
+    - React-Core (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - ReactCommon/turbomodule/core (= 0.61.4)
   - FBSDKCoreKit (4.37.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.37.0):
@@ -139,6 +146,11 @@ PODS:
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (1.0.0)
   - Folly (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - Folly/Default (= 2018.10.22.00)
+    - glog
+  - Folly/Default (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
     - glog
@@ -158,14 +170,14 @@ PODS:
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - Keys (1.0.0)
-  - KSCrash/Core (1.15.18):
+  - KSCrash/Core (1.15.21):
     - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.18):
-    - KSCrash/Recording/Tools (= 1.15.18)
-  - KSCrash/Recording/Tools (1.15.18)
-  - KSCrash/Reporting/Filters/Base (1.15.18):
+  - KSCrash/Recording (1.15.21):
+    - KSCrash/Recording/Tools (= 1.15.21)
+  - KSCrash/Recording/Tools (1.15.21)
+  - KSCrash/Reporting/Filters/Base (1.15.21):
     - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.18):
+  - KSCrash/Reporting/Filters/Basic (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
   - KSDeferred (0.2.0)
@@ -190,70 +202,218 @@ PODS:
     - FLKAutoLayout
   - Pulley (2.6.2)
   - Quick (2.0.0)
-  - React (0.59.2):
-    - React/Core (= 0.59.2)
-  - react-native-cameraroll (1.0.5):
-    - React
-  - react-native-mapbox-gl (6.1.4):
-    - React
-  - react-native-navigator-ios (1.0.0):
-    - React
-  - React/Core (0.59.2):
-    - yoga (= 0.59.2.React)
-  - React/CxxBridge (0.59.2):
+  - RCTRequired (0.61.4)
+  - RCTTypeSafety (0.61.4):
+    - FBLazyVector (= 0.61.4)
     - Folly (= 2018.10.22.00)
-    - React/Core
-    - React/cxxreact
-    - React/jsiexecutor
-  - React/cxxreact (0.59.2):
+    - RCTRequired (= 0.61.4)
+    - React-Core (= 0.61.4)
+  - React (0.61.4):
+    - React-Core (= 0.61.4)
+    - React-Core/DevSupport (= 0.61.4)
+    - React-Core/RCTWebSocket (= 0.61.4)
+    - React-RCTActionSheet (= 0.61.4)
+    - React-RCTAnimation (= 0.61.4)
+    - React-RCTBlob (= 0.61.4)
+    - React-RCTImage (= 0.61.4)
+    - React-RCTLinking (= 0.61.4)
+    - React-RCTNetwork (= 0.61.4)
+    - React-RCTSettings (= 0.61.4)
+    - React-RCTText (= 0.61.4)
+    - React-RCTVibration (= 0.61.4)
+  - React-Core (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default (= 0.61.4)
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/CoreModulesHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/Default (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/DevSupport (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default (= 0.61.4)
+    - React-Core/RCTWebSocket (= 0.61.4)
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - React-jsinspector (= 0.61.4)
+    - Yoga
+  - React-Core/RCTActionSheetHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTAnimationHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTBlobHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTImageHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTLinkingHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTNetworkHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTSettingsHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTTextHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTVibrationHeaders (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-Core/RCTWebSocket (0.61.4):
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core/Default (= 0.61.4)
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-jsiexecutor (= 0.61.4)
+    - Yoga
+  - React-CoreModules (0.61.4):
+    - FBReactNativeSpec (= 0.61.4)
+    - Folly (= 2018.10.22.00)
+    - RCTTypeSafety (= 0.61.4)
+    - React-Core/CoreModulesHeaders (= 0.61.4)
+    - React-RCTImage (= 0.61.4)
+    - ReactCommon/turbomodule/core (= 0.61.4)
+  - React-cxxreact (0.61.4):
     - boost-for-react-native (= 1.63.0)
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
-    - React/jsinspector
-  - React/DevSupport (0.59.2):
-    - React/Core
-    - React/RCTWebSocket
-  - React/fishhook (0.59.2)
-  - React/jsi (0.59.2):
+    - React-jsinspector (= 0.61.4)
+  - React-jsi (0.61.4):
+    - boost-for-react-native (= 1.63.0)
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
-  - React/jsiexecutor (0.59.2):
+    - React-jsi/Default (= 0.61.4)
+  - React-jsi/Default (0.61.4):
+    - boost-for-react-native (= 1.63.0)
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
-    - React/cxxreact
-    - React/jsi
-  - React/jsinspector (0.59.2)
-  - React/RCTActionSheet (0.59.2):
-    - React/Core
-  - React/RCTAnimation (0.59.2):
-    - React/Core
-  - React/RCTBlob (0.59.2):
-    - React/Core
-  - React/RCTCameraRoll (0.59.2):
-    - React/Core
-    - React/RCTImage
-  - React/RCTGeolocation (0.59.2):
-    - React/Core
-  - React/RCTImage (0.59.2):
-    - React/Core
-    - React/RCTNetwork
-  - React/RCTLinkingIOS (0.59.2):
-    - React/Core
-  - React/RCTNetwork (0.59.2):
-    - React/Core
-  - React/RCTText (0.59.2):
-    - React/Core
-  - React/RCTWebSocket (0.59.2):
-    - React/Core
-    - React/fishhook
-    - React/RCTBlob
+  - React-jsiexecutor (0.61.4):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+  - React-jsinspector (0.61.4)
+  - react-native-cameraroll (1.3.0):
+    - React
+  - react-native-geolocation (2.0.2):
+    - React
+  - react-native-mapbox-gl (6.1.3):
+    - React
+  - react-native-navigator-ios (1.0.0):
+    - React
+  - react-native-netinfo (4.6.1):
+    - React
+  - React-RCTActionSheet (0.61.4):
+    - React-Core/RCTActionSheetHeaders (= 0.61.4)
+  - React-RCTAnimation (0.61.4):
+    - React-Core/RCTAnimationHeaders (= 0.61.4)
+  - React-RCTBlob (0.61.4):
+    - React-Core/RCTBlobHeaders (= 0.61.4)
+    - React-Core/RCTWebSocket (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - React-RCTNetwork (= 0.61.4)
+  - React-RCTImage (0.61.4):
+    - React-Core/RCTImageHeaders (= 0.61.4)
+    - React-RCTNetwork (= 0.61.4)
+  - React-RCTLinking (0.61.4):
+    - React-Core/RCTLinkingHeaders (= 0.61.4)
+  - React-RCTNetwork (0.61.4):
+    - React-Core/RCTNetworkHeaders (= 0.61.4)
+  - React-RCTSettings (0.61.4):
+    - React-Core/RCTSettingsHeaders (= 0.61.4)
+  - React-RCTText (0.61.4):
+    - React-Core/RCTTextHeaders (= 0.61.4)
+  - React-RCTVibration (0.61.4):
+    - React-Core/RCTVibrationHeaders (= 0.61.4)
+  - ReactCommon/jscallinvoker (0.61.4):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-cxxreact (= 0.61.4)
+  - ReactCommon/turbomodule/core (0.61.4):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React-Core (= 0.61.4)
+    - React-cxxreact (= 0.61.4)
+    - React-jsi (= 0.61.4)
+    - ReactCommon/jscallinvoker (= 0.61.4)
   - ReactiveObjC (2.1.2)
   - RNReanimated (1.4.0):
     - React
-  - RNSVG (9.4.0):
+  - RNSVG (9.13.3):
     - React
   - RSSwizzle (0.1.0)
   - SDWebImage (3.7.3):
@@ -283,7 +443,7 @@ PODS:
   - VCRURLConnection (0.2.0)
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
-  - yoga (0.59.2.React)
+  - Yoga (1.14.0)
 
 DEPENDENCIES:
   - Aerodramus
@@ -303,18 +463,22 @@ DEPENDENCIES:
   - Artsy-UIButtons
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
+  - DoubleConversion (from `./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
-  - Emission (~> 1.17)
+  - Emission (= 1.19.0)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
+  - FBLazyVector (from `./rn_pods/node_modules/react-native/Libraries/FBLazyVector`)
+  - FBReactNativeSpec (from `./rn_pods/node_modules/react-native/Libraries/FBReactNativeSpec`)
   - FBSDKCoreKit (~> 4.33)
   - FBSDKLoginKit (~> 4.33)
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
+  - Folly (from `./rn_pods/node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - Forgeries/Mocks
   - FXBlurView
-  - glog (from `./externals/glog/glog.podspec`)
+  - glog (from `./rn_pods/node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
@@ -337,26 +501,47 @@ DEPENDENCIES:
   - ORStackView (= 2.0.3)
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - Quick
-  - react-native-cameraroll (from `https://github.com/react-native-community/react-native-cameraroll`, tag `v1.0.5`)
-  - react-native-mapbox-gl (from `https://github.com/l2succes/react-native-mapbox-gl`, branch `fix-gesture-recognizer`)
-  - react-native-navigator-ios (from `https://github.com/ashfurrow/react-native-navigator-ios`, branch `license_podspec`)
-  - React/Core
-  - React/DevSupport
+  - RCTRequired (from `./rn_pods/node_modules/react-native/Libraries/RCTRequired`)
+  - RCTTypeSafety (from `./rn_pods/node_modules/react-native/Libraries/TypeSafety`)
+  - React (from `./rn_pods/node_modules/react-native`)
+  - React-Core/DevSupport (from `./rn_pods/node_modules/react-native`)
+  - React-CoreModules (from `./rn_pods/node_modules/react-native/React/CoreModules`)
+  - React-cxxreact (from `./rn_pods/node_modules/react-native/ReactCommon/cxxreact`)
+  - React-jsi (from `./rn_pods/node_modules/react-native/ReactCommon/jsi`)
+  - React-jsiexecutor (from `./rn_pods/node_modules/react-native/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `./rn_pods/node_modules/react-native/ReactCommon/jsinspector`)
+  - "react-native-cameraroll (from `./rn_pods/node_modules/@react-native-community/cameraroll`)"
+  - "react-native-geolocation (from `./rn_pods/node_modules/@react-native-community/geolocation`)"
+  - "react-native-mapbox-gl (from `./rn_pods/node_modules/@mapbox/react-native-mapbox-gl`)"
+  - react-native-navigator-ios (from `./rn_pods/node_modules/react-native-navigator-ios`)
+  - "react-native-netinfo (from `./rn_pods/node_modules/@react-native-community/netinfo`)"
+  - React-RCTActionSheet (from `./rn_pods/node_modules/react-native/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `./rn_pods/node_modules/react-native/Libraries/NativeAnimation`)
+  - React-RCTBlob (from `./rn_pods/node_modules/react-native/Libraries/Blob`)
+  - React-RCTImage (from `./rn_pods/node_modules/react-native/Libraries/Image`)
+  - React-RCTLinking (from `./rn_pods/node_modules/react-native/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `./rn_pods/node_modules/react-native/Libraries/Network`)
+  - React-RCTSettings (from `./rn_pods/node_modules/react-native/Libraries/Settings`)
+  - React-RCTText (from `./rn_pods/node_modules/react-native/Libraries/Text`)
+  - React-RCTVibration (from `./rn_pods/node_modules/react-native/Libraries/Vibration`)
+  - ReactCommon/jscallinvoker (from `./rn_pods/node_modules/react-native/ReactCommon`)
+  - ReactCommon/turbomodule/core (from `./rn_pods/node_modules/react-native/ReactCommon`)
   - ReactiveObjC
-  - RNReanimated (from `https://github.com/software-mansion/react-native-reanimated`, tag `1.4.0`)
-  - RNSVG (from `https://github.com/react-native-community/react-native-svg.git`, tag `v9.4.0`)
+  - RNReanimated (from `./rn_pods/node_modules/react-native-reanimated`)
+  - RNSVG (from `./rn_pods/node_modules/react-native-svg`)
   - SDWebImage (>= 3.7.2)
-  - SentryReactNative (from `https://github.com/getsentry/react-native-sentry.git`, tag `v0.30.3`)
+  - SentryReactNative (from `./rn_pods/node_modules/react-native-sentry`)
   - Specta
   - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `https://github.com/ashfurrow/tipsi-stripe.git`, branch `fix-infinite-loop`)
+  - tipsi-stripe (from `./rn_pods/node_modules/tipsi-stripe/tipsi-stripe.podspec`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
   - "XCTest+OHHTTPStubSuiteCleanUp"
+  - Yoga (from `./rn_pods/node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://github.com/artsy/Specs.git:
@@ -365,12 +550,8 @@ SPEC REPOS:
     - "Artsy+UIFonts"
     - "Artsy+UILabels"
     - Artsy-UIButtons
-    - DoubleConversion
     - Emission
     - Extraction
-    - Folly
-    - React
-    - yoga
   https://github.com/cocoapods/specs.git:
     - Adjust
     - AFNetworkActivityLogger
@@ -433,11 +614,19 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  DoubleConversion:
+    :podspec: "./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  FBLazyVector:
+    :path: "./rn_pods/node_modules/react-native/Libraries/FBLazyVector"
+  FBReactNativeSpec:
+    :path: "./rn_pods/node_modules/react-native/Libraries/FBReactNativeSpec"
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
+  Folly:
+    :podspec: "./rn_pods/node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
-    :podspec: "./externals/glog/glog.podspec"
+    :podspec: "./rn_pods/node_modules/react-native/third-party-podspecs/glog.podspec"
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -450,30 +639,67 @@ EXTERNAL SOURCES:
   Pulley:
     :branch: master
     :git: https://github.com/l2succes/Pulley.git
+  RCTRequired:
+    :path: "./rn_pods/node_modules/react-native/Libraries/RCTRequired"
+  RCTTypeSafety:
+    :path: "./rn_pods/node_modules/react-native/Libraries/TypeSafety"
+  React:
+    :path: "./rn_pods/node_modules/react-native"
+  React-Core:
+    :path: "./rn_pods/node_modules/react-native"
+  React-CoreModules:
+    :path: "./rn_pods/node_modules/react-native/React/CoreModules"
+  React-cxxreact:
+    :path: "./rn_pods/node_modules/react-native/ReactCommon/cxxreact"
+  React-jsi:
+    :path: "./rn_pods/node_modules/react-native/ReactCommon/jsi"
+  React-jsiexecutor:
+    :path: "./rn_pods/node_modules/react-native/ReactCommon/jsiexecutor"
+  React-jsinspector:
+    :path: "./rn_pods/node_modules/react-native/ReactCommon/jsinspector"
   react-native-cameraroll:
-    :git: https://github.com/react-native-community/react-native-cameraroll
-    :tag: v1.0.5
+    :path: "./rn_pods/node_modules/@react-native-community/cameraroll"
+  react-native-geolocation:
+    :path: "./rn_pods/node_modules/@react-native-community/geolocation"
   react-native-mapbox-gl:
-    :branch: fix-gesture-recognizer
-    :git: https://github.com/l2succes/react-native-mapbox-gl
+    :path: "./rn_pods/node_modules/@mapbox/react-native-mapbox-gl"
   react-native-navigator-ios:
-    :branch: license_podspec
-    :git: https://github.com/ashfurrow/react-native-navigator-ios
+    :path: "./rn_pods/node_modules/react-native-navigator-ios"
+  react-native-netinfo:
+    :path: "./rn_pods/node_modules/@react-native-community/netinfo"
+  React-RCTActionSheet:
+    :path: "./rn_pods/node_modules/react-native/Libraries/ActionSheetIOS"
+  React-RCTAnimation:
+    :path: "./rn_pods/node_modules/react-native/Libraries/NativeAnimation"
+  React-RCTBlob:
+    :path: "./rn_pods/node_modules/react-native/Libraries/Blob"
+  React-RCTImage:
+    :path: "./rn_pods/node_modules/react-native/Libraries/Image"
+  React-RCTLinking:
+    :path: "./rn_pods/node_modules/react-native/Libraries/LinkingIOS"
+  React-RCTNetwork:
+    :path: "./rn_pods/node_modules/react-native/Libraries/Network"
+  React-RCTSettings:
+    :path: "./rn_pods/node_modules/react-native/Libraries/Settings"
+  React-RCTText:
+    :path: "./rn_pods/node_modules/react-native/Libraries/Text"
+  React-RCTVibration:
+    :path: "./rn_pods/node_modules/react-native/Libraries/Vibration"
+  ReactCommon:
+    :path: "./rn_pods/node_modules/react-native/ReactCommon"
   RNReanimated:
-    :git: https://github.com/software-mansion/react-native-reanimated
-    :tag: 1.4.0
+    :path: "./rn_pods/node_modules/react-native-reanimated"
   RNSVG:
-    :git: https://github.com/react-native-community/react-native-svg.git
-    :tag: v9.4.0
+    :path: "./rn_pods/node_modules/react-native-svg"
   SentryReactNative:
-    :git: https://github.com/getsentry/react-native-sentry.git
-    :tag: v0.30.3
+    :path: "./rn_pods/node_modules/react-native-sentry"
   SSFadingScrollView:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :branch: fix-infinite-loop
-    :git: https://github.com/ashfurrow/tipsi-stripe.git
+    :podspec: "./rn_pods/node_modules/tipsi-stripe/tipsi-stripe.podspec"
+  Yoga:
+    :path: "./rn_pods/node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -506,24 +732,6 @@ CHECKOUT OPTIONS:
   Pulley:
     :commit: 23f1c0e8cad5a72d03176fe33535c14726e7a160
     :git: https://github.com/l2succes/Pulley.git
-  react-native-cameraroll:
-    :git: https://github.com/react-native-community/react-native-cameraroll
-    :tag: v1.0.5
-  react-native-mapbox-gl:
-    :commit: 8ad2d3a2207da62024c82624c71df5bf5dabc126
-    :git: https://github.com/l2succes/react-native-mapbox-gl
-  react-native-navigator-ios:
-    :commit: 695725296669114ceeed76bba218fd91cde381c1
-    :git: https://github.com/ashfurrow/react-native-navigator-ios
-  RNReanimated:
-    :git: https://github.com/software-mansion/react-native-reanimated
-    :tag: 1.4.0
-  RNSVG:
-    :git: https://github.com/react-native-community/react-native-svg.git
-    :tag: v9.4.0
-  SentryReactNative:
-    :git: https://github.com/getsentry/react-native-sentry.git
-    :tag: v0.30.3
   SSFadingScrollView:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -550,20 +758,22 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: e0c151975b30a1842e7efd5787a64038a8cb87c0
+  Emission: e95a0292257c47eb479e8de2052fee486189988f
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
+  FBLazyVector: cb37b5590a27600f0a889222d7c1f019625f4168
+  FBReactNativeSpec: 6fda0eee5b059ee8ea0f845f4060620ff96b5b55
   FBSDKCoreKit: fe5f3474499a81963e11e3f3a5c753d0a95ca2b4
   FBSDKLoginKit: 2f7249686d1e30ce8a5ef5400eedf50b3e3df332
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: affb802cb73dc1156005a5fb19085008bf6ffd52
+  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
@@ -572,7 +782,7 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   Keys: af65e23feef2a047b3277b1ef0399f1209ef9d46
-  KSCrash: 5394936f41e5c1ef7b79cf79b30d53299b0c160e
+  KSCrash: 47bc2f48bb5537f112432cfbea9a359aaf7a6cc5
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
@@ -588,17 +798,37 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
-  react-native-cameraroll: b1faef9f2ea27b07bdf818b8043909a93f797eca
-  react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
-  react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
+  RCTRequired: 81db8debffc2eb932841fa02dcf5a2e911af74c1
+  RCTTypeSafety: 39a7d8643abe2460aef0adeb9acbe9401b579fff
+  React: 89f2294058332cf7c4feee644e17d5024da1f531
+  React-Core: c55956aa434fae94816b665f99d51d50f48d5993
+  React-CoreModules: c70b9db4f48e31474bb022716fff41983b335ce2
+  React-cxxreact: 1dbe583c02d15d269f13451d203e645bb233fc96
+  React-jsi: f9126dd5818fbd8fbf869be9bbc1c0543973e1a1
+  React-jsiexecutor: 752f034d0f007d1141a1c52ba9ef3fd9668fbfa7
+  React-jsinspector: 044105eea064aec81adc5e4d777a8f6589e7d094
+  react-native-cameraroll: a0817e9d2e054f166500e3ca1c70f2e7c615c66a
+  react-native-geolocation: 8710b1bae31e734191273344d52141151b94bb3f
+  react-native-mapbox-gl: b42480060cdcc515dfa3d8e403fb4dd32466a1b9
+  react-native-navigator-ios: c8057c286843d1da6e80a24f513b8765f60da28c
+  react-native-netinfo: a91b5cf92ed3ada997cfe2bf067633386eb19fd8
+  React-RCTActionSheet: 49433f6e3659ba5d3ee650e44b9c18743ef9a7fc
+  React-RCTAnimation: 12f86a4e3542032329366b03bca2cc254a7c64a9
+  React-RCTBlob: ba90a4144ad478a022b79a4e8a1f150548d39425
+  React-RCTImage: f652d97e49f4b0f26c7df336e723a0d259179967
+  React-RCTLinking: e738422857085a1c40c57505a25920160d365783
+  React-RCTNetwork: d0d635ad07deed0c05a1b1499d1ab4ce5c41ac97
+  React-RCTSettings: ae6f8b64ee5c5e4fc629f5109042e122fd0fd14b
+  React-RCTText: 3f24042210886ee8c02613758013010be04b291e
+  React-RCTVibration: d55e1365be416980217914fe009e9d55dec02e03
+  ReactCommon: eb96b70a2a5bed775e919151fd77699fed52944c
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
-  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
-  RNSVG: 9cb6e958c4b6a1f58185ac72a350b148947d6fed
+  RNReanimated: 438b025d37de68a20188ead653ad5a5050b65990
+  RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
-  SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
+  SentryReactNative: a292506edfa707119e3aa155892cdb07e453a93a
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
@@ -610,8 +840,8 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
-  yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
+  Yoga: 6af72bedeaea291a3a3717772d6d41836f23a1b9
 
-PODFILE CHECKSUM: 988f6b03942251502942bab64cab7967bd851575
+PODFILE CHECKSUM: 7693e3657e490477361ef95d67d1e4755bd9b904
 
 COCOAPODS: 1.6.0.beta.1

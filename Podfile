@@ -5,11 +5,55 @@ unless using_bundler
   exit(1)
 end
 
+
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
 inhibit_all_warnings!
+
+EMISSION_VERSION = '1.19.0'
+require 'down'
+require 'json'
+require 'fileutils'
+
+system 'mkdir rn_pods' unless File.exists?('./rn_pods')
+
+# Check if the version we're installing is the same as what we already have installed.
+needs_install = true # Assume it's true until we know otherwise
+if File.exists? './rn_pods/package.json'
+  emission_package = JSON.parse(File.read('./rn_pods/package.json'), symbolize_names: true)
+  needs_install = emission_package[:version] != EMISSION_VERSION
+end
+
+if needs_install
+  puts 'Installing Emission packages to reference locally.'
+  system 'rm -rf rn_pods/*' # Clear all existing pods.
+  tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/package.json")
+  FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
+  tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/yarn.lock")
+  FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
+  tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/npm-podspecs.json")
+  FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
+  system 'pushd rn_pods ; yarn install --ignore-scripts ; popd'
+else
+  puts 'Skipping Emission node_modules install.'
+end
+
+npm_vendored_podspecs = JSON.parse(File.read('./rn_pods/npm-podspecs.json'), symbolize_names: true)
+npm_vendored_podspecs.update(npm_vendored_podspecs) do |_pod_name, props|
+  if props[:path]
+    props.merge path: File.join('./rn_pods/', props[:path])
+  else
+    props.merge podspec: File.join('./rn_pods/', props[:podspec])
+  end
+end
+
+# Remove DevSupport pod on CI builds, which are used to deploy prod builds.
+if ENV['CIRCLE_BUILD_NUM']
+  npm_vendored_podspecs['React-Core'.to_sym].delete(:subspecs)
+end
+
 
 # Note: These should be reflected _accurately_ in the environment of
 #       the continuous build server.
@@ -77,30 +121,16 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.17'
-  pod 'glog', podspec: './externals/glog/glog.podspec'
-
-  # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
-  if ENV['CIRCLE_BUILD_NUM']
-    # Production:
-    pod 'React', :subspecs => %w(Core)
-  else
-    # Development
-    pod 'React', :subspecs => %w(Core DevSupport)
+  pod 'Emission', EMISSION_VERSION
+  npm_vendored_podspecs.each do |pod_name, props|
+    pod pod_name.to_s, props
   end
 
   # Emission's dependencies
   # use `cat ~/.cocoapods/repos/artsy/Emission/1.x.x/Emission.podspec.json` to see the Podspec
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
-  pod 'tipsi-stripe', git: 'https://github.com/ashfurrow/tipsi-stripe.git', branch: 'fix-infinite-loop'
-  pod 'react-native-mapbox-gl', git: 'https://github.com/l2succes/react-native-mapbox-gl', branch: 'fix-gesture-recognizer'
-  pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
-  pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.4.0'
-  pod 'react-native-navigator-ios', git: 'https://github.com/ashfurrow/react-native-navigator-ios', branch: 'license_podspec'
-  pod 'react-native-cameraroll', git: 'https://github.com/react-native-community/react-native-cameraroll', tag: 'v1.0.5'
-  pod 'RNReanimated', git: 'https://github.com/software-mansion/react-native-reanimated', tag: '1.4.0'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'

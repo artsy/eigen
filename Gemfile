@@ -6,6 +6,7 @@ gem 'cocoapods', '1.6.0.beta.1'
 gem 'cocoapods-check'
 gem 'cocoapods-keys' # So we don't leak ENV vars
 gem 'psych' # So our Podfile.lock is consistent
+gem 'down'
 
 group :development do
   gem 'lowdown' # For handling notifications + certs

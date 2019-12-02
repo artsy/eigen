@@ -5180,7 +5180,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
-				"${PODS_ROOT}/react-native-mapbox-gl/ios/Mapbox.framework",
+				"${PODS_ROOT}/../rn_pods/node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
