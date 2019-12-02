@@ -1,13 +1,9 @@
-import { Box, Flex } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import Spinner from "lib/Components/Spinner"
-import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
-import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
-import React, { useState } from "react"
+import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PartnerArtwork: React.FC<{
