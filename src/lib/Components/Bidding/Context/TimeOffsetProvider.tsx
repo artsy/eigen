@@ -80,7 +80,7 @@ export class TimeOffsetProvider extends React.Component {
     }
   }
 
-  async componentWillMount() {
+  async UNSAFE_componentWillMount() {
     const timeOffsetInMilliSeconds = await getOffsetBetweenGravityClock()
 
     this.setState({ timeOffsetInMilliSeconds })

@@ -1,11 +1,11 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 
-import SerifText from "../Text/Serif"
 import RelatedArtist from "./RelatedArtist"
 
+import { Sans, Spacer } from "@artsy/palette"
 import { RelatedArtists_artists } from "__generated__/RelatedArtists_artists.graphql"
 
 interface Props {
@@ -60,7 +60,10 @@ class RelatedArtists extends React.Component<Props, State> {
   render() {
     return (
       <View style={styles.container} onLayout={this.onLayout.bind(this)}>
-        <SerifText style={styles.heading}>Related Artists</SerifText>
+        <Sans size="3t" weight="medium">
+          Related artists
+        </Sans>
+        <Spacer mb={2} />
         <View style={styles.artistContainer}>{this.renderArtists()}</View>
       </View>
     )
@@ -69,7 +72,7 @@ class RelatedArtists extends React.Component<Props, State> {
   renderArtists() {
     const artists = this.props.artists
     const artistViews = artists.map(artist => {
-      return <RelatedArtist key={artist.id} artist={artist as any} imageSize={this.state.imageSize} />
+      return <RelatedArtist key={artist.id} artist={artist} imageSize={this.state.imageSize} />
     })
 
     const numberOfTrailingViews = artists.length % this.state.columns
@@ -87,7 +90,6 @@ class RelatedArtists extends React.Component<Props, State> {
 interface Styles {
   container: ViewStyle
   artistContainer: ViewStyle
-  heading: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -99,12 +101,8 @@ const styles = StyleSheet.create<Styles>({
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-around",
-    marginTop: 12,
     marginLeft: -10,
     marginRight: -10,
-  },
-  heading: {
-    fontSize: 20,
   },
 })
 

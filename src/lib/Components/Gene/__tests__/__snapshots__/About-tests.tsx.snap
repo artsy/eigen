@@ -62,23 +62,32 @@ exports[`shows trending artists correctly 1`] = `
     }
   >
     <Text
-      numberOfLines={1}
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="20px"
       style={
         Array [
           Object {
-            "fontSize": 17,
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 20,
           },
-          Object {
-            "fontSize": 20,
-          },
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
+          Object {},
         ]
       }
     >
-      Related Artists
+      Related artists
     </Text>
+    <View
+      mb={2}
+      style={
+        Array [
+          Object {
+            "marginBottom": 20,
+          },
+        ]
+      }
+    />
     <View
       style={
         Object {
@@ -88,12 +97,13 @@ exports[`shows trending artists correctly 1`] = `
           "justifyContent": "space-around",
           "marginLeft": -10,
           "marginRight": -10,
-          "marginTop": 12,
         }
       }
     >
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -117,26 +127,48 @@ exports[`shows trending artists correctly 1`] = `
             }
           }
         />
-        <Text
+        <View
+          mb={0.5}
           style={
-            Object {
-              "fontFamily": "AvantGardeGothicITC",
-              "fontSize": 12,
-              "marginTop": 10,
-              "textAlign": "left",
-            }
+            Array [
+              Object {
+                "marginBottom": 5,
+              },
+            ]
+          }
+        />
+        <Text
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              Object {},
+            ]
           }
         >
-          LITA ALBUQUERQUE
+          Lita Albuquerque
         </Text>
         <Text
+          color="#666"
+          fontFamily="ReactNativeAGaramondPro-Regular"
+          fontSize="14px"
+          lineHeight="18px"
           style={
-            Object {
-              "color": "#666666",
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginTop": 5,
-            }
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 14,
+                "lineHeight": 18,
+              },
+              Object {},
+            ]
           }
         >
           36 works
@@ -144,6 +176,8 @@ exports[`shows trending artists correctly 1`] = `
       </View>
       <View
         accessible={true}
+        focusable={true}
+        onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -167,26 +201,48 @@ exports[`shows trending artists correctly 1`] = `
             }
           }
         />
-        <Text
+        <View
+          mb={0.5}
           style={
-            Object {
-              "fontFamily": "AvantGardeGothicITC",
-              "fontSize": 12,
-              "marginTop": 10,
-              "textAlign": "left",
-            }
+            Array [
+              Object {
+                "marginBottom": 5,
+              },
+            ]
+          }
+        />
+        <Text
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              Object {},
+            ]
           }
         >
-          DOUG ARGUE
+          Doug Argue
         </Text>
         <Text
+          color="#666"
+          fontFamily="ReactNativeAGaramondPro-Regular"
+          fontSize="14px"
+          lineHeight="18px"
           style={
-            Object {
-              "color": "#666666",
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginTop": 5,
-            }
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 14,
+                "lineHeight": 18,
+              },
+              Object {},
+            ]
           }
         >
           31 works

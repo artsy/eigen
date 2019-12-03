@@ -23,7 +23,9 @@ exports[`renders properly 1`] = `
   <View>
     <Image
       accessible={true}
+      focusable={true}
       left={10}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -142,6 +144,8 @@ exports[`renders properly 1`] = `
     <View
       accessible={true}
       flexDirection="row"
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}

@@ -5,7 +5,8 @@ import { Schema, Track, track as _track } from "../utils/track"
 
 import { SmallHeadline } from "../Components/Inbox/Typography"
 
-import { NetInfo, View } from "react-native"
+import NetInfo from "@react-native-community/netinfo"
+import { View } from "react-native"
 
 import styled from "styled-components/native"
 

@@ -3,16 +3,15 @@ import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.g
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
-import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
+import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
-import { ScrollView } from "react-native"
+import { Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { PartnerEmptyState } from "./PartnerEmptyState"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
-const textLimit = truncatedTextLimit()
 const PAGE_SIZE = 10
 
 export const PartnerOverview: React.FC<{
@@ -22,19 +21,26 @@ export const PartnerOverview: React.FC<{
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
   const artists = partner.artists && partner.artists.edges
 
-  const fetchNextPage = () => {
-    if (fetchingNextPage || !partner.artists.pageInfo.endCursor) {
-      return
-    }
-    setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("PartnerArtwork.tsx", error.message)
+  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
+
+  useOnCloseToBottom({
+    contentHeight,
+    scrollOffsetY,
+    layoutHeight,
+    callback: () => {
+      if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
+        return
       }
-      setFetchingNextPage(false)
-    })
-  }
+      setFetchingNextPage(true)
+      relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("PartnerOverview.tsx", error.message)
+        }
+        setFetchingNextPage(false)
+      })
+    },
+  })
 
   const renderArtists = () => {
     return artists.map(artist => {
@@ -54,39 +60,45 @@ export const PartnerOverview: React.FC<{
   const aboutText = get(partner, p => p.profile.bio)
 
   if (!aboutText && !artists && !partner.cities) {
-    return <PartnerEmptyState text="There is no information for this gallery yet" />
+    return <TabEmptyState text="There is no information for this gallery yet" />
   }
 
   return (
-    <ScrollView onScroll={isCloseToBottom(fetchNextPage)}>
-      <Box px={2} py={3}>
-        {!!aboutText && (
+    <Box px={2} py={3}>
+      {!!aboutText && (
+        <>
+          <ReadMore content={aboutText} maxChars={300} />
+          <Spacer mb={2} />
+        </>
+      )}
+      <PartnerLocationSection partner={partner} />
+      {!!artists &&
+        artists.length > 0 && (
           <>
-            <ReadMore content={aboutText} maxChars={textLimit} />
-            <Spacer mb={3} />
-          </>
-        )}
-        <PartnerLocationSection partner={partner} />
-        {!!artists &&
-          artists.length > 0 && (
-            <>
+            <Text>
               <Sans size="3t" weight="medium">
                 Artists
               </Sans>
-              <Spacer mb={2} />
-              {renderArtists()}
-              {fetchingNextPage && (
-                <Box p={2} style={{ height: 50 }}>
-                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                    <Spinner />
-                  </Flex>
-                </Box>
-              )}
-              <Spacer mb={3} />
-            </>
-          )}
-      </Box>
-    </ScrollView>
+              {partner.counts &&
+                partner.counts.artists && (
+                  <Sans size="3t" weight="medium">
+                    {` (${partner.counts.artists})`}
+                  </Sans>
+                )}
+            </Text>
+            <Spacer mb={2} />
+            {renderArtists()}
+            {fetchingNextPage && (
+              <Box p={2}>
+                <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              </Box>
+            )}
+            <Spacer mb={3} />
+          </>
+        )}
+    </Box>
   )
 }
 
@@ -101,6 +113,9 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
         cities
         profile {
           bio
+        }
+        counts {
+          artists
         }
         artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
           @connection(key: "Partner_artists") {

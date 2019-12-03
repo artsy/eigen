@@ -6,12 +6,18 @@ export type PartnerLocationSectionTestsQueryResponse = {
     readonly partner: {
         readonly name: string | null;
         readonly cities: ReadonlyArray<string | null> | null;
+        readonly locations: {
+            readonly totalCount: number | null;
+        } | null;
     } | null;
 };
 export type PartnerLocationSectionTestsQueryRawResponse = {
     readonly partner: ({
         readonly name: string | null;
         readonly cities: ReadonlyArray<string | null> | null;
+        readonly locations: ({
+            readonly totalCount: number | null;
+        }) | null;
         readonly id: string | null;
     }) | null;
 };
@@ -28,6 +34,9 @@ query PartnerLocationSectionTestsQuery {
   partner(id: "gagosian") {
     name
     cities
+    locations: locationsConnection(first: 0) {
+      totalCount
+    }
     id
   }
 }
@@ -54,6 +63,30 @@ v2 = {
   "name": "cities",
   "args": null,
   "storageKey": null
+},
+v3 = {
+  "kind": "LinkedField",
+  "alias": "locations",
+  "name": "locationsConnection",
+  "storageKey": "locationsConnection(first:0)",
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "first",
+      "value": 0
+    }
+  ],
+  "concreteType": "LocationConnection",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "totalCount",
+      "args": null,
+      "storageKey": null
+    }
+  ]
 };
 return {
   "kind": "Request",
@@ -74,7 +107,8 @@ return {
         "plural": false,
         "selections": [
           (v1/*: any*/),
-          (v2/*: any*/)
+          (v2/*: any*/),
+          (v3/*: any*/)
         ]
       }
     ]
@@ -95,6 +129,7 @@ return {
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -109,11 +144,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerLocationSectionTestsQuery",
-    "id": "bd82f5d04904ca8e8f3a20e663881587",
+    "id": "1bec8afc0eec40c0cd822458a8dcccdd",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '12f978dce4e1a52d0c71dba5cfc09769';
+(node as any).hash = 'd654766eb7ba94ff128b77162488a552';
 export default node;

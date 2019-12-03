@@ -1,11 +1,12 @@
 import { Box, Sans, Theme } from "@artsy/palette"
+import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CollectionHeaderContainer as CollectionHeader } from "./Components/CollectionHeader"
 
 interface CollectionProps {
-  collection: any
+  collection: Collection_collection
 }
 
 interface CollectionState {
@@ -52,6 +53,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       <Theme>
         <Box>
           <FlatList
+            keyExtractor={(_item, index) => String(index)}
             data={sections}
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
             renderItem={item => (

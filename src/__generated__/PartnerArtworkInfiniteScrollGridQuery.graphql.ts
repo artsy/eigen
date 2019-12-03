@@ -33,29 +33,42 @@ query PartnerArtworkInfiniteScrollGridQuery(
 
 fragment PartnerArtwork_partner_1G22uz on Partner {
   internalID
-  artworks: artworksConnection(first: $count, after: $cursor) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: $count, after: $cursor) {
     edges {
       node {
-        ...GenericGrid_artworks
         id
         __typename
       }
       cursor
     }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 }
 
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
   }
-  ...ArtworkGridItem_artwork
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -132,6 +145,11 @@ v2 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "PARTNER_UPDATED_AT_DESC"
   }
 ],
 v3 = {
@@ -222,38 +240,6 @@ return {
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "pageInfo",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hasNextPage",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "startCursor",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "endCursor",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
                 "name": "edges",
                 "storageKey": null,
                 "args": null,
@@ -271,6 +257,13 @@ return {
                     "selections": [
                       (v3/*: any*/),
                       {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "slug",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
                         "kind": "LinkedField",
                         "alias": null,
                         "name": "image",
@@ -281,7 +274,7 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": "aspect_ratio",
+                            "alias": null,
                             "name": "aspectRatio",
                             "args": null,
                             "storageKey": null
@@ -298,6 +291,13 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "aspect_ratio",
+                            "name": "aspectRatio",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -340,13 +340,6 @@ return {
                         "kind": "ScalarField",
                         "alias": "is_offerable",
                         "name": "isOfferable",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "slug",
                         "args": null,
                         "storageKey": null
                       },
@@ -461,6 +454,39 @@ return {
                     "name": "cursor",
                     "args": null,
                     "storageKey": null
+                  },
+                  (v3/*: any*/)
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "startCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               }
@@ -473,7 +499,9 @@ return {
             "args": (v2/*: any*/),
             "handle": "connection",
             "key": "Partner_artworks",
-            "filters": null
+            "filters": [
+              "sort"
+            ]
           },
           (v3/*: any*/)
         ]
@@ -483,7 +511,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkInfiniteScrollGridQuery",
-    "id": "c36013717d4274c3a6569e1c2d086e9a",
+    "id": "b9de1a1ee6bb013c31503749d2ba28c0",
     "text": null,
     "metadata": {}
   }

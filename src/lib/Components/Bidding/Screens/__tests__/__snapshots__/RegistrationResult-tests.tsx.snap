@@ -113,6 +113,8 @@ to bid on works in this sale.
   <View
     accessible={true}
     flexDirection="row"
+    focusable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -568,6 +570,8 @@ with any questions.
   <View
     accessible={true}
     flexDirection="row"
+    focusable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1027,6 +1031,8 @@ exports[`Registration result component renders registration pending properly 1`]
   <View
     accessible={true}
     flexDirection="row"
+    focusable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}

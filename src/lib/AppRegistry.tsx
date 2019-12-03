@@ -67,6 +67,9 @@ YellowBox.ignoreWarnings([
   "Require cycle: node_modules/react-native-sentry/lib/Sentry.js -> node_modules/react-native-sentry/lib/RavenClient.js -> node_modules/react-native-sentry/lib/Sentry.js",
   // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
   "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
+
+  // This is for the Artist page, which will likely get redone soon anyway.
+  "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
 ])
 
 interface ArtistProps {
@@ -74,13 +77,9 @@ interface ArtistProps {
   isPad: boolean
 }
 
-const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
-  return {
-    context_screen: Schema.PageNames.ArtistPage,
-    context_screen_owner_slug: props.artistID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-  }
-})(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
+const Artist: React.SFC<ArtistProps> = props => (
+  <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
+)
 
 interface ArtworkProps {
   artworkID: string

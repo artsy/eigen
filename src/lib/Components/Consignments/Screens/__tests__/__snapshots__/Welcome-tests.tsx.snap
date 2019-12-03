@@ -392,6 +392,8 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -733,6 +735,8 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -1461,6 +1465,8 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -1802,6 +1808,8 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -2530,6 +2538,8 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -2871,6 +2881,8 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -3599,6 +3611,8 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -3940,6 +3954,8 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -4668,6 +4684,8 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -5009,6 +5027,8 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 <View
                   accessible={true}
                   flexDirection="row"
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}

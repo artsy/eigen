@@ -1,11 +1,8 @@
-import "react-native"
-
-import React from "react"
-import * as renderer from "react-test-renderer"
-
-import About from "../About"
-
 import { Theme } from "@artsy/palette"
+import React from "react"
+import "react-native"
+import * as renderer from "react-test-renderer"
+import ArtistAbout from "../ArtistAbout"
 
 it("renders properly", () => {
   const artist = {
@@ -18,7 +15,7 @@ it("renders properly", () => {
   const about = renderer
     .create(
       <Theme>
-        <About artist={artist as any} />
+        <ArtistAbout artist={artist as any} />
       </Theme>
     )
     .toJSON()

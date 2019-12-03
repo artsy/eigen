@@ -27,9 +27,10 @@ exports[`renders correctly 1`] = `
   >
     <View
       accessibilityLabel="Page 1"
-      accessibilityTraits="button"
       accessible={true}
       active={false}
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -71,9 +72,10 @@ exports[`renders correctly 1`] = `
     </View>
     <View
       accessibilityLabel="Page 2"
-      accessibilityTraits="button"
       accessible={true}
       active={false}
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -115,9 +117,10 @@ exports[`renders correctly 1`] = `
     </View>
     <View
       accessibilityLabel="Page 3"
-      accessibilityTraits="button"
       accessible={true}
       active={false}
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}

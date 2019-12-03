@@ -1,154 +1,84 @@
+import { Flex, Theme } from "@artsy/palette"
 import { Artist_artist } from "__generated__/Artist_artist.graphql"
-import About from "lib/Components/Artist/About"
-import Artworks from "lib/Components/Artist/Artworks"
-import Header from "lib/Components/Artist/Header"
-import Shows from "lib/Components/Artist/Shows"
-import { SwitchEvent } from "lib/Components/SwitchView"
-import TabView from "lib/Components/TabView"
-import { Schema, Track, track as _track } from "lib/utils/track"
-import React, { Component } from "react"
-import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import ArtistAbout from "lib/Components/Artist/ArtistAbout"
+import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
+import ArtistHeader from "lib/Components/Artist/ArtistHeader"
+import ArtistShows from "lib/Components/Artist/ArtistShows"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { Schema, screenTrack } from "lib/utils/track"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
+import React from "react"
+import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-const isPad = Dimensions.get("window").width > 700
-
-const TABS = {
-  ABOUT: "About",
-  WORKS: "Works",
-  SHOWS: "Shows",
-}
 
 interface Props extends ViewProperties {
   artist: Artist_artist
 }
 
 interface State {
-  selectedTabIndex: number
-  selectedTabTitle: string
+  tabs: any[]
 }
 
-const track: Track<Props, State> = _track
-
-@track()
-export class Artist extends Component<Props, State> {
-  initialTabState() {
-    const tabs = this.availableTabs()
-    const worksTab = tabs.indexOf(TABS.WORKS)
-    if (worksTab > -1) {
-      return { selectedTabIndex: worksTab, selectedTabTitle: TABS.WORKS }
-    } else {
-      return { selectedTabIndex: 0, selectedTabTitle: tabs[0] }
-    }
+@screenTrack((props: Props) => ({
+  context_screen: Schema.PageNames.ArtistPage,
+  context_screen_owner_slug: props.artist.slug,
+  context_screen_owner_id: props.artist.internalID,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+}))
+export class Artist extends React.Component<Props, State> {
+  state = {
+    tabs: [],
   }
 
-  componentWillMount() {
-    this.setState(this.initialTabState())
-  }
-
-  @track((props, state) => {
-    let actionName
-    switch (state.selectedTabTitle) {
-      case TABS.ABOUT:
-        actionName = Schema.ActionNames.ArtistAbout
-        break
-      case TABS.WORKS:
-        actionName = Schema.ActionNames.ArtistWorks
-        break
-      case TABS.SHOWS:
-        actionName = Schema.ActionNames.ArtistShows
-        break
-    }
-    return {
-      action_name: actionName,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: props.artist.internalID,
-      owner_slug: props.artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    }
-  })
-  tabSelectionDidChange(event: SwitchEvent) {
-    this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex, selectedTabTitle: this.selectedTabTitle() })
+  componentWillMount = () => {
+    this.availableTabs()
   }
 
   availableTabs = () => {
-    const tabs: string[] = []
+    const tabs = []
     const artist = this.props.artist
     const displayAboutSection = artist.has_metadata || artist.counts.articles > 0 || artist.counts.related_artists > 0
 
     if (displayAboutSection) {
-      tabs.push(TABS.ABOUT)
+      tabs.push({
+        title: "About",
+        content: <ArtistAbout artist={artist} />,
+      })
     }
 
     if (artist.counts.artworks) {
-      tabs.push(TABS.WORKS)
+      tabs.push({
+        title: "Artworks",
+        initial: true,
+        content: <ArtistArtworks artist={artist} />,
+      })
     }
 
     if (artist.counts.partner_shows) {
-      tabs.push(TABS.SHOWS)
+      tabs.push({
+        title: "Shows",
+        content: <ArtistShows artist={artist} />,
+      })
     }
-    return tabs
-  }
 
-  selectedTabTitle = () => {
-    return this.availableTabs()[this.state.selectedTabIndex]
-  }
-
-  renderSelectedTab = () => {
-    switch (this.selectedTabTitle()) {
-      case TABS.ABOUT:
-        return <About artist={this.props.artist as any} />
-      case TABS.WORKS:
-        return <Artworks artist={this.props.artist as any} />
-      case TABS.SHOWS:
-        return <Shows artist={this.props.artist as any} />
-    }
-  }
-
-  renderTabView() {
-    return (
-      <TabView
-        titles={this.availableTabs()}
-        selectedIndex={this.state.selectedTabIndex}
-        onSelectionChange={this.tabSelectionDidChange.bind(this)}
-        style={styles.tabView}
-      >
-        {this.renderSelectedTab()}
-      </TabView>
-    )
-  }
-
-  renderSingleTab() {
-    return <View style={{ paddingTop: 30 }}>{this.renderSelectedTab()}</View>
+    this.setState({ tabs })
   }
 
   render() {
-    const windowDimensions = Dimensions.get("window")
-    const commonPadding = windowDimensions.width > 700 ? 40 : 20
-    const displayTabView = this.availableTabs().length > 1
+    const { artist } = this.props
+    const { tabs } = this.state
 
     return (
-      <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
-        <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
-          <Header artist={this.props.artist as any} />
-          {displayTabView ? this.renderTabView() : this.renderSingleTab()}
-        </View>
-      </ScrollView>
+      <Theme>
+        <ProvideScreenDimensions>
+          <Flex style={{ flex: 1 }}>
+            <StickyTabPage headerContent={<ArtistHeader artist={artist} />} tabs={tabs} />
+          </Flex>
+        </ProvideScreenDimensions>
+      </Theme>
     )
   }
 }
-
-interface Styles {
-  tabView: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  tabView: {
-    width: isPad ? 330 : null,
-    marginTop: 30,
-    marginBottom: 30,
-    alignSelf: isPad ? "center" : null,
-  },
-})
 
 export default createFragmentContainer(Artist, {
   artist: graphql`
@@ -162,10 +92,10 @@ export default createFragmentContainer(Artist, {
         related_artists: relatedArtists
         articles
       }
-      ...Header_artist
-      ...About_artist
-      ...Shows_artist
-      ...Artworks_artist
+      ...ArtistHeader_artist
+      ...ArtistAbout_artist
+      ...ArtistShows_artist
+      ...ArtistArtworks_artist
     }
   `,
 })

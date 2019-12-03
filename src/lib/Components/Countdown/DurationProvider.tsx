@@ -31,7 +31,7 @@ export class DurationProvider extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.startAt !== this.props.startAt) {
       clearInterval(this.intervalId)
       this.intervalId = null

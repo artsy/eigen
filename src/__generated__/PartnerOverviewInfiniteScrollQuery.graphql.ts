@@ -39,6 +39,9 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     bio
     id
   }
+  counts {
+    artists
+  }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -78,6 +81,9 @@ fragment PartnerLocationSection_partner on Partner {
   slug
   name
   cities
+  locations: locationsConnection(first: 0) {
+    totalCount
+  }
 }
 */
 
@@ -236,6 +242,24 @@ return {
           },
           {
             "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artists",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
             "storageKey": null,
@@ -390,6 +414,30 @@ return {
             ]
           },
           (v6/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": "locations",
+            "name": "locationsConnection",
+            "storageKey": "locationsConnection(first:0)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 0
+              }
+            ],
+            "concreteType": "LocationConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalCount",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           (v4/*: any*/)
         ]
       }
@@ -398,7 +446,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "beea7adba6a872a5455ad40c530f7611",
+    "id": "7fbe6ec13b41bc26a2b849bd365f47c8",
     "text": null,
     "metadata": {}
   }

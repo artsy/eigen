@@ -12,6 +12,8 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
 >
   <View
     accessible={true}
+    focusable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -124,6 +126,8 @@ exports[`lays out correctly for read notification 1`] = `
 >
   <View
     accessible={true}
+    focusable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -236,6 +240,8 @@ exports[`lays out correctly for unread notification 1`] = `
 >
   <View
     accessible={true}
+    focusable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}

@@ -124,6 +124,7 @@ export enum PageNames {
   SavesAndFollows = "SavesAndFollows",
   ShowAllArtists = "ShowAllArtists",
   ShowAllArtworks = "ShowAllArtworks",
+  PartnerPage = "PartnerPage",
 }
 
 export enum OwnerEntityTypes {
@@ -134,6 +135,7 @@ export enum OwnerEntityTypes {
   Gallery = "Gallery",
   Gene = "Gene",
   Fair = "Fair",
+  Partner = "Partner",
   Search = "Search",
   Show = "Show",
   Invoice = "Invoice",

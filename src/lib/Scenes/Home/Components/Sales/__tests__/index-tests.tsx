@@ -6,7 +6,6 @@ import { renderWithLayout } from "lib/tests/renderWithLayout"
 
 import Sales from "../index"
 
-jest.mock("WebView", () => "WebView")
 jest.mock("../Components/ZeroState/index.html", () => "")
 jest.mock("../Components/LotsByFollowedArtists", () => "")
 

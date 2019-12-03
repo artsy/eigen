@@ -3,6 +3,8 @@
 exports[`renders correctly with a show 1`] = `
 <View
   accessible={true}
+  focusable={true}
+  onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -220,6 +222,8 @@ exports[`renders correctly with a show 1`] = `
 exports[`renders correctly with an artwork 1`] = `
 <View
   accessible={true}
+  focusable={true}
+  onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}

@@ -5,7 +5,6 @@ import { ZeroState } from "../index"
 
 import { Theme } from "@artsy/palette"
 
-jest.mock("WebView", () => "WebView")
 jest.mock("../index.html", () => "")
 
 it("looks correct when rendered", () => {

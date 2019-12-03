@@ -1,12 +1,18 @@
 export const PartnerArtworkFixture = {
   internalID: "4d8b92c44eb68a1b2c0004cb",
   artworks: {
+    pageInfo: {
+      startCursor: "YXJyYXljb25uZWN0aW9uOjA=",
+      endCursor: "YXJyYXljb25uZWN0aW9uOjc=",
+      hasNextPage: false,
+      hasPreviousPage: false,
+    },
     edges: [
       {
         node: {
           id: "QXJ0d29yazo0ZDhiOTJjNzRlYjY4YTFiMmMwMDA1NDA=",
           image: {
-            aspect_ratio: 0.71,
+            aspectRatio: 0.71,
             url: "https://d32dm0rphc51dk.cloudfront.net/Wpq1gvhpupGvUcUwtdl0KQ/large.jpg",
           },
           title: "Untitled",
@@ -33,7 +39,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTJmYzRlYjY4YTFiMmMwMDBiNDI=",
           image: {
-            aspect_ratio: 0.78,
+            aspectRatio: 0.78,
             url: "https://d32dm0rphc51dk.cloudfront.net/0uqXV6WS2yR264w7vbxeZw/large.jpg",
           },
           title: "Purple Bra",
@@ -60,7 +66,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTJmZTRlYjY4YTFiMmMwMDBiN2I=",
           image: {
-            aspect_ratio: 1.56,
+            aspectRatio: 1.56,
             url: "https://d32dm0rphc51dk.cloudfront.net/w9vKR48fw3DiE0ha5B5bOw/large.jpg",
           },
           title: "Untitled",
@@ -87,7 +93,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTJmNTRlYjY4YTFiMmMwMDBhNWU=",
           image: {
-            aspect_ratio: 1.13,
+            aspectRatio: 1.13,
             url: "https://d32dm0rphc51dk.cloudfront.net/U2_icKldX8zDuKmSGDoUlg/large.jpg",
           },
           title: "Snowman",
@@ -114,7 +120,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTMzYjRlYjY4YTFiMmMwMDExMWM=",
           image: {
-            aspect_ratio: 0.78,
+            aspectRatio: 0.78,
             url: "https://d32dm0rphc51dk.cloudfront.net/eKsH3Qe7Iu7dXQgOwOyn5g/large.jpg",
           },
           title: "Peg Leg",
@@ -141,7 +147,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTM1NTRlYjY4YTFiMmMwMDEzYWQ=",
           image: {
-            aspect_ratio: 0.73,
+            aspectRatio: 0.73,
             url: "https://d32dm0rphc51dk.cloudfront.net/VfN5PAsxyuaTfLz47h_Gjg/large.jpg",
           },
           title: "For They Know Not What They Do (Self-Portrait)",
@@ -168,7 +174,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTM1MjRlYjY4YTFiMmMwMDEzNmU=",
           image: {
-            aspect_ratio: 1.34,
+            aspectRatio: 1.34,
             url: "https://d32dm0rphc51dk.cloudfront.net/vKzEFsW8gckSlWwkRWLSIQ/large.jpg",
           },
           title: "Untitled",
@@ -195,7 +201,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTMzMDRlYjY4YTFiMmMwMDEwMmE=",
           image: {
-            aspect_ratio: 0.6,
+            aspectRatio: 0.6,
             url: "https://d32dm0rphc51dk.cloudfront.net/_CDPOHfm9KXnLyvQVCYaYQ/large.jpg",
           },
           title: "One Green Cow",
@@ -222,7 +228,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTM2NzRlYjY4YTFiMmMwMDE1MjA=",
           image: {
-            aspect_ratio: 1,
+            aspectRatio: 1,
             url: "https://d32dm0rphc51dk.cloudfront.net/BOXfMix8m119pln0iWe78w/large.jpg",
           },
           title: "Duet",
@@ -249,7 +255,7 @@ export const PartnerArtworkFixture = {
         node: {
           id: "QXJ0d29yazo0ZDhiOTM5NTRlYjY4YTFiMmMwMDE5NTA=",
           image: {
-            aspect_ratio: 0.7,
+            aspectRatio: 0.7,
             url: "https://d32dm0rphc51dk.cloudfront.net/HKx0sMXcfEzuhrhcHEdUog/large.jpg",
           },
           title: "Constance Towers",

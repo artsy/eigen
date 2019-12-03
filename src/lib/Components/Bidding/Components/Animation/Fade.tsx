@@ -21,11 +21,11 @@ export class Fade extends React.Component<FadeProps, FadeState> {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.visibility = new Animated.Value(this.props.show ? 1 : 0)
   }
 
-  componentWillReceiveProps(nextProps: FadeProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: FadeProps) {
     if (nextProps.show) {
       this.setState({ visible: true })
     }
