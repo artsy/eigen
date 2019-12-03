@@ -111,5 +111,8 @@
   },
   "RNReanimated": {
     "path": "node_modules/react-native-reanimated"
+  },
+  "RNCAsyncStorage": {
+    "path": "node_modules/@react-native-community/async-storage"
   }
 }

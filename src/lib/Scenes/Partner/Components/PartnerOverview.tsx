@@ -3,10 +3,9 @@ import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.g
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
-import { useStickyTabContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
-import { useOnCloseToBottom } from "lib/utils/isCloseToBottom"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -20,27 +19,6 @@ export const PartnerOverview: React.FC<{
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
   const artists = partner.artists && partner.artists.edges
-
-  const { scrollOffsetY, contentHeight, layoutHeight } = useStickyTabContext()
-
-  useOnCloseToBottom({
-    contentHeight,
-    scrollOffsetY,
-    layoutHeight,
-    callback: () => {
-      if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
-        return
-      }
-      setFetchingNextPage(true)
-      relay.loadMore(PAGE_SIZE, error => {
-        if (error) {
-          // FIXME: Handle error
-          console.error("PartnerOverview.tsx", error.message)
-        }
-        setFetchingNextPage(false)
-      })
-    },
-  })
 
   const renderArtists = () => {
     return artists.map(artist => {
@@ -60,11 +38,30 @@ export const PartnerOverview: React.FC<{
   const aboutText = get(partner, p => p.profile.bio)
 
   if (!aboutText && !artists && !partner.cities) {
-    return <TabEmptyState text="There is no information for this gallery yet" />
+    return (
+      <StickyTabPageScrollView>
+        <TabEmptyState text="There is no information for this gallery yet" />
+      </StickyTabPageScrollView>
+    )
   }
 
   return (
-    <Box px={2} py={3}>
+    // TODO: Switch to StickyTabPageFlatList
+    <StickyTabPageScrollView
+      onEndReached={() => {
+        if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
+          return
+        }
+        setFetchingNextPage(true)
+        relay.loadMore(PAGE_SIZE, error => {
+          if (error) {
+            // FIXME: Handle error
+            console.error("PartnerOverview.tsx", error.message)
+          }
+          setFetchingNextPage(false)
+        })
+      }}
+    >
       {!!aboutText && (
         <>
           <ReadMore content={aboutText} maxChars={300} />
@@ -98,7 +95,7 @@ export const PartnerOverview: React.FC<{
             <Spacer mb={3} />
           </>
         )}
-    </Box>
+    </StickyTabPageScrollView>
   )
 }
 

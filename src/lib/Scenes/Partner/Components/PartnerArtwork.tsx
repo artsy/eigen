@@ -1,6 +1,6 @@
-import { Box } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
 import React from "react"
@@ -12,14 +12,14 @@ export const PartnerArtwork: React.FC<{
 }> = ({ partner, relay }) => {
   const artworks = get(partner, p => p.artworks)
 
-  if (!artworks) {
-    return <TabEmptyState text="There is no artwork from this gallery yet" />
-  }
-
   return (
-    <Box px={2} py={3}>
-      <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
-    </Box>
+    <StickyTabPageScrollView>
+      {artworks ? (
+        <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
+      ) : (
+        <TabEmptyState text="There is no artwork from this gallery yet" />
+      )}
+    </StickyTabPageScrollView>
   )
 }
 

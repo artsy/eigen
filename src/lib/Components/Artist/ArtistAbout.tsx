@@ -10,6 +10,7 @@ import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import { CaretButton } from "../Buttons/CaretButton"
+import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface Props {
   artist: ArtistAbout_artist
@@ -18,11 +19,11 @@ interface Props {
 class ArtistAbout extends React.Component<Props> {
   render() {
     return (
-      <Box py={3} px={2}>
+      <StickyTabPageScrollView>
         {this.biography()}
         {this.articles()}
         {this.relatedArtists()}
-      </Box>
+      </StickyTabPageScrollView>
     )
   }
 

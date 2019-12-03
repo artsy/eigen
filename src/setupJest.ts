@@ -192,4 +192,20 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 })
 
+jest.mock("@react-native-community/async-storage", () => {
+  let state = {}
+  return {
+    __resetState() {
+      state = {}
+    },
+    setItem(key, val) {
+      state[key] = val
+      return Promise.resolve()
+    },
+    getItem(key) {
+      return Promise.resolve(state[key])
+    },
+  }
+})
+
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))

@@ -2,10 +2,8 @@ import { Serif, Theme } from "@artsy/palette"
 import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.graphql"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
-import { StickyTabScrollViewContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import Animated from "react-native-reanimated"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "../PartnerOverview"
 
@@ -35,15 +33,7 @@ describe("PartnerOverview", () => {
       Component: (props: any) => {
         return (
           <Theme>
-            <StickyTabScrollViewContext.Provider
-              value={{
-                contentHeight: new Animated.Value(0),
-                layoutHeight: new Animated.Value(0),
-                scrollOffsetY: new Animated.Value(0),
-              }}
-            >
-              <PartnerOverview partner={{ ...partner }} relay={{ environment: {} } as RelayPaginationProp} {...props} />
-            </StickyTabScrollViewContext.Provider>
+            <PartnerOverview partner={{ ...partner }} relay={{ environment: {} } as RelayPaginationProp} {...props} />
           </Theme>
         )
       },

@@ -1,3 +1,41 @@
+# v1.19.5 (Tue Dec 03 2019)
+
+#### 🐛  Bug Fix
+
+- Pin dep @react-native-community/async-storage from ^1.6.3 to 1.6.3 [#1987](https://github.com/artsy/emission/pull/1987) ([@renovate-bot](https://github.com/renovate-bot))
+- StickyTabs perf + UX improvements [#1982](https://github.com/artsy/emission/pull/1982) ([@ds300](https://github.com/ds300))
+
+#### Authors: 2
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
+# v1.19.4 (Tue Dec 03 2019)
+
+#### 🐛  Bug Fix
+
+- [ME-84] Add recent searches [#1972](https://github.com/artsy/emission/pull/1972) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
+# v1.19.3 (Tue Dec 03 2019)
+
+#### 🐛  Bug Fix
+
+- Show sticky header based on scroll offset rather than velocity [#1985](https://github.com/artsy/emission/pull/1985) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.19.2 (Tue Dec 03 2019)
 
 #### 🐛  Bug Fix
