@@ -1,10 +1,9 @@
 import { Theme } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
-import { StickyTabScrollViewContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { PartnerShowsTestsQueryRawResponse } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import Animated from "react-native-reanimated"
-import { graphql, RelayPaginationProp } from "react-relay"
+import { graphql } from "react-relay"
 import { PartnerShowRailItem as RailItem } from "../PartnerShowRailItem"
 import { PartnerShowsFragmentContainer as PartnerShows } from "../PartnerShows"
 
@@ -16,55 +15,14 @@ describe("PartnerShows", () => {
       Component: (props: any) => {
         return (
           <Theme>
-            <StickyTabScrollViewContext.Provider
-              value={{
-                contentHeight: new Animated.Value(0),
-                layoutHeight: new Animated.Value(0),
-                scrollOffsetY: new Animated.Value(0),
-              }}
-            >
-              <PartnerShows partner={{ ...partner }} {...props} relay={{ environment: {} } as RelayPaginationProp} />
-            </StickyTabScrollViewContext.Provider>
+            <PartnerShows {...props} />
           </Theme>
         )
       },
       query: graphql`
         query PartnerShowsTestsQuery @raw_response_type {
           partner(id: "gagosian") {
-            slug
-            internalID
-            currentAndUpcomingShows: showsConnection(status: CURRENT, first: 10) {
-              edges {
-                node {
-                  id
-                  internalID
-                  slug
-                  name
-                  exhibitionPeriod
-                  endAt
-                  images {
-                    url
-                  }
-                  ...PartnerShowRailItem_show
-                }
-              }
-            }
-            pastShows: showsConnection(status: CLOSED, first: 10) {
-              edges {
-                node {
-                  id
-                  name
-                  slug
-                  exhibitionPeriod
-                  coverImage {
-                    url
-                    aspectRatio
-                  }
-                  href
-                  exhibitionPeriod
-                }
-              }
-            }
+            ...PartnerShows_partner
           }
         }
       `,
@@ -83,13 +41,25 @@ describe("PartnerShows", () => {
   })
 })
 
-const PartnerShowsFixture = {
+const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
+  id: "gagosian-id",
   slug: "gagosian",
   internalID: "4d8b92c44eb68a1b2c0004cb",
+  recentShows: {
+    edges: [{ node: { id: "ye" } }],
+  },
   currentAndUpcomingShows: {
+    pageInfo: {
+      hasNextPage: true,
+      endCursor: "end",
+      startCursor: "start",
+    },
     edges: [
       {
+        cursor: "a",
         node: {
+          __typename: "Show",
+          partner: null,
           id: "U2hvdzo1ZDY0MjBjZjJhNDFlNDAwMGYxYzAzYTE=",
           internalID: "5d6420cf2a41e4000f1c03a1",
           slug: "gagosian-richard-serra-triptychs-and-diptychs",
@@ -100,7 +70,10 @@ const PartnerShowsFixture = {
         },
       },
       {
+        cursor: "b",
         node: {
+          __typename: "Show",
+          partner: null,
           id: "U2hvdzo1ZDY0MWJmMjAzNDliYTAwMTAxMzM4NmQ=",
           internalID: "5d641bf20349ba001013386d",
           slug: "gagosian-giuseppe-penone-foglie-di-bronzo-slash-leaves-of-bronze",
@@ -115,7 +88,10 @@ const PartnerShowsFixture = {
         },
       },
       {
+        cursor: "c",
         node: {
+          __typename: "Show",
+          partner: null,
           id: "U2hvdzo1ZDY0MjAwODEyZDI5MDAwMGUxZTVkMzU=",
           internalID: "5d64200812d290000e1e5d35",
           slug: "gagosian-albert-oehlen-new-paintings",
@@ -132,9 +108,16 @@ const PartnerShowsFixture = {
     ],
   },
   pastShows: {
+    pageInfo: {
+      hasNextPage: true,
+      endCursor: "end",
+      startCursor: "start",
+    },
     edges: [
       {
+        cursor: "a",
         node: {
+          __typename: "Show",
           id: "U2hvdzo1ZDY0MTg0ZTlhZjkwYTAwMGVjMGJiMDk=",
           name: "Zao Wou-Ki",
           slug: "gagosian-zao-wou-ki",
@@ -147,7 +130,9 @@ const PartnerShowsFixture = {
         },
       },
       {
+        cursor: "b",
         node: {
+          __typename: "Show",
           id: "U2hvdzo1ZDY0MGRlMjlhZjkwYTAwMTI3YmQzZjU=",
           name: "Domestic Horror",
           slug: "gagosian-domestic-horror",
@@ -160,7 +145,9 @@ const PartnerShowsFixture = {
         },
       },
       {
+        cursor: "c",
         node: {
+          __typename: "Show",
           id: "U2hvdzo1ZDY0MTlmYjE5NmUxMDAwMGRmMWRkY2E=",
           name: "Nathaniel Mary Quinn: Hollow and Cut",
           slug: "gagosian-nathaniel-mary-quinn-hollow-and-cut",
@@ -173,7 +160,9 @@ const PartnerShowsFixture = {
         },
       },
       {
+        cursor: "d",
         node: {
+          __typename: "Show",
           id: "U2hvdzo1ZDk0YjkxZDIzNDU1YTAwMGU0NjZlMTM=",
           name: "Frieze London 2019: Sterling Ruby Online Viewing Room",
           slug: "gagosian-frieze-london-2019-sterling-ruby-online-viewing-room",
@@ -187,6 +176,4 @@ const PartnerShowsFixture = {
       },
     ],
   },
-  " $fragmentRefs": null as any,
-  " $refType": null as any,
 }

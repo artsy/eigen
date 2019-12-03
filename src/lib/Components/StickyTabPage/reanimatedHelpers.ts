@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react"
+import { useMemo, useRef, useState } from "react"
 import Animated from "react-native-reanimated"
 
 /**
@@ -86,4 +86,10 @@ export function useValueReader<T extends { [k: string]: Animated.Adaptable<numbe
     }
     return result.current
   }
+}
+
+export function useNativeValue(node: Animated.Node<number>, init: number): number {
+  const [state, setState] = useState(init)
+  Animated.useCode(() => Animated.call([node], ([val]) => setState(val)), [])
+  return state
 }

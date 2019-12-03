@@ -1,9 +1,9 @@
-import { Box } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -13,9 +13,9 @@ interface Props extends InfiniteScrollGridProps {
 }
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
-  <Box px={2} py={3}>
+  <StickyTabPageScrollView>
     <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
-  </Box>
+  </StickyTabPageScrollView>
 )
 
 export default createPaginationContainer(

@@ -11,8 +11,7 @@ const PAGE_SIZE = 6
 const PartnerShowsRail: React.FC<{
   partner: PartnerShowsRail_partner
   relay: RelayPaginationProp
-  setHasRecentShows: (hasRecentShows: boolean) => void
-}> = ({ partner, relay, setHasRecentShows }) => {
+}> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
   const currentAndUpcomingShows = partner.currentAndUpcomingShows && partner.currentAndUpcomingShows.edges
 
@@ -28,10 +27,6 @@ const PartnerShowsRail: React.FC<{
       }
       setFetchingNextPage(false)
     })
-  }
-
-  if (currentAndUpcomingShows && currentAndUpcomingShows.length) {
-    setHasRecentShows(true)
   }
 
   return (
