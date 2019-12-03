@@ -54,3 +54,6 @@ Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
 # React Native pods. See: Podfile
 rn_pods
+
+# build artefacts
+derived_data

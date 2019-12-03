@@ -758,7 +758,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  DoubleConversion: 1f9e358142d21eaa409e08e6d28aeb643f1a7967
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Emission: e95a0292257c47eb479e8de2052fee486189988f
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
@@ -770,10 +770,10 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 2f7249686d1e30ce8a5ef5400eedf50b3e3df332
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
+  Folly: 67e5794bb00e6ea586292080eebb5e1f3529bc5b
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  glog: 07f3e064a66424626a605a3656200e29cb276d81
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
@@ -835,13 +835,13 @@ SPEC CHECKSUMS:
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
-  tipsi-stripe: 2d0e33b5bb62168cd1f1777a904781725c5baf8a
+  tipsi-stripe: 237cab79699eb7d354bfc09238b3284e3b8dad84
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 6af72bedeaea291a3a3717772d6d41836f23a1b9
 
-PODFILE CHECKSUM: 7693e3657e490477361ef95d67d1e4755bd9b904
+PODFILE CHECKSUM: 7ff362ff33ce34d5e4fd86c30cb6253167eabea9
 
 COCOAPODS: 1.6.0.beta.1
