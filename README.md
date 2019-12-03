@@ -94,15 +94,7 @@ We vendor some data from other repositories that you will sometimes need to upda
 
 ### Deploying Emission
 
-**Note:** Deploys are mostly automated using `yarn release patch|minor|major`; the following instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break.
-
-**Note 2:** If you're updating React Native, you're going to have to do a lot of this stuff manually. See the makefile, ashfurrow or alloy for more info.
-
-1. Don't change the `package.json` version.
-1. For non-pre-releases, use either `yarn release patch`, `yarn release minor`, or `yarn release major`. For
-   pre-releases, use `yarn release prerelease`. Pre-releases are usually reserved for testing major releases before deployment.
-1. After the release has finished compiling, a PR will be automatically created in Metaphysics with an updated `complete.queryMap.json`, which can be self assigned and merged.
-1. If integrating in Eigen consult the docs [on updating Emission](https://github.com/artsy/eigen/blob/master/docs/updating_emission.md)
+Deploys are automated on CI after each PR merge, based on the patch/minor/major label added to the PR (patch is default). 
 
 ### Automated Emission App Deploys
 
