@@ -4,7 +4,7 @@
   "native-code-version": 39,
   "description": "Artsy React(Native) components.",
   "engines": {
-    "node": "11.x",
+    "node": "12.x",
     "npm": "6.1.x",
     "yarn": "1.x"
   },
