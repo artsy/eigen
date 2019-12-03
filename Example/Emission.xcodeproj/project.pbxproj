@@ -453,8 +453,8 @@
 				5157C2E92018C82400DE6B07 /* Record Packager Host IP for Debug */,
 				510DCB0C1CCA69EC0075E8CB /* Resources */,
 				510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */,
-				BD012BCCAEAB7DB916DE7D2D /* [CP] Embed Pods Frameworks */,
 				3531E0CB4D0C66204FFF9D4A /* [CP] Copy Pods Resources */,
+				3CB362FC55CDD77CDAA5F2C2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -672,6 +672,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3CB362FC55CDD77CDAA5F2C2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh",
+				"${PODS_ROOT}/../../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -733,24 +751,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BD012BCCAEAB7DB916DE7D2D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh",
-				"${PODS_ROOT}/../../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -842,6 +842,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -863,6 +864,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wno-variadic-macros";
 			};
 			name = Debug;
 		};
@@ -873,6 +875,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -891,6 +894,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wno-variadic-macros";
 			};
 			name = Release;
 		};
@@ -1123,6 +1127,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -1144,6 +1149,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wno-variadic-macros";
 			};
 			name = Deploy;
 		};

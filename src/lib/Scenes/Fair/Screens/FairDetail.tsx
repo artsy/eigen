@@ -45,7 +45,7 @@ export class FairDetail extends React.Component<Props, State> {
     boothCount: 0,
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.fair.shows.edges.length !== nextProps.fair.shows.edges.length) {
       this.updateSections()
     }

@@ -21,7 +21,7 @@ export class CssTransition extends React.Component<CssTransitionProps, CssTransi
     }
   }
 
-  componentWillReceiveProps(nextProps: CssTransitionProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: CssTransitionProps) {
     this.setState({
       previousStyle: this.props.style,
     })

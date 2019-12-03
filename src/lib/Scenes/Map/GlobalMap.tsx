@@ -242,7 +242,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { citySlug, relayErrorState } = this.props
 
     if (citySlug && citySlug !== nextProps.citySlug) {

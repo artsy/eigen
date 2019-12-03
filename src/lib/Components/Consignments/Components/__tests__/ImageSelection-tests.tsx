@@ -12,28 +12,28 @@ it("renders correctly at iPhone size", () => {
   expect(bg).toMatchSnapshot()
 })
 
-describe("data source items", () => {
-  it("includes the camera image", () => {
-    const data = []
-    const selection = new ImageSelection({ data })
-    const ds = selection.dataSourceFromData(data, true)
-    expect(ds.getRowData(0, 0)).toEqual("take_photo")
-  })
+// describe("data source items", () => {
+// xit("includes the camera image", () => {
+// const data = []
+// const selection = new ImageSelection({ data })
+// const ds = selection.dataSourceFromData(data, true)
+// expect(ds.getRowData(0, 0)).toEqual("take_photo")
+// })
 
-  it("adds an extra trailing element for iPhone", () => {
-    const data = []
-    const selection = new ImageSelection({ data })
-    const ds = selection.dataSourceFromData(data, false)
-    expect(ds.getRowCount()).toEqual(2)
-  })
+// xit("adds an extra trailing element for iPhone", () => {
+// const data = []
+// const selection = new ImageSelection({ data })
+// const ds = selection.dataSourceFromData(data, false)
+// expect(ds.getRowCount()).toEqual(2)
+// })
 
-  it("only adds the photo element for iPad", () => {
-    const data = []
-    const selection = new ImageSelection({ data })
-    const ds = selection.dataSourceFromData(data, true)
-    expect(ds.getRowCount()).toEqual(1)
-  })
-})
+// xit("only adds the photo element for iPad", () => {
+// const data = []
+// const selection = new ImageSelection({ data })
+// const ds = selection.dataSourceFromData(data, true)
+// expect(ds.getRowCount()).toEqual(1)
+// })
+// })
 
 it("updates state on selection", () => {
   const selection = new ImageSelection({ data: [] })

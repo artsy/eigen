@@ -68,6 +68,8 @@ exports[`looks correct when rendered 1`] = `
     <Text
       accessible={true}
       disabled={true}
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -161,6 +163,8 @@ exports[`regarding the send button disables it when there is no text 1`] = `
     <Text
       accessible={true}
       disabled={true}
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
