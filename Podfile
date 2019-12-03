@@ -11,7 +11,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 inhibit_all_warnings!
 
-EMISSION_VERSION = '1.19.0'
+EMISSION_VERSION = '1.19.5'
 require 'down'
 require 'json'
 require 'fileutils'

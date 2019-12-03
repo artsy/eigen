@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.19.0):
+  - Emission (1.19.5):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -411,6 +411,8 @@ PODS:
     - React-jsi (= 0.61.4)
     - ReactCommon/jscallinvoker (= 0.61.4)
   - ReactiveObjC (2.1.2)
+  - RNCAsyncStorage (1.6.3):
+    - React
   - RNReanimated (1.4.0):
     - React
   - RNSVG (9.13.3):
@@ -465,7 +467,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DoubleConversion (from `./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
-  - Emission (= 1.19.0)
+  - Emission (= 1.19.5)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -527,6 +529,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `./rn_pods/node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `./rn_pods/node_modules/react-native/ReactCommon`)
   - ReactiveObjC
+  - "RNCAsyncStorage (from `./rn_pods/node_modules/@react-native-community/async-storage`)"
   - RNReanimated (from `./rn_pods/node_modules/react-native-reanimated`)
   - RNSVG (from `./rn_pods/node_modules/react-native-svg`)
   - SDWebImage (>= 3.7.2)
@@ -687,6 +690,8 @@ EXTERNAL SOURCES:
     :path: "./rn_pods/node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "./rn_pods/node_modules/react-native/ReactCommon"
+  RNCAsyncStorage:
+    :path: "./rn_pods/node_modules/@react-native-community/async-storage"
   RNReanimated:
     :path: "./rn_pods/node_modules/react-native-reanimated"
   RNSVG:
@@ -760,7 +765,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: e95a0292257c47eb479e8de2052fee486189988f
+  Emission: 40f5fdb088a0e2e39fec1472b0b13fc0716f66c4
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -823,6 +828,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: d55e1365be416980217914fe009e9d55dec02e03
   ReactCommon: eb96b70a2a5bed775e919151fd77699fed52944c
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
+  RNCAsyncStorage: e99188b8a89ea0edddc82d8831cd5142f4550fdc
   RNReanimated: 438b025d37de68a20188ead653ad5a5050b65990
   RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
@@ -842,6 +848,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 6af72bedeaea291a3a3717772d6d41836f23a1b9
 
-PODFILE CHECKSUM: 38930f92d3799a418b2d4f5ccf524e1aa6c0b048
+PODFILE CHECKSUM: 72fe32451ae9b5780fffcf0a8f7d2dbbe26eee30
 
 COCOAPODS: 1.6.0.beta.1
