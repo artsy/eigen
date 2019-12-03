@@ -14,9 +14,6 @@ export const useStickyTabContext = () => {
   return useContext(StickyTabScrollViewContext)
 }
 
-// how fast you have to be scrolling up to show the header when not near the top of the scroll view
-const SHOW_HEADER_VELOCITY = 25
-
 export const StickyTabScrollView: React.FC<{
   headerHeight: number
   headerOffsetY: Animated.Value<number>
@@ -113,22 +110,25 @@ function useStickyHeaderPositioning({
 
       // TODO: We'd like to change this to be based on overall scroll delta (starting from beginning
       // of the gesture). If it scrolls "too much" then it can catch.
-      const upwardVelocityBreached = Animated.lessOrEq(scrollDiff, -SHOW_HEADER_VELOCITY)
+      const amountScrolledUpward = new Animated.Value(0)
+      const upwardScrollThresholdBreached = Animated.greaterOrEq(amountScrolledUpward, 400)
 
       // this is the code which actually performs the update to headerOffsetY, according to which direction
       // the scrolling is going
       const updateHeaderOffset = Animated.cond(
         Animated.greaterThan(scrollDiff, 0),
         [
+          Animated.set(amountScrolledUpward, 0),
           // y offset got bigger so scrolling down (content travels up the screen)
           // move the header up (hide it) unconditionally
           Animated.set(headerOffsetY, Animated.max(-headerHeight, Animated.sub(headerOffsetY, scrollDiff))),
         ],
         [
           // y offset got smaller so scrolling up (content travels down the screen)
+          Animated.set(amountScrolledUpward, Animated.add(amountScrolledUpward, Animated.abs(scrollDiff))),
           // if velocity is high enough or we're already moving the header up or we're near the top of the scroll view
           // then move the header down (show it)
-          Animated.cond(Animated.or(upwardVelocityBreached, headerIsNotFullyUp, nearTheTop), [
+          Animated.cond(Animated.or(upwardScrollThresholdBreached, headerIsNotFullyUp, nearTheTop), [
             Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
           ]),
         ]
