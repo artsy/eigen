@@ -2,13 +2,14 @@ import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
-import { TouchableOpacity, View } from "react-native"
+import { NativeModules, TouchableOpacity, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabScrollView } from "./StickyTabScrollView"
+const { ARSwitchBoardModule } = NativeModules
 
 interface TabProps {
   initial?: boolean
@@ -34,6 +35,19 @@ export const StickyTabPage: React.FC<{
   const [headerHeight, setHeaderHeight] = useState<null | number>(null)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
+
+  const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
+
+  Animated.useCode(
+    () =>
+      Animated.onChange(
+        shouldHideBackButton,
+        Animated.call([shouldHideBackButton], ([shouldHide]) => {
+          ARSwitchBoardModule.updateShouldHideBackButton(shouldHide)
+        })
+      ),
+    []
+  )
 
   const handleTabPress = index => {
     setActiveTabIndex(index)

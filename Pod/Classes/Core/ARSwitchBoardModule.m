@@ -54,6 +54,11 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
     } reactTag:reactTag];
 }
 
+RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
+{
+  self.updateShouldHideBackButton(shouldHide);
+}
+
 - (dispatch_queue_t)methodQueue;
 {
   return dispatch_get_main_queue();
