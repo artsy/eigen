@@ -5,7 +5,6 @@ unless using_bundler
   exit(1)
 end
 
-
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -17,48 +16,56 @@ require 'down'
 require 'json'
 require 'fileutils'
 
-system 'mkdir rn_pods' unless File.exists?('./rn_pods')
+# We need to scope the side-effects of downloading Emission's NPM podspecs to 
+# only cases where we are actually installing pods (and not, for example,
+# fetching a key from CocoaPods-Keys). Not pretty, but it works!
+installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
-# Check if the version we're installing is the same as what we already have installed.
-needs_install = true # Assume it's true until we know otherwise
-if File.exists? './rn_pods/package.json'
-  emission_package = JSON.parse(File.read('./rn_pods/package.json'), symbolize_names: true)
-  needs_install = emission_package[:version] != EMISSION_VERSION
-end
+npm_vendored_podspecs = {}
+if installing_pods
+  system 'mkdir rn_pods' unless File.exists?('./rn_pods')
 
-if needs_install
-  puts 'Installing Emission packages to reference locally.'
-  system 'rm -rf rn_pods/*' # Clear all existing pods.
-
-  tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/package.json")
-  FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
-
-  emission_package = JSON.parse(File.read('./rn_pods/package.json'), symbolize_names: true)
-  emission_package.merge! scripts: {}
-
-  File.write('./rn_pods/package.json', emission_package.to_json)
-
-  tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/yarn.lock")
-  FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
-  tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/npm-podspecs.json")
-  FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
-  system 'pushd rn_pods ; yarn install --production ; popd'
-else
-  puts 'Skipping Emission node_modules install.'
-end
-
-npm_vendored_podspecs = JSON.parse(File.read('./rn_pods/npm-podspecs.json'), symbolize_names: true)
-npm_vendored_podspecs.update(npm_vendored_podspecs) do |_pod_name, props|
-  if props[:path]
-    props.merge path: File.join('./rn_pods/', props[:path])
-  else
-    props.merge podspec: File.join('./rn_pods/', props[:podspec])
+  # Check if the version we're installing is the same as what we already have installed.
+  needs_install = true # Assume it's true until we know otherwise
+  if File.exists? './rn_pods/package.json'
+    emission_package = JSON.parse(File.read('./rn_pods/package.json'), symbolize_names: true)
+    needs_install = emission_package[:version] != EMISSION_VERSION
   end
-end
 
-# Remove DevSupport pod on CI builds, which are used to deploy prod builds.
-if ENV['CIRCLE_BUILD_NUM']
-  npm_vendored_podspecs['React-Core'.to_sym].delete(:subspecs)
+  if needs_install
+    puts 'Installing Emission packages to reference locally.'
+    system 'rm -rf rn_pods/*' # Clear all existing pods.
+
+    tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/package.json")
+    FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
+
+    emission_package = JSON.parse(File.read('./rn_pods/package.json'), symbolize_names: true)
+    emission_package.merge! scripts: {}
+
+    File.write('./rn_pods/package.json', emission_package.to_json)
+
+    tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/yarn.lock")
+    FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
+    tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/npm-podspecs.json")
+    FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
+    system 'pushd rn_pods ; yarn install --production ; popd'
+  else
+    puts 'Skipping Emission node_modules install.'
+  end
+
+  npm_vendored_podspecs = JSON.parse(File.read('./rn_pods/npm-podspecs.json'), symbolize_names: true)
+  npm_vendored_podspecs.update(npm_vendored_podspecs) do |_pod_name, props|
+    if props[:path]
+      props.merge path: File.join('./rn_pods/', props[:path])
+    else
+      props.merge podspec: File.join('./rn_pods/', props[:podspec])
+    end
+  end
+
+  # Remove DevSupport pod on CI builds, which are used to deploy prod builds.
+  if ENV['CIRCLE_BUILD_NUM']
+    npm_vendored_podspecs['React-Core'.to_sym].delete(:subspecs)
+  end
 end
 
 
