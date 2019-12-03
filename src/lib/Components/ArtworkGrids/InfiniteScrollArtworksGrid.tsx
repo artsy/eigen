@@ -235,7 +235,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             {artworks}
           </View>
         </Box>
-        {this.state.fetchingNextPage ? <Spinner style={styles.spinner} /> : null}
+        {this.state.fetchingNextPage && (
+          <Box my={2}>
+            <Spinner />
+          </Box>
+        )}
       </ScrollView>
     )
   }
@@ -244,7 +248,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 interface Styles {
   container: ViewStyle
   section: ViewStyle
-  spinner: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -254,9 +257,6 @@ const styles = StyleSheet.create<Styles>({
   section: {
     flex: 1,
     flexDirection: "column",
-  },
-  spinner: {
-    marginTop: 20,
   },
 })
 
