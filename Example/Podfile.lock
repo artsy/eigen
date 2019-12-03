@@ -313,6 +313,8 @@ PODS:
     - React-cxxreact (= 0.61.4)
     - React-jsi (= 0.61.4)
     - ReactCommon/jscallinvoker (= 0.61.4)
+  - RNCAsyncStorage (1.6.3):
+    - React
   - RNReanimated (1.4.0):
     - React
   - RNSVG (9.13.3):
@@ -380,6 +382,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SAMKeychain
@@ -483,6 +486,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNSVG:
@@ -553,6 +558,7 @@ SPEC CHECKSUMS:
   React-RCTText: 21934e0a51d522abcd0a275407e80af45d6fd9ec
   React-RCTVibration: 0f76400ee3cec6edb9c125da49fed279340d145a
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
+  RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
