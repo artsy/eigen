@@ -29,7 +29,9 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -103,7 +105,9 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -177,7 +181,9 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -251,7 +257,9 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -325,7 +333,9 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -399,7 +409,9 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -503,7 +515,9 @@ exports[`TODO states: Looks right when With Artist 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -580,7 +594,9 @@ exports[`TODO states: Looks right when With Artist 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -654,7 +670,9 @@ exports[`TODO states: Looks right when With Artist 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -728,7 +746,9 @@ exports[`TODO states: Looks right when With Artist 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -802,7 +822,9 @@ exports[`TODO states: Looks right when With Artist 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -876,7 +898,9 @@ exports[`TODO states: Looks right when With Artist 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -980,7 +1004,9 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1054,7 +1080,9 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1128,7 +1156,9 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1205,7 +1235,9 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1279,7 +1311,9 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1353,7 +1387,9 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1457,7 +1493,9 @@ exports[`TODO states: Looks right when With Location 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1534,7 +1572,9 @@ exports[`TODO states: Looks right when With Location 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1611,7 +1651,9 @@ exports[`TODO states: Looks right when With Location 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1688,7 +1730,9 @@ exports[`TODO states: Looks right when With Location 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1762,7 +1806,9 @@ exports[`TODO states: Looks right when With Location 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1836,7 +1882,9 @@ exports[`TODO states: Looks right when With Location 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -1940,7 +1988,9 @@ exports[`TODO states: Looks right when With Long 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2014,7 +2064,9 @@ exports[`TODO states: Looks right when With Long 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2088,7 +2140,9 @@ exports[`TODO states: Looks right when With Long 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2162,7 +2216,9 @@ exports[`TODO states: Looks right when With Long 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2236,7 +2292,9 @@ exports[`TODO states: Looks right when With Long 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2310,7 +2368,9 @@ exports[`TODO states: Looks right when With Long 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2417,7 +2477,9 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2494,7 +2556,9 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2571,7 +2635,9 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2648,7 +2714,9 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2722,7 +2790,9 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2796,7 +2866,9 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2900,7 +2972,9 @@ exports[`TODO states: Looks right when With One 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -2977,7 +3051,9 @@ exports[`TODO states: Looks right when With One 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3054,7 +3130,9 @@ exports[`TODO states: Looks right when With One 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3128,7 +3206,9 @@ exports[`TODO states: Looks right when With One 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3202,7 +3282,9 @@ exports[`TODO states: Looks right when With One 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3276,7 +3358,9 @@ exports[`TODO states: Looks right when With One 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3380,7 +3464,9 @@ exports[`TODO states: Looks right when With Photos 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3457,7 +3543,9 @@ exports[`TODO states: Looks right when With Photos 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3534,7 +3622,9 @@ exports[`TODO states: Looks right when With Photos 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3608,7 +3698,9 @@ exports[`TODO states: Looks right when With Photos 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3682,7 +3774,9 @@ exports[`TODO states: Looks right when With Photos 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3756,7 +3850,9 @@ exports[`TODO states: Looks right when With Photos 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3860,7 +3956,9 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -3937,7 +4035,9 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -4014,7 +4114,9 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -4091,7 +4193,9 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -4165,7 +4269,9 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -4242,7 +4348,9 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
   />
   <View
     accessible={true}
+    focusable={false}
     isTVSelectable={true}
+    onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}

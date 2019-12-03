@@ -221,6 +221,8 @@ exports[`renders properly with credit card 1`] = `
             >
               <View
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -243,6 +245,8 @@ exports[`renders properly with credit card 1`] = `
               >
                 <View
                   accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -319,6 +323,8 @@ exports[`renders properly with credit card 1`] = `
                   <View
                     accessible={true}
                     flexDirection="row"
+                    focusable={true}
+                    onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
                     onResponderRelease={[Function]}
@@ -655,8 +661,10 @@ exports[`renders properly with credit card 1`] = `
             accessible={true}
             alignItems="center"
             flexDirection="row"
+            focusable={true}
             justifyContent="center"
             mb={4}
+            onClick={[Function]}
             onPress={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -753,6 +761,8 @@ exports[`renders properly with credit card 1`] = `
             <View
               accessible={true}
               flexDirection="row"
+              focusable={true}
+              onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -1292,8 +1302,10 @@ exports[`renders properly without credit card 1`] = `
               accessible={true}
               alignItems="center"
               flexDirection="row"
+              focusable={true}
               justifyContent="space-between"
               mb={1}
+              onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -1414,8 +1426,10 @@ exports[`renders properly without credit card 1`] = `
               accessible={true}
               alignItems="center"
               flexDirection="row"
+              focusable={true}
               justifyContent="space-between"
               mb={1}
+              onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -1571,6 +1585,8 @@ exports[`renders properly without credit card 1`] = `
             >
               <View
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -1593,6 +1609,8 @@ exports[`renders properly without credit card 1`] = `
               >
                 <View
                   accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -1669,6 +1687,8 @@ exports[`renders properly without credit card 1`] = `
                   <View
                     accessible={true}
                     flexDirection="row"
+                    focusable={true}
+                    onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
                     onResponderRelease={[Function]}
@@ -2005,8 +2025,10 @@ exports[`renders properly without credit card 1`] = `
             accessible={true}
             alignItems="center"
             flexDirection="row"
+            focusable={true}
             justifyContent="center"
             mb={4}
+            onClick={[Function]}
             onPress={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -2103,6 +2125,8 @@ exports[`renders properly without credit card 1`] = `
             <View
               accessible={true}
               flexDirection="row"
+              focusable={true}
+              onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}

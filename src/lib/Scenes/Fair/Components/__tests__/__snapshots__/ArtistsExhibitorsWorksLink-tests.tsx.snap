@@ -30,6 +30,8 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       accessible={true}
       align-items="base-line"
       flexDirection="row"
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -79,6 +81,7 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
           align="xMidYMid"
           bbHeight={14}
           bbWidth={14}
+          focusable={false}
           height={14}
           meetOrSlice={0}
           minX={0}
@@ -92,7 +95,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               Object {
                 "top": 1,
               },
-              null,
+              Object {
+                "opacity": 1,
+              },
               Object {
                 "flex": 0,
                 "height": 14,
@@ -241,6 +246,8 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       accessible={true}
       align-items="base-line"
       flexDirection="row"
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -290,6 +297,7 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
           align="xMidYMid"
           bbHeight={14}
           bbWidth={14}
+          focusable={false}
           height={14}
           meetOrSlice={0}
           minX={0}
@@ -303,7 +311,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               Object {
                 "top": 1,
               },
-              null,
+              Object {
+                "opacity": 1,
+              },
               Object {
                 "flex": 0,
                 "height": 14,
@@ -452,6 +462,8 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       accessible={true}
       align-items="base-line"
       flexDirection="row"
+      focusable={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -501,6 +513,7 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
           align="xMidYMid"
           bbHeight={14}
           bbWidth={14}
+          focusable={false}
           height={14}
           meetOrSlice={0}
           minX={0}
@@ -514,7 +527,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               Object {
                 "top": 1,
               },
-              null,
+              Object {
+                "opacity": 1,
+              },
               Object {
                 "flex": 0,
                 "height": 14,

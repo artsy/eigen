@@ -546,7 +546,9 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       </Text>
                       <View
                         accessible={true}
+                        focusable={true}
                         isTVSelectable={true}
+                        onClick={[Function]}
                         onResponderGrant={[Function]}
                         onResponderMove={[Function]}
                         onResponderRelease={[Function]}
@@ -664,6 +666,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                   </View>
                   <View
                     accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
                     onResponderRelease={[Function]}
@@ -742,7 +746,9 @@ exports[`state is set up with empty consignment metadata 1`] = `
         />
         <View
           accessible={true}
+          focusable={true}
           isTVSelectable={true}
+          onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1334,7 +1340,9 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       </Text>
                       <View
                         accessible={true}
+                        focusable={true}
                         isTVSelectable={true}
+                        onClick={[Function]}
                         onResponderGrant={[Function]}
                         onResponderMove={[Function]}
                         onResponderRelease={[Function]}
@@ -1452,6 +1460,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                   </View>
                   <View
                     accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
                     onResponderRelease={[Function]}
@@ -1530,7 +1540,9 @@ exports[`state is set up with filled consignment metadata 1`] = `
         />
         <View
           accessible={true}
+          focusable={true}
           isTVSelectable={true}
+          onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}

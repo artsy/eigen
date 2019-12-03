@@ -19,35 +19,12 @@ export type WorksForYou_query = {
             } | null;
         } | null;
     } | null;
-    readonly selectedArtist: {
-        readonly slug: string;
-        readonly href: string | null;
-        readonly name: string | null;
-        readonly image: {
-            readonly resized: {
-                readonly url: string | null;
-            } | null;
-        } | null;
-        readonly artworks: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
-                } | null;
-            } | null> | null;
-        } | null;
-    } | null;
     readonly " $refType": "WorksForYou_query";
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "Literal",
-  "name": "sort",
-  "value": "PUBLISHED_AT_DESC"
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "WorksForYou_query",
   "type": "Query",
@@ -77,12 +54,6 @@ return {
       "name": "cursor",
       "type": "String",
       "defaultValue": null
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "selectedArtist",
-      "type": "String!",
-      "defaultValue": ""
     },
     {
       "kind": "LocalArgument",
@@ -116,7 +87,11 @@ return {
               "name": "__WorksForYou_notifications_connection",
               "storageKey": "__WorksForYou_notifications_connection(sort:\"PUBLISHED_AT_DESC\")",
               "args": [
-                (v0/*: any*/)
+                {
+                  "kind": "Literal",
+                  "name": "sort",
+                  "value": "PUBLISHED_AT_DESC"
+                }
               ],
               "concreteType": "FollowedArtistsArtworksGroupConnection",
               "plural": false,
@@ -199,132 +174,8 @@ return {
           ]
         }
       ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": "selectedArtist",
-      "name": "artist",
-      "storageKey": null,
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "id",
-          "variableName": "selectedArtist"
-        }
-      ],
-      "concreteType": "Artist",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "slug",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "href",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "name",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "image",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Image",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "resized",
-              "storageKey": "resized(height:80,width:80)",
-              "args": [
-                {
-                  "kind": "Literal",
-                  "name": "height",
-                  "value": 80
-                },
-                {
-                  "kind": "Literal",
-                  "name": "width",
-                  "value": 80
-                }
-              ],
-              "concreteType": "ResizedImageUrl",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "url",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": "artworks",
-          "name": "artworksConnection",
-          "storageKey": "artworksConnection(first:6,sort:\"PUBLISHED_AT_DESC\")",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 6
-            },
-            (v0/*: any*/)
-          ],
-          "concreteType": "ArtworkConnection",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "edges",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "ArtworkEdge",
-              "plural": true,
-              "selections": [
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "node",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Artwork",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "FragmentSpread",
-                      "name": "GenericGrid_artworks",
-                      "args": null
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
     }
   ]
 };
-})();
-(node as any).hash = 'c5f141826764d982b4a00aa020709ffe';
+(node as any).hash = 'ef9a3c92f093075b90773f766409d6f0';
 export default node;

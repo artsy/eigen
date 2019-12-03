@@ -67,7 +67,7 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
     activeTab: this.props.activeTab || 0,
   }
 
-  componentWillReceiveProps(newProps: ScrollableTabBarProps) {
+  UNSAFE_componentWillReceiveProps(newProps: ScrollableTabBarProps) {
     this.centerOnTab(newProps.activeTab)
   }
 

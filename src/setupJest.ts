@@ -41,6 +41,9 @@ jest.mock("react-native-sentry", () => ({
   },
 }))
 
+// Needing to mock react-native-scrollable-tab-view due to Flow issue
+jest.mock("react-native-scrollable-tab-view", () => jest.fn())
+
 jest.mock("@mapbox/react-native-mapbox-gl", () => ({
   MapView: () => null,
   StyleURL: {

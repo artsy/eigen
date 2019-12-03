@@ -156,6 +156,9 @@ function useStickyHeaderPositioning({
 
       const nearTheTop = Animated.lessOrEq(scrollOffsetY, headerHeight)
 
+      const amountScrolledUpward = new Animated.Value(0)
+      const upwardScrollThresholdBreached = Animated.greaterOrEq(amountScrolledUpward, 400)
+
       // this is the code which actually performs the update to headerOffsetY, according to which direction
       // the scrolling is going
       const updateHeaderOffset = Animated.cond(
@@ -163,13 +166,15 @@ function useStickyHeaderPositioning({
         [
           // y offset got bigger so scrolling down (content travels up the screen)
           // move the header up (hide it) unconditionally
+          Animated.set(amountScrolledUpward, 0),
           Animated.set(headerOffsetY, Animated.max(negative(headerHeight), Animated.sub(headerOffsetY, scrollDiff))),
         ],
         [
           // y offset got smaller so scrolling up (content travels down the screen)
           // if velocity is high enough or we're already moving the header up or we're near the top of the scroll view
           // then move the header down (show it)
-          Animated.cond(Animated.or(headerIsNotFullyUp, nearTheTop), [
+          Animated.set(amountScrolledUpward, Animated.add(amountScrolledUpward, Animated.abs(scrollDiff))),
+          Animated.cond(Animated.or(upwardScrollThresholdBreached, headerIsNotFullyUp, nearTheTop), [
             Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
           ]),
         ]

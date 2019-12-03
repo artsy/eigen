@@ -11,6 +11,9 @@ unless Dir.exist? '../node_modules'
   exit(1)
 end
 
+# TODO: Get autolinking working after RN upgrade
+# require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
 require "rbconfig"
 expected_ruby_version = File.read(File.expand_path("../../.ruby-version", __FILE__)).strip
 unless RbConfig::CONFIG["RUBY_PROGRAM_VERSION"] == expected_ruby_version
@@ -25,34 +28,24 @@ source 'https://cdn.cocoapods.org/'
 inhibit_all_warnings!
 platform :ios, '10.0'
 
-node_modules_path = '../node_modules'
-react_path = File.join(node_modules_path, 'react-native')
-yoga_path = File.join(react_path, 'ReactCommon/yoga')
-folly_spec_path = File.join(react_path, 'third-party-podspecs/Folly.podspec')
-glog_spec_path = File.join(react_path, 'third-party-podspecs/glog.podspec')
-double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/DoubleConversion.podspec')
-
-# If you add a new dependency here, it should also go in the Podspec
-sentry_path = File.join(node_modules_path, 'react-native-sentry')
-tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe.podspec')
-mapbox_path = File.join(node_modules_path, '@mapbox/react-native-mapbox-gl')
-react_native_cameraroll_path = File.join(node_modules_path, '@react-native-community/cameraroll')
-react_native_navigator_ios_path = File.join(node_modules_path, 'react-native-navigator-ios')
-react_native_reanimated_path =File.join(node_modules_path, 'react-native-reanimated')
+require 'json'
+npm_vendored_podspecs = JSON.parse(File.read('../npm-podspecs.json'), symbolize_names: true)
+npm_vendored_podspecs.update(npm_vendored_podspecs) do |_pod_name, props|
+  if props[:path]
+    props.merge path: File.join('../', props[:path])
+  else
+    props.merge podspec: File.join('../', props[:podspec])
+  end
+end
 
 target 'Emission' do
   pod 'Emission', path: '../', inhibit_warnings: false
 
-  # As this runs dev, we need the developer web socket
-  pod 'React', path: react_path, subspecs: %w[DevSupport]
-  pod 'yoga', path: yoga_path
-  pod 'Folly', podspec: folly_spec_path
-  pod 'DoubleConversion', podspec: double_conversion_spec_path
-  pod 'glog', podspec: glog_spec_path
+  npm_vendored_podspecs.each do |pod_name, props|
+    pod pod_name.to_s, props
+  end
 
   pod 'Sentry', subspecs: %w[Core KSCrash]
-  pod 'SentryReactNative', path: sentry_path
-
   # Got to make it look right
   pod 'Artsy+UIFonts'
 
@@ -72,20 +65,6 @@ target 'Emission' do
   pod 'Artsy+Authentication', subspecs: %w[email],
                               git: 'https://github.com/artsy/Artsy-Authentication.git',
                               branch: 'fetch-user-details'
-
-  # Stripe- tag must match package.json's tipsi-stripe dep
-  pod 'tipsi-stripe', podspec: tispi_stripe_spec_path
-
-  # Map library
-  pod 'react-native-mapbox-gl', path: mapbox_path
-  pod 'RNSVG', path: '../node_modules/react-native-svg'
-
-  pod 'react-native-cameraroll', path: react_native_cameraroll_path
-
-  # Deprecated from React Native, but fine until we support Android
-  pod 'react-native-navigator-ios', path: react_native_navigator_ios_path
-
-  pod 'RNReanimated', path: react_native_reanimated_path
 
   # Bottom Sheet view controller for Map view
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'

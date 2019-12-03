@@ -51,8 +51,10 @@ Array [
   >
     <View
       accessible={true}
+      focusable={true}
       isActive={true}
       isLast={true}
+      onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}

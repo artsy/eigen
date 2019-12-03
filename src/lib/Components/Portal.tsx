@@ -57,7 +57,7 @@ class InnerPortal extends React.Component<InnerPortalProps> {
     this.props.onSetPortalChildren(this.props.children)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.children !== nextProps.children) {
       this.props.onSetPortalChildren(nextProps.children)
     }

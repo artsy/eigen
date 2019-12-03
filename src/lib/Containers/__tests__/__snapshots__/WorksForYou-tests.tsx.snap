@@ -22,236 +22,337 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
       }
     >
       <RCTScrollView
-        dataSource={
-          ListViewDataSource {
-            "items": 2,
-          }
+        ItemSeparatorComponent={[Function]}
+        ListFooterComponent={[Function]}
+        data={
+          Array [
+            Object {
+              "node": Object {
+                "artists": "Jean-Michel Basquiat",
+                "artworks": Object {
+                  "edges": Array [
+                    Object {
+                      "title": "Anti-Product Postcard",
+                    },
+                  ],
+                },
+                "image": Object {
+                  "resized": Object {
+                    "url": "cloudfront.url",
+                  },
+                },
+                "summary": "1 Work Added",
+              },
+            },
+            Object {
+              "node": Object {
+                "artists": "Ana Mendieta",
+                "artworks": Object {
+                  "edges": Array [
+                    Object {
+                      "title": "Corazón de Roca con Sangre",
+                    },
+                    Object {
+                      "title": "Butterfly",
+                    },
+                  ],
+                },
+                "image": Object {
+                  "resized": Object {
+                    "url": "cloudfront.url",
+                  },
+                },
+                "summary": "2 Works Added",
+              },
+            },
+          ]
         }
-        renderFooter={[Function]}
-        renderRow={[Function]}
-        renderScrollComponent={[Function]}
-        renderSeparator={[Function]}
+        disableVirtualization={false}
+        getItem={[Function]}
+        getItemCount={[Function]}
+        horizontal={false}
+        initialNumToRender={10}
+        keyExtractor={[Function]}
+        maxToRenderPerBatch={10}
+        numColumns={1}
+        onContentSizeChange={[Function]}
+        onEndReachedThreshold={2}
+        onLayout={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        removeClippedSubviews={false}
+        renderItem={[Function]}
         scrollEnabled={false}
+        scrollEventThrottle={50}
+        stickyHeaderIndices={Array []}
+        updateCellsBatchingPeriod={50}
+        viewabilityConfigCallbackPairs={Array []}
+        windowSize={21}
       >
         <View>
           <View
-            style={
-              Object {
-                "marginLeft": 20,
-                "marginRight": 20,
-                "marginTop": 20,
-              }
-            }
+            onLayout={[Function]}
+            style={null}
           >
             <View
-              accessible={true}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
               style={
                 Object {
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "cloudfront.url",
-                  }
-                }
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "backgroundColor": "#f8f8f8",
-                    "borderRadius": 20,
-                    "height": 40,
-                    "marginRight": 10,
-                    "width": 40,
-                  }
-                }
-              />
-              <View
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "flex": 1,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  JEAN-MICHEL BASQUIAT
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 17,
-                      },
-                      Object {
-                        "color": "#666666",
-                        "fontSize": 14,
-                        "marginTop": 2,
-                      },
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
-                  }
-                >
-                  1 Work Added
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                Object {
-                  "marginBottom": 20,
+                  "marginLeft": 20,
+                  "marginRight": 20,
                   "marginTop": 20,
                 }
               }
             >
               <View
-                onLayout={[Function]}
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
               >
-                <View
-                  accessibilityLabel="Artworks Content View"
+                <Image
+                  source={
+                    Object {
+                      "uri": "cloudfront.url",
+                    }
+                  }
                   style={
                     Object {
-                      "flexDirection": "row",
+                      "alignSelf": "center",
+                      "backgroundColor": "#f8f8f8",
+                      "borderRadius": 20,
+                      "height": 40,
+                      "marginRight": 10,
+                      "width": 40,
                     }
                   }
                 />
+                <View
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                        Object {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    JEAN-MICHEL BASQUIAT
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 17,
+                        },
+                        Object {
+                          "color": "#666666",
+                          "fontSize": 14,
+                          "marginTop": 2,
+                        },
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    1 Work Added
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={
+                  Object {
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  }
+                }
+              >
+                <View
+                  onLayout={[Function]}
+                >
+                  <View
+                    accessibilityLabel="Artworks Content View"
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              px={2}
+              style={
+                Array [
+                  Object {
+                    "paddingLeft": 20,
+                    "paddingRight": 20,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#E5E5E5",
+                      "borderStyle": "solid",
+                      "borderWidth": 1,
+                      "width": "100%",
+                    },
+                  ]
+                }
+                width="100%"
+              />
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              style={
+                Object {
+                  "marginLeft": 20,
+                  "marginRight": 20,
+                  "marginTop": 20,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Image
+                  source={
+                    Object {
+                      "uri": "cloudfront.url",
+                    }
+                  }
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "backgroundColor": "#f8f8f8",
+                      "borderRadius": 20,
+                      "height": 40,
+                      "marginRight": 10,
+                      "width": 40,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                        Object {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    ANA MENDIETA
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 17,
+                        },
+                        Object {
+                          "color": "#666666",
+                          "fontSize": 14,
+                          "marginTop": 2,
+                        },
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    2 Works Added
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={
+                  Object {
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  }
+                }
+              >
+                <View
+                  onLayout={[Function]}
+                >
+                  <View
+                    accessibilityLabel="Artworks Content View"
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
               </View>
             </View>
           </View>
           <View
-            style={
-              Object {
-                "marginLeft": 20,
-                "marginRight": 20,
-                "marginTop": 20,
-              }
-            }
-          >
-            <View
-              accessible={true}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                Object {
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "cloudfront.url",
-                  }
-                }
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "backgroundColor": "#f8f8f8",
-                    "borderRadius": 20,
-                    "height": 40,
-                    "marginRight": 10,
-                    "width": 40,
-                  }
-                }
-              />
-              <View
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "flex": 1,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  ANA MENDIETA
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 17,
-                      },
-                      Object {
-                        "color": "#666666",
-                        "fontSize": 14,
-                        "marginTop": 2,
-                      },
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
-                  }
-                >
-                  2 Works Added
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                Object {
-                  "marginBottom": 20,
-                  "marginTop": 20,
-                }
-              }
-            >
-              <View
-                onLayout={[Function]}
-              >
-                <View
-                  accessibilityLabel="Artworks Content View"
-                  style={
-                    Object {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
+            onLayout={[Function]}
+          />
         </View>
       </RCTScrollView>
     </View>
@@ -281,236 +382,337 @@ exports[`with notifications lays out correctly on small screens 1`] = `
       }
     >
       <RCTScrollView
-        dataSource={
-          ListViewDataSource {
-            "items": 2,
-          }
+        ItemSeparatorComponent={[Function]}
+        ListFooterComponent={[Function]}
+        data={
+          Array [
+            Object {
+              "node": Object {
+                "artists": "Jean-Michel Basquiat",
+                "artworks": Object {
+                  "edges": Array [
+                    Object {
+                      "title": "Anti-Product Postcard",
+                    },
+                  ],
+                },
+                "image": Object {
+                  "resized": Object {
+                    "url": "cloudfront.url",
+                  },
+                },
+                "summary": "1 Work Added",
+              },
+            },
+            Object {
+              "node": Object {
+                "artists": "Ana Mendieta",
+                "artworks": Object {
+                  "edges": Array [
+                    Object {
+                      "title": "Corazón de Roca con Sangre",
+                    },
+                    Object {
+                      "title": "Butterfly",
+                    },
+                  ],
+                },
+                "image": Object {
+                  "resized": Object {
+                    "url": "cloudfront.url",
+                  },
+                },
+                "summary": "2 Works Added",
+              },
+            },
+          ]
         }
-        renderFooter={[Function]}
-        renderRow={[Function]}
-        renderScrollComponent={[Function]}
-        renderSeparator={[Function]}
+        disableVirtualization={false}
+        getItem={[Function]}
+        getItemCount={[Function]}
+        horizontal={false}
+        initialNumToRender={10}
+        keyExtractor={[Function]}
+        maxToRenderPerBatch={10}
+        numColumns={1}
+        onContentSizeChange={[Function]}
+        onEndReachedThreshold={2}
+        onLayout={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        removeClippedSubviews={false}
+        renderItem={[Function]}
         scrollEnabled={false}
+        scrollEventThrottle={50}
+        stickyHeaderIndices={Array []}
+        updateCellsBatchingPeriod={50}
+        viewabilityConfigCallbackPairs={Array []}
+        windowSize={21}
       >
         <View>
           <View
-            style={
-              Object {
-                "marginLeft": 20,
-                "marginRight": 20,
-                "marginTop": 20,
-              }
-            }
+            onLayout={[Function]}
+            style={null}
           >
             <View
-              accessible={true}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
               style={
                 Object {
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "cloudfront.url",
-                  }
-                }
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "backgroundColor": "#f8f8f8",
-                    "borderRadius": 20,
-                    "height": 40,
-                    "marginRight": 10,
-                    "width": 40,
-                  }
-                }
-              />
-              <View
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "flex": 1,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  JEAN-MICHEL BASQUIAT
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 17,
-                      },
-                      Object {
-                        "color": "#666666",
-                        "fontSize": 14,
-                        "marginTop": 2,
-                      },
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
-                  }
-                >
-                  1 Work Added
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                Object {
-                  "marginBottom": 20,
+                  "marginLeft": 20,
+                  "marginRight": 20,
                   "marginTop": 20,
                 }
               }
             >
               <View
-                onLayout={[Function]}
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
               >
-                <View
-                  accessibilityLabel="Artworks Content View"
+                <Image
+                  source={
+                    Object {
+                      "uri": "cloudfront.url",
+                    }
+                  }
                   style={
                     Object {
-                      "flexDirection": "row",
+                      "alignSelf": "center",
+                      "backgroundColor": "#f8f8f8",
+                      "borderRadius": 20,
+                      "height": 40,
+                      "marginRight": 10,
+                      "width": 40,
                     }
                   }
                 />
+                <View
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                        Object {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    JEAN-MICHEL BASQUIAT
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 17,
+                        },
+                        Object {
+                          "color": "#666666",
+                          "fontSize": 14,
+                          "marginTop": 2,
+                        },
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    1 Work Added
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={
+                  Object {
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  }
+                }
+              >
+                <View
+                  onLayout={[Function]}
+                >
+                  <View
+                    accessibilityLabel="Artworks Content View"
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              px={2}
+              style={
+                Array [
+                  Object {
+                    "paddingLeft": 20,
+                    "paddingRight": 20,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "borderBottomWidth": 0,
+                      "borderColor": "#E5E5E5",
+                      "borderStyle": "solid",
+                      "borderWidth": 1,
+                      "width": "100%",
+                    },
+                  ]
+                }
+                width="100%"
+              />
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              style={
+                Object {
+                  "marginLeft": 20,
+                  "marginRight": 20,
+                  "marginTop": 20,
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Image
+                  source={
+                    Object {
+                      "uri": "cloudfront.url",
+                    }
+                  }
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "backgroundColor": "#f8f8f8",
+                      "borderRadius": 20,
+                      "height": 40,
+                      "marginRight": 10,
+                      "width": 40,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    Object {
+                      "alignSelf": "center",
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                        Object {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    ANA MENDIETA
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 17,
+                        },
+                        Object {
+                          "color": "#666666",
+                          "fontSize": 14,
+                          "marginTop": 2,
+                        },
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    2 Works Added
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={
+                  Object {
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  }
+                }
+              >
+                <View
+                  onLayout={[Function]}
+                >
+                  <View
+                    accessibilityLabel="Artworks Content View"
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
               </View>
             </View>
           </View>
           <View
-            style={
-              Object {
-                "marginLeft": 20,
-                "marginRight": 20,
-                "marginTop": 20,
-              }
-            }
-          >
-            <View
-              accessible={true}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                Object {
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "cloudfront.url",
-                  }
-                }
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "backgroundColor": "#f8f8f8",
-                    "borderRadius": 20,
-                    "height": 40,
-                    "marginRight": 10,
-                    "width": 40,
-                  }
-                }
-              />
-              <View
-                style={
-                  Object {
-                    "alignSelf": "center",
-                    "flex": 1,
-                  }
-                }
-              >
-                <Text
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  ANA MENDIETA
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 17,
-                      },
-                      Object {
-                        "color": "#666666",
-                        "fontSize": 14,
-                        "marginTop": 2,
-                      },
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
-                  }
-                >
-                  2 Works Added
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                Object {
-                  "marginBottom": 20,
-                  "marginTop": 20,
-                }
-              }
-            >
-              <View
-                onLayout={[Function]}
-              >
-                <View
-                  accessibilityLabel="Artworks Content View"
-                  style={
-                    Object {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
+            onLayout={[Function]}
+          />
         </View>
       </RCTScrollView>
     </View>

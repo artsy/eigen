@@ -31,7 +31,7 @@ export class Inbox extends React.Component<Props, State> {
     fetchingData: false,
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.isVisible) {
       this.fetchData()
     }

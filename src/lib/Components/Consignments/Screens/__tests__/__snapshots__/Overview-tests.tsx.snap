@@ -125,7 +125,9 @@ exports[`Sets up the right view hierarchy 1`] = `
               />
               <View
                 accessible={true}
+                focusable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -199,7 +201,9 @@ exports[`Sets up the right view hierarchy 1`] = `
               />
               <View
                 accessible={true}
+                focusable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -273,7 +277,9 @@ exports[`Sets up the right view hierarchy 1`] = `
               />
               <View
                 accessible={true}
+                focusable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -347,7 +353,9 @@ exports[`Sets up the right view hierarchy 1`] = `
               />
               <View
                 accessible={true}
+                focusable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -421,7 +429,9 @@ exports[`Sets up the right view hierarchy 1`] = `
               />
               <View
                 accessible={true}
+                focusable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -495,7 +505,9 @@ exports[`Sets up the right view hierarchy 1`] = `
               />
               <View
                 accessible={true}
+                focusable={true}
                 isTVSelectable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -612,6 +624,8 @@ exports[`Sets up the right view hierarchy 1`] = `
               <View
                 accessible={true}
                 flexDirection="row"
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}

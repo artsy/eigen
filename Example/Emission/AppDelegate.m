@@ -225,6 +225,12 @@ randomBOOL(void)
     [controller presentViewController:alert animated:YES completion:nil];
   };
 
+  emission.switchBoardModule.updateShouldHideBackButton = ^(BOOL shouldHide) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[self.navigationController backButton] setHidden:shouldHide];
+    });
+  };
+
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
     if ([fromViewController isKindOfClass:ARStorybookComponentViewController.class]) {

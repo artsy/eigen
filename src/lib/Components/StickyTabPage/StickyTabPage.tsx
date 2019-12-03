@@ -2,13 +2,15 @@ import { color, Spacer } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
-import { View } from "react-native"
+import { NativeModules, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
+
+const { ARSwitchBoardModule } = NativeModules
 
 interface TabProps {
   initial?: boolean
@@ -36,6 +38,19 @@ export const StickyTabPage: React.FC<{
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>()
+
+  const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
+
+  Animated.useCode(
+    () =>
+      Animated.onChange(
+        shouldHideBackButton,
+        Animated.call([shouldHideBackButton], ([shouldHide]) => {
+          ARSwitchBoardModule.updateShouldHideBackButton(shouldHide)
+        })
+      ),
+    []
+  )
 
   return (
     <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
