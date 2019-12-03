@@ -41,7 +41,7 @@ export class AllEvents extends React.Component<Props, State> {
     this.updateSections(this.props)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const shouldUpdate = this.shouldUpdate(nextProps)
 
     if (shouldUpdate) {

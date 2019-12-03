@@ -90,7 +90,7 @@ export class CityView extends Component<Props, State> {
     })
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     EventEmitter.subscribe("map:change", this.handleEvent)
     EventEmitter.subscribe("map:error", this.handleError)
   }

@@ -1,14 +1,5 @@
 import React from "react"
-import {
-  Dimensions,
-  Image,
-  ListView,
-  ListViewDataSource,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from "react-native"
+import { Dimensions, FlatList, Image, StyleSheet, TouchableHighlight, TouchableOpacity, View } from "react-native"
 
 import styled from "styled-components/native"
 
@@ -90,14 +81,13 @@ const ImageForURI = (props: ImagePreviewProps) => (
 
 interface Props {
   data: ImageData[]
-  selected?: Set<string>
+  selected?: string[]
   onPressNewPhoto?: () => void
-  onUpdateSelectedStates?: (selectionSet: Set<string>) => void
+  onUpdateSelectedStates?: (selection: string[]) => void
 }
 
 interface State {
-  selected: Set<string>
-  dataSource: ListViewDataSource
+  selected: string[]
 }
 
 const TakePhotoID = "take_photo"
@@ -108,46 +98,23 @@ export default class ImageSelection extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      selected: props.selected ? props.selected : new Set(),
-      dataSource: this.dataSourceFromData(props.data, isPad),
+      selected: props.selected ? props.selected : [],
     }
-  }
-
-  // Whenever props changes we need to be able to set a new version of the datasource
-  // see: https://github.com/facebook/react-native/issues/4104
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data !== this.props.data) {
-      this.setState({
-        dataSource: this.dataSourceFromData(nextProps.data, isPad),
-      })
-    }
-  }
-
-  // Standardized way to create a datasource
-  dataSourceFromData = (data, isLargeWidth) => {
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-    const rows = isLargeWidth ? [TakePhotoID, ...data] : [TakePhotoID, ...data, BlankImageID]
-    return ds.cloneWithRows(rows)
   }
 
   onPressItem = (id: string) => {
-    this.setState(_state => {
-      const selected = this.state.selected
-      const selectedAlready = selected.has(id)
-      if (selectedAlready) {
-        selected.delete(id)
-      } else {
-        selected.add(id)
-      }
-
+    const selected = this.state.selected
+    const selectedAlready = selected.includes(id)
+    const refreshCallback = () => {
       if (this.props.onUpdateSelectedStates) {
-        this.props.onUpdateSelectedStates(selected)
+        this.props.onUpdateSelectedStates(this.state.selected)
       }
-
-      // This is probably inefficient, but it works.
-      const dataSource = this.dataSourceFromData(this.props.data, isPad)
-      return { dataSource }
-    })
+    }
+    if (selectedAlready) {
+      this.setState({ selected: selected.filter(i => i !== id) }, refreshCallback)
+    } else {
+      this.setState({ selected: [id, ...selected] }, refreshCallback)
+    }
   }
 
   renderRow = (d: ImageData & string) => {
@@ -159,7 +126,7 @@ export default class ImageSelection extends React.Component<Props, State> {
       return (
         <ImageForURI
           key={d.image.uri}
-          selected={!!this.state.selected.has(d.image.uri)}
+          selected={!!this.state.selected.includes(d.image.uri)}
           data={d}
           onPressItem={this.onPressItem}
         />
@@ -168,8 +135,37 @@ export default class ImageSelection extends React.Component<Props, State> {
   }
 
   render() {
+    const data = isPad ? [TakePhotoID, ...this.props.data] : [TakePhotoID, ...this.props.data, BlankImageID]
     return (
-      <ListView contentContainerStyle={styles.list} dataSource={this.state.dataSource} renderRow={this.renderRow} />
+      <FlatList
+        data={data}
+        contentContainerStyle={styles.list}
+        keyExtractor={item => {
+          if (typeof item === "string") {
+            return item
+          } else {
+            return item.image.uri
+          }
+        }}
+        renderItem={({ item }) => {
+          if (typeof item === "string") {
+            if (item === TakePhotoID) {
+              return <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
+            } else if (item === BlankImageID) {
+              return <View style={{ width: 158, height: 158 }} />
+            }
+          } else {
+            return (
+              <ImageForURI
+                key={item.image.uri}
+                selected={!!this.state.selected.includes(item.image.uri)}
+                data={item}
+                onPressItem={this.onPressItem}
+              />
+            )
+          }
+        }}
+      />
     )
   }
 }

@@ -42,7 +42,7 @@ export class FairArtists extends React.Component<Props, State> {
     this.groupArtists(artists.edges.map(edge => edge.node))
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const {
       fair: { artists },
     } = this.props

@@ -216,6 +216,8 @@ exports[`looks correct when rendered 1`] = `
             <View
               accessible={true}
               flexDirection="row"
+              focusable={true}
+              onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}

@@ -1,5 +1,5 @@
 import React from "react"
-import { ListView, Route, TouchableHighlight, View, ViewProperties } from "react-native"
+import { FlatList, Route, TouchableHighlight, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
 import { Story, StorySection } from "./"
@@ -12,9 +12,7 @@ interface Props extends ViewProperties {
 }
 
 const render = (props: Props) => {
-  const Headline = () => <Title>{props.section.kind}</Title>
-
-  const ListViewItem = (item: Story) => {
+  const renderItem = (item: Story) => {
     const showStory = () => {
       props.navigator.push({ title: item.name, component: item.render as any })
     }
@@ -29,13 +27,15 @@ const render = (props: Props) => {
     )
   }
 
-  const storybookDS = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }).cloneWithRows(
-    props.section.stories
-  )
-
   return (
     <Background>
-      <ListView style={{ flex: 1 }} dataSource={storybookDS} renderRow={ListViewItem} renderHeader={Headline} />
+      <FlatList
+        style={{ flex: 1 }}
+        data={props.section.stories}
+        keyExtractor={(item, index) => item.name + String(index)}
+        renderItem={({ item }) => renderItem(item)}
+        ListHeaderComponent={() => <Title>{props.section.kind}</Title>}
+      />
     </Background>
   )
 }

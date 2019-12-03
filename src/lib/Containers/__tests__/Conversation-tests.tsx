@@ -1,12 +1,11 @@
 import { shallow } from "enzyme"
 import React from "react"
-
 import "react-native"
 import Conversation from "../Conversation"
 
 jest.unmock("react-tracking")
 
-jest.mock("NetInfo", () => {
+jest.mock("@react-native-community/netinfo", () => {
   return {
     addEventListener: jest.fn(),
     isConnected: {

@@ -148,6 +148,8 @@ exports[`Artwork renders a snapshot 1`] = `
               >
                 <View
                   accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -259,6 +261,8 @@ exports[`Artwork renders a snapshot 1`] = `
             >
               <View
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -294,6 +298,7 @@ exports[`Artwork renders a snapshot 1`] = `
                     bbWidth="18px"
                     className="Iconios__Icon-z4d8jr-0 cjvLsm"
                     fill="black100"
+                    focusable={false}
                     height="18px"
                     meetOrSlice={0}
                     minX={0}
@@ -305,7 +310,9 @@ exports[`Artwork renders a snapshot 1`] = `
                           "borderWidth": 0,
                         },
                         undefined,
-                        null,
+                        Object {
+                          "opacity": 1,
+                        },
                         Object {
                           "flex": 0,
                           "height": 18,
@@ -432,6 +439,8 @@ exports[`Artwork renders a snapshot 1`] = `
               </View>
               <View
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -465,6 +474,7 @@ exports[`Artwork renders a snapshot 1`] = `
                     bbWidth="18px"
                     className="Iconios__Icon-z4d8jr-0 cjvLsm"
                     fill="black100"
+                    focusable={false}
                     height="18px"
                     meetOrSlice={0}
                     minX={0}
@@ -476,7 +486,9 @@ exports[`Artwork renders a snapshot 1`] = `
                           "borderWidth": 0,
                         },
                         undefined,
-                        null,
+                        Object {
+                          "opacity": 1,
+                        },
                         Object {
                           "flex": 0,
                           "height": 18,
@@ -649,9 +661,11 @@ exports[`Artwork renders a snapshot 1`] = `
               <Text>
                 <Text
                   accessible={true}
+                  focusable={true}
                   fontFamily="ReactNativeAGaramondPro-Semibold"
                   fontSize="18px"
                   lineHeight="22px"
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -693,9 +707,11 @@ exports[`Artwork renders a snapshot 1`] = `
                 <Text
                   accessible={true}
                   color="black60"
+                  focusable={true}
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
                   lineHeight="20px"
+                  onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
                   onResponderRelease={[Function]}
@@ -874,6 +890,8 @@ exports[`Artwork renders a snapshot 1`] = `
             >
               <Text
                 accessible={true}
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -1941,7 +1959,9 @@ exports[`Artwork renders a snapshot 1`] = `
             accessible={true}
             flexDirection="row"
             flexWrap="nowrap"
+            focusable={true}
             justifyContent="space-between"
+            onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
             onResponderRelease={[Function]}
@@ -2067,6 +2087,8 @@ exports[`Artwork renders a snapshot 1`] = `
               <View
                 accessible={true}
                 flexDirection="row"
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -2486,7 +2508,9 @@ exports[`Artwork renders a snapshot 1`] = `
             accessible={true}
             flexDirection="row"
             flexWrap="nowrap"
+            focusable={true}
             justifyContent="space-between"
+            onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
             onResponderRelease={[Function]}
@@ -2612,6 +2636,8 @@ exports[`Artwork renders a snapshot 1`] = `
               <View
                 accessible={true}
                 flexDirection="row"
+                focusable={true}
+                onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -3055,6 +3081,8 @@ exports[`Artwork renders a snapshot 1`] = `
             accessible={true}
             alignContent="center"
             flexDirection="row"
+            focusable={true}
+            onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
             onResponderRelease={[Function]}
@@ -3096,6 +3124,7 @@ exports[`Artwork renders a snapshot 1`] = `
               bbWidth="18px"
               className="Iconios__Icon-z4d8jr-0 ihTyDP"
               fill="black30"
+              focusable={false}
               height="18px"
               meetOrSlice={0}
               minX={0}
@@ -3109,7 +3138,9 @@ exports[`Artwork renders a snapshot 1`] = `
                     "borderWidth": 0,
                   },
                   undefined,
-                  null,
+                  Object {
+                    "opacity": 1,
+                  },
                   Object {
                     "flex": 0,
                     "height": 18,
