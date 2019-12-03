@@ -5,16 +5,12 @@ import { FragmentRefs } from "relay-runtime";
 export type PartnerArtwork_partner = {
     readonly internalID: string;
     readonly artworks: {
-        readonly pageInfo: {
-            readonly hasNextPage: boolean;
-            readonly startCursor: string | null;
-            readonly endCursor: string | null;
-        };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
+                readonly id: string;
             } | null;
         } | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
     readonly " $refType": "PartnerArtwork_partner";
 };
@@ -83,38 +79,6 @@ const node: ReaderFragment = {
         {
           "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "PageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "hasNextPage",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "startCursor",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "endCursor",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
           "name": "edges",
           "storageKey": null,
           "args": null,
@@ -133,14 +97,16 @@ const node: ReaderFragment = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
+                  "name": "id",
                   "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "FragmentSpread",
-                  "name": "GenericGrid_artworks",
-                  "args": null
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
                 }
               ]
             },
@@ -152,10 +118,40 @@ const node: ReaderFragment = {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "InfiniteScrollArtworksGrid_connection",
+          "args": null
         }
       ]
     }
   ]
 };
-(node as any).hash = 'b89b1f4eda37d98bd54dd927b250470c';
+(node as any).hash = 'df579f4d28807f2c99c56bcbc7afcc8d';
 export default node;

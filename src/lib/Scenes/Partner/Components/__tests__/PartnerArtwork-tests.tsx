@@ -1,9 +1,11 @@
 import { Theme } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { Artwork as GridItem } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { StickyTabScrollViewContext } from "lib/Components/StickyTabPage/StickyTabScrollView"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
+import { ScrollView } from "react-native"
 import Animated from "react-native-reanimated"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { PartnerArtworkFixture } from "../__fixtures__/PartnerArtwork-fixture"
@@ -36,9 +38,10 @@ describe("PartnerArtwork", () => {
             artworks: artworksConnection(first: 10) {
               edges {
                 node {
-                  ...GenericGrid_artworks
+                  id
                 }
               }
+              ...InfiniteScrollArtworksGrid_connection
             }
           }
         }
@@ -50,9 +53,17 @@ describe("PartnerArtwork", () => {
 
   it("renders the artworks", async () => {
     const wrapper = await getWrapper(PartnerArtworkFixture as any)
-    const grid = wrapper.find(GenericGrid)
-    expect(grid.props().artworks.length).toBe(10)
-    expect(grid.length).toBe(1)
+    wrapper
+      .find(ScrollView)
+      .props()
+      .onLayout({
+        nativeEvent: {
+          layout: { width: 768 },
+        },
+      })
+    await flushPromiseQueue()
+    wrapper.update()
+    expect(wrapper.find(GridItem).length).toBe(10)
     expect(wrapper.html()).toMatchSnapshot()
   })
 })

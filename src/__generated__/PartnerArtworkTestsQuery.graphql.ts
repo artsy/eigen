@@ -9,9 +9,10 @@ export type PartnerArtworkTestsQueryResponse = {
         readonly artworks: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
+                    readonly id: string;
                 } | null;
             } | null> | null;
+            readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
         } | null;
     } | null;
 };
@@ -22,9 +23,11 @@ export type PartnerArtworkTestsQueryRawResponse = {
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
+                    readonly slug: string;
                     readonly image: ({
-                        readonly aspect_ratio: number;
+                        readonly aspectRatio: number;
                         readonly url: string | null;
+                        readonly aspect_ratio: number;
                     }) | null;
                     readonly title: string | null;
                     readonly date: string | null;
@@ -32,7 +35,6 @@ export type PartnerArtworkTestsQueryRawResponse = {
                     readonly is_biddable: boolean | null;
                     readonly is_acquireable: boolean | null;
                     readonly is_offerable: boolean | null;
-                    readonly slug: string;
                     readonly sale: ({
                         readonly is_auction: boolean | null;
                         readonly is_closed: boolean | null;
@@ -55,7 +57,13 @@ export type PartnerArtworkTestsQueryRawResponse = {
                     }) | null;
                     readonly href: string | null;
                 }) | null;
+                readonly id: string | null;
             }) | null> | null;
+            readonly pageInfo: {
+                readonly hasNextPage: boolean;
+                readonly startCursor: string | null;
+                readonly endCursor: string | null;
+            };
         }) | null;
     }) | null;
 };
@@ -74,20 +82,34 @@ query PartnerArtworkTestsQuery {
     artworks: artworksConnection(first: 10) {
       edges {
         node {
-          ...GenericGrid_artworks
           id
         }
       }
+      ...InfiniteScrollArtworksGrid_connection
     }
   }
 }
 
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
   }
-  ...ArtworkGridItem_artwork
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -204,14 +226,15 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "FragmentSpread",
-                        "name": "GenericGrid_artworks",
-                        "args": null
-                      }
+                      (v1/*: any*/)
                     ]
                   }
                 ]
+              },
+              {
+                "kind": "FragmentSpread",
+                "name": "InfiniteScrollArtworksGrid_connection",
+                "args": null
               }
             ]
           }
@@ -263,6 +286,13 @@ return {
                     "selections": [
                       (v1/*: any*/),
                       {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "slug",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
                         "kind": "LinkedField",
                         "alias": null,
                         "name": "image",
@@ -273,7 +303,7 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": "aspect_ratio",
+                            "alias": null,
                             "name": "aspectRatio",
                             "args": null,
                             "storageKey": null
@@ -290,6 +320,13 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "aspect_ratio",
+                            "name": "aspectRatio",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -332,13 +369,6 @@ return {
                         "kind": "ScalarField",
                         "alias": "is_offerable",
                         "name": "isOfferable",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "slug",
                         "args": null,
                         "storageKey": null
                       },
@@ -439,6 +469,39 @@ return {
                         "storageKey": null
                       }
                     ]
+                  },
+                  (v1/*: any*/)
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "startCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               }
@@ -451,11 +514,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkTestsQuery",
-    "id": "9c5619c4633c3e4fa0941e025af876b7",
+    "id": "7f5093147cb7095487e125f0cda21e94",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c7bfa492abbedd484df23a54825a941a';
+(node as any).hash = '18b6f5b0458db4ece5f016d3c798cb80';
 export default node;
