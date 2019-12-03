@@ -1,3 +1,18 @@
+# v1.19.2 (Tue Dec 03 2019)
+
+#### 🐛  Bug Fix
+
+- [MX-114] Infrastructure for hiding back button on Partner view [#1981](https://github.com/artsy/emission/pull/1981) ([@ashfurrow](https://github.com/ashfurrow) [@ds300](https://github.com/ds300))
+- Partner artworks to InfiniteScrollGrid [#1983](https://github.com/artsy/emission/pull/1983) ([@kierangillen](https://github.com/kierangillen) [@ds300](https://github.com/ds300))
+
+#### Authors: 3
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+- David Sheldrick ([@ds300](https://github.com/ds300))
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.19.1 (Mon Dec 02 2019)
 
 #### 🐛  Bug Fix
