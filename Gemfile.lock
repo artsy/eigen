@@ -103,6 +103,8 @@ GEM
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.1.1)
+    down (5.0.0)
+      addressable (~> 2.5)
     escape (0.0.4)
     excon (0.61.0)
     faraday (0.15.2)
@@ -271,6 +273,7 @@ DEPENDENCIES
   cocoapods-check
   cocoapods-keys
   danger
+  down
   lowdown
   nokogiri (>= 1.10.4)
   psych
