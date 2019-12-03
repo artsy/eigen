@@ -2,9 +2,9 @@
 
 ### Meta
 
-* __State:__ production
-* __Point People:__ [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
-* __CI :__  [![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
+- **State:** production
+- **Point People:** [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
+- **CI :** [![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
 This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
 
@@ -43,6 +43,10 @@ open Artsy.xcworkspace
 This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Product > Run` (or ⌘R).
 
 **Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
+
+### Updating Emission
+
+To update the version of Emission used, [check out the docs](docs/updating_emissio.md#update-eigen-with-the-most-recent-version-of-emission).
 
 ### Deployment
 

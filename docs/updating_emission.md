@@ -2,10 +2,11 @@
 
 ## Update Eigen with the most recent version of Emission
 
-- Ship a [new Emission release](https://github.com/artsy/emission#deploying-emission)
-- Once Emission has finished building in CI, rebase master and switch to a new branch. Then update Eigen's `Podfile.lock` via `bundle exec pod update Emission`, you will see a diff with the new version in `Podfile.lock`.
-- Commit your changes and merge a self assigned PR in Eigen with the updated Emission changes. 
-- Once that PR has merged, switch to your master branch, rebase, and then run `make deploy`. This will create a new version of Eigen with the updated Emission package.
+- [New Emission releases](https://github.com/artsy/emission#deploying-emission) are made after any merged PR.
+- Update Eigen's `Podfile`, specifically the `EMISSION_VERSION` constant near the top. It needs to point to the same version number you want to deploy.
+- Apply the update: `bundle exec pod repo update artsy && bundle exec pod install`. You will see a diff with the new version in `Podfile.lock`.
+- Commit your changes and merge a self assigned PR in Eigen with the updated Emission changes.
+- Once that PR has merged, switch to your master branch, pull the latest changes, and run `make deploy`. This will create a new version of Eigen with the updated Emission package.
 
 ## Get Emission's to compile
 
