@@ -26,6 +26,11 @@ The file `Artsy/App/Echo.json` is not checked in (a sample file is included for 
 
 **Note**: We currently require using Xcode 10 for development, with the latest version (10.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
+You'll need:
+
+- [Node](https://nodejs.org/en/) installed (whichever version is listed as the `engine` [here](https://github.com/artsy/emission/blob/master/package.json)).
+- [Yarn](https://yarnpkg.com/en/) installed, too.
+
 Want to get the app running? Run this in your shell:
 
 ```sh
