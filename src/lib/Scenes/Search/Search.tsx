@@ -1,7 +1,7 @@
-import { color, Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { color, Flex, Sans, Serif, space, Theme } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
 import React, { useRef, useState } from "react"
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
 import { RecentSearches, useRecentSearches } from "./RecentSearches"
@@ -43,9 +43,9 @@ export const Search: React.FC = () => {
             </Flex>
           </TouchableOpacity>
         </Flex>
-        <Flex flexGrow={1} p={2}>
+        <View style={{ flex: 1, padding: space(2) }} onTouchStart={() => input.current.blur()}>
           {query ? <AutosuggestResults query={query} /> : recentSearches.length ? <RecentSearches /> : <EmptyState />}
-        </Flex>
+        </View>
       </Flex>
     </Theme>
   )
