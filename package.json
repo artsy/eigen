@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.19.5",
+  "version": "1.19.6",
   "native-code-version": 39,
   "description": "Artsy React(Native) components.",
   "engines": {
@@ -185,7 +185,7 @@
     "tslint": "5.14.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.2",
-    "typescript": "3.7.2",
+    "typescript": "3.7.3",
     "typescript-styled-plugin": "0.13.0",
     "vscode-apollo-relay": "1.5.0"
   },

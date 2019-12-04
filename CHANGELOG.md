@@ -1,6 +1,18 @@
+# v1.19.6 (Wed Dec 04 2019)
+
+#### 🐛 Bug Fix
+
+- Update dep typescript from 3.7.2 to v3.7.3 [#1990](https://github.com/artsy/emission/pull/1990) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.19.5 (Tue Dec 03 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Pin dep @react-native-community/async-storage from ^1.6.3 to 1.6.3 [#1987](https://github.com/artsy/emission/pull/1987) ([@renovate-bot](https://github.com/renovate-bot))
 - StickyTabs perf + UX improvements [#1982](https://github.com/artsy/emission/pull/1982) ([@ds300](https://github.com/ds300))
@@ -14,7 +26,7 @@
 
 # v1.19.4 (Tue Dec 03 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [ME-84] Add recent searches [#1972](https://github.com/artsy/emission/pull/1972) ([@ds300](https://github.com/ds300))
 
@@ -26,7 +38,7 @@
 
 # v1.19.3 (Tue Dec 03 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Show sticky header based on scroll offset rather than velocity [#1985](https://github.com/artsy/emission/pull/1985) ([@ds300](https://github.com/ds300))
 
@@ -38,7 +50,7 @@
 
 # v1.19.2 (Tue Dec 03 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-114] Infrastructure for hiding back button on Partner view [#1981](https://github.com/artsy/emission/pull/1981) ([@ashfurrow](https://github.com/ashfurrow) [@ds300](https://github.com/ds300))
 - Partner artworks to InfiniteScrollGrid [#1983](https://github.com/artsy/emission/pull/1983) ([@kierangillen](https://github.com/kierangillen) [@ds300](https://github.com/ds300))
@@ -53,7 +65,7 @@
 
 # v1.19.1 (Mon Dec 02 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Pin dependencies [#1984](https://github.com/artsy/emission/pull/1984) ([@renovate-bot](https://github.com/renovate-bot))
 
@@ -65,7 +77,7 @@
 
 # v1.19.0 (Mon Dec 02 2019)
 
-#### 🚀  Enhancement
+#### 🚀 Enhancement
 
 - [ME-113] Upgrade RN [#1970](https://github.com/artsy/emission/pull/1970) ([@kierangillen](https://github.com/kierangillen) [@ashfurrow](https://github.com/ashfurrow) [@ds300](https://github.com/ds300))
 
