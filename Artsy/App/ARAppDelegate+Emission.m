@@ -113,7 +113,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [[ARRouter baseMetaphysicsApiURLString] stringByAppendingString:@"/v2"];
-  
+
     NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
 
     // Grab echo features and make that the base of all options
@@ -126,14 +126,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     } else {
         stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
     }
-  
+
     NSString *env;
     if ([AROptions boolForOption:ARUseStagingDefault]) {
       env = AREnvStaging;
     } else {
       env = AREnvProduction;
     }
-  
+
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
@@ -228,6 +228,12 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     };
 
 #pragma mark - Native Module: SwitchBoard
+
+    emission.switchBoardModule.updateShouldHideBackButton = ^(BOOL shouldHide) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
+        });
+    };
 
     emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_Nonnull fromViewController,
                                                                    NSString *_Nonnull route) {
