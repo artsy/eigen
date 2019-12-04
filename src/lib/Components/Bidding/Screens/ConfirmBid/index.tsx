@@ -34,6 +34,7 @@ import {
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
+import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 
 type BidderPositionResult = ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]["result"]
 
@@ -491,6 +492,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             {requiresCheckbox ? (
               <Checkbox
                 mt={4}
+                mx={5}
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
@@ -498,7 +500,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
-                    Conditions of Sale
+                    {partnerName(sale)} Conditions of Sale
                   </LinkText>
                   .
                 </Serif>
@@ -508,7 +510,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
-                    Conditions of Sale
+                    {partnerName(sale)} Conditions of Sale
                   </LinkText>
                   .
                 </Serif>
@@ -555,6 +557,10 @@ export const ConfirmBidScreen = createRefetchContainer(
           slug
           live_start_at: liveStartAt
           end_at: endAt
+          isBenefit
+          partner {
+            name
+          }
         }
         artwork {
           slug

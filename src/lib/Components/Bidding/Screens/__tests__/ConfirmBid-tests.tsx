@@ -557,7 +557,11 @@ describe("polling to verify bid position", () => {
             lot_label: "538",
             sale: {
               end_at: "2018-05-10T20:22:42+00:00",
+              isBenefit: false,
               live_start_at: "2018-05-09T20:22:42+00:00",
+              partner: {
+                name: "Christie's",
+              },
               slug: "best-art-sale-in-town",
             },
           },
@@ -855,6 +859,10 @@ const saleArtwork: ConfirmBid_sale_artwork = {
     slug: "best-art-sale-in-town",
     live_start_at: "2018-05-09T20:22:42+00:00",
     end_at: "2018-05-10T20:22:42+00:00",
+    isBenefit: false,
+    partner: {
+      name: "Christie's",
+    },
   },
   lot_label: "538",
   " $fragmentRefs": null, // needs this to keep TS happy
