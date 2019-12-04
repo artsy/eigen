@@ -6,7 +6,10 @@ import styled from "styled-components/native"
 export default class ZeroStateInbox extends React.Component {
   render() {
     const rows = [
-      { iconHref: require("../../../../../images/find.png"), text: "Follow artists and find works you love." },
+      {
+        iconHref: require("../../../../../images/find.png"),
+        text: "Follow artists and find works you love.",
+      },
       {
         iconHref: require("../../../../../images/contact.png"),
         text: "Contact galleries or bid in auctions to purchase the work.",
@@ -26,6 +29,13 @@ export default class ZeroStateInbox extends React.Component {
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
         data={rows}
         keyExtractor={(_item, index) => String(index)}
+        ListHeaderComponent={() => (
+          <Box px={2}>
+            <Sans size="4" textAlign="center" weight="medium">
+              Buying art on Artsy is simple
+            </Sans>
+          </Box>
+        )}
         renderItem={({ item }) => {
           return (
             <Box px={2}>
@@ -39,13 +49,6 @@ export default class ZeroStateInbox extends React.Component {
             </Box>
           )
         }}
-        ListHeaderComponent={() => (
-          <Box px={2}>
-            <Sans size="4" textAlign="center" weight="medium">
-              Buying art on Artsy is simple
-            </Sans>
-          </Box>
-        )}
       />
     )
   }

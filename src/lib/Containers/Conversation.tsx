@@ -1,26 +1,17 @@
-import React from "react"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-
-import { Schema, Track, track as _track } from "../utils/track"
-
-import { SmallHeadline } from "../Components/Inbox/Typography"
-
 import NetInfo from "@react-native-community/netinfo"
+import { Conversation_me } from "__generated__/Conversation_me.graphql"
+import React from "react"
 import { View } from "react-native"
-
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-
 import ConnectivityBanner from "../Components/ConnectivityBanner"
-
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Messages from "../Components/Inbox/Conversations/Messages"
 import { Messages as MessagesComponent } from "../Components/Inbox/Conversations/Messages"
-
 import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
-
 import { updateConversation } from "../Components/Inbox/Conversations/UpdateConversation"
-
-import { Conversation_me } from "__generated__/Conversation_me.graphql"
+import { SmallHeadline } from "../Components/Inbox/Typography"
+import { Schema, Track, track as _track } from "../utils/track"
 
 const Container = styled.View`
   flex: 1;
