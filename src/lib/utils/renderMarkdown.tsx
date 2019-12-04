@@ -124,7 +124,9 @@ export function defaultRules(modal: boolean = false) {
           )
           return (
             <View key={i} style={{ flexDirection: "row" }}>
-              {bullet} {listItemText}
+              <Text>
+                {bullet} {listItemText}
+              </Text>
             </View>
           )
         })
