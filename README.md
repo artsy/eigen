@@ -11,7 +11,7 @@ Inside Emission you will find:
 ### Meta
 
 - **State:** production
-- **Point People:** [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
+- **Point People:** [@ashfurrow](https://github.com/ashfurrow), [@ds300](https://github.com/ds300), [@kierangillen](https://github.com/kierangillen)
 - **CI:**
   - React Native components: [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
     [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fartsy%2Femission.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fartsy%2Femission?ref=badge_shield)
@@ -94,7 +94,7 @@ We vendor some data from other repositories that you will sometimes need to upda
 
 ### Deploying Emission
 
-Deploys are automated on CI after each PR merge, based on the patch/minor/major label added to the PR (patch is default). 
+Deploys are automated on CI after each PR merge, based on the patch/minor/major label added to the PR (patch is default).
 
 ### Automated Emission App Deploys
 
