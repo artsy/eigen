@@ -1,6 +1,6 @@
 import { Flex, Sans, Spacer } from "@artsy/palette"
 import AsyncStorage from "@react-native-community/async-storage"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import React from "react"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchResult } from "./SearchResult"
@@ -52,9 +52,8 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
 
 export const RecentSearches: React.FC = () => {
   const { recentSearches } = useRecentSearches()
-  const navRef = useRef<any>()
   return (
-    <Flex ref={navRef} p={2}>
+    <Flex>
       <Sans size="3" weight="medium">
         Recent
       </Sans>

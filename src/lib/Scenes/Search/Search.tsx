@@ -1,22 +1,24 @@
-import { color, Flex, Sans, Theme } from "@artsy/palette"
+import { color, Flex, Sans, Serif, Theme } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
 import React, { useRef, useState } from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
-import { RecentSearches } from "./RecentSearches"
+import { RecentSearches, useRecentSearches } from "./RecentSearches"
 
 export const Search: React.FC = () => {
   const input = useRef<Input>()
   const [query, setQuery] = useState("")
+  const { recentSearches } = useRecentSearches()
   return (
     <Theme>
-      <Flex>
+      <Flex flexGrow={1}>
         <Flex
           flexDirection="row"
           alignItems="center"
           p={2}
           pb={1}
+          pr={0}
           style={{ borderBottomWidth: 1, borderColor: color("black10") }}
         >
           <Input
@@ -26,22 +28,37 @@ export const Search: React.FC = () => {
             onChangeText={q => setQuery(q.trim())}
             autoCorrect={false}
           />
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={() => {
               input.current.clear()
               input.current.blur()
               setQuery("")
             }}
+            hitSlop={{ bottom: 20, right: 20, left: 20, top: 20 }}
           >
-            <Flex pl={1}>
-              <Sans size="2" color="black60">
-                Cancel
+            <Flex pl={1} pr={2}>
+              <Sans size="2" color={query ? "black60" : "black30"}>
+                Clear
               </Sans>
             </Flex>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </Flex>
-        {query.trim() ? <AutosuggestResults query={query} /> : <RecentSearches />}
+        <Flex flexGrow={1} p={2}>
+          {query ? <AutosuggestResults query={query} /> : recentSearches.length ? <RecentSearches /> : <EmptyState />}
+        </Flex>
       </Flex>
     </Theme>
+  )
+}
+
+const EmptyState: React.FC<{}> = ({}) => {
+  return (
+    <Flex flexGrow={1} alignItems="center" justifyContent="center">
+      <Flex maxWidth={250}>
+        <Serif textAlign="center" size="3">
+          Search for artists, artworks, galleries, shows, and more.
+        </Serif>
+      </Flex>
+    </Flex>
   )
 }

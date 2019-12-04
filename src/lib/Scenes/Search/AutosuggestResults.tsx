@@ -2,7 +2,7 @@ import { Flex } from "@artsy/palette"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { throttle } from "lodash"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import React from "react"
 import Sentry from "react-native-sentry"
 import { fetchQuery, graphql } from "react-relay"
@@ -69,9 +69,8 @@ export const AutosuggestResults: React.FC<{ query: string }> = ({ query }) => {
     },
     [query]
   )
-  const navRef = useRef<any>()
   return (
-    <Flex ref={navRef} p={2}>
+    <Flex>
       <SearchResultList
         results={results.map(result => (
           <SearchResult highlight={query} result={result} />
