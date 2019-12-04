@@ -1,3 +1,15 @@
+# v1.19.6 (Wed Dec 04 2019)
+
+#### 🐛  Bug Fix
+
+- Update dep typescript from 3.7.2 to v3.7.3 [#1990](https://github.com/artsy/emission/pull/1990) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.19.5 (Tue Dec 03 2019)
 
 #### 🐛  Bug Fix
