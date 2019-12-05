@@ -3,7 +3,7 @@
 #import "ARRouter.h"
 #import "ArtsyAPI+HEAD.h"
 #import "ARAppConstants.h"
-
+#import "UIDevice-Hardware.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "UIViewController+SimpleChildren.h"
@@ -28,6 +28,15 @@
     _originalPath = path;
 
     return self;
+}
+
+- (BOOL) shouldAutorotate {
+    return [UIDevice isPad];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)viewDidLoad

@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', '1.6.0.beta.1'
+gem 'cocoapods', '~> 1.7.2'
 
 # So we know if we need to run `pod install`
 gem 'cocoapods-check'
 gem 'cocoapods-keys' # So we don't leak ENV vars
 gem 'psych' # So our Podfile.lock is consistent
+gem 'down'
 
 group :development do
   gem 'lowdown' # For handling notifications + certs

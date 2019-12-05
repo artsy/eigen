@@ -29,23 +29,22 @@ jobs:
       #   SegmentDevWriteKey: from_admin
       #   AdjustProductionAppToken: from_admin
       #   ArtsyEchoProductionToken:  from_admin
-      BUNDLE_PATH: vendor/bundle  # path to install gems and use for caching
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     # Specify the Xcode version to use.
     macos:
-      xcode: "10.3.0"
+      xcode: '10.3.0'
 
     # Define the steps required to build the project.
     steps:
-
       # Get the code from the VCS provider.
       - checkout
 
       - restore_cache:
           keys:
-          - v1-gems-{{ checksum "Gemfile.lock" }}
-          # Fall back to using the latest cache if no exact match is found.
-          - v1-gems-
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v1-gems-
 
       # Install gems.
       - run:
@@ -70,22 +69,19 @@ jobs:
 
       - restore_cache:
           keys:
-          - v3-pods-{{ checksum "Podfile.lock" }}
-          # Fall back to using the latest cache if no exact match is found.
-          - v3-pods-
-
-      - run:
-          name: Install CocoaPods
-          command: bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+            - v4-pods-{{ checksum "Podfile.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v4-pods-
 
       - run:
           name: Install Pods
           command: bundle exec pod check || bundle exec pod install
 
       - save_cache:
-          key: v3-pods-{{ checksum "Podfile.lock" }}
+          key: v4-pods-{{ checksum "Podfile.lock" }}
           paths:
             - Pods
+            - rn_pods
 
       - run:
           name: Pre-Build App
@@ -105,11 +101,11 @@ jobs:
 
       - store_test_results:
           path: test-results.xml
-  
+
       - run:
           name: Danger
           command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
-      
+
       - run:
           name: Deploy if beta
           command: make deploy_if_beta_branch
@@ -117,7 +113,6 @@ jobs:
       - run:
           name: Promote if app_store_submission
           command: make promote_if_app_store_submission_branch
-
 
 workflows:
   version: 2
