@@ -4,15 +4,6 @@ upcoming:
   emission_version: 1.18.39
   dev:
     - Switched CocoaPods to use the CDN master spec repo - alloy
-    - Cleans up unused lab options - ash
-    - Removes concept of a lot's "current value" in favour of using the asking price - ash
-    - Adds more granular lab options for testing new RN artwork view - ash
-    - Make status bar white on artwork views - ash + david
-    - Adds Switchboard-based routing for inquiry, BNMO - kieran + ash
-    - Removes ARArtworkSetViewController - ash
-    - Prevents admins from customizing API URLs while pointing to production - ash
-    - Adds echo flag support for enabling various types of RN Artwork view - ash + david + kieran
-    - Disables landscape rotation for iPhone on Artwork views - ash
     - Add a new flag for Price Transparency to Echo - yuki24
     - Adds option to show a collection view controller - ash
     - Upgrades React Native to 0.61.4 - ash & david & kieran
