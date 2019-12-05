@@ -81,6 +81,7 @@ jobs:
           key: v4-pods-{{ checksum "Podfile.lock" }}
           paths:
             - Pods
+            - rn_pods
 
       - run:
           name: Pre-Build App
