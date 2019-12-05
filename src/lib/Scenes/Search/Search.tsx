@@ -1,19 +1,23 @@
-import { color, Flex, Sans, Serif, space, Theme } from "@artsy/palette"
+import { color, Flex, Sans, Serif, Theme } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
+import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
-import { LayoutAnimation, TouchableOpacity, View } from "react-native"
+import { KeyboardAvoidingView, LayoutAnimation, TouchableOpacity, View } from "react-native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
 import { RecentSearches, useRecentSearches } from "./RecentSearches"
 
-export const Search: React.FC = () => {
+const SearchPage: React.FC = () => {
   const input = useRef<Input>()
   const [query, setQuery] = useState("")
   const { recentSearches } = useRecentSearches()
   const [inputFocused, setInputFocused] = useState(false)
+  const {
+    safeAreaInsets: { top },
+  } = useScreenDimensions()
   return (
     <Theme>
-      <Flex flexGrow={1}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
         <Flex flexDirection="row" p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <Input
             ref={input}
@@ -30,6 +34,7 @@ export const Search: React.FC = () => {
               setInputFocused(false)
             }}
             showClearButton
+            returnKeyType="search"
           />
           <Flex alignItems="center" justifyContent="center" flexDirection="row">
             {inputFocused && (
@@ -48,22 +53,38 @@ export const Search: React.FC = () => {
             )}
           </Flex>
         </Flex>
-        <View style={{ flex: 1, padding: space(2) }} onTouchStart={() => input.current.blur()}>
-          {query ? <AutosuggestResults query={query} /> : recentSearches.length ? <RecentSearches /> : <EmptyState />}
+        <View style={{ flex: 1 }} onTouchStart={() => input.current.blur()}>
+          {query.length >= 2 ? (
+            <AutosuggestResults query={query} />
+          ) : recentSearches.length ? (
+            <RecentSearches />
+          ) : (
+            <EmptyState />
+          )}
         </View>
-      </Flex>
+      </KeyboardAvoidingView>
     </Theme>
   )
 }
 
 const EmptyState: React.FC<{}> = ({}) => {
   return (
-    <Flex flexGrow={1} alignItems="center" justifyContent="center">
+    <Flex p={2} flexGrow={1} alignItems="center" justifyContent="center">
       <Flex maxWidth={250}>
         <Serif textAlign="center" size="3">
           Search for artists, artworks, galleries, shows, and more.
         </Serif>
       </Flex>
     </Flex>
+  )
+}
+
+export const Search: React.FC = () => {
+  return (
+    <Theme>
+      <ProvideScreenDimensions>
+        <SearchPage />
+      </ProvideScreenDimensions>
+    </Theme>
   )
 }

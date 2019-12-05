@@ -1,81 +1,121 @@
-import { Flex } from "@artsy/palette"
+import { Flex, Serif, space } from "@artsy/palette"
+import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { throttle } from "lodash"
-import { useEffect, useMemo, useState } from "react"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { useEffect, useMemo, useRef } from "react"
 import React from "react"
-import Sentry from "react-native-sentry"
-import { fetchQuery, graphql } from "react-relay"
+import { FlatList } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { SearchResult } from "./SearchResult"
-import { SearchResultList } from "./SearchResultList"
 
-export type AutosuggestResult = AutosuggestResultsQuery["response"]["searchConnection"]["edges"][0]["node"]
+export type AutosuggestResult = AutosuggestResults_results["results"]["edges"][0]["node"]
 
-async function fetchResults(query: string): Promise<AutosuggestResult[]> {
-  try {
-    const data = await fetchQuery<AutosuggestResultsQuery>(
-      defaultEnvironment,
-      graphql`
-        query AutosuggestResultsQuery($query: String!) {
-          searchConnection(query: $query, mode: AUTOSUGGEST, first: 5) {
-            edges {
-              node {
-                imageUrl
-                href
-                displayLabel
-                ... on SearchableItem {
-                  displayType
-                }
+const AutosuggestResultsFlatList: React.FC<{
+  query: string
+  results: AutosuggestResults_results
+  relay: RelayPaginationProp
+}> = ({ query, results, relay }) => {
+  const flatListRef = useRef<FlatList<any>>()
+  useEffect(() => {
+    if (query) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
+    }
+  }, [query])
+
+  const nodes = useMemo(() => results?.results.edges.map(e => ({ ...e.node, key: e.node.href })), [results])
+
+  return (
+    <FlatList<AutosuggestResult>
+      ref={flatListRef}
+      style={{ flex: 1, padding: space(2) }}
+      data={nodes}
+      ListEmptyComponent={() => <Serif size="3">We couldn't find anything for “{query}”</Serif>}
+      renderItem={({ item }) => {
+        return (
+          <Flex mb={2}>
+            <SearchResult highlight={query} result={item} />
+          </Flex>
+        )
+      }}
+      onEndReached={() => {
+        relay.loadMore(15)
+      }}
+    />
+  )
+}
+
+const AutosuggestResultsContainer = createPaginationContainer(
+  AutosuggestResultsFlatList,
+  {
+    results: graphql`
+      fragment AutosuggestResults_results on Query
+        @argumentDefinitions(
+          query: { type: "String!" }
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String", defaultValue: "" }
+        ) {
+        results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor)
+          @connection(key: "AutosuggestResults_results") {
+          edges {
+            node {
+              imageUrl
+              href
+              displayLabel
+              ... on SearchableItem {
+                displayType
               }
             }
           }
         }
-      `,
-      { query },
-      { force: true }
-    )
-
-    return data.searchConnection.edges.map(e => e.node)
-  } catch (e) {
-    Sentry.captureMessage(e.stack)
-    if (__DEV__ && typeof jest === "undefined") {
-      console.error(e)
-    }
-    return []
-  }
-}
-
-export const AutosuggestResults: React.FC<{ query: string }> = ({ query }) => {
-  const [results, setResults] = useState<AutosuggestResult[]>([])
-  const throttledFetchResults = useMemo(
-    () =>
-      throttle(
-        async (q: string) => {
-          const r = await fetchResults(q)
-          setResults(r)
-        },
-        400,
-        { leading: false, trailing: true }
-      ),
-    []
-  )
-  useEffect(
-    () => {
-      if (query) {
-        throttledFetchResults(query)
-      } else {
-        setResults([])
+      }
+    `,
+  },
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.results.results
+    },
+    getFragmentVariables(vars, totalCount) {
+      return {
+        ...vars,
+        count: totalCount,
       }
     },
-    [query]
-  )
-  return (
-    <Flex>
-      <SearchResultList
-        results={results.map(result => (
-          <SearchResult highlight={query} result={result} />
-        ))}
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        cursor,
+        count,
+      }
+    },
+    query: graphql`
+      query AutosuggestResultsPaginationQuery($query: String!, $count: Int) {
+        ...AutosuggestResults_results @arguments(query: $query, count: $count)
+      }
+    `,
+  }
+)
+
+export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
+  ({ query }) => {
+    return (
+      <QueryRenderer<AutosuggestResultsQuery>
+        render={renderWithLoadProgress(props => {
+          return <AutosuggestResultsContainer query={query} results={props} />
+        })}
+        variables={{ query, count: 32 }}
+        query={graphql`
+          query AutosuggestResultsQuery($query: String!, $count: Int) {
+            ...AutosuggestResults_results @arguments(query: $query, count: $count)
+            me {
+              id
+            }
+          }
+        `}
+        environment={defaultEnvironment}
       />
-    </Flex>
-  )
-}
+    )
+  },
+  (a, b) => a.query === b.query
+)

@@ -53,7 +53,7 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
 export const RecentSearches: React.FC = () => {
   const { recentSearches } = useRecentSearches()
   return (
-    <Flex>
+    <Flex p={2}>
       <Sans size="3" weight="medium">
         Recent
       </Sans>

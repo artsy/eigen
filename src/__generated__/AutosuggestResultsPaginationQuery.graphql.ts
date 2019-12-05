@@ -2,32 +2,26 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AutosuggestResultsQueryVariables = {
+export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
     count?: number | null;
 };
-export type AutosuggestResultsQueryResponse = {
-    readonly me: {
-        readonly id: string;
-    } | null;
+export type AutosuggestResultsPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
-export type AutosuggestResultsQuery = {
-    readonly response: AutosuggestResultsQueryResponse;
-    readonly variables: AutosuggestResultsQueryVariables;
+export type AutosuggestResultsPaginationQuery = {
+    readonly response: AutosuggestResultsPaginationQueryResponse;
+    readonly variables: AutosuggestResultsPaginationQueryVariables;
 };
 
 
 
 /*
-query AutosuggestResultsQuery(
+query AutosuggestResultsPaginationQuery(
   $query: String!
   $count: Int
 ) {
   ...AutosuggestResults_results_1bcUq5
-  me {
-    id
-  }
 }
 
 fragment AutosuggestResults_results_1bcUq5 on Query {
@@ -71,30 +65,11 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "me",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Me",
-  "plural": false,
-  "selections": [
-    (v1/*: any*/)
-  ]
-},
-v3 = {
   "kind": "Variable",
   "name": "query",
   "variableName": "query"
 },
-v4 = [
+v2 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -110,18 +85,17 @@ v4 = [
     "name": "mode",
     "value": "AUTOSUGGEST"
   },
-  (v3/*: any*/)
+  (v1/*: any*/)
 ];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "AutosuggestResultsQuery",
+    "name": "AutosuggestResultsPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
-      (v2/*: any*/),
       {
         "kind": "FragmentSpread",
         "name": "AutosuggestResults_results",
@@ -131,14 +105,14 @@ return {
             "name": "count",
             "variableName": "count"
           },
-          (v3/*: any*/)
+          (v1/*: any*/)
         ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "AutosuggestResultsQuery",
+    "name": "AutosuggestResultsPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -146,7 +120,7 @@ return {
         "alias": "results",
         "name": "searchConnection",
         "storageKey": null,
-        "args": (v4/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "SearchableConnection",
         "plural": false,
         "selections": [
@@ -189,7 +163,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v1/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -252,25 +232,24 @@ return {
         "kind": "LinkedHandle",
         "alias": "results",
         "name": "searchConnection",
-        "args": (v4/*: any*/),
+        "args": (v2/*: any*/),
         "handle": "connection",
         "key": "AutosuggestResults_results",
         "filters": [
           "query",
           "mode"
         ]
-      },
-      (v2/*: any*/)
+      }
     ]
   },
   "params": {
     "operationKind": "query",
-    "name": "AutosuggestResultsQuery",
-    "id": "b19422a2eff89cfe855ee0df90660ce5",
+    "name": "AutosuggestResultsPaginationQuery",
+    "id": "f43f49323e7ba53b7df00c9931a9442b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2909f1e5d9dc857b4f24122df7876d63';
+(node as any).hash = 'e2ebdfb6de85fb6354cf74ecba856b30';
 export default node;
