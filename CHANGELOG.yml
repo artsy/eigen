@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.18.39
   dev:
+    - Switched CocoaPods to use the CDN master spec repo - alloy
     - Add a new flag for Price Transparency to Echo - yuki24
     - Adds option to show a collection view controller - ash
     - Upgrades React Native to 0.61.4 - ash & david & kieran

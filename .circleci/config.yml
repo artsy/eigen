@@ -74,10 +74,6 @@ jobs:
             - v4-pods-
 
       - run:
-          name: Install CocoaPods
-          command: bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
-
-      - run:
           name: Install Pods
           command: bundle exec pod check || bundle exec pod install
 
@@ -85,6 +81,7 @@ jobs:
           key: v4-pods-{{ checksum "Podfile.lock" }}
           paths:
             - Pods
+            - rn_pods
 
       - run:
           name: Pre-Build App
