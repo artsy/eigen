@@ -49,7 +49,7 @@ class AuctionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if appeared {
+        if appeared && saleViewModel.isNotEmpty {
             // Re-appearing, so: check if Live has launched, and if not, re-fetch lot standings and update.
             if saleViewModel.shouldShowLiveInterface {
                 setupLiveInterfaceAndPop()

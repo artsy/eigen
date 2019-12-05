@@ -75,10 +75,10 @@ static void *ARProgressContext = &ARProgressContext;
 {
     [super viewDidLoad];
     [self showLoading];
-    
+
     // KVO on progress for when we can show the page
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
-    
+
     if ([AROptions boolForOption:AROptionsShowMartsyOnScreen]) {
         [self displayDebugMartsyIndicator];
     }
@@ -165,8 +165,26 @@ static void *ARProgressContext = &ARProgressContext;
 
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
+
             if (viewController) {
-                [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                if ([viewController isKindOfClass:[UINavigationController class]]) {
+                    // Navigation controllers can't be pushed onto regular navigation controllers, only the top menu VC.
+                    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                } else if (viewController.navigationController) {
+                    // viewController already has a navigation controller set on it, which indicates it's a special case
+                    // where it's already in a navigation stack somewhere. Let's dismiss ourselves (if applicable) and then
+                    // show the VC through the normal ARTopMenuViewController flow, which handles all special cases.
+
+                    if (self.presentingViewController) {
+                        [self.presentingViewController dismissViewControllerAnimated:ARPerformWorkAsynchronously completion:^{
+                            [[ARTopMenuViewController sharedController] pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                        }];
+                    } else {
+                        [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                    }
+                } else {
+                    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                }
             }
 
             ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));

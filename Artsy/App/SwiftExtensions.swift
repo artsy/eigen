@@ -34,6 +34,12 @@ extension Occupiable {
     var isNotEmpty: Bool { return !isEmpty }
 }
 
+extension Optional: Occupiable {
+    var isEmpty: Bool {
+        return self == nil
+    }
+}
+
 // Required for Xcode 8/9 compatibility. Can be dropped when we move to Swift 4.
 extension String: Occupiable {
     var isNotEmpty: Bool {

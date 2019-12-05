@@ -4,6 +4,7 @@
 #import "ArtsyAPI+Profiles.h"
 #import "Fair.h"
 #import "Profile.h"
+#import "Partner.h"
 #import "AROptions.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
@@ -15,6 +16,8 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "UIViewController+SimpleChildren.h"
 #import "UIDevice-Hardware.h"
+
+#import <Emission/ARPartnerComponentViewController.h>
 
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -56,11 +59,6 @@
     }];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
 - (void)loadProfile
 {
     // We have no unique vanity URLs for iPad, so always load the martsy view
@@ -84,6 +82,13 @@
                 NSString * fairID = ((Fair *) profile.profileOwner).fairID;
                 ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
                 [self showViewController:viewController];
+            } else if ([profile.profileOwner isKindOfClass:[Partner class]] && [AROptions boolForOption:AROptionsNewPartnerPage]) {
+              [self ar_removeChildViewController: self.childViewControllers.firstObject];
+              
+              NSString *partnerID = ((Partner *) profile.profileOwner).partnerID;
+              ARPartnerComponentViewController *viewController =
+              [[ARPartnerComponentViewController alloc] initWithPartnerID:partnerID];
+              [self showViewController:viewController];
             }
 
             [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
@@ -114,6 +119,14 @@
     return [UIDevice isPad];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if (self.childViewControllers.firstObject && [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class]) {
+        return UIStatusBarStyleLightContent;
+    }
+    return UIStatusBarStyleDefault;
+}
+
 - (BOOL)hidesStatusBarBackground
 {
     if (self.childViewControllers.firstObject) {
@@ -121,6 +134,5 @@
     }
     return NO;
 }
-
 
 @end

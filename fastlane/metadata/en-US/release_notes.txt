@@ -1,1 +1,9 @@
-This release fixes a crash in the app for some users when registering for an auction.
+We've updated the artwork view to make it even more like seeing the art in person:
+
+• Swipe to view multiple images if available
+• Tap and pinch to zoom to see the details of the work
+• Evaluate the most important details about the work like medium, signature, certificate of authenticity, and more
+
+We've also fixed some bugs, including: push notifications not opening the right conversation screen, an issue with "View in Room" AR feature on iOS 13, and an issue sharing artworks from the app.
+
+Have feedback? Email us at support@artsy.net

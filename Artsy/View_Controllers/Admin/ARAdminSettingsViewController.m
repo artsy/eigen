@@ -24,6 +24,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARCollectionComponentViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
@@ -69,6 +70,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [tableViewData addSectionData:userSectionData];
 
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
+        [self generateCollections],
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
@@ -114,6 +116,14 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
             [ARUserManager logout];
         }];
+    }];
+}
+
+- (ARCellData *)generateCollections
+{
+    return [self tappableCellDataWithTitle:@"Show Collection" selection:^{
+        ARCollectionComponentViewController *viewController = [[ARCollectionComponentViewController alloc] initWithCollectionID:@"street-art-now"];
+        [self.navigationController pushViewController:viewController animated:YES];
     }];
 }
 

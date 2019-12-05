@@ -17,7 +17,12 @@
     UIGraphicsEndImageContext();
 
     if ([toVC isKindOfClass:[ARAppSearchViewController class]]) {
+        // Showing search
         toVC.backgroundImage = viewImage;
+    } else {
+        // Selecting search result
+        toVC.view.frame = [transitionContext finalFrameForViewController:toVC];
+        toVC.view.transform = CGAffineTransformMakeTranslation(toVC.view.frame.size.width, 0); // Push it offscreen
     }
 
     [transitionContext.containerView addSubview:fromVC.view];
@@ -27,10 +32,11 @@
         delay:0.0
         options:UIViewAnimationOptionCurveEaseOut
         animations:^{
-                         toVC.view.alpha = 1;
+            toVC.view.alpha = 1;
+            toVC.view.transform = CGAffineTransformIdentity;
         }
         completion:^(BOOL finished) {
-                        [transitionContext completeTransition:YES];
+            [transitionContext completeTransition:YES];
         }];
 }
 

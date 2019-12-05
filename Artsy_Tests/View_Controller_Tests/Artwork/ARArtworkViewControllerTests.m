@@ -42,7 +42,7 @@ StubArtworkWithAvailability(NSString *availability)
 }
 
 static void
-StubArtworkWithBNMO(BOOL buyable, BOOL offerable)
+StubArtworkWithBNMOInSale(BOOL buyable, BOOL offerable, BOOL inSale)
 {
     NSDictionary *response = @{
         @"data" : @{
@@ -51,12 +51,20 @@ StubArtworkWithBNMO(BOOL buyable, BOOL offerable)
                 @"title" : @"Some Title",
                 @"availability" : @"for sale",
                 @"is_acquireable": @(buyable),
-                @"is_offerable": @(offerable)
+                @"is_offerable": @(offerable),
+                @"is_in_auction": @(inSale)
             }
         }
     };
     [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:response];
 }
+
+static void
+StubArtworkWithBNMO(BOOL buyable, BOOL offerable)
+{
+    StubArtworkWithBNMOInSale(buyable, offerable, NO);
+}
+
 
 static void
 StubArtworkWithSaleArtwork()
@@ -230,6 +238,12 @@ describe(@"ARArtworkViewController", ^{
                     (void)vc.view;
                     expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
                 });
+
+                it(@"doesn't work if the artwork is in a sale", ^{
+                    StubArtworkWithBNMOInSale(YES, YES, YES);
+                    (void)vc.view;
+                    expect(vc.childViewControllers[0]).notTo.equal(mockComponentVC);
+                });
             });
 
             describe(@"enabled through echo", ^{
@@ -273,7 +287,7 @@ describe(@"ARArtworkViewController", ^{
                     };
                 });
 
-                it(@"works artworks that are in a sale", ^{
+                pending(@"works artworks that are in a sale", ^{
                     StubArtworkWithSaleArtwork();
                     (void)vc.view;
                     expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
@@ -284,40 +298,6 @@ describe(@"ARArtworkViewController", ^{
         describe(@"when all artworks lab option is enabled", ^{
             beforeEach(^{
                 [AROptions setBool:YES forOption:AROptionsRNArtworkAlways];
-            });
-
-            for (NSString *availability in componentAvailabilityStates) {
-                it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
-                    StubArtworkWithAvailability(availability);
-                    (void)vc.view;
-                    expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
-                });
-            }
-
-            it(@"works with buy-nowable artworks", ^{
-                StubArtworkWithBNMO(YES, NO);
-                (void)vc.view;
-                expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
-            });
-
-            it(@"works with make-offerable artworks", ^{
-                StubArtworkWithBNMO(NO, YES);
-                (void)vc.view;
-                expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
-            });
-
-            it(@"works artworks that are in a sale", ^{
-                StubArtworkWithSaleArtwork();
-                (void)vc.view;
-                expect(vc.childViewControllers[0]).to.equal(mockComponentVC);
-            });
-        });
-
-        describe(@"when all artworks echo option is enabled", ^{
-            beforeEach(^{
-                echo.features = @{
-                    @"ARReactNativeArtworkEnableAlways" : [[Feature alloc] initWithName:@"" state:@(YES)]
-                };
             });
 
             for (NSString *availability in componentAvailabilityStates) {

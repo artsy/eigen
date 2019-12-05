@@ -24,6 +24,9 @@ NSString *const AROptionsRNArtworkAlways = @"New RN Artwork view (Always)";
 NSString *const AROptionsRNArtworkNonCommerical = @"New RN Artwork view (Non-commerical)";
 NSString *const AROptionsRNArtworkNSOInquiry = @"New RN Artwork view (NSO&Inquiry)";
 NSString *const AROptionsRNArtworkAuctions = @"New RN Artwork view (Auctions)";
+NSString *const AROptionsPriceTransparency = @"Price Transparency";
+NSString *const AROptionsNewSearch = @"New Search";
+NSString *const AROptionsNewPartnerPage = @"New Partner page";
 
 @implementation AROptions
 
@@ -41,6 +44,9 @@ NSString *const AROptionsRNArtworkAuctions = @"New RN Artwork view (Auctions)";
          AROptionsRNArtworkNonCommerical: AROptionsRNArtworkNonCommerical,
          AROptionsRNArtworkNSOInquiry: AROptionsRNArtworkNSOInquiry,
          AROptionsRNArtworkAuctions: AROptionsRNArtworkAuctions,
+         AROptionsPriceTransparency: AROptionsPriceTransparency,
+         AROptionsNewSearch: AROptionsNewSearch,
+         AROptionsNewPartnerPage: AROptionsNewPartnerPage,
 
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };

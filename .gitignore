@@ -51,3 +51,9 @@ iOSInjectionProject/
 .vscode/.browse.VC.db
 fastlane/Gemfile.lock
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+# React Native pods. See: Podfile
+rn_pods
+
+# build artefacts
+derived_data

@@ -42,6 +42,7 @@
 #import "ARAuthValidator.h"
 
 #import "UIDevice-Hardware.h"
+#import "ArtsyEcho.h"
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
@@ -203,15 +204,12 @@ static ARAppDelegate *_sharedInstance = nil;
     }
     [self.window makeKeyAndVisible];
 
-    NSDictionary *remoteNotification = self.initialLaunchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotification) {
-        // The app was not running, so considering it to be in the UIApplicationStateInactive state.
-        [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
-                                                               inApplicationState:UIApplicationStateInactive];
-    }
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
+    ar_dispatch_after(1, ^{
+        [self killSwitch];
+    });
 }
 
 /// This is called when the app is almost done launching
@@ -262,6 +260,38 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)showOnboarding;
 {
     [self showOnboardingWithState:ARInitialOnboardingStateSlideShow];
+}
+
+- (void)killSwitch;
+{
+    Message *killSwitchVersion = ARSwitchBoard.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
+    NSString *echoMinimumBuild = killSwitchVersion.content;
+    if (echoMinimumBuild != nil && [echoMinimumBuild length] > 0) {
+        NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
+        NSString *buildVersion = infoDictionary[@"CFBundleShortVersionString"];
+
+        if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedAscending) {
+            UIAlertController *alert = [UIAlertController
+                                         alertControllerWithTitle:@"New app version required"
+                                         message:@"Please update your Artsy app to continue."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* linkToAppButton = [UIAlertAction
+                                              actionWithTitle:@"Download"
+                                              style:UIAlertActionStyleDefault
+                                              handler:^(UIAlertAction * action) {
+                                                  NSString *iTunesLink = @"https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080";
+                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+                                                  // We wait 1 second to make sure the view controller hierarchy has been set up.
+                                                  ar_dispatch_after(1, ^{
+                                                      exit(0);
+                                                  });
+                                              }];
+
+            [alert addAction:linkToAppButton];
+
+            [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        }
+    }
 }
 
 - (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
@@ -443,7 +473,7 @@ static ARAppDelegate *_sharedInstance = nil;
         ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [navigationController pushViewController:adminSettings animated:YES];
     }
-    
+
 }
 
 - (void)showQuicksilver

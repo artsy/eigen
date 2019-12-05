@@ -1,5 +1,13 @@
 ## Getting Setup
 
+### Prerequisites
+
+You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) installed. The Node version should match [the `engine` version here](https://github.com/artsy/emission/blob/master/package.json).
+
+### Xcode Version
+
+Currently we require developers to use Xcode 10, with the latest version (10.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+
 ### Fork and Clone
 
 Follow the instructions in [the README](https://github.com/artsy/eigen).

@@ -70,7 +70,6 @@ GEM
       nap (~> 1.0)
     cocoapods-deintegrate (1.0.4)
     cocoapods-downloader (1.2.2)
-    cocoapods-fix-react-native (2019.03.19.11)
     cocoapods-keys (2.1.0)
       dotenv
       osx_keychain
@@ -108,6 +107,8 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.5)
+    down (5.0.0)
+      addressable (~> 2.5)
     emoji_regex (1.0.1)
     escape (0.0.4)
     excon (0.66.0)
@@ -291,11 +292,11 @@ PLATFORMS
 DEPENDENCIES
   cocoapods (~> 1.7.2)
   cocoapods-check
-  cocoapods-fix-react-native
   cocoapods-keys
   danger
+  down
   lowdown
-  nokogiri (>= 1.6.7)
+  nokogiri (>= 1.10.4)
   psych
   second_curtain
   xcode-install

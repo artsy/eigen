@@ -1,7 +1,7 @@
 upcoming:
-  version: 5.0.6
+  version: 6.1.0
   date: TBD
-  emission_version: 1.12.x
+  emission_version: 1.18.39
   dev:
     - Switched CocoaPods to use the CDN master spec repo - alloy
     - Cleans up unused lab options - ash
@@ -13,23 +13,85 @@ upcoming:
     - Prevents admins from customizing API URLs while pointing to production - ash
     - Adds echo flag support for enabling various types of RN Artwork view - ash + david + kieran
     - Disables landscape rotation for iPhone on Artwork views - ash
+    - Add a new flag for Price Transparency to Echo - yuki24
+    - Adds option to show a collection view controller - ash
+    - Upgrades React Native to 0.61.4 - ash & david & kieran
+    - Add back-button-hiding infra for emission - ash & david & kieran
   user_facing:
-    - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
-    - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
-    - Adds new React Native Artwork view behind lab option - alloy/david
-    - Integrates View-in-Room support from React Native Artwork view - ash/steve
-    - LAI view now updates the number of bids as they come in - ash
-    - LAI view now opens on all sales - ash
-    - Adds edition information to LAI lot info view - ash/lily
-    - Don't push same search view if it already exists
-    - Live auction current lot now updates current bid - ash/anson
-    - Trim whitespace in featured links
-    - Improves UX when opening artwork view - ash
-    - Removes left-and-right swiping between artwork views - ash
+    - Updates profile and mutable view controllers to use default background if not fair - kierangillen
+    - Fixes an issue where confirm bid screen crashses when the Price Transparncy feature is off - yuki24
 
 releases:
-  - version: 5.0.5
+  - version: 6.0.0
+    date: November 14, 2019
+    emission_version: 1.18.23
+    dev:
+      - Add new partner page behind feature flag
+      - Update emission, sending the new 'env' parameter
+      - Add a feature flag for the new Price Transparency work - yuki24
+    user_facing:
+      - Adds killswitch based on Eigen version set in echo - kierangillen
+      - Re-enables Auctions Artwork Echo flag - ash
+      - Fixes circle badge size on nav when user has messages - kierangillen
+      - Fixes close button position on modal nav bars
+      - Fixes intermittent crash during Augmented Reality View-in-Room - ash
+      - (ME-1) Fixes ARKit showing some random circles during setup on iOS 13 - ash
+      - (ME-83) Infrastructure for new search UI - ash
+
+  - version: 5.0.8
     date: TBD
+    emission_version: 1.17.7
+    dev:
+      -
+    user_facing:
+      - Re-enables Artwork Auctions view to respect Echo flag - ash
+      - Re-disables Artwork Auctions view to respect Echo flag - ash
+      - Fixes crashes navigating to view controllers which were already in a navigation stack - ash
+      - Fixes problem not being able to select buy now works from an auction - ash
+      - Fixes search result pop transition (empty view bug) - ash & lily
+
+  - version: 5.0.7
+    date: September 30, 2019
+    emission_version: 1.17.3
+    dev:
+      - Allow opening web view target='_blank' links by pushing onto navigation stack - david + alloy
+      - Switch to MP v2 - alloy/justin
+      - Cleans up unused lab options - ash
+      - Removes concept of a lot's "current value" in favour of using the asking price - ash
+      - Adds more granular lab options for testing new RN artwork view - ash
+      - Make status bar white on artwork views - ash + david
+      - Adds Switchboard-based routing for inquiry, BNMO - kieran + ash
+      - Removes ARArtworkSetViewController - ash
+      - Prevents admins from customizing API URLs while pointing to production - ash
+      - Adds echo flag support for enabling various types of RN Artwork view - ash + david + kieran
+      - Disables landscape rotation for iPhone on Artwork views - ash
+      - Fixes problems displaying analytics debugging on iPad - ash
+      - Disables Auctions artwork view when enabled in Echo - ash
+    user_facing:
+      - Fixes crash when AuctionViewController re-appears without a populated view model - ash
+      - Users are no longer required to bid one increment above asking price on upcoming LAI lots - ash
+      - Purple "current lot" view at bottom of LAI now has correct, updating asking price - ash
+      - Adds new React Native Artwork view behind lab option - alloy/david
+      - Integrates View-in-Room support from React Native Artwork view - ash/steve
+      - LAI view now updates the number of bids as they come in - ash
+      - LAI view now opens on all sales - ash
+      - Adds edition information to LAI lot info view - ash/lily
+      - Don't push same search view if it already exists
+      - Live auction current lot now updates current bid - ash/anson
+      - Trim whitespace in featured links
+      - Improves UX when opening artwork view - ash
+      - Removes left-and-right swiping between artwork views - ash
+      - Fixes opening Terms/Privacy Policy links during onboarding - ash\
+
+  - version: 5.0.6
+    date: September 23, 2019
+    emission_version: 1.11.6
+      -
+    user_facing:
+      - Fixes crash for iOS 13 users - ash & david
+
+  - version: 5.0.5
+    date: June 25, 2019
     emission_version: 1.11.6
     dev:
       - Adds analytics tracking for artwork set view controller swipes - ash

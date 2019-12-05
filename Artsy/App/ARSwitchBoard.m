@@ -44,6 +44,7 @@
 #import <Emission/ARFairBMWArtActivationComponentViewController.h>
 #import <Emission/ARCitySavedListComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
+#import <Emission/ARPartnerLocationsComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -256,6 +257,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
     [self.routes addRoute:@"/artwork-classifications" handler:JLRouteParams {
         return [[ARArtworkAttributionClassFAQViewController alloc] init];
+    }];
+
+    [self.routes addRoute:@"/partner-locations/:id" handler:JLRouteParams {
+        return [[ARPartnerLocationsComponentViewController alloc] initWithPartnerID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/fair/:id/artworks" handler:JLRouteParams {

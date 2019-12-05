@@ -56,10 +56,10 @@ class AuctionBuyNowView: ORStackView {
 fileprivate typealias EmbeddedModelCallbacks = AuctionBuyNowView
 extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {
     func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, didTapItemAt index: UInt) {
-        guard let saleArtwork = controller.items?[Int(index)] as? SaleArtworkViewModel else {
+        guard let artwork = controller.items?[Int(index)] as? Artwork else {
             return
         }
-        let viewController = ARArtworkViewController(artwork: Artwork(artworkID: saleArtwork.artworkID), fair: nil)
+        let viewController = ARArtworkViewController(artwork: artwork, fair: nil)
         self.actionDelegate?.navigationController?.pushViewController(viewController, animated: true)
     }
 

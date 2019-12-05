@@ -1,1 +1,1 @@
-gallery,fairs,exhibition,collector,museum,auction,buy,artwork,artist,armory,bid,interior,banksy,fair
+buy,collect,bid,sell,consign,gallery,fair,auction,fine,art,artwork,artist,painting,print,photography

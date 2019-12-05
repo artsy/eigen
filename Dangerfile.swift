@@ -27,7 +27,7 @@ for file in testFiles {
 }
 
 // A shortcut to say "I know what I'm doing thanks"
-let knownDevTools = danger.github.pullRequest.body.contains("#known")
+let knownDevTools = danger.github.pullRequest.body?.contains("#known") ?? false
 
 // These files are ones we really don't want changes to, except in really occasional
 // cases, so offer a way out.

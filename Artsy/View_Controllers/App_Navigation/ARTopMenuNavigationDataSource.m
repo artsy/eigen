@@ -8,6 +8,7 @@
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileViewController.h>
 #import <Emission/ARMapContainerViewController.h>
+#import <Emission/ARSearchComponentViewController.h>
 
 #import "AREigenMapContainerViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
@@ -32,6 +33,7 @@
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
+@property (nonatomic, strong) ARNavigationController *searchNavigationController;
 @property (nonatomic, strong) ARNavigationController *favoritesNavigationController;
 @property (nonatomic, strong) ARNavigationController *localDiscoveryNavigationController;
 @property (nonatomic, strong) ARNavigationController *messagingNavigationController;
@@ -65,6 +67,16 @@
     return self;
 }
 
+- (ARNavigationController *)searchNavigationController
+{
+    if (_searchNavigationController) {
+        return _searchNavigationController;
+    }
+
+    ARSearchComponentViewController *searchVC = [[ARSearchComponentViewController alloc] init];
+    _searchNavigationController = [[ARNavigationController alloc] initWithRootViewController:searchVC];
+    return _searchNavigationController;
+}
 
 - (ARNavigationController *)messagingNavigationController
 {
@@ -134,6 +146,11 @@
                 return [self getHomeViewControllerWithArtist:params[@"artist_id"]];
             } else {
                 return [self feedNavigationController];
+            }
+
+        case ARTopTabControllerIndexSearch:
+            if ([AROptions boolForOption:AROptionsNewSearch]) {
+                return self.searchNavigationController;
             }
 
         case ARTopTabControllerIndexMessaging:

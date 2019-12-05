@@ -33,7 +33,7 @@ jobs:
 
     # Specify the Xcode version to use.
     macos:
-      xcode: "10.1.0"
+      xcode: '10.1.0'
 
     # Define the steps required to build the project.
     steps:
@@ -69,9 +69,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v3-pods-{{ checksum "Podfile.lock" }}
+            - v4-pods-{{ checksum "Podfile.lock" }}
             # Fall back to using the latest cache if no exact match is found.
-            - v3-pods-
+            - v4-pods-
 
       - run:
           name: Install CocoaPods
@@ -82,7 +82,7 @@ jobs:
           command: bundle exec pod check || bundle exec pod install
 
       - save_cache:
-          key: v3-pods-{{ checksum "Podfile.lock" }}
+          key: v4-pods-{{ checksum "Podfile.lock" }}
           paths:
             - Pods
 

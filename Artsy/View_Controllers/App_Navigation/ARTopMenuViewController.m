@@ -91,9 +91,13 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (UIImage *)badgeBackgroundImageWithColor:(UIColor *)color;
 {
     CGSize size = self.bounds.size;
+    CGSize circleSize = self.bounds.size;
+    circleSize.width /= 2;
+    circleSize.height /= 2;
+    // We dont want to alter the size of the button so we need to only halve the ellipse size, the button will otherwise resize to the image we return
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     [color setFill];
-    CGContextFillEllipseInRect(UIGraphicsGetCurrentContext(), (CGRect){ CGPointZero, size });
+    CGContextFillEllipseInRect(UIGraphicsGetCurrentContext(), CGRectMake(circleSize.width / 2, circleSize.height / 2, circleSize.width, circleSize.height));
     UIImage *backgroundImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return backgroundImage;

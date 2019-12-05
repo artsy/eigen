@@ -127,6 +127,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
     }
 
+    NSString *env;
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+      env = AREnvStaging;
+    } else {
+      env = AREnvProduction;
+    }
+
+
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                       authenticationToken:authenticationToken
@@ -138,6 +146,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                            metaphysicsURL:metaphysics
                                                                             predictionURL:liveAuctionsURL
                                                                                 userAgent:ARRouter.userAgent
+                                                                                      env:env
                                                                                   options:options];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
@@ -220,6 +229,12 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: SwitchBoard
 
+    emission.switchBoardModule.updateShouldHideBackButton = ^(BOOL shouldHide) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
+        });
+    };
+
     emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_Nonnull fromViewController,
                                                                    NSString *_Nonnull route) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
@@ -295,11 +310,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     [options addEntriesFromDictionary:echoFeatures];
 
-    // Handle the fact that it's "AREnableBuyNowFlow" in iOS world - and echo, then "enableBuyNowMakeOffer" in Emission world
-    options[@"enableBuyNowMakeOffer"] = echoFeatures[@"AREnableBuyNowFlow"];
-
     // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
     [options addEntriesFromDictionary:labOptions];
+
+    options[@"AROptionsPriceTransparency"] = @([options[@"AROptionsPriceTransparency"] boolValue] || [labOptions[AROptionsPriceTransparency] boolValue]);
+
     return options;
 }
 
@@ -485,4 +500,3 @@ MakeMenuAware(ARFairMoreInfoComponentViewController)
 MakeMenuAware(ARFairArtistsComponentViewController)
 MakeMenuAware(ARFairArtworksComponentViewController)
 MakeMenuAware(ARFairExhibitorsComponentViewController)
-
