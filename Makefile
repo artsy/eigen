@@ -145,7 +145,8 @@ set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITRemoteOriginURL $(GIT_REMOTE_ORIGIN_URL)" $(APP_PLIST)
 
 update_echo:
-	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell bundle exec pod keys get ArtsyEchoProductionToken Artsy)" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+	# Circle has trouble accessing CocoaPods keys from the command link. ArtsyEchoProductionToken is an ENV var on CI, so reference it directly if it's non-zero length.
+	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell [[ -z "${ArtsyEchoProductionToken}" ]] && bundle exec pod keys get ArtsyEchoProductionToken Artsy || echo $ArtsyEchoProductionToken)" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
