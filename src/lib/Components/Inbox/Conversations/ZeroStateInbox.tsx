@@ -28,6 +28,7 @@ export default class ZeroStateInbox extends React.Component {
       <FlatList
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
         data={rows}
+        alwaysBounceVertical={false}
         keyExtractor={(_item, index) => String(index)}
         ListHeaderComponent={() => (
           <Box px={2}>
@@ -43,7 +44,7 @@ export default class ZeroStateInbox extends React.Component {
               <Flex flexDirection="row" alignItems="center" flexWrap="nowrap">
                 <Icon source={item.iconHref} />
                 <Flex style={{ flex: 1 }}>
-                  <Serif size="3">{item.text}</Serif>
+                  <Serif size="4">{item.text}</Serif>
                 </Flex>
               </Flex>
             </Box>
