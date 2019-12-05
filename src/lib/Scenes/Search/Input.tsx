@@ -1,7 +1,7 @@
-import { color, Color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
+import { CloseIcon, color, Color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { TextInput, TextInputProps, TouchableWithoutFeedback } from "react-native"
+import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 const INPUT_HEIGHT = 40
@@ -13,6 +13,7 @@ export interface InputProps {
   required?: boolean
   title?: string
   icon?: JSX.Element
+  showClearButton?: boolean
 }
 
 export type Input = TextInput
@@ -20,8 +21,9 @@ export type Input = TextInput
  * Input component
  */
 export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
-  ({ description, disabled, error, required, title, icon, ...rest }, ref) => {
+  ({ description, disabled, error, required, title, showClearButton, icon, ...rest }, ref) => {
     const [focused, setFocused] = useState(false)
+    const [value, setValue] = useState(rest.defaultValue || "")
     const input = useRef<TextInput>()
     useImperativeHandle(ref, () => input.current)
     return (
@@ -44,11 +46,33 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
             <StyledInput
               ref={input}
               placeholderTextColor={color("black60")}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
               style={{ flex: 1 }}
-              {...rest as any}
+              {...(rest as any)}
+              onChangeText={text => {
+                setValue(text)
+                rest.onChangeText?.(text)
+              }}
+              onFocus={e => {
+                setFocused(true)
+                rest.onFocus?.(e)
+              }}
+              onBlur={e => {
+                setFocused(false)
+                rest.onBlur?.(e)
+              }}
             />
+            {Boolean(value) && showClearButton && (
+              <TouchableOpacity
+                onPress={() => {
+                  input.current.clear()
+                  setValue("")
+                  rest.onChangeText?.("")
+                }}
+                hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+              >
+                <CloseIcon fill="black60" />
+              </TouchableOpacity>
+            )}
           </InputWrapper>
         </TouchableWithoutFeedback>
         {error && (
