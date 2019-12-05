@@ -39,7 +39,7 @@ it("Shows a zero state when there are no bids/conversations", () => {
     renderWithLayout(<Inbox me={emptyMeProps as any} isVisible={true} />, { width: 768, height: 1024 })
   )
   // Taken from the title in ZeroStateInbox
-  expect(tree).toContain("BUYING ART ON ARTSY IS SIMPLE")
+  expect(tree).toContain("Buying art on Artsy is simple")
 })
 
 it("requests a relay refetch when fetchData is called in ZeroState", () => {
