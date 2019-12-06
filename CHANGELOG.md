@@ -1,3 +1,28 @@
+# v1.19.7 (Fri Dec 06 2019)
+
+#### 🐛  Bug Fix
+
+- [MX-54] App Ratings Prompt [#1995](https://github.com/artsy/emission/pull/1995) ([@ashfurrow](https://github.com/ashfurrow))
+- [MX-87] Search Results Pagination + other search improvements [#1994](https://github.com/artsy/emission/pull/1994) ([@ds300](https://github.com/ds300))
+- Refactor and modernize Consignments/Welcome & Inbox empty state [#1993](https://github.com/artsy/emission/pull/1993) ([@kierangillen](https://github.com/kierangillen))
+- Updates point people [#1992](https://github.com/artsy/emission/pull/1992) ([@kierangillen](https://github.com/kierangillen))
+- MX-116 - Fixes markdown bug causing Artwork crash [#1991](https://github.com/artsy/emission/pull/1991) ([@kierangillen](https://github.com/kierangillen))
+- Updates to Node 12 [#1986](https://github.com/artsy/emission/pull/1986) ([@kierangillen](https://github.com/kierangillen) [@ashfurrow](https://github.com/ashfurrow) [@ds300](https://github.com/ds300))
+- Adds note about auto-deploys [#1989](https://github.com/artsy/emission/pull/1989) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### ⚠️  Pushed to master
+
+- Revert "Removes Ruby version specifier."  ([@ashfurrow](https://github.com/ashfurrow))
+- Removes Ruby version specifier.  ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 3
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+- David Sheldrick ([@ds300](https://github.com/ds300))
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.19.6 (Wed Dec 04 2019)
 
 #### 🐛 Bug Fix
