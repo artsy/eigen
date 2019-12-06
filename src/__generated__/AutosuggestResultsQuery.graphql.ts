@@ -9,9 +9,35 @@ export type AutosuggestResultsQueryVariables = {
 export type AutosuggestResultsQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
+export type AutosuggestResultsQueryRawResponse = {
+    readonly results: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: "SearchableItem";
+                readonly displayType: string | null;
+            } | {
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: string;
+            }) | null;
+            readonly cursor: string;
+        }) | null> | null;
+        readonly pageInfo: {
+            readonly endCursor: string | null;
+            readonly hasNextPage: boolean;
+        };
+    }) | null;
+};
 export type AutosuggestResultsQuery = {
     readonly response: AutosuggestResultsQueryResponse;
     readonly variables: AutosuggestResultsQueryVariables;
+    readonly rawResponse: AutosuggestResultsQueryRawResponse;
 };
 
 
@@ -246,5 +272,5 @@ return {
   }
 };
 })();
-(node as any).hash = '2b1fed6f69fc2d626551f537fa4af69f';
+(node as any).hash = 'da338a989b43bdbad215b61dbb7ee597';
 export default node;

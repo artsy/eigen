@@ -2,14 +2,14 @@ import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import React, { MutableRefObject } from "react"
 import { Text, View } from "react-native"
 import { act, create, ReactTestRenderer } from "react-test-renderer"
-import { RecentSearch, useRecentSearches } from "../RecentSearches"
+import { ProvideRecentSearches, RecentSearch, useRecentSearches } from "../RecentSearches"
 
 const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
   return <Text>{href}</Text>
 }
 
 type TestRef = MutableRefObject<{ notifyRecentSearch(search: RecentSearch): Promise<void> }>
-const TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
+const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
   testRef = { current: null },
   numItems = 10,
 }) => {
@@ -21,6 +21,14 @@ const TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
         <TestItem href={props.href} onPress={() => notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })} />
       ))}
     </View>
+  )
+}
+
+const TestPage: typeof _TestPage = props => {
+  return (
+    <ProvideRecentSearches>
+      <_TestPage {...props} />
+    </ProvideRecentSearches>
   )
 }
 
@@ -71,10 +79,6 @@ describe(useRecentSearches, () => {
     await testRef.current.notifyRecentSearch(banksy)
 
     // should still be length 0 because local state doesn't update
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(0)
-
-    await remountTree()
-
     expect(tree.root.findAllByType(TestItem)).toHaveLength(1)
     expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(banksy.props.href)
   })
