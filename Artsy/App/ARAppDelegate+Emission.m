@@ -341,21 +341,18 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                 config.floorBasedVIR = YES;
                 config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
-                // @available check is to silence compiler warning; it is guaranteed by +canOpenARView.
-                if (@available(iOS 11.3, *)) {
-                    if (allowedAccess) {
-                        id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
-                        [[ARTopMenuViewController sharedController] pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-                    } else {
-                        ArtsyEcho *echo = [[ArtsyEcho alloc] init];
-                        [echo setup];
+                if (allowedAccess) {
+                    id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
+                    [[ARTopMenuViewController sharedController] pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+                } else {
+                    ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+                    [echo setup];
 
-                        Message *setupURL = echo.messages[@"ARVIRVideo"];
+                    Message *setupURL = echo.messages[@"ARVIRVideo"];
 
-                        NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
-                        ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
-                        [[ARTopMenuViewController sharedController] pushViewController:setupVC animated:ARPerformWorkAsynchronously];
-                    }
+                    NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
+                    ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
+                    [[ARTopMenuViewController sharedController] pushViewController:setupVC animated:ARPerformWorkAsynchronously];
                 }
             };
 

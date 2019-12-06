@@ -5,12 +5,14 @@ upcoming:
   dev:
     - Switched CocoaPods to use the CDN master spec repo - alloy
     - Add a new flag for Price Transparency to Echo - yuki24
+    - Increases minimum deploy version to iOS 12 - ash
     - Adds option to show a collection view controller - ash
     - Upgrades React Native to 0.61.4 - ash & david & kieran
     - Add back-button-hiding infra for emission - ash & david & kieran
   user_facing:
     - Updates profile and mutable view controllers to use default background if not fair - kierangillen
     - Fixes an issue where confirm bid screen crashses when the Price Transparncy feature is off - yuki24
+    - Increases the minimum iOS version supported by the app to iOS 12 - ash
 
 releases:
   - version: 6.0.0

@@ -8,7 +8,7 @@ end
 source 'https://github.com/artsy/Specs.git'
 source 'https://cdn.cocoapods.org/'
 
-platform :ios, '9.0'
+platform :ios, '12.0'
 inhibit_all_warnings!
 
 EMISSION_VERSION = '1.19.5'
@@ -48,7 +48,7 @@ if installing_pods
     FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
     tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/npm-podspecs.json")
     FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
-    system 'pushd rn_pods ; yarn install --production ; popd'
+    system 'pushd rn_pods ; yarn install --production --ignore-engines ; popd'
   else
     puts 'Skipping Emission node_modules install.'
   end

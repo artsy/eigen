@@ -14,7 +14,7 @@ beforeEach(^{
 });
 
 it(@"normally returns the onboarding URL", ^{
-    expect([subject imageURLForGene:gene atIndexPath:indexPath]).to.equal([NSURL URLWithString:@"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=100&height=100&quality=85&src=http://example.com/:version.jpg"]);
+    expect([subject imageURLForGene:gene atIndexPath:indexPath]).to.equal([NSURL URLWithString:@"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=150&height=150&quality=85&src=http://example.com/:version.jpg"]);
 });
 
 describe(@"added index path", ^{
@@ -32,7 +32,7 @@ describe(@"added index path", ^{
         });
 
         it(@"returns the onboarding URL", ^{
-            expect([subject imageURLForGene:gene atIndexPath:indexPath]).to.equal([NSURL URLWithString:@"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=100&height=100&quality=85&src=http://example.com/:version.jpg"]);
+            expect([subject imageURLForGene:gene atIndexPath:indexPath]).to.equal([NSURL URLWithString:@"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=150&height=150&quality=85&src=http://example.com/:version.jpg"]);
         });
     });
 });

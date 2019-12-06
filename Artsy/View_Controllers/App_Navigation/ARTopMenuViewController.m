@@ -234,12 +234,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (CGFloat)statusBarHeight
 {
-    // iPhone X support
-    if (@available(iOS 11.0, *)) {
-        return self.view.safeAreaInsets.top;
-    } else {
-        return 20;
-    }
+    return self.view.safeAreaInsets.top;
 }
 
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)isWhite
@@ -474,12 +469,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (CGFloat)bottomMargin
 {
-    // iPhone X support
-    if (@available(iOS 11.0, *)) {
-        return self.view.safeAreaInsets.bottom * -1;
-    } else {
-        return 0;
-    }
+    return self.view.safeAreaInsets.bottom * -1;
 }
 
 #pragma mark - ARMenuAwareViewController
