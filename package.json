@@ -161,7 +161,7 @@
     "node-fetch": "2.6.0",
     "patch-package": "6.1.2",
     "postinstall-prepare": "1.0.1",
-    "prettier": "1.14.3",
+    "prettier": "^1.19.1",
     "pull-lock": "1.0.0",
     "react-dom": "16.8.3",
     "react-native-storybook-loader": "1.8.0",

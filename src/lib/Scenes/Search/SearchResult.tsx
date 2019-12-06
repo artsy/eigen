@@ -1,36 +1,61 @@
-import { Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { CloseIcon, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useRef } from "react"
-import { TouchableOpacity } from "react-native"
+import React, { useContext, useRef } from "react"
+import { TouchableOpacity, View } from "react-native"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { useRecentSearches } from "./RecentSearches"
+import { SearchContext } from "./SearchContext"
 
 export const SearchResult: React.FC<{
   result: AutosuggestResult
   highlight?: string
-}> = ({ result, highlight }) => {
+  updateRecentSearchesOnTap?: boolean
+  onDelete?(): void
+}> = ({ result, highlight, onDelete, updateRecentSearchesOnTap = true }) => {
   const navRef = useRef<any>()
   const { notifyRecentSearch } = useRecentSearches()
+  const { inputRef } = useContext(SearchContext)
   return (
     <TouchableOpacity
       ref={navRef}
       onPress={() => {
-        SwitchBoard.presentNavigationViewController(navRef.current, result.href)
-        notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+        inputRef.current.blur()
+        // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
+        setTimeout(() => {
+          SwitchBoard.presentNavigationViewController(navRef.current, result.href)
+          if (updateRecentSearchesOnTap) {
+            notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+          }
+        }, 20)
       }}
     >
       <Flex flexDirection="row" alignItems="center">
         <OpaqueImageView imageURL={result.imageUrl} style={{ width: 36, height: 36 }} />
         <Spacer ml={1} />
-        <Flex>
+        <View style={{ flex: 1 }}>
           {applyHighlight(result.displayLabel, highlight)}
           {result.displayType && (
             <Sans size="2" color="black60">
               {result.displayType}
             </Sans>
           )}
-        </Flex>
+        </View>
+        {onDelete && (
+          <TouchableOpacity
+            onPress={onDelete}
+            hitSlop={{
+              bottom: 20,
+              top: 20,
+              left: 10,
+              right: 20,
+            }}
+          >
+            <Flex pl={1}>
+              <CloseIcon fill="black60" />
+            </Flex>
+          </TouchableOpacity>
+        )}
       </Flex>
     </TouchableOpacity>
   )

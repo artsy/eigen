@@ -2,30 +2,32 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AutosuggestResultsQueryVariables = {
+export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
     count?: number | null;
+    cursor?: string | null;
 };
-export type AutosuggestResultsQueryResponse = {
+export type AutosuggestResultsPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
-export type AutosuggestResultsQuery = {
-    readonly response: AutosuggestResultsQueryResponse;
-    readonly variables: AutosuggestResultsQueryVariables;
+export type AutosuggestResultsPaginationQuery = {
+    readonly response: AutosuggestResultsPaginationQueryResponse;
+    readonly variables: AutosuggestResultsPaginationQueryVariables;
 };
 
 
 
 /*
-query AutosuggestResultsQuery(
+query AutosuggestResultsPaginationQuery(
   $query: String!
   $count: Int
+  $cursor: String
 ) {
-  ...AutosuggestResults_results_1bcUq5
+  ...AutosuggestResults_results_1jWD3d
 }
 
-fragment AutosuggestResults_results_1bcUq5 on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count) {
+fragment AutosuggestResults_results_1jWD3d on Query {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor) {
     edges {
       node {
         imageUrl
@@ -62,6 +64,12 @@ var v0 = [
     "name": "count",
     "type": "Int",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
   }
 ],
 v1 = {
@@ -70,6 +78,11 @@ v1 = {
   "variableName": "query"
 },
 v2 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
   {
     "kind": "Variable",
     "name": "first",
@@ -86,7 +99,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "AutosuggestResultsQuery",
+    "name": "AutosuggestResultsPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -100,6 +113,11 @@ return {
             "name": "count",
             "variableName": "count"
           },
+          {
+            "kind": "Variable",
+            "name": "cursor",
+            "variableName": "cursor"
+          },
           (v1/*: any*/)
         ]
       }
@@ -107,7 +125,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "AutosuggestResultsQuery",
+    "name": "AutosuggestResultsPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -239,12 +257,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "AutosuggestResultsQuery",
-    "id": "965a233ccdfcec5697b87c7fde155ef9",
+    "name": "AutosuggestResultsPaginationQuery",
+    "id": "a76a4374774965e59510383c9d34cfd3",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2b1fed6f69fc2d626551f537fa4af69f';
+(node as any).hash = 'ad79bc1d1045b244e9a9a17dd7b03457';
 export default node;

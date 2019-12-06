@@ -18,13 +18,6 @@ const TestWrapper: typeof Search = props => (
 )
 
 describe("The Search page", () => {
-  it(`shows recent searches on initial load`, async () => {
-    const tree = ReactTestRenderer.create(<TestWrapper />)
-
-    expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
-    expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
-  })
-
   it(`passes the query to the AutosuggestResults when the query is nonempty`, async () => {
     const tree = ReactTestRenderer.create(<TestWrapper />)
 
