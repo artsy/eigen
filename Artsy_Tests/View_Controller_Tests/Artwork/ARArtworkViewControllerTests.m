@@ -135,12 +135,6 @@ describe(@"ARArtworkViewController", ^{
 
         vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
         vc.echo = echo;
-
-        // Reset all options to default states
-        [AROptions setBool:NO forOption:AROptionsRNArtworkNonCommerical];
-        [AROptions setBool:NO forOption:AROptionsRNArtworkNSOInquiry];
-        [AROptions setBool:NO forOption:AROptionsRNArtworkAuctions];
-        [AROptions setBool:NO forOption:AROptionsRNArtworkAlways];
     });
 
     afterEach(^{
@@ -191,10 +185,6 @@ describe(@"ARArtworkViewController", ^{
     describe(@"concerning artworks for which to show the new component view", ^{
         describe(@"noncommerical artworks", ^{
             describe(@"enabled through debug options", ^{
-                beforeEach(^{
-                    [AROptions setBool:YES forOption:AROptionsRNArtworkNonCommerical];
-                });
-
                 for (NSString *availability in componentAvailabilityStates) {
                     it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
                         StubArtworkWithAvailability(availability);
@@ -205,12 +195,6 @@ describe(@"ARArtworkViewController", ^{
             });
 
             describe(@"enabled through echo", ^{
-                beforeEach(^{
-                    echo.features = @{
-                        @"ARReactNativeArtworkEnableNonCommercial" : [[Feature alloc] initWithName:@"" state:@(YES)]
-                    };
-                });
-
                 for (NSString *availability in componentAvailabilityStates) {
                     it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
                         StubArtworkWithAvailability(availability);
@@ -223,10 +207,6 @@ describe(@"ARArtworkViewController", ^{
 
         describe(@"NSO/inquiry artworks", ^{
             describe(@"enabled through debug options", ^{
-                beforeEach(^{
-                    [AROptions setBool:YES forOption:AROptionsRNArtworkNSOInquiry];
-                });
-
                 it(@"works with buy-nowable artworks", ^{
                     StubArtworkWithBNMO(YES, NO);
                     (void)vc.view;
@@ -247,12 +227,6 @@ describe(@"ARArtworkViewController", ^{
             });
 
             describe(@"enabled through echo", ^{
-                beforeEach(^{
-                    echo.features = @{
-                        @"ARReactNativeArtworkEnableNSOInquiry" : [[Feature alloc] initWithName:@"" state:@(YES)]
-                    };
-                });
-
                 it(@"works with buy-nowable artworks", ^{
                     StubArtworkWithBNMO(YES, NO);
                     (void)vc.view;
@@ -269,10 +243,6 @@ describe(@"ARArtworkViewController", ^{
 
         describe(@"auctions artworks", ^{
             describe(@"enabled through debug options", ^{
-                beforeEach(^{
-                    [AROptions setBool:YES forOption:AROptionsRNArtworkAuctions];
-                });
-
                 it(@"works artworks that are in a sale", ^{
                     StubArtworkWithSaleArtwork();
                     (void)vc.view;
@@ -281,12 +251,6 @@ describe(@"ARArtworkViewController", ^{
             });
 
             describe(@"enabled through echo", ^{
-                beforeEach(^{
-                    echo.features = @{
-                        @"ARReactNativeArtworkEnableAuctions" : [[Feature alloc] initWithName:@"" state:@(YES)]
-                    };
-                });
-
                 pending(@"works artworks that are in a sale", ^{
                     StubArtworkWithSaleArtwork();
                     (void)vc.view;
@@ -296,10 +260,6 @@ describe(@"ARArtworkViewController", ^{
         });
 
         describe(@"when all artworks lab option is enabled", ^{
-            beforeEach(^{
-                [AROptions setBool:YES forOption:AROptionsRNArtworkAlways];
-            });
-
             for (NSString *availability in componentAvailabilityStates) {
                 it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
                     StubArtworkWithAvailability(availability);

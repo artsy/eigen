@@ -11,13 +11,8 @@ extern NSString *const AROptionsDisableNativeLiveAuctions;
 extern NSString *const AROptionsStagingReactEnv;
 extern NSString *const AROptionsDevReactEnv;
 extern NSString *const AROptionsDebugARVIR;
-extern NSString *const AROptionsRNArtworkAlways;
-extern NSString *const AROptionsRNArtworkNonCommerical;
-extern NSString *const AROptionsRNArtworkNSOInquiry;
-extern NSString *const AROptionsRNArtworkAuctions;
 extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsNewSearch;
-extern NSString *const AROptionsNewPartnerPage;
 
 @interface AROptions : NSObject
 

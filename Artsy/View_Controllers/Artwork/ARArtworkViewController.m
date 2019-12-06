@@ -23,28 +23,6 @@
 
 @implementation ARArtworkViewController
 
-- (BOOL)shouldShowNewVersion;
-{
-    if ([AROptions boolForOption:AROptionsRNArtworkAlways]) {
-        return YES;
-    }
-
-    BOOL isArtworkNonCommerical = self.artwork.availability != ARArtworkAvailabilityForSale && !self.artwork.isInquireable.boolValue;
-    BOOL isArtworkAuctions = self.artwork.isInAuction;
-    // Being in an auction excludes artworks from being NSOInquiry.
-    BOOL isArtworkNSOInquiry = !isArtworkAuctions && (self.artwork.isOfferable.boolValue || self.artwork.isAcquireable.boolValue || self.artwork.isInquireable.boolValue);
-
-    if (isArtworkNonCommerical) {
-        return ([AROptions boolForOption:AROptionsRNArtworkNonCommerical] || [self.echo.features[@"ARReactNativeArtworkEnableNonCommercial"] state]);
-    } else if (isArtworkNSOInquiry) {
-        return ([AROptions boolForOption:AROptionsRNArtworkNSOInquiry] || [self.echo.features[@"ARReactNativeArtworkEnableNSOInquiry"] state]);
-    } else if (isArtworkAuctions) {
-        return ([AROptions boolForOption:AROptionsRNArtworkAuctions] || [self.echo.features[@"ARReactNativeArtworkEnableAuctions"] state]);
-    }
-
-    return NO;
-}
-
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair;
 {
     if ((self = [super init])) {
@@ -85,20 +63,8 @@
             [sself.spinner stopAnimating];
             [sself.spinner removeFromSuperview];
 
-            if (sself.shouldShowNewVersion) {
-                ARArtworkComponentViewController *vc = [[ARArtworkComponentViewController alloc] initWithArtworkID:sself.artwork.artworkID];
-                [sself ar_addAlignedModernChildViewController:vc];
-            } else {
-                // Pass a copy of the artwork instance here, because we don’t want our
-                // artwork's onArtworkUpdate deferred callback to be triggered again.
-                sself.legacyViewController = [[ARLegacyArtworkViewController alloc] initWithArtwork:[sself.artwork copy]
-                                                                                               fair:sself.fair];
-                [sself ar_addAlignedModernChildViewController:sself.legacyViewController];
-
-                // This replicates what previously the ARArtworkSetViewController would invoke on the legacy VC,
-                // which in turn ends up invoking -setupUI and render everything below the fold.
-                [sself.legacyViewController setHasFinishedScrolling];
-            }
+            ARArtworkComponentViewController *vc = [[ARArtworkComponentViewController alloc] initWithArtworkID:sself.artwork.artworkID];
+            [sself ar_addAlignedModernChildViewController:vc];
         });
     } failure:^(NSError *error) {
         // TODO
