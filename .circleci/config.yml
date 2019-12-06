@@ -4,7 +4,7 @@ jobs:
   build-and-test:
     # Specify the Xcode version to use
     macos:
-      xcode: "10.1.0"
+      xcode: "10.3.0"
 
     shell: /bin/bash --login -eo pipefail
 
@@ -93,7 +93,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: yarn ci:skip-native-if-possible || { cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output /tmp/test_results/xcode/results.xml ; }
+          command: yarn ci:skip-native-if-possible || { cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=12.4,name=iPhone X" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output /tmp/test_results/xcode/results.xml ; }
 
       - store_test_results:
           path: /tmp/test_results/
