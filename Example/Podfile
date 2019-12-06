@@ -115,6 +115,9 @@ post_install do |installer|
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
   emission.build_configurations.each do |config|
     config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
+    # We treat warnings as errors, but currently have outstanding deprecation warnings to deal with, so we ignore deprecation warnings.
+    # See: https://artsyproduct.atlassian.net/browse/MX-119
+    config.build_settings['GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS'] = 'NO'
     # Work around https://github.com/rs/SDWebImage/issues/2022, because we don't want to upgrade to SDWebImage 4 atm.
     config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
     # Use dynamic queries by default in development mode.
