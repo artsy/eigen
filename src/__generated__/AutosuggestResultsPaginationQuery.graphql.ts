@@ -5,6 +5,7 @@ import { FragmentRefs } from "relay-runtime";
 export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
     count?: number | null;
+    cursor?: string | null;
 };
 export type AutosuggestResultsPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
@@ -20,12 +21,13 @@ export type AutosuggestResultsPaginationQuery = {
 query AutosuggestResultsPaginationQuery(
   $query: String!
   $count: Int
+  $cursor: String
 ) {
-  ...AutosuggestResults_results_1bcUq5
+  ...AutosuggestResults_results_1jWD3d
 }
 
-fragment AutosuggestResults_results_1bcUq5 on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: "") {
+fragment AutosuggestResults_results_1jWD3d on Query {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor) {
     edges {
       node {
         imageUrl
@@ -62,6 +64,12 @@ var v0 = [
     "name": "count",
     "type": "Int",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
   }
 ],
 v1 = {
@@ -71,9 +79,9 @@ v1 = {
 },
 v2 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "after",
-    "value": ""
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
@@ -104,6 +112,11 @@ return {
             "kind": "Variable",
             "name": "count",
             "variableName": "count"
+          },
+          {
+            "kind": "Variable",
+            "name": "cursor",
+            "variableName": "cursor"
           },
           (v1/*: any*/)
         ]
@@ -245,11 +258,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "f43f49323e7ba53b7df00c9931a9442b",
+    "id": "a76a4374774965e59510383c9d34cfd3",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e2ebdfb6de85fb6354cf74ecba856b30';
+(node as any).hash = 'ad79bc1d1045b244e9a9a17dd7b03457';
 export default node;

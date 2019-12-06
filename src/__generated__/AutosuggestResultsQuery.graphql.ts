@@ -7,9 +7,6 @@ export type AutosuggestResultsQueryVariables = {
     count?: number | null;
 };
 export type AutosuggestResultsQueryResponse = {
-    readonly me: {
-        readonly id: string;
-    } | null;
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
 export type AutosuggestResultsQuery = {
@@ -25,13 +22,10 @@ query AutosuggestResultsQuery(
   $count: Int
 ) {
   ...AutosuggestResults_results_1bcUq5
-  me {
-    id
-  }
 }
 
 fragment AutosuggestResults_results_1bcUq5 on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: "") {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count) {
     edges {
       node {
         imageUrl
@@ -71,35 +65,11 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "me",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Me",
-  "plural": false,
-  "selections": [
-    (v1/*: any*/)
-  ]
-},
-v3 = {
   "kind": "Variable",
   "name": "query",
   "variableName": "query"
 },
-v4 = [
-  {
-    "kind": "Literal",
-    "name": "after",
-    "value": ""
-  },
+v2 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -110,7 +80,7 @@ v4 = [
     "name": "mode",
     "value": "AUTOSUGGEST"
   },
-  (v3/*: any*/)
+  (v1/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -121,7 +91,6 @@ return {
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
-      (v2/*: any*/),
       {
         "kind": "FragmentSpread",
         "name": "AutosuggestResults_results",
@@ -131,7 +100,7 @@ return {
             "name": "count",
             "variableName": "count"
           },
-          (v3/*: any*/)
+          (v1/*: any*/)
         ]
       }
     ]
@@ -146,7 +115,7 @@ return {
         "alias": "results",
         "name": "searchConnection",
         "storageKey": null,
-        "args": (v4/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "SearchableConnection",
         "plural": false,
         "selections": [
@@ -189,7 +158,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v1/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -252,25 +227,24 @@ return {
         "kind": "LinkedHandle",
         "alias": "results",
         "name": "searchConnection",
-        "args": (v4/*: any*/),
+        "args": (v2/*: any*/),
         "handle": "connection",
         "key": "AutosuggestResults_results",
         "filters": [
           "query",
           "mode"
         ]
-      },
-      (v2/*: any*/)
+      }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsQuery",
-    "id": "b19422a2eff89cfe855ee0df90660ce5",
+    "id": "965a233ccdfcec5697b87c7fde155ef9",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2909f1e5d9dc857b4f24122df7876d63';
+(node as any).hash = '2b1fed6f69fc2d626551f537fa4af69f';
 export default node;
