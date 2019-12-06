@@ -21,13 +21,31 @@ const AutosuggestResultsFlatList: React.FC<{
   results: AutosuggestResults_results | null
   relay: RelayPaginationProp
 }> = ({ query, results: latestResults, relay }) => {
+  const flatListRef = useRef<FlatList<any>>()
+  const maybeScrollBackToTopAfterNextRender = useRef(false)
+  const scrollBackToTop = useRef(false)
+
   const results = useRef(latestResults)
+
+  if (maybeScrollBackToTopAfterNextRender.current) {
+    if (results.current && latestResults && results.current !== latestResults) {
+      // the results have finally changed, wait for the reconciliation and then scroll back to top
+      scrollBackToTop.current = true
+      maybeScrollBackToTopAfterNextRender.current = false
+    }
+  }
+
+  useEffect(() => {
+    if (scrollBackToTop.current) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
+      scrollBackToTop.current = false
+    }
+  })
 
   // if the user just typed and we didn't get a response from MP yet latestResults will
   // be null. In that case we don't want to re-render as empty so just re-use the old results
   results.current = latestResults || results.current
 
-  const flatListRef = useRef<FlatList<any>>()
   const shouldLoadMore = useRef(false)
 
   const loadMore = useMemo(() => {
@@ -45,7 +63,7 @@ const AutosuggestResultsFlatList: React.FC<{
   useEffect(() => {
     // whenever the query changes make sure we scroll back to the top
     if (query) {
-      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
+      maybeScrollBackToTopAfterNextRender.current = true
       // also disable loading more until the user explicitly begins to scroll
       shouldLoadMore.current = false
     }
