@@ -1,4 +1,4 @@
-import { Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { CloseIcon, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
@@ -9,7 +9,8 @@ import { useRecentSearches } from "./RecentSearches"
 export const SearchResult: React.FC<{
   result: AutosuggestResult
   highlight?: string
-}> = ({ result, highlight }) => {
+  onDelete?(): void
+}> = ({ result, highlight, onDelete }) => {
   const navRef = useRef<any>()
   const { notifyRecentSearch } = useRecentSearches()
   return (
@@ -31,6 +32,21 @@ export const SearchResult: React.FC<{
             </Sans>
           )}
         </View>
+        {onDelete && (
+          <TouchableOpacity
+            onPress={onDelete}
+            hitSlop={{
+              bottom: 20,
+              top: 20,
+              left: 10,
+              right: 20,
+            }}
+          >
+            <Flex pl={1}>
+              <CloseIcon />
+            </Flex>
+          </TouchableOpacity>
+        )}
       </Flex>
     </TouchableOpacity>
   )

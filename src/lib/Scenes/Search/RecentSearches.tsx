@@ -2,6 +2,7 @@ import { Flex, Sans, Spacer } from "@artsy/palette"
 import AsyncStorage from "@react-native-community/async-storage"
 import { useEffect, useState } from "react"
 import React from "react"
+import { LayoutAnimation } from "react-native"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchResult } from "./SearchResult"
 import { SearchResultList } from "./SearchResultList"
@@ -47,11 +48,18 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
       }
       await AsyncStorage.setItem(storageKey, JSON.stringify(newSearches))
     },
+    async deleteRecentSearch(props: RecentSearch["props"]) {
+      const value = await AsyncStorage.getItem(storageKey)
+      const oldSearches = JSON.parse(value || "[]") as RecentSearch[]
+      const newSearches = oldSearches ? oldSearches.filter(s => s.props.href !== props.href) : []
+      setSearches(newSearches)
+      await AsyncStorage.setItem(storageKey, JSON.stringify(newSearches))
+    },
   }
 }
 
 export const RecentSearches: React.FC = () => {
-  const { recentSearches } = useRecentSearches()
+  const { recentSearches, deleteRecentSearch } = useRecentSearches()
   return (
     <Flex p={2}>
       <Sans size="3" weight="medium">
@@ -60,7 +68,13 @@ export const RecentSearches: React.FC = () => {
       <Spacer mb={1} />
       <SearchResultList
         results={recentSearches.map(({ props: result }) => (
-          <SearchResult result={result} />
+          <SearchResult
+            result={result}
+            onDelete={() => {
+              LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 230 })
+              deleteRecentSearch(result)
+            }}
+          />
         ))}
       />
     </Flex>
