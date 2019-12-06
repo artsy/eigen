@@ -26,7 +26,7 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://cdn.cocoapods.org/'
 
 inhibit_all_warnings!
-platform :ios, '10.0'
+platform :ios, '12.0'
 
 require 'json'
 npm_vendored_podspecs = JSON.parse(File.read('../npm-podspecs.json'), symbolize_names: true)
@@ -109,7 +109,7 @@ post_install do |installer|
 
     target.build_configurations.each do |config|
       # CocoaPods setting the deployment target to be less than the actual deployable target is causing many Xcode warnings. This silences them. See: https://github.com/CocoaPods/CocoaPods/issues/7314
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
   end
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
