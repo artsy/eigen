@@ -1,7 +1,6 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
-#import <iRate/iRate.h>
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Adjust/Adjust.h>
@@ -141,7 +140,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupAdminTools];
 
-    [self setupRatingTool];
     [self countNumberOfRuns];
 
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
@@ -360,15 +358,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey:^{
         [ARTopMenuViewController.sharedController.rootNavigationController popViewControllerAnimated:YES];
     }];
-}
-
-- (void)setupRatingTool
-{
-    BOOL isLoggedIn = [[ARUserManager sharedManager] hasExistingAccount];
-    if (isLoggedIn) {
-        [iRate sharedInstance].promptForNewVersionIfUserRated = NO;
-        [iRate sharedInstance].verboseLogging = NO;
-    }
 }
 
 // For pre-iOS 10

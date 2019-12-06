@@ -13,6 +13,7 @@ upcoming:
     - Updates profile and mutable view controllers to use default background if not fair - kierangillen
     - Fixes an issue where confirm bid screen crashses when the Price Transparncy feature is off - yuki24
     - Increases the minimum iOS version supported by the app to iOS 12 - ash
+    - Migrates to iOS app review dialogue - ash
 
 releases:
   - version: 6.0.0

@@ -11,7 +11,7 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '12.0'
 inhibit_all_warnings!
 
-EMISSION_VERSION = '1.19.5'
+EMISSION_VERSION = '1.19.7'
 require 'down'
 require 'json'
 require 'fileutils'
@@ -101,7 +101,6 @@ target 'Artsy' do
   pod 'CocoaLumberjack', git: 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
   pod 'FLKAutoLayout', git: 'https://github.com/orta/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
-  pod 'iRate'
   pod 'ISO8601DateFormatter', git: 'https://github.com/orta/iso-8601-date-formatter'
   pod 'JLRoutes', git: 'https://github.com/orta/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
@@ -135,7 +134,10 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
+  # To link to Emission locally, for development, comment out the line below, and uncomment the line below it.
   pod 'Emission', EMISSION_VERSION
+#  pod 'Emission', path: '../emission' # Local Development Emission
+
   npm_vendored_podspecs.each do |pod_name, props|
     pod pod_name.to_s, props
   end
