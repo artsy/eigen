@@ -93,6 +93,7 @@ const AutosuggestResultsFlatList: React.FC<{
       ref={flatListRef}
       style={{ flex: 1, padding: space(2) }}
       data={nodes}
+      showsVerticalScrollIndicator={false}
       ListFooterComponent={ListFooterComponent}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
