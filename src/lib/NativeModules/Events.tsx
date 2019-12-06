@@ -8,6 +8,8 @@ function postEvent(info: any) {
   AREventsModule.postEvent(info)
 }
 
+// Whether we have requested during the current session or not.
+let hasRequested = false
 /**
  * Callback for when user has meaningfully interacted with the app (eg: followed an artist).
  * This method is designed to be called often, and it encapsulates all logic necessary for
@@ -26,7 +28,5 @@ function userHadMeaningfulInteraction() {
     }
   }
 }
-// Whether we have requested during the current session or not.
-let hasRequested = false
 
 export default { postEvent, userHadMeaningfulInteraction }
