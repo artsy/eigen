@@ -1,10 +1,11 @@
 import { CloseIcon, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useRef } from "react"
+import React, { useContext, useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { useRecentSearches } from "./RecentSearches"
+import { SearchContext } from "./SearchContext"
 
 export const SearchResult: React.FC<{
   result: AutosuggestResult
@@ -14,14 +15,19 @@ export const SearchResult: React.FC<{
 }> = ({ result, highlight, onDelete, updateRecentSearchesOnTap = true }) => {
   const navRef = useRef<any>()
   const { notifyRecentSearch } = useRecentSearches()
+  const { inputRef } = useContext(SearchContext)
   return (
     <TouchableOpacity
       ref={navRef}
       onPress={() => {
-        if (updateRecentSearchesOnTap) {
+        inputRef.current.blur()
+        // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
+        setTimeout(() => {
           SwitchBoard.presentNavigationViewController(navRef.current, result.href)
-        }
-        notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+          if (updateRecentSearchesOnTap) {
+            notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+          }
+        }, 20)
       }}
     >
       <Flex flexDirection="row" alignItems="center">

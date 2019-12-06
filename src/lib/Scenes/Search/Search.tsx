@@ -6,6 +6,7 @@ import { KeyboardAvoidingView, LayoutAnimation, TouchableOpacity, View } from "r
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
+import { SearchContext } from "./SearchContext"
 
 const SearchPage: React.FC = () => {
   const input = useRef<Input>()
@@ -16,7 +17,7 @@ const SearchPage: React.FC = () => {
     safeAreaInsets: { top },
   } = useScreenDimensions()
   return (
-    <Theme>
+    <SearchContext.Provider value={{ inputRef: input }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
         <Flex flexDirection="row" p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <Input
@@ -53,7 +54,7 @@ const SearchPage: React.FC = () => {
             )}
           </Flex>
         </Flex>
-        <View style={{ flex: 1 }} onTouchStart={() => input.current.blur()}>
+        <View style={{ flex: 1 }}>
           {query.length >= 2 ? (
             <AutosuggestResults query={query} />
           ) : recentSearches.length ? (
@@ -63,7 +64,7 @@ const SearchPage: React.FC = () => {
           )}
         </View>
       </KeyboardAvoidingView>
-    </Theme>
+    </SearchContext.Provider>
   )
 }
 

@@ -94,6 +94,8 @@ const AutosuggestResultsFlatList: React.FC<{
       style={{ flex: 1, padding: space(2) }}
       data={nodes}
       ListFooterComponent={ListFooterComponent}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
       ListEmptyComponent={
         noResults
           ? () => {

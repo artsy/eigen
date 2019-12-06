@@ -1,8 +1,8 @@
-import { Flex, Sans, Spacer } from "@artsy/palette"
+import { Sans, space, Spacer } from "@artsy/palette"
 import AsyncStorage from "@react-native-community/async-storage"
 import { useContext, useEffect, useMemo, useState } from "react"
 import React from "react"
-import { LayoutAnimation } from "react-native"
+import { LayoutAnimation, ScrollView } from "react-native"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchResult } from "./SearchResult"
 import { SearchResultList } from "./SearchResultList"
@@ -77,7 +77,7 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
 export const RecentSearches: React.FC = () => {
   const { recentSearches, deleteRecentSearch } = useRecentSearches()
   return (
-    <Flex p={2}>
+    <ScrollView style={{ padding: space(2) }} keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
       <Sans size="3" weight="medium">
         Recent
       </Sans>
@@ -94,6 +94,6 @@ export const RecentSearches: React.FC = () => {
           />
         ))}
       />
-    </Flex>
+    </ScrollView>
   )
 }
