@@ -43,7 +43,7 @@ export const SearchResult: React.FC<{
             }}
           >
             <Flex pl={1}>
-              <CloseIcon />
+              <CloseIcon fill="black60" />
             </Flex>
           </TouchableOpacity>
         )}
