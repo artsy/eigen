@@ -12,6 +12,7 @@ import {
 } from "@artsy/palette"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
+import Events from "lib/NativeModules/Events"
 import { Schema, track } from "lib/utils/track"
 import { take } from "lodash"
 import React from "react"
@@ -66,6 +67,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       `,
       variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
       optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
+      onCompleted: () => Events.userHadMeaningfulInteraction(),
     })
   }
 

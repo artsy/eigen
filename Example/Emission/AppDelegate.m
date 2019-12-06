@@ -153,6 +153,7 @@ randomBOOL(void)
 
   AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                 authenticationToken:accessToken
+                                                                        launchCount:2 // launches mod20 == 2 is the trigger for showing ratings prompt (eg, launch on 2, 22, 42, etc).
                                                                           sentryDSN:sentryDSN
                                                                stripePublishableKey:[keys stripePublishableKey]
                                                                    googleMapsAPIKey:[keys googleMapsAPIKey]

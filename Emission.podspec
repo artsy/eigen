@@ -3,8 +3,8 @@ require 'date'
 
 root = ENV['EMISSION_ROOT'] || __dir__
 pkg_version = lambda do |dir_from_root = '', version = 'version'|
-  _path = File.join(root, dir_from_root, 'package.json')
-  JSON.load(File.read(_path))[version]
+  path = File.join(root, dir_from_root, 'package.json')
+  JSON.load(File.read(path))[version]
 end
 
 emission_version = pkg_version.call
@@ -19,7 +19,7 @@ podspec = Pod::Spec.new do |s|
   s.license        = 'MIT'
   s.author         = { 'Artsy Mobile' => 'mobile@artsy.net' }
   s.source         = { git: 'https://github.com/artsy/emission.git', tag: "v#{s.version}" }
-  s.platform       = :ios, '9.0'
+  s.platform       = :ios, '12.0'
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
   s.preserve_paths = 'Pod/Classes/**/*.generated.objc'
   s.resources      = 'Pod/Assets/{Emission.js,assets,PreHeatedGraphQLCache}'

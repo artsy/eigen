@@ -37,6 +37,7 @@ RCT_EXPORT_MODULE(Emission);
   return @{
     @"userID": self.userID,
     @"authenticationToken": self.authenticationToken,
+    @"launchCount": @(self.launchCount),
 
     @"gravityURL": self.gravityURL,
     @"metaphysicsURL": self.metaphysicsURL,
@@ -56,6 +57,7 @@ RCT_EXPORT_MODULE(Emission);
 
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
+                   launchCount:(NSInteger)launchCount
                      sentryDSN:(nullable NSString *)sentryDSN
           stripePublishableKey:(nullable NSString *)stripePublishableKey
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
@@ -70,6 +72,7 @@ RCT_EXPORT_MODULE(Emission);
     self = [super init];
     _userID = userID.copy;
     _authenticationToken = token.copy;
+    _launchCount = launchCount;
     _sentryDSN = sentryDSN.copy;
     _stripePublishableKey = stripePublishableKey.copy;
     _googleMapsAPIKey = googleAPIKey.copy;

@@ -17,6 +17,10 @@ extern NSString *const AREnvTest;
 @property (nonatomic, copy, readonly) NSString *userID;
 @property (nonatomic, copy, readonly) NSString *authenticationToken;
 @property (nonatomic, copy, readonly) NSDictionary *options;
+// How many times the app has been launched. We assign this on startup because this number
+// increases quite often (any time the app loses focus and regains it). By injecting it
+// here, we get the count of launches at the time _of_ app launch.
+@property (nonatomic, assign, readonly) NSInteger launchCount;
 
 // ENV Variables
 @property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey;
@@ -41,6 +45,7 @@ extern NSString *const AREnvTest;
 // Forces us to always include all properties
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
+                   launchCount:(NSInteger)launchCount
                      sentryDSN:(nullable NSString *)sentryDSN
           stripePublishableKey:(nullable NSString *)stripePublishableKey
               googleMapsAPIKey:(nullable NSString *)googleAPIKey

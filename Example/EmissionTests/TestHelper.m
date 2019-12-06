@@ -40,11 +40,11 @@
 {
   NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-  NSAssert(version.majorVersion == 10,
-           @"The tests should be run on iOS 10.x, not %ld.%ld", version.majorVersion, version.minorVersion);
+  NSAssert(version.majorVersion == 12,
+           @"The tests should be run on iOS 12.x, not %ld.%ld", version.majorVersion, version.minorVersion);
 
   CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
-  NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
+  NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1125, 2436)),
            @"The tests should be run on an iPhone 6, not a device with native resolution %@",
            NSStringFromCGSize(nativeResolution));
 }
@@ -98,6 +98,7 @@
       // RCTTestRunner expects a new config for each run instead of storing one between runs.
       AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@"userID"
                                                                     authenticationToken:@"some.access.token"
+                                                                            launchCount:0
                                                                               sentryDSN:nil
                                                                    stripePublishableKey:@"strip-test-key"
                                                                        googleMapsAPIKey:nil
