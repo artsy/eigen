@@ -1,6 +1,7 @@
 import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
+import Events from "lib/NativeModules/Events"
 import React from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -163,6 +164,7 @@ class Header extends React.Component<Props, State> {
   }))
   successfulFollowChange() {
     // callback for analytics purposes
+    Events.userHadMeaningfulInteraction()
     this.setState({
       isFollowedChanging: false,
     })

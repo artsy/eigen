@@ -98,6 +98,7 @@
       // RCTTestRunner expects a new config for each run instead of storing one between runs.
       AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@"userID"
                                                                     authenticationToken:@"some.access.token"
+                                                                            launchCount:0
                                                                               sentryDSN:nil
                                                                    stripePublishableKey:@"strip-test-key"
                                                                        googleMapsAPIKey:nil
