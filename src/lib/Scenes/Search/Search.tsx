@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react"
 import { KeyboardAvoidingView, LayoutAnimation, TouchableOpacity, View } from "react-native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
-import { RecentSearches, useRecentSearches } from "./RecentSearches"
+import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
 
 const SearchPage: React.FC = () => {
   const input = useRef<Input>()
@@ -83,7 +83,9 @@ export const Search: React.FC = () => {
   return (
     <Theme>
       <ProvideScreenDimensions>
-        <SearchPage />
+        <ProvideRecentSearches>
+          <SearchPage />
+        </ProvideRecentSearches>
       </ProvideScreenDimensions>
     </Theme>
   )

@@ -1,6 +1,6 @@
 import { Flex, Sans, Spacer } from "@artsy/palette"
 import AsyncStorage from "@react-native-community/async-storage"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { AutosuggestResult } from "./AutosuggestResults"
@@ -15,7 +15,12 @@ export interface RecentSearch {
   props: AutosuggestResult
 }
 
-export function useRecentSearches({ numSearches = 10 }: { numSearches?: number } = {}) {
+const RecentSearchesContext = React.createContext<{
+  searches: RecentSearch[]
+  updateSearches: (updater: (searches: RecentSearch[]) => RecentSearch[]) => Promise<void>
+}>(null)
+
+export const ProvideRecentSearches: React.FC = ({ children }) => {
   const [searches, setSearches] = useState<null | RecentSearch[]>(null)
 
   useEffect(() => {
@@ -32,28 +37,39 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
     })
   }, [])
 
+  const updateSearches = useMemo(() => {
+    return async (updater: (searches: RecentSearch[]) => RecentSearch[]) => {
+      const value = await AsyncStorage.getItem(storageKey)
+      const oldSearches = JSON.parse(value || "[]") as RecentSearch[]
+      const newSearches = updater(oldSearches)
+      setSearches(newSearches)
+      await AsyncStorage.setItem(storageKey, JSON.stringify(newSearches))
+    }
+  }, [])
+
+  return (
+    <RecentSearchesContext.Provider value={{ searches, updateSearches }}>{children}</RecentSearchesContext.Provider>
+  )
+}
+
+export function useRecentSearches({ numSearches = 10 }: { numSearches?: number } = {}) {
+  const { searches, updateSearches } = useContext(RecentSearchesContext)
   return {
     get recentSearches() {
       return searches ? searches.slice(0, numSearches) : []
     },
     async notifyRecentSearch(search: RecentSearch) {
-      // don't update local state because we don't want order to change unless specifically requested via forced update
-      // of consuming component
-      const value = await AsyncStorage.getItem(storageKey)
-      const oldSearches = JSON.parse(value || "[]") as RecentSearch[]
-      const newSearches = oldSearches ? oldSearches.filter(s => s.props.href !== search.props.href) : []
-      newSearches.unshift(search)
-      if (newSearches.length > maxToKeep) {
-        newSearches.pop()
-      }
-      await AsyncStorage.setItem(storageKey, JSON.stringify(newSearches))
+      await updateSearches(oldSearches => {
+        const newSearches = oldSearches.filter(s => s.props.href !== search.props.href)
+        newSearches.unshift(search)
+        if (newSearches.length > maxToKeep) {
+          newSearches.pop()
+        }
+        return newSearches
+      })
     },
     async deleteRecentSearch(props: RecentSearch["props"]) {
-      const value = await AsyncStorage.getItem(storageKey)
-      const oldSearches = JSON.parse(value || "[]") as RecentSearch[]
-      const newSearches = oldSearches ? oldSearches.filter(s => s.props.href !== props.href) : []
-      setSearches(newSearches)
-      await AsyncStorage.setItem(storageKey, JSON.stringify(newSearches))
+      await updateSearches(oldSearches => oldSearches.filter(s => s.props.href !== props.href))
     },
   }
 }
@@ -70,6 +86,7 @@ export const RecentSearches: React.FC = () => {
         results={recentSearches.map(({ props: result }) => (
           <SearchResult
             result={result}
+            updateRecentSearchesOnTap={false}
             onDelete={() => {
               LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 230 })
               deleteRecentSearch(result)

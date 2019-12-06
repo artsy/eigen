@@ -9,15 +9,18 @@ import { useRecentSearches } from "./RecentSearches"
 export const SearchResult: React.FC<{
   result: AutosuggestResult
   highlight?: string
+  updateRecentSearchesOnTap?: boolean
   onDelete?(): void
-}> = ({ result, highlight, onDelete }) => {
+}> = ({ result, highlight, onDelete, updateRecentSearchesOnTap = true }) => {
   const navRef = useRef<any>()
   const { notifyRecentSearch } = useRecentSearches()
   return (
     <TouchableOpacity
       ref={navRef}
       onPress={() => {
-        SwitchBoard.presentNavigationViewController(navRef.current, result.href)
+        if (updateRecentSearchesOnTap) {
+          SwitchBoard.presentNavigationViewController(navRef.current, result.href)
+        }
         notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
       }}
     >
