@@ -80,7 +80,7 @@ const AutosuggestResultsFlatList: React.FC<{
   const hasMoreResults = results.current && results.current.results.edges.length > 0 && relay.hasMore()
   const ListFooterComponent = useMemo(() => {
     return () => (
-      <Flex alignItems="center" justifyContent="center" p={3}>
+      <Flex justifyContent="center" p={3} pb={6}>
         {hasMoreResults ? <Spinner /> : null}
       </Flex>
     )
@@ -157,7 +157,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AutosuggestResultsPaginationQuery($query: String!, $count: Int, $cursor: String) @raw_response_type {
+      query AutosuggestResultsPaginationQuery($query: String!, $count: Int, $cursor: String) {
         ...AutosuggestResults_results @arguments(query: $query, count: $count, cursor: $cursor)
       }
     `,
@@ -189,7 +189,7 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
         }}
         variables={{ query, count: INITIAL_BATCH_SIZE }}
         query={graphql`
-          query AutosuggestResultsQuery($query: String!, $count: Int) @raw_response_type {
+          query AutosuggestResultsQuery($query: String!, $count: Int) {
             ...AutosuggestResults_results @arguments(query: $query, count: $count)
           }
         `}
