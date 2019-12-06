@@ -24,6 +24,7 @@ NSString *const ARAuctionArtworkIDKey = @"ARAuctionArtworkID";
 
 NSString *const ARPaymentRequestPaidNotification = @"ARPaymentRequestPaid";
 NSString *const ARPaymentRequestURLKey = @"ARPaymentRequestURL";
+NSString *const ARLaunchesCountKey = @"ARLaunchesCountKey";
 
 NSString *const ARAPNSDeviceTokenKey = @"apns_device_token";
 

@@ -134,20 +134,22 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
       env = AREnvProduction;
     }
 
+    NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
-                                                                      authenticationToken:authenticationToken
-                                                                                sentryDSN:sentryDSN
-                                                                     stripePublishableKey:stripePublishableKey
-                                                                         googleMapsAPIKey:[keys googleMapsAPIKey]
-                                                                       mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
-                                                                               gravityURL:gravity
-                                                                           metaphysicsURL:metaphysics
-                                                                            predictionURL:liveAuctionsURL
-                                                                                userAgent:ARRouter.userAgent
-                                                                                      env:env
-                                                                                  options:options];
+                                                                  authenticationToken:authenticationToken
+                                                                          launchCount:2
+                                                                            sentryDSN:sentryDSN
+                                                                 stripePublishableKey:stripePublishableKey
+                                                                     googleMapsAPIKey:[keys googleMapsAPIKey]
+                                                                   mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
+                                                                           gravityURL:gravity
+                                                                       metaphysicsURL:metaphysics
+                                                                        predictionURL:liveAuctionsURL
+                                                                            userAgent:ARRouter.userAgent
+                                                                                  env:env
+                                                                              options:options];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
 

@@ -24,6 +24,7 @@ extern NSString *const ARAuctionArtworkIDKey;
 
 extern NSString *const ARPaymentRequestPaidNotification;
 extern NSString *const ARPaymentRequestURLKey;
+extern NSString *const ARLaunchesCountKey;
 
 typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
     ARAuctionStateDefault = 0,
