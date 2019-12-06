@@ -3,7 +3,7 @@ import { AutosuggestResults_results } from "__generated__/AutosuggestResults_res
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useEffect, useMemo, useRef } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { FlatList } from "react-native"
 import Sentry from "react-native-sentry"
@@ -21,60 +21,62 @@ const AutosuggestResultsFlatList: React.FC<{
   results: AutosuggestResults_results | null
   relay: RelayPaginationProp
 }> = ({ query, results: latestResults, relay }) => {
-  const flatListRef = useRef<FlatList<any>>()
-  const maybeScrollBackToTopAfterNextRender = useRef(false)
-  const scrollBackToTop = useRef(false)
+  const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
-  const results = useRef(latestResults)
-
-  if (maybeScrollBackToTopAfterNextRender.current) {
-    if (results.current && latestResults && results.current !== latestResults) {
-      // the results have finally changed, wait for the reconciliation and then scroll back to top
-      scrollBackToTop.current = true
-      maybeScrollBackToTopAfterNextRender.current = false
-    }
-  }
-
-  useEffect(() => {
-    if (scrollBackToTop.current) {
-      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
-      scrollBackToTop.current = false
-    }
-  })
-
-  // if the user just typed and we didn't get a response from MP yet latestResults will
-  // be null. In that case we don't want to re-render as empty so just re-use the old results
-  results.current = latestResults || results.current
-
-  const shouldLoadMore = useRef(false)
-
-  const loadMore = useMemo(() => {
-    let isLoadingMore = false
-    return () => {
-      if (!isLoadingMore && relay.hasMore()) {
-        isLoadingMore = true
-        relay.loadMore(SUBSEQUENT_BATCH_SIZE, () => {
-          isLoadingMore = false
-        })
-      }
+  // We only want to load more results after the user has started scrolling, and unfortunately
+  // FlatList calls onEndReached right after mounting because the default threshold is quite
+  // generous. We want that generosity during a scroll but most of the time a user will not
+  // scroll at all so to begin with we only want to fetch enough content to fill the screen.
+  // So we're using this flag to 'gate' loadMore
+  const userHasStartedScrolling = useRef(false)
+  const onScrollBeginDrag = useCallback(() => {
+    if (!userHasStartedScrolling.current) {
+      userHasStartedScrolling.current = true
+      // fetch second page immediately
+      loadMore()
     }
   }, [])
-
+  const onEndReached = useCallback(() => {
+    if (userHasStartedScrolling.current) {
+      loadMore()
+    }
+  }, [])
   useEffect(() => {
-    // whenever the query changes make sure we scroll back to the top
     if (query) {
-      maybeScrollBackToTopAfterNextRender.current = true
-      // also disable loading more until the user explicitly begins to scroll
-      shouldLoadMore.current = false
+      // the query changed, prevent loading more pages until the user starts scrolling
+      userHasStartedScrolling.current = false
     }
   }, [query])
+
+  // When the user has scrolled down some and then starts typing again we want to
+  // take them back to the top of the results list. But if we do that immediately
+  // after the query changed then janky behaviour ensues, so we need to wait for
+  // the relevant results to be fetched and rendered. We know new results come
+  // in when the previous results we encountered were `null` (when the query changed but
+  /// the fetch/cache-lookup has not completed yet) so we can scroll the user back to
+  // the top whenever that happens.
+  const lastResults = usePreviousValue(latestResults, undefined)
+  const flatListRef = useRef<FlatList<any>>()
+  useEffect(() => {
+    if (lastResults === null && latestResults !== null) {
+      // results were updated after a new query, scroll user back to top
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
+      // (we need to wait for the results to be updated to avoid janky behaviour that
+      // happens when the results get updated during a scroll)
+    }
+  }, [lastResults])
+
+  // if the latestResults are null then the query just changed but we didn't get a response
+  // yet. We don't want to keep rendering whatever was there before rather than show a blank
+  // screen for a split second.
+  const results = useRef(latestResults)
+  results.current = latestResults || results.current
 
   const nodes = useMemo(() => results.current?.results.edges.map(e => ({ ...e.node, key: e.node.href })), [
     results.current,
   ])
 
-  const noResults = results.current && results.current.results.edges.length === 0
-
+  // We want to show a loading spinner at the bottom so long as there are more results to be had
   const hasMoreResults = results.current && results.current.results.edges.length > 0 && relay.hasMore()
   const ListFooterComponent = useMemo(() => {
     return () => (
@@ -83,6 +85,8 @@ const AutosuggestResultsFlatList: React.FC<{
       </Flex>
     )
   }, [hasMoreResults])
+
+  const noResults = results.current && results.current.results.edges.length === 0
 
   return (
     <FlatList<AutosuggestResult>
@@ -104,20 +108,8 @@ const AutosuggestResultsFlatList: React.FC<{
           </Flex>
         )
       }}
-      onScrollBeginDrag={() => {
-        if (!shouldLoadMore.current) {
-          // load second page straight away
-          loadMore()
-          shouldLoadMore.current = true
-        }
-      }}
-      onEndReached={() => {
-        // onEndReached gets called a bit too readily, so we hide it
-        // behind this flag which only gets set to true after the user has started scrolling
-        if (shouldLoadMore.current) {
-          loadMore()
-        }
-      }}
+      onScrollBeginDrag={onScrollBeginDrag}
+      onEndReached={onEndReached}
     />
   )
 }
@@ -185,13 +177,12 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
               <Flex p={2} alignItems="center" justifyContent="center">
                 <Flex maxWidth={280}>
                   <Serif size="3" textAlign="center">
-                    There seems to be a problem with the connection. Please try again soon.
+                    There seems to be a problem with the connection. Please try again shortly.
                   </Serif>
                 </Flex>
               </Flex>
             )
           }
-          // props might be null if it's still loading but that's cool we don't want to create flicker.
           return <AutosuggestResultsContainer query={query} results={props} />
         }}
         variables={{ query, count: INITIAL_BATCH_SIZE }}
@@ -206,3 +197,10 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
   },
   (a, b) => a.query === b.query
 )
+
+function usePreviousValue<T>(val: T, init: T) {
+  const prev = useRef(init)
+  const result = prev.current
+  prev.current = val
+  return result
+}
