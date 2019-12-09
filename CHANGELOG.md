@@ -1,3 +1,15 @@
+# v1.19.10 (Mon Dec 09 2019)
+
+#### 🐛  Bug Fix
+
+- Updates emission VC to expose artworkID [#2003](https://github.com/artsy/emission/pull/2003) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.19.9 (Mon Dec 09 2019)
 
 #### 🐛  Bug Fix
