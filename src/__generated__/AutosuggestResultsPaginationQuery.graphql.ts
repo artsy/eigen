@@ -4,7 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
-    count?: number | null;
+    count: number;
     cursor?: string | null;
 };
 export type AutosuggestResultsPaginationQueryResponse = {
@@ -20,7 +20,7 @@ export type AutosuggestResultsPaginationQuery = {
 /*
 query AutosuggestResultsPaginationQuery(
   $query: String!
-  $count: Int
+  $count: Int!
   $cursor: String
 ) {
   ...AutosuggestResults_results_1jWD3d
@@ -62,7 +62,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "count",
-    "type": "Int",
+    "type": "Int!",
     "defaultValue": null
   },
   {
@@ -258,11 +258,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "a76a4374774965e59510383c9d34cfd3",
+    "id": "bda784e302181ed4584ddc0fcece44a5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'ad79bc1d1045b244e9a9a17dd7b03457';
+(node as any).hash = 'b4ff2a974a91871ec18ea29a4e59dde0';
 export default node;

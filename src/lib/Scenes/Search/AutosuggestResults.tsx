@@ -158,7 +158,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AutosuggestResultsPaginationQuery($query: String!, $count: Int, $cursor: String) {
+      query AutosuggestResultsPaginationQuery($query: String!, $count: Int!, $cursor: String) {
         ...AutosuggestResults_results @arguments(query: $query, count: $count, cursor: $cursor)
       }
     `,
@@ -190,7 +190,7 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
         }}
         variables={{ query, count: INITIAL_BATCH_SIZE }}
         query={graphql`
-          query AutosuggestResultsQuery($query: String!, $count: Int) {
+          query AutosuggestResultsQuery($query: String!, $count: Int!) {
             ...AutosuggestResults_results @arguments(query: $query, count: $count)
           }
         `}

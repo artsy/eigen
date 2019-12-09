@@ -7,6 +7,7 @@ import {
 } from "lib/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
+import { extractText } from "lib/tests/extractText"
 import { merge } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -206,13 +207,3 @@ describe("Artwork", () => {
     })
   })
 })
-
-const extractText = root => {
-  let result = ""
-  root.findAll(el => {
-    if (el.type === "Text") {
-      result += el.children[0]
-    }
-  })
-  return result
-}
