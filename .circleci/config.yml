@@ -181,11 +181,7 @@ workflows:
   version: 2
   build-test:
     jobs:
-      - build-and-test:
-          filters:
-            branches:
-              ignore:
-                - master
+      - build-and-test
       - deploy:
           filters:
             branches:
