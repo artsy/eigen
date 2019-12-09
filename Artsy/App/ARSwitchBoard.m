@@ -23,6 +23,7 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARPaymentRequestWebViewController.h"
 #import "ARSerifNavigationViewController.h"
+#import "AREigenInquiryComponentViewController.h"
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
