@@ -5140,7 +5140,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
-				"${PODS_ROOT}/iRate/iRate/iRate.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -5166,7 +5165,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/iRate.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

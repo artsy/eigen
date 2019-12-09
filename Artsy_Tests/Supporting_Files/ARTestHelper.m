@@ -5,7 +5,6 @@
 #import "ARSpotlight.h"
 #import "ARUserManager.h"
 
-#import <iRate/iRate.h>
 #import <SDWebImage/SDWebImageManager.h>
 #import "ARFonts.h"
 #import <Emission/AREmission.h>
@@ -37,9 +36,6 @@
     // The related ARUserManager methods can still be invoked, they will just silently do nothing.
     [[ARUserManager sharedManager] disableSharedWebCredentials];
 
-    /// Never run in tests
-    [[iRate sharedInstance] setRatedThisVersion:YES];
-
     /// Not really sure what this is for
     [[ARLogger sharedLogger] startLogging];
 
@@ -62,6 +58,7 @@
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@""
                                                                   authenticationToken:@""
+                                                                          launchCount:0
                                                                             sentryDSN:@""
                                                                  stripePublishableKey:@""
                                                                      googleMapsAPIKey:@""

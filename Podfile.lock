@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.19.5):
+  - Emission (1.19.7):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -164,7 +164,6 @@ PODS:
   - INTUAnimationEngine (1.4.2):
     - INTUAnimationEngine/SpringSolver (= 1.4.2)
   - INTUAnimationEngine/SpringSolver (1.4.2)
-  - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
   - JSDecoupledAppDelegate (1.2.0)
@@ -467,7 +466,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DoubleConversion (from `./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
-  - Emission (= 1.19.5)
+  - Emission (= 1.19.7)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -482,7 +481,6 @@ DEPENDENCIES:
   - FXBlurView
   - glog (from `./rn_pods/node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
-  - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
   - JSDecoupledAppDelegate
@@ -565,7 +563,6 @@ SPEC REPOS:
     - Forgeries
     - FXBlurView
     - INTUAnimationEngine
-    - iRate
     - JSDecoupledAppDelegate
     - JWTDecode
     - KSCrash
@@ -765,7 +762,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 40f5fdb088a0e2e39fec1472b0b13fc0716f66c4
+  Emission: 81b02533308067df751c7aa5324660b2db0c90d7
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -781,7 +778,6 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
-  iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
@@ -848,6 +844,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: fe237de2988698761ab935fa622bdcb6223cd0cc
+PODFILE CHECKSUM: 22b89491ff093ae4207eb4cf6aafb2136acd7713
 
 COCOAPODS: 1.7.5
