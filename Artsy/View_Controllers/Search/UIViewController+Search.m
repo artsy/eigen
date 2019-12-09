@@ -1,7 +1,7 @@
 #import "UIViewController+Search.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "ARTopMenuViewController.h"
-#import "ARArtworkViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 
 #import "ARSwitchBoard.h"
 #import "ARSwitchBoard+Eigen.h"

@@ -1,5 +1,6 @@
 import UIKit
 
+
 class AuctionBuyNowView: ORStackView {
     var embeddedVC: AREmbeddedModelsViewController?
     var actionDelegate: UIViewController?
@@ -59,7 +60,7 @@ extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {
         guard let artwork = controller.items?[Int(index)] as? Artwork else {
             return
         }
-        let viewController = ARArtworkViewController(artwork: artwork, fair: nil)
+        let viewController = ARArtworkComponentViewController(artworkID: artwork.artworkID)
         self.actionDelegate?.navigationController?.pushViewController(viewController, animated: true)
     }
 

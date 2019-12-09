@@ -10,11 +10,10 @@
 
 #import "ARProfileViewController.h"
 #import "ARBrowseCategoriesViewController.h"
-#import "ARArtworkViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 #import "ARExternalWebBrowserViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARPaymentRequestWebViewController.h"
-#import "AREigenInquiryComponentViewController.h"
 #import "ARProfileViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
@@ -354,12 +353,12 @@ describe(@"ARSwitchboard", ^{
 
         it(@"routes artworks", ^{
             id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/artwork/artworkID"] fair:nil];
-            expect(subject).to.beKindOf(ARArtworkViewController.class);
+            expect(subject).to.beKindOf(ARArtworkComponentViewController.class);
         });
 
         it(@"routes artworks and retains fair context", ^{
             Fair *fair = [Fair modelWithJSON:@{}];
-            ARArtworkViewController *subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:fair];
+            ARArtworkComponentViewController *subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:fair];
             expect(subject.fair).to.equal(fair);
         });
 

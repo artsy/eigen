@@ -43,8 +43,6 @@ PODS:
     - ARAnalytics/CoreIOS
   - ARCollectionViewMasonryLayout (2.3.0)
   - ARGenericTableViewController (1.0.2)
-  - ARTiledImageView (1.2.0):
-    - SDWebImage/Core
   - "Artsy+UIColors (3.1.0)"
   - "Artsy+UIFonts (3.3.3)"
   - "Artsy+UILabels (2.2.0)":
@@ -457,7 +455,6 @@ DEPENDENCIES:
   - ARAnalytics/Segmentio
   - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`)
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
-  - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
   - "Artsy+UIColors"
   - "Artsy+UIFonts"
   - "Artsy+UILabels"
@@ -610,8 +607,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
     :git: https://github.com/orta/ARGenericTableViewController.git
-  ARTiledImageView:
-    :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   DoubleConversion:
@@ -713,9 +708,6 @@ CHECKOUT OPTIONS:
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
     :git: https://github.com/orta/ARGenericTableViewController.git
-  ARTiledImageView:
-    :commit: 775bc29beb5953e381b2af64edbdfc310b90e074
-    :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
@@ -751,7 +743,6 @@ SPEC CHECKSUMS:
   ARAnalytics: 896e530551168721fbb8852e044b8afb9baffdde
   ARCollectionViewMasonryLayout: 97cb468434b546b79a98c7c0908447ff803eb85e
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
-  ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275

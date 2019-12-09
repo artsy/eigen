@@ -1,14 +1,11 @@
 #import "ARNavigationTransitionController.h"
 
 #import "ARAppSearchTransition.h"
-#import "ARDefaultNavigationTransition.h"
-#import "ARViewInRoomTransition.h"
-#import "ARZoomImageTransition.h"
+#import "ARDefaultNavigationTransition.h"å
 
 #import "ARAppSearchViewController.h"
-#import "ARArtworkViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 #import "ARViewInRoomViewController.h"
-#import "ARZoomArtworkImageViewController.h"
 
 
 @implementation ARNavigationTransitionController
@@ -19,15 +16,8 @@
 {
     ARNavigationTransition *transition = nil;
 
-    if ([self objects:fromVC andSecond:toVC areTransitionsFromClass:[ARArtworkViewController class] andClass:[ARViewInRoomViewController class]]) {
-        transition = [[ARViewInRoomTransition alloc] init];
-
-    } else if ([self objects:fromVC andSecond:toVC areTransitionsFromClass:[ARArtworkViewController class] andClass:[ARZoomArtworkImageViewController class]]) {
-        transition = [[ARZoomImageTransition alloc] init];
-
-    } else if ([toVC isKindOfClass:[ARAppSearchViewController class]] || [fromVC isKindOfClass:[ARAppSearchViewController class]]) {
+   if ([toVC isKindOfClass:[ARAppSearchViewController class]] || [fromVC isKindOfClass:[ARAppSearchViewController class]]) {
         transition = [[ARAppSearchTransition alloc] init];
-
     } else {
         transition = [[ARDefaultNavigationTransition alloc] init];
     }

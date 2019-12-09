@@ -1,8 +1,7 @@
-#import "ARArtworkViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 #import "ARAdminSettingsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARExternalWebBrowserViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARBrowseViewController.h"
-#import "ARArtworkInfoViewController.h"
 #import "ARQuicksilverViewController.h"

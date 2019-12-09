@@ -13,7 +13,6 @@
 #import "User.h"
 
 // View Controllers
-#import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
@@ -24,7 +23,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARPaymentRequestWebViewController.h"
 #import "ARSerifNavigationViewController.h"
-#import "AREigenInquiryComponentViewController.h"
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>

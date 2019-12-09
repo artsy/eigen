@@ -114,7 +114,6 @@ target 'Artsy' do
   pod 'SSFadingScrollView', git: 'https://github.com/alloy/SSFadingScrollView.git', branch: 'add-axial-support'
 
   # Core owned by Artsy
-  pod 'ARTiledImageView', git: 'https://github.com/dblock/ARTiledImageView'
   pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
   pod 'Aerodramus'

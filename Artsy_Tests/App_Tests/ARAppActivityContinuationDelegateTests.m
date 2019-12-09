@@ -1,7 +1,6 @@
 #import "ARAppActivityContinuationDelegate.h"
 #import "ARTopMenuViewController.h"
-#import "ARArtworkViewController.h"
-#import "ARArtworkViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 #import "ARUserManager.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ArtsyAPI+Sailthru.h"
@@ -53,7 +52,7 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         [OHHTTPStubs stubJSONResponseForHost:@"metaphysics*.artsy.net" withResponse:@{}];
 
         topMenuMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
-        [[topMenuMock expect] pushViewController:[OCMArg checkWithBlock:^(ARArtworkViewController *viewController) {
+        [[topMenuMock expect] pushViewController:[OCMArg checkWithBlock:^(ARArtworkComponentViewController *viewController) {
             Artwork *artwork = viewController.artwork;
             return [artwork.artworkID isEqualToString:@"andy-warhol-tree-frog"];
         }]];

@@ -1,8 +1,7 @@
 #import "ARLogger.h"
 #import "ARAuctionWebViewController.h"
 #import "ARAppConstants.h"
-#import "ARArtworkViewController.h"
-#import "ARArtworkViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 #import "User.h"
 #import "Artwork.h"
 #import "ARSwitchBoard+Eigen.h"
@@ -85,8 +84,8 @@
 {
     NSArray *stack = self.navigationController.viewControllers;
 
-    ARArtworkViewController *artworkViewController = stack[stack.count - 2];
-    if ([artworkViewController isKindOfClass:ARArtworkViewController.class] && [artworkViewController.artwork.artworkID isEqualToString:self.artworkID]) {
+    ARArtworkComponentViewController *artworkViewController = stack[stack.count - 2];
+    if ([artworkViewController isKindOfClass:ARArtworkComponentViewController.class] && [artworkViewController.artworkID isEqualToString:self.artworkID]) {
         return;
     }
 
