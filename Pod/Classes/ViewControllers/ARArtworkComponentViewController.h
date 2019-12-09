@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
 
+@property (nonatomic, readonly) NSString *artworkID;
+
 @end
 
 NS_ASSUME_NONNULL_END

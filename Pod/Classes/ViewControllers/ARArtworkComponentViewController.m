@@ -13,9 +13,12 @@
 - (instancetype)initWithArtworkID:(NSString *)artworkID
                          emission:(nullable AREmission *)emission;
 {
-    return [super initWithEmission:emission
+    if ((self = [super initWithEmission:emission
                         moduleName:@"Artwork"
-                 initialProperties:@{ @"artworkID": artworkID }];
+                      initialProperties:@{ @"artworkID": artworkID }])) {
+        _artworkID = artworkID;
+    }
+    return self;
 }
 
 @end
