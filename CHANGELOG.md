@@ -1,3 +1,15 @@
+# v1.19.11 (Mon Dec 09 2019)
+
+#### 🐛  Bug Fix
+
+- Points to our fork of tipsi-stripe #trivial [#2004](https://github.com/artsy/emission/pull/2004) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.19.10 (Mon Dec 09 2019)
 
 #### 🐛  Bug Fix
