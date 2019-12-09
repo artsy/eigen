@@ -9,6 +9,7 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 #import "ARNavigationController.h"
+#import "ArtsyEcho.h"
 
 #import "AREigenFairComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
@@ -82,7 +83,7 @@
                 NSString * fairID = ((Fair *) profile.profileOwner).fairID;
                 ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
                 [self showViewController:viewController];
-            } else if ([profile.profileOwner isKindOfClass:[Partner class]] && [AROptions boolForOption:AROptionsNewPartnerPage]) {
+            } else if ([profile.profileOwner isKindOfClass:[Partner class]] && ARSwitchBoard.sharedInstance.echo.features[@"AREnableNewPartnerView"].state) {
               [self ar_removeChildViewController: self.childViewControllers.firstObject];
               
               NSString *partnerID = ((Partner *) profile.profileOwner).partnerID;
