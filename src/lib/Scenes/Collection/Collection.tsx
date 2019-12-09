@@ -1,13 +1,15 @@
-import { Box, Sans, Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
   collection: Collection_collection
+  artworks: any
 }
 
 interface CollectionState {
@@ -46,7 +48,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       case "collectionFeaturedArtists":
         return (
           <Box>
-            <Sans size="3t">Featured Artists</Sans>
+            <CollectionFeaturedArtists featuredArtists={this.props.collection} />
           </Box>
         )
       case "collectionArtworks":
@@ -83,6 +85,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
     fragment Collection_collection on MarketingCollection {
       ...CollectionHeader_collection
       ...CollectionArtworks_collection
+      ...FeaturedArtists_featuredArtists
     }
   `,
 })
