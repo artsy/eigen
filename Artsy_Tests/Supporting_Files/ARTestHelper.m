@@ -58,6 +58,7 @@
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@""
                                                                   authenticationToken:@""
+                                                                          launchCount:0
                                                                             sentryDSN:@""
                                                                  stripePublishableKey:@""
                                                                      googleMapsAPIKey:@""
