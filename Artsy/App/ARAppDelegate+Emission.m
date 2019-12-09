@@ -139,7 +139,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                   authenticationToken:authenticationToken
-                                                                          launchCount:2
+                                                                          launchCount:launchCount
                                                                             sentryDSN:sentryDSN
                                                                  stripePublishableKey:stripePublishableKey
                                                                      googleMapsAPIKey:[keys googleMapsAPIKey]
