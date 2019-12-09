@@ -15161,10 +15161,9 @@ tinycolor2@^1.4.1:
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
 
-tipsi-stripe@7.5.0:
+"tipsi-stripe@https://github.com/ashfurrow/tipsi-stripe.git#fix-infinite-loop":
   version "7.5.0"
-  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-7.5.0.tgz#6004564463559092fe2164b00c35b707ce084e4c"
-  integrity sha512-+p/55DF3pOuI0arv0DcsZxBowcTKU5n5V7JFe4m+jubpATbx2W2aaShoP/AYWluBJw2BGcHvAow+7OhCQ3BbIw==
+  resolved "https://github.com/ashfurrow/tipsi-stripe.git#aeb742baf1a8329ba371d9c94c7650104a112807"
 
 tmp@0.1.0:
   version "0.1.0"
