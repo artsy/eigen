@@ -9,6 +9,7 @@ upcoming:
     - Adds option to show a collection view controller - ash
     - Upgrades React Native to 0.61.4 - ash & david & kieran
     - Add back-button-hiding infra for emission - ash & david & kieran
+    - Puts new partner page behind an Echo flag - ash
   user_facing:
     - Updates profile and mutable view controllers to use default background if not fair - kierangillen
     - Fixes an issue where confirm bid screen crashses when the Price Transparncy feature is off - yuki24
