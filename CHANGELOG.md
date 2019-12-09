@@ -1,3 +1,20 @@
+# v1.19.8 (Mon Dec 09 2019)
+
+#### 🐛  Bug Fix
+
+- Run unit tests on master [#1998](https://github.com/artsy/emission/pull/1998) ([@ds300](https://github.com/ds300))
+
+#### ⚠️  Pushed to master
+
+- Empty commit to trigger CI run on master.  ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 2
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.19.7 (Fri Dec 06 2019)
 
 #### 🐛  Bug Fix
