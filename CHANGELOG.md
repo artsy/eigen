@@ -1,3 +1,15 @@
+# v1.19.12 (Tue Dec 10 2019)
+
+#### 🐛  Bug Fix
+
+- Fix sticky tab header positioning when content is not so high [#2002](https://github.com/artsy/emission/pull/2002) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.19.11 (Mon Dec 09 2019)
 
 #### 🐛  Bug Fix
