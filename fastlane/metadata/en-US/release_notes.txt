@@ -1,9 +1,7 @@
-We've updated the artwork view to make it even more like seeing the art in person:
+We've updated the app with a new partner page, making it easier than ever to look at a gallery's artworks, artists, and locations.
 
-• Swipe to view multiple images if available
-• Tap and pinch to zoom to see the details of the work
-• Evaluate the most important details about the work like medium, signature, certificate of authenticity, and more
+The bidding interface for auctions also has a new Buyer's Premium Calculator, giving users more transparency around pricing.
 
-We've also fixed some bugs, including: push notifications not opening the right conversation screen, an issue with "View in Room" AR feature on iOS 13, and an issue sharing artworks from the app.
+Finally, we've made some performance improvements and fixed various minor bugs in the user interface.
 
 Have feedback? Email us at support@artsy.net
