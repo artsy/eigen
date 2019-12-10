@@ -1,7 +1,7 @@
 upcoming:
   version: 6.1.0
   date: TBD
-  emission_version: 1.18.39
+  emission_version: 1.19.11
   dev:
     - Switched CocoaPods to use the CDN master spec repo - alloy
     - Add a new flag for Price Transparency to Echo - yuki24
