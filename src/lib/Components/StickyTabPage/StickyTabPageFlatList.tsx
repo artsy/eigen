@@ -147,86 +147,102 @@ function useStickyHeaderPositioning({
 }) {
   const lockHeaderPosition = useAnimatedValue(1)
 
-  Animated.useCode(
-    () => {
-      // scrollDiff is the amount the header has scrolled since last time this code ran
-      const scrollDiff = Animated.diff(scrollOffsetY)
+  Animated.useCode(() => {
+    // scrollDiff is the amount the header has scrolled since last time this code ran
+    const scrollDiff = Animated.diff(scrollOffsetY)
 
-      const headerIsNotFullyUp = Animated.neq(headerOffsetY, negative(headerHeight))
+    const headerIsNotFullyUp = Animated.neq(headerOffsetY, negative(headerHeight))
 
-      const nearTheTop = Animated.lessOrEq(scrollOffsetY, headerHeight)
+    const nearTheTop = Animated.lessOrEq(scrollOffsetY, headerHeight)
 
-      const amountScrolledUpward = new Animated.Value(0)
-      const upwardScrollThresholdBreached = Animated.greaterOrEq(amountScrolledUpward, 400)
+    const amountScrolledUpward = new Animated.Value(0)
+    const upwardScrollThresholdBreached = Animated.greaterOrEq(amountScrolledUpward, 400)
 
-      // this is the code which actually performs the update to headerOffsetY, according to which direction
-      // the scrolling is going
-      const updateHeaderOffset = Animated.cond(
-        Animated.greaterThan(scrollDiff, 0),
-        [
-          // y offset got bigger so scrolling down (content travels up the screen)
-          // move the header up (hide it) unconditionally
-          Animated.set(amountScrolledUpward, 0),
-          Animated.set(headerOffsetY, Animated.max(negative(headerHeight), Animated.sub(headerOffsetY, scrollDiff))),
-        ],
-        [
-          // y offset got smaller so scrolling up (content travels down the screen)
-          // if velocity is high enough or we're already moving the header up or we're near the top of the scroll view
-          // then move the header down (show it)
-          Animated.set(amountScrolledUpward, Animated.add(amountScrolledUpward, Animated.abs(scrollDiff))),
-          Animated.cond(Animated.or(upwardScrollThresholdBreached, headerIsNotFullyUp, nearTheTop), [
-            Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
-          ]),
-        ]
-      )
+    // this is the code which actually performs the update to headerOffsetY, according to which direction
+    // the scrolling is going
+    const updateHeaderOffset = Animated.cond(
+      Animated.greaterThan(scrollDiff, 0),
+      [
+        // y offset got bigger so scrolling down (content travels up the screen)
+        // move the header up (hide it) unconditionally
+        Animated.set(amountScrolledUpward, 0),
+        Animated.set(headerOffsetY, Animated.max(negative(headerHeight), Animated.sub(headerOffsetY, scrollDiff))),
+      ],
+      [
+        // y offset got smaller so scrolling up (content travels down the screen)
+        // if velocity is high enough or we're already moving the header up or we're near the top of the scroll view
+        // then move the header down (show it)
+        Animated.set(amountScrolledUpward, Animated.add(amountScrolledUpward, Animated.abs(scrollDiff))),
+        Animated.cond(Animated.or(upwardScrollThresholdBreached, headerIsNotFullyUp, nearTheTop), [
+          Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
+        ]),
+      ]
+    )
 
-      // we don't want to manipulate the header position while bouncing at the top or the bottom of the scroll view
-      // cause it feels weeeird
-      const notBouncingAtTheTop = Animated.greaterThan(scrollOffsetY, 0)
-      const notBouncingAtTheBottom = Animated.lessThan(scrollOffsetY, Animated.sub(contentHeight, layoutHeight))
+    // we don't want to manipulate the header position while bouncing at the top or the bottom of the scroll view
+    // cause it feels weeeird
+    const notBouncingAtTheTop = Animated.greaterThan(scrollOffsetY, 0)
+    const notBouncingAtTheBottom = Animated.lessThan(scrollOffsetY, Animated.sub(contentHeight, layoutHeight))
 
-      const updateHeaderOffsetWhenNotBouncing = Animated.cond(
-        Animated.and(notBouncingAtTheTop, notBouncingAtTheBottom),
-        updateHeaderOffset,
-        [
-          // deref scroll diff to prevent diff buildup when ignoring changes
-          scrollDiff,
-          // max out header position to avoid dropped diffs when the last frame was below a bounce threshold
-          Animated.cond(
-            notBouncingAtTheTop,
-            [
-              // bouncing at the bottom, keep the header fully hidden
-              Animated.set(headerOffsetY, negative(headerHeight)),
-            ],
-            [
-              // bouncing at the top, keep the header fully open
-              Animated.set(headerOffsetY, 0),
-            ]
-          ),
-        ]
-      )
+    const updateHeaderOffsetWhenNotBouncing = Animated.cond(
+      Animated.and(notBouncingAtTheTop, notBouncingAtTheBottom),
+      updateHeaderOffset,
+      [
+        Animated.cond(
+          notBouncingAtTheTop,
+          [
+            // bouncing at the bottom,
+            // normally the header will be fully up at this point but sometimes
+            // the content is not tall enough to cause that, so we still need to
+            // update the header position just like above. The only difference is that
+            // when the bounce snaps back, we don't want to trigger opening the header
+            // like we do when the user explicitly scrolls back upward.
+            Animated.cond(
+              Animated.greaterThan(scrollDiff, 0),
+              [
+                // y offset got bigger so scrolling down (content travels up the screen)
+                Animated.set(
+                  headerOffsetY,
+                  Animated.max(negative(headerHeight), Animated.sub(headerOffsetY, scrollDiff))
+                ),
+              ],
+              [
+                // y offset got smaller so scrolling up (content travels down the screen)
+                Animated.cond(Animated.or(headerIsNotFullyUp, nearTheTop), [
+                  Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
+                ]),
+              ]
+            ),
+          ],
+          [
+            // bouncing at the top, keep the header fully open
+            Animated.set(headerOffsetY, 0),
+            // deref scroll diff to prevent diff buildup when ignoring changes
+            scrollDiff,
+          ]
+        ),
+      ]
+    )
 
-      const updateHeaderOffsetWhenNotLocked = Animated.cond(
-        Animated.not(lockHeaderPosition),
-        updateHeaderOffsetWhenNotBouncing,
-        // scroll diff to prevent diff buildup when ignoring changes
-        scrollDiff
-      )
+    const updateHeaderOffsetWhenNotLocked = Animated.cond(
+      Animated.not(lockHeaderPosition),
+      updateHeaderOffsetWhenNotBouncing,
+      // scroll diff to prevent diff buildup when ignoring changes
+      scrollDiff
+    )
 
-      // on first eval (when the component mounts) the scroll values will be nonsensical so ignore
-      const firstEval = new Animated.Value(1)
-      return Animated.cond(
-        firstEval,
-        [
-          Animated.set(firstEval, 0),
-          // again, deref scrollDiff to prevent buildup
-          scrollDiff,
-        ],
-        updateHeaderOffsetWhenNotLocked
-      )
-    },
-    [headerHeight]
-  )
+    // on first eval (when the component mounts) the scroll values will be nonsensical so ignore
+    const firstEval = new Animated.Value(1)
+    return Animated.cond(
+      firstEval,
+      [
+        Animated.set(firstEval, 0),
+        // again, deref scrollDiff to prevent buildup
+        scrollDiff,
+      ],
+      updateHeaderOffsetWhenNotLocked
+    )
+  }, [headerHeight])
 
   return { lockHeaderPosition }
 }
