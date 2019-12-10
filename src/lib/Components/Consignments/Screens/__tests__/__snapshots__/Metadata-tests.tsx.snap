@@ -780,7 +780,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
               ]
             }
           >
-            DONE
+            Done
           </Text>
         </View>
       </View>
@@ -1574,7 +1574,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
               ]
             }
           >
-            DONE
+            Done
           </Text>
         </View>
       </View>

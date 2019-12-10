@@ -1,17 +1,11 @@
-import React from "react"
-
-import { BottomAlignedButton } from "../Components/BottomAlignedButton"
-import ConsignmentBG from "../Components/ConsignmentBG"
-
-import ImageSelection, { ImageData } from "../Components/ImageSelection"
-import { BodyText as P } from "../Typography"
-
-import { triggerCamera } from "lib/NativeModules/triggerCamera"
-
+import { Box, color, Serif, Spacer, Theme } from "@artsy/palette"
 import CameraRoll from "@react-native-community/cameraroll"
+import { triggerCamera } from "lib/NativeModules/triggerCamera"
+import React from "react"
 import { Alert, Dimensions, Linking, NativeModules, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-
+import { BottomAlignedButton } from "../Components/BottomAlignedButton"
+import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { ConsignmentSetup } from "../index"
 
 const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = NativeModules
@@ -29,13 +23,6 @@ interface State {
   loadingMore: boolean
   noMorePhotos: boolean
   selection: string[]
-}
-
-const doneButtonStyles = {
-  backgroundColor: "black",
-  marginBottom: 20,
-  paddingTop: 18,
-  height: 56,
 }
 
 export default class SelectFromPhotoLibrary extends React.Component<Props, State> {
@@ -197,8 +184,8 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
 
   render() {
     return (
-      <ConsignmentBG>
-        <BottomAlignedButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
+      <Theme>
+        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
           <ScrollView
             style={{ flex: 1 }}
             scrollsToTop={true}
@@ -206,7 +193,12 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
             scrollEventThrottle={50}
           >
             <View style={{ paddingTop: 40 }}>
-              <P>We suggest adding a few photos of the work including the front and back as well as the signature.</P>
+              <Box px={2}>
+                <Serif size="4" style={{ textAlign: "center" }}>
+                  We suggest adding a few photos of the work including the front and back as well as the signature.
+                </Serif>
+              </Box>
+              <Spacer mb={2} />
               <ImageSelection
                 data={this.state.cameraImages}
                 onPressNewPhoto={this.onPressNewPhoto}
@@ -216,7 +208,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
             </View>
           </ScrollView>
         </BottomAlignedButton>
-      </ConsignmentBG>
+      </Theme>
     )
   }
 }

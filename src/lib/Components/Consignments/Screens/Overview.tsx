@@ -4,16 +4,17 @@ import React from "react"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
+import { Box, Button, color, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import CloseButton from "../Components/CloseButton"
-import ConsignmentBG from "../Components/ConsignmentBG"
 import { FormButton, Row } from "../Components/FormElements"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
-import { LargeHeadline, Subtitle } from "../Typography"
+import { LargeHeadline } from "../Typography"
 import Confirmation from "./Confirmation"
 import Artist from "./ConsignmentsArtist"
 import Edition from "./Edition"
@@ -216,7 +217,7 @@ export default class Overview extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <ConsignmentBG>
+      <Theme>
         <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
           <View
             style={{
@@ -227,10 +228,19 @@ export default class Overview extends React.Component<Props, State> {
               flex: 1,
             }}
           >
-            <LargeHeadline style={{ textAlign: isPad ? "center" : "left" }}>{title}</LargeHeadline>
-            <Subtitle style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}>
-              {subtitle}
-            </Subtitle>
+            <Box px={2}>
+              <Serif size="6" style={{ textAlign: isPad ? "center" : "left" }}>
+                {title}
+              </Serif>
+              <Spacer mb={2} />
+              <Serif
+                size="4"
+                color={color("black60")}
+                style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}
+              >
+                {subtitle}
+              </Serif>
+            </Box>
             <View style={{ flex: 1 }}>
               <TODO
                 goToArtist={this.goToArtistTapped}
@@ -242,22 +252,25 @@ export default class Overview extends React.Component<Props, State> {
                 {...this.state}
               />
             </View>
-            <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : -30 }}>
+            <Flex
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="column"
+              style={{ marginTop: isPad ? 80 : -30 }}
+            >
               {this.state.hasLoaded && (
-                <FormButton
-                  text="Submit"
-                  onPress={canSubmit ? this.submitFinalSubmission : undefined}
-                  disabled={!canSubmit}
-                />
+                <Button onPress={canSubmit ? this.submitFinalSubmission : undefined} disabled={!canSubmit}>
+                  Submit
+                </Button>
               )}
-            </Row>
-            <Row style={{ justifyContent: "center" }}>
-              {/* TODO: This margin offset is just battling the default margins set on the buttons */}
-              <CloseButton style={{ marginTop: -8 }} />
-            </Row>
+              <Spacer mb={2} />
+              <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
+                Close
+              </Button>
+            </Flex>
           </View>
         </ScrollView>
-      </ConsignmentBG>
+      </Theme>
     )
   }
 }

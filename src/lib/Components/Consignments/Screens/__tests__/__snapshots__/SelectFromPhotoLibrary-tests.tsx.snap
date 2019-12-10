@@ -63,33 +63,56 @@ exports[`Sets up the right view hierarchy 1`] = `
                 }
               }
             >
-              <Text
+              <View
+                px={2}
                 style={
                   Array [
                     Object {
-                      "color": "#cccccc",
-                      "fontSize": 20,
-                      "marginBottom": 18,
-                      "marginTop": 18,
                       "paddingLeft": 20,
                       "paddingRight": 20,
-                      "textAlign": "center",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
                     },
                   ]
                 }
               >
-                We suggest adding a few photos of the work including the front and back as well as the signature.
-              </Text>
+                <Text
+                  color="#C2C2C2"
+                  fontFamily="ReactNativeAGaramondPro-Regular"
+                  fontSize="18px"
+                  lineHeight="26px"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#C2C2C2",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "fontSize": 18,
+                        "lineHeight": 26,
+                      },
+                      Object {},
+                      Object {
+                        "textAlign": "center",
+                      },
+                    ]
+                  }
+                >
+                  We suggest adding a few photos of the work including the front and back as well as the signature.
+                </Text>
+              </View>
+              <View
+                mb={2}
+                style={
+                  Array [
+                    Object {
+                      "marginBottom": 20,
+                    },
+                  ]
+                }
+              />
               <RCTScrollView
-                contentContainerStyle={
+                columnWrapperStyle={
                   Object {
-                    "flexDirection": "row",
-                    "flexWrap": "wrap",
-                    "justifyContent": "center",
+                    "justifyContent": "space-between",
+                    "paddingLeft": 20,
+                    "paddingRight": 20,
                   }
                 }
                 data={
@@ -104,7 +127,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 initialNumToRender={10}
                 keyExtractor={[Function]}
                 maxToRenderPerBatch={10}
-                numColumns={1}
+                numColumns={2}
                 onContentSizeChange={[Function]}
                 onEndReachedThreshold={2}
                 onLayout={[Function]}
@@ -126,37 +149,50 @@ exports[`Sets up the right view hierarchy 1`] = `
                     style={null}
                   >
                     <View
-                      accessible={true}
-                      focusable={true}
-                      isTVSelectable={true}
-                      onClick={[Function]}
-                      onResponderGrant={[Function]}
-                      onResponderMove={[Function]}
-                      onResponderRelease={[Function]}
-                      onResponderTerminate={[Function]}
-                      onResponderTerminationRequest={[Function]}
-                      onStartShouldSetResponder={[Function]}
                       style={
-                        Object {
-                          "alignItems": "center",
-                          "backgroundColor": "white",
-                          "borderColor": null,
-                          "borderWidth": 2,
-                          "height": 158,
-                          "justifyContent": "center",
-                          "margin": 4,
-                          "opacity": 1,
-                          "width": 158,
-                        }
+                        Array [
+                          Object {
+                            "flexDirection": "row",
+                          },
+                          Object {
+                            "justifyContent": "space-between",
+                            "paddingLeft": 20,
+                            "paddingRight": 20,
+                          },
+                        ]
                       }
                     >
-                      <Image
-                        source={
+                      <View
+                        accessible={true}
+                        focusable={true}
+                        isTVSelectable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
                           Object {
-                            "testUri": "../../../images/consignments/camera-black.png",
+                            "alignItems": "center",
+                            "backgroundColor": "white",
+                            "height": 345,
+                            "justifyContent": "center",
+                            "marginBottom": 20,
+                            "opacity": 1,
+                            "width": 345,
                           }
                         }
-                      />
+                      >
+                        <Image
+                          source={
+                            Object {
+                              "testUri": "../../../images/consignments/camera-black.png",
+                            }
+                          }
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -189,7 +225,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         style={
           Object {
             "backgroundColor": "black",
-            "height": 56,
+            "height": 44,
             "marginBottom": 20,
             "opacity": 1,
             "paddingTop": 18,
@@ -211,7 +247,7 @@ exports[`Sets up the right view hierarchy 1`] = `
             ]
           }
         >
-          DONE
+          Done
         </Text>
       </View>
     </View>

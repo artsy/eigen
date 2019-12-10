@@ -12,10 +12,10 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
+import { Theme } from "@artsy/palette"
 import { SubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { ConsignmentMetadata } from "../"
-import ConsignmentBG from "../Components/ConsignmentBG"
-import DoneButton from "../Components/DoneButton"
+import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
@@ -125,9 +125,9 @@ export default class Metadata extends React.Component<Props, State> {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <ConsignmentBG>
-          <DoneButton onPress={this.doneTapped}>
+      <Theme>
+        <View style={{ flex: 1 }}>
+          <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
             <ScrollView keyboardShouldPersistTaps="handled" centerContent>
               <View style={{ padding: 10 }}>
                 <Row>
@@ -238,25 +238,21 @@ export default class Metadata extends React.Component<Props, State> {
                 </TouchableWithoutFeedback>
               </View>
             </ScrollView>
-          </DoneButton>
-        </ConsignmentBG>
-        {
-          //  When we want to show a picker, it should replace the keyboard, so move the
-          //  keyboard down and push up the ConsignmentBG to fill in the space
-        }
-        {this.state.showPicker ? (
-          <Picker
-            style={{ height: 220, backgroundColor: "black" }}
-            key="picker"
-            selectedValue={this.state.category}
-            onValueChange={this.changeCategoryValue}
-          >
-            {categoryOptions.map(opt => (
-              <Picker.Item color="white" label={opt.name} value={opt.value} key={opt.value} />
-            ))}
-          </Picker>
-        ) : null}
-      </View>
+          </BottomAlignedButton>
+          {this.state.showPicker ? (
+            <Picker
+              style={{ height: 220, backgroundColor: "black" }}
+              key="picker"
+              selectedValue={this.state.category}
+              onValueChange={this.changeCategoryValue}
+            >
+              {categoryOptions.map(opt => (
+                <Picker.Item color="white" label={opt.name} value={opt.value} key={opt.value} />
+              ))}
+            </Picker>
+          ) : null}
+        </View>
+      </Theme>
     )
   }
 }

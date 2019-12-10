@@ -129,10 +129,15 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -153,6 +158,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -160,6 +166,10 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -220,10 +230,15 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -244,6 +259,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -251,6 +267,10 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -311,10 +331,15 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -335,6 +360,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -342,6 +368,10 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -402,10 +432,15 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -426,6 +461,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -433,6 +469,10 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -1337,10 +1377,15 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -1361,6 +1406,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -1368,6 +1414,10 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -1428,10 +1478,15 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -1452,6 +1507,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -1459,6 +1515,10 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -1519,10 +1579,15 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -1543,6 +1608,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -1550,6 +1616,10 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -1610,10 +1680,15 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -1634,6 +1709,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -1641,6 +1717,10 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -2545,10 +2625,15 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -2569,6 +2654,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -2576,6 +2662,10 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -2636,10 +2726,15 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -2660,6 +2755,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -2667,6 +2763,10 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -2727,10 +2827,15 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -2751,6 +2856,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -2758,6 +2864,10 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -2818,10 +2928,15 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -2842,6 +2957,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -2849,6 +2965,10 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -3753,10 +3873,15 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -3777,6 +3902,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -3784,6 +3910,10 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -3844,10 +3974,15 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -3868,6 +4003,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -3875,6 +4011,10 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -3935,10 +4075,15 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -3959,6 +4104,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -3966,6 +4112,10 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -4026,10 +4176,15 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -4050,6 +4205,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -4057,6 +4213,10 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -4961,10 +5121,15 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -4985,6 +5150,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -4992,6 +5158,10 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -5052,10 +5222,15 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -5076,6 +5251,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -5083,6 +5259,10 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -5143,10 +5323,15 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -5167,6 +5352,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -5174,6 +5360,10 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }
@@ -5234,10 +5424,15 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
           style={null}
         >
           <View
+            alignItems="center"
+            flexDirection="column"
             px={2}
             style={
               Array [
                 Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "column",
                   "paddingLeft": 20,
                   "paddingRight": 20,
                 },
@@ -5258,6 +5453,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               alignItems="center"
               flexDirection="row"
               flexWrap="nowrap"
+              justifyContent="center"
               style={
                 Array [
                   Object {
@@ -5265,6 +5461,10 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "display": "flex",
                     "flexDirection": "row",
                     "flexWrap": "nowrap",
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "maxWidth": 450,
                   },
                 ]
               }

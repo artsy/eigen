@@ -1,8 +1,7 @@
+import { color } from "@artsy/palette"
+import { Fonts } from "lib/data/fonts"
 import React from "react"
 import { ActivityIndicator, Image, ImageURISource, Text, TextInputProperties, View, ViewProperties } from "react-native"
-
-import { Colors } from "lib/data/colors"
-import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 interface ReffableTextInputProps extends TextInputProperties {
@@ -22,8 +21,7 @@ interface State {
 
 const Input = styled.TextInput`
   height: 40;
-  background-color: black;
-  color: white;
+  color: ${color("black100")};
   font-family: "${Fonts.GaramondRegular}";
   font-size: 20;
   flex: 1;
@@ -34,7 +32,7 @@ const Separator = focused => {
     <View
       style={{
         height: 1,
-        backgroundColor: focused ? Colors.White : Colors.GraySemibold,
+        backgroundColor: focused ? color("black100") : color("black60"),
       }}
     />
   )
@@ -43,7 +41,7 @@ const Separator = focused => {
 const ReadOnlyInput = (props: TextInputProps) => (
   <Text
     style={{
-      color: props.text.value ? Colors.White : Colors.GraySemibold,
+      color: color("black100"),
       fontFamily: Fonts.GaramondRegular,
       fontSize: 20,
       paddingTop: 8,
@@ -70,8 +68,8 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
               autoCorrect={false}
               clearButtonMode="while-editing"
               keyboardAppearance="dark"
-              placeholderTextColor={this.state.focused ? "white" : Colors.GraySemibold}
-              selectionColor={Colors.GrayMedium}
+              placeholderTextColor={color("black60")}
+              selectionColor={color("black60")}
               {...this.props.text}
               onFocus={e =>
                 this.setState(

@@ -1,7 +1,4 @@
 import React from "react"
-
-import ConsignmentBG from "../Components/ConsignmentBG"
-import DoneButton from "../Components/DoneButton"
 import { SearchResults } from "../Components/SearchResults"
 
 import { ConsignmentSetup, LocationResult } from "../index"
@@ -11,7 +8,9 @@ import NavigatorIOS from "react-native-navigator-ios"
 
 import { stringify } from "qs"
 
+import { Theme } from "@artsy/palette"
 import { Dimensions, NativeModules } from "react-native"
+import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 const { Emission } = NativeModules
 
 interface Props extends ConsignmentSetup, ViewProperties {
@@ -99,8 +98,8 @@ export default class Location extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped}>
+      <Theme>
+        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
           <View
             style={{
               alignContent: "center",
@@ -121,8 +120,8 @@ export default class Location extends React.Component<Props, State> {
               noResultsMessage="Could not find"
             />
           </View>
-        </DoneButton>
-      </ConsignmentBG>
+        </BottomAlignedButton>
+      </Theme>
     )
   }
 }

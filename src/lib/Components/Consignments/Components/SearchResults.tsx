@@ -1,46 +1,13 @@
+import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import React from "react"
-import { ScrollView, View } from "react-native"
-
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { ScrollView, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
-
 import TextInput, { TextInputProps } from "./TextInput"
-
-const Result = styled.TouchableHighlight`
-  height: 40;
-  margin-bottom: 10;
-`
-
-const ResultContainers = styled.View`
-  flex-direction: row;
-  align-items: center;
-`
 
 const Image = styled.Image`
   height: 40;
   width: 40;
   border-radius: 20;
-`
-
-const Text = styled.Text`
-  font-family: "${fonts["garamond-regular"]}";
-  color: white;
-  font-size: 20;
-  padding-top: 8;
-  margin-left: 13;
-`
-
-const UnknownLabel = styled.Text`
-  font-family: "${fonts["garamond-regular"]}";
-  color: ${colors["gray-medium"]};
-  font-size: 17;
-`
-
-const UnknownName = styled.Text`
-  font-family: "${fonts["garamond-italic"]}";
-  color: ${colors["gray-medium"]};
-  font-size: 17;
 `
 
 export interface SearchQueryProps<T> extends TextInputProps {
@@ -57,21 +24,27 @@ const noResults = props => {
     return null
   }
   return (
-    <UnknownLabel>
-      {props.noResultsMessage} <UnknownName>{props.query}</UnknownName>
-    </UnknownLabel>
+    <Serif size="3t" color={color("black60")}>
+      {props.noResultsMessage} {props.query}
+    </Serif>
   )
 }
 
 function render<T>(props: SearchQueryProps<T>) {
-  const rowForResult = result => (
-    <Result key={result.id} onPress={() => props.resultSelected(result)}>
-      <ResultContainers>
-        {result.image && <Image source={{ uri: result.image.url }} />}
-        <Text>{result.name}</Text>
-      </ResultContainers>
-    </Result>
-  )
+  const rowForResult = result => {
+    return (
+      <Box key={result.internalID}>
+        <TouchableOpacity onPress={() => props.resultSelected(result)}>
+          <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
+            <Box style={{ width: 40 }}>{result.image && <Image source={{ uri: result.image.url }} />}</Box>
+            <Spacer mr={1} />
+            <Sans size="3t">{result.name}</Sans>
+          </Flex>
+        </TouchableOpacity>
+        <Spacer mb={1} />
+      </Box>
+    )
+  }
 
   return (
     <View

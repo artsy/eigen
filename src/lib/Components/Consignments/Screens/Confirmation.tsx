@@ -1,11 +1,10 @@
-import { Button } from "@artsy/palette"
+import { Button, Flex } from "@artsy/palette"
 import { RotatingView } from "lib/Components/UtilityViews/RotatingView"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { Image, NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import ConsignmentBG from "../Components/ConsignmentBG"
 import { FormButton } from "../Components/FormElements"
 import { LargeHeadline } from "../Typography/index"
 import Welcome from "./Welcome"
@@ -130,7 +129,9 @@ export default class Confirmation extends React.Component<Props, State> {
           <Subtitle>Please try again.</Subtitle>
         </View>
         <ButtonView>
-          <FormButton text="Try again" onPress={this.restart} />
+          <Flex flexDirection="row" justifyContent="center">
+            <FormButton text="Try again" onPress={this.restart} />
+          </Flex>
           <Button block width={100} onPress={this.exitModal}>
             Quit
           </Button>
@@ -150,10 +151,6 @@ export default class Confirmation extends React.Component<Props, State> {
   }
 
   render() {
-    return (
-      <ConsignmentBG>
-        <Container>{this.confirmationContent()}</Container>
-      </ConsignmentBG>
-    )
+    return <Container>{this.confirmationContent()}</Container>
   }
 }

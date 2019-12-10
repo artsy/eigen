@@ -176,7 +176,7 @@ exports[`Sets up the right view hierarchy 1`] = `
             ]
           }
         >
-          DONE
+          Done
         </Text>
       </View>
     </View>
@@ -344,7 +344,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
             ]
           }
         >
-          DONE
+          Done
         </Text>
       </View>
     </View>

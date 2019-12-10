@@ -46,50 +46,74 @@ exports[`Sets up the right view hierarchy 1`] = `
             }
           }
         >
-          <Text
+          <View
+            px={2}
             style={
               Array [
                 Object {
-                  "color": "white",
-                  "fontSize": 30,
-                  "marginBottom": 20,
                   "paddingLeft": 20,
                   "paddingRight": 20,
-                  "textAlign": "center",
-                },
-                Object {
-                  "textAlign": "center",
-                },
-                Object {
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
                 },
               ]
             }
           >
-            Complete work details to submit
-          </Text>
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "#808080",
-                  "fontSize": 20,
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
-                },
-                Object {
-                  "marginBottom": 80,
-                  "marginTop": -15,
-                  "textAlign": "center",
-                },
-                Object {
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                },
-              ]
-            }
-          >
-            Provide as much detail as possible so that our partners can best assess your work.
-          </Text>
+            <Text
+              color="#FFF"
+              fontFamily="ReactNativeAGaramondPro-Regular"
+              fontSize="26px"
+              lineHeight="32px"
+              style={
+                Array [
+                  Object {
+                    "color": "#FFF",
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    "fontSize": 26,
+                    "lineHeight": 32,
+                  },
+                  Object {},
+                  Object {
+                    "textAlign": "center",
+                  },
+                ]
+              }
+            >
+              Complete work details to submit
+            </Text>
+            <View
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "marginBottom": 20,
+                  },
+                ]
+              }
+            />
+            <Text
+              color="#C2C2C2"
+              fontFamily="ReactNativeAGaramondPro-Regular"
+              fontSize="18px"
+              lineHeight="26px"
+              style={
+                Array [
+                  Object {
+                    "color": "#C2C2C2",
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    "fontSize": 18,
+                    "lineHeight": 26,
+                  },
+                  Object {},
+                  Object {
+                    "marginBottom": 80,
+                    "marginTop": -15,
+                    "textAlign": "center",
+                  },
+                ]
+              }
+            >
+              Provide as much detail as possible so that our partners can best assess your work.
+            </Text>
+          </View>
           <View
             style={
               Object {
@@ -161,7 +185,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       ]
                     }
                   >
-                    ARTIST/DESIGNER NAME
+                    Artist/Designer name
                   </Text>
                   <View
                     style={
@@ -237,7 +261,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       ]
                     }
                   >
-                    PHOTOS
+                    Photos
                   </Text>
                   <View
                     style={
@@ -313,7 +337,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       ]
                     }
                   >
-                    WORK DETAILS
+                    Work details
                   </Text>
                   <View
                     style={
@@ -389,7 +413,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       ]
                     }
                   >
-                    EDITION & AUTHENTICITY
+                    Edition & Authenticity
                   </Text>
                   <View
                     style={
@@ -465,7 +489,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       ]
                     }
                   >
-                    LOCATION
+                    Location
                   </Text>
                   <View
                     style={
@@ -541,7 +565,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       ]
                     }
                   >
-                    PROVENANCE
+                    Provenance
                   </Text>
                   <View
                     style={

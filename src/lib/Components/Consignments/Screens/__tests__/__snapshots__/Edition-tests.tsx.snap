@@ -597,7 +597,7 @@ exports[`Sets up the right view hierarchy 1`] = `
             ]
           }
         >
-          DONE
+          Done
         </Text>
       </View>
     </View>
@@ -1334,7 +1334,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
             ]
           }
         >
-          DONE
+          Done
         </Text>
       </View>
     </View>

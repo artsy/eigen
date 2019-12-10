@@ -2,11 +2,11 @@
 
 exports[`renders correctly at iPhone size 1`] = `
 <RCTScrollView
-  contentContainerStyle={
+  columnWrapperStyle={
     Object {
-      "flexDirection": "row",
-      "flexWrap": "wrap",
-      "justifyContent": "center",
+      "justifyContent": "space-between",
+      "paddingLeft": 20,
+      "paddingRight": 20,
     }
   }
   data={
@@ -36,7 +36,7 @@ exports[`renders correctly at iPhone size 1`] = `
   initialNumToRender={10}
   keyExtractor={[Function]}
   maxToRenderPerBatch={10}
-  numColumns={1}
+  numColumns={2}
   onContentSizeChange={[Function]}
   onEndReachedThreshold={2}
   onLayout={[Function]}
@@ -58,57 +58,22 @@ exports[`renders correctly at iPhone size 1`] = `
       style={null}
     >
       <View
-        accessible={true}
-        focusable={false}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "white",
-            "borderColor": null,
-            "borderWidth": 2,
-            "height": 158,
-            "justifyContent": "center",
-            "margin": 4,
-            "opacity": 1,
-            "width": 158,
-          }
-        }
-      >
-        <Image
-          source={
+          Array [
             Object {
-              "testUri": "../../../images/consignments/camera-black.png",
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View
-        style={
-          Object {
-            "borderColor": null,
-            "borderWidth": 2,
-            "height": 158,
-            "margin": 4,
-            "width": 158,
-          }
+              "flexDirection": "row",
+            },
+            Object {
+              "justifyContent": "space-between",
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
         }
       >
         <View
           accessible={true}
-          focusable={true}
+          focusable={false}
           isTVSelectable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -119,23 +84,80 @@ exports[`renders correctly at iPhone size 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
+              "alignItems": "center",
+              "backgroundColor": "white",
+              "height": 345,
+              "justifyContent": "center",
+              "marginBottom": 20,
               "opacity": 1,
+              "width": 345,
             }
           }
         >
           <Image
             source={
               Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
-              }
-            }
-            style={
-              Object {
-                "height": 154,
-                "width": 154,
+                "testUri": "../../../images/consignments/camera-black.png",
               }
             }
           />
+        </View>
+        <View
+          style={
+            Object {
+              "height": 345,
+              "marginBottom": 20,
+              "position": "relative",
+              "width": 345,
+            }
+          }
+        >
+          <View
+            pointerEvents="none"
+            style={
+              Object {
+                "borderColor": null,
+                "borderWidth": 2,
+                "height": 345,
+                "left": 0,
+                "position": "absolute",
+                "top": 0,
+                "width": 345,
+                "zIndex": 2,
+              }
+            }
+          />
+          <View
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
+                }
+              }
+              style={
+                Object {
+                  "height": 345,
+                  "width": 345,
+                }
+              }
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -145,93 +167,131 @@ exports[`renders correctly at iPhone size 1`] = `
     >
       <View
         style={
-          Object {
-            "borderColor": null,
-            "borderWidth": 2,
-            "height": 158,
-            "margin": 4,
-            "width": 158,
-          }
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            Object {
+              "justifyContent": "space-between",
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
         }
       >
         <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "opacity": 1,
+              "height": 345,
+              "marginBottom": 20,
+              "position": "relative",
+              "width": 345,
             }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
-              }
-            }
+          <View
+            pointerEvents="none"
             style={
               Object {
-                "height": 154,
-                "width": 154,
+                "borderColor": null,
+                "borderWidth": 2,
+                "height": 345,
+                "left": 0,
+                "position": "absolute",
+                "top": 0,
+                "width": 345,
+                "zIndex": 2,
               }
             }
           />
+          <View
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
+                }
+              }
+              style={
+                Object {
+                  "height": 345,
+                  "width": 345,
+                }
+              }
+            />
+          </View>
         </View>
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View
-        style={
-          Object {
-            "borderColor": null,
-            "borderWidth": 2,
-            "height": 158,
-            "margin": 4,
-            "width": 158,
-          }
-        }
-      >
         <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "opacity": 1,
+              "height": 345,
+              "marginBottom": 20,
+              "position": "relative",
+              "width": 345,
             }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
-              }
-            }
+          <View
+            pointerEvents="none"
             style={
               Object {
-                "height": 154,
-                "width": 154,
+                "borderColor": null,
+                "borderWidth": 2,
+                "height": 345,
+                "left": 0,
+                "position": "absolute",
+                "top": 0,
+                "width": 345,
+                "zIndex": 2,
               }
             }
           />
+          <View
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "opacity": 1,
+              }
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
+                }
+              }
+              style={
+                Object {
+                  "height": 345,
+                  "width": 345,
+                }
+              }
+            />
+          </View>
         </View>
       </View>
     </View>

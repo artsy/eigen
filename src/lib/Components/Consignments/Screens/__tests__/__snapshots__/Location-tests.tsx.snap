@@ -212,7 +212,7 @@ exports[`Sets up the right view hierarchy 1`] = `
             ]
           }
         >
-          DONE
+          Done
         </Text>
       </View>
     </View>

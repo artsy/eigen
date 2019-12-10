@@ -1,15 +1,12 @@
 import React from "react"
-
-import ConsignmentBG from "../Components/ConsignmentBG"
-import DoneButton from "../Components/DoneButton"
-
 import { LayoutAnimation, Route, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
+import { Theme } from "@artsy/palette"
+import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Label, Row } from "../Components/FormElements"
 
 interface Props extends ConsignmentSetup, ViewProperties {
@@ -53,8 +50,8 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
 
   render() {
     return (
-      <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped}>
+      <Theme>
+        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
           <Form>
             <Row>
               <Label>Is this an edition?</Label>
@@ -93,8 +90,8 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
               <Toggle selected={this.state.certificateOfAuth} left="YES" right="NO" onPress={this.updateCert} />
             </Row>
           </Form>
-        </DoneButton>
-      </ConsignmentBG>
+        </BottomAlignedButton>
+      </Theme>
     )
   }
 }
