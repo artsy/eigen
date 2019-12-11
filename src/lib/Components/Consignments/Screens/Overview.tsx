@@ -4,17 +4,13 @@ import React from "react"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { Box, Button, color, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
-import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
+import { Box, Button, color, Flex, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
-import CloseButton from "../Components/CloseButton"
-import { FormButton, Row } from "../Components/FormElements"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
-import { LargeHeadline } from "../Typography"
 import Confirmation from "./Confirmation"
 import Artist from "./ConsignmentsArtist"
 import Edition from "./Edition"
@@ -241,29 +237,23 @@ export default class Overview extends React.Component<Props, State> {
                 {subtitle}
               </Serif>
             </Box>
-            <View style={{ flex: 1 }}>
-              <TODO
-                goToArtist={this.goToArtistTapped}
-                goToPhotos={this.goToPhotosTapped}
-                goToEdition={this.goToEditionTapped}
-                goToMetadata={this.goToMetadataTapped}
-                goToLocation={this.goToLocationTapped}
-                goToProvenance={this.goToProvenanceTapped}
-                {...this.state}
-              />
-            </View>
-            <Flex
-              justifyContent="center"
-              alignItems="center"
-              flexDirection="column"
-              style={{ marginTop: isPad ? 80 : -30 }}
-            >
+            <TODO
+              goToArtist={this.goToArtistTapped}
+              goToPhotos={this.goToPhotosTapped}
+              goToEdition={this.goToEditionTapped}
+              goToMetadata={this.goToMetadataTapped}
+              goToLocation={this.goToLocationTapped}
+              goToProvenance={this.goToProvenanceTapped}
+              {...this.state}
+            />
+            <Spacer mb={isPad ? 80 : 2} />
+            <Flex justifyContent="center" alignItems="center" flexDirection="column">
               {this.state.hasLoaded && (
                 <Button onPress={canSubmit ? this.submitFinalSubmission : undefined} disabled={!canSubmit}>
                   Submit
                 </Button>
               )}
-              <Spacer mb={2} />
+              <Spacer mb={1} />
               <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
                 Close
               </Button>

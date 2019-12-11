@@ -86,6 +86,8 @@ exports[`renders correctly at iPhone size 1`] = `
             Object {
               "alignItems": "center",
               "backgroundColor": "white",
+              "borderColor": "black",
+              "borderWidth": 1,
               "height": 345,
               "justifyContent": "center",
               "marginBottom": 20,
@@ -114,17 +116,19 @@ exports[`renders correctly at iPhone size 1`] = `
         >
           <View
             pointerEvents="none"
+            selected={false}
             style={
-              Object {
-                "borderColor": null,
-                "borderWidth": 2,
-                "height": 345,
-                "left": 0,
-                "position": "absolute",
-                "top": 0,
-                "width": 345,
-                "zIndex": 2,
-              }
+              Array [
+                Object {},
+                Object {
+                  "height": 345,
+                  "left": 0,
+                  "position": "absolute",
+                  "top": 0,
+                  "width": 345,
+                  "zIndex": 2,
+                },
+              ]
             }
           />
           <View
@@ -191,17 +195,19 @@ exports[`renders correctly at iPhone size 1`] = `
         >
           <View
             pointerEvents="none"
+            selected={false}
             style={
-              Object {
-                "borderColor": null,
-                "borderWidth": 2,
-                "height": 345,
-                "left": 0,
-                "position": "absolute",
-                "top": 0,
-                "width": 345,
-                "zIndex": 2,
-              }
+              Array [
+                Object {},
+                Object {
+                  "height": 345,
+                  "left": 0,
+                  "position": "absolute",
+                  "top": 0,
+                  "width": 345,
+                  "zIndex": 2,
+                },
+              ]
             }
           />
           <View
@@ -248,17 +254,19 @@ exports[`renders correctly at iPhone size 1`] = `
         >
           <View
             pointerEvents="none"
+            selected={false}
             style={
-              Object {
-                "borderColor": null,
-                "borderWidth": 2,
-                "height": 345,
-                "left": 0,
-                "position": "absolute",
-                "top": 0,
-                "width": 345,
-                "zIndex": 2,
-              }
+              Array [
+                Object {},
+                Object {
+                  "height": 345,
+                  "left": 0,
+                  "position": "absolute",
+                  "top": 0,
+                  "width": 345,
+                  "zIndex": 2,
+                },
+              ]
             }
           />
           <View

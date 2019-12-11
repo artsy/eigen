@@ -185,18 +185,10 @@ export class Inquiry extends React.Component<Props, State> {
     const partnerName = this.props.artwork.partner.name
     const buttonText = this.state.sending ? "Sending..." : "Send"
 
-    const doneButtonStyles = {
-      backgroundColor: colors["purple-regular"],
-      marginBottom: 0,
-      paddingTop: 15,
-      height: 50,
-    }
-
     return (
       <Container>
         <BottomAlignedButton
           onPress={this.sendInquiry.bind(this)}
-          bodyStyle={doneButtonStyles}
           buttonText={buttonText}
           disabled={this.state.sending}
         >

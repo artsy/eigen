@@ -36,7 +36,7 @@ function render<T>(props: SearchQueryProps<T>) {
       <Box key={result.internalID}>
         <TouchableOpacity onPress={() => props.resultSelected(result)}>
           <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
-            <Box style={{ width: 40 }}>{result.image && <Image source={{ uri: result.image.url }} />}</Box>
+            <Box>{result.image && <Image source={{ uri: result.image.url }} />}</Box>
             <Spacer mr={1} />
             <Sans size="3t">{result.name}</Sans>
           </Flex>

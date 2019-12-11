@@ -1,4 +1,4 @@
-import { Box, color, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Serif, Spacer, Theme } from "@artsy/palette"
 import CameraRoll from "@react-native-community/cameraroll"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 import React from "react"

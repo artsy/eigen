@@ -30,7 +30,7 @@ exports[`doesn't show placeholder when initial text is present 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
-            "color": "white",
+            "color": "#000",
             "flexBasis": 0,
             "flexGrow": 1,
             "flexShrink": 1,
@@ -69,7 +69,7 @@ exports[`shows the placeholder when text is empty 1`] = `
       style={
         Array [
           Object {
-            "color": "#666666",
+            "color": "#666",
             "fontFamily": "ReactNativeAGaramondPro-Regular",
             "fontSize": 20,
             "marginTop": 5,
@@ -94,7 +94,7 @@ exports[`shows the placeholder when text is empty 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
-            "color": "white",
+            "color": "#000",
             "flexBasis": 0,
             "flexGrow": 1,
             "flexShrink": 1,

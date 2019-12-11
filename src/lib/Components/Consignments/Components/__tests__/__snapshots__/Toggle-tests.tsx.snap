@@ -16,15 +16,14 @@ exports[`has the expected tree 1`] = `
     Array [
       Object {
         "alignItems": "center",
-        "backgroundColor": "green",
-        "borderColor": "white",
+        "borderColor": "black",
         "borderRadius": 16,
         "borderWidth": 1,
         "height": 34,
         "width": 64,
       },
       Object {
-        "backgroundColor": "black",
+        "backgroundColor": "white",
       },
     ]
   }
@@ -57,7 +56,7 @@ exports[`has the expected tree 1`] = `
               "width": 24,
             },
             Object {
-              "color": "white",
+              "color": "black",
             },
           ]
         }
@@ -76,7 +75,7 @@ exports[`has the expected tree 1`] = `
               "width": 24,
             },
             Object {
-              "color": "white",
+              "color": "black",
             },
           ]
         }
@@ -103,15 +102,15 @@ exports[`has the expected tree 1`] = `
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "borderColor": "white",
+              "backgroundColor": "white",
+              "borderColor": "black",
               "borderRadius": 12,
               "borderWidth": 1,
               "height": 24,
               "width": 24,
             },
             Object {
-              "borderColor": "white",
+              "borderColor": "black",
             },
           ]
         }

@@ -1,13 +1,6 @@
 import { Flex, Sans, Separator } from "@artsy/palette"
 import React from "react"
-import {
-  Image,
-  StyleProp,
-  TouchableHighlight,
-  TouchableHighlightProperties,
-  TouchableOpacity,
-  ViewStyle,
-} from "react-native"
+import { Image, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import { ConsignmentSetup } from "../index"
 
@@ -17,11 +10,6 @@ const Background = styled.View`
   padding-bottom: 20;
   padding-left: 20;
   padding-right: 20;
-`
-const ButtonView = styled.View`
-  flex-direction: row;
-  align-items: center;
-  height: 60;
 `
 
 const ImageBG = styled.View`

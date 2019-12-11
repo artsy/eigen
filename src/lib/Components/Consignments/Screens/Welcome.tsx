@@ -76,7 +76,7 @@ export default class Welcome extends React.Component<Props> {
               <Spacer mb={3} />
               <Flex flexDirection="column" alignItems="center">
                 <Button onPress={this.goTapped}>Get started</Button>
-                <Spacer mb={2} />
+                <Spacer mb={1} />
                 <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
                   Close
                 </Button>

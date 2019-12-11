@@ -124,7 +124,6 @@
   [sectionData addCellData:self.jumpToCollection];
   [sectionData addCellData:self.jumpToArtwork];
   [sectionData addCellData:self.jumpToPartner];
-  [sectionData addCellData:self.jumpToPartner2];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -263,14 +262,6 @@
 {
   return [self tappableCellDataWithTitle:@"Partner" selection:^{
     id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"gagosian-gallery"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-- (ARCellData *)jumpToPartner2
-{
-  return [self tappableCellDataWithTitle:@"Partner2" selection:^{
-    id viewController = [[ARPartnerComponentViewController alloc] initWithPartnerID:@"pace-gallery"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

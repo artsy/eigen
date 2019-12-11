@@ -1,3 +1,4 @@
+import { color } from "@artsy/palette"
 import fonts from "lib/data/fonts"
 import React from "react"
 import { View } from "react-native"
@@ -13,10 +14,9 @@ const Title = styled.Text`
 `
 
 const Background = styled.TouchableHighlight`
-  background-color: green;
   height: 34;
   border-radius: 16;
-  border-color: white;
+  border-color: black;
   border-width: 1;
   align-items: center;
   width: 64;
@@ -34,8 +34,8 @@ const WhiteCircle = styled.View`
   width: 24;
   height: 24;
   border-radius: 12;
-  background-color: black;
-  border-color: white;
+  background-color: white;
+  border-color: black;
   border-width: 1;
 `
 
@@ -55,15 +55,15 @@ interface ToggleProps {
 
 const render = (props: ToggleProps) => {
   const { selected } = props
-  const mainBGColor = "black"
-  const leftTextColor = "white"
-  const rightTextColor = "white"
+  const mainBGColor = "white"
+  const leftTextColor = "black"
+  const rightTextColor = "black"
   const dotDirection = selected ? "row-reverse" : "row"
-  const dotBorder = selected ? "white" : "white"
+  const dotBorder = "black"
   const Circle = WhiteCircle
 
   return (
-    <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress}>
+    <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress} underlayColor={color("white100")}>
       <View>
         <TextBackground>
           <Title style={{ color: leftTextColor }}>{selected ? props.left : ""}</Title>

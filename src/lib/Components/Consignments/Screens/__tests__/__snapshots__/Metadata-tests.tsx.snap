@@ -9,773 +9,1040 @@ exports[`state is set up with empty consignment metadata 1`] = `
   }
 >
   <View
+    onLayout={[Function]}
     style={
       Array [
         Object {
-          "backgroundColor": "black",
-          "flexBasis": 0,
-          "flexGrow": 1,
-          "flexShrink": 1,
+          "flex": 1,
+        },
+        Object {
+          "paddingBottom": 0,
         },
       ]
     }
   >
     <View
       style={
-        Array [
-          Object {
-            "alignSelf": "center",
-            "backgroundColor": "black",
-            "height": "100%",
-            "width": "100%",
-          },
-        ]
+        Object {
+          "flexGrow": 1,
+        }
       }
     >
-      <View
-        onLayout={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-            },
-            Object {
-              "paddingBottom": 0,
-            },
-          ]
-        }
+      <RCTScrollView
+        centerContent={true}
+        keyboardShouldPersistTaps="handled"
       >
-        <View
-          style={
-            Object {
-              "flexGrow": 1,
-            }
-          }
-        >
+        <View>
           <View
             style={
               Object {
-                "alignSelf": "center",
-                "flex": 1,
-                "maxWidth": 540,
-                "width": "100%",
+                "padding": 10,
               }
             }
           >
-            <RCTScrollView
-              centerContent={true}
-              keyboardShouldPersistTaps="handled"
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
             >
-              <View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
                 <View
                   style={
                     Object {
-                      "padding": 10,
+                      "flexDirection": "row",
+                      "height": 40,
                     }
                   }
                 >
-                  <View
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    autoFocus={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Title"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
                     style={
                       Array [
-                        undefined,
                         Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
                         },
                       ]
                     }
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Year"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Medium"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Width"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Height"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Depth"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                    value=""
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                    "margin": 10,
+                  }
+                }
+              >
+                <Text
+                  fontFamily="ReactNativeAGaramondPro-Regular"
+                  fontSize="18px"
+                  lineHeight="26px"
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "fontSize": 18,
+                        "lineHeight": 26,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  Units
+                </Text>
+                <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "alignItems": "center",
+                        "borderColor": "black",
+                        "borderRadius": 16,
+                        "borderWidth": 1,
+                        "height": 34,
+                        "width": 64,
+                      },
+                      Object {
+                        "backgroundColor": "white",
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={null}
                   >
                     <View
                       style={
                         Array [
                           Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
+                            "flexDirection": "row",
+                            "justifyContent": "space-between",
+                            "marginLeft": 8,
+                            "marginRight": 8,
+                            "marginTop": 9,
                           },
                         ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          autoFocus={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Title"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Year"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Medium"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          keyboardType="numeric"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Width"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          keyboardType="numeric"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Height"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          keyboardType="numeric"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Depth"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                          value=""
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                    <View
-                      style={
-                        Object {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "margin": 10,
-                        }
                       }
                     >
                       <Text
                         style={
                           Array [
                             Object {
-                              "color": "#cccccc",
-                              "fontSize": 20,
-                              "marginBottom": 18,
-                              "marginTop": 18,
-                              "paddingLeft": 20,
-                              "paddingRight": 20,
+                              "color": "white",
+                              "fontFamily": "AvantGardeGothicITC",
+                              "fontSize": 11,
+                              "letterSpacing": 0.75,
                               "textAlign": "center",
+                              "width": 24,
                             },
                             Object {
-                              "flex": 1,
-                              "paddingLeft": 10,
-                              "textAlign": "left",
-                            },
-                            Object {
-                              "fontFamily": "ReactNativeAGaramondPro-Regular",
+                              "color": "black",
                             },
                           ]
                         }
                       >
-                        Units
+                        
                       </Text>
-                      <View
-                        accessible={true}
-                        focusable={true}
-                        isTVSelectable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
+                      <Text
                         style={
                           Array [
                             Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
+                              "color": "white",
+                              "fontFamily": "AvantGardeGothicITC",
+                              "fontSize": 11,
+                              "letterSpacing": 0.75,
+                              "textAlign": "center",
+                              "width": 24,
                             },
                             Object {
-                              "backgroundColor": "black",
+                              "color": "black",
                             },
                           ]
                         }
                       >
-                        <View
-                          style={null}
-                        >
-                          <View
-                            style={
-                              Array [
-                                Object {
-                                  "flexDirection": "row",
-                                  "justifyContent": "space-between",
-                                  "marginLeft": 8,
-                                  "marginRight": 8,
-                                  "marginTop": 9,
-                                },
-                              ]
-                            }
-                          >
-                            <Text
-                              style={
-                                Array [
-                                  Object {
-                                    "color": "white",
-                                    "fontFamily": "AvantGardeGothicITC",
-                                    "fontSize": 11,
-                                    "letterSpacing": 0.75,
-                                    "textAlign": "center",
-                                    "width": 24,
-                                  },
-                                  Object {
-                                    "color": "white",
-                                  },
-                                ]
-                              }
-                            >
-                              
-                            </Text>
-                            <Text
-                              style={
-                                Array [
-                                  Object {
-                                    "color": "white",
-                                    "fontFamily": "AvantGardeGothicITC",
-                                    "fontSize": 11,
-                                    "letterSpacing": 0.75,
-                                    "textAlign": "center",
-                                    "width": 24,
-                                  },
-                                  Object {
-                                    "color": "white",
-                                  },
-                                ]
-                              }
-                            >
-                              IN
-                            </Text>
-                          </View>
-                          <View
-                            style={
-                              Array [
-                                Object {
-                                  "left": 6,
-                                  "position": "absolute",
-                                  "right": 6,
-                                  "top": 4,
-                                },
-                                Object {
-                                  "flexDirection": "row",
-                                },
-                              ]
-                            }
-                          >
-                            <View
-                              style={
-                                Array [
-                                  Object {
-                                    "backgroundColor": "black",
-                                    "borderColor": "white",
-                                    "borderRadius": 12,
-                                    "borderWidth": 1,
-                                    "height": 24,
-                                    "width": 24,
-                                  },
-                                  Object {
-                                    "borderColor": "white",
-                                  },
-                                ]
-                              }
-                            />
-                          </View>
-                        </View>
-                      </View>
+                        In
+                      </Text>
                     </View>
-                  </View>
-                  <View
-                    accessible={true}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
                     <View
                       style={
                         Array [
                           Object {
-                            "margin": 10,
+                            "left": 6,
+                            "position": "absolute",
+                            "right": 6,
+                            "top": 4,
                           },
                           Object {
-                            "flex": 1,
-                            "maxHeight": 40,
+                            "flexDirection": "row",
                           },
                         ]
                       }
                     >
                       <View
                         style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <Text
-                          style={
+                          Array [
                             Object {
-                              "color": "#666666",
-                              "fontFamily": "ReactNativeAGaramondPro-Regular",
-                              "fontSize": 20,
-                              "paddingTop": 8,
-                            }
-                          }
-                        >
-                          Category
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
+                              "backgroundColor": "white",
+                              "borderColor": "black",
+                              "borderRadius": 12,
+                              "borderWidth": 1,
+                              "height": 24,
+                              "width": 24,
+                            },
+                            Object {
+                              "borderColor": "black",
+                            },
+                          ]
                         }
                       />
                     </View>
                   </View>
                 </View>
               </View>
-            </RCTScrollView>
+            </View>
+            <View
+              accessible={true}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Object {
+                        "color": "#000",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "fontSize": 20,
+                        "paddingTop": 8,
+                      }
+                    }
+                  >
+                    Category
+                  </Text>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
           </View>
         </View>
+      </RCTScrollView>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "borderBottomWidth": 0,
+            "borderColor": "#E5E5E5",
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "width": "100%",
+          },
+        ]
+      }
+      width="100%"
+    />
+    <View
+      mb={1}
+      style={
+        Array [
+          Object {
+            "marginBottom": 10,
+          },
+        ]
+      }
+    />
+    <View
+      px={2}
+      style={
+        Array [
+          Object {
+            "paddingLeft": 20,
+            "paddingRight": 20,
+          },
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        flexDirection="row"
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "flexDirection": "row",
+            },
+          ]
+        }
+      >
         <View
+          block={true}
+          onPress={[Function]}
+          px={2}
+          size="medium"
           style={
             Array [
               Object {
-                "backgroundColor": "#666666",
-                "height": 1,
+                "alignItems": "center",
+                "borderRadius": 3,
+                "borderWidth": 1,
+                "justifyContent": "center",
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "position": "relative",
+                "width": "100%",
+              },
+              Object {
+                "backgroundColor": "rgba(0, 0, 0, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)",
+                "color": "rgba(255, 255, 255, 1)",
+                "height": 41,
+                "opacity": 1,
               },
             ]
           }
-        />
-        <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
+          theme={
             Object {
-              "backgroundColor": "black",
-              "height": 56,
-              "marginBottom": 0,
-              "opacity": 1,
-              "paddingTop": 18,
+              "borders": Array [
+                "1px solid",
+                "2px solid",
+              ],
+              "breakpoints": Array [
+                768,
+                900,
+                1024,
+                1192,
+              ],
+              "colors": Object {
+                "black10": "#E5E5E5",
+                "black100": "#000",
+                "black30": "#C2C2C2",
+                "black5": "#F8F8F8",
+                "black60": "#666",
+                "black80": "#333",
+                "green100": "#0EDA83",
+                "purple100": "#6E1EFF",
+                "purple30": "#D3BBFF",
+                "purple5": "#F8F3FF",
+                "red100": "#F7625A",
+                "white100": "#FFF",
+                "yellow10": "#FDF7E8",
+                "yellow100": "#F1AF1B",
+                "yellow30": "#FAE7BA",
+              },
+              "fontFamily": Object {
+                "display": Object {
+                  "regular": "AvantGardeGothicITC",
+                },
+                "sans": Object {
+                  "italic": "Unica77LL-Italic",
+                  "medium": "Unica77LL-Medium",
+                  "mediumItalic": "Unica77LL-MediumItalic",
+                  "regular": "Unica77LL-Regular",
+                },
+                "serif": Object {
+                  "italic": "ReactNativeAGaramondPro-Italic",
+                  "regular": "ReactNativeAGaramondPro-Regular",
+                  "semibold": "ReactNativeAGaramondPro-Semibold",
+                },
+              },
+              "grid": Object {
+                "breakpoints": Object {
+                  "lg": 1024,
+                  "md": 900,
+                  "sm": 768,
+                  "xl": 1192,
+                  "xs": 767,
+                },
+                "col": Object {
+                  "padding": 0,
+                },
+                "container": Object {
+                  "padding": 0,
+                },
+                "row": Object {
+                  "padding": 0,
+                },
+              },
+              "mediaQueries": Object {
+                "hover": "not all and (pointer: coarse), not all and (-moz-touch-enabled: 1)",
+                "lg": "(min-width: 1024px) and (max-width: 1191px)",
+                "md": "(min-width: 900px) and (max-width: 1023px)",
+                "sm": "(min-width: 768px) and (max-width: 899px)",
+                "xl": "(min-width: 1192px)",
+                "xs": "(max-width: 767px)",
+              },
+              "space": Object {
+                "0.3": 3,
+                "0.5": 5,
+                "1": 10,
+                "12": 120,
+                "18": 180,
+                "2": 20,
+                "3": 30,
+                "4": 40,
+                "6": 60,
+                "9": 90,
+              },
+              "typeSizes": Object {
+                "display": Object {
+                  "2": Object {
+                    "fontSize": 10,
+                    "lineHeight": 12,
+                  },
+                  "3t": Object {
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  "4t": Object {
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  },
+                  "5t": Object {
+                    "fontSize": 16,
+                    "lineHeight": 20,
+                  },
+                  "6": Object {
+                    "fontSize": 18,
+                    "lineHeight": 22,
+                  },
+                  "8": Object {
+                    "fontSize": 22,
+                    "lineHeight": 24,
+                  },
+                },
+                "sans": Object {
+                  "0": Object {
+                    "fontSize": 8,
+                    "lineHeight": 8,
+                  },
+                  "1": Object {
+                    "fontSize": 10,
+                    "lineHeight": 14,
+                  },
+                  "10": Object {
+                    "fontSize": 42,
+                    "lineHeight": 50,
+                  },
+                  "12": Object {
+                    "fontSize": 60,
+                    "lineHeight": 66,
+                  },
+                  "14": Object {
+                    "fontSize": 80,
+                    "lineHeight": 84,
+                  },
+                  "16": Object {
+                    "fontSize": 100,
+                    "lineHeight": 104,
+                  },
+                  "2": Object {
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  "3": Object {
+                    "fontSize": 14,
+                    "lineHeight": 24,
+                  },
+                  "3t": Object {
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  "4": Object {
+                    "fontSize": 16,
+                    "lineHeight": 26,
+                  },
+                  "4t": Object {
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  "5": Object {
+                    "fontSize": 18,
+                    "lineHeight": 30,
+                  },
+                  "5t": Object {
+                    "fontSize": 18,
+                    "lineHeight": 26,
+                  },
+                  "6": Object {
+                    "fontSize": 22,
+                    "lineHeight": 30,
+                  },
+                  "8": Object {
+                    "fontSize": 28,
+                    "lineHeight": 36,
+                  },
+                },
+                "serif": Object {
+                  "1": Object {
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  "10": Object {
+                    "fontSize": 44,
+                    "lineHeight": 50,
+                  },
+                  "12": Object {
+                    "fontSize": 60,
+                    "lineHeight": 70,
+                  },
+                  "2": Object {
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  },
+                  "3": Object {
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                  },
+                  "3t": Object {
+                    "fontSize": 16,
+                    "lineHeight": 20,
+                  },
+                  "4": Object {
+                    "fontSize": 18,
+                    "lineHeight": 26,
+                  },
+                  "4t": Object {
+                    "fontSize": 18,
+                    "lineHeight": 22,
+                  },
+                  "5": Object {
+                    "fontSize": 22,
+                    "lineHeight": 32,
+                  },
+                  "5t": Object {
+                    "fontSize": 22,
+                    "lineHeight": 28,
+                  },
+                  "6": Object {
+                    "fontSize": 26,
+                    "lineHeight": 32,
+                  },
+                  "8": Object {
+                    "fontSize": 32,
+                    "lineHeight": 38,
+                  },
+                },
+              },
             }
           }
+          variant="primaryBlack"
+          width="100%"
         >
-          <Text
+          <View
             style={
               Array [
                 Object {
-                  "color": "white",
-                  "flexBasis": 0,
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "fontFamily": "AvantGardeGothicITC",
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "height": "100%",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "width": "100%",
+                },
+              ]
+            }
+          >
+            <Text
+              color="#FFF"
+              fontFamily="Unica77LL-Medium"
+              fontSize="14px"
+              lineHeight="20px"
+              style={
+                Array [
+                  Object {
+                    "color": "#FFF",
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Done
+            </Text>
+          </View>
+          <Text
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="20px"
+            role="presentation"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "textAlign": "center",
+                  "lineHeight": 20,
+                },
+                Object {
+                  "opacity": 0,
                 },
               ]
             }
@@ -785,6 +1052,16 @@ exports[`state is set up with empty consignment metadata 1`] = `
         </View>
       </View>
     </View>
+    <View
+      mb={1}
+      style={
+        Array [
+          Object {
+            "marginBottom": 10,
+          },
+        ]
+      }
+    />
   </View>
 </View>
 `;
@@ -798,778 +1075,1045 @@ exports[`state is set up with filled consignment metadata 1`] = `
   }
 >
   <View
+    onLayout={[Function]}
     style={
       Array [
         Object {
-          "backgroundColor": "black",
-          "flexBasis": 0,
-          "flexGrow": 1,
-          "flexShrink": 1,
+          "flex": 1,
+        },
+        Object {
+          "paddingBottom": 0,
         },
       ]
     }
   >
     <View
       style={
-        Array [
-          Object {
-            "alignSelf": "center",
-            "backgroundColor": "black",
-            "height": "100%",
-            "width": "100%",
-          },
-        ]
+        Object {
+          "flexGrow": 1,
+        }
       }
     >
-      <View
-        onLayout={[Function]}
-        style={
-          Array [
-            Object {
-              "flex": 1,
-            },
-            Object {
-              "paddingBottom": 0,
-            },
-          ]
-        }
+      <RCTScrollView
+        centerContent={true}
+        keyboardShouldPersistTaps="handled"
       >
-        <View
-          style={
-            Object {
-              "flexGrow": 1,
-            }
-          }
-        >
+        <View>
           <View
             style={
               Object {
-                "alignSelf": "center",
-                "flex": 1,
-                "maxWidth": 540,
-                "width": "100%",
+                "padding": 10,
               }
             }
           >
-            <RCTScrollView
-              centerContent={true}
-              keyboardShouldPersistTaps="handled"
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
             >
-              <View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
                 <View
                   style={
                     Object {
-                      "padding": 10,
+                      "flexDirection": "row",
+                      "height": 40,
                     }
                   }
                 >
-                  <View
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    autoFocus={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Title"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
                     style={
                       Array [
-                        undefined,
                         Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
                         },
                       ]
                     }
+                    underlineColorAndroid="transparent"
+                    value="My Work"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Year"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                    value="1983"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Medium"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                    value="Wood"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Width"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                    value="100"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Height"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                    value="100"
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <TextInput
+                    allowFontScaling={true}
+                    autoCorrect={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="Depth"
+                    placeholderTextColor="#666"
+                    rejectResponderTermination={true}
+                    returnKeyType="next"
+                    selectionColor="#666"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#000",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                      ]
+                    }
+                    underlineColorAndroid="transparent"
+                    value=""
+                  />
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                    "margin": 10,
+                  }
+                }
+              >
+                <Text
+                  fontFamily="ReactNativeAGaramondPro-Regular"
+                  fontSize="18px"
+                  lineHeight="26px"
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "fontSize": 18,
+                        "lineHeight": 26,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  Units
+                </Text>
+                <View
+                  accessible={true}
+                  focusable={true}
+                  isTVSelectable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "alignItems": "center",
+                        "borderColor": "black",
+                        "borderRadius": 16,
+                        "borderWidth": 1,
+                        "height": 34,
+                        "width": 64,
+                      },
+                      Object {
+                        "backgroundColor": "white",
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={null}
                   >
                     <View
                       style={
                         Array [
                           Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
+                            "flexDirection": "row",
+                            "justifyContent": "space-between",
+                            "marginLeft": 8,
+                            "marginRight": 8,
+                            "marginTop": 9,
                           },
                         ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          autoFocus={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Title"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                          value="My Work"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Year"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                          value="1983"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Medium"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                          value="Wood"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          keyboardType="numeric"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Width"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                          value="100"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          keyboardType="numeric"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Height"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                          value="100"
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <TextInput
-                          allowFontScaling={true}
-                          autoCorrect={false}
-                          clearButtonMode="while-editing"
-                          keyboardAppearance="dark"
-                          keyboardType="numeric"
-                          onBlur={[Function]}
-                          onChangeText={[Function]}
-                          onFocus={[Function]}
-                          onSubmitEditing={[Function]}
-                          placeholder="Depth"
-                          placeholderTextColor="#666666"
-                          rejectResponderTermination={true}
-                          returnKeyType="next"
-                          selectionColor="#cccccc"
-                          style={
-                            Array [
-                              Object {
-                                "backgroundColor": "black",
-                                "color": "white",
-                                "flexBasis": 0,
-                                "flexGrow": 1,
-                                "flexShrink": 1,
-                                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                                "fontSize": 20,
-                                "height": 40,
-                              },
-                            ]
-                          }
-                          underlineColorAndroid="transparent"
-                          value=""
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
-                        }
-                      />
-                    </View>
-                    <View
-                      style={
-                        Object {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "margin": 10,
-                        }
                       }
                     >
                       <Text
                         style={
                           Array [
                             Object {
-                              "color": "#cccccc",
-                              "fontSize": 20,
-                              "marginBottom": 18,
-                              "marginTop": 18,
-                              "paddingLeft": 20,
-                              "paddingRight": 20,
+                              "color": "white",
+                              "fontFamily": "AvantGardeGothicITC",
+                              "fontSize": 11,
+                              "letterSpacing": 0.75,
                               "textAlign": "center",
+                              "width": 24,
                             },
                             Object {
-                              "flex": 1,
-                              "paddingLeft": 10,
-                              "textAlign": "left",
-                            },
-                            Object {
-                              "fontFamily": "ReactNativeAGaramondPro-Regular",
+                              "color": "black",
                             },
                           ]
                         }
                       >
-                        Units
+                        
                       </Text>
-                      <View
-                        accessible={true}
-                        focusable={true}
-                        isTVSelectable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
+                      <Text
                         style={
                           Array [
                             Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
+                              "color": "white",
+                              "fontFamily": "AvantGardeGothicITC",
+                              "fontSize": 11,
+                              "letterSpacing": 0.75,
+                              "textAlign": "center",
+                              "width": 24,
                             },
                             Object {
-                              "backgroundColor": "black",
+                              "color": "black",
                             },
                           ]
                         }
                       >
-                        <View
-                          style={null}
-                        >
-                          <View
-                            style={
-                              Array [
-                                Object {
-                                  "flexDirection": "row",
-                                  "justifyContent": "space-between",
-                                  "marginLeft": 8,
-                                  "marginRight": 8,
-                                  "marginTop": 9,
-                                },
-                              ]
-                            }
-                          >
-                            <Text
-                              style={
-                                Array [
-                                  Object {
-                                    "color": "white",
-                                    "fontFamily": "AvantGardeGothicITC",
-                                    "fontSize": 11,
-                                    "letterSpacing": 0.75,
-                                    "textAlign": "center",
-                                    "width": 24,
-                                  },
-                                  Object {
-                                    "color": "white",
-                                  },
-                                ]
-                              }
-                            >
-                              
-                            </Text>
-                            <Text
-                              style={
-                                Array [
-                                  Object {
-                                    "color": "white",
-                                    "fontFamily": "AvantGardeGothicITC",
-                                    "fontSize": 11,
-                                    "letterSpacing": 0.75,
-                                    "textAlign": "center",
-                                    "width": 24,
-                                  },
-                                  Object {
-                                    "color": "white",
-                                  },
-                                ]
-                              }
-                            >
-                              IN
-                            </Text>
-                          </View>
-                          <View
-                            style={
-                              Array [
-                                Object {
-                                  "left": 6,
-                                  "position": "absolute",
-                                  "right": 6,
-                                  "top": 4,
-                                },
-                                Object {
-                                  "flexDirection": "row",
-                                },
-                              ]
-                            }
-                          >
-                            <View
-                              style={
-                                Array [
-                                  Object {
-                                    "backgroundColor": "black",
-                                    "borderColor": "white",
-                                    "borderRadius": 12,
-                                    "borderWidth": 1,
-                                    "height": 24,
-                                    "width": 24,
-                                  },
-                                  Object {
-                                    "borderColor": "white",
-                                  },
-                                ]
-                              }
-                            />
-                          </View>
-                        </View>
-                      </View>
+                        In
+                      </Text>
                     </View>
-                  </View>
-                  <View
-                    accessible={true}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                  >
                     <View
                       style={
                         Array [
                           Object {
-                            "margin": 10,
+                            "left": 6,
+                            "position": "absolute",
+                            "right": 6,
+                            "top": 4,
                           },
                           Object {
-                            "flex": 1,
-                            "maxHeight": 40,
+                            "flexDirection": "row",
                           },
                         ]
                       }
                     >
                       <View
                         style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
-                          }
-                        }
-                      >
-                        <Text
-                          style={
+                          Array [
                             Object {
-                              "color": "white",
-                              "fontFamily": "ReactNativeAGaramondPro-Regular",
-                              "fontSize": 20,
-                              "paddingTop": 8,
-                            }
-                          }
-                        >
-                          Architecture
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "backgroundColor": "#666666",
-                            "height": 1,
-                          }
+                              "backgroundColor": "white",
+                              "borderColor": "black",
+                              "borderRadius": 12,
+                              "borderWidth": 1,
+                              "height": 24,
+                              "width": 24,
+                            },
+                            Object {
+                              "borderColor": "black",
+                            },
+                          ]
                         }
                       />
                     </View>
                   </View>
                 </View>
               </View>
-            </RCTScrollView>
+            </View>
+            <View
+              accessible={true}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "margin": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                      "height": 40,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Object {
+                        "color": "#000",
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "fontSize": 20,
+                        "paddingTop": 8,
+                      }
+                    }
+                  >
+                    Architecture
+                  </Text>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "#666",
+                      "height": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
           </View>
         </View>
+      </RCTScrollView>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "borderBottomWidth": 0,
+            "borderColor": "#E5E5E5",
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "width": "100%",
+          },
+        ]
+      }
+      width="100%"
+    />
+    <View
+      mb={1}
+      style={
+        Array [
+          Object {
+            "marginBottom": 10,
+          },
+        ]
+      }
+    />
+    <View
+      px={2}
+      style={
+        Array [
+          Object {
+            "paddingLeft": 20,
+            "paddingRight": 20,
+          },
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        flexDirection="row"
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "flexDirection": "row",
+            },
+          ]
+        }
+      >
         <View
+          block={true}
+          onPress={[Function]}
+          px={2}
+          size="medium"
           style={
             Array [
               Object {
-                "backgroundColor": "#666666",
-                "height": 1,
+                "alignItems": "center",
+                "borderRadius": 3,
+                "borderWidth": 1,
+                "justifyContent": "center",
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "position": "relative",
+                "width": "100%",
+              },
+              Object {
+                "backgroundColor": "rgba(0, 0, 0, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)",
+                "color": "rgba(255, 255, 255, 1)",
+                "height": 41,
+                "opacity": 1,
               },
             ]
           }
-        />
-        <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
+          theme={
             Object {
-              "backgroundColor": "black",
-              "height": 56,
-              "marginBottom": 0,
-              "opacity": 1,
-              "paddingTop": 18,
+              "borders": Array [
+                "1px solid",
+                "2px solid",
+              ],
+              "breakpoints": Array [
+                768,
+                900,
+                1024,
+                1192,
+              ],
+              "colors": Object {
+                "black10": "#E5E5E5",
+                "black100": "#000",
+                "black30": "#C2C2C2",
+                "black5": "#F8F8F8",
+                "black60": "#666",
+                "black80": "#333",
+                "green100": "#0EDA83",
+                "purple100": "#6E1EFF",
+                "purple30": "#D3BBFF",
+                "purple5": "#F8F3FF",
+                "red100": "#F7625A",
+                "white100": "#FFF",
+                "yellow10": "#FDF7E8",
+                "yellow100": "#F1AF1B",
+                "yellow30": "#FAE7BA",
+              },
+              "fontFamily": Object {
+                "display": Object {
+                  "regular": "AvantGardeGothicITC",
+                },
+                "sans": Object {
+                  "italic": "Unica77LL-Italic",
+                  "medium": "Unica77LL-Medium",
+                  "mediumItalic": "Unica77LL-MediumItalic",
+                  "regular": "Unica77LL-Regular",
+                },
+                "serif": Object {
+                  "italic": "ReactNativeAGaramondPro-Italic",
+                  "regular": "ReactNativeAGaramondPro-Regular",
+                  "semibold": "ReactNativeAGaramondPro-Semibold",
+                },
+              },
+              "grid": Object {
+                "breakpoints": Object {
+                  "lg": 1024,
+                  "md": 900,
+                  "sm": 768,
+                  "xl": 1192,
+                  "xs": 767,
+                },
+                "col": Object {
+                  "padding": 0,
+                },
+                "container": Object {
+                  "padding": 0,
+                },
+                "row": Object {
+                  "padding": 0,
+                },
+              },
+              "mediaQueries": Object {
+                "hover": "not all and (pointer: coarse), not all and (-moz-touch-enabled: 1)",
+                "lg": "(min-width: 1024px) and (max-width: 1191px)",
+                "md": "(min-width: 900px) and (max-width: 1023px)",
+                "sm": "(min-width: 768px) and (max-width: 899px)",
+                "xl": "(min-width: 1192px)",
+                "xs": "(max-width: 767px)",
+              },
+              "space": Object {
+                "0.3": 3,
+                "0.5": 5,
+                "1": 10,
+                "12": 120,
+                "18": 180,
+                "2": 20,
+                "3": 30,
+                "4": 40,
+                "6": 60,
+                "9": 90,
+              },
+              "typeSizes": Object {
+                "display": Object {
+                  "2": Object {
+                    "fontSize": 10,
+                    "lineHeight": 12,
+                  },
+                  "3t": Object {
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  "4t": Object {
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  },
+                  "5t": Object {
+                    "fontSize": 16,
+                    "lineHeight": 20,
+                  },
+                  "6": Object {
+                    "fontSize": 18,
+                    "lineHeight": 22,
+                  },
+                  "8": Object {
+                    "fontSize": 22,
+                    "lineHeight": 24,
+                  },
+                },
+                "sans": Object {
+                  "0": Object {
+                    "fontSize": 8,
+                    "lineHeight": 8,
+                  },
+                  "1": Object {
+                    "fontSize": 10,
+                    "lineHeight": 14,
+                  },
+                  "10": Object {
+                    "fontSize": 42,
+                    "lineHeight": 50,
+                  },
+                  "12": Object {
+                    "fontSize": 60,
+                    "lineHeight": 66,
+                  },
+                  "14": Object {
+                    "fontSize": 80,
+                    "lineHeight": 84,
+                  },
+                  "16": Object {
+                    "fontSize": 100,
+                    "lineHeight": 104,
+                  },
+                  "2": Object {
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  "3": Object {
+                    "fontSize": 14,
+                    "lineHeight": 24,
+                  },
+                  "3t": Object {
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  "4": Object {
+                    "fontSize": 16,
+                    "lineHeight": 26,
+                  },
+                  "4t": Object {
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  "5": Object {
+                    "fontSize": 18,
+                    "lineHeight": 30,
+                  },
+                  "5t": Object {
+                    "fontSize": 18,
+                    "lineHeight": 26,
+                  },
+                  "6": Object {
+                    "fontSize": 22,
+                    "lineHeight": 30,
+                  },
+                  "8": Object {
+                    "fontSize": 28,
+                    "lineHeight": 36,
+                  },
+                },
+                "serif": Object {
+                  "1": Object {
+                    "fontSize": 12,
+                    "lineHeight": 16,
+                  },
+                  "10": Object {
+                    "fontSize": 44,
+                    "lineHeight": 50,
+                  },
+                  "12": Object {
+                    "fontSize": 60,
+                    "lineHeight": 70,
+                  },
+                  "2": Object {
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  },
+                  "3": Object {
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                  },
+                  "3t": Object {
+                    "fontSize": 16,
+                    "lineHeight": 20,
+                  },
+                  "4": Object {
+                    "fontSize": 18,
+                    "lineHeight": 26,
+                  },
+                  "4t": Object {
+                    "fontSize": 18,
+                    "lineHeight": 22,
+                  },
+                  "5": Object {
+                    "fontSize": 22,
+                    "lineHeight": 32,
+                  },
+                  "5t": Object {
+                    "fontSize": 22,
+                    "lineHeight": 28,
+                  },
+                  "6": Object {
+                    "fontSize": 26,
+                    "lineHeight": 32,
+                  },
+                  "8": Object {
+                    "fontSize": 32,
+                    "lineHeight": 38,
+                  },
+                },
+              },
             }
           }
+          variant="primaryBlack"
+          width="100%"
         >
-          <Text
+          <View
             style={
               Array [
                 Object {
-                  "color": "white",
-                  "flexBasis": 0,
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "fontFamily": "AvantGardeGothicITC",
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "height": "100%",
+                  "justifyContent": "center",
+                  "position": "absolute",
+                  "width": "100%",
+                },
+              ]
+            }
+          >
+            <Text
+              color="#FFF"
+              fontFamily="Unica77LL-Medium"
+              fontSize="14px"
+              lineHeight="20px"
+              style={
+                Array [
+                  Object {
+                    "color": "#FFF",
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Done
+            </Text>
+          </View>
+          <Text
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="20px"
+            role="presentation"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "textAlign": "center",
+                  "lineHeight": 20,
+                },
+                Object {
+                  "opacity": 0,
                 },
               ]
             }
@@ -1579,6 +2123,16 @@ exports[`state is set up with filled consignment metadata 1`] = `
         </View>
       </View>
     </View>
+    <View
+      mb={1}
+      style={
+        Array [
+          Object {
+            "marginBottom": 10,
+          },
+        ]
+      }
+    />
   </View>
 </View>
 `;
