@@ -1,22 +1,30 @@
 upcoming:
-  version: 6.1.0
+  version: 6.2.0
   date: TBD
   emission_version: 1.19.11
   dev:
-    - Switched CocoaPods to use the CDN master spec repo - alloy
-    - Add a new flag for Price Transparency to Echo - yuki24
-    - Increases minimum deploy version to iOS 12 - ash
-    - Adds option to show a collection view controller - ash
-    - Upgrades React Native to 0.61.4 - ash & david & kieran
-    - Add back-button-hiding infra for emission - ash & david & kieran
-    - Puts new partner page behind an Echo flag - ash
+    -
   user_facing:
-    - Updates profile and mutable view controllers to use default background if not fair - kierangillen
-    - Fixes an issue where confirm bid screen crashses when the Price Transparncy feature is off - yuki24
-    - Increases the minimum iOS version supported by the app to iOS 12 - ash
-    - Migrates to iOS app review dialogue - ash
+    - 
 
 releases:
+  - version: 6.1.0
+    date: Dec 11, 2019
+    emission_version: 1.19.11
+    dev:
+      - Switched CocoaPods to use the CDN master spec repo - alloy
+      - Add a new flag for Price Transparency to Echo - yuki24
+      - Increases minimum deploy version to iOS 12 - ash
+      - Adds option to show a collection view controller - ash
+      - Upgrades React Native to 0.61.4 - ash & david & kieran
+      - Add back-button-hiding infra for emission - ash & david & kieran
+      - Puts new partner page behind an Echo flag - ash
+    user_facing:
+      - Updates profile and mutable view controllers to use default background if not fair - kierangillen
+      - Fixes an issue where confirm bid screen crashes when the Price Transparency feature is off - yuki24
+      - Increases the minimum iOS version supported by the app to iOS 12 - ash
+      - Migrates to iOS app review dialogue - ash
+
   - version: 6.0.0
     date: November 14, 2019
     emission_version: 1.18.23
