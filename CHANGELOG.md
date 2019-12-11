@@ -1,3 +1,15 @@
+# v1.19.15 (Wed Dec 11 2019)
+
+#### 🐛  Bug Fix
+
+- MX-117 Retry failed persisted queries with full text [#2007](https://github.com/artsy/emission/pull/2007) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.19.14 (Wed Dec 11 2019)
 
 #### 🐛  Bug Fix
