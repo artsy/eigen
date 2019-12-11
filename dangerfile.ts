@@ -25,9 +25,13 @@ const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).is
 const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => filesOnly(p) && typescriptOnly(p))
 
 // Modified or Created can be treated the same a lot of the time
-const touchedFiles = modified.concat(danger.git.created_files).filter(p => filesOnly(p))
+const touchedFiles = modified.concat(danger.git.created_files).filter(filesOnly)
+const createdFiles = danger.git.created_files.filter(filesOnly)
 
 const touchedAppOnlyFiles = touchedFiles.filter(
+  p => includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p)
+)
+const createdAppOnlyFiles = createdFiles.filter(
   p => includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p)
 )
 
@@ -40,8 +44,8 @@ if (pr.base.repo.full_name !== pr.head.repo.full_name) {
   warn("This PR comes from a fork, and won't get JS generated for QA testing this PR inside the Emission Example app.")
 }
 
-// Check that every file touched has a corresponding test file
-const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
+// Check that every file created has a corresponding test file
+const correspondingTestsForAppFiles = createdAppOnlyFiles.map(f => {
   const newPath = path.dirname(f)
   const name = path.basename(f).replace(".ts", "-tests.ts")
   return `${newPath}/__tests__/${name}`
