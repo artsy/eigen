@@ -10,9 +10,35 @@ export type AutosuggestResultsPaginationQueryVariables = {
 export type AutosuggestResultsPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
+export type AutosuggestResultsPaginationQueryRawResponse = {
+    readonly results: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: "SearchableItem";
+                readonly displayType: string | null;
+            } | {
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: string;
+            }) | null;
+            readonly cursor: string;
+        }) | null> | null;
+        readonly pageInfo: {
+            readonly endCursor: string | null;
+            readonly hasNextPage: boolean;
+        };
+    }) | null;
+};
 export type AutosuggestResultsPaginationQuery = {
     readonly response: AutosuggestResultsPaginationQueryResponse;
     readonly variables: AutosuggestResultsPaginationQueryVariables;
+    readonly rawResponse: AutosuggestResultsPaginationQueryRawResponse;
 };
 
 
@@ -264,5 +290,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b4ff2a974a91871ec18ea29a4e59dde0';
+(node as any).hash = '9ad2750be9283e0077f7bc5dc7f27ed7';
 export default node;
