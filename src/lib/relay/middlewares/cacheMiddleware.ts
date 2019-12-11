@@ -1,5 +1,5 @@
 import { NetworkError } from "lib/utils/errors"
-import Sentry from "react-native-sentry"
+import { Sentry } from "react-native-sentry"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 
 export const cacheMiddleware = () => {
@@ -25,7 +25,6 @@ export const cacheMiddleware = () => {
       body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
       req.operation.text = body.query
     } else {
-      console.warn("using documentID")
       body = { documentID: queryID, variables }
     }
 
