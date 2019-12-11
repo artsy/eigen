@@ -1,18 +1,103 @@
 import { Theme } from "@artsy/palette"
+import { AutosuggestResultsPaginationQueryRawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
+import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
+import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractText } from "lib/tests/extractText"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
-import ReactTestRenderer from "react-test-renderer"
+import { FlatList } from "react-native"
+import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "../AutosuggestResults"
+import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
 
+const FixturePage1: AutosuggestResultsQueryRawResponse = {
+  results: {
+    edges: [
+      {
+        cursor: "page-1",
+        node: {
+          __typename: "SearchableItem",
+          displayLabel: "Banksy",
+          displayType: "Artist",
+          href: "banksy-href",
+          id: "banksy",
+          imageUrl: "",
+        },
+      },
+    ],
+    pageInfo: {
+      endCursor: "page-2",
+      hasNextPage: true,
+    },
+  },
+}
+const FixturePage2: AutosuggestResultsPaginationQueryRawResponse = {
+  results: {
+    edges: [
+      {
+        cursor: "page-2",
+        node: {
+          __typename: "SearchableItem",
+          displayLabel: "Andy Warhol",
+          displayType: "Artist",
+          href: "andy-warhol-href",
+          id: "andy-warhol",
+          imageUrl: "",
+        },
+      },
+    ],
+    pageInfo: {
+      endCursor: "page-3",
+      hasNextPage: true,
+    },
+  },
+}
+
+const FixturePage3: AutosuggestResultsPaginationQueryRawResponse = {
+  results: {
+    edges: [
+      {
+        cursor: "page-3",
+        node: {
+          __typename: "SearchableItem",
+          displayLabel: "Alex Katz",
+          displayType: "Artist",
+          href: "alex-katz-href",
+          id: "alex-katz",
+          imageUrl: "",
+        },
+      },
+    ],
+    pageInfo: {
+      endCursor: null,
+      hasNextPage: false,
+    },
+  },
+}
+
+const FixtureEmpty: AutosuggestResultsQueryRawResponse = {
+  results: {
+    edges: [],
+    pageInfo: {
+      endCursor: null,
+      hasNextPage: false,
+    },
+  },
+}
+
+const inputBlurMock = jest.fn()
+
 const TestWrapper: typeof AutosuggestResults = props => (
-  <Theme>
-    <CatchErrors>
-      <AutosuggestResults {...props} />
-    </CatchErrors>
-  </Theme>
+  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any } }}>
+    <Theme>
+      <CatchErrors>
+        <AutosuggestResults {...props} />
+      </CatchErrors>
+    </Theme>
+  </SearchContext.Provider>
 )
 
 jest.mock("lib/relay/createEnvironment", () => ({
@@ -57,6 +142,7 @@ describe("AutosuggestResults", () => {
     env.mockClear()
     consoleErrorMock.mockClear()
     notifyRecentSearchMock.mockClear()
+    inputBlurMock.mockClear()
   })
 
   afterEach(() => {
@@ -68,131 +154,107 @@ describe("AutosuggestResults", () => {
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
   })
 
-  // TODO: figure out how to test this now
+  it(`has some elements to begin with if you give it some`, async () => {
+    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
 
-  // it(`renders the appropriate results after having made the request`, async () => {
-  //   let tree = null as ReactTestRenderer.ReactTestRenderer
-  //   act(() => {
-  //     tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
-  //   })
-  //   expect(env.mock.getMostRecentOperation().request.variables.query).toBe("michael")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsQuery")
+    expect(env.mock.getMostRecentOperation().request.variables.query).toBe("michael")
 
-  //   env.mock.resolveMostRecentOperation(op =>
-  //     MockPayloadGenerator.generate(op, {
-  //       SearchableEdge(_, id) {
-  //         return { node: { href: `${id()}` } }
-  //       },
-  //       SearchableConnection() {
-  //         return { edges: [{}, {}, {}, {}, {}] }
-  //       },
-  //     })
-  //   )
+    act(() => {
+      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    })
 
-  //   await flushPromiseQueue()
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
+  })
 
-  //   expect(tree.root.findAllByType(SearchResult)).toHaveLength(5)
-  // })
+  it(`doesn't call loadMore untill you start scrolling`, () => {
+    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    })
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
 
-  // it(`clears the results if the query is empty again`, async () => {
-  //   let tree = null as ReactTestRenderer.ReactTestRenderer
-  //   act(() => {
-  //     tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
-  //   })
+    expect(env.mock.getAllOperations()).toHaveLength(0)
 
-  //   env.mock.resolveMostRecentOperation(op => MockPayloadGenerator.generate(op))
+    // even if FlatList calls onEndReached, we ignore it until the user explicitly scrolls
+    act(() => {
+      tree.root.findByType(FlatList).props.onEndReached()
+    })
+    expect(env.mock.getAllOperations()).toHaveLength(0)
 
-  //   await flushPromiseQueue()
+    act(() => {
+      tree.root.findByType(FlatList).props.onScrollBeginDrag()
+    })
+    expect(env.mock.getAllOperations()).toHaveLength(1)
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsPaginationQuery")
+    expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-2")
 
-  //   expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
+    act(() => {
+      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
+    })
 
-  //   act(() => {
-  //     tree.update(<TestWrapper query="" />)
-  //   })
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(2)
+    expect(extractText(tree.root)).toContain("Banksy")
+    expect(extractText(tree.root)).toContain("Andy Warhol")
 
-  //   expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
+    // and it works if onEndReached is called now
+    act(() => {
+      tree.root.findByType(FlatList).props.onEndReached()
+    })
+    expect(env.mock.getAllOperations()).toHaveLength(1)
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsPaginationQuery")
+    expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-3")
 
-  //   expect(env.mock.getAllOperations()).toHaveLength(0)
-  // })
+    act(() => {
+      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
+    })
 
-  // it(`clears the results if the query returned an error`, async () => {
-  //   let tree = null as ReactTestRenderer.ReactTestRenderer
-  //   act(() => {
-  //     tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
-  //   })
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(3)
+    expect(extractText(tree.root)).toContain("Banksy")
+    expect(extractText(tree.root)).toContain("Andy Warhol")
+    expect(extractText(tree.root)).toContain("Alex Katz")
+  })
 
-  //   env.mock.resolveMostRecentOperation(op => MockPayloadGenerator.generate(op))
+  it(`scrolls back to the top when the query changes`, async () => {
+    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    })
+    const scrollToOffsetMock = jest.fn()
+    tree.root.findByType(FlatList).instance.scrollToOffset = scrollToOffsetMock
 
-  //   await flushPromiseQueue()
+    act(() => {
+      tree.update(<TestWrapper query="michaela" />)
+    })
+    act(() => {
+      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    })
 
-  //   expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
+    expect(scrollToOffsetMock).toHaveBeenCalledWith({ animated: true, offset: 0 })
+  })
 
-  //   act(() => {
-  //     tree.update(<TestWrapper query="jackson" />)
-  //   })
+  it(`shows the loading spinner until there's no more data`, async () => {
+    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
-  //   env.mock.rejectMostRecentOperation(new Error("bad times"))
+    act(() => tree.root.findByType(FlatList).props.onScrollBeginDrag())
+    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
 
-  //   await flushPromiseQueue()
+    expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
-  //   expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
-  // })
+    act(() => tree.root.findByType(FlatList).props.onEndReached())
+    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
 
-  // it(`lets you navigate to the result`, async () => {
-  //   let tree = null as ReactTestRenderer.ReactTestRenderer
-  //   act(() => {
-  //     tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
-  //   })
+    expect(tree.root.findAllByType(Spinner)).toHaveLength(0)
+  })
 
-  //   env.mock.resolveMostRecentOperation(op =>
-  //     MockPayloadGenerator.generate(op, {
-  //       SearchableConnection() {
-  //         return { edges: [{ node: { href: "michael-jackson.html" } }, { node: { href: "michael-jordan.html" } }] }
-  //       },
-  //     })
-  //   )
+  it(`gives an appropriate message when there's no search results`, () => {
+    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
 
-  //   await flushPromiseQueue()
-
-  //   const results = tree.root.findAllByType(SearchResult)
-
-  //   expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
-
-  //   results[0].findByType(TouchableOpacity).props.onPress()
-
-  //   expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "michael-jackson.html")
-
-  //   results[1].findByType(TouchableOpacity).props.onPress()
-
-  //   expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "michael-jordan.html")
-  // })
-
-  // it(`adds a result to the recent searches when tapped`, async () => {
-  //   let tree = null as ReactTestRenderer.ReactTestRenderer
-  //   act(() => {
-  //     tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
-  //   })
-
-  //   const fixture = {
-  //     href: "michael-jordan.html",
-  //     displayLabel: "Michael Jordan",
-  //     displayType: "Athlete",
-  //     imageUrl: "https://image.com/image.jpeg",
-  //   }
-  //   env.mock.resolveMostRecentOperation(op =>
-  //     MockPayloadGenerator.generate(op, {
-  //       SearchableConnection() {
-  //         return { edges: [{ node: fixture }] }
-  //       },
-  //     })
-  //   )
-
-  //   await flushPromiseQueue()
-
-  //   const results = tree.root.findAllByType(SearchResult)
-  //   results[0].findByType(TouchableOpacity).props.onPress()
-  //   expect(notifyRecentSearchMock).toHaveBeenCalledWith({
-  //     type: "AUTOSUGGEST_RESULT_TAPPED",
-  //     props: fixture,
-  //   })
-  // })
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
+    expect(extractText(tree.root)).toContain("We couldn't find anything for “michael”")
+  })
 })

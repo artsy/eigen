@@ -1,3 +1,4 @@
+import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import React, { MutableRefObject } from "react"
 import { Text, View } from "react-native"
@@ -8,13 +9,16 @@ const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
   return <Text>{href}</Text>
 }
 
-type TestRef = MutableRefObject<{ notifyRecentSearch(search: RecentSearch): Promise<void> }>
+type TestRef = MutableRefObject<{
+  deleteRecentSearch(searchProps: RecentSearch["props"]): Promise<void>
+  notifyRecentSearch(search: RecentSearch): Promise<void>
+}>
 const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
   testRef = { current: null },
   numItems = 10,
 }) => {
-  const { recentSearches, notifyRecentSearch } = useRecentSearches({ numSearches: numItems })
-  testRef.current = { notifyRecentSearch }
+  const { recentSearches, notifyRecentSearch, deleteRecentSearch } = useRecentSearches({ numSearches: numItems })
+  testRef.current = { notifyRecentSearch, deleteRecentSearch }
   return (
     <View>
       {recentSearches.map(({ props }) => (
@@ -157,5 +161,20 @@ describe(useRecentSearches, () => {
     await remountTree(<TestPage testRef={testRef} numItems={51} key={1} />)
 
     expect(tree.root.findAllByType(TestItem)).toHaveLength(51)
+  })
+
+  it(`allows deleting things`, async () => {
+    await testRef.current.notifyRecentSearch(banksy)
+    await testRef.current.notifyRecentSearch(andyWarhol)
+
+    await remountTree(<TestPage testRef={testRef} key={0} />)
+
+    expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
+
+    expect(extractText(tree.root)).toContain("andy-warhol")
+    await testRef.current.deleteRecentSearch(andyWarhol.props)
+
+    expect(tree.root.findAllByType(TestItem)).toHaveLength(1)
+    expect(extractText(tree.root)).not.toContain("andy-warhol")
   })
 })

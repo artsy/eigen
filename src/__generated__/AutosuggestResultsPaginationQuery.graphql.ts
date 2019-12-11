@@ -4,15 +4,41 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
-    count?: number | null;
+    count: number;
     cursor?: string | null;
 };
 export type AutosuggestResultsPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
+export type AutosuggestResultsPaginationQueryRawResponse = {
+    readonly results: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: "SearchableItem";
+                readonly displayType: string | null;
+            } | {
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: string;
+            }) | null;
+            readonly cursor: string;
+        }) | null> | null;
+        readonly pageInfo: {
+            readonly endCursor: string | null;
+            readonly hasNextPage: boolean;
+        };
+    }) | null;
+};
 export type AutosuggestResultsPaginationQuery = {
     readonly response: AutosuggestResultsPaginationQueryResponse;
     readonly variables: AutosuggestResultsPaginationQueryVariables;
+    readonly rawResponse: AutosuggestResultsPaginationQueryRawResponse;
 };
 
 
@@ -20,7 +46,7 @@ export type AutosuggestResultsPaginationQuery = {
 /*
 query AutosuggestResultsPaginationQuery(
   $query: String!
-  $count: Int
+  $count: Int!
   $cursor: String
 ) {
   ...AutosuggestResults_results_1jWD3d
@@ -62,7 +88,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "count",
-    "type": "Int",
+    "type": "Int!",
     "defaultValue": null
   },
   {
@@ -258,11 +284,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "a76a4374774965e59510383c9d34cfd3",
+    "id": "bda784e302181ed4584ddc0fcece44a5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'ad79bc1d1045b244e9a9a17dd7b03457';
+(node as any).hash = '9ad2750be9283e0077f7bc5dc7f27ed7';
 export default node;

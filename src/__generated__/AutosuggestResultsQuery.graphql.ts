@@ -4,14 +4,40 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AutosuggestResultsQueryVariables = {
     query: string;
-    count?: number | null;
+    count: number;
 };
 export type AutosuggestResultsQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
+export type AutosuggestResultsQueryRawResponse = {
+    readonly results: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: "SearchableItem";
+                readonly displayType: string | null;
+            } | {
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly id: string | null;
+                readonly __typename: string;
+            }) | null;
+            readonly cursor: string;
+        }) | null> | null;
+        readonly pageInfo: {
+            readonly endCursor: string | null;
+            readonly hasNextPage: boolean;
+        };
+    }) | null;
+};
 export type AutosuggestResultsQuery = {
     readonly response: AutosuggestResultsQueryResponse;
     readonly variables: AutosuggestResultsQueryVariables;
+    readonly rawResponse: AutosuggestResultsQueryRawResponse;
 };
 
 
@@ -19,7 +45,7 @@ export type AutosuggestResultsQuery = {
 /*
 query AutosuggestResultsQuery(
   $query: String!
-  $count: Int
+  $count: Int!
 ) {
   ...AutosuggestResults_results_1bcUq5
 }
@@ -60,7 +86,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "count",
-    "type": "Int",
+    "type": "Int!",
     "defaultValue": null
   }
 ],
@@ -240,11 +266,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsQuery",
-    "id": "965a233ccdfcec5697b87c7fde155ef9",
+    "id": "e8aedb33805f04cc23175bc5cf7a9545",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2b1fed6f69fc2d626551f537fa4af69f';
+(node as any).hash = '2196a55f29c246b84a934662a5addb90';
 export default node;

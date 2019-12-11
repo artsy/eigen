@@ -209,3 +209,12 @@ jest.mock("@react-native-community/async-storage", () => {
 })
 
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+
+jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
+  ...require.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
+  configureNext: jest.fn(),
+  create: jest.fn(),
+  easeInEaseOut: jest.fn(),
+  linear: jest.fn(),
+  spring: jest.fn(),
+}))
