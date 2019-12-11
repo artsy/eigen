@@ -1,3 +1,15 @@
+# v1.19.13 (Wed Dec 11 2019)
+
+#### 🐛  Bug Fix
+
+- Updates Danger rule for adding tests for new files [#2008](https://github.com/artsy/emission/pull/2008) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.19.12 (Tue Dec 10 2019)
 
 #### 🐛  Bug Fix
