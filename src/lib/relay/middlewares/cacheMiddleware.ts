@@ -1,4 +1,5 @@
 import { NetworkError } from "lib/utils/errors"
+import Sentry from "react-native-sentry"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 
 export const cacheMiddleware = () => {
@@ -24,6 +25,7 @@ export const cacheMiddleware = () => {
       body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
       req.operation.text = body.query
     } else {
+      console.warn("using documentID")
       body = { documentID: queryID, variables }
     }
 
@@ -31,7 +33,20 @@ export const cacheMiddleware = () => {
       req.fetchOpts.body = JSON.stringify(body)
     }
 
-    const response = await next(req)
+    let response
+    try {
+      response = await next(req)
+    } catch (e) {
+      if (!__DEV__ && e.toString().includes("Unable to serve persisted query with ID")) {
+        // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
+        Sentry.captureMessage(e.stack)
+        body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
+        req.fetchOpts.body = JSON.stringify(body)
+        response = await next(req)
+      } else {
+        throw e
+      }
+    }
 
     const clearCacheAndThrowError = () => {
       cache.clear(queryID, req.variables)
