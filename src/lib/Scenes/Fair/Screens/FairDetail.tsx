@@ -13,7 +13,6 @@ import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorksLink"
 import { FairBoothPreviewContainer as FairBoothPreview } from "../Components/FairBoothPreview"
 import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
-import { SearchLink } from "../Components/SearchLink"
 import { shouldShowFairBMWArtActivationLink } from "./FairBMWArtActivation"
 import { shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "./FairMoreInfo"
 
@@ -103,14 +102,6 @@ export class FairDetail extends React.Component<Props, State> {
           fairID: fair.slug,
         },
       })
-      sections.push({
-        type: "search",
-        data: {
-          // FIXME: Should this be slug, internalID, or id?
-          id: fair.slug,
-          internalID: fair.internalID,
-        },
-      })
 
       fair.shows.edges.forEach(showData => {
         const showArtworks = showData.node.artworks
@@ -162,8 +153,6 @@ export class FairDetail extends React.Component<Props, State> {
             <Separator mt={2} />
           </>
         )
-      case "search":
-        return <SearchLink {...data} />
       case "booth":
         const renderSeparator = this.state.boothCount - 1 > showIndex ? true : false
         return (
