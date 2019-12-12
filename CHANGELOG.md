@@ -1,3 +1,15 @@
+# v1.19.17 (Thu Dec 12 2019)
+
+#### 🐛  Bug Fix
+
+- MX-100 - Removes SearchLink from Fair [#2009](https://github.com/artsy/emission/pull/2009) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.19.16 (Thu Dec 12 2019)
 
 #### 🐛  Bug Fix
