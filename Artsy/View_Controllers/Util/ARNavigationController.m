@@ -16,6 +16,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
 #import "AREigenMapContainerViewController.h"
+#import "AROptions.h"
 
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
@@ -395,16 +396,11 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 - (BOOL)shouldHideToolbarMenuForViewController:(UIViewController *)viewController
 {
   if (ShouldHideItem(viewController, @selector(hidesToolbarMenu), NULL)) {
-    return YES;
+      return YES;
   }
-  
+
   // also hide if in search view and other VCs are pushed above root search view
-  for (int i = 0; i < self.viewControllers.count; i++) {
-    if ([self.viewControllers[i] isKindOfClass:ARSearchComponentViewController.class]) {
-      return i < self.viewControllers.count - 1;
-    }
-  }
-  return NO;
+  return [AROptions boolForOption:AROptionsNewSearch] && [self.viewControllers.firstObject isKindOfClass:ARSearchComponentViewController.class] && self.viewControllers.count > 1;
 }
 
 
@@ -472,7 +468,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     } else if (context == ARNavigationControllerScrollingChiefContext) {
         // All hail the chief
         ARScrollNavigationChief *chief = object;
-        
+
         NSAssert(self.visibleViewController == self.topViewController, @"Called by a VC that is not part of this navigation controller's stack.");
         [self showBackButton:[self shouldShowBackButtonForViewController:self.topViewController] && chief.allowsMenuButtons animated:YES];
     } else if (context == ARNavigationControllerMenuAwareScrollViewContext) {
@@ -518,7 +514,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     if (self.searchViewController == nil) {
         self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
     }
-    
+
     if ([[[ARTopMenuViewController sharedController] rootNavigationController] topViewController] != self.searchViewController) {
         [[[ARTopMenuViewController sharedController] rootNavigationController] pushViewController:self.searchViewController animated:ARPerformWorkAsynchronously];
     }
