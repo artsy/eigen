@@ -1,3 +1,15 @@
+# v1.19.16 (Thu Dec 12 2019)
+
+#### 🐛  Bug Fix
+
+- Moves collection screens to new a sub dir of collections [#2006](https://github.com/artsy/emission/pull/2006) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.19.15 (Wed Dec 11 2019)
 
 #### 🐛  Bug Fix
