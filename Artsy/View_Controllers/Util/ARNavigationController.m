@@ -28,6 +28,7 @@
 #import <MultiDelegate/AIMultiDelegate.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <Emission/ARSearchComponentViewController.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
@@ -393,7 +394,17 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (BOOL)shouldHideToolbarMenuForViewController:(UIViewController *)viewController
 {
-    return ShouldHideItem(viewController, @selector(hidesToolbarMenu), NULL);
+  if (ShouldHideItem(viewController, @selector(hidesToolbarMenu), NULL)) {
+    return YES;
+  }
+  
+  // also hide if in search view and other VCs are pushed above root search view
+  for (int i = 0; i < self.viewControllers.count; i++) {
+    if ([self.viewControllers[i] isKindOfClass:ARSearchComponentViewController.class]) {
+      return i < self.viewControllers.count - 1;
+    }
+  }
+  return NO;
 }
 
 
