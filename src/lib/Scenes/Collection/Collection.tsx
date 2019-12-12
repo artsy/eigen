@@ -1,9 +1,9 @@
 import { Box, Sans, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
+import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { CollectionHeaderContainer as CollectionHeader } from "./Components/CollectionHeader"
 
 interface CollectionProps {
   collection: Collection_collection
