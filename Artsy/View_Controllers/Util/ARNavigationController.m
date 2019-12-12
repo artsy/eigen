@@ -16,6 +16,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
 #import "AREigenMapContainerViewController.h"
+#import "AROptions.h"
 
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
@@ -28,6 +29,7 @@
 #import <MultiDelegate/AIMultiDelegate.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <Emission/ARSearchComponentViewController.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
@@ -393,7 +395,12 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (BOOL)shouldHideToolbarMenuForViewController:(UIViewController *)viewController
 {
-    return ShouldHideItem(viewController, @selector(hidesToolbarMenu), NULL);
+  if (ShouldHideItem(viewController, @selector(hidesToolbarMenu), NULL)) {
+      return YES;
+  }
+
+  // also hide if in search view and other VCs are pushed above root search view
+  return [AROptions boolForOption:AROptionsNewSearch] && [self.viewControllers.firstObject isKindOfClass:ARSearchComponentViewController.class] && self.viewControllers.count > 1;
 }
 
 
@@ -461,7 +468,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     } else if (context == ARNavigationControllerScrollingChiefContext) {
         // All hail the chief
         ARScrollNavigationChief *chief = object;
-        
+
         NSAssert(self.visibleViewController == self.topViewController, @"Called by a VC that is not part of this navigation controller's stack.");
         [self showBackButton:[self shouldShowBackButtonForViewController:self.topViewController] && chief.allowsMenuButtons animated:YES];
     } else if (context == ARNavigationControllerMenuAwareScrollViewContext) {
@@ -507,7 +514,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     if (self.searchViewController == nil) {
         self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
     }
-    
+
     if ([[[ARTopMenuViewController sharedController] rootNavigationController] topViewController] != self.searchViewController) {
         [[[ARTopMenuViewController sharedController] rootNavigationController] pushViewController:self.searchViewController animated:ARPerformWorkAsynchronously];
     }
