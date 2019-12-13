@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { CamIcon, MoneyIcon, OfferIcon, SellIcon } from "lib/Icons/Consignments"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { FlatList, Image, Route, ViewProperties } from "react-native"
+import { FlatList, Route, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import styled from "styled-components/native"
 import Overview from "./Overview"
 
 interface Props extends ViewProperties {
@@ -14,19 +14,19 @@ interface Props extends ViewProperties {
 
 const rows = [
   {
-    iconHref: require("../../../../../images/cam.png"),
+    IconComponent: CamIcon,
     text: "Take a few photos and submit details about the work.",
   },
   {
-    iconHref: require("../../../../../images/offer.png"),
+    IconComponent: OfferIcon,
     text: "Get offers from galleries and auction houses.",
   },
   {
-    iconHref: require("../../../../../images/sell.png"),
+    IconComponent: SellIcon,
     text: "Have your work placed in a gallery or upcoming sale.",
   },
   {
-    iconHref: require("../../../../../images/money.png"),
+    IconComponent: MoneyIcon,
     text: "Receive payment once the work sells.",
   },
 ]
@@ -53,6 +53,7 @@ export default class Welcome extends React.Component<Props> {
             </Box>
           )}
           renderItem={({ item }) => {
+            const Icon = item.IconComponent
             return (
               <Flex px={2} alignItems="center" flexDirection="column">
                 <Spacer mb={3} />
@@ -63,7 +64,8 @@ export default class Welcome extends React.Component<Props> {
                   flexWrap="nowrap"
                   justifyContent="center"
                 >
-                  <Icon source={item.iconHref} />
+                  <Icon />
+                  <Spacer mr={2} />
                   <Flex style={{ flex: 1 }}>
                     <Serif size="4">{item.text}</Serif>
                   </Flex>
@@ -88,9 +90,3 @@ export default class Welcome extends React.Component<Props> {
     )
   }
 }
-
-const Icon = styled(Image)`
-  resize-mode: contain;
-  width: 40;
-  margin-right: 24;
-`
