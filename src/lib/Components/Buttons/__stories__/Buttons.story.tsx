@@ -4,15 +4,9 @@ import React from "react"
 import { View } from "react-native"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-import { FormButton } from "lib/Components/Consignments/Components/FormElements"
-
-const emptyFunc = () => ""
 
 storiesOf("App Style/Buttons")
   .addDecorator(story => <View style={{ marginTop: 60, marginLeft: 20, marginRight: 20 }}>{story()}</View>)
-  .add("FormButton", () => {
-    return [<FormButton text="Disabled" key="1" />, <FormButton text="Clickable" onPress={emptyFunc} key="2" />]
-  })
   .add("Dark Navigation Button", () => (
     <Theme>
       <DarkNavigationButton title="Default button with some text" href="/link/place" />
