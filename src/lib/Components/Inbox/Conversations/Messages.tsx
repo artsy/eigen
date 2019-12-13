@@ -39,6 +39,8 @@ export class Messages extends React.Component<Props, State> {
     shouldStickFirstMessageToTop: false,
   }
 
+  flatListHeight = 0
+
   renderMessage({ item, index }) {
     const conversation = this.props.conversation
     const { item: subjectItem } = conversation.items[0]
@@ -147,15 +149,16 @@ export class Messages extends React.Component<Props, State> {
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
+        onLayout={({
+          nativeEvent: {
+            layout: { height },
+          },
+        }) => {
+          this.flatListHeight = height
+        }}
         onContentSizeChange={(_width, height) => {
-          // If there aren't enough items to scroll through
-          // display messages from the top
-          const windowHeight = Dimensions.get("window").height
-          const containerHeight = windowHeight - 100
-          const shouldStickFirstMessageToTop = height < containerHeight
-
           this.setState({
-            shouldStickFirstMessageToTop,
+            shouldStickFirstMessageToTop: height < this.flatListHeight,
           })
         }}
         refreshControl={refreshControl}
