@@ -20,11 +20,7 @@ RCT_EXPORT_METHOD(postEvent:(nonnull NSDictionary *)info)
 
 RCT_EXPORT_METHOD(requestAppStoreRating)
 {
-    if (@available(iOS 10.3, *)) {
-        [SKStoreReviewController requestReview];
-    } else {
-        // Fallback on earlier versions
-    }
+    [SKStoreReviewController requestReview];
 }
 
 @end
