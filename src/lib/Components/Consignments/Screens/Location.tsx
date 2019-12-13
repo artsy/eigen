@@ -1,10 +1,10 @@
 import React from "react"
 import { SearchResults } from "../Components/SearchResults"
 
-import { ConsignmentSetup, LocationResult } from "../index"
-
+import { LocationIcon } from "@artsy/palette"
 import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+import { ConsignmentSetup, LocationResult } from "../index"
 
 import { stringify } from "qs"
 
@@ -115,7 +115,7 @@ export default class Location extends React.Component<Props, State> {
               onChangeText={this.textChanged}
               searching={this.state.searching}
               resultSelected={this.locationSelected}
-              preImage={require("../../../../../images/consignments/map-pin.png")}
+              LocationIcon={LocationIcon}
               placeholder="City, Country"
               noResultsMessage="Could not find"
             />

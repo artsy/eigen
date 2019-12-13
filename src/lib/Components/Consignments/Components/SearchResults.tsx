@@ -32,13 +32,20 @@ const noResults = props => {
 
 function render<T>(props: SearchQueryProps<T>) {
   const rowForResult = result => {
+    const resultID = !!result.internalID ? result.internalID : result.id
     return (
-      <Box key={result.internalID}>
+      <Box key={resultID}>
         <TouchableOpacity onPress={() => props.resultSelected(result)}>
           <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
-            <Box>{result.image && <Image source={{ uri: result.image.url }} />}</Box>
-            <Spacer mr={1} />
-            <Sans size="3t">{result.name}</Sans>
+            {result.image && (
+              <>
+                <Image source={{ uri: result.image.url }} />
+                <Spacer mr={1} />
+              </>
+            )}
+            <Flex flexDirection="row" alignItems="center" style={{ height: 35 }}>
+              <Sans size="3t">{result.name}</Sans>
+            </Flex>
           </Flex>
         </TouchableOpacity>
         <Spacer mb={1} />
@@ -59,6 +66,7 @@ function render<T>(props: SearchQueryProps<T>) {
       <TextInput
         searching={props.searching}
         preImage={props.preImage}
+        LocationIcon={props.LocationIcon}
         text={{
           placeholder: props.placeholder,
           returnKeyType: "search",
@@ -67,7 +75,6 @@ function render<T>(props: SearchQueryProps<T>) {
           autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
         }}
       />
-
       <ScrollView
         style={{ height: 182, paddingTop: 16 }}
         scrollEnabled={props.results && !!props.results.length}

@@ -5,7 +5,7 @@ import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
-import { Theme } from "@artsy/palette"
+import { Flex, Serif, Spacer, Theme } from "@artsy/palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Label, Row } from "../Components/FormElements"
 
@@ -52,44 +52,54 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
     return (
       <Theme>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <Form>
-            <Row>
-              <Label>Is this an edition?</Label>
-              <Toggle selected={!!this.state.editionInfo} left="YES" right="NO" onPress={this.updateEdition} />
-            </Row>
-
-            {this.state.editionInfo ? (
-              <Row>
-                <Text
-                  text={{
-                    placeholder: "Edition Size",
-                    keyboardType: "phone-pad",
-                    onChangeText: this.updateEditionSize,
-                    value: this.state.editionInfo && this.state.editionInfo.size,
-                  }}
-                  style={{ margin: 10 }}
-                />
-                <Text
-                  text={{
-                    placeholder: "Edition Number",
-                    onChangeText: this.updateEditionNumber,
-                    value: this.state.editionInfo && this.state.editionInfo.number,
-                  }}
-                  style={{ margin: 10 }}
-                />
-              </Row>
-            ) : null}
-
-            <Row>
-              <Label>Is this work signed?</Label>
-              <Toggle selected={this.state.signed} left="YES" right="NO" onPress={this.updateSigned} />
-            </Row>
-
-            <Row>
-              <Label>Do you have a certificate of authenticity?</Label>
-              <Toggle selected={this.state.certificateOfAuth} left="YES" right="NO" onPress={this.updateCert} />
-            </Row>
-          </Form>
+          <Flex style={{ flex: 1 }} p={1}>
+            <Form>
+              <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
+                <Flex style={{ flex: 1 }}>
+                  <Serif size="5">Is this an edition?</Serif>
+                </Flex>
+                <Toggle selected={!!this.state.editionInfo} left="Yes" right="No" onPress={this.updateEdition} />
+              </Flex>
+              <Spacer mb={2} />
+              {this.state.editionInfo ? (
+                <>
+                  <Row>
+                    <Text
+                      text={{
+                        placeholder: "Edition Size",
+                        keyboardType: "phone-pad",
+                        onChangeText: this.updateEditionSize,
+                        value: this.state.editionInfo && this.state.editionInfo.size,
+                      }}
+                    />
+                    <Spacer mr={2} />
+                    <Text
+                      text={{
+                        placeholder: "Edition Number",
+                        onChangeText: this.updateEditionNumber,
+                        value: this.state.editionInfo && this.state.editionInfo.number,
+                      }}
+                    />
+                  </Row>
+                  <Spacer mb={2} />
+                </>
+              ) : null}
+              <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
+                <Flex style={{ flex: 1 }}>
+                  <Serif size="5">Is this work signed?</Serif>
+                </Flex>
+                <Toggle selected={this.state.signed} left="Yes" right="No" onPress={this.updateSigned} />
+              </Flex>
+              <Spacer mb={2} />
+              <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
+                <Flex style={{ flex: 1 }}>
+                  <Serif size="5">Do you have a certificate of authenticity?</Serif>
+                </Flex>
+                <Spacer mr={2} />
+                <Toggle selected={this.state.certificateOfAuth} left="Yes" right="No" onPress={this.updateCert} />
+              </Flex>
+            </Form>
+          </Flex>
         </BottomAlignedButton>
       </Theme>
     )
