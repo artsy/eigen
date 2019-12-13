@@ -7,7 +7,7 @@ import { ConsignmentSetup } from "../index"
 
 import { Flex, Serif, Spacer, Theme } from "@artsy/palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
-import { Form, Label, Row } from "../Components/FormElements"
+import { Form, Row } from "../Components/FormElements"
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS

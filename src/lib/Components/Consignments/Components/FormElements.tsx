@@ -1,7 +1,7 @@
 import { Box, Button } from "@artsy/palette"
 import React from "react"
 import { ScrollView, View, ViewProperties } from "react-native"
-import { BodyText, LargeHeadline } from "../Typography/index"
+import { LargeHeadline } from "../Typography/index"
 
 export interface FormButtonProps extends ViewProperties {
   /** The text value on the string */
@@ -27,11 +27,6 @@ export const Row: React.SFC<ViewProperties> = ({ children, ...props }) => (
   <View {...props} style={[props.style, { flexDirection: "row", paddingVertical: 6, alignItems: "center" }]}>
     {children}
   </View>
-)
-
-/** A label for form element */
-export const Label = (props: any) => (
-  <BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>{props.children}</BodyText>
 )
 
 export const FormButton: React.SFC<FormButtonProps> = props => (

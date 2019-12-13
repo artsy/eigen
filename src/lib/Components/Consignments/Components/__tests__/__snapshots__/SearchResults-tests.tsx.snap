@@ -120,30 +120,22 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -154,23 +146,40 @@ exports[`Search states:  Looks right when Found four results 1`] = `
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Ada Van Hoorebeke
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Ada Van Hoorebeke
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -223,30 +232,22 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -257,23 +258,40 @@ exports[`Search states:  Looks right when Found four results 1`] = `
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Kathleen Adair Brown
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Kathleen Adair Brown
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -326,30 +344,22 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -360,23 +370,40 @@ exports[`Search states:  Looks right when Found four results 1`] = `
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Linda Adair
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Linda Adair
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -429,30 +456,22 @@ exports[`Search states:  Looks right when Found four results 1`] = `
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -463,23 +482,40 @@ exports[`Search states:  Looks right when Found four results 1`] = `
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Hector Adalid
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Hector Adalid
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -725,30 +761,22 @@ exports[`Search states:  Looks right when Found one result 1`] = `
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -759,23 +787,40 @@ exports[`Search states:  Looks right when Found one result 1`] = `
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Banksy
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -920,30 +965,22 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -954,23 +991,40 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Banksy
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -1109,30 +1163,22 @@ exports[`Search states:  Looks right when Found two results 1`] = `
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -1143,23 +1189,40 @@ exports[`Search states:  Looks right when Found two results 1`] = `
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Banksy
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
           </View>
         </View>
         <View
@@ -1212,30 +1275,22 @@ exports[`Search states:  Looks right when Found two results 1`] = `
               ]
             }
           >
-            <View
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
+                }
+              }
               style={
                 Array [
-                  Object {},
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
                 ]
               }
-            >
-              <Image
-                source={
-                  Object {
-                    "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
-                  }
-                }
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 20,
-                      "height": 40,
-                      "width": 40,
-                    },
-                  ]
-                }
-              />
-            </View>
+            />
             <View
               mr={1}
               style={
@@ -1246,23 +1301,40 @@ exports[`Search states:  Looks right when Found two results 1`] = `
                 ]
               }
             />
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
+            <View
+              alignItems="center"
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
-                  Object {},
+                  Object {
+                    "height": 35,
+                  },
                 ]
               }
             >
-              Banksy's Brother
-            </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy's Brother
+              </Text>
+            </View>
           </View>
         </View>
         <View

@@ -62,19 +62,141 @@ exports[`Sets up the right view hierarchy 1`] = `
               }
             }
           >
-            <Image
-              source={
-                Object {
-                  "testUri": "../../../images/consignments/map-pin.png",
-                }
-              }
+            <View
               style={
-                Object {
-                  "marginRight": 6,
-                  "marginTop": 12,
-                }
+                Array [
+                  Object {},
+                  Object {
+                    "top": 11,
+                  },
+                ]
               }
-            />
+            >
+              <RNSVGSvgView
+                align="xMidYMid"
+                bbHeight="18px"
+                bbWidth="18px"
+                className="Iconios__Icon-z4d8jr-0 cjvLsm"
+                fill="black100"
+                focusable={false}
+                height="18px"
+                meetOrSlice={0}
+                minX={0}
+                minY={0}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "borderWidth": 0,
+                    },
+                    undefined,
+                    Object {
+                      "opacity": 1,
+                    },
+                    Object {
+                      "flex": 0,
+                      "height": 18,
+                      "width": 18,
+                    },
+                  ]
+                }
+                vbHeight={18}
+                vbWidth={18}
+                width="18px"
+              >
+                <RNSVGGroup
+                  fill={
+                    Array [
+                      0,
+                      4278190080,
+                    ]
+                  }
+                  fillOpacity={1}
+                  fillRule={1}
+                  font={Object {}}
+                  matrix={
+                    Array [
+                      1,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                    ]
+                  }
+                  opacity={1}
+                  originX={0}
+                  originY={0}
+                  propList={
+                    Array [
+                      "fill",
+                    ]
+                  }
+                  rotation={0}
+                  scaleX={1}
+                  scaleY={1}
+                  skewX={0}
+                  skewY={0}
+                  stroke={null}
+                  strokeDasharray={null}
+                  strokeDashoffset={null}
+                  strokeLinecap={0}
+                  strokeLinejoin={0}
+                  strokeMiterlimit={4}
+                  strokeOpacity={1}
+                  strokeWidth={1}
+                  vectorEffect={0}
+                  x={0}
+                  y={0}
+                >
+                  <RNSVGPath
+                    d="M9.395 16.807a.5.5 0 0 1-.79 0c-3.787-4.85-5.68-8.226-5.68-10.247 0-3.022 2.958-5.68 6.117-5.68 3.196 0 5.934 2.478 5.934 5.62 0 2.121-1.862 5.522-5.581 10.307zM13.975 6.5c0-2.566-2.268-4.62-4.933-4.62-2.63 0-5.118 2.236-5.118 4.68 0 1.65 1.692 4.726 5.075 9.123 3.32-4.34 4.977-7.433 4.977-9.183zM9 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 1a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"
+                    fill={
+                      Array [
+                        0,
+                        4278190080,
+                      ]
+                    }
+                    fillOpacity={1}
+                    fillRule={1}
+                    matrix={
+                      Array [
+                        1,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                      ]
+                    }
+                    opacity={1}
+                    originX={0}
+                    originY={0}
+                    propList={
+                      Array [
+                        "fillRule",
+                      ]
+                    }
+                    rotation={0}
+                    scaleX={1}
+                    scaleY={1}
+                    skewX={0}
+                    skewY={0}
+                    stroke={null}
+                    strokeDasharray={null}
+                    strokeDashoffset={null}
+                    strokeLinecap={0}
+                    strokeLinejoin={0}
+                    strokeMiterlimit={4}
+                    strokeOpacity={1}
+                    strokeWidth={1}
+                    vectorEffect={0}
+                    x={0}
+                    y={0}
+                  />
+                </RNSVGGroup>
+              </RNSVGSvgView>
+            </View>
             <TextInput
               allowFontScaling={true}
               autoCorrect={false}
