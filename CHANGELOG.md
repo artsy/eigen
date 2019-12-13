@@ -1,3 +1,15 @@
+# v1.19.19 (Fri Dec 13 2019)
+
+#### 🐛  Bug Fix
+
+- [MX-75] fix scroll to bottom in conversations [#2011](https://github.com/artsy/emission/pull/2011) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.19.18 (Fri Dec 13 2019)
 
 #### 🐛  Bug Fix
