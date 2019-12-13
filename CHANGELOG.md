@@ -1,3 +1,15 @@
+# v1.19.18 (Fri Dec 13 2019)
+
+#### 🐛  Bug Fix
+
+- Fix artist header when `bylineRequired` field is an empty string. [#2010](https://github.com/artsy/emission/pull/2010) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.19.17 (Thu Dec 12 2019)
 
 #### 🐛  Bug Fix
