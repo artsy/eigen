@@ -1,3 +1,16 @@
+# v1.19.20 (Mon Dec 16 2019)
+
+#### 🐛  Bug Fix
+
+- Removes bundler installation from deploy job [#2014](https://github.com/artsy/emission/pull/2014) ([@ashfurrow](https://github.com/ashfurrow))
+- Adds documentation for releasing iOS features [#2013](https://github.com/artsy/emission/pull/2013) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.19.19 (Fri Dec 13 2019)
 
 #### 🐛  Bug Fix
