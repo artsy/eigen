@@ -27,12 +27,6 @@ jobs:
 
       - checkout
 
-      - run:
-          name: Install Bundler 2.0.2
-          command: gem update --system && gem install bundler -v 2.0.2
-
-      - checkout
-
       - restore_cache:
           keys:
             - v3-gems-{{ checksum "Example/Gemfile.lock" }}
