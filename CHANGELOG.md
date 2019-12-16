@@ -1,3 +1,15 @@
+# v1.20.0 (Mon Dec 16 2019)
+
+#### 🚀  Enhancement
+
+- Include partner's name on copy stating bidders agree to Artsy's COS [#2012](https://github.com/artsy/emission/pull/2012) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
 # v1.19.20 (Mon Dec 16 2019)
 
 #### 🐛  Bug Fix
