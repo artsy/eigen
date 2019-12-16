@@ -51,7 +51,7 @@ This will set you up on our staging server, you will have a running version of t
 
 ### Updating Emission
 
-To update the version of Emission used, [check out the docs](docs/updating_emissio.md#update-eigen-with-the-most-recent-version-of-emission).
+To update the version of Emission used, [check out the docs](docs/updating_emission.md#update-eigen-with-the-most-recent-version-of-emission).
 
 ### Deployment
 
