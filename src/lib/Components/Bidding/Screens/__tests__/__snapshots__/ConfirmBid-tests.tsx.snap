@@ -881,6 +881,7 @@ exports[`renders properly 1`] = `
       focusable={true}
       justifyContent="center"
       mt={4}
+      mx={5}
       onClick={[Function]}
       onPress={[Function]}
       onResponderGrant={[Function]}
@@ -892,6 +893,8 @@ exports[`renders properly 1`] = `
       style={
         Array [
           Object {
+            "marginLeft": 30,
+            "marginRight": 30,
             "marginTop": 20,
           },
         ]
@@ -957,7 +960,8 @@ exports[`renders properly 1`] = `
               ]
             }
           >
-            Conditions of Sale
+            Artsy's and Christie's
+             Conditions of Sale
           </Text>
           .
         </Text>

@@ -9,6 +9,10 @@ export type ConfirmBid_sale_artwork = {
         readonly slug: string;
         readonly live_start_at: string | null;
         readonly end_at: string | null;
+        readonly isBenefit: boolean | null;
+        readonly partner: {
+            readonly name: string | null;
+        } | null;
     } | null;
     readonly artwork: {
         readonly slug: string;
@@ -78,6 +82,31 @@ return {
           "name": "endAt",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isBenefit",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "partner",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Partner",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "name",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         }
       ]
     },
@@ -153,5 +182,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8d479a1aa00dfaa40cc119e04a6b9df4';
+(node as any).hash = 'd5140c99bf2098c836646804ed8a2d44';
 export default node;

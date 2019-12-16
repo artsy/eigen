@@ -4,7 +4,7 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import Event from "lib/NativeModules/Events"
 import React from "react"
 import { Text } from "react-native"
-import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
+import { ArtworkExtraLinks } from "../index"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
@@ -221,6 +221,10 @@ describe("ArtworkExtraLinks", () => {
       sale: {
         isClosed: false,
         internalID: "123",
+        isBenefit: false,
+        partner: {
+          name: "Christie's",
+        },
       },
       artists: [
         {
@@ -236,13 +240,14 @@ describe("ArtworkExtraLinks", () => {
       </Theme>
     ))
     const component = mount(<Component />)
+
     it("renders Auction specific text", () => {
       expect(
         component
           .find(Sans)
           .at(0)
           .text()
-      ).toContain("By placing a bid you agree to Artsy's Conditions of Sale.")
+      ).toContain("By placing a bid you agree to Artsy's and Christie's Conditions of Sale.")
       expect(
         component
           .find(Sans)
@@ -265,6 +270,10 @@ describe("ArtworkExtraLinks", () => {
         sale: {
           isClosed: false,
           internalID: "123",
+          isBenefit: false,
+          partner: {
+            name: "Christie's",
+          },
         },
         artists: [
           {

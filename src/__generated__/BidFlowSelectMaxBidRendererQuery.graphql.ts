@@ -44,6 +44,11 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
     slug
     live_start_at: liveStartAt
     end_at: endAt
+    isBenefit
+    partner {
+      name
+      id
+    }
     id
   }
   artwork {
@@ -215,6 +220,32 @@ return {
                     "args": null,
                     "storageKey": null
                   },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "isBenefit",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "partner",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Partner",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "name",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v2/*: any*/)
+                    ]
+                  },
                   (v2/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -306,7 +337,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidFlowSelectMaxBidRendererQuery",
-    "id": "72daf769b93eb156e67aae36a46da1fe",
+    "id": "adddf094285845d091dffe82fbe2834d",
     "text": null,
     "metadata": {}
   }
