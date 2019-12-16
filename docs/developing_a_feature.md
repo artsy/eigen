@@ -1,11 +1,11 @@
 # How to develop a feature in Emission
 
-Developing new features in Emission can be a little tricky. For very small features (like adding a single new label to a view), just send a pull request. The complicated part is when adding big features features: things that will take longer than a sprint to fully build and test.
+Developing new features in Emission can be a little tricky. For very small features (like adding a single new label to a view), just send a pull request. The complicated part is when adding big features: things that will take longer than a sprint to fully build and test.
 
 [Artsy releases the app on a 2-week cadence 🔐](https://www.notion.so/artsy/2-week-Release-Cadence-f3427549d9cb4d8b809ad16c57338c2d), submitting the Monday after a sprint starts. To support this process, new features are put behind "options" so that in-progress work can be shipped without actually being visible to users. Here's how it works at a high-level:
 
 - Work is put behind a "lab option", which can only be enabled in the admin menu (shake your device). [Here is an example pull request adding a lab option](https://github.com/artsy/eigen/pull/2934).
-- When the feature is ready to be released to users, we replace the lab option with an "Echo Feature." [Echo](https://github.com/artsy/echo) is Artsy's feature-flag-as-a-service. We would put a new features behind an Echo Feature so that, in case we accidentally ship a catastrophic bug, we can disable the feature remotely until we fix it. [Here is an example pull request adding an Echo Feature](https://github.com/artsy/eigen/pull/2937).
+- When the feature is ready to be released to users, we replace the lab option with an "Echo Feature." [Echo](https://github.com/artsy/echo) is Artsy's feature-flag-as-a-service. We would put a new feature behind an Echo Feature so that, in case we accidentally ship a catastrophic bug, we can disable the feature remotely until we fix it. [Here is an example pull request adding an Echo Feature](https://github.com/artsy/eigen/pull/2937).
 
 In the past, we have used both simultaneously, using a logical or (`||`) to enable the feature: either the lab option _or_ the Echo Feature needed to be enabled. This caused a lot of problems (see note below). The current recommendation is **first add a lab option** while you're developing the feature. Once the feature is fully QA'd and ready to go live for users, **then replace the lab option with the Echo Feature**. Use the same name for both the lab option and the Echo Feature.
 
