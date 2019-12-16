@@ -229,7 +229,7 @@ export default class Metadata extends React.Component<Props, State> {
                     }}
                   >
                     <Serif size="4">Units</Serif>
-                    <Toggle selected={this.state.unit === "CM"} left="Cm" right="In" onPress={this.updateUnit} />
+                    <Toggle selected={this.state.unit === "CM"} left="cm" right="in" onPress={this.updateUnit} />
                   </View>
                 </Row>
                 <TouchableWithoutFeedback onPress={this.showCategorySelection}>

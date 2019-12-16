@@ -66,7 +66,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                   <Row>
                     <Text
                       text={{
-                        placeholder: "Edition Size",
+                        placeholder: "Edition size",
                         keyboardType: "phone-pad",
                         onChangeText: this.updateEditionSize,
                         value: this.state.editionInfo && this.state.editionInfo.size,
@@ -75,7 +75,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                     <Spacer mr={2} />
                     <Text
                       text={{
-                        placeholder: "Edition Number",
+                        placeholder: "Edition number",
                         onChangeText: this.updateEditionNumber,
                         value: this.state.editionInfo && this.state.editionInfo.number,
                       }}
