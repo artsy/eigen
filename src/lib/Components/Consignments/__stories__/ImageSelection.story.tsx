@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import ImageSelection from "../Components/ImageSelection"
 import { Wrapper } from "./"
@@ -9,12 +10,16 @@ const uri3 = "https://d32dm0rphc51dk.cloudfront.net/8BuMWBuUOBtKVBsGRUoDKw/large
 
 storiesOf("Consignments/Image Selection")
   .add("With some images", () => (
-    <Wrapper>
-      <ImageSelection data={[{ image: { uri: uri1 } }, { image: { uri: uri2 } }, { image: { uri: uri3 } }]} />
-    </Wrapper>
+    <ProvideScreenDimensions>
+      <Wrapper>
+        <ImageSelection data={[{ image: { uri: uri1 } }, { image: { uri: uri2 } }, { image: { uri: uri3 } }]} />
+      </Wrapper>
+    </ProvideScreenDimensions>
   ))
   .add("With no images", () => (
-    <Wrapper>
-      <ImageSelection data={[]} />
-    </Wrapper>
+    <ProvideScreenDimensions>
+      <Wrapper>
+        <ImageSelection data={[]} />
+      </Wrapper>
+    </ProvideScreenDimensions>
   ))

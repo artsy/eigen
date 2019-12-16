@@ -13,7 +13,7 @@ export interface ScreenDimensions {
   safeAreaInsets: SafeAreaInsets
 }
 
-const ScreenDimenionsContext = createContext<ScreenDimensions>(null)
+const ScreenDimensionsContext = createContext<ScreenDimensions>(null)
 
 const changes = new NativeEventEmitter(NativeModules.ARDynamicScreenDimensions)
 
@@ -54,12 +54,12 @@ export const ProvideScreenDimensions: React.FC = ({ children }) => {
     [onChange]
   )
 
-  return <ScreenDimenionsContext.Provider value={dimensions}>{children}</ScreenDimenionsContext.Provider>
+  return <ScreenDimensionsContext.Provider value={dimensions}>{children}</ScreenDimensionsContext.Provider>
 }
 
 /**
  * Call during render to be notified whenever `screenDimensions` changes
  */
 export function useScreenDimensions() {
-  return useContext(ScreenDimenionsContext)
+  return useContext(ScreenDimensionsContext)
 }

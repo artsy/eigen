@@ -1,6 +1,7 @@
 import { Box, Serif, Spacer, Theme } from "@artsy/palette"
 import CameraRoll from "@react-native-community/cameraroll"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { Alert, Dimensions, Linking, NativeModules, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -185,29 +186,31 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   render() {
     return (
       <Theme>
-        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <ScrollView
-            style={{ flex: 1 }}
-            scrollsToTop={true}
-            onScroll={this.onScroll.bind(this)}
-            scrollEventThrottle={50}
-          >
-            <View style={{ paddingTop: 40 }}>
-              <Box px={2}>
-                <Serif size="4" style={{ textAlign: "center" }}>
-                  We suggest adding a few photos of the work including the front and back as well as the signature.
-                </Serif>
-              </Box>
-              <Spacer mb={2} />
-              <ImageSelection
-                data={this.state.cameraImages}
-                onPressNewPhoto={this.onPressNewPhoto}
-                onUpdateSelectedStates={this.onNewSelectionState}
-                selected={this.state.selection}
-              />
-            </View>
-          </ScrollView>
-        </BottomAlignedButton>
+        <ProvideScreenDimensions>
+          <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+            <ScrollView
+              style={{ flex: 1 }}
+              scrollsToTop={true}
+              onScroll={this.onScroll.bind(this)}
+              scrollEventThrottle={50}
+            >
+              <View style={{ paddingTop: 40 }}>
+                <Box px={2}>
+                  <Serif size="4" style={{ textAlign: "center" }}>
+                    We suggest adding a few photos of the work including the front and back as well as the signature.
+                  </Serif>
+                </Box>
+                <Spacer mb={2} />
+                <ImageSelection
+                  data={this.state.cameraImages}
+                  onPressNewPhoto={this.onPressNewPhoto}
+                  onUpdateSelectedStates={this.onNewSelectionState}
+                  selected={this.state.selection}
+                />
+              </View>
+            </ScrollView>
+          </BottomAlignedButton>
+        </ProvideScreenDimensions>
       </Theme>
     )
   }
