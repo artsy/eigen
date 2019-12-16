@@ -115,9 +115,6 @@ extern NSString *const ARAnalyticsSearchCleared;
 extern NSString *const ARAnalyticsSearchStartedQuery;
 extern NSString *const ARAnalyticsSearchItemSelected;
 
-extern NSString *const ARAnalyticsFairSearch;
-extern NSString *const ARAnalyticsFairSearchItemSelected;
-
 // App Session
 
 extern NSString *const ARAnalyticsTimePerSession;

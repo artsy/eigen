@@ -597,31 +597,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARFairSearchViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsFairSearch,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(fetchSearchResults:replace:),
-                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"query": parameters.firstObject ?: @""
-                                };
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSearchItemSelected,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(selectedResult:ofType:fromQuery:),
-                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"query": parameters[2] ?: @"",
-                                    @"selected_object_type": parameters[1] ?: @"",
-                                    @"slug": [parameters[0] modelID] ?: @""
-                                };
-                            }
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARNavigationController.class,
                     ARAnalyticsDetails: @[
                         @{
