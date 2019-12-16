@@ -153,11 +153,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "backgroundColor": "white",
                         "borderColor": "black",
                         "borderWidth": 1,
-                        "height": 345,
+                        "height": 160,
                         "justifyContent": "center",
                         "marginBottom": 20,
                         "opacity": 1,
-                        "width": 345,
+                        "width": 160,
                       }
                     }
                   >

@@ -1,15 +1,13 @@
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { getTextTree } from "lib/utils/getTestWrapper"
 import React from "react"
 import "react-native"
-
-import { getTextTree } from "lib/utils/getTestWrapper"
 import Confirmation, { SubmissionTypes } from "../Confirmation"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   dismissModalViewController: jest.fn(),
 }))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 const emptyProps = { navigator: {} as any, route: {} as any }
 
@@ -86,13 +84,6 @@ describe("state", () => {
 })
 
 describe("messaging", () => {
-  it("Lets you know you're submitting", () => {
-    const expected = "Submitting your work"
-    const state = SubmissionTypes.Submitting
-    const confirmationText = getTextTree(<Confirmation {...emptyProps} initialState={state} />)
-    expect(confirmationText).toContain(expected)
-  })
-
   it("Lets you you've succedded", () => {
     const expected = "Succesfully submitted"
     const state = SubmissionTypes.SuccessfulSubmission

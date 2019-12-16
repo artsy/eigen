@@ -88,11 +88,11 @@ exports[`renders correctly at iPhone size 1`] = `
               "backgroundColor": "white",
               "borderColor": "black",
               "borderWidth": 1,
-              "height": 345,
+              "height": 160,
               "justifyContent": "center",
               "marginBottom": 20,
               "opacity": 1,
-              "width": 345,
+              "width": 160,
             }
           }
         >
@@ -107,10 +107,10 @@ exports[`renders correctly at iPhone size 1`] = `
         <View
           style={
             Object {
-              "height": 345,
+              "height": 160,
               "marginBottom": 20,
               "position": "relative",
-              "width": 345,
+              "width": 160,
             }
           }
         >
@@ -121,11 +121,11 @@ exports[`renders correctly at iPhone size 1`] = `
               Array [
                 Object {},
                 Object {
-                  "height": 345,
+                  "height": 160,
                   "left": 0,
                   "position": "absolute",
                   "top": 0,
-                  "width": 345,
+                  "width": 160,
                   "zIndex": 2,
                 },
               ]
@@ -156,8 +156,8 @@ exports[`renders correctly at iPhone size 1`] = `
               }
               style={
                 Object {
-                  "height": 345,
-                  "width": 345,
+                  "height": 160,
+                  "width": 160,
                 }
               }
             />
@@ -186,10 +186,10 @@ exports[`renders correctly at iPhone size 1`] = `
         <View
           style={
             Object {
-              "height": 345,
+              "height": 160,
               "marginBottom": 20,
               "position": "relative",
-              "width": 345,
+              "width": 160,
             }
           }
         >
@@ -200,11 +200,11 @@ exports[`renders correctly at iPhone size 1`] = `
               Array [
                 Object {},
                 Object {
-                  "height": 345,
+                  "height": 160,
                   "left": 0,
                   "position": "absolute",
                   "top": 0,
-                  "width": 345,
+                  "width": 160,
                   "zIndex": 2,
                 },
               ]
@@ -235,8 +235,8 @@ exports[`renders correctly at iPhone size 1`] = `
               }
               style={
                 Object {
-                  "height": 345,
-                  "width": 345,
+                  "height": 160,
+                  "width": 160,
                 }
               }
             />
@@ -245,10 +245,10 @@ exports[`renders correctly at iPhone size 1`] = `
         <View
           style={
             Object {
-              "height": 345,
+              "height": 160,
               "marginBottom": 20,
               "position": "relative",
-              "width": 345,
+              "width": 160,
             }
           }
         >
@@ -259,11 +259,11 @@ exports[`renders correctly at iPhone size 1`] = `
               Array [
                 Object {},
                 Object {
-                  "height": 345,
+                  "height": 160,
                   "left": 0,
                   "position": "absolute",
                   "top": 0,
-                  "width": 345,
+                  "width": 160,
                   "zIndex": 2,
                 },
               ]
@@ -294,8 +294,8 @@ exports[`renders correctly at iPhone size 1`] = `
               }
               style={
                 Object {
-                  "height": 345,
-                  "width": 345,
+                  "height": 160,
+                  "width": 160,
                 }
               }
             />
