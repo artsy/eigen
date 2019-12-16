@@ -36,7 +36,6 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "ARPriceRangeViewController.h"
 #import "ARViewInRoomViewController.h"
-#import "ARFairSearchViewController.h"
 #import "ARSharingController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARArtistBiographyViewController.h"
@@ -833,21 +832,6 @@
                                     @"owner-slug": controller.geneID ?: @"",
                                     @"partial" : @"true"
                                 };
-                            }
-                        }
-                    ]
-                },
-                // ========== FAIRS ==========
-                @{
-                    ARAnalyticsClass: ARFairSearchViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Fair Search",
-                            ARAnalyticsProperties: ^NSDictionary *(ARFairSearchViewController *controller, NSArray *_) {
-                                return @{ @"owner_type": @"fair",
-                                          @"owner_id" : controller.fair.fairUUID ?: @"",
-                                          @"owner_slug": controller.fair.fairID ?: @"",
-                                    };
                             }
                         }
                     ]
