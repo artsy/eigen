@@ -121,10 +121,6 @@ jobs:
           fingerprints:
             - "23:11:82:24:bb:cb:a8:1e:7a:eb:b1:f3:d6:e1:55:32"
 
-      - run:
-          name: Install Bundler 2.0.2
-          command: gem update --system && gem install bundler -v 2.0.2
-
       - restore_cache:
           keys:
             - v3-gems-{{ checksum "Example/Gemfile.lock" }}
