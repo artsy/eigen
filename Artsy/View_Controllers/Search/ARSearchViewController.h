@@ -7,12 +7,9 @@ typedef NS_ENUM(NSInteger, ARMenuState) {
 };
 
 /// Search is complex.
-/// The SearchVC can be seen in either the App Menu, or within a fair context.
-/// Both are their own subclasses, ARAppSearchViewController and ARFairSearchViewController
-
-/// The FairSearchVC supports a scoped version of search using the local Fair context to look
-/// up shows. This makes it super fast, the trade off is that the API below is confusing.
-
+/// The SearchVC was originally implemented to support search in app menu
+/// and within a fair context. Fair context search has since been removed
+/// so there may be opportunities to simplify the interface below.
 
 @interface ARSearchViewController : UIViewController
 
