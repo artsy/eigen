@@ -12,8 +12,6 @@ export const partnerName = ({ isBenefit, partner }: SaleWithPartner) => {
 
     if (name.endsWith("'s") || name.endsWith("’s")) {
       return `Artsy's and ${name}`
-    } else if (name.endsWith("s")) {
-      return `Artsy's and ${name}'`
     } else if (name.endsWith("'") || name.endsWith("’")) {
       return `Artsy's and ${name}s`
     } else {
