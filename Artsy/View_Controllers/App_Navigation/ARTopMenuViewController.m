@@ -6,8 +6,6 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
-#import "ARFairSearchViewController.h"
-#import "ARFairComponentViewController+Eigen.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
 #import "ARAppConstants.h"
@@ -561,19 +559,6 @@ static const CGFloat ARMenuButtonDimension = 50;
     if ([self.class shouldPresentViewControllerAsModal:viewController]) {
         [self presentViewController:viewController animated:animated completion:completion];
         return;
-    }
-
-    if ([viewController isKindOfClass:[ARFairSearchViewController class]]) {
-        // This isn't great, but we need to support both ARFairComponentViewControllers _and_
-        // ARProfileViewControllers containing ARMutableLinkViewControllers containing ARFairComponentViewControllers.
-        id parentViewController = [[[[[[self rootNavigationController] topViewController] childViewControllers] first] childViewControllers] first];
-        if (parentViewController == nil) {
-            parentViewController = [[self rootNavigationController] topViewController];
-        }
-        if ([parentViewController isKindOfClass:[ARFairComponentViewController class]]) {
-            [(ARFairComponentViewController *)parentViewController presentFairSearchViewController:(id)viewController completion:completion];
-            return;
-        }
     }
     
     if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {

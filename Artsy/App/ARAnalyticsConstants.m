@@ -81,8 +81,6 @@ NSString *const ARAnalyticsSearchClosed = @"Close search screen";
 NSString *const ARAnalyticsSearchCleared = @"Cleared input in search screen";
 NSString *const ARAnalyticsSearchStartedQuery = @"Searched";
 NSString *const ARAnalyticsSearchItemSelected = @"Selected result from search screen";
-NSString *const ARAnalyticsFairSearch = @"Fair search";
-NSString *const ARAnalyticsFairSearchItemSelected = @"Selected item from fair search";
 
 NSString *const ARAnalyticsTimePerSession = @"app session time";
 

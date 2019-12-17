@@ -18,7 +18,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARFairSearchViewController.h"
 #import "AREigenFairComponentViewController.h"
 #import "ARTopMenuViewController.h"
 #import "ARMutableLinkViewController.h"
@@ -294,14 +293,6 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     [self.routes addRoute:@"/city-save/:city_slug" handler:JLRouteParams {
         return [[ARCitySavedListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"]];
     }];
-
-    // We don't show a native fairs UI for iPad
-    if (![UIDevice isPad]) {
-        [self.routes addRoute:@"/:fairID/search" handler:JLRouteParams {
-            Fair *fair = [[Fair alloc] initWithFairID:parameters[@"fairID"]];
-            return [[ARFairSearchViewController alloc] initWithFair:fair];
-        }];
-    }
 
     [self registerEchoRouteForKey:@"ARBrowseCategoriesRoute" handler:JLRouteParams {
         return [[ARBrowseCategoriesViewController alloc] init];

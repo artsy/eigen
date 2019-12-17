@@ -104,7 +104,6 @@
 		3C22227618C64B4A00B7CE3A /* User_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = 3C22227518C64B4A00B7CE3A /* User_v1.data */; };
 		3C28D3DB18BE180B00C846EA /* ARNavigationButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28D3DA18BE180B00C846EA /* ARNavigationButtonTests.m */; };
 		3C2E6C5C192262A3009DAB28 /* ARRouterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2E6C5B192262A3009DAB28 /* ARRouterTests.m */; };
-		3C33298D18AD3324006D28C0 /* ARFairSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C33298C18AD3324006D28C0 /* ARFairSearchViewController.m */; };
 		3C35CC7B189FF05E00E3D8DE /* OrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C35CC7A189FF05E00E3D8DE /* OrderedSet.m */; };
 		3C35CC7D189FF14800E3D8DE /* OrderedSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C35CC7C189FF14800E3D8DE /* OrderedSetTests.m */; };
 		3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C35CC7F189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m */; };
@@ -683,7 +682,6 @@
 		9D3ED24421ADAD8800A0318A /* ArtsyEcho+BNMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */; };
 		9D3ED24621ADB11B00A0318A /* ArtsyEchoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */; };
 		9D3ED24821ADBB4900A0318A /* create_offer.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9D3ED24721ADBB4900A0318A /* create_offer.graphql */; };
-		9DBD8576221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DBD8575221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m */; };
 		9DF23C0F2135C6D6008EAB9C /* create_order.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9DF23C0E2135C6D6008EAB9C /* create_order.graphql */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
@@ -984,8 +982,6 @@
 		3C22227518C64B4A00B7CE3A /* User_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = User_v1.data; sourceTree = "<group>"; };
 		3C28D3DA18BE180B00C846EA /* ARNavigationButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButtonTests.m; sourceTree = "<group>"; };
 		3C2E6C5B192262A3009DAB28 /* ARRouterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRouterTests.m; sourceTree = "<group>"; };
-		3C33298B18AD3324006D28C0 /* ARFairSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairSearchViewController.h; sourceTree = "<group>"; };
-		3C33298C18AD3324006D28C0 /* ARFairSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairSearchViewController.m; sourceTree = "<group>"; };
 		3C35CC79189FF05E00E3D8DE /* OrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderedSet.h; sourceTree = "<group>"; };
 		3C35CC7A189FF05E00E3D8DE /* OrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderedSet.m; sourceTree = "<group>"; };
 		3C35CC7C189FF14800E3D8DE /* OrderedSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderedSetTests.m; sourceTree = "<group>"; };
@@ -1876,8 +1872,6 @@
 		9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ArtsyEcho+BNMO.m"; sourceTree = "<group>"; };
 		9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyEchoTests.m; sourceTree = "<group>"; };
 		9D3ED24721ADBB4900A0318A /* create_offer.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = create_offer.graphql; sourceTree = "<group>"; };
-		9DBD8574221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARFairComponentViewController+Eigen.h"; sourceTree = "<group>"; };
-		9DBD8575221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARFairComponentViewController+Eigen.m"; sourceTree = "<group>"; };
 		9DF23C0E2135C6D6008EAB9C /* create_order.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = create_order.graphql; sourceTree = "<group>"; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
@@ -4472,15 +4466,11 @@
 				5EE5DE12190167A400040B84 /* ARProfileViewController.h */,
 				5EE5DE13190167A400040B84 /* ARProfileViewController.m */,
 				342F93B0E900CB6BC98011DE /* Views */,
-				3C33298B18AD3324006D28C0 /* ARFairSearchViewController.h */,
-				3C33298C18AD3324006D28C0 /* ARFairSearchViewController.m */,
 				5EFF52BC197916C800E2A563 /* ARPendingOperationViewController.h */,
 				5EFF52BD197916C800E2A563 /* ARPendingOperationViewController.m */,
 				60647C761A95095800A45247 /* ARFairPopupViewController.h */,
 				60647C771A95095800A45247 /* ARFairPopupViewController.m */,
 				60647C781A95095800A45247 /* ARFairPopupViewController.xib */,
-				9DBD8574221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.h */,
-				9DBD8575221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m */,
 			);
 			path = Fair;
 			sourceTree = "<group>";
@@ -5340,7 +5330,6 @@
 				CB42B64F181092480069A801 /* ARCountdownView.m in Sources */,
 				5E8585F91CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
 				7FE2CE30221F074E00D0E779 /* AREigenFairComponentViewController.m in Sources */,
-				9DBD8576221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m in Sources */,
 				4953E83B16681A4200A09726 /* ContentLink.m in Sources */,
 				494332FD16692010005AB483 /* VideoContentLink.m in Sources */,
 				E676B2EB18D0CC330057B4E1 /* ARURLItemProvider.m in Sources */,
@@ -5560,7 +5549,6 @@
 				60F9B08F1D83255800DBAC8C /* ARAdminNetworkModel.m in Sources */,
 				342F9D9296B47F66184FA760 /* NSDate+DateRange.m in Sources */,
 				60CC97351EC3203D00793566 /* ARSentryAnalyticsProvider.m in Sources */,
-				3C33298D18AD3324006D28C0 /* ARFairSearchViewController.m in Sources */,
 				3C9F215F18B25D0D00D8898B /* ARSearchViewController.m in Sources */,
 				5E47F35B1C4444A900EC0751 /* SaleViewModel.swift in Sources */,
 				60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */,
