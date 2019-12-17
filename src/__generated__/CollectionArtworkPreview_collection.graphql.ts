@@ -1,52 +1,37 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-export type CollectionHeader_collection = {
-    readonly title: string;
-    readonly headerImage: string | null;
-    readonly image: {
+import { FragmentRefs } from "relay-runtime";
+export type CollectionArtworkPreview_collection = {
+    readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly imageUrl: string | null;
+                readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "CollectionHeader_collection";
+    readonly " $refType": "CollectionArtworkPreview_collection";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "CollectionHeader_collection",
+  "name": "CollectionArtworkPreview_collection",
   "type": "MarketingCollection",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "title",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "headerImage",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
-      "alias": "image",
+      "alias": "artworks",
       "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:1,sort:\"-merchandisability\")",
+      "storageKey": "artworksConnection(first:6,sort:\"-merchandisability\")",
       "args": [
         {
           "kind": "Literal",
           "name": "first",
-          "value": 1
+          "value": 6
         },
         {
           "kind": "Literal",
@@ -76,11 +61,9 @@ const node: ReaderFragment = {
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "imageUrl",
-                  "args": null,
-                  "storageKey": null
+                  "kind": "FragmentSpread",
+                  "name": "GenericGrid_artworks",
+                  "args": null
                 }
               ]
             }
@@ -90,5 +73,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '29324ff44b26f95096f5977c5b31414c';
+(node as any).hash = 'bf5391be3c762f88c8c8b3c3ce0e0321';
 export default node;
