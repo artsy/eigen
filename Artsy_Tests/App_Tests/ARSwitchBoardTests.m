@@ -16,7 +16,6 @@
 #import "ARPaymentRequestWebViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "ARProfileViewController.h"
-#import "ARFairSearchViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
 
@@ -315,12 +314,6 @@ describe(@"ARSwitchboard", ^{
 
                 after(^{
                     [ARTestContext stopStubbing];
-                });
-
-                it(@"routes fair search", ^{
-                    Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/search"] fair:fair];
-                    expect(viewController).to.beKindOf(ARFairSearchViewController.class);
                 });
 
                 it(@"forwards fair views to martsy for non-native views", ^{
