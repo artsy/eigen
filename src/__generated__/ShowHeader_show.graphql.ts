@@ -15,6 +15,10 @@ export type ShowHeader_show = {
         readonly slug?: string;
         readonly href?: string | null;
     } | null;
+    readonly coverImage: {
+        readonly url: string | null;
+        readonly aspect_ratio: number;
+    } | null;
     readonly images: ReadonlyArray<{
         readonly url: string | null;
         readonly aspect_ratio: number;
@@ -72,6 +76,22 @@ v3 = {
   "storageKey": null
 },
 v4 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "url",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": "aspect_ratio",
+    "name": "aspectRatio",
+    "args": null,
+    "storageKey": null
+  }
+],
+v5 = [
   (v2/*: any*/),
   (v3/*: any*/),
   (v0/*: any*/),
@@ -145,27 +165,22 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "coverImage",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Image",
+      "plural": false,
+      "selections": (v4/*: any*/)
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "images",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
       "plural": true,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "url",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "aspect_ratio",
-          "name": "aspectRatio",
-          "args": null,
-          "storageKey": null
-        }
-      ]
+      "selections": (v4/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -208,7 +223,7 @@ return {
                   "args": null,
                   "concreteType": "Artist",
                   "plural": false,
-                  "selections": (v4/*: any*/)
+                  "selections": (v5/*: any*/)
                 }
               ]
             }
@@ -224,10 +239,10 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": (v4/*: any*/)
+      "selections": (v5/*: any*/)
     }
   ]
 };
 })();
-(node as any).hash = 'c995db340566939709d1e0bb4da85c1c';
+(node as any).hash = 'fd0f6f7275f3fb70bcbe35ae933fd0f9';
 export default node;

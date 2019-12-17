@@ -101,6 +101,10 @@ fragment ShowHeader_show on Show {
       id
     }
   }
+  coverImage {
+    url
+    aspect_ratio: aspectRatio
+  }
   images {
     url
     aspect_ratio: aspectRatio
@@ -380,38 +384,42 @@ v12 = {
   "args": null,
   "storageKey": null
 },
-v13 = {
+v13 = [
+  (v11/*: any*/),
+  (v12/*: any*/)
+],
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "initials",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v15 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "nationality",
   "args": null,
   "storageKey": null
 },
-v15 = {
+v16 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "birthday",
   "args": null,
   "storageKey": null
 },
-v16 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "deathday",
   "args": null,
   "storageKey": null
 },
-v17 = [
+v18 = [
   (v11/*: any*/)
 ],
-v18 = {
+v19 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -419,9 +427,9 @@ v18 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": (v17/*: any*/)
+  "selections": (v18/*: any*/)
 },
-v19 = [
+v20 = [
   (v5/*: any*/),
   (v4/*: any*/)
 ];
@@ -519,15 +527,22 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "coverImage",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": (v13/*: any*/)
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "images",
             "storageKey": null,
             "args": null,
             "concreteType": "Image",
             "plural": true,
-            "selections": [
-              (v11/*: any*/),
-              (v12/*: any*/)
-            ]
+            "selections": (v13/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -598,12 +613,12 @@ return {
               (v3/*: any*/),
               (v2/*: any*/),
               (v4/*: any*/),
-              (v13/*: any*/),
-              (v6/*: any*/),
               (v14/*: any*/),
+              (v6/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
-              (v18/*: any*/)
+              (v17/*: any*/),
+              (v19/*: any*/)
             ]
           },
           {
@@ -810,7 +825,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v19/*: any*/)
+                        "selections": (v20/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -820,7 +835,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v19/*: any*/)
+                        "selections": (v20/*: any*/)
                       },
                       (v10/*: any*/)
                     ]
@@ -843,12 +858,12 @@ return {
               (v3/*: any*/),
               (v10/*: any*/),
               (v5/*: any*/),
-              (v13/*: any*/),
-              (v6/*: any*/),
               (v14/*: any*/),
+              (v6/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
-              (v18/*: any*/)
+              (v17/*: any*/),
+              (v19/*: any*/)
             ]
           },
           {
@@ -898,7 +913,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": true,
-                        "selections": (v17/*: any*/)
+                        "selections": (v18/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -1107,7 +1122,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersShowQuery",
-    "id": "8263a78f7ff738c06e546cd1bc086b39",
+    "id": "a6ddf9fd1bb7e37dd7984198a9ae0b97",
     "text": null,
     "metadata": {}
   }

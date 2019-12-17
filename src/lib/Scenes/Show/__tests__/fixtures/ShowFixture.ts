@@ -29,6 +29,10 @@ export const ShowFixture = {
     { url: "https://d32dm0rphc51dk.cloudfront.net/8q57f6Fyyzpn7jT-Jq3PTw/featured.jpg", aspect_ratio: 0.75 },
     { url: "https://d32dm0rphc51dk.cloudfront.net/J6yrwSxoPxyINX7JMtvC-A/medium.jpg", aspect_ratio: 0.78 },
   ],
+  coverImage: {
+    url: "https://d32dm0rphc51dk.cloudfront.net/J6yrwSxoPxyINX7JMtvC-A/medium.jpg",
+    aspect_ratio: 0.78,
+  },
   followedArtists: { edges: [] },
   artists: [
     {
