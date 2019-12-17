@@ -33,6 +33,6 @@ describe("partnerName", () => {
   })
 
   it(`adds a "Artsy's" prefix and "'" (single quote) to the end of the partner name if the partner name ends with "s"`, () => {
-    expect(partnerName({ ...sale, partner: { name: "Phillips" } })).toEqual("Artsy's and Phillips'")
+    expect(partnerName({ ...sale, partner: { name: "Phillips" } })).toEqual("Artsy's and Phillips's")
   })
 })
