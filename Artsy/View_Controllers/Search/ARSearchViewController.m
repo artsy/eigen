@@ -48,7 +48,7 @@
     UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
     [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide
-                                 predicate:[self.styling topLayoutConstraintForStyleMode:self.searchPresentationMode]];
+                                 predicate:[self.styling topLayoutConstraint]];
     [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
     [searchBoxView constrainHeight:@(self.fontSize).stringValue];
     _searchBoxView = searchBoxView;
@@ -57,12 +57,12 @@
     UIImageView *searchIcon = [[UIImageView alloc] init];
     searchIcon.image = [[UIImage imageNamed:self.searchIconImageName ?: @"SearchButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     searchIcon.contentMode = UIViewContentModeScaleAspectFit;
-    searchIcon.tintColor = [self.styling searchIconTintColorForStyleMode:self.searchPresentationMode];
+    searchIcon.tintColor = [self.styling searchIconTintColor];
     [searchBoxView addSubview:searchIcon];
     _searchIcon = searchIcon;
 
     [searchIcon alignLeadingEdgeWithView:searchBoxView
-                               predicate:[self.styling searchIconLeadingConstraintForStyleMode:self.searchPresentationMode sizeClass:self.traitCollection.horizontalSizeClass]];
+                               predicate:[self.styling searchIconLeadingConstraintForSizeClass:self.traitCollection.horizontalSizeClass]];
     [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:@"0"];
 
     // input text field
@@ -88,7 +88,7 @@
     [closeButton constrainLeadingSpaceToView:textField predicate:@"14"];
     [closeButton alignTrailingEdgeWithView:searchBoxView predicate:@"0"];
 
-    [closeButton setAttributedTitle:[self.styling closeButtonAttribtedTextForStyleMode:self.searchPresentationMode]
+    [closeButton setAttributedTitle:[self.styling closeButtonAttributedText]
                            forState:UIControlStateNormal];
 
     [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -332,11 +332,6 @@
     [self stopSearching];
 }
 
-- (ARSearchViewControllerStylingMode)searchPresentationMode
-{
-    return ARSearchViewControllerStylingModeMainScreen;
-}
-
 #pragma mark - Info Label
 
 - (void)showInfoLabel:(BOOL)show animated:(BOOL)animated
@@ -388,7 +383,7 @@
         [self stopSearching];
 
         [self.view addSubview:tableView];
-        [self.styling constrainTableView:tableView toContentView:self.contentView forStyleMode:self.searchPresentationMode];
+        [self.styling constrainTableView:tableView toContentView:self.contentView];
         _resultsView = tableView;
         [self.view layoutIfNeeded];
     }

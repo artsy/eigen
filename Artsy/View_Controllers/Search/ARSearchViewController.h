@@ -44,6 +44,4 @@ typedef NS_ENUM(NSInteger, ARMenuState) {
 - (void)addResults:(NSArray *)results replace:(BOOL)replaceResults;
 - (void)selectedResult:(NSObject <SearchResultable> *)result ofType:(NSString *)type fromQuery:(NSString *)query;
 
-- (ARSearchViewControllerStylingMode)searchPresentationMode;
-
 @end

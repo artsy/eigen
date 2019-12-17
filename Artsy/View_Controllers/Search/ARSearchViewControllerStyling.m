@@ -8,68 +8,33 @@
 
 @implementation ARSearchViewControllerStyling
 
-- (NSString *)topLayoutConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+- (NSString *)topLayoutConstraint
 {
-    switch (styleMode) {
-        case ARSearchViewControllerStylingModeMainScreen:
-            return @"47";
-        case ARSearchViewControllerStylingModeFair:
-            return @"24";
-    }
+    return @"47";
 }
 
-- (NSString *)searchIconLeadingConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode sizeClass:(UIUserInterfaceSizeClass)sizeClass
+- (NSString *)searchIconLeadingConstraintForSizeClass:(UIUserInterfaceSizeClass)sizeClass
 {
-    NSString *mainScreenConstant = (sizeClass == UIUserInterfaceSizeClassRegular) ? @"51" : @"26";
-
-    switch (styleMode) {
-        case ARSearchViewControllerStylingModeMainScreen:
-            return mainScreenConstant;
-        case ARSearchViewControllerStylingModeFair:
-            return @"10";
-    }
+    return (sizeClass == UIUserInterfaceSizeClassRegular) ? @"51" : @"26";
 }
 
-- (UIColor *)searchIconTintColorForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+- (UIColor *)searchIconTintColor
 {
-    switch (styleMode) {
-        case ARSearchViewControllerStylingModeMainScreen:
-            return [UIColor whiteColor];
-        case ARSearchViewControllerStylingModeFair:
-            return [UIColor artsyGraySemibold];
-    }
+    return [UIColor whiteColor];
 }
 
-- (NSAttributedString *)closeButtonAttribtedTextForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+- (NSAttributedString *)closeButtonAttributedText
 {
-    UIColor *textColor;
-
-    switch (styleMode) {
-        case ARSearchViewControllerStylingModeMainScreen:
-            textColor = [UIColor whiteColor];
-            break;
-        case ARSearchViewControllerStylingModeFair:
-            textColor = [UIColor artsyGraySemibold];
-            break;
-    }
-
     return [[NSAttributedString alloc] initWithString:@"CLOSE" attributes:@{
         NSKernAttributeName : @1,
         NSFontAttributeName : [UIFont sansSerifFontWithSize:[UIDevice isPad] ? 13 : 10],
-        NSForegroundColorAttributeName : textColor,
+        NSForegroundColorAttributeName : [UIColor whiteColor],
     }];
 }
 
-- (void)constrainTableView:(UITableView *)tableView toContentView:(UIView *)contentView forStyleMode:(ARSearchViewControllerStylingMode)styleMode
+- (void)constrainTableView:(UITableView *)tableView toContentView:(UIView *)contentView
 {
-    switch (styleMode) {
-        case ARSearchViewControllerStylingModeMainScreen:
-            [tableView alignTop:@"10" leading:@"10" bottom:@"0" trailing:@"10" toView:contentView];
-            break;
-        case ARSearchViewControllerStylingModeFair:
-            [tableView alignToView:contentView];
-            break;
-    }
+    [tableView alignTop:@"10" leading:@"10" bottom:@"0" trailing:@"10" toView:contentView];
 }
 
 @end
