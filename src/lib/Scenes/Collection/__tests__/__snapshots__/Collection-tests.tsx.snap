@@ -13,6 +13,562 @@ exports[`Collection Renders collection  correctly 1`] = `
       <CollectionHeader
         collection={
           Object {
+            " $refType": "CollectionArtworkPreview_collection",
+            "artworks": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "carolyn-brady",
+                        "name": "Carolyn Brady",
+                      },
+                    ],
+                    "date": "1997",
+                    "href": "/artwork/carolyn-brady-stourhead-across-the-lake",
+                    "id": "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U=",
+                    "image": Object {
+                      "aspect_ratio": 1.53,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/tH19ZfyCDocnNsKzXOZfHg/medium.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$15,000",
+                    "slug": "carolyn-brady-stourhead-across-the-lake",
+                    "title": "Stourhead Across the Lake",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "robert-harms",
+                        "name": "Robert Harms",
+                      },
+                    ],
+                    "date": "1998",
+                    "href": "/artwork/robert-harms-bluff-road",
+                    "id": "QXJ0d29yazpyb2JlcnQtaGFybXMtYmx1ZmYtcm9hZA==",
+                    "image": Object {
+                      "aspect_ratio": 1,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/xU1Y9RXzBJ0TY6G0ZvbHHw/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "Sold",
+                    "slug": "robert-harms-bluff-road",
+                    "title": "Bluff Road",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "jim-dine",
+                        "name": "Jim Dine",
+                      },
+                    ],
+                    "date": "1961",
+                    "href": "/artwork/jim-dine-an-informal-tie",
+                    "id": "QXJ0d29yazpqaW0tZGluZS1hbi1pbmZvcm1hbC10aWU=",
+                    "image": Object {
+                      "aspect_ratio": 0.51,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/dBBr15AyJ13x5heIyctJIA/tall.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$14,000",
+                    "slug": "jim-dine-an-informal-tie",
+                    "title": "An Informal Tie",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "richard-diebenkorn",
+                        "name": "Richard Diebenkorn",
+                      },
+                    ],
+                    "date": "1987",
+                    "href": "/artwork/richard-diebenkorn-blue-with-red-15",
+                    "id": "QXJ0d29yazpyaWNoYXJkLWRpZWJlbmtvcm4tYmx1ZS13aXRoLXJlZC0xNQ==",
+                    "image": Object {
+                      "aspect_ratio": 0.71,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/txGh8F3S_CDBKt6QPtjIBw/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "Sold",
+                    "slug": "richard-diebenkorn-blue-with-red-15",
+                    "title": "Blue with Red",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "karel-appel",
+                        "name": "Karel Appel",
+                      },
+                    ],
+                    "date": "1960",
+                    "href": "/artwork/karel-appel-happy-ghost",
+                    "id": "QXJ0d29yazprYXJlbC1hcHBlbC1oYXBweS1naG9zdA==",
+                    "image": Object {
+                      "aspect_ratio": 0.78,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/SUPKae4rRR1ZWs5mc70QJg/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$6,000",
+                    "slug": "karel-appel-happy-ghost",
+                    "title": "Happy Ghost",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "nell-blaine",
+                        "name": "Nell Blaine",
+                      },
+                    ],
+                    "date": "1989",
+                    "href": "/artwork/nell-blaine-august-light",
+                    "id": "QXJ0d29yazpuZWxsLWJsYWluZS1hdWd1c3QtbGlnaHQ=",
+                    "image": Object {
+                      "aspect_ratio": 1.46,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/P_4Avd1FcPjMKJ_aJFA1WQ/medium.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$10,000",
+                    "slug": "nell-blaine-august-light",
+                    "title": "August Light",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "bruce-beasley",
+                        "name": "Bruce Beasley",
+                      },
+                    ],
+                    "date": "1999",
+                    "href": "/artwork/bruce-beasley-voyager",
+                    "id": "QXJ0d29yazpicnVjZS1iZWFzbGV5LXZveWFnZXI=",
+                    "image": Object {
+                      "aspect_ratio": 0.71,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/m7N4jeFJJr3FdFqU_0YDRg/medium.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "Sold",
+                    "slug": "bruce-beasley-voyager",
+                    "title": "Voyager",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "sam-francis",
+                        "name": "Sam Francis",
+                      },
+                    ],
+                    "date": "1974",
+                    "href": "/artwork/sam-francis-under-blue-3",
+                    "id": "QXJ0d29yazpzYW0tZnJhbmNpcy11bmRlci1ibHVlLTM=",
+                    "image": Object {
+                      "aspect_ratio": 1.35,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/gz2wa9iBcZKB0ut6gMED1w/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$12,000",
+                    "slug": "sam-francis-under-blue-3",
+                    "title": "Under Blue",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "carolyn-brady",
+                        "name": "Carolyn Brady",
+                      },
+                    ],
+                    "date": "1999",
+                    "href": "/artwork/carolyn-brady-tamarind",
+                    "id": "QXJ0d29yazpjYXJvbHluLWJyYWR5LXRhbWFyaW5k",
+                    "image": Object {
+                      "aspect_ratio": 1.33,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/tkm-BtRS1igRoRUx5SdOOA/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$4,500",
+                    "slug": "carolyn-brady-tamarind",
+                    "title": "Tamarind",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "robert-motherwell",
+                        "name": "Robert Motherwell",
+                      },
+                    ],
+                    "date": "2000",
+                    "href": "/artwork/robert-motherwell-number-8",
+                    "id": "QXJ0d29yazpyb2JlcnQtbW90aGVyd2VsbC1udW1iZXItOA==",
+                    "image": Object {
+                      "aspect_ratio": 0.72,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/u-Onw4lFPIgSERW9vkizjA/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$6,000",
+                    "slug": "robert-motherwell-number-8",
+                    "title": "Number 8",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "ellsworth-kelly",
+                        "name": "Ellsworth Kelly",
+                      },
+                    ],
+                    "date": "2000",
+                    "href": "/artwork/ellsworth-kelly-green-curve-14",
+                    "id": "QXJ0d29yazplbGxzd29ydGgta2VsbHktZ3JlZW4tY3VydmUtMTQ=",
+                    "image": Object {
+                      "aspect_ratio": 0.74,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/Cut7VPHWKBilZ5Ivj5vJIg/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$10,500",
+                    "slug": "ellsworth-kelly-green-curve-14",
+                    "title": "Green Curve",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "wolf-kahn",
+                        "name": "Wolf Kahn",
+                      },
+                    ],
+                    "date": "1987",
+                    "href": "/artwork/wolf-kahn-in-ipswich-mass",
+                    "id": "QXJ0d29yazp3b2xmLWthaG4taW4taXBzd2ljaC1tYXNz",
+                    "image": Object {
+                      "aspect_ratio": 1.35,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/qY9kBnLdh2EPkPZK8VuAaA/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$9,500",
+                    "slug": "wolf-kahn-in-ipswich-mass",
+                    "title": "In Ipswich, Mass",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "david-hockney",
+                        "name": "David Hockney",
+                      },
+                    ],
+                    "date": "1983",
+                    "href": "/artwork/david-hockney-my-pool-and-terrace-4",
+                    "id": "QXJ0d29yazpkYXZpZC1ob2NrbmV5LW15LXBvb2wtYW5kLXRlcnJhY2UtNA==",
+                    "image": Object {
+                      "aspect_ratio": 1.48,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/05rL1DSRwbn9t43xoYkiLg/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "Sold",
+                    "slug": "david-hockney-my-pool-and-terrace-4",
+                    "title": "My Pool & Terrace",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "wolf-kahn",
+                        "name": "Wolf Kahn",
+                      },
+                    ],
+                    "date": "1989",
+                    "href": "/artwork/wolf-kahn-orchard-at-dusk",
+                    "id": "QXJ0d29yazp3b2xmLWthaG4tb3JjaGFyZC1hdC1kdXNr",
+                    "image": Object {
+                      "aspect_ratio": 1.25,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/7YGi2ogpyQW4Vl9gorV0dQ/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$8,000",
+                    "slug": "wolf-kahn-orchard-at-dusk",
+                    "title": "Orchard at Dusk",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "hans-hofmann",
+                        "name": "Hans Hofmann",
+                      },
+                    ],
+                    "date": "1942",
+                    "href": "/artwork/hans-hofmann-untitled-221",
+                    "id": "QXJ0d29yazpoYW5zLWhvZm1hbm4tdW50aXRsZWQtMjIx",
+                    "image": Object {
+                      "aspect_ratio": 0.82,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/WPV9hXX5oms437ujKpPdGg/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$5,000",
+                    "slug": "hans-hofmann-untitled-221",
+                    "title": "Untitled",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "polly-apfelbaum",
+                        "name": "Polly Apfelbaum",
+                      },
+                    ],
+                    "date": "",
+                    "href": "/artwork/polly-apfelbaum-love-me-tender-ii",
+                    "id": "QXJ0d29yazpwb2xseS1hcGZlbGJhdW0tbG92ZS1tZS10ZW5kZXItaWk=",
+                    "image": Object {
+                      "aspect_ratio": 1,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/HPFxUT7W1lV6UwRu3PvlRQ/larger.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "Sold",
+                    "slug": "polly-apfelbaum-love-me-tender-ii",
+                    "title": "Love Me Tender II",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "bridget-riley",
+                        "name": "Bridget Riley",
+                      },
+                    ],
+                    "date": "1977",
+                    "href": "/artwork/bridget-riley-blue-dominance",
+                    "id": "QXJ0d29yazpicmlkZ2V0LXJpbGV5LWJsdWUtZG9taW5hbmNl",
+                    "image": Object {
+                      "aspect_ratio": 0.5,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/SvWPlpYA25k-5Kje-Lp8rg/medium.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "$15,000",
+                    "slug": "bridget-riley-blue-dominance",
+                    "title": "Blue Dominance",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "pablo-picasso",
+                        "name": "Pablo Picasso",
+                      },
+                    ],
+                    "date": "1933",
+                    "href": "/artwork/pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
+                    "id": "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
+                    "image": Object {
+                      "aspect_ratio": 1.21,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/leU66mGhe0D2OvMQmGRt4Q/large_rectangle.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "Sold",
+                    "slug": "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
+                    "title": "Model Contemplating a Group of Sculptures (Modele Contemplant Un Groupe Sculpte)",
+                  },
+                },
+                Object {
+                  "node": Object {
+                    "artists": Array [
+                      Object {
+                        "id": "dale-chihuly",
+                        "name": "Dale Chihuly",
+                      },
+                    ],
+                    "date": "",
+                    "href": "/artwork/dale-chihuly-celtic-emerald-persian-pair",
+                    "id": "QXJ0d29yazpkYWxlLWNoaWh1bHktY2VsdGljLWVtZXJhbGQtcGVyc2lhbi1wYWly",
+                    "image": Object {
+                      "aspect_ratio": 1.5,
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/6hN0QtT-BQE2y8LGhiI3EA/medium.jpg",
+                    },
+                    "is_acquireable": false,
+                    "is_biddable": false,
+                    "is_offerable": false,
+                    "partner": Object {
+                      "id": "anderson-fine-art-gallery",
+                      "name": "Anderson Fine Art Gallery",
+                    },
+                    "sale": null,
+                    "sale_artwork": null,
+                    "sale_message": "Sold",
+                    "slug": "dale-chihuly-celtic-emerald-persian-pair",
+                    "title": "Celtic Emerald Persian Pair",
+                  },
+                },
+              ],
+            },
             "description": "<p>From <a href=\\"https://www.someartsyimage.net/artist/jean-michel-basquiat\\">Jean-Michel Basquiat</a> to <a href=\\"https://www.someartsyimage.net/artist/shepard-fairey\\">Shepard Fairey</a>, street artists are known for their creative expressions of rebellion.</p>",
             "headerImage": "http://imageuploadedbymarketingteam.jpg",
             "image": Object {
@@ -36,6 +592,12 @@ exports[`Collection Renders collection  correctly 1`] = `
             "artists": Array [],
           },
           "type": "featuredArtists",
+        },
+        Object {
+          "data": Object {
+            "artworks": Array [],
+          },
+          "type": "artworkPreview",
         },
       ]
     }
@@ -103,27 +665,6 @@ exports[`Collection Renders collection  correctly 1`] = `
         >
           Street Art Now
         </Text>
-        <Text
-          color="#000"
-          fontFamily="ReactNativeAGaramondPro-Regular"
-          fontSize="18px"
-          lineHeight="26px"
-          mt={2}
-          style={
-            Array [
-              Object {
-                "color": "#000",
-                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                "fontSize": 18,
-                "lineHeight": 26,
-                "marginTop": 20,
-              },
-              Object {},
-            ]
-          }
-        >
-          &lt;p&gt;From &lt;a href="https://www.someartsyimage.net/artist/jean-michel-basquiat"&gt;Jean-Michel Basquiat&lt;/a&gt; to &lt;a href="https://www.someartsyimage.net/artist/shepard-fairey"&gt;Shepard Fairey&lt;/a&gt;, street artists are known for their creative expressions of rebellion.&lt;/p&gt;
-        </Text>
       </View>
       <View
         onLayout={[Function]}
@@ -169,6 +710,60 @@ exports[`Collection Renders collection  correctly 1`] = `
           </View>
         </View>
       </View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          pb={2}
+          px={2}
+          style={
+            Array [
+              Object {
+                "paddingBottom": 20,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+              },
+            ]
+          }
+        >
+          <View
+            mb={4}
+            style={
+              Array [
+                Object {
+                  "borderBottomWidth": 0,
+                  "borderColor": "#E5E5E5",
+                  "borderStyle": "solid",
+                  "borderWidth": 1,
+                  "marginBottom": 40,
+                  "width": "100%",
+                },
+              ]
+            }
+            width="100%"
+          />
+          <View
+            onLayout={[Function]}
+          >
+            <View
+              accessibilityLabel="Artworks Content View"
+              style={
+                Object {
+                  "flexDirection": "row",
+                }
+              }
+            />
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "height": 0,
+          }
+        }
+      />
     </View>
   </RCTScrollView>
 </View>

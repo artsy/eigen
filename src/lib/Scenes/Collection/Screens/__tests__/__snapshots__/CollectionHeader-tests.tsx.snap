@@ -39,26 +39,5 @@ Array [
   >
     Street Art Now
   </Text>,
-  <Text
-    color="#000"
-    fontFamily="ReactNativeAGaramondPro-Regular"
-    fontSize="18px"
-    lineHeight="26px"
-    mt={2}
-    style={
-      Array [
-        Object {
-          "color": "#000",
-          "fontFamily": "ReactNativeAGaramondPro-Regular",
-          "fontSize": 18,
-          "lineHeight": 26,
-          "marginTop": 8,
-        },
-        Object {},
-      ]
-    }
-  >
-    &lt;p&gt;From &lt;a href="https://www.someartsyimage.net/artist/jean-michel-basquiat"&gt;Jean-Michel Basquiat&lt;/a&gt; to &lt;a href="https://www.someartsyimage.net/artist/shepard-fairey"&gt;Shepard Fairey&lt;/a&gt;, street artists are known for their creative expressions of rebellion.&lt;/p&gt;
-  </Text>,
 ]
 `;

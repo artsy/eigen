@@ -1,6 +1,7 @@
 import { Separator } from "@artsy/palette"
 import { CollectionArtworkPreview_collection } from "__generated__/CollectionArtworkPreview_collection.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { get } from "lib/utils/get"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -10,11 +11,13 @@ interface Props {
 
 export class CollectionArtworkPreview extends React.Component<Props> {
   render() {
+    let artworks
     const { collection } = this.props
     if (!collection) {
       return null
     }
-    const artworks = collection.artworks.edges.map(({ node }) => node)
+    const collectionArtworks = get(collection.artworks, artwork => artwork.edges, [])
+    artworks = collectionArtworks.map(({ node }) => node)
 
     return (
       <>
