@@ -23,6 +23,7 @@
 #import "Partner.h"
 #import "PartnerShow.h"
 #import "Profile.h"
+#import "SearchResult.h"
 #import "ARAnalyticsVisualizer.h"
 #import "ARAppNotificationsDelegate.h"
 
