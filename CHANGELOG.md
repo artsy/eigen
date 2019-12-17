@@ -1,3 +1,15 @@
+# v1.20.1 (Tue Dec 17 2019)
+
+#### 🐛  Bug Fix
+
+- Correct the punctuation for e.g. Phillips [#2017](https://github.com/artsy/emission/pull/2017) ([@yuki24](https://github.com/yuki24))
+
+#### Authors: 1
+
+- Yuki Nishijima ([@yuki24](https://github.com/yuki24))
+
+---
+
 # v1.20.0 (Mon Dec 16 2019)
 
 #### 🚀  Enhancement
