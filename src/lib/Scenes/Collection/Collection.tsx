@@ -9,7 +9,6 @@ import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from 
 
 interface CollectionProps {
   collection: Collection_collection
-  artworks: any
 }
 
 interface CollectionState {

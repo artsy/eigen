@@ -1,11 +1,13 @@
 import { Box, Button, EntityHeader, Flex, Sans } from "@artsy/palette"
+import { FeaturedArtists_featuredArtists } from "__generated__/FeaturedArtists_featuredArtists.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { get } from "lib/utils/get"
 import React from "react"
 import { TouchableHighlight, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface FeaturedArtistsProps {
-  featuredArtists: any
+  featuredArtists: FeaturedArtists_featuredArtists
 }
 
 interface FeaturedArtistsState {
@@ -21,7 +23,9 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
     SwitchBoard.presentNavigationViewController(context, href)
   }
 
-  getFeaturedArtistEntityCollection = (artists: any) => {
+  getFeaturedArtistEntityCollection = (
+    artists: FeaturedArtists_featuredArtists["artworksConnection"]["merchandisableArtists"]
+  ) => {
     return artists.map((artist, index) => {
       const hasArtistMetaData = artist.nationality && artist.birthday
       return (
@@ -34,11 +38,11 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
               href={`/artist/${artist.slug}`}
               FollowButton={
                 <Button
-                  variant={artist.isfollowed ? "primaryBlack" : "secondaryOutline"}
+                  variant={artist.isFollowed ? "primaryBlack" : "secondaryOutline"}
                   size="small"
                   longestText="Following"
                 >
-                  {artist.isfollowed ? "Following" : "Follow"}
+                  {artist.isFollowed ? "Following" : "Follow"}
                 </Button>
               }
             />
@@ -49,9 +53,13 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
   }
 
   render() {
-    const { featuredArtists } = this.props
-    const artists = featuredArtists.artworksConnection.merchandisableArtists
+    const artists = get(this.props, p => p.featuredArtists.artworksConnection.merchandisableArtists)
+    if (!artists) {
+      return null
+    }
+
     const hasMultipleArtists = artists.length > 1
+
     const artistCount = 3
     const remainingCount = artists.length - artistCount
     const truncatedArtists = this.getFeaturedArtistEntityCollection(artists).slice(0, artistCount)
@@ -63,7 +71,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
           {headlineLabel}
         </Sans>
         <Flex flexWrap="wrap">
-          {this.state.showMore || featuredArtists.length <= artistCount ? (
+          {this.state.showMore || artists.length <= artistCount ? (
             this.getFeaturedArtistEntityCollection(artists)
           ) : (
             <>
@@ -86,6 +94,8 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FeaturedArtists, {
   featuredArtists: graphql`
     fragment FeaturedArtists_featuredArtists on MarketingCollection {
+      # TODO: size:9 is not actually limiting to 9 items. We need to figure out
+      #  why the back-end is not respecting that argument.
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 9, sort: "-decayed_merch") {
         merchandisableArtists {
           slug
@@ -100,19 +110,3 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
     }
   `,
 })
-
-// artworks: graphql`
-//     fragment Collection_artworks on MarketingCollection {
-//       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 20, sort: "-decayed_merch") {
-//         # ...FeaturedArtists_featuredArtists
-//         merchandisableArtists {
-//           slug
-//           internalID
-//           name
-//           imageUrl
-//           birthday
-//           nationality
-//         }
-//       }
-//     }
-//   `,
