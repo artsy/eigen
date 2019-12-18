@@ -1,3 +1,15 @@
+# v1.20.2 (Wed Dec 18 2019)
+
+#### 🐛  Bug Fix
+
+- Updates shows to use coverImage [#2016](https://github.com/artsy/emission/pull/2016) ([@kierangillen](https://github.com/kierangillen))
+
+#### Authors: 1
+
+- Kieran Gillen ([@kierangillen](https://github.com/kierangillen))
+
+---
+
 # v1.20.1 (Tue Dec 17 2019)
 
 #### 🐛  Bug Fix
