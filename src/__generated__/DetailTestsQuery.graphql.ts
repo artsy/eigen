@@ -30,6 +30,10 @@ export type DetailTestsQueryRawResponse = {
             readonly __typename: string | null;
             readonly id: string | null;
         }) | null;
+        readonly coverImage: ({
+            readonly url: string | null;
+            readonly aspect_ratio: number;
+        }) | null;
         readonly images: ReadonlyArray<({
             readonly url: string | null;
             readonly aspect_ratio: number;
@@ -264,6 +268,10 @@ fragment ShowHeader_show on Show {
     ... on ExternalPartner {
       id
     }
+  }
+  coverImage {
+    url
+    aspect_ratio: aspectRatio
   }
   images {
     url
@@ -536,38 +544,42 @@ v11 = {
   "args": null,
   "storageKey": null
 },
-v12 = {
+v12 = [
+  (v10/*: any*/),
+  (v11/*: any*/)
+],
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "initials",
   "args": null,
   "storageKey": null
 },
-v13 = {
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "nationality",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v15 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "birthday",
   "args": null,
   "storageKey": null
 },
-v15 = {
+v16 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "deathday",
   "args": null,
   "storageKey": null
 },
-v16 = [
+v17 = [
   (v10/*: any*/)
 ],
-v17 = {
+v18 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -575,9 +587,9 @@ v17 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": (v16/*: any*/)
+  "selections": (v17/*: any*/)
 },
-v18 = [
+v19 = [
   (v4/*: any*/),
   (v3/*: any*/)
 ];
@@ -675,15 +687,22 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "coverImage",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": (v12/*: any*/)
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "images",
             "storageKey": null,
             "args": null,
             "concreteType": "Image",
             "plural": true,
-            "selections": [
-              (v10/*: any*/),
-              (v11/*: any*/)
-            ]
+            "selections": (v12/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -754,12 +773,12 @@ return {
               (v2/*: any*/),
               (v1/*: any*/),
               (v3/*: any*/),
-              (v12/*: any*/),
-              (v5/*: any*/),
               (v13/*: any*/),
+              (v5/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
-              (v17/*: any*/)
+              (v16/*: any*/),
+              (v18/*: any*/)
             ]
           },
           {
@@ -966,7 +985,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v18/*: any*/)
+                        "selections": (v19/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -976,7 +995,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v18/*: any*/)
+                        "selections": (v19/*: any*/)
                       },
                       (v9/*: any*/)
                     ]
@@ -999,12 +1018,12 @@ return {
               (v2/*: any*/),
               (v9/*: any*/),
               (v4/*: any*/),
-              (v12/*: any*/),
-              (v5/*: any*/),
               (v13/*: any*/),
+              (v5/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
-              (v17/*: any*/)
+              (v16/*: any*/),
+              (v18/*: any*/)
             ]
           },
           {
@@ -1054,7 +1073,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": true,
-                        "selections": (v16/*: any*/)
+                        "selections": (v17/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -1263,7 +1282,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "DetailTestsQuery",
-    "id": "e8b9d1e8261793ccc06cc346f5a15716",
+    "id": "3246783c98a187d39b92d8b24bb6fddc",
     "text": null,
     "metadata": {}
   }

@@ -942,6 +942,10 @@ export const ShowFixture: ShowArtworksTestsQueryRawResponse["show"] &
       aspect_ratio: 0.87,
     },
   ],
+  coverImage: {
+    url: "https://d32dm0rphc51dk.cloudfront.net/Bu7ONuoTlR-PLZDUjs6ZTA/medium.jpg",
+    aspect_ratio: 0.87,
+  },
   filterArtworksConnection: {
     id: "skfjhsfkljsdfsfsdjkll",
     pageInfo: {

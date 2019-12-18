@@ -128,17 +128,17 @@ export class ShowHeader extends React.Component<Props, State> {
   render() {
     const { isFollowedSaving } = this.state
     const {
-      show: { artists, images, is_followed, name, partner, followedArtists, end_at, exhibition_period },
+      show: { artists, images, is_followed, name, partner, followedArtists, end_at, exhibition_period, coverImage },
     } = this.props
     const fairfollowedArtistList =
       (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
     const uniqArtistList = uniq(fairfollowedArtistList.concat(artists))
-    const hasImages = !!images.length
-    const singleImage = hasImages && images.length === 1
+    const displayImageCarousel = !!images && !!images.length && images.length > 1
+    const singleImage = !!images && images.length === 1 ? images[0] : coverImage
 
     return (
       <>
-        <Box px={2} pt={5} pb={hasImages ? 0 : 4}>
+        <Box px={2} pt={5} pb={displayImageCarousel ? 0 : 4}>
           <Spacer m={2} />
           <TouchableWithoutFeedback onPress={this.handlePartnerTitleClick}>
             <Sans size="3" mb={0.5} weight="medium">
@@ -150,24 +150,24 @@ export class ShowHeader extends React.Component<Props, State> {
           </Serif>
           {!!exhibition_period && <Sans size="3">{exhibitionDates(exhibition_period, end_at)}</Sans>}
         </Box>
-        {!!hasImages &&
-          !singleImage && (
-            <Carousel
-              sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
-                imageURL,
-                aspectRatio,
-              }))}
-              onScrollEndDrag={e => {
-                if (e.nativeEvent.velocity.x > 0) {
-                  this.handleUserSwipingCarousel()
-                }
-              }}
-            />
-          )}
-        {!!singleImage && (
-          <Box px={2} py={2}>
-            <OpaqueImageView imageURL={images[0].url} aspectRatio={images[0].aspect_ratio} />
-          </Box>
+        {displayImageCarousel ? (
+          <Carousel
+            sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
+              imageURL,
+              aspectRatio,
+            }))}
+            onScrollEndDrag={e => {
+              if (e.nativeEvent.velocity.x > 0) {
+                this.handleUserSwipingCarousel()
+              }
+            }}
+          />
+        ) : (
+          !!singleImage && (
+            <Box px={2} py={2}>
+              <OpaqueImageView imageURL={singleImage.url} aspectRatio={singleImage.aspect_ratio} />
+            </Box>
+          )
         )}
         <Box px={2}>
           <EntityList
@@ -212,6 +212,10 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
           slug
           href
         }
+      }
+      coverImage {
+        url
+        aspect_ratio: aspectRatio
       }
       images {
         url

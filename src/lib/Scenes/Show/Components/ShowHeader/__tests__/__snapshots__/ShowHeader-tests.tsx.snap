@@ -3,13 +3,13 @@
 exports[`looks correct when rendered 1`] = `
 Array [
   <View
-    pb={0}
+    pb={4}
     pt={5}
     px={2}
     style={
       Array [
         Object {
-          "paddingBottom": 0,
+          "paddingBottom": 40,
           "paddingLeft": 20,
           "paddingRight": 20,
           "paddingTop": 5,
