@@ -83,6 +83,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
     fragment Collection_collection on MarketingCollection {
       ...CollectionHeader_collection
       ...CollectionArtworkPreview_collection
+      ...CollectionArtworks_collection
     }
   `,
 })
