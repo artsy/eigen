@@ -47,7 +47,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       case "collectionFeaturedArtists":
         return (
           <Box>
-            <CollectionFeaturedArtists featuredArtists={this.props.collection} />
+            <CollectionFeaturedArtists collection={this.props.collection} />
           </Box>
         )
       case "collectionArtworks":
@@ -84,7 +84,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
     fragment Collection_collection on MarketingCollection {
       ...CollectionHeader_collection
       ...CollectionArtworks_collection
-      ...FeaturedArtists_featuredArtists
+      ...FeaturedArtists_collection
     }
   `,
 })

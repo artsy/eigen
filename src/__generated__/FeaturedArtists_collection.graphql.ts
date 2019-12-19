@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-export type FeaturedArtists_featuredArtists = {
+export type FeaturedArtists_collection = {
     readonly artworksConnection: {
         readonly merchandisableArtists: ReadonlyArray<{
             readonly slug: string;
@@ -13,14 +13,14 @@ export type FeaturedArtists_featuredArtists = {
             readonly isFollowed: boolean | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "FeaturedArtists_featuredArtists";
+    readonly " $refType": "FeaturedArtists_collection";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "FeaturedArtists_featuredArtists",
+  "name": "FeaturedArtists_collection",
   "type": "MarketingCollection",
   "metadata": null,
   "argumentDefinitions": [],
@@ -116,5 +116,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd761d95392f0c514f0580ed05c2909a6';
+(node as any).hash = '689e9257db52b272b67d5e328d9bcb9a';
 export default node;

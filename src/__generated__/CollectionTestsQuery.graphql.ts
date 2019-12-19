@@ -26,7 +26,7 @@ query CollectionTestsQuery {
 fragment Collection_collection on MarketingCollection {
   ...CollectionHeader_collection
   ...CollectionArtworks_collection
-  ...FeaturedArtists_featuredArtists
+  ...FeaturedArtists_collection
 }
 
 fragment CollectionHeader_collection on MarketingCollection {
@@ -63,7 +63,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   }
 }
 
-fragment FeaturedArtists_featuredArtists on MarketingCollection {
+fragment FeaturedArtists_collection on MarketingCollection {
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 9, sort: "-decayed_merch") {
     merchandisableArtists {
       slug
@@ -689,7 +689,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "5dacbc111c0a9bce53694a2368c15cf4",
+    "id": "b97b43de68e78cf1e51452b5e99e578f",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {

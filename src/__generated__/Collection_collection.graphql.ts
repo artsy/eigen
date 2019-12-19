@@ -3,7 +3,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Collection_collection = {
-    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "FeaturedArtists_featuredArtists">;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "FeaturedArtists_collection">;
     readonly " $refType": "Collection_collection";
 };
 
@@ -28,10 +28,10 @@ const node: ReaderFragment = {
     },
     {
       "kind": "FragmentSpread",
-      "name": "FeaturedArtists_featuredArtists",
+      "name": "FeaturedArtists_collection",
       "args": null
     }
   ]
 };
-(node as any).hash = '648faa62b42cab83520e98399994c70d';
+(node as any).hash = '3fa152348315c51452af9cc7a446a147';
 export default node;

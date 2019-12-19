@@ -1,5 +1,5 @@
 import { Box, Button, EntityHeader, Flex, Sans } from "@artsy/palette"
-import { FeaturedArtists_featuredArtists } from "__generated__/FeaturedArtists_featuredArtists.graphql"
+import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import React from "react"
@@ -7,7 +7,7 @@ import { TouchableHighlight, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface FeaturedArtistsProps {
-  featuredArtists: FeaturedArtists_featuredArtists
+  collection: FeaturedArtists_collection
 }
 
 interface FeaturedArtistsState {
@@ -24,7 +24,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
   }
 
   getFeaturedArtistEntityCollection = (
-    artists: FeaturedArtists_featuredArtists["artworksConnection"]["merchandisableArtists"]
+    artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
   ) => {
     return artists.map((artist, index) => {
       const hasArtistMetaData = artist.nationality && artist.birthday
@@ -53,7 +53,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
   }
 
   render() {
-    const artists = get(this.props, p => p.featuredArtists.artworksConnection.merchandisableArtists)
+    const artists = get(this.props, p => p.collection.artworksConnection.merchandisableArtists)
     if (!artists) {
       return null
     }
@@ -92,8 +92,8 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
 }
 
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FeaturedArtists, {
-  featuredArtists: graphql`
-    fragment FeaturedArtists_featuredArtists on MarketingCollection {
+  collection: graphql`
+    fragment FeaturedArtists_collection on MarketingCollection {
       # TODO: size:9 is not actually limiting to 9 items. We need to figure out
       #  why the back-end is not respecting that argument.
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 9, sort: "-decayed_merch") {
