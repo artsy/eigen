@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Collection Renders collection  correctly 1`] = `
+exports[`Collection Renders collection correctly 1`] = `
 <View
   style={
     Array [
@@ -13,7 +13,6 @@ exports[`Collection Renders collection  correctly 1`] = `
       <CollectionHeader
         collection={
           Object {
-            " $refType": "CollectionArtworkPreview_collection",
             "artworks": Object {
               "edges": Array [
                 Object {
@@ -568,17 +567,20 @@ exports[`Collection Renders collection  correctly 1`] = `
                   },
                 },
               ],
+              "id": "some-id",
             },
-            "description": "<p>From <a href=\\"https://www.someartsyimage.net/artist/jean-michel-basquiat\\">Jean-Michel Basquiat</a> to <a href=\\"https://www.someartsyimage.net/artist/shepard-fairey\\">Shepard Fairey</a>, street artists are known for their creative expressions of rebellion.</p>",
             "headerImage": "http://imageuploadedbymarketingteam.jpg",
+            "id": "top-level-id",
             "image": Object {
               "edges": Array [
                 Object {
                   "node": Object {
+                    "id": "an-id",
                     "imageUrl": "https://defaultmostmarketableartworkincollectionimage.jpg",
                   },
                 },
               ],
+              "id": "another-id",
             },
             "title": "Street Art Now",
           }

@@ -1,21 +1,35 @@
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import * as renderer from "react-test-renderer"
-import { CollectionFixture } from "../../Components/__fixtures__/index"
-import { CollectionHeader } from "../CollectionHeader"
+import { graphql } from "react-relay"
+import { CollectionFixture } from "../../Components/__fixtures__/CollectionFixture"
+import { CollectionHeader, CollectionHeaderContainer } from "../CollectionHeader"
 
-describe("CollectionHeader", () => {
+jest.unmock("react-relay")
+
+it("renders a snapshot of the collection header", async () => {
+  const tree = await renderRelayTree({
+    Component: (props: any) => <CollectionHeaderContainer collection={props.marketingCollection} {...props} />,
+    query: graphql`
+      query CollectionHeaderTestsQuery @raw_response_type {
+        marketingCollection(slug: "street-art-now") {
+          ...CollectionHeader_collection
+        }
+      }
+    `,
+    mockData: { marketingCollection: CollectionFixture },
+  })
+
+  expect(tree.html()).toMatchSnapshot()
+})
+
+describe("collection header", () => {
   let props
   beforeEach(() => {
     props = {
-      ...CollectionFixture,
+      collection: { ...CollectionFixture },
     }
-  })
-
-  it("Renders collection header correctly", () => {
-    const component = renderer.create(<CollectionHeader {...props} />)
-    expect(component).toMatchSnapshot()
   })
 
   it("passes the collection header image url to collection header", () => {
