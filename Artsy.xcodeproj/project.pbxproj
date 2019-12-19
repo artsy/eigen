@@ -717,7 +717,6 @@
 		E61B703919904D9F00260D29 /* ARTopTapThroughTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E61B703819904D9F00260D29 /* ARTopTapThroughTableView.m */; };
 		E61E772619A5477300C55E14 /* ARExpectaExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = E61E772519A5477300C55E14 /* ARExpectaExtensions.m */; };
 		E620C74819C746530064A0FF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E620C74719C746530064A0FF /* Images.xcassets */; };
-		E63C796C198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E63C796B198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m */; };
 		E649708918D7762F009DB0C4 /* ARImageItemProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E649708818D7762F009DB0C4 /* ARImageItemProviderTests.m */; };
 		E6543CDB18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6543CDA18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png */; };
 		E655E4B8194B4BEF00F2B7DA /* ARArtworkFavoritesNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E655E4B7194B4BEF00F2B7DA /* ARArtworkFavoritesNetworkModelTests.m */; };
@@ -1911,7 +1910,6 @@
 		E61E772419A5477300C55E14 /* ARExpectaExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARExpectaExtensions.h; sourceTree = "<group>"; };
 		E61E772519A5477300C55E14 /* ARExpectaExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExpectaExtensions.m; sourceTree = "<group>"; };
 		E620C74719C746530064A0FF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		E63C796B198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkRelatedArtworksViewTests.m; sourceTree = "<group>"; };
 		E649708818D7762F009DB0C4 /* ARImageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageItemProviderTests.m; sourceTree = "<group>"; };
 		E6543CDA18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Parallax_Overlay_Bottom@2x.png"; sourceTree = "<group>"; };
 		E655E4B7194B4BEF00F2B7DA /* ARArtworkFavoritesNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkFavoritesNetworkModelTests.m; sourceTree = "<group>"; };
@@ -4391,7 +4389,6 @@
 				E67E1DB119475642004252E0 /* ARAnimatedTickViewTest.m */,
 				3CB9A20C18F303B20056C72B /* ARArtworkActionsViewTests.m */,
 				342F9F3C689C41D4B941B665 /* ARArtworkDetailViewTests.m */,
-				E63C796B198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m */,
 				3C11CD27189B07810060B26B /* ARAspectRatioImageViewTests.m */,
 				3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */,
 				5EA250621C4EDBE7001E4950 /* ARCountdownViewTests.m */,
@@ -5559,7 +5556,6 @@
 				51B4BA461C6A2B710014A394 /* AuctionSaleArtworksNetworkModelTests.swift in Sources */,
 				3C6BDCBD18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m in Sources */,
 				3CB37D991922483100089A1D /* ArtsyAPI+ErrorHandlers.m in Sources */,
-				E63C796C198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m in Sources */,
 				3C11CD28189B07810060B26B /* ARAspectRatioImageViewTests.m in Sources */,
 				60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */,
 				3CF144AB18E460BE00B1A764 /* ArtsyAPI+SystemTimeTests.m in Sources */,
