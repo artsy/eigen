@@ -5,7 +5,6 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -21,11 +20,15 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -38,46 +41,55 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -97,11 +109,15 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -114,46 +130,55 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -173,11 +198,15 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -190,46 +219,55 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -249,11 +287,15 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -266,46 +308,55 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -325,11 +376,15 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -342,46 +397,55 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -401,11 +465,15 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -418,46 +486,55 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -477,11 +554,15 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -491,7 +572,6 @@ exports[`TODO states: Looks right when With Artist 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -507,11 +587,15 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -524,46 +608,55 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -586,11 +679,15 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -603,46 +700,55 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -662,11 +768,15 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -679,46 +789,55 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -738,11 +857,15 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -755,46 +878,55 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -814,11 +946,15 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -831,46 +967,55 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -890,11 +1035,15 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -907,46 +1056,55 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -966,11 +1124,15 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -980,7 +1142,6 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -996,11 +1157,15 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1013,46 +1178,55 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1072,11 +1246,15 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1089,46 +1267,55 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1148,11 +1335,15 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1165,46 +1356,55 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -1227,11 +1427,15 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1244,46 +1448,55 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1303,11 +1516,15 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1320,46 +1537,55 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1379,11 +1605,15 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1396,46 +1626,55 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1455,11 +1694,15 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -1469,7 +1712,6 @@ exports[`TODO states: Looks right when With Location 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -1485,11 +1727,15 @@ exports[`TODO states: Looks right when With Location 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1502,46 +1748,55 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -1564,11 +1819,15 @@ exports[`TODO states: Looks right when With Location 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1581,46 +1840,55 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -1643,11 +1911,15 @@ exports[`TODO states: Looks right when With Location 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1660,46 +1932,55 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -1722,11 +2003,15 @@ exports[`TODO states: Looks right when With Location 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1739,46 +2024,55 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1798,11 +2092,15 @@ exports[`TODO states: Looks right when With Location 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1815,46 +2113,55 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1874,11 +2181,15 @@ exports[`TODO states: Looks right when With Location 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1891,46 +2202,55 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -1950,11 +2270,15 @@ exports[`TODO states: Looks right when With Location 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -1964,7 +2288,6 @@ exports[`TODO states: Looks right when With Long 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -1980,11 +2303,15 @@ exports[`TODO states: Looks right when With Long 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -1997,46 +2324,55 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2056,11 +2392,15 @@ exports[`TODO states: Looks right when With Long 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2073,46 +2413,55 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2132,11 +2481,15 @@ exports[`TODO states: Looks right when With Long 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2149,46 +2502,55 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2208,11 +2570,15 @@ exports[`TODO states: Looks right when With Long 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2225,46 +2591,55 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2284,11 +2659,15 @@ exports[`TODO states: Looks right when With Long 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2301,46 +2680,55 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2360,11 +2748,15 @@ exports[`TODO states: Looks right when With Long 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2377,46 +2769,55 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -2439,11 +2840,15 @@ exports[`TODO states: Looks right when With Long 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -2453,7 +2858,6 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -2469,11 +2873,15 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2486,46 +2894,55 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -2548,11 +2965,15 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2565,46 +2986,55 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -2627,11 +3057,15 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2644,46 +3078,55 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -2706,11 +3149,15 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2723,46 +3170,55 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2782,11 +3238,15 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2799,46 +3259,55 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2858,11 +3327,15 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2875,46 +3348,55 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -2934,11 +3416,15 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -2948,7 +3434,6 @@ exports[`TODO states: Looks right when With One 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -2964,11 +3449,15 @@ exports[`TODO states: Looks right when With One 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -2981,46 +3470,55 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -3043,11 +3541,15 @@ exports[`TODO states: Looks right when With One 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3060,46 +3562,55 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -3122,11 +3633,15 @@ exports[`TODO states: Looks right when With One 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3139,46 +3654,55 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3198,11 +3722,15 @@ exports[`TODO states: Looks right when With One 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3215,46 +3743,55 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3274,11 +3811,15 @@ exports[`TODO states: Looks right when With One 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3291,46 +3832,55 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3350,11 +3900,15 @@ exports[`TODO states: Looks right when With One 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3367,46 +3921,55 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3426,11 +3989,15 @@ exports[`TODO states: Looks right when With One 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -3440,7 +4007,6 @@ exports[`TODO states: Looks right when With Photos 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -3456,11 +4022,15 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3473,46 +4043,55 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -3535,11 +4114,15 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3552,46 +4135,55 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -3614,11 +4206,15 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3631,46 +4227,55 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3690,11 +4295,15 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3707,46 +4316,55 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3766,11 +4384,15 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3783,46 +4405,55 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3842,11 +4473,15 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3859,46 +4494,55 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -3918,11 +4562,15 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;
@@ -3932,7 +4580,6 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
   style={
     Array [
       Object {
-        "backgroundColor": "black",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
@@ -3948,11 +4595,15 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -3965,46 +4616,55 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        ARTIST/DESIGNER NAME
+        Artist/Designer name
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -4027,11 +4687,15 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -4044,46 +4708,55 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PHOTOS
+        Photos
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -4106,11 +4779,15 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -4123,46 +4800,55 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        WORK DETAILS
+        Work details
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -4185,11 +4871,15 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -4202,46 +4892,55 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        EDITION & AUTHENTICITY
+        Edition & Authenticity
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
           ]
@@ -4261,11 +4960,15 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -4278,46 +4981,55 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        LOCATION
+        Location
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -4340,11 +5052,15 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
   <View
     accessible={true}
@@ -4357,46 +5073,55 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={null}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
   >
     <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
       style={
         Array [
           Object {
-            "alignItems": "center",
+            "display": "flex",
             "flexDirection": "row",
-            "height": 60,
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
           },
-          null,
         ]
       }
     >
       <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
             },
+            Object {},
           ]
         }
       >
-        PROVENANCE
+        Provenance
       </Text>
       <View
         style={
           Array [
             Object {
               "alignItems": "center",
-              "borderColor": "white",
+              "borderColor": "black",
               "borderRadius": 13,
               "borderWidth": 1,
               "height": 26,
               "justifyContent": "center",
-              "marginRight": 20,
               "width": 26,
             },
             Object {
@@ -4419,11 +5144,15 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#444444",
-          "height": 1,
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
         },
       ]
     }
+    width="100%"
   />
 </View>
 `;

@@ -1,9 +1,10 @@
+import { Box, color } from "@artsy/palette"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { Dimensions, FlatList, Image, StyleSheet, TouchableHighlight, TouchableOpacity, View } from "react-native"
-
+import { Dimensions, FlatList, Image, TouchableHighlight, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 
-const ImageBG = styled.View`
+const SelectedIndicator = styled.View`
   border-color: white;
   border-radius: 13;
   border-width: 1;
@@ -14,7 +15,9 @@ const ImageBG = styled.View`
   margin-right: 20;
 `
 
-const isPad = Dimensions.get("window").width > 700
+const Overlay = styled(Box)`
+  ${p => p.selected && `border-width: 1; border-color: ${color("black80")}`};
+`
 
 export interface ImageData {
   image: {
@@ -33,51 +36,77 @@ interface TakePhotoImageProps {
 }
 
 const SelectedIcon = () => (
-  <ImageBG style={{ backgroundColor: "white", position: "absolute", top: 120, left: 120 }}>
+  <SelectedIndicator style={{ backgroundColor: "white", position: "absolute", bottom: 20, right: 0 }}>
     <Image source={require("../../../../../images/consignments/black-tick.png")} />
-  </ImageBG>
+  </SelectedIndicator>
 )
 
-const TakePhotoImage = (props: TakePhotoImageProps) => (
-  <TouchableOpacity
-    onPress={props.onPressNewPhoto}
-    style={{
-      backgroundColor: "white",
-      borderWidth: 2,
-      borderColor: null,
+const TakePhotoImage = (props: TakePhotoImageProps) => {
+  const { width } = useScreenDimensions()
+  const imageSize = (width - 60) / 2
 
-      height: 158,
-      width: 158,
-      margin: 4,
-      justifyContent: "center",
-      alignItems: "center",
-    }}
-  >
-    <Image source={require("../../../../../images/consignments/camera-black.png")} />
-  </TouchableOpacity>
-)
-
-const ImageForURI = (props: ImagePreviewProps) => (
-  <View
-    style={{
-      borderWidth: 2,
-      borderColor: props.selected ? "white" : null,
-      margin: 4,
-      height: 158,
-      width: 158,
-    }}
-  >
-    <TouchableHighlight
-      onPress={() => props.onPressItem(props.data.image.uri)}
+  return (
+    <TouchableOpacity
+      onPress={props.onPressNewPhoto}
       style={{
-        opacity: props.selected ? 0.5 : 1.0,
+        backgroundColor: "white",
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: "black",
+        height: imageSize,
+        width: imageSize,
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
-    </TouchableHighlight>
-    {props.selected ? <SelectedIcon /> : null}
-  </View>
-)
+      <Image source={require("../../../../../images/consignments/camera-black.png")} />
+    </TouchableOpacity>
+  )
+}
+
+const ImageForURI = (props: ImagePreviewProps) => {
+  const { width } = useScreenDimensions()
+  const imageSize = (width - 60) / 2
+
+  return (
+    <View
+      style={{
+        position: "relative",
+        height: imageSize,
+        width: imageSize,
+        marginBottom: 20,
+      }}
+    >
+      <Overlay
+        selected={props.selected}
+        pointerEvents="none"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: 2,
+          height: imageSize,
+          width: imageSize,
+        }}
+      />
+      <TouchableHighlight
+        onPress={() => props.onPressItem(props.data.image.uri)}
+        style={{
+          opacity: props.selected ? 0.5 : 1.0,
+        }}
+      >
+        <Image source={{ uri: props.data.image.uri }} style={{ height: imageSize, width: imageSize }} />
+      </TouchableHighlight>
+      {props.selected ? <SelectedIcon /> : null}
+    </View>
+  )
+}
+
+const EmptyView = () => {
+  const { width } = useScreenDimensions()
+  const imageSize = (width - 60) / 2
+  return <View style={{ width: imageSize, height: imageSize, marginBottom: 20 }} />
+}
 
 interface Props {
   data: ImageData[]
@@ -117,29 +146,16 @@ export default class ImageSelection extends React.Component<Props, State> {
     }
   }
 
-  renderRow = (d: ImageData & string) => {
-    if (d === TakePhotoID) {
-      return <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
-    } else if (d === BlankImageID) {
-      return <View style={{ width: 158, height: 158 }} />
-    } else {
-      return (
-        <ImageForURI
-          key={d.image.uri}
-          selected={!!this.state.selected.includes(d.image.uri)}
-          data={d}
-          onPressItem={this.onPressItem}
-        />
-      )
-    }
-  }
-
   render() {
+    const dimensionsWidth = Dimensions.get("window").width
+    const isPad = dimensionsWidth > 700
     const data = isPad ? [TakePhotoID, ...this.props.data] : [TakePhotoID, ...this.props.data, BlankImageID]
+
     return (
       <FlatList
         data={data}
-        contentContainerStyle={styles.list}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: "space-between", paddingLeft: 20, paddingRight: 20 }}
         keyExtractor={item => {
           if (typeof item === "string") {
             return item
@@ -152,7 +168,7 @@ export default class ImageSelection extends React.Component<Props, State> {
             if (item === TakePhotoID) {
               return <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
             } else if (item === BlankImageID) {
-              return <View style={{ width: 158, height: 158 }} />
+              return <EmptyView />
             }
           } else {
             return (
@@ -169,15 +185,3 @@ export default class ImageSelection extends React.Component<Props, State> {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  list: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-  row: {
-    height: 158,
-    width: 158,
-  },
-})

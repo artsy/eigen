@@ -1,11 +1,8 @@
+import { Theme } from "@artsy/palette"
 import React from "react"
-
-import ConsignmentBG from "../Components/ConsignmentBG"
-import DoneButton from "../Components/DoneButton"
-
 import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-
+import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import TextArea from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 
@@ -36,8 +33,8 @@ export default class Provenance extends React.Component<Props, State> {
 
   render() {
     return (
-      <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped}>
+      <Theme>
+        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
           <View
             style={{
               marginLeft: 20,
@@ -57,8 +54,8 @@ export default class Provenance extends React.Component<Props, State> {
               }}
             />
           </View>
-        </DoneButton>
-      </ConsignmentBG>
+        </BottomAlignedButton>
+      </Theme>
     )
   }
 }

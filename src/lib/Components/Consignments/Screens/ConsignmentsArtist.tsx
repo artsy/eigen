@@ -1,13 +1,12 @@
+import { Theme } from "@artsy/palette"
+import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
+import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
+import { throttle } from "lodash"
 import React from "react"
 import { Dimensions, Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { fetchQuery, graphql } from "react-relay"
-
-import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
-import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
-import { throttle } from "lodash"
-import ConsignmentBG from "../Components/ConsignmentBG"
-import DoneButton from "../Components/DoneButton"
+import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { SearchResults } from "../Components/SearchResults"
 import { ArtistResult, ConsignmentSetup } from "../index"
 
@@ -79,8 +78,8 @@ export default class Artist extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped}>
+      <Theme>
+        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
           <View
             style={{
               alignContent: "center",
@@ -100,8 +99,8 @@ export default class Artist extends React.Component<Props, State> {
               resultSelected={this.artistSelected}
             />
           </View>
-        </DoneButton>
-      </ConsignmentBG>
+        </BottomAlignedButton>
+      </Theme>
     )
   }
 }

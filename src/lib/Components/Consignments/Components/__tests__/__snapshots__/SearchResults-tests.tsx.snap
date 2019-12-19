@@ -40,15 +40,14 @@ exports[`Search states:  Looks right when Found four results 1`] = `
         onBlur={[Function]}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
-        placeholderTextColor="#666666"
+        placeholderTextColor="#666"
         rejectResponderTermination={true}
         returnKeyType="search"
-        selectionColor="#cccccc"
+        selectionColor="#666"
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "color": "white",
+              "color": "#000",
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
@@ -65,7 +64,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
     <View
       style={
         Object {
-          "backgroundColor": "#666666",
+          "backgroundColor": "#666",
           "height": 1,
         }
       }
@@ -83,260 +82,452 @@ exports[`Search states:  Looks right when Found four results 1`] = `
   >
     <View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Ada Van Hoorebeke
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Ada Van Hoorebeke
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Kathleen Adair Brown
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Kathleen Adair Brown
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Linda Adair
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Linda Adair
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Hector Adalid
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Hector Adalid
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
     </View>
   </RCTScrollView>
@@ -383,15 +574,14 @@ exports[`Search states:  Looks right when Found no results 1`] = `
         onBlur={[Function]}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
-        placeholderTextColor="#666666"
+        placeholderTextColor="#666"
         rejectResponderTermination={true}
         returnKeyType="search"
-        selectionColor="#cccccc"
+        selectionColor="#666"
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "color": "white",
+              "color": "#000",
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
@@ -408,7 +598,7 @@ exports[`Search states:  Looks right when Found no results 1`] = `
     <View
       style={
         Object {
-          "backgroundColor": "#666666",
+          "backgroundColor": "#666",
           "height": 1,
         }
       }
@@ -426,31 +616,25 @@ exports[`Search states:  Looks right when Found no results 1`] = `
   >
     <View>
       <Text
+        color="#666"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="20px"
         style={
           Array [
             Object {
-              "color": "#cccccc",
+              "color": "#666",
               "fontFamily": "ReactNativeAGaramondPro-Regular",
-              "fontSize": 17,
+              "fontSize": 16,
+              "lineHeight": 20,
             },
+            Object {},
           ]
         }
       >
         Unfortunately we are not accepting consignments for works by
          
-        <Text
-          style={
-            Array [
-              Object {
-                "color": "#cccccc",
-                "fontFamily": "ReactNativeAGaramondPro-Italic",
-                "fontSize": 17,
-              },
-            ]
-          }
-        >
-          ba
-        </Text>
+        ba
       </Text>
     </View>
   </RCTScrollView>
@@ -497,15 +681,14 @@ exports[`Search states:  Looks right when Found one result 1`] = `
         onBlur={[Function]}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
-        placeholderTextColor="#666666"
+        placeholderTextColor="#666"
         rejectResponderTermination={true}
         returnKeyType="search"
-        selectionColor="#cccccc"
+        selectionColor="#666"
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "color": "white",
+              "color": "#000",
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
@@ -522,7 +705,7 @@ exports[`Search states:  Looks right when Found one result 1`] = `
     <View
       style={
         Object {
-          "backgroundColor": "#666666",
+          "backgroundColor": "#666",
           "height": 1,
         }
       }
@@ -540,68 +723,116 @@ exports[`Search states:  Looks right when Found one result 1`] = `
   >
     <View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Banksy
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
     </View>
   </RCTScrollView>
@@ -648,15 +879,14 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
         onBlur={[Function]}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
-        placeholderTextColor="#666666"
+        placeholderTextColor="#666"
         rejectResponderTermination={true}
         returnKeyType="search"
-        selectionColor="#cccccc"
+        selectionColor="#666"
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "color": "white",
+              "color": "#000",
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
@@ -679,7 +909,7 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
     <View
       style={
         Object {
-          "backgroundColor": "#666666",
+          "backgroundColor": "#666",
           "height": 1,
         }
       }
@@ -697,68 +927,116 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
   >
     <View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Banksy
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
     </View>
   </RCTScrollView>
@@ -805,15 +1083,14 @@ exports[`Search states:  Looks right when Found two results 1`] = `
         onBlur={[Function]}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
-        placeholderTextColor="#666666"
+        placeholderTextColor="#666"
         rejectResponderTermination={true}
         returnKeyType="search"
-        selectionColor="#cccccc"
+        selectionColor="#666"
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "color": "white",
+              "color": "#000",
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
@@ -830,7 +1107,7 @@ exports[`Search states:  Looks right when Found two results 1`] = `
     <View
       style={
         Object {
-          "backgroundColor": "#666666",
+          "backgroundColor": "#666",
           "height": 1,
         }
       }
@@ -848,132 +1125,228 @@ exports[`Search states:  Looks right when Found two results 1`] = `
   >
     <View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Banksy
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
       <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
-            Object {
-              "height": 40,
-              "marginBottom": 10,
-            },
+            Object {},
           ]
         }
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              },
-              null,
-            ]
+            Object {
+              "opacity": 1,
+            }
           }
         >
-          <Image
-            source={
-              Object {
-                "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
-              }
-            }
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
             style={
               Array [
                 Object {
-                  "borderRadius": 20,
-                  "height": 40,
-                  "width": 40,
-                },
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "white",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 20,
-                  "marginLeft": 13,
-                  "paddingTop": 8,
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
                 },
               ]
             }
           >
-            Banksy's Brother
-          </Text>
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy's Brother
+              </Text>
+            </View>
+          </View>
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
       </View>
     </View>
   </RCTScrollView>
@@ -1020,15 +1393,14 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
         onBlur={[Function]}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
-        placeholderTextColor="#666666"
+        placeholderTextColor="#666"
         rejectResponderTermination={true}
         returnKeyType="search"
-        selectionColor="#cccccc"
+        selectionColor="#666"
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "color": "white",
+              "color": "#000",
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
@@ -1051,7 +1423,7 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
     <View
       style={
         Object {
-          "backgroundColor": "#666666",
+          "backgroundColor": "#666",
           "height": 1,
         }
       }
@@ -1112,15 +1484,14 @@ exports[`Search states:  Looks right when No query 1`] = `
         onBlur={[Function]}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
-        placeholderTextColor="#666666"
+        placeholderTextColor="#666"
         rejectResponderTermination={true}
         returnKeyType="search"
-        selectionColor="#cccccc"
+        selectionColor="#666"
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "color": "white",
+              "color": "#000",
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
@@ -1137,7 +1508,7 @@ exports[`Search states:  Looks right when No query 1`] = `
     <View
       style={
         Object {
-          "backgroundColor": "#666666",
+          "backgroundColor": "#666",
           "height": 1,
         }
       }

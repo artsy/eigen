@@ -1,12 +1,10 @@
-import { Box, color, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { CamIcon, MoneyIcon, OfferIcon, SellIcon } from "lib/Icons/Consignments"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { FlatList, Image, Route, ViewProperties } from "react-native"
+import { FlatList, Route, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import styled from "styled-components/native"
-import CloseButton from "../Components/CloseButton"
-import ConsignmentBG from "../Components/ConsignmentBG"
-import { FormButton } from "../Components/FormElements"
 import Overview from "./Overview"
 
 interface Props extends ViewProperties {
@@ -16,19 +14,19 @@ interface Props extends ViewProperties {
 
 const rows = [
   {
-    iconHref: require("../../../../../images/cam.png"),
+    IconComponent: CamIcon,
     text: "Take a few photos and submit details about the work.",
   },
   {
-    iconHref: require("../../../../../images/offer.png"),
+    IconComponent: OfferIcon,
     text: "Get offers from galleries and auction houses.",
   },
   {
-    iconHref: require("../../../../../images/sell.png"),
+    IconComponent: SellIcon,
     text: "Have your work placed in a gallery or upcoming sale.",
   },
   {
-    iconHref: require("../../../../../images/money.png"),
+    IconComponent: MoneyIcon,
     text: "Receive payment once the work sells.",
   },
 ]
@@ -42,52 +40,53 @@ export default class Welcome extends React.Component<Props> {
   render() {
     return (
       <Theme>
-        <ConsignmentBG>
-          <FlatList
-            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-            data={rows}
-            alwaysBounceVertical={false}
-            keyExtractor={(_item, index) => String(index)}
-            ListHeaderComponent={() => (
-              <Box px={2}>
-                <Sans size="4" textAlign="center" weight="medium" color={color("white100")}>
-                  Sell works from your collection
-                </Sans>
-              </Box>
-            )}
-            renderItem={({ item }) => {
-              return (
-                <Box px={2}>
-                  <Spacer mb={3} />
-                  <Flex flexDirection="row" alignItems="center" flexWrap="nowrap">
-                    <Icon source={item.iconHref} />
-                    <Flex style={{ flex: 1 }}>
-                      <Serif size="4" color={color("white100")}>
-                        {item.text}
-                      </Serif>
-                    </Flex>
-                  </Flex>
-                </Box>
-              )
-            }}
-            ListFooterComponent={() => (
-              <>
+        <FlatList
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          data={rows}
+          alwaysBounceVertical={false}
+          keyExtractor={(_item, index) => String(index)}
+          ListHeaderComponent={() => (
+            <Box px={2}>
+              <Sans size="4" textAlign="center" weight="medium">
+                Sell works from your collection
+              </Sans>
+            </Box>
+          )}
+          renderItem={({ item }) => {
+            const Icon = item.IconComponent
+            return (
+              <Flex px={2} alignItems="center" flexDirection="column">
                 <Spacer mb={3} />
-                <Flex flexDirection="column" alignItems="center">
-                  <FormButton text="Get started" onPress={this.goTapped} style={{ marginTop: 0 }} />
-                  <CloseButton />
+                <Flex
+                  style={{ maxWidth: 450 }}
+                  flexDirection="row"
+                  alignItems="center"
+                  flexWrap="nowrap"
+                  justifyContent="center"
+                >
+                  <Icon />
+                  <Spacer mr={2} />
+                  <Flex style={{ flex: 1 }}>
+                    <Serif size="4">{item.text}</Serif>
+                  </Flex>
                 </Flex>
-              </>
-            )}
-          />
-        </ConsignmentBG>
+              </Flex>
+            )
+          }}
+          ListFooterComponent={() => (
+            <>
+              <Spacer mb={3} />
+              <Flex flexDirection="column" alignItems="center">
+                <Button onPress={this.goTapped}>Get started</Button>
+                <Spacer mb={1} />
+                <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
+                  Close
+                </Button>
+              </Flex>
+            </>
+          )}
+        />
       </Theme>
     )
   }
 }
-
-const Icon = styled(Image)`
-  resize-mode: contain;
-  width: 40;
-  margin-right: 24;
-`

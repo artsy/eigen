@@ -1,44 +1,25 @@
+import { Flex, Sans, Separator } from "@artsy/palette"
 import React from "react"
-import { Image, StyleProp, TouchableHighlight, TouchableHighlightProperties, ViewStyle } from "react-native"
-
-import fonts from "lib/data/fonts"
+import { Image, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
 import styled from "styled-components/native"
-
 import { ConsignmentSetup } from "../index"
 
-const Title = styled.Text`
-  color: white;
-  font-family: "${fonts["avant-garde-regular"]}";
-  flex: 2;
-`
 const Background = styled.View`
-  background-color: black;
   flex: 1;
   padding-top: 20;
   padding-bottom: 20;
   padding-left: 20;
   padding-right: 20;
 `
-const Separator = styled.View`
-  background-color: #444444;
-  height: 1;
-`
-
-const ButtonView = styled.View`
-  flex-direction: row;
-  align-items: center;
-  height: 60;
-`
 
 const ImageBG = styled.View`
-  border-color: white;
+  border-color: black;
   border-radius: 13;
   border-width: 1;
   width: 26;
   height: 26;
   justify-content: center;
   align-items: center;
-  margin-right: 20;
 `
 
 const ToDoButton = () => (
@@ -51,12 +32,6 @@ const DoneButton = () => (
   <ImageBG style={{ backgroundColor: "white" }}>
     <Image source={require("../../../../../images/consignments/black-tick.png")} />
   </ImageBG>
-)
-
-const Button: React.SFC<TouchableHighlightProperties> = ({ children, ...props }) => (
-  <TouchableHighlight {...props}>
-    <ButtonView>{children}</ButtonView>
-  </TouchableHighlight>
 )
 
 interface TODOProps extends ConsignmentSetup {
@@ -72,40 +47,52 @@ interface TODOProps extends ConsignmentSetup {
 const render = (props: TODOProps, canSubmitMetadata: boolean) => (
   <Background style={props.style}>
     <Separator />
-    <Button onPress={props.goToArtist}>
-      <Title>ARTIST/DESIGNER NAME</Title>
-      {props.artist ? DoneButton() : ToDoButton()}
-    </Button>
+    <TouchableOpacity onPress={props.goToArtist}>
+      <Flex flexDirection="row" justifyContent="space-between" py={2}>
+        <Sans size="4">Artist/Designer name</Sans>
+        {props.artist ? DoneButton() : ToDoButton()}
+      </Flex>
+    </TouchableOpacity>
 
     <Separator />
-    <Button onPress={props.goToPhotos}>
-      <Title>PHOTOS</Title>
-      {props.photos ? DoneButton() : ToDoButton()}
-    </Button>
+    <TouchableOpacity onPress={props.goToPhotos}>
+      <Flex flexDirection="row" justifyContent="space-between" py={2}>
+        <Sans size="4">Photos</Sans>
+        {props.photos ? DoneButton() : ToDoButton()}
+      </Flex>
+    </TouchableOpacity>
 
     <Separator />
-    <Button onPress={props.goToMetadata}>
-      <Title>WORK DETAILS</Title>
-      {canSubmitMetadata ? DoneButton() : ToDoButton()}
-    </Button>
+    <TouchableOpacity onPress={props.goToMetadata}>
+      <Flex flexDirection="row" justifyContent="space-between" py={2}>
+        <Sans size="4">Work details</Sans>
+        {canSubmitMetadata ? DoneButton() : ToDoButton()}
+      </Flex>
+    </TouchableOpacity>
 
     <Separator />
-    <Button onPress={props.goToEdition}>
-      <Title>EDITION & AUTHENTICITY</Title>
-      {props.editionScreenViewed ? DoneButton() : ToDoButton()}
-    </Button>
+    <TouchableOpacity onPress={props.goToEdition}>
+      <Flex flexDirection="row" justifyContent="space-between" py={2}>
+        <Sans size="4">Edition & Authenticity</Sans>
+        {props.editionScreenViewed ? DoneButton() : ToDoButton()}
+      </Flex>
+    </TouchableOpacity>
 
     <Separator />
-    <Button onPress={props.goToLocation}>
-      <Title>LOCATION</Title>
-      {props.location ? DoneButton() : ToDoButton()}
-    </Button>
+    <TouchableOpacity onPress={props.goToLocation}>
+      <Flex flexDirection="row" justifyContent="space-between" py={2}>
+        <Sans size="4">Location</Sans>
+        {props.location ? DoneButton() : ToDoButton()}
+      </Flex>
+    </TouchableOpacity>
 
     <Separator />
-    <Button onPress={props.goToProvenance}>
-      <Title>PROVENANCE</Title>
-      {props.provenance ? DoneButton() : ToDoButton()}
-    </Button>
+    <TouchableOpacity onPress={props.goToProvenance}>
+      <Flex flexDirection="row" justifyContent="space-between" py={2}>
+        <Sans size="4">Provenance</Sans>
+        {props.provenance ? DoneButton() : ToDoButton()}
+      </Flex>
+    </TouchableOpacity>
 
     <Separator />
   </Background>
