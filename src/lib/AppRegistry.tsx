@@ -30,7 +30,6 @@ import { ArtworkRenderer } from "./Scenes/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
-import { CollectionArtworksRenderer } from "./Scenes/Collection"
 import { CollectionContainer } from "./Scenes/Collection/Collection"
 import {
   FairArtistsRenderer,
@@ -183,14 +182,6 @@ const Collection: React.SFC<CollectionProps> = ({ collectionID }) => {
       render={renderWithLoadProgress(CollectionContainer, { collectionID })}
     />
   )
-}
-
-interface CollectionArtworksProps {
-  collectionID: string
-}
-
-const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collectionID }) => {
-  return <CollectionArtworksRenderer collectionID={collectionID} />
 }
 
 /*
@@ -406,4 +397,3 @@ AppRegistry.registerComponent("CityFairList", () => CityFairList)
 AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
 AppRegistry.registerComponent("Collection", () => Collection)
-AppRegistry.registerComponent("CollectionArtworks", () => CollectionArtworks)

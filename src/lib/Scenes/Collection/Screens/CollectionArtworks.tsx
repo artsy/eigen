@@ -1,58 +1,66 @@
-import { Theme } from "@artsy/palette"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
-import { CollectionArtworksQuery } from "__generated__/CollectionArtworksQuery.graphql"
-import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { get } from "lib/utils/get"
 import React from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-interface Props {
+export const CollectionArtworks: React.FC<{
   collection: CollectionArtworks_collection
+  relay: RelayPaginationProp
+}> = ({ collection, relay }) => {
+  const artworks = get(collection, p => p.collectionArtworks)
+
+  return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
 }
 
-export class CollectionArtworks extends React.Component<Props> {
-  render() {
-    return (
-      <Theme>
-        <FilteredInfiniteScrollGrid entity={this.props.collection} />
-      </Theme>
-    )
-  }
-}
-
-export const CollectionArtworksContainer = createFragmentContainer(CollectionArtworks, {
-  collection: graphql`
-    fragment CollectionArtworks_collection on MarketingCollection {
-      id
-      slug
-      internalID
-      artworks: artworksConnection(sort: $sort, first: $count, after: $cursor) @connection(key: "Collection_artworks") {
-        edges {
-          node {
-            id
+export const CollectionArtworksFragmentContainer = createPaginationContainer(
+  CollectionArtworks,
+  {
+    collection: graphql`
+      fragment CollectionArtworks_collection on MarketingCollection
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 6 }
+          cursor: { type: "String" }
+          sort: { type: "String", defaultValue: "-decayed_merch " }
+        ) {
+        slug
+        id
+        collectionArtworks: artworksConnection(first: $count, after: $cursor)
+          @connection(key: "Collection_collectionArtworks") {
+          edges {
+            node {
+              id
+            }
           }
+          ...InfiniteScrollArtworksGrid_connection
         }
-        ...InfiniteScrollArtworksGrid_connection
-        # ...FilteredInfiniteScrollGrid_entity
       }
-    }
-  `,
-})
-
-export const CollectionArtworksRenderer: React.SFC<{ collectionID: string }> = ({ collectionID }) => {
-  return (
-    <QueryRenderer<CollectionArtworksQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query CollectionArtworksQuery($collectionID: String!) {
-          marketingCollection(slug: $collectionID) {
-            ...CollectionArtworks_collection
-          }
+    `,
+  },
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.collection && props.collection.collectionArtworks
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      }
+    },
+    getVariables(props, { count, cursor }) {
+      return {
+        id: props.collection.slug,
+        count,
+        cursor,
+      }
+    },
+    query: graphql`
+      query CollectionArtworksInfiniteScrollGridQuery($id: String!, $cursor: String, $count: Int!) {
+        marketingCollection(slug: $id) {
+          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor)
         }
-      `}
-      variables={{ collectionID }}
-      render={renderWithLoadProgress(CollectionArtworksContainer)}
-    />
-  )
-}
+      }
+    `,
+  }
+)

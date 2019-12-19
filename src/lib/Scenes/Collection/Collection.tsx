@@ -1,6 +1,7 @@
 import { Box, Sans, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import { CollectionArtworkPreviewContainer as CollectionArtworkPreview } from "lib/Scenes/Collection/Screens/CollectionArtworkPreview"
+import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import React, { Component } from "react"
 import { FlatList } from "react-native"
@@ -36,6 +37,13 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       },
     })
 
+    sections.push({
+      type: "collectionArtworks",
+      data: {
+        artworks: [],
+      },
+    })
+
     this.setState({
       sections,
     })
@@ -51,6 +59,8 @@ export class Collection extends Component<CollectionProps, CollectionState> {
         )
       case "artworkPreview":
         return <CollectionArtworkPreview collection={this.props.collection} />
+      case "collectionArtworks":
+        return <CollectionArtworks collection={this.props.collection} />
       default:
         return null
     }
