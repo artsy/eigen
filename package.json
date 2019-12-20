@@ -185,7 +185,7 @@
     "tslint": "5.14.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.2",
-    "typescript": "3.7.3",
+    "typescript": "3.7.4",
     "typescript-styled-plugin": "0.13.0",
     "vscode-apollo-relay": "1.5.0"
   },
