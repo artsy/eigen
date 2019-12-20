@@ -1,3 +1,15 @@
+# v1.20.4 (Fri Dec 20 2019)
+
+#### 🐛  Bug Fix
+
+- [MX-70] - Guard against S3 upload crash [#2018](https://github.com/artsy/emission/pull/2018) ([@brainbicycle](https://github.com/brainbicycle))
+
+#### Authors: 1
+
+- Brian Beckerle ([@brainbicycle](https://github.com/brainbicycle))
+
+---
+
 # v1.20.3 (Thu Dec 19 2019)
 
 #### 🐛  Bug Fix
