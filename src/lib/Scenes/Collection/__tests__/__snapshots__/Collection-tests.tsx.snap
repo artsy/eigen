@@ -950,25 +950,7 @@ exports[`Collection renders a snapshot 1`] = `
                 Object {},
               ]
             }
-          >
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
-              style={
-                Array [
-                  Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
-                  },
-                  Object {},
-                ]
-              }
-            >
-              Featured Artists
-            </Text>
-          </View>
+          />
         </View>
       </View>
       <View
