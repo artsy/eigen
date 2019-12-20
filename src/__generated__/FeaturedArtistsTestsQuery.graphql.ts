@@ -15,7 +15,11 @@ export type FeaturedArtistsTestsQueryRawResponse = {
                 readonly slug: string;
                 readonly internalID: string;
                 readonly name: string | null;
-                readonly imageUrl: string | null;
+                readonly image: ({
+                    readonly resized: ({
+                        readonly url: string | null;
+                    }) | null;
+                }) | null;
                 readonly birthday: string | null;
                 readonly nationality: string | null;
                 readonly isFollowed: boolean | null;
@@ -48,7 +52,11 @@ fragment FeaturedArtists_collection on MarketingCollection {
       slug
       internalID
       name
-      imageUrl
+      image {
+        resized(width: 100) {
+          url
+        }
+      }
       birthday
       nationality
       isFollowed
@@ -173,11 +181,39 @@ return {
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
+                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "imageUrl",
+                    "name": "image",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "resized",
+                        "storageKey": "resized(width:100)",
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "width",
+                            "value": 100
+                          }
+                        ],
+                        "concreteType": "ResizedImageUrl",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -214,7 +250,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FeaturedArtistsTestsQuery",
-    "id": "e5db888b6d9f87e17511922162c7da7e",
+    "id": "7e3de2453d73699a59f282e5a16d24ed",
     "text": null,
     "metadata": {}
   }

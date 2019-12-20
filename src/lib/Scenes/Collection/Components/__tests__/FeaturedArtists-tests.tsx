@@ -14,8 +14,11 @@ const CollectionFixture: FeaturedArtists_collection = {
         slug: "pablo-picasso",
         internalID: "1234",
         name: "Pablo Picasso",
-        // TODO: should this be image.url (and resized)?
-        imageUrl: "/some/picasso/image/url",
+        image: {
+          resized: {
+            url: "/some/resized/picasso/image/url",
+          },
+        },
         birthday: "1877",
         nationality: "American",
         isFollowed: true,
@@ -24,8 +27,11 @@ const CollectionFixture: FeaturedArtists_collection = {
         slug: "andy-warhol",
         internalID: "2342",
         name: "Andy Warhol",
-        // TODO: should this be image.url (and resized)?
-        imageUrl: "/some/warhol/image/url",
+        image: {
+          resized: {
+            url: "/some/resized/warhol/image/url",
+          },
+        },
         birthday: "1947",
         nationality: "American",
         isFollowed: false,
@@ -34,8 +40,11 @@ const CollectionFixture: FeaturedArtists_collection = {
         slug: "joan-miro",
         internalID: "3454",
         name: "Joan Miro",
-        // TODO: should this be image.url (and resized)?
-        imageUrl: "/some/miro/image/url",
+        image: {
+          resized: {
+            url: "/some/resized/miro/image/url",
+          },
+        },
         birthday: "1877",
         nationality: "Spanish",
         isFollowed: true,

@@ -7,7 +7,11 @@ export type FeaturedArtists_collection = {
             readonly slug: string;
             readonly internalID: string;
             readonly name: string | null;
-            readonly imageUrl: string | null;
+            readonly image: {
+                readonly resized: {
+                    readonly url: string | null;
+                } | null;
+            } | null;
             readonly birthday: string | null;
             readonly nationality: string | null;
             readonly isFollowed: boolean | null;
@@ -83,11 +87,39 @@ const node: ReaderFragment = {
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
+              "kind": "LinkedField",
               "alias": null,
-              "name": "imageUrl",
+              "name": "image",
+              "storageKey": null,
               "args": null,
-              "storageKey": null
+              "concreteType": "Image",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "resized",
+                  "storageKey": "resized(width:100)",
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "width",
+                      "value": 100
+                    }
+                  ],
+                  "concreteType": "ResizedImageUrl",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                }
+              ]
             },
             {
               "kind": "ScalarField",
@@ -116,5 +148,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '689e9257db52b272b67d5e328d9bcb9a';
+(node as any).hash = 'dc165dbfa637227d7afe99944bcefaee';
 export default node;

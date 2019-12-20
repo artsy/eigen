@@ -32,7 +32,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
         <Box width="100%" key={index} pb={20}>
           <TouchableWithoutFeedback onPress={() => this.handleTap(this, `/artist/${artist.slug}`)}>
             <EntityHeader
-              imageUrl={artist.imageUrl}
+              imageUrl={artist.image.resized.url}
               name={artist.name}
               meta={hasArtistMetaData ? `${artist.nationality}, b. ${artist.birthday}` : undefined}
               href={`/artist/${artist.slug}`}
@@ -101,7 +101,11 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
           slug
           internalID
           name
-          imageUrl
+          image {
+            resized(width: 100) {
+              url
+            }
+          }
           birthday
           nationality
           isFollowed
