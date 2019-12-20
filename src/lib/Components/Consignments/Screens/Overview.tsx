@@ -124,7 +124,7 @@ export default class Overview extends React.Component<Props, State> {
   }
 
   showUploadFailureAlert(error: Error) {
-    Alert.alert("Sorry, we couldn't upload your image(s).", "Please try again or contact consign@artsy.net for help.", [
+    Alert.alert("Sorry, we couldn't upload your images.", "Please try again or contact consign@artsy.net for help.", [
       {
         text: "Cancel",
         style: "cancel",
