@@ -1,3 +1,4 @@
+import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -8,7 +9,7 @@ import { CollectionHeader, CollectionHeaderContainer } from "../CollectionHeader
 
 jest.unmock("react-relay")
 
-it("renders a snapshot of the collection header", async () => {
+it("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: (props: any) => <CollectionHeaderContainer collection={props.marketingCollection} {...props} />,
     query: graphql`
@@ -18,7 +19,7 @@ it("renders a snapshot of the collection header", async () => {
         }
       }
     `,
-    mockData: { marketingCollection: CollectionFixture },
+    mockData: { marketingCollection: CollectionFixture } as CollectionHeaderTestsQueryRawResponse,
   })
 
   expect(tree.html()).toMatchSnapshot()
