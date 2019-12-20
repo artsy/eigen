@@ -124,7 +124,7 @@ export default class Overview extends React.Component<Props, State> {
   }
 
   showUploadFailureAlert(error: Error) {
-    Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
+    Alert.alert("Sorry, we couldn't upload your image(s).", "Please try again or contact support@artsy.net for help.", [
       {
         text: "Cancel",
         style: "cancel",
@@ -206,6 +206,7 @@ export default class Overview extends React.Component<Props, State> {
         photo.uploading = false
         this.setState({ photos: this.state.photos }, this.uploadPhotosIfNeeded)
       } catch (e) {
+        // Reset photos to enable upload retry, propogate exception upward
         photo.uploaded = false
         photo.uploading = false
         throw e
