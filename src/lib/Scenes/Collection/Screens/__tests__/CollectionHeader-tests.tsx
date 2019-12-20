@@ -1,3 +1,4 @@
+import { Serif } from "@artsy/palette"
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -36,6 +37,11 @@ describe("collection header", () => {
   it("passes the collection header image url to collection header", () => {
     const wrapper = mount(<CollectionHeader {...props} />)
     expect(wrapper.find(OpaqueImageView).html()).toContain("http://imageuploadedbymarketingteam.jpg")
+  })
+
+  it("passes the collection header title to collection header", () => {
+    const wrapper = mount(<CollectionHeader {...props} />)
+    expect(wrapper.find(Serif).html()).toContain("Street Art Now")
   })
 
   it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
