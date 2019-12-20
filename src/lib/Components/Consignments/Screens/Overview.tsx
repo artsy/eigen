@@ -1,5 +1,6 @@
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
+import { Alert } from "react-native"
 
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -108,16 +109,34 @@ export default class Overview extends React.Component<Props, State> {
     this.saveStateToLocalStorage()
 
     if (this.state.submissionID) {
-      // This is async, but we don't need the synchronous behavior from await.
-      this.uploadPhotosIfNeeded()
-
-      updateConsignmentSubmission(this.state)
+      try {
+        await this.uploadPhotosIfNeeded()
+        updateConsignmentSubmission(this.state)
+      } catch (error) {
+        this.showUploadFailureAlert(error)
+      }
     } else if (this.state.artist) {
       const submissionID = await createConsignmentSubmission(this.state)
       this.setState({ submissionID }, () => {
         this.submissionDraftCreated()
       })
     }
+  }
+
+  showUploadFailureAlert(error: Error) {
+    Alert.alert("Sorry, we couldn't upload your images.", "Please try again or contact consign@artsy.net for help.", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Retry",
+        onPress: () => {
+          this.updateLocalStateAndMetaphysics()
+        },
+      },
+    ])
+    console.log("src/lib/Components/Consignments/Screens/Overview.tsx", error)
   }
 
   @track((_props, state) => ({
@@ -174,18 +193,24 @@ export default class Overview extends React.Component<Props, State> {
     if (!uploading && toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]
+      try {
+        // Set this one photo to upload, so that if you go in and out
+        // quickly it doesn't upload duplicates
+        photo.uploading = true
+        this.setState({ photos: this.state.photos })
+        await uploadImageAndPassToGemini(photo.file, "private", this.state.submissionID)
 
-      // Set this one photo to upload, so that if you go in and out
-      // quickly it doesn't upload duplicates
-      photo.uploading = true
-      this.setState({ photos: this.state.photos })
-      await uploadImageAndPassToGemini(photo.file, "private", this.state.submissionID)
-
-      // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
-      // in the queue
-      photo.uploaded = true
-      photo.uploading = false
-      this.setState({ photos: this.state.photos }, this.uploadPhotosIfNeeded)
+        // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
+        // in the queue
+        photo.uploaded = true
+        photo.uploading = false
+        this.setState({ photos: this.state.photos }, this.uploadPhotosIfNeeded)
+      } catch (e) {
+        // Reset photos to enable upload retry, propogate exception upward
+        photo.uploaded = false
+        photo.uploading = false
+        throw e
+      }
     }
   }
 

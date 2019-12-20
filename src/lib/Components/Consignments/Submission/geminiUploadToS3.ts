@@ -15,7 +15,7 @@ declare var FormData: any
 declare var XMLHttpRequest: any
 
 export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredentials) =>
-  new Promise<S3UploadResponse>(resolve => {
+  new Promise<S3UploadResponse>((resolve, reject) => {
     const formData = new FormData()
     const geminiKey = asset.policyDocument.conditions.geminiKey
     const bucket = asset.policyDocument.conditions.bucket
@@ -59,7 +59,7 @@ export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredential
             .replace("%2F", "/"),
         })
       } else {
-        throw new Error("S3 upload failed")
+        reject(new Error("S3 upload failed"))
       }
     }
 
