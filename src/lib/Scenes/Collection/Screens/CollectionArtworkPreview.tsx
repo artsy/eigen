@@ -11,13 +11,12 @@ interface Props {
 
 export class CollectionArtworkPreview extends React.Component<Props> {
   render() {
-    let artworks
     const { collection } = this.props
     if (!collection) {
       return null
     }
-    const collectionArtworks = get(collection.artworks, artwork => artwork.edges, [])
-    artworks = collectionArtworks.map(({ node }) => node)
+    const collectionArtworks = get(collection, collectionWorks => collectionWorks.artworks.edges, [])
+    const artworks = collectionArtworks.map(({ node }) => node)
 
     return (
       <>
