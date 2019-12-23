@@ -1,3 +1,15 @@
+# v1.20.5 (Mon Dec 23 2019)
+
+#### 🐛  Bug Fix
+
+- Update dep @artsy/palette from 5.1.11 to v5.1.12 [#2020](https://github.com/artsy/emission/pull/2020) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.20.4 (Fri Dec 20 2019)
 
 #### 🐛  Bug Fix
