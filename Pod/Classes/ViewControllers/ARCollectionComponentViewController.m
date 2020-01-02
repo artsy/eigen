@@ -18,6 +18,8 @@
                              moduleName:@"Collection"
                       initialProperties:@{ @"collectionID": collectionID }])) {
         _collectionID = collectionID;
+
+        self.fullBleed = YES;
     }
     return self;
 }
