@@ -10,7 +10,7 @@ interface CollectionHeaderProps {
 }
 
 export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
-  const { title, description, image, headerImage } = props.collection
+  const { title, image, headerImage } = props.collection
   const url = headerImage ? headerImage : image.edges[0].node.imageUrl
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 204
@@ -23,9 +23,6 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
       <Serif size="8" color={color("black100")} ml={2}>
         {title}
       </Serif>
-      <Serif size="4" color={color("black100")} mt={2}>
-        {description}
-      </Serif>
     </>
   )
 }
@@ -34,7 +31,6 @@ export const CollectionHeaderContainer = createFragmentContainer(CollectionHeade
   collection: graphql`
     fragment CollectionHeader_collection on MarketingCollection {
       title
-      description
       headerImage
       image: artworksConnection(sort: "-merchandisability", first: 1) {
         edges {
