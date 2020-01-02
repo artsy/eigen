@@ -1,3 +1,15 @@
+# v1.20.7 (Thu Jan 02 2020)
+
+#### 🐛  Bug Fix
+
+- Adds full bleed to collections header [#2021](https://github.com/artsy/emission/pull/2021) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.20.6 (Thu Jan 02 2020)
 
 #### 🐛  Bug Fix
