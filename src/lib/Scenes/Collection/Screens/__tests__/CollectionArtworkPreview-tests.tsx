@@ -7,7 +7,9 @@ import { CollectionArtworkPreviewContainer as CollectionArtworkPreview } from ".
 
 jest.unmock("react-relay")
 
-it("renders properly", async () => {
+// TODO: Re-enable this test after following up with Mobile Exp Team
+// Discussion here: https://github.com/artsy/emission/pull/2015/files#r360482627
+xit("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: (props: any) => <CollectionArtworkPreview collection={props} {...props} />,
     query: graphql`
