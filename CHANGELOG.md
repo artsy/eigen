@@ -1,3 +1,15 @@
+# v1.20.6 (Thu Jan 02 2020)
+
+#### 🐛  Bug Fix
+
+- Adds collection artwork preview component [#2015](https://github.com/artsy/emission/pull/2015) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.20.5 (Mon Dec 23 2019)
 
 #### 🐛  Bug Fix
