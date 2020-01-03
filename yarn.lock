@@ -7,17 +7,17 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.1.tgz#781aaaf026d2d06520005ced032ebca284935e8c"
   integrity sha512-S6tw+x7CmTQQutt2Xqla4Y+3/Wr4RVjaZ5WYmv2V4D0ZUc/lk5UQKpI9akxlgOd5tMUcqBDPRGK6SF5pGNYP8g==
 
-"@artsy/palette@5.1.12":
-  version "5.1.12"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-5.1.12.tgz#fe68bcdb48eac76b6609fcf0bbe105a9171db360"
-  integrity sha512-q50y9yeYOPtNNoAlaGPnZUj20L94gW++4F5aIiRHrEtpYVmUYo/Ub8KPXiH53nyStkL3Zv1hout2DEXqkxlAkw==
+"@artsy/palette@5.1.13":
+  version "5.1.13"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-5.1.13.tgz#1f7c055d2d1fea074b00a409811680fae48785de"
+  integrity sha512-W8l7vmgcFtv8LXMeRw2zubfqK9plCgLj50Hlf/gQVwxkTYEn+jG8/CtmRQf0Ip2ect+GRC9UyEEhYYAgcek61Q==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
     luxon "^1.15"
     rc-slider "^8.6.2"
-    react-lazy-load-image-component "^1.4.0-beta.1"
+    react-lazy-load-image-component "^1.4.0"
     react-live "^1.12.0"
     react-powerplug "^1.0.0"
     react-spring "^8.0.27"
@@ -12918,10 +12918,10 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.4.tgz#90f336a68c3a29a096a3d648ab80e87ec61482a2"
   integrity sha512-PVadd+WaUDOAciICm/J1waJaSvgq+4rHE/K70j0PFqKhkTBsPv/82UGQJNXAngz1fOQLLxI6z1sEDmJDQhCTAA==
 
-react-lazy-load-image-component@^1.4.0-beta.1:
-  version "1.4.0-beta.1"
-  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.4.0-beta.1.tgz#9728b2de583cfee2146f4e81db60562b63fe866f"
-  integrity sha512-0hsmYC1aVbs2FiPaGli/kLBy/adrZWVDAond/vYZZA1i1pfA+pltT6TrIOmV1hzGhVwNHohkSzDqXvlgVelciQ==
+react-lazy-load-image-component@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.4.0.tgz#10c73ca46afc039864b395191d6b54a46a673b60"
+  integrity sha512-o/L93CyJVvXPuA2P/ouUZI7ZXJRrdE/eqP45AH5/SakOU0bzAk2ZP6qNT/WaaXhf+JtE7hhjXxMr7KGsLNX64w==
   dependencies:
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
