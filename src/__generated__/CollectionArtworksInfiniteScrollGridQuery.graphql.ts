@@ -34,7 +34,7 @@ query CollectionArtworksInfiniteScrollGridQuery(
 fragment CollectionArtworks_collection_1G22uz on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(first: $count, after: $cursor) {
+  collectionArtworks: artworksConnection(sort: "-merchandisability", first: $count, after: $cursor) {
     edges {
       node {
         id
@@ -161,6 +161,11 @@ v4 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "-merchandisability"
   }
 ],
 v5 = [
@@ -493,7 +498,9 @@ return {
             "args": (v4/*: any*/),
             "handle": "connection",
             "key": "Collection_collectionArtworks",
-            "filters": null
+            "filters": [
+              "sort"
+            ]
           }
         ]
       }
@@ -502,11 +509,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "3803f2fb82afbdc2017f38b4a7636d53",
+    "id": "3296b66180888423ae2a6cb72840f8fa",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '917bd68bc219842bdc0618e7cc6e84f8';
+(node as any).hash = 'dfbb2367b74f9f12496788a612fe6def';
 export default node;

@@ -47,7 +47,7 @@ return {
       "kind": "LocalArgument",
       "name": "count",
       "type": "Int",
-      "defaultValue": 6
+      "defaultValue": 9
     },
     {
       "kind": "LocalArgument",
@@ -59,7 +59,13 @@ return {
       "kind": "LocalArgument",
       "name": "sort",
       "type": "String",
-      "defaultValue": "-decayed_merch "
+      "defaultValue": "-merchandisability"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "after",
+      "type": "String",
+      "defaultValue": "6"
     }
   ],
   "selections": [
@@ -76,7 +82,13 @@ return {
       "alias": "collectionArtworks",
       "name": "__Collection_collectionArtworks_connection",
       "storageKey": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "sort",
+          "variableName": "sort"
+        }
+      ],
       "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
@@ -152,5 +164,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c7855c66fe995153e5441531a93646e4';
+(node as any).hash = '2895a663e8c31b7e961e9ae09e431c01';
 export default node;

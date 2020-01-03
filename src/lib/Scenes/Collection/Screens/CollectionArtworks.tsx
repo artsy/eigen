@@ -8,6 +8,7 @@ export const CollectionArtworks: React.FC<{
   collection: CollectionArtworks_collection
   relay: RelayPaginationProp
 }> = ({ collection, relay }) => {
+  console.log("TCL: collection", collection)
   const artworks = get(collection, p => p.collectionArtworks)
 
   return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
@@ -19,13 +20,14 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
     collection: graphql`
       fragment CollectionArtworks_collection on MarketingCollection
         @argumentDefinitions(
-          count: { type: "Int", defaultValue: 6 }
+          count: { type: "Int", defaultValue: 9 }
           cursor: { type: "String" }
-          sort: { type: "String", defaultValue: "-decayed_merch " }
+          sort: { type: "String", defaultValue: "-merchandisability" }
+          after: { type: "String", defaultValue: "6" }
         ) {
         slug
         id
-        collectionArtworks: artworksConnection(first: $count, after: $cursor)
+        collectionArtworks: artworksConnection(sort: $sort, first: $count, after: $cursor)
           @connection(key: "Collection_collectionArtworks") {
           edges {
             node {
@@ -58,7 +60,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
     query: graphql`
       query CollectionArtworksInfiniteScrollGridQuery($id: String!, $cursor: String, $count: Int!) {
         marketingCollection(slug: $id) {
-          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor)
+          ...CollectionArtworks_collection @arguments(cursor: $cursor, count: $count)
         }
       }
     `,
