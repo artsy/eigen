@@ -8,7 +8,6 @@ export const CollectionArtworks: React.FC<{
   collection: CollectionArtworks_collection
   relay: RelayPaginationProp
 }> = ({ collection, relay }) => {
-  console.log("TCL: collection", collection)
   const artworks = get(collection, p => p.collectionArtworks)
 
   return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />

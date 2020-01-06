@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Collection Artworks renders properly 1`] = `"<rctscrollview scrolleventthrottle=\\"50\\" accessibilitylabel=\\"Artworks ScrollView\\"><view><view px=\\"0\\"><view style=\\"flex-direction: row;\\" accessibilitylabel=\\"Artworks Content View\\"></view></view></view></rctscrollview>"`;
