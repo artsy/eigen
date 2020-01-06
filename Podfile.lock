@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.20.1):
+  - Emission (1.20.8):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -466,7 +466,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DoubleConversion (from `./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
-  - Emission (= 1.20.1)
+  - Emission (= 1.20.8)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -762,7 +762,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 482b18d340f269462060aa7e3a2a7818618050c3
+  Emission: 907628438ff62fc40c096858870de7829623564a
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -775,7 +775,7 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  glog: affb802cb73dc1156005a5fb19085008bf6ffd52
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -797,7 +797,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
+  Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
   RCTTypeSafety: 2ec60de6abb1db050b56ecc4b60188026078fd10
@@ -844,6 +844,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: a38de7baec5f645c70571bbfeced78226ba7a0db
+PODFILE CHECKSUM: 8a6e2ba72249fed07a8c213d5ee9a4c285fd33a6
 
 COCOAPODS: 1.7.5

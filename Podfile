@@ -16,7 +16,7 @@ require 'down'
 require 'json'
 require 'fileutils'
 
-# We need to scope the side-effects of downloading Emission's NPM podspecs to 
+# We need to scope the side-effects of downloading Emission's NPM podspecs to
 # only cases where we are actually installing pods (and not, for example,
 # fetching a key from CocoaPods-Keys). Not pretty, but it works!
 installing_pods = ARGV.include?('install') || ARGV.include?('update')
