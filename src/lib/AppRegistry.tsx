@@ -21,7 +21,6 @@ import {
   GeneRenderer,
   InboxRenderer,
   InquiryRenderer,
-  MyProfileRenderer,
   RegistrationFlowRenderer,
   ShowRenderer,
   WorksForYouRenderer,
@@ -169,7 +168,7 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
   }
 })(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
-const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
+const MyProfile = Containers.MyProfile
 
 interface CollectionProps {
   collectionID: string
