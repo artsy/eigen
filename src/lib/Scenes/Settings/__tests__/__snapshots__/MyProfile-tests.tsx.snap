@@ -1,240 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks like expected 1`] = `
-<RCTScrollView
-  automaticallyAdjustContentInsets={false}
-  scrollsToTop={true}
->
-  <View>
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "marginTop": 82,
-          },
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "#e5e5e5",
-              "borderRadius": 61.5,
-              "height": 123,
-              "justifyContent": "center",
-              "width": 123,
-            },
-          ]
-        }
-      >
-        <Text
-          style={
-            Array [
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-                "fontSize": 16,
-              },
-            ]
-          }
-        >
-          DM
-        </Text>
-      </View>
-      <Text
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "fontSize": 17,
-            },
-            Array [
-              Object {
-                "fontSize": 26,
-                "marginTop": 24,
-                "textAlign": "center",
-              },
-              Object {
-                "fontSize": 26,
-                "marginTop": 24,
-                "textAlign": "center",
-              },
-            ],
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-            },
-          ]
-        }
-      >
-        Danger McShane
-      </Text>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "marginTop": 82,
-          },
-        ]
-      }
-    >
-      <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "opacity": 1,
-            "width": 330,
-          }
-        }
-      >
-        <View>
-          <View
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "#e5e5e5",
-                  "height": 1,
-                  "marginLeft": -40,
-                  "marginRight": -40,
-                },
-                undefined,
-              ]
-            }
-          />
-          <Text
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                  "fontSize": 14,
-                  "marginBottom": 8,
-                  "marginTop": 24,
-                },
-              ]
-            }
-          >
-            SELLING
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Array [
-                  Object {
-                    "color": "#999999",
-                    "fontSize": 26,
-                    "marginBottom": 12,
-                  },
-                ],
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-              ]
-            }
-          >
-            Sell works from your collection
-          </Text>
-          <View
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "#e5e5e5",
-                  "height": 1,
-                  "marginLeft": -40,
-                  "marginRight": -40,
-                },
-                undefined,
-              ]
-            }
-          />
-        </View>
-      </View>
-      <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "opacity": 1,
-            "width": 330,
-          }
-        }
-      >
-        <View>
-          <Text
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                  "fontSize": 14,
-                  "marginBottom": 8,
-                  "marginTop": 24,
-                },
-              ]
-            }
-          >
-            ACCOUNT DETAILS
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Array [
-                  Object {
-                    "color": "#999999",
-                    "fontSize": 26,
-                    "marginBottom": 12,
-                  },
-                ],
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-              ]
-            }
-          >
-            Email, password reset, profile
-          </Text>
-          <View
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "#e5e5e5",
-                  "height": 1,
-                  "marginLeft": -40,
-                  "marginRight": -40,
-                },
-                undefined,
-              ]
-            }
-          />
-        </View>
-      </View>
-    </View>
-  </View>
-</RCTScrollView>
+Array [
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        undefined,
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    TODO: Implement this according to designs. See: MX-141.
+  </Text>,
+  <Text
+    accessible={true}
+    focusable={true}
+    numberOfLines={1}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        undefined,
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Take me to the new privacy view controller
+  </Text>,
+]
 `;

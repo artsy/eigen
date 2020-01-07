@@ -356,13 +356,10 @@
 
 - (ARCellData *)jumpToMyProfile
 {
-  return [self viewControllerCellDataWithTitle:@"My Profile"
+  return [self tappableCellDataWithTitle:@"My Profile"
                                      selection:^{
     id viewController = [[ARMyProfileComponentViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
-  }
-                                       preload:^NSArray<ARGraphQLQuery *> *{
-    return [ARMyProfileComponentViewController preloadQueries];
   }];
 }
 
