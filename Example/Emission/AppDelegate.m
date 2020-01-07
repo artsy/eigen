@@ -27,6 +27,7 @@
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowArtistsComponentViewController.h>
 #import <Emission/ARShowMoreInfoComponentViewController.h>
@@ -298,7 +299,10 @@ randomBOOL(void)
   BOOL isCitySavedList = [route hasPrefix:@"/city-save/"];
   BOOL isCityList = [route hasPrefix:@"/city/"];
 
-  if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
+  if ([route hasPrefix:@"ios-settings"]) {
+    viewController = [[ARMyProfileComponentViewController alloc] init];
+
+  } else if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
 

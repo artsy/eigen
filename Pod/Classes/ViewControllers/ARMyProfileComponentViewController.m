@@ -1,7 +1,7 @@
-#import "ARMyProfileViewController.h"
+#import "ARMyProfileComponentViewController.h"
 #import "ARGraphQLQueryPreloader.h"
 
-@implementation ARMyProfileViewController
+@implementation ARMyProfileComponentViewController
 
 + (NSArray<ARGraphQLQuery *> *)preloadQueries;
 {

@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARMyProfileViewController : ARComponentViewController
+@interface ARMyProfileComponentViewController : ARComponentViewController
 
 + (NSArray<ARGraphQLQuery *> *)preloadQueries;
 

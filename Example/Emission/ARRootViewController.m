@@ -31,7 +31,7 @@
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARInquiryComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
-#import <Emission/ARMyProfileViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARPartnerComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
@@ -358,11 +358,11 @@
 {
   return [self viewControllerCellDataWithTitle:@"My Profile"
                                      selection:^{
-    id viewController = [[ARMyProfileViewController alloc] init];
+    id viewController = [[ARMyProfileComponentViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
   }
                                        preload:^NSArray<ARGraphQLQuery *> *{
-    return [ARMyProfileViewController preloadQueries];
+    return [ARMyProfileComponentViewController preloadQueries];
   }];
 }
 
