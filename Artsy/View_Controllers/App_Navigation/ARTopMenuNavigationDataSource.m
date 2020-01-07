@@ -6,7 +6,7 @@
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
-#import <Emission/ARMyProfileViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
 
@@ -113,7 +113,7 @@
         return _profileNavigationController;
     }
 
-    ARComponentViewController *profileVC = [[ARMyProfileViewController alloc] init];
+    ARComponentViewController *profileVC = [[ARMyProfileComponentViewController alloc] init];
     _profileNavigationController = [[ARNavigationController alloc] initWithRootViewController:profileVC];
     return _profileNavigationController;
 }
