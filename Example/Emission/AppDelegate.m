@@ -21,6 +21,7 @@
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARArtworkComponentViewController.h>
+#import <Emission/ARPrivacyRequestComponentViewController.h>
 #import <Emission/ARPartnerComponentViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
@@ -301,6 +302,9 @@ randomBOOL(void)
 
   if ([route hasPrefix:@"ios-settings"]) {
     viewController = [[ARMyProfileComponentViewController alloc] init];
+
+  } else if ([route hasPrefix:@"privacy-request"]) {
+    viewController = [[ARPrivacyRequestComponentViewController alloc] init];
 
   } else if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
