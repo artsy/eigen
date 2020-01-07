@@ -1,3 +1,15 @@
+# v1.21.0 (Tue Jan 07 2020)
+
+#### 🚀  Enhancement
+
+- [MX-140] CCPA infrastructure [#2025](https://github.com/artsy/emission/pull/2025) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.20.8 (Fri Jan 03 2020)
 
 #### 🐛  Bug Fix
