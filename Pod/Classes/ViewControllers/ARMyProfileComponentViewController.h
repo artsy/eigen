@@ -1,8 +1,10 @@
 #import <Emission/ARComponentViewController.h>
 
+@class ARGraphQLQuery;
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARMyProfileEditViewController : ARComponentViewController
+@interface ARMyProfileComponentViewController : ARComponentViewController
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 

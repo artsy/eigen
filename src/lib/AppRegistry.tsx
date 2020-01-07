@@ -21,7 +21,6 @@ import {
   GeneRenderer,
   InboxRenderer,
   InquiryRenderer,
-  MyProfileRenderer,
   RegistrationFlowRenderer,
   ShowRenderer,
   WorksForYouRenderer,
@@ -45,6 +44,7 @@ import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { PartnerRenderer } from "./Scenes/Partner"
 import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
+import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
@@ -169,7 +169,7 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
   }
 })(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
-const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
+const MyProfile = Containers.MyProfile
 
 interface CollectionProps {
   collectionID: string
@@ -368,7 +368,6 @@ AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
-AppRegistry.registerComponent("MyProfileEdit", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
@@ -397,3 +396,4 @@ AppRegistry.registerComponent("CityFairList", () => CityFairList)
 AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
 AppRegistry.registerComponent("Collection", () => Collection)
+AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)

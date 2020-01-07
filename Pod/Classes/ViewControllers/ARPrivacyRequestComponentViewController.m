@@ -1,7 +1,7 @@
-#import "ARMyProfileViewController.h"
+#import "ARPrivacyRequestComponentViewController.h"
 #import "ARGraphQLQueryPreloader.h"
 
-@implementation ARMyProfileViewController
+@implementation ARPrivacyRequestComponentViewController
 
 + (NSArray<ARGraphQLQuery *> *)preloadQueries;
 {
@@ -10,7 +10,7 @@
 
 - (instancetype)init
 {
-    return [super initWithEmission:nil moduleName:@"MyProfile" initialProperties:nil];
+    return [super initWithEmission:nil moduleName:@"PrivacyRequest" initialProperties:nil];
 }
 
 @end

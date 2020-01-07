@@ -23,9 +23,6 @@ WorksForYou
 import Inquiry from "../Containers/Inquiry"
 Inquiry
 
-import MyProfile from "lib/Scenes/Settings/MyProfile"
-MyProfile
-
 import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
@@ -45,7 +42,6 @@ import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQue
 import { QueryRenderersGeneQuery } from "__generated__/QueryRenderersGeneQuery.graphql"
 import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
 import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
-import { QueryRenderersMyProfileQuery } from "__generated__/QueryRenderersMyProfileQuery.graphql"
 import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderersRegistrationFlowQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
@@ -270,23 +266,6 @@ export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
         query QueryRenderersInboxQuery {
           me {
             ...Inbox_me
-          }
-        }
-      `}
-      variables={{}}
-      render={render}
-    />
-  )
-}
-
-export const MyProfileRenderer: React.SFC<RendererProps> = ({ render }) => {
-  return (
-    <QueryRenderer<QueryRenderersMyProfileQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersMyProfileQuery {
-          me {
-            ...MyProfile_me
           }
         }
       `}

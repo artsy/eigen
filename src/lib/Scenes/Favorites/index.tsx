@@ -1,5 +1,5 @@
 import React from "react"
-import { View } from "react-native"
+import { TouchableWithoutFeedback, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
@@ -26,15 +26,21 @@ import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
 import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
-import { Theme } from "@artsy/palette"
+import { Flex, Theme } from "@artsy/palette"
 import { gravityURL } from "lib/relay/config"
+
+import { Gear } from "lib/Icons/Gear"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
+const SettingsIcon = styled(Gear)`
+  margin-right: 20px;
+`
 
 const Title = styled.Text`
   font-family: ${Fonts.GaramondRegular};
   font-size: 30px;
   text-align: left;
   margin-left: 20px;
-  margin-top: 20px;
 `
 
 const isStaging = gravityURL.includes("staging")
@@ -64,8 +70,15 @@ class Favorites extends React.Component<Props, null> {
           <ScrollableTabView
             onChangeTab={selectedTab => this.fireTabSelectionAnalytics(selectedTab)}
             renderTabBar={props => (
-              <View>
-                <Title>Saves &amp; Follows</Title>
+              <View style={{ marginTop: 20 }}>
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  <Title>Saves &amp; Follows</Title>
+                  <TouchableWithoutFeedback
+                    onPress={() => SwitchBoard.presentNavigationViewController(this, "ios-settings")}
+                  >
+                    <SettingsIcon />
+                  </TouchableWithoutFeedback>
+                </Flex>
                 <ScrollableTabBar {...props} />
               </View>
             )}
