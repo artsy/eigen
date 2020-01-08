@@ -75,7 +75,7 @@ extern NSString *const AREnvTest;
 @property (nonatomic, strong, readwrite) AREmissionConfiguration *configurationModule;
 
 + (instancetype)sharedInstance;
-+ (void)setSharedInstance:(AREmission *)instance;
++ (void)setSharedInstance:(nullable AREmission *)instance;
 
 - (instancetype)initWithConfiguration:(AREmissionConfiguration *)config packagerURL:(nullable NSURL *)packagerURL NS_DESIGNATED_INITIALIZER;
 

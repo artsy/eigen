@@ -93,7 +93,7 @@ RCT_EXPORT_MODULE(Emission);
 
 static AREmission *_sharedInstance = nil;
 
-+ (void)setSharedInstance:(AREmission *)instance;
++ (void)setSharedInstance:(nullable AREmission *)instance;
 {
   _sharedInstance = instance;
 }
