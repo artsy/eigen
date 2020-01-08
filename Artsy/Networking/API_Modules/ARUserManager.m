@@ -95,6 +95,25 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }
 
     _keychain = [[ARKeychain alloc] init];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARUserRequestedLogout" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"Hey, we're logging out!");
+        [[self class] clearUserData];
+        /*
+         TODO:
+         - Tear down the React Native runtime. [AREmission setSharedInstance:nil];
+         - Tear down the ARTopMenuViewController singleton. (TBD)
+         - Get a new XApp token
+           [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+                // Sync clock with server
+                [ARSystemTime sync];
+            }];
+         - Re-present the login flow. [[ARAppDelegate sharedInstance] showOnboarding];
+         */
+
+
+    }];
+
     return self;
 }
 
