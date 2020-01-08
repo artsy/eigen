@@ -16,6 +16,8 @@
 #import "ARKeychainable.h"
 #import "ARSystemTime.h"
 #import "ARLogger.h"
+#import "ARTopMenuViewController.h"
+#import "ARAppDelegate.h"
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
@@ -99,9 +101,22 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARUserRequestedLogout" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSLog(@"Hey, we're logging out!");
         [[self class] clearUserData];
+        [AREmission setSharedInstance:nil];
+        [ARTopMenuViewController teardownSharedInstance];
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+            // Sync clock with server
+            [ARSystemTime sync];
+        }];
+        [[ARAppDelegate sharedInstance] showOnboarding];
+
         /*
          TODO:
+            - the admin menu is not appearing correctly in response to rage shake
+            - notification is not even being posted
+            - looks like there are two js runtimes, need to remove previous from memory
+         DONE:
          - Tear down the React Native runtime. [AREmission setSharedInstance:nil];
+            - Tangential: param in AREmission is non-nullable change had to be made to allow this to be nullable
          - Tear down the ARTopMenuViewController singleton. (TBD)
          - Get a new XApp token
            [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
