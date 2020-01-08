@@ -98,7 +98,7 @@ jobs:
 
   deploy:
     macos:
-      xcode: "10.3.0"
+      xcode: "11.3.0"
 
     shell: /bin/bash --login -eo pipefail
 
