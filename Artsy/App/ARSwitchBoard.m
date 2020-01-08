@@ -44,6 +44,8 @@
 #import <Emission/ARCitySavedListComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
+#import <Emission/ARPrivacyRequestComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -235,6 +237,14 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
+    }];
+
+    [self.routes addRoute:@"/ios-settings" handler:JLRouteParams {
+        return [[ARMyProfileComponentViewController alloc] init];
+    }];
+
+    [self.routes addRoute:@"/privacy-request" handler:JLRouteParams {
+        return [[ARPrivacyRequestComponentViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {

@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.19.11
   dev:
     - Delete ARFairSearchViewController - brian
+    - Adds basic UI infrastructure for CCPA UI - ash
   user_facing:
     - 
 
