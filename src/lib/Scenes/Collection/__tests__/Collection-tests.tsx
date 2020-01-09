@@ -1,18 +1,48 @@
-import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql"
 import React from "react"
-import * as renderer from "react-test-renderer"
-import { Collection } from "../Collection"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer from "react-test-renderer"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { CollectionContainer } from "../Collection"
+
+jest.unmock("react-relay")
 
 describe("Collection", () => {
-  let props
+  let environment: ReturnType<typeof createMockEnvironment>
+  const TestRenderer = () => (
+    <QueryRenderer<CollectionTestsQuery>
+      environment={environment}
+      query={graphql`
+        query CollectionTestsQuery @relay_test_operation {
+          marketingCollection(slug: "doesn't matter") {
+            ...Collection_collection
+          }
+        }
+      `}
+      variables={{ hello: true }}
+      render={({ props, error }) => {
+        if (props) {
+          return <CollectionContainer collection={props.marketingCollection} />
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
+
   beforeEach(() => {
-    props = {
-      collection: { ...CollectionFixture },
-    }
+    environment = createMockEnvironment()
   })
 
-  it("Renders collection correctly", () => {
-    const component = renderer.create(<Collection {...props} />)
-    expect(component).toMatchSnapshot()
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("renders a snapshot", () => {
+    const renderer = ReactTestRenderer.create(<TestRenderer />)
+    environment.mock.resolveMostRecentOperation(operation => {
+      return MockPayloadGenerator.generate(operation)
+    })
+    expect(renderer.toJSON()).toMatchSnapshot()
   })
 })

@@ -2,21 +2,34 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CollectionArtworkPreviewTestsQueryVariables = {};
-export type CollectionArtworkPreviewTestsQueryResponse = {
+export type CollectionArtworksTestsQueryVariables = {};
+export type CollectionArtworksTestsQueryResponse = {
     readonly marketingCollection: {
-        readonly " $fragmentRefs": FragmentRefs<"CollectionArtworkPreview_collection">;
+        readonly slug: string;
+        readonly id: string;
+        readonly collectionArtworks: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly id: string;
+                } | null;
+            } | null> | null;
+            readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
+        } | null;
     } | null;
 };
-export type CollectionArtworkPreviewTestsQueryRawResponse = {
+export type CollectionArtworksTestsQueryRawResponse = {
     readonly marketingCollection: ({
-        readonly artworks: ({
+        readonly slug: string;
+        readonly id: string;
+        readonly collectionArtworks: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
+                    readonly slug: string;
                     readonly image: ({
-                        readonly aspect_ratio: number;
+                        readonly aspectRatio: number;
                         readonly url: string | null;
+                        readonly aspect_ratio: number;
                     }) | null;
                     readonly title: string | null;
                     readonly date: string | null;
@@ -24,7 +37,6 @@ export type CollectionArtworkPreviewTestsQueryRawResponse = {
                     readonly is_biddable: boolean | null;
                     readonly is_acquireable: boolean | null;
                     readonly is_offerable: boolean | null;
-                    readonly slug: string;
                     readonly sale: ({
                         readonly is_auction: boolean | null;
                         readonly is_closed: boolean | null;
@@ -47,46 +59,62 @@ export type CollectionArtworkPreviewTestsQueryRawResponse = {
                     }) | null;
                     readonly href: string | null;
                 }) | null;
+                readonly id: string | null;
             }) | null> | null;
+            readonly pageInfo: {
+                readonly hasNextPage: boolean;
+                readonly startCursor: string | null;
+                readonly endCursor: string | null;
+            };
             readonly id: string | null;
         }) | null;
-        readonly id: string | null;
     }) | null;
 };
-export type CollectionArtworkPreviewTestsQuery = {
-    readonly response: CollectionArtworkPreviewTestsQueryResponse;
-    readonly variables: CollectionArtworkPreviewTestsQueryVariables;
-    readonly rawResponse: CollectionArtworkPreviewTestsQueryRawResponse;
+export type CollectionArtworksTestsQuery = {
+    readonly response: CollectionArtworksTestsQueryResponse;
+    readonly variables: CollectionArtworksTestsQueryVariables;
+    readonly rawResponse: CollectionArtworksTestsQueryRawResponse;
 };
 
 
 
 /*
-query CollectionArtworkPreviewTestsQuery {
+query CollectionArtworksTestsQuery {
   marketingCollection(slug: "street-art-now") {
-    ...CollectionArtworkPreview_collection
+    slug
     id
-  }
-}
-
-fragment CollectionArtworkPreview_collection on MarketingCollection {
-  artworks: artworksConnection(sort: "-merchandisability", first: 6) {
-    edges {
-      node {
-        ...GenericGrid_artworks
-        id
+    collectionArtworks: artworksConnection(first: 6) {
+      edges {
+        node {
+          id
+        }
       }
+      ...InfiniteScrollArtworksGrid_connection
+      id
     }
-    id
   }
 }
 
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
   }
-  ...ArtworkGridItem_artwork
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -136,11 +164,25 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v2 = [
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 6
+  }
+],
+v4 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -148,13 +190,13 @@ v2 = [
     "args": null,
     "storageKey": null
   },
-  (v1/*: any*/)
+  (v2/*: any*/)
 ];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "CollectionArtworkPreviewTestsQuery",
+    "name": "CollectionArtworksTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -168,46 +210,14 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
-          {
-            "kind": "FragmentSpread",
-            "name": "CollectionArtworkPreview_collection",
-            "args": null
-          }
-        ]
-      }
-    ]
-  },
-  "operation": {
-    "kind": "Operation",
-    "name": "CollectionArtworkPreviewTestsQuery",
-    "argumentDefinitions": [],
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"street-art-now\")",
-        "args": (v0/*: any*/),
-        "concreteType": "MarketingCollection",
-        "plural": false,
-        "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": "artworks",
+            "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:6,sort:\"-merchandisability\")",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 6
-              },
-              {
-                "kind": "Literal",
-                "name": "sort",
-                "value": "-merchandisability"
-              }
-            ],
+            "storageKey": "artworksConnection(first:6)",
+            "args": (v3/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -229,6 +239,66 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/)
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "FragmentSpread",
+                "name": "InfiniteScrollArtworksGrid_connection",
+                "args": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "operation": {
+    "kind": "Operation",
+    "name": "CollectionArtworksTestsQuery",
+    "argumentDefinitions": [],
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "marketingCollection",
+        "storageKey": "marketingCollection(slug:\"street-art-now\")",
+        "args": (v0/*: any*/),
+        "concreteType": "MarketingCollection",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": "collectionArtworks",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(first:6)",
+            "args": (v3/*: any*/),
+            "concreteType": "FilterArtworksConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artwork",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/),
                       (v1/*: any*/),
                       {
                         "kind": "LinkedField",
@@ -241,7 +311,7 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": "aspect_ratio",
+                            "alias": null,
                             "name": "aspectRatio",
                             "args": null,
                             "storageKey": null
@@ -258,6 +328,13 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "aspect_ratio",
+                            "name": "aspectRatio",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -304,13 +381,6 @@ return {
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "slug",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
                         "kind": "LinkedField",
                         "alias": null,
                         "name": "sale",
@@ -340,7 +410,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v2/*: any*/)
                         ]
                       },
                       {
@@ -370,7 +440,7 @@ return {
                               }
                             ]
                           },
-                          (v1/*: any*/)
+                          (v2/*: any*/)
                         ]
                       },
                       {
@@ -387,7 +457,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v2/*: any*/)
+                        "selections": (v4/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -397,7 +467,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v2/*: any*/)
+                        "selections": (v4/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -407,25 +477,57 @@ return {
                         "storageKey": null
                       }
                     ]
+                  },
+                  (v2/*: any*/)
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "startCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               },
-              (v1/*: any*/)
+              (v2/*: any*/)
             ]
-          },
-          (v1/*: any*/)
+          }
         ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
-    "name": "CollectionArtworkPreviewTestsQuery",
-    "id": "3f7a2d911ccabe3c245d779bfe44fd23",
+    "name": "CollectionArtworksTestsQuery",
+    "id": "b3931ef6c51ee94508cb1e8b8ddc0a11",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '16cdadfc0ad11a794228d6f981eb590e';
+(node as any).hash = 'aa1c8b21e8950ee86ff8fc849697962a';
 export default node;
