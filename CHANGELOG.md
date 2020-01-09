@@ -1,3 +1,16 @@
+# v1.21.3 (Thu Jan 09 2020)
+
+#### 🐛  Bug Fix
+
+- Adds log out button to app [#2027](https://github.com/artsy/emission/pull/2027) ([@ashfurrow](https://github.com/ashfurrow) [@brainbicycle](https://github.com/brainbicycle))
+
+#### Authors: 2
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+- Brian Beckerle ([@brainbicycle](https://github.com/brainbicycle))
+
+---
+
 # v1.21.2 (Thu Jan 09 2020)
 
 
