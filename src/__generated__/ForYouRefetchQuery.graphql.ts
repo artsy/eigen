@@ -60,7 +60,6 @@ fragment ArtworkCarousel_rail on HomePageArtworkModule {
     }
     ... on Fair {
       href
-      id
     }
     ... on Gene {
       href
@@ -139,9 +138,6 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
       }
     }
     ... on Node {
-      id
-    }
-    ... on Fair {
       id
     }
   }
@@ -724,7 +720,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "33abb5c227a13284a798d13124d590f0",
+    "id": "ebda234a0160cd4f89cd2625e3530b72",
     "text": null,
     "metadata": {}
   }
