@@ -70,6 +70,9 @@ fragment Artwork_artwork on Artwork {
     ... on Node {
       id
     }
+    ... on Fair {
+      id
+    }
   }
   contextGrids {
     __typename
@@ -1972,7 +1975,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTestsQuery",
-    "id": "caa640fd10a3af964a52847d612cea3d",
+    "id": "9e26d90dd865931068f6b79dd6b2cbe1",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {

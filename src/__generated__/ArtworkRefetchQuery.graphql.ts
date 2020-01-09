@@ -75,6 +75,9 @@ fragment Artwork_artwork on Artwork {
     ... on Node {
       id
     }
+    ... on Fair {
+      id
+    }
   }
   contextGrids {
     __typename
@@ -1884,7 +1887,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "b552825389deca584f267ddc8cc94e18",
+    "id": "e87e08f65910b389b278adef0c3736d8",
     "text": null,
     "metadata": {}
   }

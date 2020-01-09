@@ -6,7 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ARPrivacyRequestComponentViewController : ARComponentViewController
 
-
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
