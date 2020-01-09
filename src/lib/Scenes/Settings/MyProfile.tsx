@@ -45,7 +45,7 @@ export default class MyProfile extends React.Component {
               </Join>
             </Box>
           </View>
-          <Box py={1} mx={2} mt={1}>
+          <Box py={2} mx={2} mt={1}>
             <Button variant="primaryBlack" block size="large" onPress={this.confirmLogout} mt={1}>
               Log out
             </Button>
