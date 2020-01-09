@@ -1,6 +1,5 @@
 import { Box, Sans, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
-import { CollectionArtworkPreviewContainer as CollectionArtworkPreview } from "lib/Scenes/Collection/Screens/CollectionArtworkPreview"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import React, { Component } from "react"
@@ -24,16 +23,9 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     const sections = []
 
     sections.push({
-      type: "featuredArtists",
+      type: "collectionFeaturedArtists",
       data: {
         artists: [],
-      },
-    })
-
-    sections.push({
-      type: "artworkPreview",
-      data: {
-        artworks: [],
       },
     })
 
@@ -51,14 +43,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
 
   renderItem = ({ item: { type } }) => {
     switch (type) {
-      case "featuredArtists":
+      case "collectionFeaturedArtists":
         return (
           <Box>
             <Sans size="3t">Featured Artists</Sans>
           </Box>
         )
-      case "artworkPreview":
-        return <CollectionArtworkPreview collection={this.props.collection} />
       case "collectionArtworks":
         return <CollectionArtworks collection={this.props.collection} />
       default:
@@ -92,7 +82,6 @@ export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
     fragment Collection_collection on MarketingCollection {
       ...CollectionHeader_collection
-      ...CollectionArtworkPreview_collection
       ...CollectionArtworks_collection
     }
   `,
