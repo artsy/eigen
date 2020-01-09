@@ -84,6 +84,8 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
 @implementation ARSwitchBoard
 
+static ARSwitchBoard *sharedInstance = nil;
+
 #pragma mark - Lifecycle
 
 + (void)load
@@ -94,15 +96,15 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
 + (instancetype)sharedInstance
 {
-    static ARSwitchBoard *sharedInstance;
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (sharedInstance == nil) {
         sharedInstance = [[ARSwitchBoard alloc] init];
         [sharedInstance updateRoutes];
-    });
-
+    }
     return sharedInstance;
+}
+
++ (void)teardownSharedInstance {
+    sharedInstance = nil;
 }
 
 #define JLRouteParams ^id _Nullable(NSDictionary *_Nullable parameters)

@@ -16,6 +16,9 @@
 #import "ARKeychainable.h"
 #import "ARSystemTime.h"
 #import "ARLogger.h"
+#import "ARTopMenuViewController.h"
+#import "ARAppDelegate.h"
+#import "ARSwitchBoard.h"
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
@@ -95,6 +98,20 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }
 
     _keychain = [[ARKeychain alloc] init];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARUserRequestedLogout" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"Hey, we're logging out!");
+        [[self class] clearUserData];
+        [AREmission teardownSharedInstance];
+        [ARTopMenuViewController teardownSharedInstance];
+        [ARSwitchBoard teardownSharedInstance];
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+            // Sync clock with server
+            [ARSystemTime sync];
+            [[ARAppDelegate sharedInstance] showOnboarding];
+        }];
+    }];
+
     return self;
 }
 

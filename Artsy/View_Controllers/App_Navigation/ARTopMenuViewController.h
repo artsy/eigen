@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The main interface of the app
 + (ARTopMenuViewController *)sharedController;
 
+/// Allow for instance teardown to allow logout
++ (void)teardownSharedInstance;
+
 /// The current navigation controller for the app from inside the tab controller
 @property (readonly, nonatomic, strong) ARNavigationController *rootNavigationController;
 

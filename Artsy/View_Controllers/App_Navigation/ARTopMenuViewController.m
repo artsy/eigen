@@ -123,17 +123,21 @@ static const CGFloat ARMenuButtonDimension = 50;
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 @end
 
+static ARTopMenuViewController *_sharedManager = nil;
 
 @implementation ARTopMenuViewController
 
 + (ARTopMenuViewController *)sharedController
 {
-    static ARTopMenuViewController *_sharedManager = nil;
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
+    if (_sharedManager == nil) {
         _sharedManager = [[self alloc] init];
-    });
+    }
     return _sharedManager;
+}
+
++ (void)teardownSharedInstance
+{
+    _sharedManager = nil;
 }
 
 - (void)viewDidLoad
