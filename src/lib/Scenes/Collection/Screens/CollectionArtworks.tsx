@@ -19,14 +19,13 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
     collection: graphql`
       fragment CollectionArtworks_collection on MarketingCollection
         @argumentDefinitions(
-          count: { type: "Int", defaultValue: 9 }
+          count: { type: "Int", defaultValue: 6 }
           cursor: { type: "String" }
           sort: { type: "String", defaultValue: "-merchandisability" }
-          after: { type: "String", defaultValue: "6" }
         ) {
         slug
         id
-        collectionArtworks: artworksConnection(sort: $sort, first: $count, after: $cursor)
+        collectionArtworks: artworksConnection(sort: $sort, first: $count)
           @connection(key: "Collection_collectionArtworks") {
           edges {
             node {

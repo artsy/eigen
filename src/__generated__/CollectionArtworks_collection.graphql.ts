@@ -34,7 +34,7 @@ return {
     "connection": [
       {
         "count": "count",
-        "cursor": "cursor",
+        "cursor": null,
         "direction": "forward",
         "path": [
           "collectionArtworks"
@@ -47,7 +47,7 @@ return {
       "kind": "LocalArgument",
       "name": "count",
       "type": "Int",
-      "defaultValue": 9
+      "defaultValue": 6
     },
     {
       "kind": "LocalArgument",
@@ -60,12 +60,6 @@ return {
       "name": "sort",
       "type": "String",
       "defaultValue": "-merchandisability"
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "after",
-      "type": "String",
-      "defaultValue": "6"
     }
   ],
   "selections": [
@@ -164,5 +158,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2895a663e8c31b7e961e9ae09e431c01';
+(node as any).hash = 'cde7ba35078221957335b4ed3715687a';
 export default node;

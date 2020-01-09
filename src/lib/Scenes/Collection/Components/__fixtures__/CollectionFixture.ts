@@ -1,8 +1,4 @@
-import { CollectionArtworksTestsQueryRawResponse } from "__generated__/CollectionArtworksTestsQuery.graphql"
-import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
-
-export const CollectionFixture: CollectionHeaderTestsQueryRawResponse["marketingCollection"] &
-  CollectionArtworksTestsQueryRawResponse["marketingCollection"] = {
+export const CollectionFixture = {
   slug: "street-art-now",
   id: "top-level-id",
   title: "Street Art Now",

@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "3088eda2e0a9bcc2ca06e9808964fea9{}",
+              "identifier": "775c64e97086c5b4644ce3afd3b65b62{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -167,7 +167,7 @@ exports[`Collection renders a snapshot 1`] = `
                             Object {
                               "kind": "Literal",
                               "name": "first",
-                              "value": 9,
+                              "value": 6,
                             },
                             Object {
                               "kind": "Literal",
@@ -495,7 +495,7 @@ exports[`Collection renders a snapshot 1`] = `
                               "storageKey": null,
                             },
                           ],
-                          "storageKey": "artworksConnection(first:9,sort:\\"-merchandisability\\")",
+                          "storageKey": "artworksConnection(first:6,sort:\\"-merchandisability\\")",
                         },
                         Object {
                           "alias": "collectionArtworks",
@@ -503,7 +503,7 @@ exports[`Collection renders a snapshot 1`] = `
                             Object {
                               "kind": "Literal",
                               "name": "first",
-                              "value": 9,
+                              "value": 6,
                             },
                             Object {
                               "kind": "Literal",
@@ -525,7 +525,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "3088eda2e0a9bcc2ca06e9808964fea9",
+                  "id": "775c64e97086c5b4644ce3afd3b65b62",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {

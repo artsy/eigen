@@ -22,7 +22,6 @@ export type CollectionArtworksInfiniteScrollGridQuery = {
 /*
 query CollectionArtworksInfiniteScrollGridQuery(
   $id: String!
-  $cursor: String
   $count: Int!
 ) {
   marketingCollection(slug: $id) {
@@ -34,7 +33,7 @@ query CollectionArtworksInfiniteScrollGridQuery(
 fragment CollectionArtworks_collection_1G22uz on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(sort: "-merchandisability", first: $count, after: $cursor) {
+  collectionArtworks: artworksConnection(sort: "-merchandisability", first: $count) {
     edges {
       node {
         id
@@ -152,11 +151,6 @@ v3 = {
   "storageKey": null
 },
 v4 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
   {
     "kind": "Variable",
     "name": "first",
@@ -509,7 +503,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "3296b66180888423ae2a6cb72840f8fa",
+    "id": "0d18216aa7cf44bca02723fc58b734b7",
     "text": null,
     "metadata": {}
   }

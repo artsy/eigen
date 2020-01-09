@@ -5,7 +5,16 @@ import { FragmentRefs } from "relay-runtime";
 export type CollectionArtworksTestsQueryVariables = {};
 export type CollectionArtworksTestsQueryResponse = {
     readonly marketingCollection: {
-        readonly " $fragmentRefs": FragmentRefs<"CollectionArtworks_collection">;
+        readonly slug: string;
+        readonly id: string;
+        readonly collectionArtworks: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly id: string;
+                } | null;
+            } | null> | null;
+            readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
+        } | null;
     } | null;
 };
 export type CollectionArtworksTestsQueryRawResponse = {
@@ -49,9 +58,7 @@ export type CollectionArtworksTestsQueryRawResponse = {
                         readonly id: string | null;
                     }) | null;
                     readonly href: string | null;
-                    readonly __typename: "Artwork";
                 }) | null;
-                readonly cursor: string;
                 readonly id: string | null;
             }) | null> | null;
             readonly pageInfo: {
@@ -74,28 +81,17 @@ export type CollectionArtworksTestsQuery = {
 /*
 query CollectionArtworksTestsQuery {
   marketingCollection(slug: "street-art-now") {
-    ...CollectionArtworks_collection
+    slug
     id
-  }
-}
-
-fragment CollectionArtworks_collection on MarketingCollection {
-  slug
-  id
-  collectionArtworks: artworksConnection(sort: "-merchandisability", first: 9) {
-    edges {
-      node {
-        id
-        __typename
+    collectionArtworks: artworksConnection(first: 6) {
+      edges {
+        node {
+          id
+        }
       }
-      cursor
+      ...InfiniteScrollArtworksGrid_connection
+      id
     }
-    ...InfiniteScrollArtworksGrid_connection
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    id
   }
 }
 
@@ -183,12 +179,7 @@ v3 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 9
-  },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-merchandisability"
+    "value": 6
   }
 ],
 v4 = [
@@ -219,10 +210,46 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
-            "kind": "FragmentSpread",
-            "name": "CollectionArtworks_collection",
-            "args": null
+            "kind": "LinkedField",
+            "alias": "collectionArtworks",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(first:6)",
+            "args": (v3/*: any*/),
+            "concreteType": "FilterArtworksConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artwork",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/)
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "FragmentSpread",
+                "name": "InfiniteScrollArtworksGrid_connection",
+                "args": null
+              }
+            ]
           }
         ]
       }
@@ -248,7 +275,7 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:9,sort:\"-merchandisability\")",
+            "storageKey": "artworksConnection(first:6)",
             "args": (v3/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -448,22 +475,8 @@ return {
                         "name": "href",
                         "args": null,
                         "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "__typename",
-                        "args": null,
-                        "storageKey": null
                       }
                     ]
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "cursor",
-                    "args": null,
-                    "storageKey": null
                   },
                   (v2/*: any*/)
                 ]
@@ -502,17 +515,6 @@ return {
               },
               (v2/*: any*/)
             ]
-          },
-          {
-            "kind": "LinkedHandle",
-            "alias": "collectionArtworks",
-            "name": "artworksConnection",
-            "args": (v3/*: any*/),
-            "handle": "connection",
-            "key": "Collection_collectionArtworks",
-            "filters": [
-              "sort"
-            ]
           }
         ]
       }
@@ -521,11 +523,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksTestsQuery",
-    "id": "d144d23ed570ee78a55860b2aa07623a",
+    "id": "b3931ef6c51ee94508cb1e8b8ddc0a11",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3e4ca3300cd6327076334dc582e4cd13';
+(node as any).hash = 'aa1c8b21e8950ee86ff8fc849697962a';
 export default node;
