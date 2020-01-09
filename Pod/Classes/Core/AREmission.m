@@ -99,7 +99,7 @@ static AREmission *_sharedInstance = nil;
 }
 
 + (void)teardownSharedInstance {
-    _sharedInstance.bridge.invalidate;
+    [_sharedInstance.bridge invalidate];
     _sharedInstance = nil;
 }
 
