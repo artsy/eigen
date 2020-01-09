@@ -28,12 +28,14 @@ const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => f
 const touchedFiles = modified.concat(danger.git.created_files).filter(filesOnly)
 const createdFiles = danger.git.created_files.filter(filesOnly)
 
-const touchedAppOnlyFiles = touchedFiles.filter(
-  p => includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p)
-)
-const createdAppOnlyFiles = createdFiles.filter(
-  p => includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p)
-)
+const appOnlyFilter = (filename: string) =>
+  includes(filename, "src/lib/") &&
+  !includes(filename, "__tests__") &&
+  !includes(filename, "__mocks__") &&
+  typescriptOnly(filename)
+
+const touchedAppOnlyFiles = touchedFiles.filter(appOnlyFilter)
+const createdAppOnlyFiles = createdFiles.filter(appOnlyFilter)
 
 const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
