@@ -6,7 +6,7 @@ upcoming:
     - Delete ARFairSearchViewController - brian
     - Adds basic UI infrastructure for CCPA UI - ash
   user_facing:
-    - 
+    - Adds log out button to app - brian & ash 
 
 releases:
   - version: 6.1.0
