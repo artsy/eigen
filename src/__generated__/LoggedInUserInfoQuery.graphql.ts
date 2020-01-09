@@ -2,28 +2,28 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileQueryVariables = {};
-export type MyProfileQueryResponse = {
+export type LoggedInUserInfoQueryVariables = {};
+export type LoggedInUserInfoQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfile_me">;
+        readonly " $fragmentRefs": FragmentRefs<"LoggedInUserInfo_me">;
     } | null;
 };
-export type MyProfileQuery = {
-    readonly response: MyProfileQueryResponse;
-    readonly variables: MyProfileQueryVariables;
+export type LoggedInUserInfoQuery = {
+    readonly response: LoggedInUserInfoQueryResponse;
+    readonly variables: LoggedInUserInfoQueryVariables;
 };
 
 
 
 /*
-query MyProfileQuery {
+query LoggedInUserInfoQuery {
   me {
-    ...MyProfile_me
+    ...LoggedInUserInfo_me
     id
   }
 }
 
-fragment MyProfile_me on Me {
+fragment LoggedInUserInfo_me on Me {
   name
   email
 }
@@ -33,7 +33,7 @@ const node: ConcreteRequest = {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "MyProfileQuery",
+    "name": "LoggedInUserInfoQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -49,7 +49,7 @@ const node: ConcreteRequest = {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "MyProfile_me",
+            "name": "LoggedInUserInfo_me",
             "args": null
           }
         ]
@@ -58,7 +58,7 @@ const node: ConcreteRequest = {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MyProfileQuery",
+    "name": "LoggedInUserInfoQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -97,11 +97,11 @@ const node: ConcreteRequest = {
   },
   "params": {
     "operationKind": "query",
-    "name": "MyProfileQuery",
-    "id": "8681efa8460125e7f083d3ee9d79dda9",
+    "name": "LoggedInUserInfoQuery",
+    "id": "7d69ced7249d5f5cbd4da634c24ad4bb",
     "text": null,
     "metadata": {}
   }
 };
-(node as any).hash = 'fc2287d226489845236b2de22cf1ede8';
+(node as any).hash = 'e4f8e948db43ff716fec9355c45857d0';
 export default node;

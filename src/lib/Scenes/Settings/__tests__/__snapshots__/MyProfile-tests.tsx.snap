@@ -197,6 +197,33 @@ exports[`looks like expected 1`] = `
           }
         />
       </View>
+      <View
+        mb={2}
+        style={
+          Array [
+            Object {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      />
+      <Text
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="20px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 20,
+            },
+            Object {},
+          ]
+        }
+      >
+        Logged in as: Unit Test User (example@example.com)
+      </Text>
     </View>
   </View>
   <View

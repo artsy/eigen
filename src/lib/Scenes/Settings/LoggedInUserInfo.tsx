@@ -1,13 +1,13 @@
 import { Serif } from "@artsy/palette"
-import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
-import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
+import { LoggedInUserInfo_me } from "__generated__/LoggedInUserInfo_me.graphql"
+import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface UserProfileProps {
-  me: MyProfile_me
+  me: LoggedInUserInfo_me
 }
 
 class UserProfile extends React.Component<UserProfileProps> {
@@ -24,7 +24,7 @@ class UserProfile extends React.Component<UserProfileProps> {
 
 const UserProfileFragmentContainer = createFragmentContainer(UserProfile, {
   me: graphql`
-    fragment MyProfile_me on Me {
+    fragment LoggedInUserInfo_me on Me {
       name
       email
     }
@@ -32,12 +32,12 @@ const UserProfileFragmentContainer = createFragmentContainer(UserProfile, {
 })
 
 export const UserProfileQueryRenderer: React.FC = () => (
-  <QueryRenderer<MyProfileQuery>
+  <QueryRenderer<LoggedInUserInfoQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query MyProfileQuery {
+      query LoggedInUserInfoQuery {
         me {
-          ...MyProfile_me
+          ...LoggedInUserInfo_me
         }
       }
     `}

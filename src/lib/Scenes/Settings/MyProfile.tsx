@@ -37,6 +37,7 @@ export default class MyProfile extends React.Component {
                   title="Personal Data Request"
                   onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
                 />
+                <UserProfileQueryRenderer />
               </Join>
             </Box>
           </View>
