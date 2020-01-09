@@ -3,15 +3,9 @@ import * as renderer from "react-test-renderer"
 
 import MyProfile from "../MyProfile"
 
-import { Theme } from "@artsy/palette"
+jest.mock("../LoggedInUserInfo")
 
 it("looks like expected", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <MyProfile />
-      </Theme>
-    )
-    .toJSON()
+  const tree = renderer.create(<MyProfile />).toJSON()
   expect(tree).toMatchSnapshot()
 })
