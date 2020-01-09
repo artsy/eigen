@@ -1,9 +1,23 @@
 import { Box, Button, Flex, Join, Separator, Serif, Spacer } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { Image, NativeModules, TouchableWithoutFeedback } from "react-native"
+import { Alert, Image, NativeModules, TouchableWithoutFeedback } from "react-native"
 
 export default class MyProfile extends React.Component {
+  confirmLogout() {
+    Alert.alert("Log out?", "Are you sure you want to log out?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Log out",
+        style: "destructive",
+        onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+      },
+    ])
+  }
+
   render() {
     return (
       <>
@@ -20,14 +34,8 @@ export default class MyProfile extends React.Component {
               title="Personal Data Request"
               onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
             />
-            <Button
-              variant="primaryBlack"
-              block
-              size="large"
-              mt={3}
-              onPress={() => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {})}
-            >
-              Logout
+            <Button variant="primaryBlack" block size="large" mt={3} onPress={this.confirmLogout}>
+              Log out
             </Button>
           </Join>
         </Box>
