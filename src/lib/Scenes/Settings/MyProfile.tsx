@@ -5,7 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { Alert, Image, NativeModules, TouchableWithoutFeedback } from "react-native"
+import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 export default class MyProfile extends React.Component {
@@ -26,27 +26,31 @@ export default class MyProfile extends React.Component {
   render() {
     return (
       <Theme>
-        <Box mb={1} mt={2}>
-          <Flex alignItems="center">
-            <Serif size="5">Settings</Serif>
-          </Flex>
-        </Box>
-        <Separator />
-        <Box py={1} mx={2} mt={1}>
-          <Join separator={<Spacer mb={2} />}>
-            <Row title="Send Feedback" />
-            <Row
-              title="Personal Data Request"
-              onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
-            />
-            <Box mt={2}>
-              <UserProfileQueryRenderer />
-              <Button variant="primaryBlack" block size="large" onPress={this.confirmLogout} mt={1}>
-                Log out
-              </Button>
+        <Flex flexDirection="column" justifyContent="space-between" height="100%">
+          <View>
+            <Box mb={1} mt={2}>
+              <Flex alignItems="center">
+                <Serif size="5">Settings</Serif>
+              </Flex>
             </Box>
-          </Join>
-        </Box>
+            <Separator />
+            <Box py={1} mx={2} mt={1}>
+              <Join separator={<Spacer mb={2} />}>
+                <Row title="Send Feedback" />
+                <Row
+                  title="Personal Data Request"
+                  onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
+                />
+                <UserProfileQueryRenderer />
+              </Join>
+            </Box>
+          </View>
+          <Box py={1} mx={2} mt={1}>
+            <Button variant="primaryBlack" block size="large" onPress={this.confirmLogout} mt={1}>
+              Log out
+            </Button>
+          </Box>
+        </Flex>
       </Theme>
     )
   }
