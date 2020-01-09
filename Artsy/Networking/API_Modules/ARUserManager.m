@@ -108,25 +108,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
             // Sync clock with server
             [ARSystemTime sync];
+            [[ARAppDelegate sharedInstance] showOnboarding];
         }];
-        [[ARAppDelegate sharedInstance] showOnboarding];
-
-        /*
-         TODO:
-            - the admin menu is not appearing correctly in response to rage shake
-            - notification is not even being posted
-         DONE:
-         - Diagnose and fix memory issue keeping two js runtimes
-         - Tear down the React Native runtime. [AREmission setSharedInstance:nil];
-            - Tangential: param in AREmission is non-nullable change had to be made to allow this to be nullable
-         - Tear down the ARTopMenuViewController singleton. (TBD)
-         - Get a new XApp token
-           [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-                // Sync clock with server
-                [ARSystemTime sync];
-            }];
-         - Re-present the login flow. [[ARAppDelegate sharedInstance] showOnboarding];
-         */
     }];
 
     return self;
