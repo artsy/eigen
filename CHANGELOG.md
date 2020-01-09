@@ -1,3 +1,21 @@
+# v1.21.2 (Thu Jan 09 2020)
+
+
+
+---
+
+# v1.21.1 (Thu Jan 09 2020)
+
+#### 🐛  Bug Fix
+
+- Implements Infinite Scroll Artwork Grid in Collections [#2024](https://github.com/artsy/emission/pull/2024) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.0 (Tue Jan 07 2020)
 
 #### 🚀  Enhancement
