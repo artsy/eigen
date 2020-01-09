@@ -1,12 +1,8 @@
 import { Box, Button, Flex, Join, Separator, Serif, Spacer, Theme } from "@artsy/palette"
-import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
-import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
 export default class MyProfile extends React.Component {
   confirmLogout() {
@@ -41,7 +37,6 @@ export default class MyProfile extends React.Component {
                   title="Personal Data Request"
                   onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
                 />
-                <UserProfileQueryRenderer />
               </Join>
             </Box>
           </View>
@@ -63,44 +58,4 @@ const Row: React.FC<{ title: string; onPress?: () => void }> = ({ title, onPress
       <Image source={require("../../../../images/horizontal_chevron.png")} />
     </Flex>
   </TouchableWithoutFeedback>
-)
-
-interface UserProfileProps {
-  me: MyProfile_me
-}
-
-class UserProfile extends React.Component<UserProfileProps> {
-  render() {
-    const { me } = this.props
-    const loginInfo = !!me.name ? `${me.name} (${me.email})` : me.email
-    return (
-      <Serif size="3t" color="black60">
-        Logged in as: {loginInfo}
-      </Serif>
-    )
-  }
-}
-
-const UserProfileFragmentContainer = createFragmentContainer(UserProfile, {
-  me: graphql`
-    fragment MyProfile_me on Me {
-      name
-      email
-    }
-  `,
-})
-
-const UserProfileQueryRenderer: React.FC = () => (
-  <QueryRenderer<MyProfileQuery>
-    environment={defaultEnvironment}
-    query={graphql`
-      query MyProfileQuery {
-        me {
-          ...MyProfile_me
-        }
-      }
-    `}
-    variables={{}}
-    render={renderWithLoadProgress(UserProfileFragmentContainer)}
-  />
 )
