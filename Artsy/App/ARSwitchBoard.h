@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// A shared instance object
 + (instancetype)sharedInstance;
 
+///  Allow teardown for logout
++ (void)teardownSharedInstance;
+
 /// Allows other objects to hook into the switchboard
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
 
