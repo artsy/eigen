@@ -37,11 +37,13 @@ export default class MyProfile extends React.Component {
                   title="Personal Data Request"
                   onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
                 />
-                <UserProfileQueryRenderer />
               </Join>
             </Box>
           </View>
           <Box py={2} mx={2} mt={1}>
+            <Box>
+              <UserProfileQueryRenderer />
+            </Box>
             <Button variant="primaryBlack" block size="large" onPress={this.confirmLogout} mt={1}>
               Log out
             </Button>

@@ -1,6 +1,7 @@
-import { Serif } from "@artsy/palette"
+import { Box, Serif } from "@artsy/palette"
 import { LoggedInUserInfo_me } from "__generated__/LoggedInUserInfo_me.graphql"
 import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
+import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
@@ -14,11 +15,7 @@ class UserProfile extends React.Component<UserProfileProps> {
   render() {
     const { me } = this.props
     const loginInfo = !!me.name ? `${me.name} (${me.email})` : me.email
-    return (
-      <Serif size="3t" color="black60">
-        Logged in as: {loginInfo}
-      </Serif>
-    )
+    return <Serif size="3t">Logged in as: {loginInfo}</Serif>
   }
 }
 
@@ -42,6 +39,18 @@ export const UserProfileQueryRenderer: React.FC = () => (
       }
     `}
     variables={{}}
-    render={renderWithLoadProgress(UserProfileFragmentContainer)}
+    render={({ error, props }) => {
+      if (error) {
+        return null
+      } else if (props) {
+        return <UserProfileFragmentContainer {...props} />
+      } else {
+        return (
+          <Box mb={1}>
+            <Spinner />
+          </Box>
+        )
+      }
+    }}
   />
 )
