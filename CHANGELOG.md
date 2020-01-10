@@ -1,3 +1,15 @@
+# v1.21.4 (Fri Jan 10 2020)
+
+#### 🐛  Bug Fix
+
+- Changes settings screen to use sentence case #trivial [#2029](https://github.com/artsy/emission/pull/2029) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.3 (Thu Jan 09 2020)
 
 #### 🐛  Bug Fix
