@@ -33,7 +33,7 @@ jobs:
 
     # Specify the Xcode version to use.
     macos:
-      xcode: '10.3.0'
+      xcode: '11.3.0'
 
     # Define the steps required to build the project.
     steps:
@@ -104,7 +104,9 @@ jobs:
 
       - run:
           name: Danger
-          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
+          command:
+            bundle exec danger --danger_id=circle
+            --dangerfile=Dangerfile.circle.rb --verbose
 
       - run:
           name: Deploy if beta
