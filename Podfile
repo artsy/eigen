@@ -11,7 +11,7 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '12.0'
 inhibit_all_warnings!
 
-EMISSION_VERSION = '1.21.3'
+EMISSION_VERSION = '1.21.5'
 require 'down'
 require 'json'
 require 'fileutils'
