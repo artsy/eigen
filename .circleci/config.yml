@@ -25,6 +25,17 @@ jobs:
           name: List Simulators
           command: xcrun simctl list
 
+      - run:
+          name: Install Node 12 (Required for Yarn)
+          command: |
+            set +e
+            touch $BASH_ENV
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+            echo 'nvm install v12.13.1' >> $BASH_ENV
+            echo 'nvm alias default v12.13.1' >> $BASH_ENV
+
       - checkout
 
       - restore_cache:
