@@ -32,9 +32,9 @@ export default class MyProfile extends React.Component {
             <Separator />
             <Box py={1} mx={2} mt={1}>
               <Join separator={<Spacer mb={2} />}>
-                <Row title="Send Feedback" />
+                <Row title="Send feedback" />
                 <Row
-                  title="Personal Data Request"
+                  title="Personal data request"
                   onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
                 />
               </Join>
