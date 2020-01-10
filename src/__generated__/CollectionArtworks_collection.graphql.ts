@@ -34,7 +34,7 @@ return {
     "connection": [
       {
         "count": "count",
-        "cursor": null,
+        "cursor": "cursor",
         "direction": "forward",
         "path": [
           "collectionArtworks"
@@ -158,5 +158,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'cde7ba35078221957335b4ed3715687a';
+(node as any).hash = 'ea15cad697a4b7ae05513fa1151044ba';
 export default node;

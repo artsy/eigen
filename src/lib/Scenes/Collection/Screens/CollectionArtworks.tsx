@@ -25,7 +25,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         ) {
         slug
         id
-        collectionArtworks: artworksConnection(sort: $sort, first: $count)
+        collectionArtworks: artworksConnection(sort: $sort, first: $count, after: $cursor)
           @connection(key: "Collection_collectionArtworks") {
           edges {
             node {
