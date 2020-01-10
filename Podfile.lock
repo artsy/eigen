@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.21.3):
+  - Emission (1.21.5):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -466,7 +466,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DoubleConversion (from `./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
-  - Emission (= 1.21.3)
+  - Emission (= 1.21.5)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -762,7 +762,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 85572fb3b76726f2410dbb880933b50713b6149b
+  Emission: 881c181af2c4c0995b687ddd44e75ae9b0d86612
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -844,6 +844,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 084504ec25d9c856732f1812d283766f3ab228b0
+PODFILE CHECKSUM: f4de48a9ccd2c05aac367ccd99032242b7adc133
 
 COCOAPODS: 1.7.5
