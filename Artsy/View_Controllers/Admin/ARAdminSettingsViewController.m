@@ -7,6 +7,7 @@
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
+#import "AREigenCollectionComponentViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"
@@ -24,7 +25,6 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
-#import <Emission/ARCollectionComponentViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
@@ -122,8 +122,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)generateCollections
 {
     return [self tappableCellDataWithTitle:@"Show Collection" selection:^{
-        ARCollectionComponentViewController *viewController = [[ARCollectionComponentViewController alloc] initWithCollectionID:@"street-art-now"];
-        [self.navigationController pushViewController:viewController animated:YES];
+        AREigenCollectionComponentViewController *viewController = [[AREigenCollectionComponentViewController alloc] initWithCollectionID:@"street-art-now"];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
 
