@@ -1,3 +1,15 @@
+# v1.21.5 (Fri Jan 10 2020)
+
+#### 🐛  Bug Fix
+
+- Adds missing cursor to collection artwork pagination query [#2030](https://github.com/artsy/emission/pull/2030) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.4 (Fri Jan 10 2020)
 
 #### 🐛  Bug Fix
