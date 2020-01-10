@@ -154,7 +154,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
 
     // Disable default React Native dev menu shake motion handler
-    RCTSwapInstanceMethods([UIWindow class], @selector(RCT_motionEnded:withEvent:), @selector(motionEnded:withEvent:));
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        RCTSwapInstanceMethods([UIWindow class], @selector(RCT_motionEnded:withEvent:), @selector(motionEnded:withEvent:));
+    });
 
     [AREmission setSharedInstance:emission];
 
