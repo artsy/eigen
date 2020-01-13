@@ -28,11 +28,13 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
   ) => {
     return artists.map((artist, index) => {
       const hasArtistMetaData = artist.nationality && artist.birthday
+      const artistImageUrl = get(artist, a => a.image.resized.url, "")
+
       return (
         <Box width="100%" key={index} pb={20}>
           <TouchableWithoutFeedback onPress={() => this.handleTap(this, `/artist/${artist.slug}`)}>
             <EntityHeader
-              imageUrl={artist.image.resized.url}
+              imageUrl={artistImageUrl}
               name={artist.name}
               meta={hasArtistMetaData ? `${artist.nationality}, b. ${artist.birthday}` : undefined}
               href={`/artist/${artist.slug}`}
