@@ -11,9 +11,4 @@
     return YES;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleDefault;
-}
-
 @end
