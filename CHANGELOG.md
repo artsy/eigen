@@ -1,3 +1,16 @@
+# v1.21.6 (Mon Jan 13 2020)
+
+#### 🐛  Bug Fix
+
+- Featured artists module rebase [#2032](https://github.com/artsy/emission/pull/2032) ([@xtina-starr](https://github.com/xtina-starr) [@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 2
+
+- Christina ([@xtina-starr](https://github.com/xtina-starr))
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.5 (Fri Jan 10 2020)
 
 #### 🐛  Bug Fix
