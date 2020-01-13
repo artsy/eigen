@@ -104,7 +104,7 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
           internalID
           name
           image {
-            resized(width: 100) {
+            resized(width: 500) {
               url
             }
           }

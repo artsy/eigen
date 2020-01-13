@@ -74,7 +74,7 @@ fragment FeaturedArtists_collection on MarketingCollection {
       internalID
       name
       image {
-        resized(width: 100) {
+        resized(width: 500) {
           url
         }
       }
@@ -628,12 +628,12 @@ return {
                         "kind": "LinkedField",
                         "alias": null,
                         "name": "resized",
-                        "storageKey": "resized(width:100)",
+                        "storageKey": "resized(width:500)",
                         "args": [
                           {
                             "kind": "Literal",
                             "name": "width",
-                            "value": 100
+                            "value": 500
                           }
                         ],
                         "concreteType": "ResizedImageUrl",
@@ -684,7 +684,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "3c2b719ff9202573bec35cd926da41d9",
+    "id": "ebe82217b2bb94a48d87bdca4e5adcb5",
     "text": null,
     "metadata": {}
   }
