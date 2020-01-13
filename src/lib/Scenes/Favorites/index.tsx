@@ -26,7 +26,7 @@ import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
 import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
-import { Flex, Theme } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import { gravityURL } from "lib/relay/config"
 
 import { Gear } from "lib/Icons/Gear"
@@ -76,7 +76,9 @@ class Favorites extends React.Component<Props, null> {
                   <TouchableWithoutFeedback
                     onPress={() => SwitchBoard.presentNavigationViewController(this, "ios-settings")}
                   >
-                    <SettingsIcon />
+                    <Box>
+                      <SettingsIcon />
+                    </Box>
                   </TouchableWithoutFeedback>
                 </Flex>
                 <ScrollableTabBar {...props} />

@@ -98,6 +98,11 @@ static AREmission *_sharedInstance = nil;
   _sharedInstance = instance;
 }
 
++ (void)teardownSharedInstance {
+    [_sharedInstance.bridge invalidate];
+    _sharedInstance = nil;
+}
+
 + (instancetype)sharedInstance;
 {
   NSParameterAssert(_sharedInstance);

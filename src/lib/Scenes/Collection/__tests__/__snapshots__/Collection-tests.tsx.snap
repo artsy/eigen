@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Collection Renders collection correctly 1`] = `
+exports[`Collection renders a snapshot 1`] = `
 <View
   style={
     Array [
@@ -10,579 +10,838 @@ exports[`Collection Renders collection correctly 1`] = `
 >
   <RCTScrollView
     ListHeaderComponent={
-      <CollectionHeader
+      <ForwardRef(Relay(CollectionHeader))
         collection={
           Object {
-            "artworks": Object {
-              "edges": Array [
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "carolyn-brady",
-                        "name": "Carolyn Brady",
-                      },
-                    ],
-                    "date": "1997",
-                    "href": "/artwork/carolyn-brady-stourhead-across-the-lake",
-                    "id": "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U=",
-                    "image": Object {
-                      "aspect_ratio": 1.53,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/tH19ZfyCDocnNsKzXOZfHg/medium.jpg",
+            "__fragmentOwner": Object {
+              "identifier": "775c64e97086c5b4644ce3afd3b65b62{}",
+              "node": Object {
+                "fragment": Object {
+                  "argumentDefinitions": Array [],
+                  "kind": "Fragment",
+                  "metadata": null,
+                  "name": "CollectionTestsQuery",
+                  "selections": Array [
+                    Object {
+                      "alias": null,
+                      "args": Array [
+                        Object {
+                          "kind": "Literal",
+                          "name": "slug",
+                          "value": "doesn't matter",
+                        },
+                      ],
+                      "concreteType": "MarketingCollection",
+                      "kind": "LinkedField",
+                      "name": "marketingCollection",
+                      "plural": false,
+                      "selections": Array [
+                        Object {
+                          "args": null,
+                          "kind": "FragmentSpread",
+                          "name": "Collection_collection",
+                        },
+                      ],
+                      "storageKey": "marketingCollection(slug:\\"doesn't matter\\")",
                     },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$15,000",
-                    "slug": "carolyn-brady-stourhead-across-the-lake",
-                    "title": "Stourhead Across the Lake",
-                  },
+                  ],
+                  "type": "Query",
                 },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "robert-harms",
-                        "name": "Robert Harms",
-                      },
-                    ],
-                    "date": "1998",
-                    "href": "/artwork/robert-harms-bluff-road",
-                    "id": "QXJ0d29yazpyb2JlcnQtaGFybXMtYmx1ZmYtcm9hZA==",
-                    "image": Object {
-                      "aspect_ratio": 1,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/xU1Y9RXzBJ0TY6G0ZvbHHw/larger.jpg",
+                "hash": "fbe5831179fb6d1e2f66b7360c128d63",
+                "kind": "Request",
+                "operation": Object {
+                  "argumentDefinitions": Array [],
+                  "kind": "Operation",
+                  "name": "CollectionTestsQuery",
+                  "selections": Array [
+                    Object {
+                      "alias": null,
+                      "args": Array [
+                        Object {
+                          "kind": "Literal",
+                          "name": "slug",
+                          "value": "doesn't matter",
+                        },
+                      ],
+                      "concreteType": "MarketingCollection",
+                      "kind": "LinkedField",
+                      "name": "marketingCollection",
+                      "plural": false,
+                      "selections": Array [
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "title",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "headerImage",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": "image",
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "first",
+                              "value": 1,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-merchandisability",
+                            },
+                          ],
+                          "concreteType": "FilterArtworksConnection",
+                          "kind": "LinkedField",
+                          "name": "artworksConnection",
+                          "plural": false,
+                          "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "FilterArtworksEdge",
+                              "kind": "LinkedField",
+                              "name": "edges",
+                              "plural": true,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Artwork",
+                                  "kind": "LinkedField",
+                                  "name": "node",
+                                  "plural": false,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "imageUrl",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "id",
+                                      "storageKey": null,
+                                    },
+                                  ],
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null,
+                            },
+                          ],
+                          "storageKey": "artworksConnection(first:1,sort:\\"-merchandisability\\")",
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "slug",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "id",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": "collectionArtworks",
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "first",
+                              "value": 6,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-merchandisability",
+                            },
+                          ],
+                          "concreteType": "FilterArtworksConnection",
+                          "kind": "LinkedField",
+                          "name": "artworksConnection",
+                          "plural": false,
+                          "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "FilterArtworksEdge",
+                              "kind": "LinkedField",
+                              "name": "edges",
+                              "plural": true,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Artwork",
+                                  "kind": "LinkedField",
+                                  "name": "node",
+                                  "plural": false,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "id",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "slug",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "concreteType": "Image",
+                                      "kind": "LinkedField",
+                                      "name": "image",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "aspectRatio",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": Array [
+                                            Object {
+                                              "kind": "Literal",
+                                              "name": "version",
+                                              "value": "large",
+                                            },
+                                          ],
+                                          "kind": "ScalarField",
+                                          "name": "url",
+                                          "storageKey": "url(version:\\"large\\")",
+                                        },
+                                        Object {
+                                          "alias": "aspect_ratio",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "aspectRatio",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "title",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "date",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "sale_message",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "saleMessage",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "is_biddable",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "isBiddable",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "is_acquireable",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "isAcquireable",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "is_offerable",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "isOfferable",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "concreteType": "Sale",
+                                      "kind": "LinkedField",
+                                      "name": "sale",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": "is_auction",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "isAuction",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": "is_closed",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "isClosed",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": "display_timely_at",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "displayTimelyAt",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "sale_artwork",
+                                      "args": null,
+                                      "concreteType": "SaleArtwork",
+                                      "kind": "LinkedField",
+                                      "name": "saleArtwork",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": "current_bid",
+                                          "args": null,
+                                          "concreteType": "SaleArtworkCurrentBid",
+                                          "kind": "LinkedField",
+                                          "name": "currentBid",
+                                          "plural": false,
+                                          "selections": Array [
+                                            Object {
+                                              "alias": null,
+                                              "args": null,
+                                              "kind": "ScalarField",
+                                              "name": "display",
+                                              "storageKey": null,
+                                            },
+                                          ],
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": Array [
+                                        Object {
+                                          "kind": "Literal",
+                                          "name": "shallow",
+                                          "value": true,
+                                        },
+                                      ],
+                                      "concreteType": "Artist",
+                                      "kind": "LinkedField",
+                                      "name": "artists",
+                                      "plural": true,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "name",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": "artists(shallow:true)",
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "concreteType": "Partner",
+                                      "kind": "LinkedField",
+                                      "name": "partner",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "name",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "href",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "__typename",
+                                      "storageKey": null,
+                                    },
+                                  ],
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "cursor",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "id",
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "PageInfo",
+                              "kind": "LinkedField",
+                              "name": "pageInfo",
+                              "plural": false,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "hasNextPage",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "startCursor",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "endCursor",
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null,
+                            },
+                          ],
+                          "storageKey": "artworksConnection(first:6,sort:\\"-merchandisability\\")",
+                        },
+                        Object {
+                          "alias": "collectionArtworks",
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "first",
+                              "value": 6,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-merchandisability",
+                            },
+                          ],
+                          "filters": Array [
+                            "sort",
+                          ],
+                          "handle": "connection",
+                          "key": "Collection_collectionArtworks",
+                          "kind": "LinkedHandle",
+                          "name": "artworksConnection",
+                        },
+                      ],
+                      "storageKey": "marketingCollection(slug:\\"doesn't matter\\")",
                     },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "Sold",
-                    "slug": "robert-harms-bluff-road",
-                    "title": "Bluff Road",
-                  },
+                  ],
                 },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "jim-dine",
-                        "name": "Jim Dine",
+                "params": Object {
+                  "id": "775c64e97086c5b4644ce3afd3b65b62",
+                  "metadata": Object {
+                    "relayTestingSelectionTypeInfo": Object {
+                      "marketingCollection": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "MarketingCollection",
                       },
-                    ],
-                    "date": "1961",
-                    "href": "/artwork/jim-dine-an-informal-tie",
-                    "id": "QXJ0d29yazpqaW0tZGluZS1hbi1pbmZvcm1hbC10aWU=",
-                    "image": Object {
-                      "aspect_ratio": 0.51,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/dBBr15AyJ13x5heIyctJIA/tall.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$14,000",
-                    "slug": "jim-dine-an-informal-tie",
-                    "title": "An Informal Tie",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "richard-diebenkorn",
-                        "name": "Richard Diebenkorn",
+                      "marketingCollection.collectionArtworks": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FilterArtworksConnection",
                       },
-                    ],
-                    "date": "1987",
-                    "href": "/artwork/richard-diebenkorn-blue-with-red-15",
-                    "id": "QXJ0d29yazpyaWNoYXJkLWRpZWJlbmtvcm4tYmx1ZS13aXRoLXJlZC0xNQ==",
-                    "image": Object {
-                      "aspect_ratio": 0.71,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/txGh8F3S_CDBKt6QPtjIBw/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "Sold",
-                    "slug": "richard-diebenkorn-blue-with-red-15",
-                    "title": "Blue with Red",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "karel-appel",
-                        "name": "Karel Appel",
+                      "marketingCollection.collectionArtworks.edges": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "ArtworkEdgeInterface",
                       },
-                    ],
-                    "date": "1960",
-                    "href": "/artwork/karel-appel-happy-ghost",
-                    "id": "QXJ0d29yazprYXJlbC1hcHBlbC1oYXBweS1naG9zdA==",
-                    "image": Object {
-                      "aspect_ratio": 0.78,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/SUPKae4rRR1ZWs5mc70QJg/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$6,000",
-                    "slug": "karel-appel-happy-ghost",
-                    "title": "Happy Ghost",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "nell-blaine",
-                        "name": "Nell Blaine",
+                      "marketingCollection.collectionArtworks.edges.cursor": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
                       },
-                    ],
-                    "date": "1989",
-                    "href": "/artwork/nell-blaine-august-light",
-                    "id": "QXJ0d29yazpuZWxsLWJsYWluZS1hdWd1c3QtbGlnaHQ=",
-                    "image": Object {
-                      "aspect_ratio": 1.46,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/P_4Avd1FcPjMKJ_aJFA1WQ/medium.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$10,000",
-                    "slug": "nell-blaine-august-light",
-                    "title": "August Light",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "bruce-beasley",
-                        "name": "Bruce Beasley",
+                      "marketingCollection.collectionArtworks.edges.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
                       },
-                    ],
-                    "date": "1999",
-                    "href": "/artwork/bruce-beasley-voyager",
-                    "id": "QXJ0d29yazpicnVjZS1iZWFzbGV5LXZveWFnZXI=",
-                    "image": Object {
-                      "aspect_ratio": 0.71,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/m7N4jeFJJr3FdFqU_0YDRg/medium.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "Sold",
-                    "slug": "bruce-beasley-voyager",
-                    "title": "Voyager",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "sam-francis",
-                        "name": "Sam Francis",
+                      "marketingCollection.collectionArtworks.edges.node": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Artwork",
                       },
-                    ],
-                    "date": "1974",
-                    "href": "/artwork/sam-francis-under-blue-3",
-                    "id": "QXJ0d29yazpzYW0tZnJhbmNpcy11bmRlci1ibHVlLTM=",
-                    "image": Object {
-                      "aspect_ratio": 1.35,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/gz2wa9iBcZKB0ut6gMED1w/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$12,000",
-                    "slug": "sam-francis-under-blue-3",
-                    "title": "Under Blue",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "carolyn-brady",
-                        "name": "Carolyn Brady",
+                      "marketingCollection.collectionArtworks.edges.node.__typename": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
                       },
-                    ],
-                    "date": "1999",
-                    "href": "/artwork/carolyn-brady-tamarind",
-                    "id": "QXJ0d29yazpjYXJvbHluLWJyYWR5LXRhbWFyaW5k",
-                    "image": Object {
-                      "aspect_ratio": 1.33,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/tkm-BtRS1igRoRUx5SdOOA/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$4,500",
-                    "slug": "carolyn-brady-tamarind",
-                    "title": "Tamarind",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "robert-motherwell",
-                        "name": "Robert Motherwell",
+                      "marketingCollection.collectionArtworks.edges.node.artists": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "Artist",
                       },
-                    ],
-                    "date": "2000",
-                    "href": "/artwork/robert-motherwell-number-8",
-                    "id": "QXJ0d29yazpyb2JlcnQtbW90aGVyd2VsbC1udW1iZXItOA==",
-                    "image": Object {
-                      "aspect_ratio": 0.72,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/u-Onw4lFPIgSERW9vkizjA/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$6,000",
-                    "slug": "robert-motherwell-number-8",
-                    "title": "Number 8",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "ellsworth-kelly",
-                        "name": "Ellsworth Kelly",
+                      "marketingCollection.collectionArtworks.edges.node.artists.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
                       },
-                    ],
-                    "date": "2000",
-                    "href": "/artwork/ellsworth-kelly-green-curve-14",
-                    "id": "QXJ0d29yazplbGxzd29ydGgta2VsbHktZ3JlZW4tY3VydmUtMTQ=",
-                    "image": Object {
-                      "aspect_ratio": 0.74,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/Cut7VPHWKBilZ5Ivj5vJIg/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$10,500",
-                    "slug": "ellsworth-kelly-green-curve-14",
-                    "title": "Green Curve",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "wolf-kahn",
-                        "name": "Wolf Kahn",
+                      "marketingCollection.collectionArtworks.edges.node.artists.name": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
                       },
-                    ],
-                    "date": "1987",
-                    "href": "/artwork/wolf-kahn-in-ipswich-mass",
-                    "id": "QXJ0d29yazp3b2xmLWthaG4taW4taXBzd2ljaC1tYXNz",
-                    "image": Object {
-                      "aspect_ratio": 1.35,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/qY9kBnLdh2EPkPZK8VuAaA/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$9,500",
-                    "slug": "wolf-kahn-in-ipswich-mass",
-                    "title": "In Ipswich, Mass",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "david-hockney",
-                        "name": "David Hockney",
+                      "marketingCollection.collectionArtworks.edges.node.date": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
                       },
-                    ],
-                    "date": "1983",
-                    "href": "/artwork/david-hockney-my-pool-and-terrace-4",
-                    "id": "QXJ0d29yazpkYXZpZC1ob2NrbmV5LW15LXBvb2wtYW5kLXRlcnJhY2UtNA==",
-                    "image": Object {
-                      "aspect_ratio": 1.48,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/05rL1DSRwbn9t43xoYkiLg/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "Sold",
-                    "slug": "david-hockney-my-pool-and-terrace-4",
-                    "title": "My Pool & Terrace",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "wolf-kahn",
-                        "name": "Wolf Kahn",
+                      "marketingCollection.collectionArtworks.edges.node.href": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
                       },
-                    ],
-                    "date": "1989",
-                    "href": "/artwork/wolf-kahn-orchard-at-dusk",
-                    "id": "QXJ0d29yazp3b2xmLWthaG4tb3JjaGFyZC1hdC1kdXNr",
-                    "image": Object {
-                      "aspect_ratio": 1.25,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/7YGi2ogpyQW4Vl9gorV0dQ/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$8,000",
-                    "slug": "wolf-kahn-orchard-at-dusk",
-                    "title": "Orchard at Dusk",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "hans-hofmann",
-                        "name": "Hans Hofmann",
+                      "marketingCollection.collectionArtworks.edges.node.id": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
                       },
-                    ],
-                    "date": "1942",
-                    "href": "/artwork/hans-hofmann-untitled-221",
-                    "id": "QXJ0d29yazpoYW5zLWhvZm1hbm4tdW50aXRsZWQtMjIx",
-                    "image": Object {
-                      "aspect_ratio": 0.82,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/WPV9hXX5oms437ujKpPdGg/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$5,000",
-                    "slug": "hans-hofmann-untitled-221",
-                    "title": "Untitled",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "polly-apfelbaum",
-                        "name": "Polly Apfelbaum",
+                      "marketingCollection.collectionArtworks.edges.node.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Image",
                       },
-                    ],
-                    "date": "",
-                    "href": "/artwork/polly-apfelbaum-love-me-tender-ii",
-                    "id": "QXJ0d29yazpwb2xseS1hcGZlbGJhdW0tbG92ZS1tZS10ZW5kZXItaWk=",
-                    "image": Object {
-                      "aspect_ratio": 1,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/HPFxUT7W1lV6UwRu3PvlRQ/larger.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "Sold",
-                    "slug": "polly-apfelbaum-love-me-tender-ii",
-                    "title": "Love Me Tender II",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "bridget-riley",
-                        "name": "Bridget Riley",
+                      "marketingCollection.collectionArtworks.edges.node.image.aspectRatio": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "Float",
                       },
-                    ],
-                    "date": "1977",
-                    "href": "/artwork/bridget-riley-blue-dominance",
-                    "id": "QXJ0d29yazpicmlkZ2V0LXJpbGV5LWJsdWUtZG9taW5hbmNl",
-                    "image": Object {
-                      "aspect_ratio": 0.5,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/SvWPlpYA25k-5Kje-Lp8rg/medium.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "$15,000",
-                    "slug": "bridget-riley-blue-dominance",
-                    "title": "Blue Dominance",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "pablo-picasso",
-                        "name": "Pablo Picasso",
+                      "marketingCollection.collectionArtworks.edges.node.image.aspect_ratio": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "Float",
                       },
-                    ],
-                    "date": "1933",
-                    "href": "/artwork/pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
-                    "id": "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
-                    "image": Object {
-                      "aspect_ratio": 1.21,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/leU66mGhe0D2OvMQmGRt4Q/large_rectangle.jpg",
-                    },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "Sold",
-                    "slug": "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
-                    "title": "Model Contemplating a Group of Sculptures (Modele Contemplant Un Groupe Sculpte)",
-                  },
-                },
-                Object {
-                  "node": Object {
-                    "artists": Array [
-                      Object {
-                        "id": "dale-chihuly",
-                        "name": "Dale Chihuly",
+                      "marketingCollection.collectionArtworks.edges.node.image.url": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
                       },
-                    ],
-                    "date": "",
-                    "href": "/artwork/dale-chihuly-celtic-emerald-persian-pair",
-                    "id": "QXJ0d29yazpkYWxlLWNoaWh1bHktY2VsdGljLWVtZXJhbGQtcGVyc2lhbi1wYWly",
-                    "image": Object {
-                      "aspect_ratio": 1.5,
-                      "url": "https://d32dm0rphc51dk.cloudfront.net/6hN0QtT-BQE2y8LGhiI3EA/medium.jpg",
+                      "marketingCollection.collectionArtworks.edges.node.is_acquireable": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.is_biddable": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.is_offerable": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.partner": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Partner",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.partner.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.partner.name": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Sale",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.display_timely_at": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.is_auction": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.is_closed": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "SaleArtwork",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork.current_bid": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "SaleArtworkCurrentBid",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork.current_bid.display": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_message": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.slug": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.title": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "PageInfo",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo.endCursor": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo.hasNextPage": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo.startCursor": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.headerImage": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.id": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FilterArtworksConnection",
+                      },
+                      "marketingCollection.image.edges": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "FilterArtworksEdge",
+                      },
+                      "marketingCollection.image.edges.node": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Artwork",
+                      },
+                      "marketingCollection.image.edges.node.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.image.edges.node.imageUrl": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.image.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.slug": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.title": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
                     },
-                    "is_acquireable": false,
-                    "is_biddable": false,
-                    "is_offerable": false,
-                    "partner": Object {
-                      "id": "anderson-fine-art-gallery",
-                      "name": "Anderson Fine Art Gallery",
-                    },
-                    "sale": null,
-                    "sale_artwork": null,
-                    "sale_message": "Sold",
-                    "slug": "dale-chihuly-celtic-emerald-persian-pair",
-                    "title": "Celtic Emerald Persian Pair",
                   },
+                  "name": "CollectionTestsQuery",
+                  "operationKind": "query",
+                  "text": null,
                 },
-              ],
-              "id": "some-id",
+              },
+              "variables": Object {},
             },
-            "headerImage": "http://imageuploadedbymarketingteam.jpg",
-            "id": "top-level-id",
-            "image": Object {
-              "edges": Array [
-                Object {
-                  "node": Object {
-                    "id": "an-id",
-                    "imageUrl": "https://defaultmostmarketableartworkincollectionimage.jpg",
-                  },
-                },
-              ],
-              "id": "another-id",
+            "__fragments": Object {
+              "CollectionArtworks_collection": Object {},
+              "CollectionHeader_collection": Object {},
             },
-            "title": "Street Art Now",
+            "__id": "<MarketingCollection-mock-id-3>",
           }
         }
       />
@@ -593,13 +852,13 @@ exports[`Collection Renders collection correctly 1`] = `
           "data": Object {
             "artists": Array [],
           },
-          "type": "featuredArtists",
+          "type": "collectionFeaturedArtists",
         },
         Object {
           "data": Object {
             "artworks": Array [],
           },
-          "type": "artworkPreview",
+          "type": "collectionArtworks",
         },
       ]
     }
@@ -642,7 +901,7 @@ exports[`Collection Renders collection correctly 1`] = `
         >
           <AROpaqueImageView
             height={204}
-            imageURL="http://imageuploadedbymarketingteam.jpg"
+            imageURL="<mock-value-for-field-\\"headerImage\\">"
             width={750}
           />
         </View>
@@ -665,7 +924,7 @@ exports[`Collection Renders collection correctly 1`] = `
             ]
           }
         >
-          Street Art Now
+          &lt;mock-value-for-field-"title"&gt;
         </Text>
       </View>
       <View
@@ -729,34 +988,36 @@ exports[`Collection Renders collection correctly 1`] = `
             ]
           }
         >
-          <View
-            mb={4}
-            style={
-              Array [
-                Object {
-                  "borderBottomWidth": 0,
-                  "borderColor": "#E5E5E5",
-                  "borderStyle": "solid",
-                  "borderWidth": 1,
-                  "marginBottom": 40,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          />
-          <View
+          <RCTScrollView
+            accessibilityLabel="Artworks ScrollView"
             onLayout={[Function]}
+            onScroll={[Function]}
+            scrollEventThrottle={50}
+            scrollsToTop={false}
           >
-            <View
-              accessibilityLabel="Artworks Content View"
-              style={
-                Object {
-                  "flexDirection": "row",
+            <View>
+              <View
+                px={0}
+                style={
+                  Array [
+                    Object {
+                      "paddingLeft": 0,
+                      "paddingRight": 0,
+                    },
+                  ]
                 }
-              }
-            />
-          </View>
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </RCTScrollView>
         </View>
       </View>
       <View

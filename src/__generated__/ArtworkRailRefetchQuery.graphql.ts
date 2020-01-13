@@ -54,7 +54,6 @@ fragment ArtworkRail_rail_abFTe on HomePageArtworkModule {
     }
     ... on Fair {
       href
-      id
     }
     ... on Gene {
       href
@@ -89,9 +88,6 @@ fragment ArtworkRailHeader_rail on HomePageArtworkModule {
       }
     }
     ... on Node {
-      id
-    }
-    ... on Fair {
       id
     }
   }
@@ -322,11 +318,6 @@ return {
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "Fair",
-                    "selections": (v8/*: any*/)
-                  },
-                  {
-                    "kind": "InlineFragment",
                     "type": "HomePageFollowedArtistArtworkModule",
                     "selections": [
                       {
@@ -343,6 +334,11 @@ return {
                         ]
                       }
                     ]
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "Fair",
+                    "selections": (v8/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
@@ -567,7 +563,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRailRefetchQuery",
-    "id": "e553c6fe2dd63d7d9b6ba0fb2ca7a9a0",
+    "id": "71511130fc0c9789e314ecba46cb5e14",
     "text": null,
     "metadata": {}
   }
