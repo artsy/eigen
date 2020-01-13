@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "47e95cdc098e1b1e1ff07d474f25b252{}",
+              "identifier": "96f69ed020ca15dbf340d769ae0f68b9{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -588,7 +588,7 @@ exports[`Collection renders a snapshot 1`] = `
                                         Object {
                                           "kind": "Literal",
                                           "name": "width",
-                                          "value": 100,
+                                          "value": 500,
                                         },
                                       ],
                                       "concreteType": "ResizedImageUrl",
@@ -604,7 +604,7 @@ exports[`Collection renders a snapshot 1`] = `
                                           "storageKey": null,
                                         },
                                       ],
-                                      "storageKey": "resized(width:100)",
+                                      "storageKey": "resized(width:500)",
                                     },
                                   ],
                                   "storageKey": null,
@@ -656,7 +656,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "47e95cdc098e1b1e1ff07d474f25b252",
+                  "id": "96f69ed020ca15dbf340d769ae0f68b9",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
