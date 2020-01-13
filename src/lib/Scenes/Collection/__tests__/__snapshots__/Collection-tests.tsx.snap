@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "775c64e97086c5b4644ce3afd3b65b62{}",
+              "identifier": "47e95cdc098e1b1e1ff07d474f25b252{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -519,13 +519,144 @@ exports[`Collection renders a snapshot 1`] = `
                           "kind": "LinkedHandle",
                           "name": "artworksConnection",
                         },
+                        Object {
+                          "alias": null,
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "aggregations",
+                              "value": Array [
+                                "MERCHANDISABLE_ARTISTS",
+                              ],
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "size",
+                              "value": 9,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-decayed_merch",
+                            },
+                          ],
+                          "concreteType": "FilterArtworksConnection",
+                          "kind": "LinkedField",
+                          "name": "artworksConnection",
+                          "plural": false,
+                          "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "Artist",
+                              "kind": "LinkedField",
+                              "name": "merchandisableArtists",
+                              "plural": true,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "slug",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "internalID",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "name",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Image",
+                                  "kind": "LinkedField",
+                                  "name": "image",
+                                  "plural": false,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": Array [
+                                        Object {
+                                          "kind": "Literal",
+                                          "name": "width",
+                                          "value": 100,
+                                        },
+                                      ],
+                                      "concreteType": "ResizedImageUrl",
+                                      "kind": "LinkedField",
+                                      "name": "resized",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "url",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": "resized(width:100)",
+                                    },
+                                  ],
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "birthday",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "nationality",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "isFollowed",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "id",
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null,
+                            },
+                          ],
+                          "storageKey": "artworksConnection(aggregations:[\\"MERCHANDISABLE_ARTISTS\\"],size:9,sort:\\"-decayed_merch\\")",
+                        },
                       ],
                       "storageKey": "marketingCollection(slug:\\"doesn't matter\\")",
                     },
                   ],
                 },
                 "params": Object {
-                  "id": "775c64e97086c5b4644ce3afd3b65b62",
+                  "id": "47e95cdc098e1b1e1ff07d474f25b252",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -533,6 +664,84 @@ exports[`Collection renders a snapshot 1`] = `
                         "nullable": true,
                         "plural": false,
                         "type": "MarketingCollection",
+                      },
+                      "marketingCollection.artworksConnection": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FilterArtworksConnection",
+                      },
+                      "marketingCollection.artworksConnection.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "Artist",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.birthday": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Image",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.image.resized": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ResizedImageUrl",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.image.resized.url": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.internalID": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.isFollowed": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.name": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.nationality": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.slug": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
                       },
                       "marketingCollection.collectionArtworks": Object {
                         "enumValues": null,
@@ -840,6 +1049,7 @@ exports[`Collection renders a snapshot 1`] = `
             "__fragments": Object {
               "CollectionArtworks_collection": Object {},
               "CollectionHeader_collection": Object {},
+              "FeaturedArtists_collection": Object {},
             },
             "__id": "<MarketingCollection-mock-id-3>",
           }
@@ -950,7 +1160,522 @@ exports[`Collection renders a snapshot 1`] = `
                 Object {},
               ]
             }
-          />
+          >
+            <View
+              pb={1}
+              style={
+                Array [
+                  Object {
+                    "paddingBottom": 10,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                pb={15}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "paddingBottom": 15,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Featured Artist
+              </Text>
+              <View
+                flexWrap="wrap"
+                style={
+                  Array [
+                    Object {
+                      "display": "flex",
+                      "flexWrap": "wrap",
+                    },
+                  ]
+                }
+              >
+                <View
+                  pb={20}
+                  style={
+                    Array [
+                      Object {
+                        "paddingBottom": 20,
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                  width="100%"
+                >
+                  <View
+                    accessible={true}
+                    flexDirection="row"
+                    flexWrap="nowrap"
+                    focusable={true}
+                    justifyContent="space-between"
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "display": "flex",
+                          "flexDirection": "row",
+                          "flexWrap": "nowrap",
+                          "justifyContent": "space-between",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      justifyContent="center"
+                      mr={1}
+                      style={
+                        Array [
+                          Object {
+                            "display": "flex",
+                            "justifyContent": "center",
+                            "marginRight": 10,
+                          },
+                        ]
+                      }
+                    >
+                      <Image
+                        resizeMode="stretch"
+                        size="xs"
+                        source={
+                          Object {
+                            "uri": "<mock-value-for-field-\\"url\\">",
+                          }
+                        }
+                        style={
+                          Object {
+                            "borderRadius": 22.5,
+                            "height": 45,
+                            "width": 45,
+                          }
+                        }
+                      />
+                    </View>
+                    <View
+                      flexGrow={1}
+                      justifyContent="center"
+                      style={
+                        Array [
+                          Object {
+                            "display": "flex",
+                            "flexGrow": 1,
+                            "justifyContent": "center",
+                            "width": "0%",
+                          },
+                        ]
+                      }
+                      width={0}
+                    >
+                      <Text
+                        color="black100"
+                        ellipsizeMode="tail"
+                        fontFamily="ReactNativeAGaramondPro-Regular"
+                        fontSize="16px"
+                        lineHeight="20px"
+                        numberOfLines={1}
+                        style={
+                          Array [
+                            Object {
+                              "color": "#000",
+                              "fontFamily": "ReactNativeAGaramondPro-Regular",
+                              "fontSize": 16,
+                              "lineHeight": 20,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        &lt;mock-value-for-field-"name"&gt;
+                      </Text>
+                      <Text
+                        color="black60"
+                        ellipsizeMode="tail"
+                        fontFamily="Unica77LL-Regular"
+                        fontSize="12px"
+                        lineHeight="16px"
+                        numberOfLines={1}
+                        style={
+                          Array [
+                            Object {
+                              "color": "#666",
+                              "fontFamily": "Unica77LL-Regular",
+                              "fontSize": 12,
+                              "lineHeight": 16,
+                            },
+                            Object {},
+                          ]
+                        }
+                      >
+                        &lt;mock-value-for-field-"nationality"&gt;, b. &lt;mock-value-for-field-"birthday"&gt;
+                      </Text>
+                    </View>
+                    <View
+                      alignItems="center"
+                      flexDirection="row"
+                      justifyContent="flex-end"
+                      ml={1}
+                      style={
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "display": "flex",
+                            "flexDirection": "row",
+                            "justifyContent": "flex-end",
+                            "marginLeft": 10,
+                          },
+                        ]
+                      }
+                    >
+                      <View
+                        accessible={true}
+                        flexDirection="row"
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "display": "flex",
+                              "flexDirection": "row",
+                            },
+                          ]
+                        }
+                      >
+                        <View
+                          px={1}
+                          size="small"
+                          style={
+                            Array [
+                              Object {
+                                "alignItems": "center",
+                                "borderRadius": 3,
+                                "borderWidth": 1,
+                                "justifyContent": "center",
+                                "paddingLeft": 10,
+                                "paddingRight": 10,
+                                "position": "relative",
+                                "width": "auto",
+                              },
+                              Object {
+                                "backgroundColor": "rgba(255, 255, 255, 1)",
+                                "borderColor": "rgba(229, 229, 229, 1)",
+                                "color": "rgba(0, 0, 0, 1)",
+                                "height": 26,
+                                "opacity": 1,
+                              },
+                            ]
+                          }
+                          theme={
+                            Object {
+                              "borders": Array [
+                                "1px solid",
+                                "2px solid",
+                              ],
+                              "breakpoints": Array [
+                                768,
+                                900,
+                                1024,
+                                1192,
+                              ],
+                              "colors": Object {
+                                "black10": "#E5E5E5",
+                                "black100": "#000",
+                                "black30": "#C2C2C2",
+                                "black5": "#F8F8F8",
+                                "black60": "#666",
+                                "black80": "#333",
+                                "green100": "#0EDA83",
+                                "purple100": "#6E1EFF",
+                                "purple30": "#D3BBFF",
+                                "purple5": "#F8F3FF",
+                                "red100": "#F7625A",
+                                "white100": "#FFF",
+                                "yellow10": "#FDF7E8",
+                                "yellow100": "#F1AF1B",
+                                "yellow30": "#FAE7BA",
+                              },
+                              "fontFamily": Object {
+                                "display": Object {
+                                  "regular": "AvantGardeGothicITC",
+                                },
+                                "sans": Object {
+                                  "italic": "Unica77LL-Italic",
+                                  "medium": "Unica77LL-Medium",
+                                  "mediumItalic": "Unica77LL-MediumItalic",
+                                  "regular": "Unica77LL-Regular",
+                                },
+                                "serif": Object {
+                                  "italic": "ReactNativeAGaramondPro-Italic",
+                                  "regular": "ReactNativeAGaramondPro-Regular",
+                                  "semibold": "ReactNativeAGaramondPro-Semibold",
+                                },
+                              },
+                              "grid": Object {
+                                "breakpoints": Object {
+                                  "lg": 1024,
+                                  "md": 900,
+                                  "sm": 768,
+                                  "xl": 1192,
+                                  "xs": 767,
+                                },
+                                "col": Object {
+                                  "padding": 0,
+                                },
+                                "container": Object {
+                                  "padding": 0,
+                                },
+                                "row": Object {
+                                  "padding": 0,
+                                },
+                              },
+                              "mediaQueries": Object {
+                                "hover": "not all and (pointer: coarse), not all and (-moz-touch-enabled: 1)",
+                                "lg": "(min-width: 1024px) and (max-width: 1191px)",
+                                "md": "(min-width: 900px) and (max-width: 1023px)",
+                                "sm": "(min-width: 768px) and (max-width: 899px)",
+                                "xl": "(min-width: 1192px)",
+                                "xs": "(max-width: 767px)",
+                              },
+                              "space": Object {
+                                "0.3": 3,
+                                "0.5": 5,
+                                "1": 10,
+                                "12": 120,
+                                "18": 180,
+                                "2": 20,
+                                "3": 30,
+                                "4": 40,
+                                "6": 60,
+                                "9": 90,
+                              },
+                              "typeSizes": Object {
+                                "display": Object {
+                                  "2": Object {
+                                    "fontSize": 10,
+                                    "lineHeight": 12,
+                                  },
+                                  "3t": Object {
+                                    "fontSize": 12,
+                                    "lineHeight": 16,
+                                  },
+                                  "4t": Object {
+                                    "fontSize": 14,
+                                    "lineHeight": 18,
+                                  },
+                                  "5t": Object {
+                                    "fontSize": 16,
+                                    "lineHeight": 20,
+                                  },
+                                  "6": Object {
+                                    "fontSize": 18,
+                                    "lineHeight": 22,
+                                  },
+                                  "8": Object {
+                                    "fontSize": 22,
+                                    "lineHeight": 24,
+                                  },
+                                },
+                                "sans": Object {
+                                  "0": Object {
+                                    "fontSize": 8,
+                                    "lineHeight": 8,
+                                  },
+                                  "1": Object {
+                                    "fontSize": 10,
+                                    "lineHeight": 14,
+                                  },
+                                  "10": Object {
+                                    "fontSize": 42,
+                                    "lineHeight": 50,
+                                  },
+                                  "12": Object {
+                                    "fontSize": 60,
+                                    "lineHeight": 66,
+                                  },
+                                  "14": Object {
+                                    "fontSize": 80,
+                                    "lineHeight": 84,
+                                  },
+                                  "16": Object {
+                                    "fontSize": 100,
+                                    "lineHeight": 104,
+                                  },
+                                  "2": Object {
+                                    "fontSize": 12,
+                                    "lineHeight": 16,
+                                  },
+                                  "3": Object {
+                                    "fontSize": 14,
+                                    "lineHeight": 24,
+                                  },
+                                  "3t": Object {
+                                    "fontSize": 14,
+                                    "lineHeight": 20,
+                                  },
+                                  "4": Object {
+                                    "fontSize": 16,
+                                    "lineHeight": 26,
+                                  },
+                                  "4t": Object {
+                                    "fontSize": 16,
+                                    "lineHeight": 22,
+                                  },
+                                  "5": Object {
+                                    "fontSize": 18,
+                                    "lineHeight": 30,
+                                  },
+                                  "5t": Object {
+                                    "fontSize": 18,
+                                    "lineHeight": 26,
+                                  },
+                                  "6": Object {
+                                    "fontSize": 22,
+                                    "lineHeight": 30,
+                                  },
+                                  "8": Object {
+                                    "fontSize": 28,
+                                    "lineHeight": 36,
+                                  },
+                                },
+                                "serif": Object {
+                                  "1": Object {
+                                    "fontSize": 12,
+                                    "lineHeight": 16,
+                                  },
+                                  "10": Object {
+                                    "fontSize": 44,
+                                    "lineHeight": 50,
+                                  },
+                                  "12": Object {
+                                    "fontSize": 60,
+                                    "lineHeight": 70,
+                                  },
+                                  "2": Object {
+                                    "fontSize": 14,
+                                    "lineHeight": 18,
+                                  },
+                                  "3": Object {
+                                    "fontSize": 16,
+                                    "lineHeight": 24,
+                                  },
+                                  "3t": Object {
+                                    "fontSize": 16,
+                                    "lineHeight": 20,
+                                  },
+                                  "4": Object {
+                                    "fontSize": 18,
+                                    "lineHeight": 26,
+                                  },
+                                  "4t": Object {
+                                    "fontSize": 18,
+                                    "lineHeight": 22,
+                                  },
+                                  "5": Object {
+                                    "fontSize": 22,
+                                    "lineHeight": 32,
+                                  },
+                                  "5t": Object {
+                                    "fontSize": 22,
+                                    "lineHeight": 28,
+                                  },
+                                  "6": Object {
+                                    "fontSize": 26,
+                                    "lineHeight": 32,
+                                  },
+                                  "8": Object {
+                                    "fontSize": 32,
+                                    "lineHeight": 38,
+                                  },
+                                },
+                              },
+                            }
+                          }
+                          variant="secondaryOutline"
+                        >
+                          <View
+                            style={
+                              Array [
+                                Object {
+                                  "alignItems": "center",
+                                  "display": "flex",
+                                  "flexDirection": "row",
+                                  "height": "100%",
+                                  "justifyContent": "center",
+                                  "position": "absolute",
+                                  "width": "100%",
+                                },
+                              ]
+                            }
+                          >
+                            <Text
+                              color="#000"
+                              fontFamily="Unica77LL-Medium"
+                              fontSize="12px"
+                              lineHeight="16px"
+                              style={
+                                Array [
+                                  Object {
+                                    "color": "#000",
+                                    "fontFamily": "Unica77LL-Medium",
+                                    "fontSize": 12,
+                                    "lineHeight": 16,
+                                  },
+                                  Object {},
+                                ]
+                              }
+                            >
+                              Follow
+                            </Text>
+                          </View>
+                          <Text
+                            fontFamily="Unica77LL-Medium"
+                            fontSize="12px"
+                            lineHeight="16px"
+                            role="presentation"
+                            style={
+                              Array [
+                                Object {
+                                  "fontFamily": "Unica77LL-Medium",
+                                  "fontSize": 12,
+                                  "lineHeight": 16,
+                                },
+                                Object {
+                                  "opacity": 0,
+                                },
+                              ]
+                            }
+                          >
+                            Following
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
       </View>
       <View
