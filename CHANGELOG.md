@@ -1,6 +1,6 @@
 # v1.21.7 (Tue Jan 14 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Pass screen width in a variable to relay resize artworks query [#2033](https://github.com/artsy/emission/pull/2033) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -12,7 +12,7 @@
 
 # v1.21.6 (Mon Jan 13 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Featured artists module rebase [#2032](https://github.com/artsy/emission/pull/2032) ([@xtina-starr](https://github.com/xtina-starr) [@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -25,7 +25,7 @@
 
 # v1.21.5 (Fri Jan 10 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Adds missing cursor to collection artwork pagination query [#2030](https://github.com/artsy/emission/pull/2030) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -37,7 +37,7 @@
 
 # v1.21.4 (Fri Jan 10 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Changes settings screen to use sentence case #trivial [#2029](https://github.com/artsy/emission/pull/2029) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -49,7 +49,7 @@
 
 # v1.21.3 (Thu Jan 09 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Adds log out button to app [#2027](https://github.com/artsy/emission/pull/2027) ([@ashfurrow](https://github.com/ashfurrow) [@brainbicycle](https://github.com/brainbicycle))
 
@@ -62,13 +62,11 @@
 
 # v1.21.2 (Thu Jan 09 2020)
 
-
-
 ---
 
 # v1.21.1 (Thu Jan 09 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Implements Infinite Scroll Artwork Grid in Collections [#2024](https://github.com/artsy/emission/pull/2024) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -80,7 +78,7 @@
 
 # v1.21.0 (Tue Jan 07 2020)
 
-#### 🚀  Enhancement
+#### 🚀 Enhancement
 
 - [MX-140] CCPA infrastructure [#2025](https://github.com/artsy/emission/pull/2025) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -92,7 +90,7 @@
 
 # v1.20.8 (Fri Jan 03 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Update dep @artsy/palette from 5.1.12 to v5.1.13 [#2022](https://github.com/artsy/emission/pull/2022) ([@renovate-bot](https://github.com/renovate-bot))
 
@@ -104,7 +102,7 @@
 
 # v1.20.7 (Thu Jan 02 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Adds full bleed to collections header [#2021](https://github.com/artsy/emission/pull/2021) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -116,7 +114,7 @@
 
 # v1.20.6 (Thu Jan 02 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Adds collection artwork preview component [#2015](https://github.com/artsy/emission/pull/2015) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -128,7 +126,7 @@
 
 # v1.20.5 (Mon Dec 23 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Update dep @artsy/palette from 5.1.11 to v5.1.12 [#2020](https://github.com/artsy/emission/pull/2020) ([@renovate-bot](https://github.com/renovate-bot))
 
@@ -140,7 +138,7 @@
 
 # v1.20.4 (Fri Dec 20 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-70] - Guard against S3 upload crash [#2018](https://github.com/artsy/emission/pull/2018) ([@brainbicycle](https://github.com/brainbicycle))
 
@@ -152,7 +150,7 @@
 
 # v1.20.3 (Thu Dec 19 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-131] - Reskin consignment flow [#2005](https://github.com/artsy/emission/pull/2005) ([@kierangillen](https://github.com/kierangillen))
 
@@ -164,7 +162,7 @@
 
 # v1.20.2 (Wed Dec 18 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Updates shows to use coverImage [#2016](https://github.com/artsy/emission/pull/2016) ([@kierangillen](https://github.com/kierangillen))
 
@@ -176,7 +174,7 @@
 
 # v1.20.1 (Tue Dec 17 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Correct the punctuation for e.g. Phillips [#2017](https://github.com/artsy/emission/pull/2017) ([@yuki24](https://github.com/yuki24))
 
@@ -188,7 +186,7 @@
 
 # v1.20.0 (Mon Dec 16 2019)
 
-#### 🚀  Enhancement
+#### 🚀 Enhancement
 
 - Include partner's name on copy stating bidders agree to Artsy's COS [#2012](https://github.com/artsy/emission/pull/2012) ([@yuki24](https://github.com/yuki24))
 
@@ -200,7 +198,7 @@
 
 # v1.19.20 (Mon Dec 16 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Removes bundler installation from deploy job [#2014](https://github.com/artsy/emission/pull/2014) ([@ashfurrow](https://github.com/ashfurrow))
 - Adds documentation for releasing iOS features [#2013](https://github.com/artsy/emission/pull/2013) ([@ashfurrow](https://github.com/ashfurrow))
@@ -213,7 +211,7 @@
 
 # v1.19.19 (Fri Dec 13 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-75] fix scroll to bottom in conversations [#2011](https://github.com/artsy/emission/pull/2011) ([@ds300](https://github.com/ds300))
 
@@ -225,7 +223,7 @@
 
 # v1.19.18 (Fri Dec 13 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Fix artist header when `bylineRequired` field is an empty string. [#2010](https://github.com/artsy/emission/pull/2010) ([@ds300](https://github.com/ds300))
 
@@ -237,7 +235,7 @@
 
 # v1.19.17 (Thu Dec 12 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - MX-100 - Removes SearchLink from Fair [#2009](https://github.com/artsy/emission/pull/2009) ([@kierangillen](https://github.com/kierangillen))
 
@@ -249,7 +247,7 @@
 
 # v1.19.16 (Thu Dec 12 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Moves collection screens to new a sub dir of collections [#2006](https://github.com/artsy/emission/pull/2006) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -261,7 +259,7 @@
 
 # v1.19.15 (Wed Dec 11 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - MX-117 Retry failed persisted queries with full text [#2007](https://github.com/artsy/emission/pull/2007) ([@ds300](https://github.com/ds300))
 
@@ -273,7 +271,7 @@
 
 # v1.19.14 (Wed Dec 11 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Adding more tests for search UI [#1999](https://github.com/artsy/emission/pull/1999) ([@ds300](https://github.com/ds300))
 
@@ -285,7 +283,7 @@
 
 # v1.19.13 (Wed Dec 11 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Updates Danger rule for adding tests for new files [#2008](https://github.com/artsy/emission/pull/2008) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -297,7 +295,7 @@
 
 # v1.19.12 (Tue Dec 10 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Fix sticky tab header positioning when content is not so high [#2002](https://github.com/artsy/emission/pull/2002) ([@ds300](https://github.com/ds300))
 
@@ -309,7 +307,7 @@
 
 # v1.19.11 (Mon Dec 09 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Points to our fork of tipsi-stripe #trivial [#2004](https://github.com/artsy/emission/pull/2004) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -321,7 +319,7 @@
 
 # v1.19.10 (Mon Dec 09 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Updates emission VC to expose artworkID [#2003](https://github.com/artsy/emission/pull/2003) ([@kierangillen](https://github.com/kierangillen))
 
@@ -333,7 +331,7 @@
 
 # v1.19.9 (Mon Dec 09 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Update dep @artsy/palette from 5.1.6 to v5.1.11 [#2000](https://github.com/artsy/emission/pull/2000) ([@renovate-bot](https://github.com/renovate-bot))
 
@@ -345,13 +343,13 @@
 
 # v1.19.8 (Mon Dec 09 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Run unit tests on master [#1998](https://github.com/artsy/emission/pull/1998) ([@ds300](https://github.com/ds300))
 
-#### ⚠️  Pushed to master
+#### ⚠️ Pushed to master
 
-- Empty commit to trigger CI run on master.  ([@ashfurrow](https://github.com/ashfurrow))
+- Empty commit to trigger CI run on master. ([@ashfurrow](https://github.com/ashfurrow))
 
 #### Authors: 2
 
@@ -362,7 +360,7 @@
 
 # v1.19.7 (Fri Dec 06 2019)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-54] App Ratings Prompt [#1995](https://github.com/artsy/emission/pull/1995) ([@ashfurrow](https://github.com/ashfurrow))
 - [MX-87] Search Results Pagination + other search improvements [#1994](https://github.com/artsy/emission/pull/1994) ([@ds300](https://github.com/ds300))
@@ -372,10 +370,10 @@
 - Updates to Node 12 [#1986](https://github.com/artsy/emission/pull/1986) ([@kierangillen](https://github.com/kierangillen) [@ashfurrow](https://github.com/ashfurrow) [@ds300](https://github.com/ds300))
 - Adds note about auto-deploys [#1989](https://github.com/artsy/emission/pull/1989) ([@ashfurrow](https://github.com/ashfurrow))
 
-#### ⚠️  Pushed to master
+#### ⚠️ Pushed to master
 
-- Revert "Removes Ruby version specifier."  ([@ashfurrow](https://github.com/ashfurrow))
-- Removes Ruby version specifier.  ([@ashfurrow](https://github.com/ashfurrow))
+- Revert "Removes Ruby version specifier." ([@ashfurrow](https://github.com/ashfurrow))
+- Removes Ruby version specifier. ([@ashfurrow](https://github.com/ashfurrow))
 
 #### Authors: 3
 
