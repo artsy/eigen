@@ -4789,7 +4789,7 @@
 					};
 					49BA7DFE1655ABE600C06572 = {
 						DevelopmentTeam = 23KMWZ572J;
-						LastSwiftMigration = 1030;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -4819,7 +4819,7 @@
 					};
 					B3ECE8251819D1E6009F5C5B = {
 						DevelopmentTeam = 23KMWZ572J;
-						LastSwiftMigration = 1030;
+						LastSwiftMigration = 1130;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
 					};
 				};
