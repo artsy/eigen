@@ -4,6 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type QueryRenderersCollectionQueryVariables = {
     collectionID: string;
+    screenWidth?: number | null;
 };
 export type QueryRenderersCollectionQueryResponse = {
     readonly collection: {
@@ -20,17 +21,18 @@ export type QueryRenderersCollectionQuery = {
 /*
 query QueryRenderersCollectionQuery(
   $collectionID: String!
+  $screenWidth: Int
 ) {
   collection: marketingCollection(slug: $collectionID) {
-    ...Collection_collection
+    ...Collection_collection_2qE49v
     id
   }
 }
 
-fragment Collection_collection on MarketingCollection {
+fragment Collection_collection_2qE49v on MarketingCollection {
   ...CollectionHeader_collection
   ...CollectionArtworks_collection
-  ...FeaturedArtists_collection
+  ...FeaturedArtists_collection_2qE49v
 }
 
 fragment CollectionHeader_collection on MarketingCollection {
@@ -67,14 +69,14 @@ fragment CollectionArtworks_collection on MarketingCollection {
   }
 }
 
-fragment FeaturedArtists_collection on MarketingCollection {
+fragment FeaturedArtists_collection_2qE49v on MarketingCollection {
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 9, sort: "-decayed_merch") {
     merchandisableArtists {
       slug
       internalID
       name
       image {
-        resized(width: 500) {
+        resized(width: $screenWidth) {
           url
         }
       }
@@ -152,6 +154,12 @@ var v0 = [
     "name": "collectionID",
     "type": "String!",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "screenWidth",
+    "type": "Int",
+    "defaultValue": null
   }
 ],
 v1 = [
@@ -227,7 +235,13 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "Collection_collection",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "screenWidth",
+                "variableName": "screenWidth"
+              }
+            ]
           }
         ]
       }
@@ -628,12 +642,12 @@ return {
                         "kind": "LinkedField",
                         "alias": null,
                         "name": "resized",
-                        "storageKey": "resized(width:500)",
+                        "storageKey": null,
                         "args": [
                           {
-                            "kind": "Literal",
+                            "kind": "Variable",
                             "name": "width",
-                            "value": 500
+                            "variableName": "screenWidth"
                           }
                         ],
                         "concreteType": "ResizedImageUrl",
@@ -684,11 +698,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "ebe82217b2bb94a48d87bdca4e5adcb5",
+    "id": "85d9ffb2cb74e3125924051143d614a8",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8a31710533b8db1aec67616c37bf90ba';
+(node as any).hash = '1feb45547aa6127fe5f740c3c3e5a0ce';
 export default node;

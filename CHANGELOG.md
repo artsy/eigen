@@ -1,6 +1,18 @@
+# v1.21.7 (Tue Jan 14 2020)
+
+#### 🐛 Bug Fix
+
+- Pass screen width in a variable to relay resize artworks query [#2033](https://github.com/artsy/emission/pull/2033) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.6 (Mon Jan 13 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Featured artists module rebase [#2032](https://github.com/artsy/emission/pull/2032) ([@xtina-starr](https://github.com/xtina-starr) [@ashleyjelks](https://github.com/ashleyjelks))
 

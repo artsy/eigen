@@ -27,7 +27,14 @@ const node: ReaderFragment = {
   "name": "FeaturedArtists_collection",
   "type": "MarketingCollection",
   "metadata": null,
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "screenWidth",
+      "type": "Int",
+      "defaultValue": 500
+    }
+  ],
   "selections": [
     {
       "kind": "LinkedField",
@@ -99,12 +106,12 @@ const node: ReaderFragment = {
                   "kind": "LinkedField",
                   "alias": null,
                   "name": "resized",
-                  "storageKey": "resized(width:500)",
+                  "storageKey": null,
                   "args": [
                     {
-                      "kind": "Literal",
+                      "kind": "Variable",
                       "name": "width",
-                      "value": 500
+                      "variableName": "screenWidth"
                     }
                   ],
                   "concreteType": "ResizedImageUrl",
@@ -148,5 +155,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '87c681f90507d69e6f3e557506faa1b3';
+(node as any).hash = '028eefeb0ff4442136cc27bf564109e6';
 export default node;
