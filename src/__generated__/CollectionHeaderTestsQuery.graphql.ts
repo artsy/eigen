@@ -12,10 +12,16 @@ export type CollectionHeaderTestsQueryRawResponse = {
     readonly marketingCollection: ({
         readonly title: string;
         readonly headerImage: string | null;
+        readonly descriptionMarkdown: string | null;
         readonly image: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly imageUrl: string | null;
+                    readonly image: ({
+                        readonly resized: ({
+                            readonly url: string | null;
+                        }) | null;
+                    }) | null;
                     readonly id: string | null;
                 }) | null;
             }) | null> | null;
@@ -43,10 +49,16 @@ query CollectionHeaderTestsQuery {
 fragment CollectionHeader_collection on MarketingCollection {
   title
   headerImage
-  image: artworksConnection(sort: "-merchandisability", first: 1) {
+  descriptionMarkdown
+  image: artworksConnection(sort: "-decayed_merch", first: 1) {
     edges {
       node {
         imageUrl
+        image {
+          resized(width: 500) {
+            url
+          }
+        }
         id
       }
     }
@@ -126,10 +138,17 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "descriptionMarkdown",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": "image",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:1,sort:\"-merchandisability\")",
+            "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")",
             "args": [
               {
                 "kind": "Literal",
@@ -139,7 +158,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "sort",
-                "value": "-merchandisability"
+                "value": "-decayed_merch"
               }
             ],
             "concreteType": "FilterArtworksConnection",
@@ -170,6 +189,41 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "image",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "resized",
+                            "storageKey": "resized(width:500)",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "width",
+                                "value": 500
+                              }
+                            ],
+                            "concreteType": "ResizedImageUrl",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "url",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          }
+                        ]
+                      },
                       (v1/*: any*/)
                     ]
                   }
@@ -186,7 +240,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionHeaderTestsQuery",
-    "id": "c867fe87521fbea7edf50318dae42ade",
+    "id": "02dc147e287b9c0962e05ef75869bf4f",
     "text": null,
     "metadata": {}
   }

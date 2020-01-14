@@ -83,7 +83,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
     fragment Collection_collection on MarketingCollection
       @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
-      ...CollectionHeader_collection
+      ...CollectionHeader_collection @arguments(screenWidth: $screenWidth)
       ...CollectionArtworks_collection
       ...FeaturedArtists_collection @arguments(screenWidth: $screenWidth)
     }

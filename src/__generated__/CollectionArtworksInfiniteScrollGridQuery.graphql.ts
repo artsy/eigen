@@ -34,7 +34,7 @@ query CollectionArtworksInfiniteScrollGridQuery(
 fragment CollectionArtworks_collection_1G22uz on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(sort: "-merchandisability", first: $count, after: $cursor) {
+  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: $count, after: $cursor) {
     edges {
       node {
         id
@@ -165,7 +165,7 @@ v4 = [
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "-merchandisability"
+    "value": "-decayed_merch"
   }
 ],
 v5 = [
@@ -509,7 +509,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "3296b66180888423ae2a6cb72840f8fa",
+    "id": "cddea0d8bfe8d700bf1783685085af5f",
     "text": null,
     "metadata": {}
   }
