@@ -46,4 +46,30 @@ it("renders properly", () => {
     )
     .toJSON()
   expect(show).toMatchSnapshot()
+
+  const showPropsNullKind = {
+    href: "artsy.net/show",
+    cover_image: {
+      url: "artsy.net/image-url",
+    },
+    name: "Expansive Exhibition",
+    exhibition_period: "Jan 1 - March 1",
+    status_update: "Closing in 2 days",
+    status: "running",
+    partner: {
+      name: "Gallery",
+    },
+    location: {
+      city: "Berlin",
+    },
+  }
+
+  const showNullKind = renderer
+    .create(
+      <Theme>
+        <ArtistShow show={showPropsNullKind as any} styles={showStyles} />
+      </Theme>
+    )
+    .toJSON()
+  expect(showNullKind).toMatchSnapshot()
 })
