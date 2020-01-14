@@ -95,7 +95,8 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
 
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FeaturedArtists, {
   collection: graphql`
-    fragment FeaturedArtists_collection on MarketingCollection {
+    fragment FeaturedArtists_collection on MarketingCollection
+      @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
       # TODO: size:9 is not actually limiting to 9 items. We need to figure out
       #  why the back-end is not respecting that argument.
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 9, sort: "-decayed_merch") {
@@ -104,7 +105,7 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
           internalID
           name
           image {
-            resized(width: 500) {
+            resized(width: $screenWidth) {
               url
             }
           }

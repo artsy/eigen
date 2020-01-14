@@ -46,6 +46,7 @@ import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderer
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
+import { Dimensions } from "react-native"
 import { defaultEnvironment as environment } from "./createEnvironment"
 
 export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"]
@@ -283,14 +284,15 @@ export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collect
   <QueryRenderer<QueryRenderersCollectionQuery>
     environment={environment}
     query={graphql`
-      query QueryRenderersCollectionQuery($collectionID: String!) {
+      query QueryRenderersCollectionQuery($collectionID: String!, $screenWidth: Int) {
         collection: marketingCollection(slug: $collectionID) {
-          ...Collection_collection
+          ...Collection_collection @arguments(screenWidth: $screenWidth)
         }
       }
     `}
     variables={{
       collectionID,
+      screenWidth: Dimensions.get("screen").width,
     }}
     cacheConfig={{
       // Bypass Relay cache on retries.

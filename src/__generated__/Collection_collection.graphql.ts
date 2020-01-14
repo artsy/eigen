@@ -14,7 +14,14 @@ const node: ReaderFragment = {
   "name": "Collection_collection",
   "type": "MarketingCollection",
   "metadata": null,
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "screenWidth",
+      "type": "Int",
+      "defaultValue": 500
+    }
+  ],
   "selections": [
     {
       "kind": "FragmentSpread",
@@ -29,9 +36,15 @@ const node: ReaderFragment = {
     {
       "kind": "FragmentSpread",
       "name": "FeaturedArtists_collection",
-      "args": null
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "screenWidth",
+          "variableName": "screenWidth"
+        }
+      ]
     }
   ]
 };
-(node as any).hash = '3fa152348315c51452af9cc7a446a147';
+(node as any).hash = '9f9d3752500c35790e065398fa7d0575';
 export default node;
