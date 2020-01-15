@@ -54,9 +54,19 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
     })
   }
 
+  getFeaturedArtists = () => {
+    const allArtists = this.props.collection?.artworksConnection?.merchandisableArtists || []
+    const featuredArtistExclusionIds = this.props.collection?.featuredArtistExclusionIds || []
+
+    if (featuredArtistExclusionIds.length > 0) {
+      return allArtists.filter(artist => !featuredArtistExclusionIds.includes(artist.internalID))
+    }
+    return allArtists
+  }
+
   render() {
-    const artists = get(this.props, p => p.collection.artworksConnection.merchandisableArtists)
-    if (!artists) {
+    const artists = this.getFeaturedArtists()
+    if (artists.length <= 0) {
       return null
     }
 
@@ -114,6 +124,7 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
           isFollowed
         }
       }
+      featuredArtistExclusionIds
     }
   `,
 })

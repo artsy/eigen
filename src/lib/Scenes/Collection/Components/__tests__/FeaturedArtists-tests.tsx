@@ -12,7 +12,7 @@ const CollectionFixture: FeaturedArtists_collection = {
     merchandisableArtists: [
       {
         slug: "pablo-picasso",
-        internalID: "1234",
+        internalID: "2342-pablo-picassos-id",
         name: "Pablo Picasso",
         image: {
           resized: {
@@ -25,7 +25,7 @@ const CollectionFixture: FeaturedArtists_collection = {
       },
       {
         slug: "andy-warhol",
-        internalID: "2342",
+        internalID: "34534-andy-warhols-id",
         name: "Andy Warhol",
         image: {
           resized: {
@@ -51,11 +51,12 @@ const CollectionFixture: FeaturedArtists_collection = {
       },
     ],
   },
+  featuredArtistExclusionIds: [],
   " $refType": null,
 }
 
 describe("FeaturedArtists", () => {
-  const render = () =>
+  const render = (collection: FeaturedArtists_collection) =>
     renderRelayTree({
       Component: ({ marketingCollection }) => (
         <Theme>
@@ -70,17 +71,17 @@ describe("FeaturedArtists", () => {
         }
       `,
       mockData: {
-        marketingCollection: CollectionFixture,
+        marketingCollection: collection,
       },
     })
 
   it("renders properly", async () => {
-    const tree = await render()
+    const tree = await render(CollectionFixture)
     expect(tree.html()).toMatchSnapshot()
   })
 
   it("renders an EntityHeader for each featured artist", async () => {
-    const tree = await render()
+    const tree = await render(CollectionFixture)
 
     const entityHeaders = tree.find("EntityHeader")
     expect(entityHeaders.length).toEqual(3)
@@ -89,5 +90,20 @@ describe("FeaturedArtists", () => {
     expect(output).toContain("Pablo Picasso")
     expect(output).toContain("Andy Warhol")
     expect(output).toContain("Joan Miro")
+  })
+
+  it("does not render an EntityHeader for excluded artists", async () => {
+    const tree = await render({
+      ...CollectionFixture,
+      featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
+    })
+
+    const entityHeaders = tree.find("EntityHeader")
+    expect(entityHeaders.length).toEqual(1)
+
+    const output = tree.html()
+    expect(output).toContain("Joan Miro")
+    expect(output).not.toContain("Andy Warhol")
+    expect(output).not.toContain("Pablo Picasso")
   })
 })

@@ -27,6 +27,7 @@ export type FeaturedArtistsTestsQueryRawResponse = {
             }) | null> | null;
             readonly id: string | null;
         }) | null;
+        readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
         readonly id: string | null;
     }) | null;
 };
@@ -64,6 +65,7 @@ fragment FeaturedArtists_collection on MarketingCollection {
     }
     id
   }
+  featuredArtistExclusionIds
 }
 */
 
@@ -242,6 +244,13 @@ return {
               (v1/*: any*/)
             ]
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "featuredArtistExclusionIds",
+            "args": null,
+            "storageKey": null
+          },
           (v1/*: any*/)
         ]
       }
@@ -250,7 +259,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FeaturedArtistsTestsQuery",
-    "id": "e754719f7ebc14649929d95477f9b6d6",
+    "id": "d8c45150bdbb69d63447e3fd3dd10fba",
     "text": null,
     "metadata": {}
   }
