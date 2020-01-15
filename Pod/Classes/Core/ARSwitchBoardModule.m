@@ -1,6 +1,7 @@
 #import "ARSwitchBoardModule.h"
 #import "ARMediaPreviewController.h"
 
+#import <MessageUI/MFMailComposeViewController.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
@@ -9,6 +10,9 @@
 
 // Invoked on the main thread.
 typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController * _Nonnull fromViewController, UIView * _Nonnull originatingView);
+
+@interface ARSwitchBoardModule () <MFMailComposeViewControllerDelegate>
+@end
 
 @implementation ARSwitchBoardModule
 
@@ -59,6 +63,24 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
   self.updateShouldHideBackButton(shouldHide);
 }
 
+RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(NSString *)toAddress subject:(NSString *)subject)
+{
+
+  [self invokeCallback:^(UIViewController *fromViewController, UIView *originatingView) {
+    if ([MFMailComposeViewController canSendMail]) {
+      MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
+      composer.mailComposeDelegate = self;
+      [composer setToRecipients:@[toAddress]];
+      [composer setSubject:subject];
+      [fromViewController presentViewController:composer animated:YES completion:nil];
+    } else {
+      UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"No email configured" message:@"You don't appear to have any email configured on your device. Please email feedback@artsy.net from another device to contact us." preferredStyle:UIAlertControllerStyleAlert];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
+      [fromViewController presentViewController:alert animated:YES completion:nil];
+    }
+  } reactTag:reactTag];
+}
+
 - (dispatch_queue_t)methodQueue;
 {
   return dispatch_get_main_queue();
@@ -84,6 +106,13 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
     UIViewController *viewController = rootView.reactViewController;
     NSParameterAssert(viewController);
     callback(viewController, originatingView);
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error
+{
+  [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

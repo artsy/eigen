@@ -32,7 +32,12 @@ export default class MyProfile extends React.Component {
             <Separator />
             <Box py={1} mx={2} mt={1}>
               <Join separator={<Spacer mb={2} />}>
-                <Row title="Send feedback" />
+                <Row
+                  title="Send feedback"
+                  onPress={() =>
+                    SwitchBoard.presentEmailComposer(this, "feedback@artsy.net", "Feedback from the Artsy app")
+                  }
+                />
                 <Row
                   title="Personal data request"
                   onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
