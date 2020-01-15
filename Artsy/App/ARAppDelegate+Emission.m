@@ -325,13 +325,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - AR View-in-Room Experience
 
-// TODO: This comment can be deleted once the new RN Artwork rollout is complete and
-// ARArtworkViewController+ButtonActions.m is deleted.
-
-// This is largely copied from ARArtworkViewController+ButtonActions.m. Normally we would
-// want to put this in its own file, but the implementations differ slightly _and_ that
-// whole file will be removed once the React Native Artwork view rollout is complete.
-// So copying the code is worth the compromise in this case.
 - (void)showARVIRWithImageURL:(NSURL *)url size:(CGSize)size artworkSlug:(NSString *)artworkSlug artworkID:(NSString *)artworkId defaults:(NSUserDefaults *)userDefauls
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];

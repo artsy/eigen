@@ -11,8 +11,7 @@
 
 // View Controller Forward Declarations
 
-@class ARArtworkViewController;
-@class ARArtworkInfoViewController;
+@class ARArtworkComponentViewController;
 @class ARAuctionArtworkResultsViewController;
 @class ARUserSettingsViewController;
 @class Aerodramus;

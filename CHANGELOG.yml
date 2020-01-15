@@ -6,6 +6,7 @@ upcoming:
     - Delete ARFairSearchViewController - brian
     - Adds basic UI infrastructure for CCPA UI - ash
     - Upgrates to Xcode 11 - ash
+    - Removes references to legacy artwork view - kieran
   user_facing:
     - Adds log out button to app - brian & ash 
 
@@ -21,6 +22,7 @@ releases:
       - Upgrades React Native to 0.61.4 - ash & david & kieran
       - Add back-button-hiding infra for emission - ash & david & kieran
       - Puts new partner page behind an Echo flag - ash
+      - Removes references to legacy artwork view - kieran
     user_facing:
       - Updates profile and mutable view controllers to use default background if not fair - kierangillen
       - Fixes an issue where confirm bid screen crashes when the Price Transparency feature is off - yuki24

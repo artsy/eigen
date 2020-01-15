@@ -4,8 +4,7 @@
 
 // View Controllers
 #import "ARAdminSettingsViewController.h"
-#import "ARArtworkViewController.h"
-#import "ARArtworkInfoViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
@@ -58,14 +57,14 @@
 #pragma mark -
 #pragma mark Artworks
 
-- (ARArtworkViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair
+- (ARArtworkComponentViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair
 {
-    return [[ARArtworkViewController alloc] initWithArtwork:artwork fair:fair];
+    return [[ARArtworkComponentViewController alloc] initWithArtworkID:artwork.artworkID];
 }
 
-- (ARArtworkViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair
+- (ARArtworkComponentViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair
 {
-    return [[ARArtworkViewController alloc] initWithArtwork:[[Artwork alloc] initWithArtworkID:artworkID] fair:fair];
+    return [[ARArtworkComponentViewController alloc] initWithArtworkID:artworkID];
 }
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID
@@ -107,11 +106,6 @@
         NSURL *URL = [self resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
     }
-}
-
-- (ARArtworkInfoViewController *)loadMoreInfoForArtwork:(Artwork *)artwork
-{
-    return [[ARArtworkInfoViewController alloc] initWithArtwork:artwork];
 }
 
 - (UIViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair

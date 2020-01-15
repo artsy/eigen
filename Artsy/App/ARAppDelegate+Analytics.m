@@ -30,7 +30,7 @@
 // View Controllers
 #import "ARProfileViewController.h"
 #import "ARAppSearchViewController.h"
-#import "ARArtworkViewController.h"
+#import <Emission/ARArtworkComponentViewController.h>
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
 #import "ARPersonalizeViewController.h"
@@ -43,7 +43,6 @@
 #import "ARBrowseViewController.h"
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
-#import "ARArtworkInfoViewController.h"
 #import "ARSentryAnalyticsProvider.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRSetupViewController.h"
@@ -58,7 +57,6 @@
 #import "ARSiteHeroUnitView.h"
 #import "ARButtonWithImage.h"
 #import "ARTabContentView.h"
-#import "ARArtworkView.h"
 #import "ARSwitchView.h"
 #import "ARSwitchView+Favorites.h"
 #import "ARSwitchView+Artist.h"
@@ -169,105 +167,6 @@
                                     @"query" : query ?: @"",
                                 };
                             }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARArtworkViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedGalleryInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
-                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"partner_slug": controller.artwork.partner.partnerID ?: @"",
-                                };
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtworkSave,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkFavorite:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARArtworkViewController *controller, NSArray *parameters) {
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.isHearted == YES;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                return @{
-                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"artwork_slug" : controller.artwork.artworkID ?: @"",
-                                    @"source_screen" : @"Artwork"
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtworkUnsave,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkFavorite:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARArtworkViewController *controller, NSArray *parameters) {
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.isHearted == NO;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                return @{
-                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"artwork_slug" : controller.artwork.artworkID ?: @"",
-                                    @"source_screen" : @"Artwork"
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTapPartnerName,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedOpenArtworkPartner)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                return @{
-                                    @"gallery_slug": controller.artwork.partner.partnerID ?: @"",
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: @"tap",
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkViewInRoom)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *_){
-                                return @{
-                                    @"context_screen_owner_slug": controller.artwork.artworkID ?: @"",
-                                    @"context_screen_owner_type": @"Artwork",
-                                    @"action_name": @"tappedArtworkViewInRoom"
-                                 };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkViewInMap)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *_){
-                                return @{@"artwork_id" : controller.artwork.artworkID ?: @""};
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsAuctionBidTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedBidButton:saleID:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                NSString *saleID = parameters[1];
-                                return @{
-                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
-                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"auction_id": saleID ?: @"",
-                                    @"context_type" : @"Artwork"
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsAuctionHowBiddingWorks,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedAuctionInfo)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtworkZoom,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(tappedTileableImagePreview),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                return @{
-                                    @"artwork_slug" : controller.artwork.artworkID ?: @"",
-                                };
-                            },
                         }
                     ]
                 },
@@ -762,49 +661,6 @@
                     ]
                 },
                 // ========== CORE CONTENT SCREENS ==========
-                @{
-                    ARAnalyticsClass: ARArtworkViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Artwork",
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(artworkHasLoaded),
-                            ARAnalyticsProperties: ^NSDictionary *(ARArtworkViewController *vc, NSArray *_) {
-                                ARArtworkView *view = (ARArtworkView *)vc.view;
-                                NSDictionary *basics =  @{
-                                    @"owner_type": @"artwork",
-                                    @"owner_id": view.artwork.artworkUUID ?: @"",
-                                    @"owner_slug": view.artwork.artworkID ?: @"",
-                                    @"acquireable": view.artwork.isAcquireable ?: @(NO),
-                                    @"offerable": view.artwork.isOfferable ?: @(NO),
-                                    @"availability": view.artwork.availablityString ?: @"",
-                                    @"price_listed": @(view.artwork.price.length != 0) ?: @(NO)
-                                };
-
-                                if (view.artwork.fair.fairID) {
-                                    basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": view.artwork.fair.fairID }];
-                                }
-
-                                return basics;
-                            }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARArtworkInfoViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Artwork More Info",
-                            ARAnalyticsSelectorName: @"viewDidAppear:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARArtworkInfoViewController *controller, NSArray *_) {
-                                return @{
-                                    @"owner_type": @"artwork",
-                                    @"owner_id": controller.artwork.artworkUUID ?: @"",
-                                    @"owner_slug": controller.artwork.artworkID ?: @""
-                                };
-                            }
-                        }
-                    ]
-                },
                 @{
                     ARAnalyticsClass: ARArtistComponentViewController.class,
                     ARAnalyticsDetails: @[

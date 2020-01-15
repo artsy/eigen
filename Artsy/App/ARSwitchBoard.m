@@ -13,7 +13,6 @@
 #import "User.h"
 
 // View Controllers
-#import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
