@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "d66fbf2161b007741d2934bbde335ed0{}",
+              "identifier": "472f48aab46c43213e2d72e0ea47b831{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -650,13 +650,20 @@ exports[`Collection renders a snapshot 1`] = `
                           ],
                           "storageKey": "artworksConnection(aggregations:[\\"MERCHANDISABLE_ARTISTS\\"],size:9,sort:\\"-decayed_merch\\")",
                         },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "featuredArtistExclusionIds",
+                          "storageKey": null,
+                        },
                       ],
                       "storageKey": "marketingCollection(slug:\\"doesn't matter\\")",
                     },
                   ],
                 },
                 "params": Object {
-                  "id": "d66fbf2161b007741d2934bbde335ed0",
+                  "id": "472f48aab46c43213e2d72e0ea47b831",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -975,6 +982,12 @@ exports[`Collection renders a snapshot 1`] = `
                         "enumValues": null,
                         "nullable": true,
                         "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.featuredArtistExclusionIds": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
                         "type": "String",
                       },
                       "marketingCollection.headerImage": Object {

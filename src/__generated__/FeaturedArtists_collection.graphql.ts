@@ -17,6 +17,7 @@ export type FeaturedArtists_collection = {
             readonly isFollowed: boolean | null;
         } | null> | null;
     } | null;
+    readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
     readonly " $refType": "FeaturedArtists_collection";
 };
 
@@ -152,8 +153,15 @@ const node: ReaderFragment = {
           ]
         }
       ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "featuredArtistExclusionIds",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = '028eefeb0ff4442136cc27bf564109e6';
+(node as any).hash = 'c50dfb6ed7971e198074bfafeb81a48f';
 export default node;

@@ -87,6 +87,7 @@ fragment FeaturedArtists_collection_2qE49v on MarketingCollection {
     }
     id
   }
+  featuredArtistExclusionIds
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -690,6 +691,13 @@ return {
               },
               (v4/*: any*/)
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "featuredArtistExclusionIds",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -698,7 +706,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "85d9ffb2cb74e3125924051143d614a8",
+    "id": "a7539721a3bc1c14ebe330689013f636",
     "text": null,
     "metadata": {}
   }

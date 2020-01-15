@@ -81,6 +81,7 @@ fragment FeaturedArtists_collection_Z952l on MarketingCollection {
     }
     id
   }
+  featuredArtistExclusionIds
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -724,6 +725,13 @@ return {
               },
               (v3/*: any*/)
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "featuredArtistExclusionIds",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -732,7 +740,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "d66fbf2161b007741d2934bbde335ed0",
+    "id": "472f48aab46c43213e2d72e0ea47b831",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -749,6 +757,12 @@ return {
         "marketingCollection.slug": (v9/*: any*/),
         "marketingCollection.collectionArtworks": (v11/*: any*/),
         "marketingCollection.artworksConnection": (v11/*: any*/),
+        "marketingCollection.featuredArtistExclusionIds": {
+          "type": "String",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
         "marketingCollection.image.edges": {
           "type": "FilterArtworksEdge",
           "enumValues": null,
