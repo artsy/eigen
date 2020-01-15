@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders properly 1`] = `
+exports[`renders properly with all props 1`] = `
 <View
   accessible={true}
   focusable={true}
@@ -127,7 +127,7 @@ exports[`renders properly 1`] = `
 </View>
 `;
 
-exports[`renders properly 2`] = `
+exports[`renders properly with null show kind 1`] = `
 <View
   accessible={true}
   focusable={true}
