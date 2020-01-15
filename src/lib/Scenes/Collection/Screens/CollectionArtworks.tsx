@@ -21,7 +21,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 6 }
           cursor: { type: "String" }
-          sort: { type: "String", defaultValue: "-merchandisability" }
+          sort: { type: "String", defaultValue: "-decayed_merch" }
         ) {
         slug
         id

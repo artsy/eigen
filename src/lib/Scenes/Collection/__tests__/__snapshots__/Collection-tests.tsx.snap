@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "472f48aab46c43213e2d72e0ea47b831{}",
+              "identifier": "a395557f023c69ffc9b532282d4212ec{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -72,6 +72,20 @@ exports[`Collection renders a snapshot 1`] = `
                           "alias": null,
                           "args": null,
                           "kind": "ScalarField",
+                          "name": "id",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "slug",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
                           "name": "title",
                           "storageKey": null,
                         },
@@ -80,6 +94,13 @@ exports[`Collection renders a snapshot 1`] = `
                           "args": null,
                           "kind": "ScalarField",
                           "name": "headerImage",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "descriptionMarkdown",
                           "storageKey": null,
                         },
                         Object {
@@ -93,7 +114,7 @@ exports[`Collection renders a snapshot 1`] = `
                             Object {
                               "kind": "Literal",
                               "name": "sort",
-                              "value": "-merchandisability",
+                              "value": "-decayed_merch",
                             },
                           ],
                           "concreteType": "FilterArtworksConnection",
@@ -120,8 +141,41 @@ exports[`Collection renders a snapshot 1`] = `
                                     Object {
                                       "alias": null,
                                       "args": null,
-                                      "kind": "ScalarField",
-                                      "name": "imageUrl",
+                                      "concreteType": "Image",
+                                      "kind": "LinkedField",
+                                      "name": "image",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": Array [
+                                            Object {
+                                              "kind": "Literal",
+                                              "name": "height",
+                                              "value": 204,
+                                            },
+                                            Object {
+                                              "kind": "Literal",
+                                              "name": "width",
+                                              "value": 500,
+                                            },
+                                          ],
+                                          "concreteType": "ResizedImageUrl",
+                                          "kind": "LinkedField",
+                                          "name": "resized",
+                                          "plural": false,
+                                          "selections": Array [
+                                            Object {
+                                              "alias": null,
+                                              "args": null,
+                                              "kind": "ScalarField",
+                                              "name": "url",
+                                              "storageKey": null,
+                                            },
+                                          ],
+                                          "storageKey": "resized(height:204,width:500)",
+                                        },
+                                      ],
                                       "storageKey": null,
                                     },
                                     Object {
@@ -145,21 +199,7 @@ exports[`Collection renders a snapshot 1`] = `
                               "storageKey": null,
                             },
                           ],
-                          "storageKey": "artworksConnection(first:1,sort:\\"-merchandisability\\")",
-                        },
-                        Object {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "slug",
-                          "storageKey": null,
-                        },
-                        Object {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "id",
-                          "storageKey": null,
+                          "storageKey": "artworksConnection(first:1,sort:\\"-decayed_merch\\")",
                         },
                         Object {
                           "alias": "collectionArtworks",
@@ -172,7 +212,7 @@ exports[`Collection renders a snapshot 1`] = `
                             Object {
                               "kind": "Literal",
                               "name": "sort",
-                              "value": "-merchandisability",
+                              "value": "-decayed_merch",
                             },
                           ],
                           "concreteType": "FilterArtworksConnection",
@@ -495,7 +535,7 @@ exports[`Collection renders a snapshot 1`] = `
                               "storageKey": null,
                             },
                           ],
-                          "storageKey": "artworksConnection(first:6,sort:\\"-merchandisability\\")",
+                          "storageKey": "artworksConnection(first:6,sort:\\"-decayed_merch\\")",
                         },
                         Object {
                           "alias": "collectionArtworks",
@@ -508,7 +548,7 @@ exports[`Collection renders a snapshot 1`] = `
                             Object {
                               "kind": "Literal",
                               "name": "sort",
-                              "value": "-merchandisability",
+                              "value": "-decayed_merch",
                             },
                           ],
                           "filters": Array [
@@ -663,7 +703,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "472f48aab46c43213e2d72e0ea47b831",
+                  "id": "a395557f023c69ffc9b532282d4212ec",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -984,6 +1024,12 @@ exports[`Collection renders a snapshot 1`] = `
                         "plural": false,
                         "type": "String",
                       },
+                      "marketingCollection.descriptionMarkdown": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
                       "marketingCollection.featuredArtistExclusionIds": Object {
                         "enumValues": null,
                         "nullable": true,
@@ -1026,7 +1072,19 @@ exports[`Collection renders a snapshot 1`] = `
                         "plural": false,
                         "type": "ID",
                       },
-                      "marketingCollection.image.edges.node.imageUrl": Object {
+                      "marketingCollection.image.edges.node.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Image",
+                      },
+                      "marketingCollection.image.edges.node.image.resized": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ResizedImageUrl",
+                      },
+                      "marketingCollection.image.edges.node.image.resized.url": Object {
                         "enumValues": null,
                         "nullable": true,
                         "plural": false,
@@ -1061,12 +1119,16 @@ exports[`Collection renders a snapshot 1`] = `
             },
             "__fragments": Object {
               "CollectionArtworks_collection": Object {},
-              "CollectionHeader_collection": Object {},
+              "CollectionHeader_collection": Object {
+                "screenWidth": 500,
+              },
               "FeaturedArtists_collection": Object {
                 "screenWidth": 500,
               },
             },
-            "__id": "<MarketingCollection-mock-id-3>",
+            "__id": "<MarketingCollection-mock-id-1>",
+            "id": "<MarketingCollection-mock-id-1>",
+            "slug": "<mock-value-for-field-\\"slug\\">",
           }
         }
       />
@@ -1130,27 +1192,71 @@ exports[`Collection renders a snapshot 1`] = `
             width={750}
           />
         </View>
-        <Text
-          color="#000"
-          fontFamily="ReactNativeAGaramondPro-Regular"
-          fontSize="32px"
-          lineHeight="38px"
-          ml={2}
+        <View
+          mb={0}
           style={
             Array [
               Object {
-                "color": "#000",
-                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                "fontSize": 32,
-                "lineHeight": 38,
-                "marginLeft": 20,
+                "marginBottom": 0,
               },
-              Object {},
             ]
           }
         >
-          &lt;mock-value-for-field-"title"&gt;
-        </Text>
+          <Text
+            color="#000"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="32px"
+            lineHeight="38px"
+            ml={2}
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 32,
+                  "lineHeight": 38,
+                  "marginLeft": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"title"&gt;
+          </Text>
+        </View>
+        <View
+          m="2"
+          style={
+            Array [
+              Object {
+                "marginBottom": 20,
+                "marginLeft": 20,
+                "marginRight": 20,
+                "marginTop": 20,
+              },
+            ]
+          }
+        >
+          <Text
+            color="black100"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="20px"
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"descriptionMarkdown"&gt;
+          </Text>
+        </View>
       </View>
       <View
         onLayout={[Function]}
@@ -1690,6 +1796,30 @@ exports[`Collection renders a snapshot 1`] = `
                 </View>
               </View>
             </View>
+            <View
+              mb={1}
+              style={
+                Array [
+                  Object {
+                    "marginBottom": 10,
+                  },
+                ]
+              }
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderBottomWidth": 0,
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "width": "100%",
+                  },
+                ]
+              }
+              width="100%"
+            />
           </View>
         </View>
       </View>
