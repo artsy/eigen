@@ -53,7 +53,7 @@ fragment CollectionHeader_collection on MarketingCollection {
     edges {
       node {
         image {
-          resized(width: 500) {
+          resized(width: 500, height: 204) {
             url
           }
         }
@@ -193,8 +193,13 @@ return {
                             "kind": "LinkedField",
                             "alias": null,
                             "name": "resized",
-                            "storageKey": "resized(width:500)",
+                            "storageKey": "resized(height:204,width:500)",
                             "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "height",
+                                "value": 204
+                              },
                               {
                                 "kind": "Literal",
                                 "name": "width",
@@ -231,7 +236,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionHeaderTestsQuery",
-    "id": "dc86d569dcef644d1f93cc7421fa6a0c",
+    "id": "2105153f035bc115adc66139d24680d9",
     "text": null,
     "metadata": {}
   }

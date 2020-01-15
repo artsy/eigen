@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "8aadf43bf16ab96b9032fcfeffa921d3{}",
+              "identifier": "a395557f023c69ffc9b532282d4212ec{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -151,6 +151,11 @@ exports[`Collection renders a snapshot 1`] = `
                                           "args": Array [
                                             Object {
                                               "kind": "Literal",
+                                              "name": "height",
+                                              "value": 204,
+                                            },
+                                            Object {
+                                              "kind": "Literal",
                                               "name": "width",
                                               "value": 500,
                                             },
@@ -168,7 +173,7 @@ exports[`Collection renders a snapshot 1`] = `
                                               "storageKey": null,
                                             },
                                           ],
-                                          "storageKey": "resized(width:500)",
+                                          "storageKey": "resized(height:204,width:500)",
                                         },
                                       ],
                                       "storageKey": null,
@@ -698,7 +703,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "8aadf43bf16ab96b9032fcfeffa921d3",
+                  "id": "a395557f023c69ffc9b532282d4212ec",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -1187,27 +1192,38 @@ exports[`Collection renders a snapshot 1`] = `
             width={750}
           />
         </View>
-        <Text
-          color="#000"
-          fontFamily="ReactNativeAGaramondPro-Regular"
-          fontSize="32px"
-          lineHeight="38px"
-          ml={2}
+        <View
+          mb={0}
           style={
             Array [
               Object {
-                "color": "#000",
-                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                "fontSize": 32,
-                "lineHeight": 38,
-                "marginLeft": 20,
+                "marginBottom": 0,
               },
-              Object {},
             ]
           }
         >
-          &lt;mock-value-for-field-"title"&gt;
-        </Text>
+          <Text
+            color="#000"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="32px"
+            lineHeight="38px"
+            ml={2}
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 32,
+                  "lineHeight": 38,
+                  "marginLeft": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"title"&gt;
+          </Text>
+        </View>
         <View
           m="2"
           style={
@@ -1781,11 +1797,11 @@ exports[`Collection renders a snapshot 1`] = `
               </View>
             </View>
             <View
-              mb={2}
+              mb={1}
               style={
                 Array [
                   Object {
-                    "marginBottom": 20,
+                    "marginBottom": 10,
                   },
                 ]
               }

@@ -110,6 +110,11 @@ const node: ReaderFragment = {
                       "storageKey": null,
                       "args": [
                         {
+                          "kind": "Literal",
+                          "name": "height",
+                          "value": 204
+                        },
+                        {
                           "kind": "Variable",
                           "name": "width",
                           "variableName": "screenWidth"
@@ -137,5 +142,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b8a3050590f6301a37a4f2929ad5c874';
+(node as any).hash = '3fd21029669bea349c2ec4456f023aa0';
 export default node;

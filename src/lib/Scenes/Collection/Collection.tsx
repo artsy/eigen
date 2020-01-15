@@ -55,7 +55,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
         return (
           <Box>
             <CollectionFeaturedArtists collection={this.props.collection} />
-            <Spacer mb={2} />
+            <Spacer mb={1} />
             <Separator />
           </Box>
         )

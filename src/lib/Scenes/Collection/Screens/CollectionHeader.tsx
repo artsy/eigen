@@ -12,21 +12,25 @@ interface CollectionHeaderProps {
   collection: CollectionHeader_collection
 }
 
+const HEADER_IMAGE_HEIGHT = 204
+
 export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
   const { title, image, headerImage, descriptionMarkdown: collectionDescription } = props.collection
-  const url = headerImage ? headerImage : image.edges[0]?.node.image.resized.url
+  const defaultHeaderUrl = image?.edges[0]?.node?.image?.resized?.url || ""
+  const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")
-  const imageHeight = 204
   const textLimit = truncatedTextLimit()
 
   return (
     <>
-      <Box mb={collectionDescription ? 2 : 4}>
-        <OpaqueImageView imageURL={url} height={imageHeight} width={screenWidth} />
+      <Box mb={2}>
+        <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Serif size="8" color={color("black100")} ml={2}>
-        {title}
-      </Serif>
+      <Box mb={collectionDescription ? 0 : 2}>
+        <Serif size="8" color={color("black100")} ml={2}>
+          {title}
+        </Serif>
+      </Box>
       {collectionDescription && (
         <Box m="2">
           <ReadMore
@@ -52,7 +56,7 @@ export const CollectionHeaderContainer = createFragmentContainer(CollectionHeade
         edges {
           node {
             image {
-              resized(width: $screenWidth) {
+              resized(width: $screenWidth, height: 204) {
                 url
               }
             }
