@@ -16,7 +16,6 @@ export type CollectionHeaderTestsQueryRawResponse = {
         readonly image: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
-                    readonly imageUrl: string | null;
                     readonly image: ({
                         readonly resized: ({
                             readonly url: string | null;
@@ -53,7 +52,6 @@ fragment CollectionHeader_collection on MarketingCollection {
   image: artworksConnection(sort: "-decayed_merch", first: 1) {
     edges {
       node {
-        imageUrl
         image {
           resized(width: 500) {
             url
@@ -183,13 +181,6 @@ return {
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "imageUrl",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
                         "kind": "LinkedField",
                         "alias": null,
                         "name": "image",
@@ -240,7 +231,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionHeaderTestsQuery",
-    "id": "02dc147e287b9c0962e05ef75869bf4f",
+    "id": "dc86d569dcef644d1f93cc7421fa6a0c",
     "text": null,
     "metadata": {}
   }

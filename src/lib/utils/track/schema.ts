@@ -125,6 +125,7 @@ export enum PageNames {
   ShowAllArtists = "ShowAllArtists",
   ShowAllArtworks = "ShowAllArtworks",
   PartnerPage = "PartnerPage",
+  Collection = "Collection",
 }
 
 export enum OwnerEntityTypes {
@@ -140,6 +141,7 @@ export enum OwnerEntityTypes {
   Show = "Show",
   Invoice = "Invoice",
   Consignment = "ConsignmentSubmission",
+  Collection = "Collection",
 }
 
 export enum ActionTypes {
@@ -322,6 +324,7 @@ export enum ContextModules {
   ExhibitionHistory = "ExhibitionHistory",
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
+  Collection = "Collection",
 }
 
 export enum Flow {

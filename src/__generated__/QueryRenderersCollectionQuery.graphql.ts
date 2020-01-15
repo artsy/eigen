@@ -30,6 +30,8 @@ query QueryRenderersCollectionQuery(
 }
 
 fragment Collection_collection_2qE49v on MarketingCollection {
+  id
+  slug
   ...CollectionHeader_collection_2qE49v
   ...CollectionArtworks_collection
   ...FeaturedArtists_collection_2qE49v
@@ -42,7 +44,6 @@ fragment CollectionHeader_collection_2qE49v on MarketingCollection {
   image: artworksConnection(sort: "-decayed_merch", first: 1) {
     edges {
       node {
-        imageUrl
         image {
           resized(width: $screenWidth) {
             url
@@ -179,16 +180,30 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "title",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
   "kind": "Literal",
   "name": "sort",
   "value": "-decayed_merch"
 },
-v4 = {
+v6 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -223,27 +238,13 @@ v4 = {
     }
   ]
 },
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
 v7 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 6
   },
-  (v3/*: any*/)
+  (v5/*: any*/)
 ],
 v8 = {
   "kind": "ScalarField",
@@ -254,7 +255,7 @@ v8 = {
 },
 v9 = [
   (v8/*: any*/),
-  (v5/*: any*/)
+  (v2/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -304,6 +305,8 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -329,7 +332,7 @@ return {
                 "name": "first",
                 "value": 1
               },
-              (v3/*: any*/)
+              (v5/*: any*/)
             ],
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -352,24 +355,15 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "imageUrl",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      (v4/*: any*/),
-                      (v5/*: any*/)
+                      (v6/*: any*/),
+                      (v2/*: any*/)
                     ]
                   }
                 ]
               },
-              (v5/*: any*/)
+              (v2/*: any*/)
             ]
           },
-          (v6/*: any*/),
-          (v5/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
@@ -397,8 +391,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
-                      (v6/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -437,7 +431,7 @@ return {
                           }
                         ]
                       },
-                      (v2/*: any*/),
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -503,7 +497,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v2/*: any*/)
                         ]
                       },
                       {
@@ -533,7 +527,7 @@ return {
                               }
                             ]
                           },
-                          (v5/*: any*/)
+                          (v2/*: any*/)
                         ]
                       },
                       {
@@ -585,7 +579,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v5/*: any*/)
+                  (v2/*: any*/)
                 ]
               },
               {
@@ -620,7 +614,7 @@ return {
                   }
                 ]
               },
-              (v5/*: any*/)
+              (v2/*: any*/)
             ]
           },
           {
@@ -652,7 +646,7 @@ return {
                 "name": "size",
                 "value": 9
               },
-              (v3/*: any*/)
+              (v5/*: any*/)
             ],
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -666,7 +660,7 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  (v6/*: any*/),
+                  (v3/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -675,7 +669,7 @@ return {
                     "storageKey": null
                   },
                   (v8/*: any*/),
-                  (v4/*: any*/),
+                  (v6/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -697,10 +691,10 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v5/*: any*/)
+                  (v2/*: any*/)
                 ]
               },
-              (v5/*: any*/)
+              (v2/*: any*/)
             ]
           },
           {
@@ -717,7 +711,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "4048efc8ae141446d4a14462a765738b",
+    "id": "18e5c968960a4667153f8ea7de8b3d16",
     "text": null,
     "metadata": {}
   }

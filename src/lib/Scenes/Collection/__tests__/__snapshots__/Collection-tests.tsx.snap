@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "0fffe27b36bf7dc9d950d2a2f52400ad{}",
+              "identifier": "8aadf43bf16ab96b9032fcfeffa921d3{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -68,6 +68,20 @@ exports[`Collection renders a snapshot 1`] = `
                       "name": "marketingCollection",
                       "plural": false,
                       "selections": Array [
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "id",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "slug",
+                          "storageKey": null,
+                        },
                         Object {
                           "alias": null,
                           "args": null,
@@ -127,13 +141,6 @@ exports[`Collection renders a snapshot 1`] = `
                                     Object {
                                       "alias": null,
                                       "args": null,
-                                      "kind": "ScalarField",
-                                      "name": "imageUrl",
-                                      "storageKey": null,
-                                    },
-                                    Object {
-                                      "alias": null,
-                                      "args": null,
                                       "concreteType": "Image",
                                       "kind": "LinkedField",
                                       "name": "image",
@@ -188,20 +195,6 @@ exports[`Collection renders a snapshot 1`] = `
                             },
                           ],
                           "storageKey": "artworksConnection(first:1,sort:\\"-decayed_merch\\")",
-                        },
-                        Object {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "slug",
-                          "storageKey": null,
-                        },
-                        Object {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "id",
-                          "storageKey": null,
                         },
                         Object {
                           "alias": "collectionArtworks",
@@ -705,7 +698,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "0fffe27b36bf7dc9d950d2a2f52400ad",
+                  "id": "8aadf43bf16ab96b9032fcfeffa921d3",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -1092,12 +1085,6 @@ exports[`Collection renders a snapshot 1`] = `
                         "plural": false,
                         "type": "String",
                       },
-                      "marketingCollection.image.edges.node.imageUrl": Object {
-                        "enumValues": null,
-                        "nullable": true,
-                        "plural": false,
-                        "type": "String",
-                      },
                       "marketingCollection.image.id": Object {
                         "enumValues": null,
                         "nullable": true,
@@ -1134,7 +1121,9 @@ exports[`Collection renders a snapshot 1`] = `
                 "screenWidth": 500,
               },
             },
-            "__id": "<MarketingCollection-mock-id-3>",
+            "__id": "<MarketingCollection-mock-id-1>",
+            "id": "<MarketingCollection-mock-id-1>",
+            "slug": "<mock-value-for-field-\\"slug\\">",
           }
         }
       />
@@ -1791,6 +1780,30 @@ exports[`Collection renders a snapshot 1`] = `
                 </View>
               </View>
             </View>
+            <View
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "marginBottom": 20,
+                  },
+                ]
+              }
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderBottomWidth": 0,
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "width": "100%",
+                  },
+                ]
+              }
+              width="100%"
+            />
           </View>
         </View>
       </View>

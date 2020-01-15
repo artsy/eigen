@@ -3,6 +3,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Collection_collection = {
+    readonly id: string;
+    readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "FeaturedArtists_collection">;
     readonly " $refType": "Collection_collection";
 };
@@ -32,6 +34,20 @@ return {
   ],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "FragmentSpread",
       "name": "CollectionHeader_collection",
       "args": (v0/*: any*/)
@@ -49,5 +65,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '64bc4a1c3afaf0e10669993b615978e3';
+(node as any).hash = '8cb3e72d7dff7e1ff17f0b1fa27ad37e';
 export default node;

@@ -8,7 +8,6 @@ export type CollectionHeader_collection = {
     readonly image: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly imageUrl: string | null;
                 readonly image: {
                     readonly resized: {
                         readonly url: string | null;
@@ -96,13 +95,6 @@ const node: ReaderFragment = {
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "imageUrl",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
                   "kind": "LinkedField",
                   "alias": null,
                   "name": "image",
@@ -145,5 +137,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '56f651965bc135fd66f87d2bb9a1fc95';
+(node as any).hash = 'b8a3050590f6301a37a4f2929ad5c874';
 export default node;
