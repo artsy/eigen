@@ -74,7 +74,10 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(NSString
       [composer setSubject:subject];
       [fromViewController presentViewController:composer animated:YES completion:nil];
     } else {
-      UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"No email configured" message:@"You don't appear to have any email configured on your device. Please email feedback@artsy.net from another device to contact us." preferredStyle:UIAlertControllerStyleAlert];
+      UIAlertController *alert = [UIAlertController
+                                  alertControllerWithTitle:@"No email configured"
+                                  message:[NSString stringWithFormat:@"You don't appear to have any email configured on your device. Please email %@ from another device to.", toAddress]
+                                  preferredStyle:UIAlertControllerStyleAlert];
       [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
       [fromViewController presentViewController:alert animated:YES completion:nil];
     }
