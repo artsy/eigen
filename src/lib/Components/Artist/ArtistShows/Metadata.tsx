@@ -16,10 +16,11 @@ interface Props extends ViewProperties {
 class Metadata extends React.Component<Props> {
   render() {
     const partnerName = this.props.show.partner && this.props.show.partner.name
+    const showType = this.showTypeString()
     return (
       <View style={styles.container}>
         {!!partnerName && <Text style={styles.sansSerifText}>{partnerName.toUpperCase()}</Text>}
-        <Text style={styles.sansSerifText}>{this.showTypeString()}</Text>
+        {!!showType && <Text style={styles.sansSerifText}>{showType}</Text>}
         <SerifText style={styles.serifText}>{this.props.show.name}</SerifText>
         {this.dateAndLocationString()}
         {this.statusText()}
@@ -28,8 +29,11 @@ class Metadata extends React.Component<Props> {
   }
 
   showTypeString() {
-    const message = this.props.show.kind.toUpperCase() + (this.props.show.kind === "fair" ? " BOOTH" : " SHOW")
-    return message
+    if (this.props.show.kind) {
+      const message = this.props.show.kind.toUpperCase() + (this.props.show.kind === "fair" ? " BOOTH" : " SHOW")
+      return message
+    }
+    return null
   }
 
   dateAndLocationString() {
