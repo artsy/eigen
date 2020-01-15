@@ -76,7 +76,7 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(NSString
     } else {
       UIAlertController *alert = [UIAlertController
                                   alertControllerWithTitle:@"No email configured"
-                                  message:[NSString stringWithFormat:@"You don't appear to have any email configured on your device. Please email %@ from another device to.", toAddress]
+                                  message:[NSString stringWithFormat:@"You don't appear to have any email configured on your device. Please email %@ from another device.", toAddress]
                                   preferredStyle:UIAlertControllerStyleAlert];
       [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
       [fromViewController presentViewController:alert animated:YES completion:nil];
