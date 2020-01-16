@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Join, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Join, Sans, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
@@ -26,7 +26,7 @@ export default class MyProfile extends React.Component {
           <View>
             <Box mb={1} mt={2}>
               <Flex alignItems="center">
-                <Serif size="5">Settings</Serif>
+                <Sans size="4">Settings</Sans>
               </Flex>
             </Box>
             <Separator />
