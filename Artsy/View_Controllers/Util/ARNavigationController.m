@@ -401,7 +401,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (UIViewController *)rootViewController;
 {
-    return [self.viewControllers firstObject];
+   return [self.viewControllers firstObject];
 }
 
 - (void)removeViewControllerFromStack:(UIViewController *)viewController;

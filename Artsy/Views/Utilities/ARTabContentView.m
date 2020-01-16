@@ -7,6 +7,8 @@
 #import "AROptions.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARNotificationsManager.h>
 
 static BOOL ARTabViewDirectionLeft = NO;
 static BOOL ARTabViewDirectionRight = YES;
@@ -134,7 +136,16 @@ static BOOL ARTabViewDirectionRight = YES;
 - (void)setCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
 {
     if ([self.delegate respondsToSelector:@selector(tabContentView:shouldChangeToIndex:)]) {
-        if ([self.delegate tabContentView:self shouldChangeToIndex:index] == NO) return;
+      if ([self.delegate tabContentView:self shouldChangeToIndex:index] == NO) {
+        if ([self.dataSource searchButtonAtIndex:index]) {
+          ar_dispatch_main_queue(^{
+            [[[AREmission sharedInstance] notificationsManagerModule] notifySearchButtonTap];
+          });
+          
+        }
+          
+        return;
+      }
     }
 
     [self forceSetCurrentViewIndex:index animated:animated];
@@ -142,7 +153,12 @@ static BOOL ARTabViewDirectionRight = YES;
 
 - (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
 {
-    [self forceSetViewController:[self navigationControllerForIndex:index] atIndex:index animated:animated];
+  UINavigationController *nav = [self navigationControllerForIndex:index];
+  
+    [self forceSetViewController:nav atIndex:index animated:animated];
+  if ([self.dataSource searchButtonAtIndex:index] && nav.viewControllers.count == 1) {
+    [[[AREmission sharedInstance] notificationsManagerModule] notifySearchButtonTap];
+  }
 }
 
 - (void)forceSetViewController:(UINavigationController *)viewController atIndex:(NSInteger)index animated:(BOOL)animated

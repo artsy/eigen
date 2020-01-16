@@ -466,7 +466,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DoubleConversion (from `./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
-  - Emission (= 1.21.6)
+  - Emission (from `../emission`)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -599,7 +599,6 @@ SPEC REPOS:
     - "Artsy+UIFonts"
     - "Artsy+UILabels"
     - Artsy-UIButtons
-    - Emission
     - Extraction
 
 EXTERNAL SOURCES:
@@ -616,6 +615,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   DoubleConversion:
     :podspec: "./rn_pods/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  Emission:
+    :path: "../emission"
   FBLazyVector:
     :path: "./rn_pods/node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -762,7 +763,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 229db3e53b3f70c77486ce7cf99a2ddae0c78c8d
+  Emission: c7a53b37c32a82d07e3951b7ee056b9372736f0f
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -844,6 +845,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 33e9731e602052e2aa70cab7ef1840b9937dcdb5
+PODFILE CHECKSUM: 0e6582cacfb3a059eadf9ae018b29335fb6d4611
 
 COCOAPODS: 1.7.5
