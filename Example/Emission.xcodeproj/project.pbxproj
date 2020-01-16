@@ -36,15 +36,11 @@
 		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
 		60218E2920168D4E00A6C66B /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */; };
 		608A60D61F75614700B6EF83 /* AppSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 608A60D51F75614700B6EF83 /* AppSetup.m */; };
-		608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 608C6DBA1FA263290044E235 /* CommitNetworkModel.m */; };
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
 		60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */; };
 		60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */; };
-		60AE1D801EE7DF9C00FC800A /* PRNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AE1D7F1EE7DF9C00FC800A /* PRNetworkModel.m */; };
 		60AEE7A01ECC6237008058E3 /* NSDateFormatter+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AEE79F1ECC6237008058E3 /* NSDateFormatter+TimeAgo.m */; };
 		60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */; };
-		60DA49A81EE7CF70001FE871 /* ARRootViewController+PRs.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DA49A71EE7CF70001FE871 /* ARRootViewController+PRs.m */; };
-		60DA49AB1EE7D219001FE871 /* EmissionPRChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */; };
 		60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */; };
 		60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EDA5721F4B2944007A6100 /* InternalWebViewController.m */; };
 		60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */; };
@@ -145,10 +141,6 @@
 		60AEE79F1ECC6237008058E3 /* NSDateFormatter+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+TimeAgo.m"; sourceTree = "<group>"; };
 		60B743B51D3EB12600E6B2A3 /* ARStorybookComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStorybookComponentViewController.h; sourceTree = "<group>"; };
 		60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStorybookComponentViewController.m; sourceTree = "<group>"; };
-		60DA49A61EE7CF70001FE871 /* ARRootViewController+PRs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARRootViewController+PRs.h"; sourceTree = "<group>"; };
-		60DA49A71EE7CF70001FE871 /* ARRootViewController+PRs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARRootViewController+PRs.m"; sourceTree = "<group>"; };
-		60DA49A91EE7D219001FE871 /* EmissionPRChooseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmissionPRChooseViewController.h; sourceTree = "<group>"; };
-		60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmissionPRChooseViewController.m; sourceTree = "<group>"; };
 		60E4ABF51EE7D85000E8C3B1 /* LoadingSpinner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingSpinner.h; sourceTree = "<group>"; };
 		60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingSpinner.m; sourceTree = "<group>"; };
 		60EDA5711F4B2944007A6100 /* InternalWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InternalWebViewController.h; sourceTree = "<group>"; };
@@ -378,12 +370,8 @@
 				3ACAE7B722258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m */,
 				6011C2391DAF5DD900CE54E5 /* ARRootViewController.h */,
 				6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */,
-				60DA49A61EE7CF70001FE871 /* ARRootViewController+PRs.h */,
-				60DA49A71EE7CF70001FE871 /* ARRootViewController+PRs.m */,
 				6011C24F1DAF7B6D00CE54E5 /* UnroutedViewController.h */,
 				6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */,
-				60DA49A91EE7D219001FE871 /* EmissionPRChooseViewController.h */,
-				60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */,
 				60EDA5711F4B2944007A6100 /* InternalWebViewController.h */,
 				60EDA5721F4B2944007A6100 /* InternalWebViewController.m */,
 				7F6D717621CAA82D001BC122 /* Placeholder.swift */,
@@ -763,13 +751,10 @@
 				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
 				3ACAE7B922258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m in Sources */,
 				3A7D41FE213F3CAD009618F5 /* ARLabOptions.m in Sources */,
-				608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,
-				60DA49AB1EE7D219001FE871 /* EmissionPRChooseViewController.m in Sources */,
 				515687BE2079A300002F365C /* ARAdminPreloadTableViewCell.m in Sources */,
 				6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */,
-				60AE1D801EE7DF9C00FC800A /* PRNetworkModel.m in Sources */,
 				60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */,
 				60218E2920168D4E00A6C66B /* ARTopMenuViewController.m in Sources */,
 				60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */,
@@ -777,7 +762,6 @@
 				6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */,
 				60AEE7A01ECC6237008058E3 /* NSDateFormatter+TimeAgo.m in Sources */,
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
-				60DA49A81EE7CF70001FE871 /* ARRootViewController+PRs.m in Sources */,
 				6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */,
 				60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,

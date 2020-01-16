@@ -2,8 +2,6 @@
 
 #import "ARDefaults.h"
 #import "AppSetup.h"
-#import "PRNetworkModel.h"
-#import "CommitNetworkModel.h"
 #import <Emission/AREmission.h>
 #import "ARLabOptions.h"
 
@@ -62,26 +60,11 @@
         _jsCodeLocation = [NSURL URLWithString:rnpString];
         _emissionLoadedFromString = [NSString stringWithFormat:@"Using Unit Test RNP from %@", _jsCodeLocation.host];
       }
-    } else {
-      if (usePRBuild) {
-        PRNetworkModel *pr = [PRNetworkModel new];
-        _jsCodeLocation = [pr fileURLForPRJavaScript];
+    } else if (useRNP) {
+      NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
 
-        NSInteger prNumber = [defaults integerForKey:ARPREmissionIDDefault];
-        _emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
-
-      } else if (useRNP) {
-        NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
-
-        _jsCodeLocation = [NSURL URLWithString:rnpString];
-        _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
-
-      } else if (useMaster) {
-        CommitNetworkModel *master = [CommitNetworkModel new];
-        _jsCodeLocation = [master fileURLForLatestCommitJavaScript];
-
-        _emissionLoadedFromString = @"Using latest JS from master";
-      }
+      _jsCodeLocation = [NSURL URLWithString:rnpString];
+      _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
     }
 
     // Fall back to the bundled Emission JS for release

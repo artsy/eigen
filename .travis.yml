@@ -2,22 +2,9 @@ cache: yarn
 language: node_js
 node_js: '12.13.1'
 
-matrix:
-  include:
-    - env: NAME="CI"
-      script:
-        - yarn ci
-        - yarn danger ci --verbose
-
-    # Deployment related tasks
-    - env: NAME="Deployment"
-      script: ""  # NOOP as we don't need to run tests etc
-      after_success: # This can never fail the build
-        - yarn relay
-        # Upload latest PR commit to S3
-        - test ! $TRAVIS_PULL_REQUEST == "false" && scripts/deploy_commit.sh
-        # Upload merges to master to apphub
-        - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then scripts/deploy_master.sh; fi
+script:
+  - yarn ci
+  - yarn danger ci --verbose
 
 cache:
   yarn: true
