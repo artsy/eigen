@@ -132,6 +132,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
               displayLabel
               ... on SearchableItem {
                 displayType
+                slug
               }
             }
           }

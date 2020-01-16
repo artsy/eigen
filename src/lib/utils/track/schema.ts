@@ -302,6 +302,14 @@ export enum ActionNames {
   ContextualArtist = "contextualArtist",
   ArtistName = "artistName",
   ListGallery = "listGallery",
+
+  /**
+   * Search (names preserved from eigen for searchability)
+   */
+  ARAnalyticsSearchCleared = "Cleared input in search screen",
+  // dispatch this on search input focus and again any time they type
+  ARAnalyticsSearchStartedQuery = "Searched",
+  ARAnalyticsSearchItemSelected = "Selected result from search screen",
 }
 
 /**

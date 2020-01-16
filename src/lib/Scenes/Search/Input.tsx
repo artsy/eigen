@@ -14,6 +14,7 @@ export interface InputProps {
   title?: string
   icon?: JSX.Element
   showClearButton?: boolean
+  onClear?(): void
 }
 
 export type Input = TextInput
@@ -67,6 +68,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
                   input.current.clear()
                   setValue("")
                   rest.onChangeText?.("")
+                  rest.onClear?.()
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
               >
