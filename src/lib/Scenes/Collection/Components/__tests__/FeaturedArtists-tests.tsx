@@ -52,6 +52,9 @@ const CollectionFixture: FeaturedArtists_collection = {
     ],
   },
   featuredArtistExclusionIds: [],
+  query: {
+    artistIDs: [],
+  },
   " $refType": null,
 }
 
@@ -105,5 +108,22 @@ describe("FeaturedArtists", () => {
     expect(output).toContain("Joan Miro")
     expect(output).not.toContain("Andy Warhol")
     expect(output).not.toContain("Pablo Picasso")
+  })
+
+  describe("when artist ids are explicitly requested", () => {
+    it("does not render an EntityHeader for any non-requested artists", async () => {
+      const tree = await render({
+        ...CollectionFixture,
+        query: { artistIDs: ["34534-andy-warhols-id"] },
+      })
+
+      const entityHeaders = tree.find("EntityHeader")
+      expect(entityHeaders.length).toEqual(1)
+
+      const output = tree.html()
+      expect(output).toContain("Andy Warhol")
+      expect(output).not.toContain("Joan Miro")
+      expect(output).not.toContain("Pablo Picasso")
+    })
   })
 })

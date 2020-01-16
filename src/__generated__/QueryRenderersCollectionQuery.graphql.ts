@@ -94,6 +94,10 @@ fragment FeaturedArtists_collection_2qE49v on MarketingCollection {
     }
     id
   }
+  query {
+    artistIDs
+    id
+  }
   featuredArtistExclusionIds
 }
 
@@ -726,6 +730,25 @@ return {
             ]
           },
           {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "query",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "MarketingCollectionQuery",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artistIDs",
+                "args": null,
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ]
+          },
+          {
             "kind": "ScalarField",
             "alias": null,
             "name": "featuredArtistExclusionIds",
@@ -739,7 +762,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "982af5da1ecac497c553ffb0d1db67e1",
+    "id": "62a88c67cb57f9c622a2582cd3f2e16b",
     "text": null,
     "metadata": {}
   }
