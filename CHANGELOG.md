@@ -1,3 +1,23 @@
+# v1.21.8 (Thu Jan 16 2020)
+
+#### 🐛  Bug Fix
+
+- Collections metadata [#2035](https://github.com/artsy/emission/pull/2035) ([@ashleyjelks](https://github.com/ashleyjelks))
+- [MX-141] [MX-144] Adds feedback/privacy request user interface [#2038](https://github.com/artsy/emission/pull/2038) ([@ashfurrow](https://github.com/ashfurrow))
+- Exclude specified artists from featured artist list [FX-1717] [#2037](https://github.com/artsy/emission/pull/2037) ([@pepopowitz](https://github.com/pepopowitz))
+- Update dep @artsy/palette from 5.1.13 to v5.1.14 [#2036](https://github.com/artsy/emission/pull/2036) ([@renovate-bot](https://github.com/renovate-bot))
+- [MX-135] - Null checks for optional show.kind metadata [#2031](https://github.com/artsy/emission/pull/2031) ([@pepopowitz](https://github.com/pepopowitz))
+- Installs Node 12 on deploy build #trivial [#2034](https://github.com/artsy/emission/pull/2034) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 4
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+- Steven Hicks ([@pepopowitz](https://github.com/pepopowitz))
+- Renovate Bot ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.21.7 (Tue Jan 14 2020)
 
 #### 🐛 Bug Fix
