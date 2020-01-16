@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Join, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Join, Sans, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -11,7 +11,7 @@ export class PrivacyRequest extends React.Component {
         <View>
           <Box mb={1} mt={2}>
             <Flex alignItems="center">
-              <Serif size="5">Personal data request</Serif>
+              <Sans size="4">Personal data request</Sans>
             </Flex>
           </Box>
           <Separator />

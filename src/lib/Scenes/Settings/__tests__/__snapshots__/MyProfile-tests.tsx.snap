@@ -41,15 +41,15 @@ exports[`looks like expected 1`] = `
         }
       >
         <Text
-          fontFamily="ReactNativeAGaramondPro-Regular"
-          fontSize="22px"
-          lineHeight="32px"
+          fontFamily="Unica77LL-Regular"
+          fontSize="16px"
+          lineHeight="26px"
           style={
             Array [
               Object {
-                "fontFamily": "ReactNativeAGaramondPro-Regular",
-                "fontSize": 22,
-                "lineHeight": 32,
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 16,
+                "lineHeight": 26,
               },
               Object {},
             ]
