@@ -149,7 +149,7 @@
             }
 
         case ARTopTabControllerIndexSearch:
-            if ([AROptions boolForOption:AROptionsNewSearch]) {
+            if ([AROptions boolForOption:AROptionsNewSearch] || self.echo.features[@"AREnableNewSearch"].state) {
                 return self.searchNavigationController;
             }
 
