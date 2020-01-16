@@ -51,8 +51,6 @@
 #import <TargetConditionals.h>
 #import "AuthenticationManager.h"
 #import "LoadingSpinner.h"
-#import "PRNetworkModel.h"
-#import "CommitNetworkModel.h"
 
 #import <Sentry/Sentry.h>
 
@@ -102,13 +100,7 @@ randomBOOL(void)
   NSString *accessToken = isImpersonating ? UserAccessToken : auth.token;
 
   if (isAuthenticated) {
-    if (setup.usingPRBuild) {
-      [self downloadPRBuildAndLoginWithUserID:userID accessToken:accessToken keychainService:service];
-    } else if(!setup.usingRNP && setup.usingMaster) {
-      [self downloadMasterAndLoginWithUserID:userID accessToken:accessToken keychainService:service];
-    } else {
-      [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
-    }
+    [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
   } else {
     [self.spinner presentSpinnerOnViewController:rootVC title:@"Logging in" subtitle:nil completion:^{
       [auth presentAuthenticationPromptOnViewController:rootVC.presentedViewController completion:^{
@@ -424,42 +416,6 @@ randomBOOL(void)
 {
   UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
   [navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)downloadPRBuildAndLoginWithUserID:(NSString *)userID
-                              accessToken:(NSString *)accessToken
-                          keychainService:(NSString *)service
-{
-  PRNetworkModel *network = [PRNetworkModel new];
-  NSUInteger prNumber = [[NSUserDefaults standardUserDefaults] integerForKey:ARPREmissionIDDefault];
-
-  NSString *subtitle = [NSString stringWithFormat:@"PR: %@", @(prNumber)];
-  [self.spinner presentSpinnerOnViewController:self.navigationController title:@"Downloading PR JS" subtitle:subtitle completion:^{
-    [network downloadJavaScriptForPRNumber:prNumber completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
-      [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
-      }];
-    }];
-  }];
-}
-
-- (void)downloadMasterAndLoginWithUserID:(NSString *)userID
-                             accessToken:(NSString *)accessToken
-                         keychainService:(NSString *)service
-{
-  CommitNetworkModel *network = [CommitNetworkModel new];
-  [network downloadJavaScriptForMasterCommit:^(NSString * _Nullable title, NSString * _Nullable subtitle) {
-    // We got metadata, show the spinner
-    [self.spinner presentSpinnerOnViewController:self.navigationController title:title subtitle:subtitle completion:NULL];
-  } completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
-    // We got the JS
-    if (downloadedFileURL) {
-      [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
-      }];
-    }
-    NSLog(@"Error: %@", error);
-  }];
 }
 
 - (void)setupSentry:(NSString *)sentryDSN userID:(NSString *)userID

@@ -16,7 +16,6 @@ const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 
 // Custom modifiers for people submitting PRs to be able to say "skip this"
 const acceptedNoTests = bodyAndTitle.includes("#skip_new_tests")
-const acceptedNoNativeChanges = bodyAndTitle.includes("#native_no_changes")
 
 const typescriptOnly = (file: string) => includes(file, ".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
@@ -184,18 +183,6 @@ if (fs.existsSync("tslint-errors.json")) {
 import jest from "danger-plugin-jest"
 if (fs.existsSync("test-results.json")) {
   jest({ testResultsJsonPath: "test-results.json" })
-}
-
-// Raise when native code changes are made, but the package.json does not
-// have a bump for the native code version
-//
-const hasNativeCodeChanges = modified.find(p => p.includes("Pod/Classes") && p.includes(".h"))
-const hasPackageJSONChanges = modified.find(p => p === "package.json")
-if (hasNativeCodeChanges && !hasPackageJSONChanges && !acceptedNoNativeChanges) {
-  fail(
-    `This PR includes changes to the Emission Pod's native code but does not have a \`package.json\`
-     change for the update to the \`"native-code-version"\`. If this is fine, add #native_no_changes to your PR message.`
-  )
 }
 
 const AppDelegate = fs.readFileSync("Example/Emission/AppDelegate.m", "utf8")

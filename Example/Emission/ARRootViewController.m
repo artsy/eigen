@@ -9,10 +9,7 @@
 #import "AppDelegate.h"
 #import "ARDefaults.h"
 #import "AppSetup.h"
-#import "CommitNetworkModel.h"
 #import "ARLabOptions.h"
-
-#import "ARRootViewController+PRs.h"
 
 #import <Emission/AREmission.h>
 #import <Emission/ARGraphQLQueryCache.h>
@@ -64,9 +61,6 @@
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
   [appData addCellData:[self emissionJSLocationDescription:setup.emissionLoadedFromString]];
-  if (setup.usingMaster && !setup.usingRNP) {
-    [appData addCellDataFromArray:[self cellsForMasterInformation]];
-  }
   [tableViewData addSectionData:appData];
 
   // This isn't of any use unless you're developing
@@ -74,9 +68,6 @@
     ARSectionData *developerSection = [self developersSection];
     [tableViewData addSectionData:developerSection];
   }
-
-  ARSectionData *reviewSection = [self prSectionData];
-  [tableViewData addSectionData:reviewSection];
 
   ARSectionData *userSection = [self userSection];
   [tableViewData addSectionData:userSection];
@@ -496,42 +487,6 @@
 {
   return [self informationCellDataWithTitle:loadedFromString];
 }
-
-
-- (NSArray<ARCellData *> *)cellsForMasterInformation
-{
-  NSError *jsonError = nil;
-  NSURL *metadataURL = [[CommitNetworkModel new] fileURLForLatestCommitMetadata];
-
-  NSData *data = [NSData dataWithContentsOfURL:metadataURL];
-  if(!data) { return @[]; }
-
-  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
-  Metadata *metadata = [[Metadata alloc] initFromJSONDict:json];
-
-  if (jsonError) { return @[]; }
-
-  ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-  NSDate *lastUpdate = [dateFormatter dateFromString:[metadata date]];
-
-  NSUInteger unitFlags = NSCalendarUnitDay;
-  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
-  NSDateComponents *components = [calendar components:unitFlags fromDate:lastUpdate toDate:[NSDate dateWithTimeIntervalSinceNow:0] options:0];
-
-  NSString *pr = [NSString stringWithFormat:@"PR #%@ - %@", [metadata number], [metadata title]];
-
-  return @[
-     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Last Updated: %@ days ago", @([components day])]],
-
-     [self tappableCellDataWithTitle:pr selection:^{
-       NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pull/%@", metadata.number];
-       NSURL *url = [NSURL URLWithString:addr];
-       id viewController = [[InternalWebViewController alloc] initWithURL:url];
-       [self.navigationController pushViewController:viewController animated:YES];
-     }]
-  ];
-}
-
 
 - (ARSectionData *)userSection
 {
