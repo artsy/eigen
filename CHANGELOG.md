@@ -1,3 +1,17 @@
+# v1.21.9 (Thu Jan 16 2020)
+
+#### 🐛  Bug Fix
+
+- Changes header to Sans font #trivial [#2041](https://github.com/artsy/emission/pull/2041) ([@ashfurrow](https://github.com/ashfurrow))
+- [FX-1716] Constrain collection's featured artists [#2039](https://github.com/artsy/emission/pull/2039) ([@anandaroop](https://github.com/anandaroop))
+
+#### Authors: 2
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+- Anandaroop Roy ([@anandaroop](https://github.com/anandaroop))
+
+---
+
 # v1.21.8 (Thu Jan 16 2020)
 
 #### 🐛  Bug Fix
