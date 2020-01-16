@@ -57,6 +57,11 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
   getFeaturedArtists = () => {
     const allArtists = this.props.collection?.artworksConnection?.merchandisableArtists || []
     const featuredArtistExclusionIds = this.props.collection?.featuredArtistExclusionIds || []
+    const artistIDs = this.props.collection?.query?.artistIDs || []
+
+    if (artistIDs.length > 0) {
+      return allArtists.filter(artist => artistIDs.includes(artist.internalID))
+    }
 
     if (featuredArtistExclusionIds.length > 0) {
       return allArtists.filter(artist => !featuredArtistExclusionIds.includes(artist.internalID))
@@ -123,6 +128,9 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
           nationality
           isFollowed
         }
+      }
+      query {
+        artistIDs
       }
       featuredArtistExclusionIds
     }

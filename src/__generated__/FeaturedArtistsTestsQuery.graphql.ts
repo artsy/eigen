@@ -27,6 +27,10 @@ export type FeaturedArtistsTestsQueryRawResponse = {
             }) | null> | null;
             readonly id: string | null;
         }) | null;
+        readonly query: {
+            readonly artistIDs: ReadonlyArray<string> | null;
+            readonly id: string | null;
+        };
         readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
         readonly id: string | null;
     }) | null;
@@ -63,6 +67,10 @@ fragment FeaturedArtists_collection on MarketingCollection {
       isFollowed
       id
     }
+    id
+  }
+  query {
+    artistIDs
     id
   }
   featuredArtistExclusionIds
@@ -245,6 +253,25 @@ return {
             ]
           },
           {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "query",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "MarketingCollectionQuery",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artistIDs",
+                "args": null,
+                "storageKey": null
+              },
+              (v1/*: any*/)
+            ]
+          },
+          {
             "kind": "ScalarField",
             "alias": null,
             "name": "featuredArtistExclusionIds",
@@ -259,7 +286,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FeaturedArtistsTestsQuery",
-    "id": "d8c45150bdbb69d63447e3fd3dd10fba",
+    "id": "3016be253f8faa7f4a0720968b41dd13",
     "text": null,
     "metadata": {}
   }

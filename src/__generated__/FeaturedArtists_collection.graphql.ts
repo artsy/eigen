@@ -17,6 +17,9 @@ export type FeaturedArtists_collection = {
             readonly isFollowed: boolean | null;
         } | null> | null;
     } | null;
+    readonly query: {
+        readonly artistIDs: ReadonlyArray<string> | null;
+    };
     readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
     readonly " $refType": "FeaturedArtists_collection";
 };
@@ -155,6 +158,24 @@ const node: ReaderFragment = {
       ]
     },
     {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "query",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "MarketingCollectionQuery",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artistIDs",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
       "kind": "ScalarField",
       "alias": null,
       "name": "featuredArtistExclusionIds",
@@ -163,5 +184,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c50dfb6ed7971e198074bfafeb81a48f';
+(node as any).hash = '38648f0d965f8caa18a38d54b5ccbe5e';
 export default node;
