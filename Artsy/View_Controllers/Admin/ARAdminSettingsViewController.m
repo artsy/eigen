@@ -122,7 +122,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)generateCollections
 {
     return [self tappableCellDataWithTitle:@"Show Collection" selection:^{
-        AREigenCollectionComponentViewController *viewController = [[AREigenCollectionComponentViewController alloc] initWithCollectionID:@"street-art-now"];
+        AREigenCollectionComponentViewController *viewController = [[AREigenCollectionComponentViewController alloc] initWithCollectionID:@"art-gifts1-under-500"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
