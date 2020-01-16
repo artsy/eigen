@@ -91,7 +91,7 @@ const FixtureEmpty: AutosuggestResultsQueryRawResponse = {
 const inputBlurMock = jest.fn()
 
 const TestWrapper: typeof AutosuggestResults = props => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any } }}>
+  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, query: { current: "" } }}>
     <Theme>
       <CatchErrors>
         <AutosuggestResults {...props} />
