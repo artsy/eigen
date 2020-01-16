@@ -21,9 +21,14 @@ import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
 jest.mock("react-tracking")
-import _track from "react-tracking"
-const track = _track as jest.Mock<typeof _track>
-track.mockImplementation((_ => x => x) as any)
+import track, { useTracking } from "react-tracking"
+const trackEvent = jest.fn()
+;(track as jest.Mock).mockImplementation((_ => x => x) as any)
+;(useTracking as jest.Mock).mockImplementation(() => {
+  return {
+    trackEvent,
+  }
+})
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
@@ -152,6 +157,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   }
 
   beforeEach(done => {
+    trackEvent.mockClear()
     const types: Array<"error" | "warn"> = ["error", "warn"]
     types.forEach(type => {
       // Don't spy on loggers that have been modified by the current test.

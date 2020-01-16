@@ -1,8 +1,10 @@
 import { CloseIcon, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
 import React, { useContext, useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
+import { useTracking } from "react-tracking"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { useRecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
@@ -15,7 +17,8 @@ export const SearchResult: React.FC<{
 }> = ({ result, highlight, onDelete, updateRecentSearchesOnTap = true }) => {
   const navRef = useRef<any>()
   const { notifyRecentSearch } = useRecentSearches()
-  const { inputRef } = useContext(SearchContext)
+  const { inputRef, query } = useContext(SearchContext)
+  const { trackEvent } = useTracking()
   return (
     <TouchableOpacity
       ref={navRef}
@@ -28,6 +31,12 @@ export const SearchResult: React.FC<{
             notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
           }
         }, 20)
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchItemSelected,
+          query: query.current,
+          selected_object_type: result.displayType,
+          selected_object_slug: result.slug,
+        })
       }}
     >
       <Flex flexDirection="row" alignItems="center">
