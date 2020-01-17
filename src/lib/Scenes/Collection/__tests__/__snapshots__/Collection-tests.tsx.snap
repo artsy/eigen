@@ -1232,6 +1232,7 @@ exports[`Collection renders a snapshot 1`] = `
           <AROpaqueImageView
             height={204}
             imageURL="<mock-value-for-field-\\"headerImage\\">"
+            useRawURL={true}
             width={750}
           />
         </View>

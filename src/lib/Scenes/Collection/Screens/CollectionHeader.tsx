@@ -24,7 +24,7 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
   return (
     <>
       <Box mb={2}>
-        <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
+        <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} useRawURL />
       </Box>
       <Box mb={collectionDescription ? 0 : 2}>
         <Serif size="8" color={color("black100")} ml={2}>
