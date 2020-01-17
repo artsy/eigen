@@ -1,7 +1,7 @@
-We've updated the app with a new partner page, making it easier than ever to look at a gallery's artworks, artists, and locations.
+We've updated the app with a whole new search experience to help users find the artworks and artists they love, faster than ever. The app remembers your recent search results for easy access.
 
-The bidding interface for auctions also has a new Buyer's Premium Calculator, giving users more transparency around pricing.
+We have also added a settings screen that shows users who they are logged in as, with a new ability for users to log out of the app.
 
-Finally, we've made some performance improvements and fixed various minor bugs in the user interface.
+Finally, we've made some small bug fixes throughout the app.
 
 Have feedback? Email us at support@artsy.net
