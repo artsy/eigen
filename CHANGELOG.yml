@@ -8,7 +8,8 @@ upcoming:
     - Upgrates to Xcode 11 - ash
     - Removes references to legacy artwork view - kieran
   user_facing:
-    - Adds log out button to app - brian & ash 
+    - Adds log out button to app - brian & ash
+    - Enables new search for all users - ash
 
 releases:
   - version: 6.1.0

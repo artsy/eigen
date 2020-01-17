@@ -5,6 +5,8 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARMenuAwareViewController.h"
 #import "AROptions.h"
+#import "ARSwitchBoard.h"
+#import "ArtsyEcho.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -150,7 +152,7 @@ static BOOL ARTabViewDirectionRight = YES;
     BOOL isARNavigationController = [self.currentNavigationController isKindOfClass:ARNavigationController.class];
 
     // If selecting search button, toggle search VC
-    if (![AROptions boolForOption:AROptionsNewSearch]) {
+    if (!([AROptions boolForOption:AROptionsNewSearch] || ARSwitchBoard.sharedInstance.echo.features[@"AREnableNewSearch"].state)) {
         if (isARNavigationController && [self.dataSource searchButtonAtIndex:index]) {
             [(ARNavigationController *)self.currentNavigationController toggleSearch];
             return;
