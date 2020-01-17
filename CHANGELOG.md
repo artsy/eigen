@@ -1,3 +1,15 @@
+# v1.21.11 (Fri Jan 17 2020)
+
+#### 🐛  Bug Fix
+
+- Fixes bug causing image to fail to render in collection header [#2045](https://github.com/artsy/emission/pull/2045) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.10 (Fri Jan 17 2020)
 
 #### 🐛  Bug Fix
