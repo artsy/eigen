@@ -75,7 +75,7 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "dependencies": {
-    "@artsy/palette": "5.1.14",
+    "@artsy/palette": "5.1.15",
     "@mapbox/react-native-mapbox-gl": "6.1.3",
     "@react-native-community/async-storage": "1.6.3",
     "@react-native-community/cameraroll": "1.3.0",
