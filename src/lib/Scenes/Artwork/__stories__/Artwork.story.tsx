@@ -28,7 +28,7 @@ storiesOf("Artwork/Screens")
     return (
       <ArtworkRenderer
         isVisible
-        artworkID="pablo-picasso-buste-de-femme-assise-dans-un-fauteuil"
+        artworkID="john-baldessari-throwing-three-balls-in-the-air-to-get-a-straight-line-best-of-thirty-six-attempts-19"
         safeAreaInsets={safeAreaInsets}
       />
     )

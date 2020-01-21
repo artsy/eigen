@@ -125,6 +125,7 @@ export enum PageNames {
   ShowAllArtists = "ShowAllArtists",
   ShowAllArtworks = "ShowAllArtworks",
   PartnerPage = "PartnerPage",
+  RequestConditionReportPage = "RequestConditionReportPage",
 }
 
 export enum OwnerEntityTypes {
@@ -189,6 +190,8 @@ export enum ActionNames {
   IncreaseMaxBid = "increaseMaxBid",
   ReadMore = "readMore",
   RegisterToBid = "registerToBid",
+  RequestConditionReportFailed = "Request condition report failed",
+  RequestConditionReportSubmitted = "Request condition report submitted",
   Share = "share",
   ShowMoreArtworksDetails = "showMoreArtworksDetails",
   ViewAll = "viewAll",
@@ -322,6 +325,7 @@ export enum ContextModules {
   ExhibitionHistory = "ExhibitionHistory",
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
+  RequestConditionReport = "Request condition report",
 }
 
 export enum Flow {
