@@ -130,7 +130,3 @@ oss:
   cd Example && bundle exec pod keys set StripePublishableKey "-"
   # ...And so on
 ```
-
-#### 6. Add to Emission-Nebula
-
-[Emission-Nebula](https://github.com/artsy/emission-nebula) is responsible for deploying the Emission test app and it will need a real copy of the key for staging use. You can see an example of this for the Stripe key above in [this commit](https://github.com/artsy/emission-nebula/commit/1cdbec7d0ec3861bdc76cb574ae535f00116de23), which is added in an encrypted form using [these instructions from Travis](https://docs.travis-ci.com/user/encryption-keys/). Don't worry about putting it in a PR, just push the Emission-Nebula change to master (any push to any branch of that repo triggers a build and deploy of the Emission test app).
