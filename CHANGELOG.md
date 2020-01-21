@@ -1,3 +1,15 @@
+# v1.21.13 (Tue Jan 21 2020)
+
+#### 🐛  Bug Fix
+
+- Removes CocoaPods Specs repo setup [#2046](https://github.com/artsy/emission/pull/2046) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.12 (Mon Jan 20 2020)
 
 
