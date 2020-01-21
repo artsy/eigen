@@ -95,10 +95,6 @@ We vendor some data from other repositories that you will sometimes need to upda
 
 Deploys are automated on CI after each PR merge, based on the patch/minor/major label added to the PR (patch is default).
 
-### Automated Emission App Deploys
-
-The Emission app (in `Example/`) is deployed automatically to TestFlight once a week through [emission-nebula](https://github.com/artsy/emission-nebula). See that repo for more details.
-
 ### Resources
 
 - React Native:
