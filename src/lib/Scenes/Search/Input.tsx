@@ -1,4 +1,4 @@
-import { CloseIcon, color, Color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
+import { color, Color, Flex, Sans, Serif, space, Spacer, XCircleIcon } from "@artsy/palette"
 import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
@@ -72,7 +72,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
               >
-                <CloseIcon fill="black60" />
+                <XCircleIcon fill="black30" />
               </TouchableOpacity>
             )}
           </InputWrapper>
