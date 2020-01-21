@@ -1,3 +1,15 @@
+# v1.21.14 (Tue Jan 21 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-137] Use XCirlceIcon [#2040](https://github.com/artsy/emission/pull/2040) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.13 (Tue Jan 21 2020)
 
 #### 🐛  Bug Fix
