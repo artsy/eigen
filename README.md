@@ -11,7 +11,7 @@ Inside Emission you will find:
 ### Meta
 
 - **State:** production
-- **Point People:** [@ashfurrow](https://github.com/ashfurrow), [@ds300](https://github.com/ds300), [@kierangillen](https://github.com/kierangillen)
+- **Point People:** [@ashfurrow](https://github.com/ashfurrow), [@ds300](https://github.com/ds300)
 - **CI:**
   - React Native components: [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
   - Native unit tests: [![CircleCI](https://circleci.com/gh/artsy/emission.svg?style=svg)](https://circleci.com/gh/artsy/emission)
