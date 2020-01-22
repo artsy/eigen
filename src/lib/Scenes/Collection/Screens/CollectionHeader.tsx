@@ -34,8 +34,8 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
           <ReadMore
             content={collectionDescription}
             maxChars={screenWidth > 700 ? 300 : 250} // truncate at 300 characters on iPads and 250 on all other devices
-            contextModule={Schema.ContextModules.Collection}
-            trackingFlow={Schema.OwnerEntityTypes.Collection}
+            contextModule={Schema.ContextModules.CollectionDescription}
+            trackingFlow={Schema.Flow.AboutTheCollection}
           />
         </Box>
       )}

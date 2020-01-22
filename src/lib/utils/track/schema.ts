@@ -333,10 +333,12 @@ export enum ContextModules {
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
   Collection = "Collection",
+  CollectionDescription = "CollectionDescription",
 }
 
 export enum Flow {
   AboutTheArtist = "AboutTheArtist",
+  AboutTheCollection = "AboutTheCollection",
   AboutTheWork = "AboutTheWork",
   ArtworkDetails = "ArtworkDetails",
   RecommendedArtworks = "RecommendedArtworks",
