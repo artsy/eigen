@@ -1,17 +1,25 @@
 upcoming:
-  version: 6.2.0
+  version: 6.2.1
   date: TBD
-  emission_version: 1.19.11
+  emission_version: 1.21.11
   dev:
-    - Delete ARFairSearchViewController - brian
-    - Adds basic UI infrastructure for CCPA UI - ash
-    - Upgrates to Xcode 11 - ash
-    - Removes references to legacy artwork view - kieran
+    - 
   user_facing:
-    - Adds log out button to app - brian & ash
-    - Enables new search for all users - ash
+    - 
 
 releases:
+  - version: 6.2.0
+    date: Jan 22, 2020
+    emission_version: 1.21.11
+    dev:
+      - Delete ARFairSearchViewController - brian
+      - Adds basic UI infrastructure for CCPA UI - ash
+      - Upgrates to Xcode 11 - ash
+      - Removes references to legacy artwork view - kieran
+    user_facing:
+      - Adds log out button to app - brian & ash
+      - Enables new search for all users - ash
+
   - version: 6.1.0
     date: Dec 11, 2019
     emission_version: 1.19.11
