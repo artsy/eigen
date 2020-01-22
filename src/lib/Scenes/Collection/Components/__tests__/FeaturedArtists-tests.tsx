@@ -49,6 +49,32 @@ const CollectionFixture: FeaturedArtists_collection = {
         nationality: "Spanish",
         isFollowed: true,
       },
+      {
+        slug: "jean-michel-basquiat",
+        internalID: "9807",
+        name: "Jean-Michel Basquiat",
+        image: {
+          resized: {
+            url: "/some/resized/basquiat/image/url",
+          },
+        },
+        birthday: "1960",
+        nationality: "American",
+        isFollowed: false,
+      },
+      {
+        slug: "kenny-scharf",
+        internalID: "0120",
+        name: "Kenny Scharf",
+        image: {
+          resized: {
+            url: "/some/resized/scharf/image/url",
+          },
+        },
+        birthday: "1958",
+        nationality: "American",
+        isFollowed: false,
+      },
     ],
   },
   featuredArtistExclusionIds: [],
@@ -87,12 +113,14 @@ describe("FeaturedArtists", () => {
     const tree = await render(CollectionFixture)
 
     const entityHeaders = tree.find("EntityHeader")
-    expect(entityHeaders.length).toEqual(3)
+    // 4 entityHeaders, because the 'View more' option is also one.
+    expect(entityHeaders.length).toEqual(4)
 
     const output = tree.html()
     expect(output).toContain("Pablo Picasso")
     expect(output).toContain("Andy Warhol")
     expect(output).toContain("Joan Miro")
+    expect(output).toContain("View more")
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
@@ -102,12 +130,14 @@ describe("FeaturedArtists", () => {
     })
 
     const entityHeaders = tree.find("EntityHeader")
-    expect(entityHeaders.length).toEqual(1)
+    expect(entityHeaders.length).toEqual(3)
 
     const output = tree.html()
     expect(output).toContain("Joan Miro")
     expect(output).not.toContain("Andy Warhol")
     expect(output).not.toContain("Pablo Picasso")
+    expect(output).toContain("Jean-Michel Basquiat")
+    expect(output).toContain("Kenny Scharf")
   })
 
   describe("when artist ids are explicitly requested", () => {
@@ -125,5 +155,25 @@ describe("FeaturedArtists", () => {
       expect(output).not.toContain("Joan Miro")
       expect(output).not.toContain("Pablo Picasso")
     })
+  })
+
+  describe("View more", () => {
+    it("shows more artists when 'View more' is tapped", async () => {
+      const tree = await render(CollectionFixture)
+      let output = tree.html()
+      expect(output).toContain("View more")
+      expect(output).not.toContain("Jean-Michel Basquiat")
+      expect(output).not.toContain("Kenny Scharf")
+
+      const viewMore = tree.find("EntityHeader").filterWhere(x => x.text().includes("View more"))
+      viewMore.simulate("click")
+
+      output = tree.html()
+      expect(output).not.toContain("View more")
+      expect(output).toContain("Jean-Michel Basquiat")
+      expect(output).toContain("Kenny Scharf")
+    })
+
+    // it("tracks an event when 'View more' is tapped", () => {})
   })
 })

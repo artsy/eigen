@@ -96,6 +96,11 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
               <TouchableHighlight
                 onPress={() => {
                   this.setState({ showMore: true })
+                  // track an event here
+                  // action_name: viewMore
+                  // context_screen: Collection
+                  // context_module: FeaturedArtists
+                  // flow: FeaturedArtists
                 }}
               >
                 <EntityHeader initials={`+ ${remainingCount}`} name="View more" />
