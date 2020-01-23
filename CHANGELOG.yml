@@ -3,9 +3,9 @@ upcoming:
   date: TBD
   emission_version: 1.21.11
   dev:
-    - 
+    - Clear AsyncStorage on logout - david
   user_facing:
-    - 
+    -
 
 releases:
   - version: 6.2.0
