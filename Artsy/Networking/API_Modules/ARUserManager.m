@@ -28,6 +28,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARGraphQLQueryCache.h>
 
+#import "RNCAsyncStorage.h"
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
@@ -472,8 +473,13 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [manager deleteHTTPCookies];
     [ARRouter setAuthToken:nil];
     manager.currentUser = nil;
-    
+
     [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+
+    RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];
+    if (asyncStorage) {
+        [asyncStorage clearAllData];
+    }
 
     if (useStaging != nil) {
         [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
