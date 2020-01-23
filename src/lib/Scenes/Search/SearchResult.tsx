@@ -3,7 +3,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useRef } from "react"
-import { TouchableOpacity, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { useRecentSearches } from "./RecentSearches"
@@ -43,7 +43,9 @@ export const SearchResult: React.FC<{
         <OpaqueImageView imageURL={result.imageUrl} style={{ width: 36, height: 36 }} />
         <Spacer ml={1} />
         <View style={{ flex: 1 }}>
-          {applyHighlight(result.displayLabel, highlight)}
+          <Text ellipsizeMode="tail" numberOfLines={1}>
+            {applyHighlight(result.displayLabel, highlight)}
+          </Text>
           {result.displayType && (
             <Sans size="2" color="black60">
               {result.displayType}
