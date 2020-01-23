@@ -477,9 +477,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
 
     RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];
-    if (asyncStorage) {
-        [asyncStorage clearAllData];
-    }
+    [asyncStorage clearAllData];
 
     if (useStaging != nil) {
         [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
