@@ -1,3 +1,15 @@
+# v1.21.18 (Thu Jan 23 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-153] Truncate search result titles at one line [#2053](https://github.com/artsy/emission/pull/2053) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.17 (Tue Jan 21 2020)
 
 
