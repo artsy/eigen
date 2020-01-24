@@ -1,3 +1,15 @@
+# v1.21.23 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- Fixes issue with Artist tracking components #trivial [#2062](https://github.com/artsy/emission/pull/2062) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.22 (Fri Jan 24 2020)
 
 #### 🐛  Bug Fix
