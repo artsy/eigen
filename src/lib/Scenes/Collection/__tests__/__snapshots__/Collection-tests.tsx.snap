@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "099f421ba1e361949422be8ea8c47037{}",
+              "identifier": "77ed5f4c58b413dfbd5c1bfc30f81755{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -572,7 +572,7 @@ exports[`Collection renders a snapshot 1`] = `
                             Object {
                               "kind": "Literal",
                               "name": "size",
-                              "value": 9,
+                              "value": 0,
                             },
                             Object {
                               "kind": "Literal",
@@ -587,7 +587,13 @@ exports[`Collection renders a snapshot 1`] = `
                           "selections": Array [
                             Object {
                               "alias": null,
-                              "args": null,
+                              "args": Array [
+                                Object {
+                                  "kind": "Literal",
+                                  "name": "size",
+                                  "value": 9,
+                                },
+                              ],
                               "concreteType": "Artist",
                               "kind": "LinkedField",
                               "name": "merchandisableArtists",
@@ -678,7 +684,7 @@ exports[`Collection renders a snapshot 1`] = `
                                   "storageKey": null,
                                 },
                               ],
-                              "storageKey": null,
+                              "storageKey": "merchandisableArtists(size:9)",
                             },
                             Object {
                               "alias": null,
@@ -688,7 +694,7 @@ exports[`Collection renders a snapshot 1`] = `
                               "storageKey": null,
                             },
                           ],
-                          "storageKey": "artworksConnection(aggregations:[\\"MERCHANDISABLE_ARTISTS\\"],size:9,sort:\\"-decayed_merch\\")",
+                          "storageKey": "artworksConnection(aggregations:[\\"MERCHANDISABLE_ARTISTS\\"],size:0,sort:\\"-decayed_merch\\")",
                         },
                         Object {
                           "alias": null,
@@ -728,7 +734,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "099f421ba1e361949422be8ea8c47037",
+                  "id": "77ed5f4c58b413dfbd5c1bfc30f81755",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
