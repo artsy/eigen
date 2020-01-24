@@ -28,9 +28,9 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
   getFeaturedArtistEntityCollection = (
     artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
   ) => {
-    return artists.map((artist, index) => {
+    return artists.map(artist => {
       return (
-        <Box width="100%" key={index} pb={20}>
+        <Box width="100%" key={artist.internalID} pb={20}>
           <ArtistListItem artist={artist} contextModule={ContextModules.Collection} />
         </Box>
       )
