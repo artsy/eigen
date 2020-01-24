@@ -1,11 +1,14 @@
 import { Theme } from "@artsy/palette"
 import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
+import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "../FeaturedArtists"
-
 jest.unmock("react-relay")
+jest.unmock("react-tracking")
+jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+import Events from "lib/NativeModules/Events"
 
 const CollectionFixture: FeaturedArtists_collection = {
   artworksConnection: {
@@ -87,11 +90,11 @@ const CollectionFixture: FeaturedArtists_collection = {
 describe("FeaturedArtists", () => {
   const render = (collection: FeaturedArtists_collection) =>
     renderRelayTree({
-      Component: ({ marketingCollection }) => (
+      Component: mockTracking(({ marketingCollection }) => (
         <Theme>
           <FeaturedArtists collection={marketingCollection} />
         </Theme>
-      ),
+      )),
       query: graphql`
         query FeaturedArtistsTestsQuery @raw_response_type {
           marketingCollection(slug: "emerging-photographers") {
@@ -174,6 +177,18 @@ describe("FeaturedArtists", () => {
       expect(output).toContain("Kenny Scharf")
     })
 
-    // it("tracks an event when 'View more' is tapped", () => {})
+    it("tracks an event when 'View more' is tapped", async () => {
+      const tree = await render(CollectionFixture)
+      const viewMore = tree.find("EntityHeader").filterWhere(x => x.text().includes("View more"))
+
+      viewMore.simulate("click")
+
+      expect(Events.postEvent).toHaveBeenCalledWith({
+        action_name: "viewMore",
+        context_module: "FeaturedArtists",
+        context_screen: "Collection",
+        flow: "FeaturedArtists",
+      })
+    })
   })
 })

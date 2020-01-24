@@ -2,18 +2,24 @@ import { Box, Button, EntityHeader, Flex, Sans } from "@artsy/palette"
 import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableHighlight, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { TrackingProp } from "react-tracking"
 
 interface FeaturedArtistsProps {
   collection: FeaturedArtists_collection
+  tracking?: TrackingProp
 }
 
 interface FeaturedArtistsState {
   showMore: boolean
 }
 
+const track: Track<FeaturedArtistsProps, FeaturedArtistsState> = _track
+
+@track()
 export class FeaturedArtists extends React.Component<FeaturedArtistsProps, FeaturedArtistsState> {
   state = {
     showMore: false,
@@ -81,6 +87,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
     const remainingCount = artists.length - artistCount
     const truncatedArtists = this.getFeaturedArtistEntityCollection(artists).slice(0, artistCount)
     const headlineLabel = "Featured Artist" + (hasMultipleArtists ? "s" : "")
+    const { tracking } = this.props
 
     return (
       <Box pb={1}>
@@ -96,11 +103,12 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
               <TouchableHighlight
                 onPress={() => {
                   this.setState({ showMore: true })
-                  // track an event here
-                  // action_name: viewMore
-                  // context_screen: Collection
-                  // context_module: FeaturedArtists
-                  // flow: FeaturedArtists
+                  tracking.trackEvent({
+                    action_name: Schema.ActionNames.ViewMore,
+                    context_screen: Schema.PageNames.Collection,
+                    context_module: Schema.ContextModules.FeaturedArtists,
+                    flow: Schema.Flow.FeaturedArtists,
+                  })
                 }}
               >
                 <EntityHeader initials={`+ ${remainingCount}`} name="View more" />

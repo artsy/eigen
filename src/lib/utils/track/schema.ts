@@ -310,6 +310,11 @@ export enum ActionNames {
   // dispatch this on search input focus and again any time they type
   ARAnalyticsSearchStartedQuery = "Searched",
   ARAnalyticsSearchItemSelected = "Selected result from search screen",
+
+  /**
+   * Collection page events
+   */
+  ViewMore = "viewMore",
 }
 
 /**
@@ -328,12 +333,13 @@ export enum ContextModules {
   ArtworkImage = "ArtworkImage",
   ArtworkTombstone = "ArtworkTombstone",
   Bibliography = "Bibliography",
-  CommercialButtons = "CommercialButtons",
-  ExhibitionHistory = "ExhibitionHistory",
-  PartnerContext = "PartnerContext",
-  Provenance = "Provenance",
   Collection = "Collection",
   CollectionDescription = "CollectionDescription",
+  CommercialButtons = "CommercialButtons",
+  ExhibitionHistory = "ExhibitionHistory",
+  FeaturedArtists = "FeaturedArtists",
+  PartnerContext = "PartnerContext",
+  Provenance = "Provenance",
 }
 
 export enum Flow {
@@ -341,5 +347,6 @@ export enum Flow {
   AboutTheCollection = "AboutTheCollection",
   AboutTheWork = "AboutTheWork",
   ArtworkDetails = "ArtworkDetails",
+  FeaturedArtists = "FeaturedArtists",
   RecommendedArtworks = "RecommendedArtworks",
 }
