@@ -1,3 +1,17 @@
+# v1.21.24 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- Fixes resizing bug on collection header images [#2060](https://github.com/artsy/emission/pull/2060) ([@ashleyjelks](https://github.com/ashleyjelks))
+- [FX-1729] tracking for collections [#2052](https://github.com/artsy/emission/pull/2052) ([@pepopowitz](https://github.com/pepopowitz))
+
+#### Authors: 2
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+- Steven Hicks ([@pepopowitz](https://github.com/pepopowitz))
+
+---
+
 # v1.21.23 (Fri Jan 24 2020)
 
 #### 🐛  Bug Fix
