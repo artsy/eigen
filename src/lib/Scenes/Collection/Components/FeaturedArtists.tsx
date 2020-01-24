@@ -112,10 +112,8 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
   collection: graphql`
     fragment FeaturedArtists_collection on MarketingCollection
       @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
-      # TODO: size:9 is not actually limiting to 9 items. We need to figure out
-      #  why the back-end is not respecting that argument.
-      artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 9, sort: "-decayed_merch") {
-        merchandisableArtists {
+      artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
+        merchandisableArtists(size: 9) {
           slug
           internalID
           name

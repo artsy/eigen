@@ -1220,7 +1220,7 @@ type ArtworksAggregationResults {
 }
 
 enum ArtworkSorts {
-  AVAILABILITY_DESC
+  AVAILABILITY_ASC
   CREATED_AT_ASC
   CREATED_AT_DESC
   DELETED_AT_ASC
@@ -3973,7 +3973,10 @@ type FilterArtworksConnection implements Node & ArtworkConnectionInterface {
   hits: [Artwork] @deprecated(reason: "Prefer to use `edges`. [Will be removed in v2]")
 
   # Returns a list of merchandisable artists sorted by merch score.
-  merchandisableArtists: [Artist]
+  merchandisableArtists(
+    # The number of artists to return
+    size: Int = 12
+  ): [Artist]
   facet: ArtworkFilterFacet
   pageCursors: PageCursors!
 }

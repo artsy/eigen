@@ -71,8 +71,8 @@ fragment CollectionArtworks_collection on MarketingCollection {
 }
 
 fragment FeaturedArtists_collection_Z952l on MarketingCollection {
-  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 9, sort: "-decayed_merch") {
-    merchandisableArtists {
+  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
+    merchandisableArtists(size: 9) {
       slug
       internalID
       name
@@ -688,7 +688,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:9,sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")",
             "args": [
               {
                 "kind": "Literal",
@@ -700,7 +700,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 9
+                "value": 0
               },
               (v4/*: any*/)
             ],
@@ -711,8 +711,14 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "merchandisableArtists",
-                "storageKey": null,
-                "args": null,
+                "storageKey": "merchandisableArtists(size:9)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "size",
+                    "value": 9
+                  }
+                ],
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
@@ -808,7 +814,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "099f421ba1e361949422be8ea8c47037",
+    "id": "77ed5f4c58b413dfbd5c1bfc30f81755",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
