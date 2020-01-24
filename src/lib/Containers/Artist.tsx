@@ -5,6 +5,7 @@ import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { track } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { ViewProperties } from "react-native"
@@ -19,6 +20,7 @@ interface State {
 }
 
 // screen views are tracked in eigen
+@track()
 export class Artist extends React.Component<Props, State> {
   state = {
     tabs: [],
