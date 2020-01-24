@@ -62,7 +62,6 @@ NSString *const ARAnalyticsFairFeaturedLinkSelected = @"fair selected featured l
 NSString *const ARAnalyticsFairPostSelected = @"fair selected post";
 NSString *const ARAnalyticsFairOverviewSelection = @"Tapped fair section from fair overview";
 
-NSString *const ARAnalyticsArtistView = @"artist view";
 NSString *const ARAnalyticsArtistFollow = @"Follow artist";
 NSString *const ARAnalyticsArtistUnfollow = @"Follow artist";
 NSString *const ARAnalyticsArtistTappedForSale = @"artist tapped for sale";

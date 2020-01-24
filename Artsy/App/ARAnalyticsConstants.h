@@ -81,7 +81,6 @@ extern NSString *const ARAnalyticsPartnerShowView;
 
 // Artist
 
-extern NSString *const ARAnalyticsArtistView;
 extern NSString *const ARAnalyticsArtistFollow;
 extern NSString *const ARAnalyticsArtistUnfollow;
 extern NSString *const ARAnalyticsArtistTappedForSale;
