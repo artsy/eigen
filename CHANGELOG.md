@@ -1,3 +1,15 @@
+# v1.21.21 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- Collections Metadata QA Fixes [#2055](https://github.com/artsy/emission/pull/2055) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.20 (Fri Jan 24 2020)
 
 #### 🐛  Bug Fix
