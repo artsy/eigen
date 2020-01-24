@@ -32,12 +32,12 @@ query QueryRenderersCollectionQuery(
 fragment Collection_collection_2qE49v on MarketingCollection {
   id
   slug
-  ...CollectionHeader_collection_2qE49v
+  ...CollectionHeader_collection
   ...CollectionArtworks_collection
   ...FeaturedArtists_collection_2qE49v
 }
 
-fragment CollectionHeader_collection_2qE49v on MarketingCollection {
+fragment CollectionHeader_collection on MarketingCollection {
   title
   headerImage
   descriptionMarkdown
@@ -45,9 +45,7 @@ fragment CollectionHeader_collection_2qE49v on MarketingCollection {
     edges {
       node {
         image {
-          resized(width: $screenWidth, height: 204) {
-            url
-          }
+          url
         }
         id
       }
@@ -207,12 +205,7 @@ v5 = {
   "name": "sort",
   "value": "-decayed_merch"
 },
-v6 = {
-  "kind": "Variable",
-  "name": "width",
-  "variableName": "screenWidth"
-},
-v7 = [
+v6 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -221,7 +214,7 @@ v7 = [
     "storageKey": null
   }
 ],
-v8 = [
+v7 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -229,15 +222,15 @@ v8 = [
   },
   (v5/*: any*/)
 ],
-v9 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v10 = [
-  (v9/*: any*/),
+v9 = [
+  (v8/*: any*/),
   (v2/*: any*/)
 ];
 return {
@@ -346,25 +339,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": false,
-                        "selections": [
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "resized",
-                            "storageKey": null,
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "height",
-                                "value": 204
-                              },
-                              (v6/*: any*/)
-                            ],
-                            "concreteType": "ResizedImageUrl",
-                            "plural": false,
-                            "selections": (v7/*: any*/)
-                          }
-                        ]
+                        "selections": (v6/*: any*/)
                       },
                       (v2/*: any*/)
                     ]
@@ -379,7 +354,7 @@ return {
             "alias": "collectionArtworks",
             "name": "artworksConnection",
             "storageKey": "artworksConnection(first:6,sort:\"-decayed_merch\")",
-            "args": (v8/*: any*/),
+            "args": (v7/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -554,7 +529,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v10/*: any*/)
+                        "selections": (v9/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -564,7 +539,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v10/*: any*/)
+                        "selections": (v9/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -631,7 +606,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "args": (v8/*: any*/),
+            "args": (v7/*: any*/),
             "handle": "connection",
             "key": "Collection_collectionArtworks",
             "filters": [
@@ -684,7 +659,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v9/*: any*/),
+                  (v8/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -700,11 +675,15 @@ return {
                         "name": "resized",
                         "storageKey": null,
                         "args": [
-                          (v6/*: any*/)
+                          {
+                            "kind": "Variable",
+                            "name": "width",
+                            "variableName": "screenWidth"
+                          }
                         ],
                         "concreteType": "ResizedImageUrl",
                         "plural": false,
-                        "selections": (v7/*: any*/)
+                        "selections": (v6/*: any*/)
                       }
                     ]
                   },
@@ -768,7 +747,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "cd8d024d71e1a03ad3333fe0e87fb8f3",
+    "id": "dceb67e3ac028717133b406237c5a680",
     "text": null,
     "metadata": {}
   }

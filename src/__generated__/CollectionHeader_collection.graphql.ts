@@ -9,9 +9,7 @@ export type CollectionHeader_collection = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly image: {
-                    readonly resized: {
-                        readonly url: string | null;
-                    } | null;
+                    readonly url: string | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -26,14 +24,7 @@ const node: ReaderFragment = {
   "name": "CollectionHeader_collection",
   "type": "MarketingCollection",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "screenWidth",
-      "type": "Int",
-      "defaultValue": 500
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     {
       "kind": "ScalarField",
@@ -104,33 +95,11 @@ const node: ReaderFragment = {
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "LinkedField",
+                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "resized",
-                      "storageKey": null,
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "height",
-                          "value": 204
-                        },
-                        {
-                          "kind": "Variable",
-                          "name": "width",
-                          "variableName": "screenWidth"
-                        }
-                      ],
-                      "concreteType": "ResizedImageUrl",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "url",
-                          "args": null,
-                          "storageKey": null
-                        }
-                      ]
+                      "name": "url",
+                      "args": null,
+                      "storageKey": null
                     }
                   ]
                 }
@@ -142,5 +111,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3fd21029669bea349c2ec4456f023aa0';
+(node as any).hash = 'd76cac2d0c6c8621a89a0d37a12f57b6';
 export default node;
