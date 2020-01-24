@@ -11,15 +11,7 @@ export type Collection_collection = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "kind": "Variable",
-    "name": "screenWidth",
-    "variableName": "screenWidth"
-  }
-];
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Collection_collection",
   "type": "MarketingCollection",
@@ -50,7 +42,13 @@ return {
     {
       "kind": "FragmentSpread",
       "name": "CollectionHeader_collection",
-      "args": (v0/*: any*/)
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "screenWidth",
+          "variableName": "screenWidth"
+        }
+      ]
     },
     {
       "kind": "FragmentSpread",
@@ -60,10 +58,9 @@ return {
     {
       "kind": "FragmentSpread",
       "name": "FeaturedArtists_collection",
-      "args": (v0/*: any*/)
+      "args": null
     }
   ]
 };
-})();
-(node as any).hash = '8cb3e72d7dff7e1ff17f0b1fa27ad37e';
+(node as any).hash = 'f84a71c20f6dc3a54301be1c7bc4e528';
 export default node;

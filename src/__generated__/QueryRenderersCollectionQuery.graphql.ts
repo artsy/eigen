@@ -34,7 +34,7 @@ fragment Collection_collection_2qE49v on MarketingCollection {
   slug
   ...CollectionHeader_collection_2qE49v
   ...CollectionArtworks_collection
-  ...FeaturedArtists_collection_2qE49v
+  ...FeaturedArtists_collection
 }
 
 fragment CollectionHeader_collection_2qE49v on MarketingCollection {
@@ -76,7 +76,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   }
 }
 
-fragment FeaturedArtists_collection_2qE49v on MarketingCollection {
+fragment FeaturedArtists_collection on MarketingCollection {
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
     merchandisableArtists(size: 9) {
       internalID
@@ -777,7 +777,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "5d2ef45bb8356767d54137fe8c71bce7",
+    "id": "6b6b625c3a68aa082b9955d1455d4764",
     "text": null,
     "metadata": {}
   }

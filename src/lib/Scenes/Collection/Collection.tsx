@@ -96,7 +96,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       slug
       ...CollectionHeader_collection @arguments(screenWidth: $screenWidth)
       ...CollectionArtworks_collection
-      ...FeaturedArtists_collection @arguments(screenWidth: $screenWidth)
+      ...FeaturedArtists_collection
     }
   `,
 })

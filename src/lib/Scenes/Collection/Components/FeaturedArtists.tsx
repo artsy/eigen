@@ -105,8 +105,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
 
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FeaturedArtists, {
   collection: graphql`
-    fragment FeaturedArtists_collection on MarketingCollection
-      @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+    fragment FeaturedArtists_collection on MarketingCollection {
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
         merchandisableArtists(size: 9) {
           internalID

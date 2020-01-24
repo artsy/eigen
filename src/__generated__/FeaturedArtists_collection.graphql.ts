@@ -23,14 +23,7 @@ const node: ReaderFragment = {
   "name": "FeaturedArtists_collection",
   "type": "MarketingCollection",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "screenWidth",
-      "type": "Int",
-      "defaultValue": 500
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     {
       "kind": "LinkedField",
@@ -117,5 +110,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0d9ba19eb4a4e5fb86ef4b3ebc089d75';
+(node as any).hash = '5945a319da0b8f99faefde2f1f2b92ed';
 export default node;

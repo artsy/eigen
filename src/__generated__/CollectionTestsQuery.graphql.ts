@@ -28,7 +28,7 @@ fragment Collection_collection on MarketingCollection {
   slug
   ...CollectionHeader_collection_Z952l
   ...CollectionArtworks_collection
-  ...FeaturedArtists_collection_Z952l
+  ...FeaturedArtists_collection
 }
 
 fragment CollectionHeader_collection_Z952l on MarketingCollection {
@@ -70,7 +70,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   }
 }
 
-fragment FeaturedArtists_collection_Z952l on MarketingCollection {
+fragment FeaturedArtists_collection on MarketingCollection {
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
     merchandisableArtists(size: 9) {
       internalID
@@ -817,7 +817,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "3a7f9166fff3391be449a24856153011",
+    "id": "fd0516f2749e8428ea5919adccf3eb10",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {

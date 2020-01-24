@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "3a7f9166fff3391be449a24856153011{}",
+              "identifier": "fd0516f2749e8428ea5919adccf3eb10{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -738,7 +738,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "3a7f9166fff3391be449a24856153011",
+                  "id": "fd0516f2749e8428ea5919adccf3eb10",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -1187,9 +1187,7 @@ exports[`Collection renders a snapshot 1`] = `
               "CollectionHeader_collection": Object {
                 "screenWidth": 500,
               },
-              "FeaturedArtists_collection": Object {
-                "screenWidth": 500,
-              },
+              "FeaturedArtists_collection": Object {},
             },
             "__id": "<MarketingCollection-mock-id-1>",
             "id": "<MarketingCollection-mock-id-1>",
