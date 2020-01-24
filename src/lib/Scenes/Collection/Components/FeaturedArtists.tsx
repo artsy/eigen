@@ -3,6 +3,7 @@ import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collec
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { ContextModules } from "lib/utils/track/schema"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -30,7 +31,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
     return artists.map((artist, index) => {
       return (
         <Box width="100%" key={index} pb={20}>
-          <ArtistListItem artist={artist} />
+          <ArtistListItem artist={artist} contextModule={ContextModules.Collection} />
         </Box>
       )
     })
