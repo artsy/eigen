@@ -91,11 +91,11 @@
         segmentWriteKey = keys.segmentDevWriteKey;
         adjustEnv = ADJEnvironmentSandbox;
     }
-    
+
     if (ARAppStatus.isBeta) {
         sentryEnv = keys.sentryStagingDSN;
     }
-    
+
     if (ARAppStatus.isDev) {
         sentryEnv = nil;
     }
@@ -209,7 +209,7 @@
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
                                     analyticsContext = @"Launch";
                                 }
-        
+
                                 analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
                                 return @{
@@ -232,7 +232,7 @@
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
                                     analyticsContext = @"Launch";
                                 }
-        
+
                                 analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
                                 return @{
@@ -409,20 +409,6 @@
                             },
                         }
                     ]
-                },
-                @{
-                    ARAnalyticsClass: ARArtistComponentViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtistComponentViewController *controller, NSArray *_){
-                                return @{
-                                    @"artist_id" : controller.artistID ?: @"",
-                                };
-                            },
-                        },
-                    ],
                 },
                 @{
                     ARAnalyticsClass: ARSharingController.class,
@@ -669,9 +655,7 @@
                             ARAnalyticsProperties: ^NSDictionary *(ARArtistComponentViewController *controller, NSArray *_) {
                                 return @{
                                      @"owner_type": @"artist",
-                                     @"owner_id": @"",
-                                     @"owner_slug": controller.artistID ?: @"",
-                                     @"partial" : @"true"
+                                     @"owner_slug": controller.artistID ?: @""
                                  };
                             }
                         }
