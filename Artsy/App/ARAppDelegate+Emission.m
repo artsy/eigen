@@ -16,6 +16,7 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
+#import "ARInternalMobileWebViewController.h"
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"
@@ -264,6 +265,17 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             // so the user can hit the close button. Consignments is the exception, and it has its own close button.
             if (!([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[LiveAuctionViewController class]])) {
                 viewController = [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
+            }
+            // Explanation for this behaviour is described in ARTopMenuViewController's
+            // pushViewController:animated: method. Once that is removed, we can remove this.
+            if ([UIDevice isPhone]) {
+                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            } else {
+                // BNMO goes through this code path instead of the one in ARTopMenuViewController.
+                if ([viewController isKindOfClass:ARSerifNavigationViewController.class] &&
+                    [[[(ARInternalMobileWebViewController *)[(ARSerifNavigationViewController *)viewController topViewController] initialURL] absoluteString] containsString:@"/orders/"]) {
+                    viewController.modalPresentationStyle = UIModalPresentationFormSheet;
+                }
             }
 
             [targetViewController presentViewController:viewController
