@@ -1,3 +1,15 @@
+# v1.21.22 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- [FX-1750] Use explicit size param for collection header's featured artists [#2057](https://github.com/artsy/emission/pull/2057) ([@anandaroop](https://github.com/anandaroop))
+
+#### Authors: 1
+
+- Anandaroop Roy ([@anandaroop](https://github.com/anandaroop))
+
+---
+
 # v1.21.21 (Fri Jan 24 2020)
 
 #### 🐛  Bug Fix
