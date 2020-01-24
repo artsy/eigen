@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette"
-import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
+import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
@@ -7,59 +7,67 @@ import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "../Featur
 
 jest.unmock("react-relay")
 
-const CollectionFixture: FeaturedArtists_collection = {
+const CollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] = {
+  id: "some-id",
   artworksConnection: {
+    id: "connection-id",
     merchandisableArtists: [
       {
+        id: "2342-pablo-picassos-id",
         slug: "pablo-picasso",
         internalID: "2342-pablo-picassos-id",
         name: "Pablo Picasso",
         image: {
-          resized: {
-            url: "/some/resized/picasso/image/url",
-          },
+          url: "/some/resized/picasso/image/url",
         },
         birthday: "1877",
         nationality: "American",
-        isFollowed: true,
+        is_followed: true,
+        initials: "PP",
+        href: "/a/link/to/picasso",
+        deathday: "1973",
       },
       {
+        id: "34534-andy-warhols-id",
         slug: "andy-warhol",
         internalID: "34534-andy-warhols-id",
         name: "Andy Warhol",
         image: {
-          resized: {
-            url: "/some/resized/warhol/image/url",
-          },
+          url: "/some/resized/warhol/image/url",
         },
         birthday: "1947",
         nationality: "American",
-        isFollowed: false,
+        is_followed: true,
+        initials: "AW",
+        href: "/a/link/to/warhol",
+        deathday: "1987",
       },
       {
+        id: "3454",
         slug: "joan-miro",
         internalID: "3454",
         name: "Joan Miro",
         image: {
-          resized: {
-            url: "/some/resized/miro/image/url",
-          },
+          url: "/some/resized/miro/image/url",
         },
         birthday: "1877",
         nationality: "Spanish",
-        isFollowed: true,
+        is_followed: true,
+        initials: "JM",
+        href: "/a/link/to/miro",
+        deathday: "1983",
       },
     ],
   },
   featuredArtistExclusionIds: [],
   query: {
+    id: "query-id",
     artistIDs: [],
   },
-  " $refType": null,
 }
 
 describe("FeaturedArtists", () => {
-  const render = (collection: FeaturedArtists_collection) =>
+  const render = (collection: FeaturedArtistsTestsQueryRawResponse["marketingCollection"]) =>
     renderRelayTree({
       Component: ({ marketingCollection }) => (
         <Theme>
@@ -114,7 +122,7 @@ describe("FeaturedArtists", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
       const tree = await render({
         ...CollectionFixture,
-        query: { artistIDs: ["34534-andy-warhols-id"] },
+        query: { id: "some-id", artistIDs: ["34534-andy-warhols-id"] },
       })
 
       const entityHeaders = tree.find("EntityHeader")
