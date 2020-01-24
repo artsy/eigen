@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.21.11
   dev:
     - Clear AsyncStorage on logout - david
+    - Fix auction banner display on iOS 13 - brian
     - Opts out of new iOS 13 modal presentation style on iPhone - ash
   user_facing:
     -

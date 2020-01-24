@@ -8,6 +8,7 @@ class AuctionBannerView: UIView {
     init(viewModel: SaleViewModel) {
         self.viewModel = viewModel
         super.init(frame: CGRect.zero)
+        self.setupViews()
     }
 
     required init?(coder aDecoder: NSCoder) {
