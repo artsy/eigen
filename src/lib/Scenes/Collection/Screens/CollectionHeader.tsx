@@ -2,7 +2,6 @@ import { Box, color, Serif } from "@artsy/palette"
 import { CollectionHeader_collection } from "__generated__/CollectionHeader_collection.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
-import { truncatedTextLimit } from "lib/Scenes/Artwork/hardware"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { Dimensions } from "react-native"
@@ -19,7 +18,6 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
   const defaultHeaderUrl = image?.edges[0]?.node?.image?.resized?.url || ""
   const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")
-  const textLimit = truncatedTextLimit()
 
   return (
     <>
@@ -31,13 +29,13 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
           {title}
         </Serif>
       </Box>
-      {collectionDescription && (
+      {!!collectionDescription && (
         <Box m="2">
           <ReadMore
             content={collectionDescription}
-            maxChars={textLimit}
-            contextModule={Schema.ContextModules.Collection}
-            trackingFlow={Schema.OwnerEntityTypes.Collection}
+            maxChars={screenWidth > 700 ? 300 : 250} // truncate at 300 characters on iPads and 250 on all other devices
+            contextModule={Schema.ContextModules.CollectionDescription}
+            trackingFlow={Schema.Flow.AboutTheCollection}
           />
         </Box>
       )}

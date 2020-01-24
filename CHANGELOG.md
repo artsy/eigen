@@ -1,3 +1,39 @@
+# v1.21.23 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- Fixes issue with Artist tracking components #trivial [#2062](https://github.com/artsy/emission/pull/2062) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
+# v1.21.22 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- [FX-1750] Use explicit size param for collection header's featured artists [#2057](https://github.com/artsy/emission/pull/2057) ([@anandaroop](https://github.com/anandaroop))
+
+#### Authors: 1
+
+- Anandaroop Roy ([@anandaroop](https://github.com/anandaroop))
+
+---
+
+# v1.21.21 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- Collections Metadata QA Fixes [#2055](https://github.com/artsy/emission/pull/2055) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.20 (Fri Jan 24 2020)
 
 #### 🐛  Bug Fix

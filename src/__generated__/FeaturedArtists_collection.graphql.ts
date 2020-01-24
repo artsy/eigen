@@ -36,7 +36,7 @@ const node: ReaderFragment = {
       "kind": "LinkedField",
       "alias": null,
       "name": "artworksConnection",
-      "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:9,sort:\"-decayed_merch\")",
+      "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")",
       "args": [
         {
           "kind": "Literal",
@@ -48,7 +48,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "size",
-          "value": 9
+          "value": 0
         },
         {
           "kind": "Literal",
@@ -63,8 +63,14 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "alias": null,
           "name": "merchandisableArtists",
-          "storageKey": null,
-          "args": null,
+          "storageKey": "merchandisableArtists(size:9)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "size",
+              "value": 9
+            }
+          ],
           "concreteType": "Artist",
           "plural": true,
           "selections": [
@@ -111,5 +117,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'fdca9de7693064c2582116d8456352b8';
+(node as any).hash = '0d9ba19eb4a4e5fb86ef4b3ebc089d75';
 export default node;
