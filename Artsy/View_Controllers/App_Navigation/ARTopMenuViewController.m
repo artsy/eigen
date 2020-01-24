@@ -34,6 +34,8 @@
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
+#import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARBidFlowViewController.h>
 #import <React/RCTScrollView.h>
 
 static const CGFloat ARMenuButtonDimension = 50;
@@ -561,6 +563,21 @@ static ARTopMenuViewController *_sharedManager = nil;
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
 
     if ([self.class shouldPresentViewControllerAsModal:viewController]) {
+        // iOS 13 introduced a new modal presentation style that are cards. They look cool!
+        // But they break React Native's KeyboardAvoidingView, see this open PR: https://github.com/facebook/react-native/pull/27607
+        // Once that PR is merged and we've upgraded, we can remove the following line
+        // of code, which opts us out of the new modal presentation stylel.
+        if ([UIDevice isPhone]) {
+            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        } else {
+            if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARBidFlowViewController.class]) {
+                // Bid Flow gets form sheet
+                viewController.modalPresentationStyle = UIModalPresentationFormSheet;
+            } else if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARShowConsignmentsFlowViewController.class]) {
+                // Consignments gets full screen
+                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            }
+        }
         [self presentViewController:viewController animated:animated completion:completion];
         return;
     }

@@ -205,11 +205,6 @@ static CGFloat exitButtonDimension = 40;
     return YES;
 }
 
-- (UIModalPresentationStyle)modalPresentationStyle
-{
-    return UIModalPresentationFormSheet;
-}
-
 - (BOOL)shouldAutorotate
 {
     return [self traitDependentAutorotateSupport];
