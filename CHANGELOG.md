@@ -1,3 +1,15 @@
+# v1.21.19 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-155] set consignments vc background color [#2056](https://github.com/artsy/emission/pull/2056) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.18 (Thu Jan 23 2020)
 
 #### 🐛  Bug Fix
