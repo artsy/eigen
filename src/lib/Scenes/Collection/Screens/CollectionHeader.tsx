@@ -15,16 +15,16 @@ const HEADER_IMAGE_HEIGHT = 204
 
 export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
   const { title, image, headerImage, descriptionMarkdown: collectionDescription } = props.collection
-  const defaultHeaderUrl = image?.edges[0]?.node?.image?.resized?.url || ""
+  const defaultHeaderUrl = image?.edges[0]?.node?.image?.url || ""
   const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")
 
   return (
     <>
       <Box mb={2}>
-        <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} useRawURL />
+        <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Box mb={collectionDescription ? 0 : 2}>
+      <Box mb={!!collectionDescription ? 2 : 0}>
         <Serif size="8" color={color("black100")} ml={2}>
           {title}
         </Serif>
@@ -45,8 +45,7 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
 
 export const CollectionHeaderContainer = createFragmentContainer(CollectionHeader, {
   collection: graphql`
-    fragment CollectionHeader_collection on MarketingCollection
-      @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+    fragment CollectionHeader_collection on MarketingCollection {
       title
       headerImage
       descriptionMarkdown
@@ -54,9 +53,7 @@ export const CollectionHeaderContainer = createFragmentContainer(CollectionHeade
         edges {
           node {
             image {
-              resized(width: $screenWidth, height: 204) {
-                url
-              }
+              url
             }
           }
         }

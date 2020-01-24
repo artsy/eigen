@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "77ed5f4c58b413dfbd5c1bfc30f81755{}",
+              "identifier": "2599978d1f57891b232fbbdc4726c175{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -148,32 +148,10 @@ exports[`Collection renders a snapshot 1`] = `
                                       "selections": Array [
                                         Object {
                                           "alias": null,
-                                          "args": Array [
-                                            Object {
-                                              "kind": "Literal",
-                                              "name": "height",
-                                              "value": 204,
-                                            },
-                                            Object {
-                                              "kind": "Literal",
-                                              "name": "width",
-                                              "value": 500,
-                                            },
-                                          ],
-                                          "concreteType": "ResizedImageUrl",
-                                          "kind": "LinkedField",
-                                          "name": "resized",
-                                          "plural": false,
-                                          "selections": Array [
-                                            Object {
-                                              "alias": null,
-                                              "args": null,
-                                              "kind": "ScalarField",
-                                              "name": "url",
-                                              "storageKey": null,
-                                            },
-                                          ],
-                                          "storageKey": "resized(height:204,width:500)",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "url",
+                                          "storageKey": null,
                                         },
                                       ],
                                       "storageKey": null,
@@ -734,7 +712,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "77ed5f4c58b413dfbd5c1bfc30f81755",
+                  "id": "2599978d1f57891b232fbbdc4726c175",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -1109,13 +1087,7 @@ exports[`Collection renders a snapshot 1`] = `
                         "plural": false,
                         "type": "Image",
                       },
-                      "marketingCollection.image.edges.node.image.resized": Object {
-                        "enumValues": null,
-                        "nullable": true,
-                        "plural": false,
-                        "type": "ResizedImageUrl",
-                      },
-                      "marketingCollection.image.edges.node.image.resized.url": Object {
+                      "marketingCollection.image.edges.node.image.url": Object {
                         "enumValues": null,
                         "nullable": true,
                         "plural": false,
@@ -1168,9 +1140,7 @@ exports[`Collection renders a snapshot 1`] = `
             },
             "__fragments": Object {
               "CollectionArtworks_collection": Object {},
-              "CollectionHeader_collection": Object {
-                "screenWidth": 500,
-              },
+              "CollectionHeader_collection": Object {},
               "FeaturedArtists_collection": Object {
                 "screenWidth": 500,
               },
@@ -1238,16 +1208,15 @@ exports[`Collection renders a snapshot 1`] = `
           <AROpaqueImageView
             height={204}
             imageURL="<mock-value-for-field-\\"headerImage\\">"
-            useRawURL={true}
             width={750}
           />
         </View>
         <View
-          mb={0}
+          mb={2}
           style={
             Array [
               Object {
-                "marginBottom": 0,
+                "marginBottom": 20,
               },
             ]
           }
