@@ -1,3 +1,15 @@
+# v1.21.25 (Mon Jan 27 2020)
+
+#### 🐛  Bug Fix
+
+- Fixes Consignments status bar content colour [#2061](https://github.com/artsy/emission/pull/2061) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.24 (Fri Jan 24 2020)
 
 #### 🐛  Bug Fix
