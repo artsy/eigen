@@ -13,6 +13,17 @@ class LiveAuctionToolbarView: UIView {
     var lotStateObserver: ObserverToken<LotState>?
     var numberOfBidsObserver: ObserverToken<Int>?
 
+    init(lotViewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
+        super.init(frame: CGRect.zero)
+        self.lotViewModel = lotViewModel
+        self.auctionViewModel = auctionViewModel
+        self.setupViews()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setupViews()

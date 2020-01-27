@@ -136,9 +136,7 @@ extension PrivateFunctions {
         lotMetadataStack.constrainBottomSpace(toView: metadataStack, predicate: "0")
 
         // Info toolbar setup
-        let infoToolbar = LiveAuctionToolbarView()
-        infoToolbar.lotViewModel = lotViewModel
-        infoToolbar.auctionViewModel = salesPerson.auctionViewModel
+        let infoToolbar = LiveAuctionToolbarView(lotViewModel: lotViewModel, auctionViewModel: salesPerson.auctionViewModel)
 
         metadataStack.addSubview(infoToolbar, withTopMargin: "28", sideMargin: sideMargin)
         infoToolbar.constrainHeight("38")
