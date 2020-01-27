@@ -1,3 +1,15 @@
+# v1.21.26 (Mon Jan 27 2020)
+
+#### 🐛  Bug Fix
+
+- Add missing event type for Collections' view-more-artists interaction [#2064](https://github.com/artsy/emission/pull/2064) ([@anandaroop](https://github.com/anandaroop))
+
+#### Authors: 1
+
+- Anandaroop Roy ([@anandaroop](https://github.com/anandaroop))
+
+---
+
 # v1.21.25 (Mon Jan 27 2020)
 
 #### 🐛  Bug Fix
