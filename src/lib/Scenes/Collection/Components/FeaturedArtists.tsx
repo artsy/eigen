@@ -104,6 +104,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
                 onPress={() => {
                   this.setState({ showMore: true })
                   tracking.trackEvent({
+                    action_type: Schema.ActionTypes.Tap,
                     action_name: Schema.ActionNames.ViewMore,
                     context_screen: Schema.PageNames.Collection,
                     context_module: Schema.ContextModules.FeaturedArtists,
