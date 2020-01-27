@@ -1,3 +1,15 @@
+# v1.21.27 (Mon Jan 27 2020)
+
+#### 🐛  Bug Fix
+
+- reduce volley client error message noise in sentry [#2063](https://github.com/artsy/emission/pull/2063) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.26 (Mon Jan 27 2020)
 
 #### 🐛  Bug Fix
