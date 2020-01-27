@@ -85,14 +85,14 @@ class VolleyClient {
         }),
       })
         .then(e => {
-          if (e.status >= 400) {
-            throw e
+          if (!__DEV__ && e.status >= 400) {
+            Sentry.captureMessage(`Failed to post metrics to volley (status ${e.status})`)
           }
         })
-        .catch(e => {
-          console.error("Failed to post metrics to volley")
-          console.error(e)
-          Sentry.captureMessage(e.stack)
+        .catch(() => {
+          if (!__DEV__) {
+            Sentry.captureMessage("Failed to post metrics to volley")
+          }
         })
     },
     1000,
