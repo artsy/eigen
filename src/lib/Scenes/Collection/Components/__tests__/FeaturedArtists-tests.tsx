@@ -184,6 +184,7 @@ describe("FeaturedArtists", () => {
       viewMore.simulate("click")
 
       expect(Events.postEvent).toHaveBeenCalledWith({
+        action_type: "tap",
         action_name: "viewMore",
         context_module: "FeaturedArtists",
         context_screen: "Collection",
