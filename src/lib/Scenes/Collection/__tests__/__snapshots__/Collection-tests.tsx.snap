@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "fd0516f2749e8428ea5919adccf3eb10{}",
+              "identifier": "ac788c93442e5221e15824cd7d9cc08c{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -716,11 +716,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-<<<<<<< HEAD
-                  "id": "fd0516f2749e8428ea5919adccf3eb10",
-=======
-                  "id": "2599978d1f57891b232fbbdc4726c175",
->>>>>>> master
+                  "id": "ac788c93442e5221e15824cd7d9cc08c",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -1160,17 +1156,8 @@ exports[`Collection renders a snapshot 1`] = `
             },
             "__fragments": Object {
               "CollectionArtworks_collection": Object {},
-<<<<<<< HEAD
-              "CollectionHeader_collection": Object {
-                "screenWidth": 500,
-              },
-              "FeaturedArtists_collection": Object {},
-=======
               "CollectionHeader_collection": Object {},
-              "FeaturedArtists_collection": Object {
-                "screenWidth": 500,
-              },
->>>>>>> master
+              "FeaturedArtists_collection": Object {},
             },
             "__id": "<MarketingCollection-mock-id-1>",
             "id": "<MarketingCollection-mock-id-1>",
@@ -1414,4 +1401,4 @@ exports[`Collection renders a snapshot 1`] = `
     </View>
   </RCTScrollView>
 </View>
-`
+`;
