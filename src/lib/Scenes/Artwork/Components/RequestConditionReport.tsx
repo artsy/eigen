@@ -86,7 +86,7 @@ export class RequestConditionReport extends React.Component<Props, State> {
 
   render() {
     return (
-      <Button mt={1} variant="secondaryGray" size="small" onClick={this.handleRequestConditionReportClick}>
+      <Button mt={1} variant="secondaryGray" size="small" onPress={this.handleRequestConditionReportClick}>
         Request condition report
       </Button>
     )
