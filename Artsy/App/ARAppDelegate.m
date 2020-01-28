@@ -201,6 +201,11 @@ static ARAppDelegate *_sharedInstance = nil;
         };
     }
     [self.window makeKeyAndVisible];
+  
+    if (@available(iOS 13.0, *)) {
+      // prevent dark mode
+      self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    }
 
 
     [ARWebViewCacheHost startup];
