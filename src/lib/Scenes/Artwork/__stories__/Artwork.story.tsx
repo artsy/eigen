@@ -28,7 +28,7 @@ storiesOf("Artwork/Screens")
     return (
       <ArtworkRenderer
         isVisible
-        artworkID="john-baldessari-throwing-three-balls-in-the-air-to-get-a-straight-line-best-of-thirty-six-attempts-19"
+        artworkID="lita-albuquerque-sun-and-moon-trajectories-number-5"
         safeAreaInsets={safeAreaInsets}
       />
     )
