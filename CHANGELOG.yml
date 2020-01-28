@@ -8,6 +8,7 @@ upcoming:
     - Fix auction toolbar display on iOS 13 - brian
     - Opts out of new iOS 13 modal presentation style on iPhone - ash
     - Opts out of dark mode - david
+    - Clear APN token on logout - david + ash + brian
   user_facing:
     -
 
