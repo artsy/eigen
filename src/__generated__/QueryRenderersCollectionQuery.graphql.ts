@@ -21,7 +21,6 @@ export type QueryRenderersCollectionQuery = {
 /*
 query QueryRenderersCollectionQuery(
   $collectionID: String!
-  $screenWidth: Int
 ) {
   collection: marketingCollection(slug: $collectionID) {
     ...Collection_collection_2qE49v
@@ -212,15 +211,24 @@ v5 = {
   "name": "sort",
   "value": "-decayed_merch"
 },
-v6 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "url",
-    "args": null,
-    "storageKey": null
-  }
-],
+v6 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "image",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Image",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "url",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+},
 v7 = [
   {
     "kind": "Literal",
@@ -345,38 +353,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "image",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Image",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "resized",
-                            "storageKey": null,
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "height",
-                                "value": 204
-                              },
-                              {
-                                "kind": "Variable",
-                                "name": "width",
-                                "variableName": "screenWidth"
-                              }
-                            ],
-                            "concreteType": "ResizedImageUrl",
-                            "plural": false,
-                            "selections": (v6/*: any*/)
-                          }
-                        ]
-                      },
+                      (v6/*: any*/),
                       (v2/*: any*/)
                     ]
                   }
@@ -696,26 +673,7 @@ return {
                     "alias": null,
                     "name": "initials",
                     "args": null,
-                    "concreteType": "Image",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "resized",
-                        "storageKey": null,
-                        "args": [
-                          {
-                            "kind": "Variable",
-                            "name": "width",
-                            "variableName": "screenWidth"
-                          }
-                        ],
-                        "concreteType": "ResizedImageUrl",
-                        "plural": false,
-                        "selections": (v6/*: any*/)
-                      }
-                    ]
+                    "storageKey": null
                   },
                   (v10/*: any*/),
                   {
@@ -746,16 +704,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "image",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Image",
-                    "plural": false,
-                    "selections": (v6/*: any*/)
-                  }
+                  (v6/*: any*/)
                 ]
               },
               (v2/*: any*/)
@@ -794,7 +743,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "6b6b625c3a68aa082b9955d1455d4764",
+    "id": "56a29a99f52d69b733722a480e0b81a5",
     "text": null,
     "metadata": {}
   }

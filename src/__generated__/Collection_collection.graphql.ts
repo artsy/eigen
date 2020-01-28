@@ -42,13 +42,7 @@ const node: ReaderFragment = {
     {
       "kind": "FragmentSpread",
       "name": "CollectionHeader_collection",
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "screenWidth",
-          "variableName": "screenWidth"
-        }
-      ]
+      "args": null
     },
     {
       "kind": "FragmentSpread",
@@ -62,5 +56,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f84a71c20f6dc3a54301be1c7bc4e528';
+(node as any).hash = 'ad2bbb9ea277d0c71e1449cb455e6cbe';
 export default node;

@@ -1,6 +1,6 @@
 # v1.21.27 (Mon Jan 27 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - reduce volley client error message noise in sentry [#2063](https://github.com/artsy/emission/pull/2063) ([@ds300](https://github.com/ds300))
 
@@ -12,7 +12,7 @@
 
 # v1.21.26 (Mon Jan 27 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Add missing event type for Collections' view-more-artists interaction [#2064](https://github.com/artsy/emission/pull/2064) ([@anandaroop](https://github.com/anandaroop))
 
@@ -24,7 +24,7 @@
 
 # v1.21.25 (Mon Jan 27 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Fixes Consignments status bar content colour [#2061](https://github.com/artsy/emission/pull/2061) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -36,7 +36,7 @@
 
 # v1.21.24 (Fri Jan 24 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Fixes resizing bug on collection header images [#2060](https://github.com/artsy/emission/pull/2060) ([@ashleyjelks](https://github.com/ashleyjelks))
 - [FX-1729] tracking for collections [#2052](https://github.com/artsy/emission/pull/2052) ([@pepopowitz](https://github.com/pepopowitz))
@@ -50,7 +50,7 @@
 
 # v1.21.23 (Fri Jan 24 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Fixes issue with Artist tracking components #trivial [#2062](https://github.com/artsy/emission/pull/2062) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -62,7 +62,7 @@
 
 # v1.21.22 (Fri Jan 24 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [FX-1750] Use explicit size param for collection header's featured artists [#2057](https://github.com/artsy/emission/pull/2057) ([@anandaroop](https://github.com/anandaroop))
 
@@ -74,7 +74,7 @@
 
 # v1.21.21 (Fri Jan 24 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Collections Metadata QA Fixes [#2055](https://github.com/artsy/emission/pull/2055) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -86,7 +86,7 @@
 
 # v1.21.20 (Fri Jan 24 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-96] Remove redundant screen view tracking for Artist page [#2058](https://github.com/artsy/emission/pull/2058) ([@ds300](https://github.com/ds300))
 
@@ -98,7 +98,7 @@
 
 # v1.21.19 (Fri Jan 24 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-155] set consignments vc background color [#2056](https://github.com/artsy/emission/pull/2056) ([@ds300](https://github.com/ds300))
 
@@ -110,7 +110,7 @@
 
 # v1.21.18 (Thu Jan 23 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-153] Truncate search result titles at one line [#2053](https://github.com/artsy/emission/pull/2053) ([@ds300](https://github.com/ds300))
 
@@ -122,25 +122,19 @@
 
 # v1.21.17 (Tue Jan 21 2020)
 
-
-
 ---
 
 # v1.21.16 (Tue Jan 21 2020)
-
-
 
 ---
 
 # v1.21.15 (Tue Jan 21 2020)
 
-
-
 ---
 
 # v1.21.14 (Tue Jan 21 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-137] Use XCirlceIcon [#2040](https://github.com/artsy/emission/pull/2040) ([@ds300](https://github.com/ds300))
 
@@ -152,7 +146,7 @@
 
 # v1.21.13 (Tue Jan 21 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Removes CocoaPods Specs repo setup [#2046](https://github.com/artsy/emission/pull/2046) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -164,13 +158,11 @@
 
 # v1.21.12 (Mon Jan 20 2020)
 
-
-
 ---
 
 # v1.21.11 (Fri Jan 17 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Fixes bug causing image to fail to render in collection header [#2045](https://github.com/artsy/emission/pull/2045) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -182,13 +174,13 @@
 
 # v1.21.10 (Fri Jan 17 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-150] New search page analytics [#2043](https://github.com/artsy/emission/pull/2043) ([@ds300](https://github.com/ds300))
 
-#### ⚠️  Pushed to master
+#### ⚠️ Pushed to master
 
-- fix indentation in .circleci/config.yml  ([@ds300](https://github.com/ds300))
+- fix indentation in .circleci/config.yml ([@ds300](https://github.com/ds300))
 
 #### Authors: 1
 
@@ -198,7 +190,7 @@
 
 # v1.21.9 (Thu Jan 16 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Changes header to Sans font #trivial [#2041](https://github.com/artsy/emission/pull/2041) ([@ashfurrow](https://github.com/ashfurrow))
 - [FX-1716] Constrain collection's featured artists [#2039](https://github.com/artsy/emission/pull/2039) ([@anandaroop](https://github.com/anandaroop))
@@ -212,11 +204,11 @@
 
 # v1.21.8 (Thu Jan 16 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Collections metadata [#2035](https://github.com/artsy/emission/pull/2035) ([@ashleyjelks](https://github.com/ashleyjelks))
-- [MX-141] [MX-144] Adds feedback/privacy request user interface [#2038](https://github.com/artsy/emission/pull/2038) ([@ashfurrow](https://github.com/ashfurrow))
-- Exclude specified artists from featured artist list [FX-1717] [#2037](https://github.com/artsy/emission/pull/2037) ([@pepopowitz](https://github.com/pepopowitz))
+- [MX-141][mx-144] Adds feedback/privacy request user interface [#2038](https://github.com/artsy/emission/pull/2038) ([@ashfurrow](https://github.com/ashfurrow))
+- Exclude specified artists from featured artist list [FX-1717][#2037](https://github.com/artsy/emission/pull/2037) ([@pepopowitz](https://github.com/pepopowitz))
 - Update dep @artsy/palette from 5.1.13 to v5.1.14 [#2036](https://github.com/artsy/emission/pull/2036) ([@renovate-bot](https://github.com/renovate-bot))
 - [MX-135] - Null checks for optional show.kind metadata [#2031](https://github.com/artsy/emission/pull/2031) ([@pepopowitz](https://github.com/pepopowitz))
 - Installs Node 12 on deploy build #trivial [#2034](https://github.com/artsy/emission/pull/2034) ([@ashfurrow](https://github.com/ashfurrow))
