@@ -32,12 +32,12 @@ query QueryRenderersCollectionQuery(
 fragment Collection_collection_2qE49v on MarketingCollection {
   id
   slug
-  ...CollectionHeader_collection_2qE49v
+  ...CollectionHeader_collection
   ...CollectionArtworks_collection
   ...FeaturedArtists_collection
 }
 
-fragment CollectionHeader_collection_2qE49v on MarketingCollection {
+fragment CollectionHeader_collection on MarketingCollection {
   title
   headerImage
   descriptionMarkdown
@@ -45,9 +45,7 @@ fragment CollectionHeader_collection_2qE49v on MarketingCollection {
     edges {
       node {
         image {
-          resized(width: $screenWidth, height: 204) {
-            url
-          }
+          url
         }
         id
       }
@@ -698,7 +696,26 @@ return {
                     "alias": null,
                     "name": "initials",
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "resized",
+                        "storageKey": null,
+                        "args": [
+                          {
+                            "kind": "Variable",
+                            "name": "width",
+                            "variableName": "screenWidth"
+                          }
+                        ],
+                        "concreteType": "ResizedImageUrl",
+                        "plural": false,
+                        "selections": (v6/*: any*/)
+                      }
+                    ]
                   },
                   (v10/*: any*/),
                   {

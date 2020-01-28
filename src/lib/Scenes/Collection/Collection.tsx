@@ -94,7 +94,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
       id
       slug
-      ...CollectionHeader_collection @arguments(screenWidth: $screenWidth)
+      ...CollectionHeader_collection
       ...CollectionArtworks_collection
       ...FeaturedArtists_collection
     }

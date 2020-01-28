@@ -9,7 +9,12 @@ export const CollectionFixture = {
     id: "another-id",
     edges: [
       {
-        node: { id: "an-id", image: { resized: { url: "https://defaultmostmarketableartworkincollectionimage.jpg" } } },
+        node: {
+          id: "an-id",
+          image: {
+            url: "https://defaultmostmarketableartworkincollectionimage.jpg",
+          },
+        },
       },
     ],
   },

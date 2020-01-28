@@ -17,9 +17,7 @@ export type CollectionHeaderTestsQueryRawResponse = {
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly image: ({
-                        readonly resized: ({
-                            readonly url: string | null;
-                        }) | null;
+                        readonly url: string | null;
                     }) | null;
                     readonly id: string | null;
                 }) | null;
@@ -53,9 +51,7 @@ fragment CollectionHeader_collection on MarketingCollection {
     edges {
       node {
         image {
-          resized(width: 500, height: 204) {
-            url
-          }
+          url
         }
         id
       }
@@ -190,33 +186,11 @@ return {
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "LinkedField",
+                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "resized",
-                            "storageKey": "resized(height:204,width:500)",
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "height",
-                                "value": 204
-                              },
-                              {
-                                "kind": "Literal",
-                                "name": "width",
-                                "value": 500
-                              }
-                            ],
-                            "concreteType": "ResizedImageUrl",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "url",
-                                "args": null,
-                                "storageKey": null
-                              }
-                            ]
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -236,7 +210,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionHeaderTestsQuery",
-    "id": "2105153f035bc115adc66139d24680d9",
+    "id": "7db41176e4a9c9b1185bc94ca82b5753",
     "text": null,
     "metadata": {}
   }

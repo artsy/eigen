@@ -1,3 +1,53 @@
+# v1.21.27 (Mon Jan 27 2020)
+
+#### 🐛  Bug Fix
+
+- reduce volley client error message noise in sentry [#2063](https://github.com/artsy/emission/pull/2063) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
+# v1.21.26 (Mon Jan 27 2020)
+
+#### 🐛  Bug Fix
+
+- Add missing event type for Collections' view-more-artists interaction [#2064](https://github.com/artsy/emission/pull/2064) ([@anandaroop](https://github.com/anandaroop))
+
+#### Authors: 1
+
+- Anandaroop Roy ([@anandaroop](https://github.com/anandaroop))
+
+---
+
+# v1.21.25 (Mon Jan 27 2020)
+
+#### 🐛  Bug Fix
+
+- Fixes Consignments status bar content colour [#2061](https://github.com/artsy/emission/pull/2061) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
+# v1.21.24 (Fri Jan 24 2020)
+
+#### 🐛  Bug Fix
+
+- Fixes resizing bug on collection header images [#2060](https://github.com/artsy/emission/pull/2060) ([@ashleyjelks](https://github.com/ashleyjelks))
+- [FX-1729] tracking for collections [#2052](https://github.com/artsy/emission/pull/2052) ([@pepopowitz](https://github.com/pepopowitz))
+
+#### Authors: 2
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+- Steven Hicks ([@pepopowitz](https://github.com/pepopowitz))
+
+---
+
 # v1.21.23 (Fri Jan 24 2020)
 
 #### 🐛  Bug Fix
