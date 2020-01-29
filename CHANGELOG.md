@@ -1,3 +1,15 @@
+# v1.21.28 (Wed Jan 29 2020)
+
+#### 🐛  Bug Fix
+
+- [FX-1747] Refactor FeatureArtist component to use ArtistListItem component [#2059](https://github.com/artsy/emission/pull/2059) ([@xtina-starr](https://github.com/xtina-starr))
+
+#### Authors: 1
+
+- Christina ([@xtina-starr](https://github.com/xtina-starr))
+
+---
+
 # v1.21.27 (Mon Jan 27 2020)
 
 #### 🐛 Bug Fix
