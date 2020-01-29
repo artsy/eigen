@@ -1,6 +1,8 @@
 import { Button } from "@artsy/palette"
+import { Modal } from "lib/Components/Modal"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
+import { View } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
 
@@ -84,11 +86,39 @@ export class RequestConditionReport extends React.Component<Props, State> {
       })
   }
 
+  closeModals() {
+    this.setState({ showConditionReportRequestedModal: false, showErrorModal: false })
+  }
+
   render() {
+    const { requestingConditionReport, showErrorModal, errorModalText, showConditionReportRequestedModal } = this.state
+
     return (
-      <Button mt={1} variant="secondaryGray" size="small" onPress={this.handleRequestConditionReportClick}>
-        Request condition report
-      </Button>
+      <View>
+        <Button
+          mt={1}
+          size="small"
+          variant="secondaryGray"
+          loading={requestingConditionReport}
+          onPress={this.handleRequestConditionReportClick}
+        >
+          Request condition report
+        </Button>
+
+        <Modal
+          visible={showErrorModal}
+          headerText="An error occurred"
+          detailText={errorModalText}
+          closeModal={this.closeModals.bind(this)}
+        />
+
+        <Modal
+          visible={showConditionReportRequestedModal}
+          headerText="Condition Report Requested"
+          detailText="We have received your request. The condition report will be sent to."
+          closeModal={this.closeModals.bind(this)}
+        />
+      </View>
     )
   }
 }
