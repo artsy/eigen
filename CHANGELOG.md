@@ -1,3 +1,15 @@
+# v1.21.29 (Wed Jan 29 2020)
+
+#### 🐛  Bug Fix
+
+- Adds conditional padding to collection title [#2065](https://github.com/artsy/emission/pull/2065) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.28 (Wed Jan 29 2020)
 
 #### 🐛  Bug Fix
