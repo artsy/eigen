@@ -1226,11 +1226,11 @@ exports[`Collection renders a snapshot 1`] = `
           />
         </View>
         <View
-          mb={2}
+          mb={0}
           style={
             Array [
               Object {
-                "marginBottom": 20,
+                "marginBottom": 0,
               },
             ]
           }

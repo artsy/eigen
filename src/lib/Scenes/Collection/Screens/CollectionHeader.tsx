@@ -18,13 +18,14 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
   const defaultHeaderUrl = image?.edges[0]?.node?.image?.url || ""
   const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")
+  const collectionTitleMargin = (collectionDescription || "").length < 1 ? 2 : 0
 
   return (
     <>
       <Box mb={2}>
         <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Box mb={!!collectionDescription ? 2 : 0}>
+      <Box mb={collectionTitleMargin}>
         <Serif size="8" color={color("black100")} ml={2}>
           {title}
         </Serif>
