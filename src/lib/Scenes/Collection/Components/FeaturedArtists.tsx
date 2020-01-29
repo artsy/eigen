@@ -1,10 +1,11 @@
-import { Box, Button, EntityHeader, Flex, Sans } from "@artsy/palette"
+import { Box, EntityHeader, Flex, Sans } from "@artsy/palette"
 import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
+import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { get } from "lib/utils/get"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { ContextModules } from "lib/utils/track/schema"
 import React from "react"
-import { TouchableHighlight, TouchableWithoutFeedback } from "react-native"
+import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
 
@@ -32,29 +33,10 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
   getFeaturedArtistEntityCollection = (
     artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
   ) => {
-    return artists.map((artist, index) => {
-      const hasArtistMetaData = artist.nationality && artist.birthday
-      const artistImageUrl = get(artist, a => a.image.resized.url, "")
-
+    return artists.map(artist => {
       return (
-        <Box width="100%" key={index} pb={20}>
-          <TouchableWithoutFeedback onPress={() => this.handleTap(this, `/artist/${artist.slug}`)}>
-            <EntityHeader
-              imageUrl={artistImageUrl}
-              name={artist.name}
-              meta={hasArtistMetaData ? `${artist.nationality}, b. ${artist.birthday}` : undefined}
-              href={`/artist/${artist.slug}`}
-              FollowButton={
-                <Button
-                  variant={artist.isFollowed ? "primaryBlack" : "secondaryOutline"}
-                  size="small"
-                  longestText="Following"
-                >
-                  {artist.isFollowed ? "Following" : "Follow"}
-                </Button>
-              }
-            />
-          </TouchableWithoutFeedback>
+        <Box width="100%" key={artist.internalID} pb={20}>
+          <ArtistListItem artist={artist} contextModule={ContextModules.Collection} />
         </Box>
       )
     })
@@ -124,21 +106,11 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
 
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FeaturedArtists, {
   collection: graphql`
-    fragment FeaturedArtists_collection on MarketingCollection
-      @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+    fragment FeaturedArtists_collection on MarketingCollection {
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
         merchandisableArtists(size: 9) {
-          slug
           internalID
-          name
-          image {
-            resized(width: $screenWidth) {
-              url
-            }
-          }
-          birthday
-          nationality
-          isFollowed
+          ...ArtistListItem_artist
         }
       }
       query {

@@ -52,15 +52,9 @@ const node: ReaderFragment = {
     {
       "kind": "FragmentSpread",
       "name": "FeaturedArtists_collection",
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "screenWidth",
-          "variableName": "screenWidth"
-        }
-      ]
+      "args": null
     }
   ]
 };
-(node as any).hash = '95b26f4c31f7a686614f53ca0ab82bdc';
+(node as any).hash = 'ad2bbb9ea277d0c71e1449cb455e6cbe';
 export default node;

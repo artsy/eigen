@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "2599978d1f57891b232fbbdc4726c175{}",
+              "identifier": "ac788c93442e5221e15824cd7d9cc08c{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -581,14 +581,21 @@ exports[`Collection renders a snapshot 1`] = `
                                   "alias": null,
                                   "args": null,
                                   "kind": "ScalarField",
-                                  "name": "slug",
+                                  "name": "internalID",
                                   "storageKey": null,
                                 },
                                 Object {
                                   "alias": null,
                                   "args": null,
                                   "kind": "ScalarField",
-                                  "name": "internalID",
+                                  "name": "id",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "slug",
                                   "storageKey": null,
                                 },
                                 Object {
@@ -601,43 +608,22 @@ exports[`Collection renders a snapshot 1`] = `
                                 Object {
                                   "alias": null,
                                   "args": null,
-                                  "concreteType": "Image",
-                                  "kind": "LinkedField",
-                                  "name": "image",
-                                  "plural": false,
-                                  "selections": Array [
-                                    Object {
-                                      "alias": null,
-                                      "args": Array [
-                                        Object {
-                                          "kind": "Literal",
-                                          "name": "width",
-                                          "value": 500,
-                                        },
-                                      ],
-                                      "concreteType": "ResizedImageUrl",
-                                      "kind": "LinkedField",
-                                      "name": "resized",
-                                      "plural": false,
-                                      "selections": Array [
-                                        Object {
-                                          "alias": null,
-                                          "args": null,
-                                          "kind": "ScalarField",
-                                          "name": "url",
-                                          "storageKey": null,
-                                        },
-                                      ],
-                                      "storageKey": "resized(width:500)",
-                                    },
-                                  ],
+                                  "kind": "ScalarField",
+                                  "name": "initials",
                                   "storageKey": null,
                                 },
                                 Object {
                                   "alias": null,
                                   "args": null,
                                   "kind": "ScalarField",
-                                  "name": "birthday",
+                                  "name": "href",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": "is_followed",
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "isFollowed",
                                   "storageKey": null,
                                 },
                                 Object {
@@ -651,14 +637,32 @@ exports[`Collection renders a snapshot 1`] = `
                                   "alias": null,
                                   "args": null,
                                   "kind": "ScalarField",
-                                  "name": "isFollowed",
+                                  "name": "birthday",
                                   "storageKey": null,
                                 },
                                 Object {
                                   "alias": null,
                                   "args": null,
                                   "kind": "ScalarField",
-                                  "name": "id",
+                                  "name": "deathday",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Image",
+                                  "kind": "LinkedField",
+                                  "name": "image",
+                                  "plural": false,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "url",
+                                      "storageKey": null,
+                                    },
+                                  ],
                                   "storageKey": null,
                                 },
                               ],
@@ -712,7 +716,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "2599978d1f57891b232fbbdc4726c175",
+                  "id": "ac788c93442e5221e15824cd7d9cc08c",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -745,9 +749,21 @@ exports[`Collection renders a snapshot 1`] = `
                         "plural": false,
                         "type": "String",
                       },
-                      "marketingCollection.artworksConnection.merchandisableArtists.id": Object {
+                      "marketingCollection.artworksConnection.merchandisableArtists.deathday": Object {
                         "enumValues": null,
                         "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.href": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.id": Object {
+                        "enumValues": null,
+                        "nullable": false,
                         "plural": false,
                         "type": "ID",
                       },
@@ -757,13 +773,13 @@ exports[`Collection renders a snapshot 1`] = `
                         "plural": false,
                         "type": "Image",
                       },
-                      "marketingCollection.artworksConnection.merchandisableArtists.image.resized": Object {
+                      "marketingCollection.artworksConnection.merchandisableArtists.image.url": Object {
                         "enumValues": null,
                         "nullable": true,
                         "plural": false,
-                        "type": "ResizedImageUrl",
+                        "type": "String",
                       },
-                      "marketingCollection.artworksConnection.merchandisableArtists.image.resized.url": Object {
+                      "marketingCollection.artworksConnection.merchandisableArtists.initials": Object {
                         "enumValues": null,
                         "nullable": true,
                         "plural": false,
@@ -775,7 +791,7 @@ exports[`Collection renders a snapshot 1`] = `
                         "plural": false,
                         "type": "ID",
                       },
-                      "marketingCollection.artworksConnection.merchandisableArtists.isFollowed": Object {
+                      "marketingCollection.artworksConnection.merchandisableArtists.is_followed": Object {
                         "enumValues": null,
                         "nullable": true,
                         "plural": false,
@@ -1141,9 +1157,7 @@ exports[`Collection renders a snapshot 1`] = `
             "__fragments": Object {
               "CollectionArtworks_collection": Object {},
               "CollectionHeader_collection": Object {},
-              "FeaturedArtists_collection": Object {
-                "screenWidth": 500,
-              },
+              "FeaturedArtists_collection": Object {},
             },
             "__id": "<MarketingCollection-mock-id-1>",
             "id": "<MarketingCollection-mock-id-1>",
