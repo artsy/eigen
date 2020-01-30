@@ -51,7 +51,7 @@ export const shareContent = (title, href, artists: ArtworkActions_artwork["artis
 @track()
 export class ArtworkActions extends React.Component<ArtworkActionsProps, State> {
   state = {
-    isModalVisible: false,
+    isModalVisible: true,
   }
 
   @track((props: ArtworkActionsProps) => {
