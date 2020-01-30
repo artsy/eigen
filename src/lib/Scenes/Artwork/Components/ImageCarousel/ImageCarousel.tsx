@@ -58,7 +58,6 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
       }
       const filteredResult = result.filter(image => image.deepZoom)
       if (filteredResult.length === 0) {
-        console.log("mc-cheese")
         result = [result[0]]
       } else {
         result = filteredResult
