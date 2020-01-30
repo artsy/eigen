@@ -3,13 +3,12 @@ import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.gra
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { truncatedTextLimit } from "../hardware"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork
-  relay: RelayProp
 }
 
 @track()

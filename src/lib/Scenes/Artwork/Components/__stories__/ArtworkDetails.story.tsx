@@ -7,6 +7,9 @@ storiesOf("Artwork/Components").add("Details", () => {
     <ArtworkDetails
       artwork={{
         " $refType": null,
+        slug: "lita-albuquerque-sun-and-moon-trajectories-number-5",
+        isBiddable: true,
+        saleArtwork: { internalID: "some-id" },
         category: "Oil on canvas",
         conditionDescription: null,
         signatureInfo: null,

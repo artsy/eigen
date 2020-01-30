@@ -8,11 +8,10 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { View } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { PayloadError } from "relay-runtime"
 
 interface RequestConditionReportProps {
-  relay?: RelayProp
   artwork: RequestConditionReport_artwork
   me: RequestConditionReport_me
 }
@@ -37,9 +36,9 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
   }
 
   requestConditionReport = () => {
-    const { artwork, relay } = this.props
+    const { artwork } = this.props
     return new Promise(async (resolve, reject) => {
-      commitMutation<RequestConditionReportMutation>(relay.environment, {
+      commitMutation<RequestConditionReportMutation>(defaultEnvironment, {
         onCompleted: data => {
           resolve(data)
         },
