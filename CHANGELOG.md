@@ -1,3 +1,16 @@
+# v1.21.30 (Thu Jan 30 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-166] handle images without deep zoom [#2066](https://github.com/artsy/emission/pull/2066) ([@ds300](https://github.com/ds300) [@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 2
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.29 (Wed Jan 29 2020)
 
 #### 🐛  Bug Fix
