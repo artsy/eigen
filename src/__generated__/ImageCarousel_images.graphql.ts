@@ -5,6 +5,7 @@ export type ImageCarousel_images = ReadonlyArray<{
     readonly url: string | null;
     readonly width: number | null;
     readonly height: number | null;
+    readonly imageVersions: ReadonlyArray<string | null> | null;
     readonly deepZoom: {
         readonly image: {
             readonly tileSize: number | null;
@@ -48,6 +49,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "height",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "imageVersions",
       "args": null,
       "storageKey": null
     },
@@ -121,5 +129,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '539c0a5412f83fe58b93630093817afd';
+(node as any).hash = 'd476e0fe87d0fa4cede85d40854121ff';
 export default node;

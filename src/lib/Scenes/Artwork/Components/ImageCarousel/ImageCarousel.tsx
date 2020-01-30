@@ -4,6 +4,7 @@ import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useMemo } from "react"
 import { Animated, PixelRatio } from "react-native"
+import Sentry from "react-native-sentry"
 import { createFragmentContainer, graphql } from "react-relay"
 import { isPad } from "../../hardware"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
@@ -29,30 +30,43 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
-  const images: ImageDescriptor[] = useMemo(
-    () =>
-      props.images
-        .map(image => {
-          if (!image.height || !image.width || !image.url) {
-            // something is very wrong
-            return null
-          }
-          const { width, height } = fitInside(embeddedCardBoundingBox, image)
-          return {
-            width,
-            height,
-            url: createGeminiUrl({
-              imageURL: image.url.replace(":version", "normalized"),
-              // upscale to match screen resolution
-              width: width * PixelRatio.get(),
-              height: height * PixelRatio.get(),
-            }),
-            deepZoom: image.deepZoom,
-          }
-        })
-        .filter(Boolean),
-    [props.images]
-  )
+  const images: ImageDescriptor[] = useMemo(() => {
+    let result = props.images
+      .map(image => {
+        if (!image.height || !image.width || !image.url) {
+          // something is very wrong
+          return null
+        }
+        const { width, height } = fitInside(embeddedCardBoundingBox, image)
+        return {
+          width,
+          height,
+          url: createGeminiUrl({
+            imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions)),
+            // upscale to match screen resolution
+            width: width * PixelRatio.get(),
+            height: height * PixelRatio.get(),
+          }),
+          deepZoom: image.deepZoom,
+        }
+      })
+      .filter(Boolean)
+
+    if (result.some(image => !image.deepZoom)) {
+      if (!__DEV__) {
+        Sentry.captureMessage(`No deep zoom for at least one image on artwork (see breadcrumbs for artwork slug)`)
+      }
+      const filteredResult = result.filter(image => image.deepZoom)
+      if (filteredResult.length === 0) {
+        console.log("mc-cheese")
+        result = [result[0]]
+      } else {
+        result = filteredResult
+      }
+    }
+
+    return result
+  }, [props.images])
 
   const context = useNewImageCarouselContext({ images })
 
@@ -112,6 +126,7 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
       url: imageURL
       width
       height
+      imageVersions
       deepZoom {
         image: Image {
           tileSize: TileSize
@@ -126,3 +141,28 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
     }
   `,
 })
+
+const imageVersionsSortedBySize = ["normalized", "larger", "large", "medium", "small"] as const
+
+// we used to rely on there being a "normalized" version of every image, but that
+// turns out not to be the case, so in those rare situations we order the image versions
+// by size and pick the largest avaialable. These large images will then be resized by
+// gemini for the actual thumnail we fetch.
+function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
+  for (const size of imageVersionsSortedBySize) {
+    if (imageVersions.includes(size)) {
+      return size
+    }
+  }
+
+  if (!__DEV__) {
+    Sentry.captureMessage("No appropriate image size found for artwork (see breadcrumbs for artwork slug)")
+  } else {
+    console.warn("No appropriate image size found!")
+  }
+
+  // doesn't really matter what we return here, the gemini image url
+  // will fail to load and we'll see a gray square. I haven't come accross an image
+  // that this will happen for, but better safe than sorry.
+  return "normalized"
+}

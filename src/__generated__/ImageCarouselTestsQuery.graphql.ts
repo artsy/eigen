@@ -16,6 +16,7 @@ export type ImageCarouselTestsQueryRawResponse = {
             readonly url: string | null;
             readonly width: number | null;
             readonly height: number | null;
+            readonly imageVersions: ReadonlyArray<string | null> | null;
             readonly deepZoom: ({
                 readonly image: ({
                     readonly tileSize: number | null;
@@ -53,6 +54,7 @@ fragment ImageCarousel_images on Image {
   url: imageURL
   width
   height
+  imageVersions
   deepZoom {
     image: Image {
       tileSize: TileSize
@@ -158,6 +160,13 @@ return {
                 "storageKey": null
               },
               {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "imageVersions",
+                "args": null,
+                "storageKey": null
+              },
+              {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "deepZoom",
@@ -241,7 +250,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ImageCarouselTestsQuery",
-    "id": "23ef66a0dbbd53bcf52766b0e420c2db",
+    "id": "8792d37017c851a70dfa3671f759a20f",
     "text": null,
     "metadata": {}
   }

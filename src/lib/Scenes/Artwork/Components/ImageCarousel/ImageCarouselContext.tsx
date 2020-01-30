@@ -87,7 +87,15 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
             setFullScreenState("none")
             break
           case "TAPPED_TO_GO_FULL_SCREEN":
-            setFullScreenState("doing first render")
+            // some artwork images are corrupt (!?) and do not have deepZoom
+            if (images[imageIndex.current].deepZoom) {
+              tracking.trackEvent({
+                action_name: Schema.ActionNames.ArtworkImageZoom,
+                action_type: Schema.ActionTypes.Tap,
+                context_module: Schema.ContextModules.ArtworkImage,
+              })
+              setFullScreenState("doing first render")
+            }
             break
           case "FULL_SCREEN_INITIAL_RENDER_COMPLETED":
             setFullScreenState("animating entry transition")
