@@ -5,7 +5,7 @@ import { RequestConditionReportMutation } from "__generated__/RequestConditionRe
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "lib/Components/Modal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { Schema, screenTrack } from "lib/utils/track"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -23,10 +23,7 @@ interface State {
   errorModalText: string
 }
 
-@screenTrack({
-  context_screen: Schema.PageNames.RequestConditionReportPage,
-  context_screen_owner_type: null,
-})
+@track()
 export class RequestConditionReport extends React.Component<RequestConditionReportProps, State> {
   state = {
     requestingConditionReport: false,
@@ -61,7 +58,11 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
     })
   }
 
-  // TODO: add tracking
+  @track(() => ({
+    action_name: Schema.ActionNames.RequestConditionReport,
+    action_type: Schema.ActionTypes.Fail,
+    context_module: Schema.ContextModules.ArtworkDetails,
+  }))
   presentErrorModal(errors: Error | ReadonlyArray<PayloadError>, mutationMessage: string) {
     console.error("RequestConditionReport.tsx", errors)
 
@@ -69,12 +70,21 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
     this.setState({ showErrorModal: true, errorModalText: errorMessage, requestingConditionReport: false })
   }
 
-  // TODO: add tracking
-  requestConditionReportSuccess = () => {
+  @track(() => ({
+    action_name: Schema.ActionNames.RequestConditionReport,
+    action_type: Schema.ActionTypes.Success,
+    context_module: Schema.ContextModules.ArtworkDetails,
+  }))
+  requestConditionReportSuccess() {
     this.setState({ showConditionReportRequestedModal: true, requestingConditionReport: false })
   }
 
-  handleRequestConditionReportClick = () => {
+  @track(() => ({
+    action_name: Schema.ActionNames.RequestConditionReport,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkDetails,
+  }))
+  handleRequestConditionReportClick() {
     this.setState({ requestingConditionReport: true })
 
     this.requestConditionReport()
@@ -106,7 +116,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
           size="small"
           variant="secondaryGray"
           loading={requestingConditionReport}
-          onPress={this.handleRequestConditionReportClick}
+          onPress={this.handleRequestConditionReportClick.bind(this)}
         >
           Request condition report
         </Button>
