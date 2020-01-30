@@ -3,9 +3,9 @@
 exports[`Collection renders a snapshot 1`] = `
 <View
   style={
-    Array [
-      Object {},
-    ]
+    Object {
+      "flex": 1,
+    }
   }
 >
   <RCTScrollView
@@ -1203,12 +1203,27 @@ exports[`Collection renders a snapshot 1`] = `
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
+    onViewableItemsChanged={[Function]}
     removeClippedSubviews={false}
     renderItem={[Function]}
     scrollEventThrottle={50}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
-    viewabilityConfigCallbackPairs={Array []}
+    viewabilityConfig={
+      Object {
+        "viewAreaCoveragePercentThreshold": 5,
+      }
+    }
+    viewabilityConfigCallbackPairs={
+      Array [
+        Object {
+          "onViewableItemsChanged": [Function],
+          "viewabilityConfig": Object {
+            "viewAreaCoveragePercentThreshold": 5,
+          },
+        },
+      ]
+    }
     windowSize={21}
   >
     <View>

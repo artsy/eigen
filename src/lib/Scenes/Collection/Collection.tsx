@@ -1,11 +1,13 @@
 import { Box, Separator, Spacer, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
+import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
-import { FlatList } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
@@ -14,6 +16,7 @@ interface CollectionProps {
 
 interface CollectionState {
   sections: Array<{ type: string; data: any }>
+  isArtworkGridVisible: boolean
 }
 
 @screenTrack((props: CollectionProps) => ({
@@ -25,8 +28,11 @@ interface CollectionState {
 export class Collection extends Component<CollectionProps, CollectionState> {
   state = {
     sections: [],
+    isArtworkGridVisible: false,
   }
-
+  viewabilityConfig = {
+    viewAreaCoveragePercentThreshold: 5,
+  }
   componentDidMount() {
     const sections = []
 
@@ -66,13 +72,25 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     }
   }
 
+  onViewableItemsChanged = ({ viewableItems }) => {
+    ;(viewableItems || []).map(viewableItem => {
+      const artworksRenderItem = viewableItem?.item?.type || ""
+      const artworksRenderItemViewable = viewableItem?.isViewable || false
+      if (artworksRenderItem === "collectionArtworks" && artworksRenderItemViewable) {
+        return this.setState({ isArtworkGridVisible: true })
+      }
+      return this.setState({ isArtworkGridVisible: false })
+    })
+  }
   render() {
-    const { sections } = this.state
+    const { isArtworkGridVisible, sections } = this.state
 
     return (
       <Theme>
-        <Box>
+        <View style={{ flex: 1 }}>
           <FlatList
+            onViewableItemsChanged={this.onViewableItemsChanged}
+            viewabilityConfig={this.viewabilityConfig}
             keyExtractor={(_item, index) => String(index)}
             data={sections}
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
@@ -82,11 +100,17 @@ export class Collection extends Component<CollectionProps, CollectionState> {
               </Box>
             )}
           />
-        </Box>
+          {isArtworkGridVisible ? <FilterArtworkButton title="Filter" /> : null}
+        </View>
       </Theme>
     )
   }
 }
+
+const FilterArtworkButton = styled(DarkNavigationButton)`
+  position: absolute;
+  bottom: 100;
+`
 
 export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
