@@ -5,7 +5,7 @@ import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { truncatedTextLimit } from "../hardware"
-import { RequestConditionReport } from "./RequestConditionReport"
+import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork
@@ -21,7 +21,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
     context_module: Schema.ContextModules.ArtworkDetails,
   }))
   render() {
-    const { artwork, relay } = this.props
+    const { artwork } = this.props
 
     const listItems = [
       { title: "Medium", value: artwork.category },
@@ -31,9 +31,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
       },
       {
         title: "Condition",
-        value: this.props.artwork.isBiddable ? (
-          <RequestConditionReport saleArtworkID={artwork.saleArtwork.internalID} relay={relay} />
-        ) : null,
+        value: this.props.artwork.isBiddable ? <RequestConditionReportQueryRenderer artworkID={artwork.slug} /> : null,
       },
       { title: "Signature", value: artwork.signatureInfo && artwork.signatureInfo.details },
       {
@@ -83,6 +81,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
 export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDetails, {
   artwork: graphql`
     fragment ArtworkDetails_artwork on Artwork {
+      slug
       category
       conditionDescription {
         label

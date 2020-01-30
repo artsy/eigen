@@ -160,6 +160,7 @@ fragment AboutArtist_artwork on Artwork {
 }
 
 fragment ArtworkDetails_artwork on Artwork {
+  slug
   category
   conditionDescription {
     label
@@ -1985,7 +1986,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkTestsQuery",
-    "id": "1275f626ce08ff917218d10b657db894",
+    "id": "0efa12f52436b294f82c25cbe8be6903",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {

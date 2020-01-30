@@ -164,6 +164,7 @@ fragment AboutArtist_artwork on Artwork {
 }
 
 fragment ArtworkDetails_artwork on Artwork {
+  slug
   category
   conditionDescription {
     label
@@ -1889,7 +1890,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "2922615fe6e16998af474e0445f44ac1",
+    "id": "f87f4778df72314360a141c9b3495ef2",
     "text": null,
     "metadata": {}
   }

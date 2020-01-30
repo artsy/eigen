@@ -1,14 +1,20 @@
 import { Button } from "@artsy/palette"
+import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
+import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
+import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "lib/Components/Modal"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { View } from "react-native"
-import { commitMutation, graphql, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
 
-interface Props {
-  saleArtworkID: string
+interface RequestConditionReportProps {
   relay?: RelayProp
+  artwork: RequestConditionReport_artwork
+  me: RequestConditionReport_me
 }
 
 interface State {
@@ -22,7 +28,7 @@ interface State {
   context_screen: Schema.PageNames.RequestConditionReportPage,
   context_screen_owner_type: null,
 })
-export class RequestConditionReport extends React.Component<Props, State> {
+export class RequestConditionReport extends React.Component<RequestConditionReportProps, State> {
   state = {
     requestingConditionReport: false,
     showConditionReportRequestedModal: false,
@@ -31,7 +37,7 @@ export class RequestConditionReport extends React.Component<Props, State> {
   }
 
   requestConditionReport = () => {
-    const { saleArtworkID, relay } = this.props
+    const { artwork, relay } = this.props
     return new Promise(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: data => {
@@ -50,7 +56,7 @@ export class RequestConditionReport extends React.Component<Props, State> {
           }
         `,
         variables: {
-          input: { saleArtworkID },
+          input: { saleArtworkID: artwork.saleArtwork.internalID },
         },
       })
     })
@@ -91,6 +97,7 @@ export class RequestConditionReport extends React.Component<Props, State> {
   }
 
   render() {
+    const { me } = this.props
     const { requestingConditionReport, showErrorModal, errorModalText, showConditionReportRequestedModal } = this.state
 
     return (
@@ -104,21 +111,67 @@ export class RequestConditionReport extends React.Component<Props, State> {
         >
           Request condition report
         </Button>
-
         <Modal
           visible={showErrorModal}
           headerText="An error occurred"
           detailText={errorModalText}
           closeModal={this.closeModals.bind(this)}
         />
-
         <Modal
           visible={showConditionReportRequestedModal}
           headerText="Condition Report Requested"
-          detailText="We have received your request. The condition report will be sent to."
+          detailText={`We have received your request.\nThe condition report will be sent to ${me &&
+            me.email}.\nFor questions contact specialist@artsy.net.`}
           closeModal={this.closeModals.bind(this)}
         />
       </View>
     )
   }
 }
+
+export const RequestConditionReportQueryRenderer: React.FC<{
+  artworkID: string
+}> = ({ artworkID }) => {
+  return (
+    <QueryRenderer<RequestConditionReportQuery>
+      environment={defaultEnvironment}
+      variables={{ artworkID }}
+      query={graphql`
+        query RequestConditionReportQuery($artworkID: String!) {
+          me {
+            ...RequestConditionReport_me
+          }
+
+          artwork(id: $artworkID) {
+            ...RequestConditionReport_artwork
+          }
+        }
+      `}
+      render={({ props }) => {
+        if (props) {
+          return <RequestConditionReportFragmentContainer artwork={props.artwork} me={props.me} />
+        } else {
+          return null
+        }
+      }}
+    />
+  )
+}
+
+export const RequestConditionReportFragmentContainer = createFragmentContainer(RequestConditionReport, {
+  me: graphql`
+    fragment RequestConditionReport_me on Me {
+      email
+      internalID
+    }
+  `,
+  artwork: graphql`
+    fragment RequestConditionReport_artwork on Artwork {
+      internalID
+      slug
+      saleArtwork {
+        internalID
+      }
+    }
+  `,
+})

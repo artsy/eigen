@@ -2,6 +2,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 export type ArtworkDetails_artwork = {
+    readonly slug: string;
     readonly category: string | null;
     readonly conditionDescription: {
         readonly label: string | null;
@@ -56,6 +57,13 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -159,5 +167,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1151853532d72e33ae243d576f1daf33';
+(node as any).hash = 'df836aa0ef7b4fbd9500144a28d9adf6';
 export default node;
