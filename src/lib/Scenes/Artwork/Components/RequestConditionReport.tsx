@@ -5,7 +5,7 @@ import { RequestConditionReportMutation } from "__generated__/RequestConditionRe
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "lib/Components/Modal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { Schema, screenTrack, track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
