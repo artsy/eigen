@@ -3,13 +3,28 @@ import React from "react"
 import { useTracking } from "react-tracking"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
 
+const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
+  images: [
+    {
+      height: 5,
+      width: 5,
+      url: "a",
+      deepZoom: { image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } } },
+    },
+    {
+      height: 5,
+      width: 5,
+      url: "b",
+      deepZoom: { image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } } },
+    },
+  ],
+}
+
 describe("image carousel context", () => {
   let context: ImageCarouselContext
   const trackEvent = jest.fn()
   function Mock() {
-    const value = useNewImageCarouselContext({
-      images: [{ height: 5, width: 5, url: "a", deepZoom: null }, { height: 5, width: 5, url: "b", deepZoom: null }],
-    })
+    const value = useNewImageCarouselContext(contextMock)
     return (
       <ImageCarouselContext.Provider value={value}>
         <ImageCarouselContext.Consumer>

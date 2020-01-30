@@ -1,3 +1,4 @@
+import { ImageCarouselTestsQueryRawResponse } from "__generated__/ImageCarouselTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { Animated, FlatList } from "react-native"
@@ -9,37 +10,55 @@ import { ImageCarouselFragmentContainer, PaginationDot } from "../ImageCarousel"
 jest.unmock("react-relay")
 const trackEvent = jest.fn()
 
-const artworkFixture = {
+const deepZoomFixture: ImageCarouselTestsQueryRawResponse["artwork"]["images"][0]["deepZoom"] = {
+  image: {
+    format: "jpg",
+    size: {
+      height: 3000,
+      width: 3000,
+    },
+    tileSize: 400,
+    url: "https://example.com/image.jpg",
+  },
+}
+
+const artworkFixture: ImageCarouselTestsQueryRawResponse["artwork"] = {
+  id: "artwork-id",
   images: [
     {
-      imageURL: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
+      url: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
       width: 1024,
       height: 822,
-      deepZoom: null,
+      deepZoom: deepZoomFixture,
+      imageVersions: ["normalized"],
     },
     {
-      imageURL: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
+      url: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
       width: 1024,
       height: 919,
-      deepZoom: null,
+      deepZoom: deepZoomFixture,
+      imageVersions: ["normalized"],
     },
     {
-      imageURL: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
+      url: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
       width: 1024,
       height: 497,
-      deepZoom: null,
+      deepZoom: deepZoomFixture,
+      imageVersions: ["normalized"],
     },
     {
-      imageURL: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
+      url: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
       width: 1024,
       height: 907,
-      deepZoom: null,
+      deepZoom: deepZoomFixture,
+      imageVersions: ["normalized"],
     },
     {
-      imageURL: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
+      url: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
       width: 2800,
       height: 2100,
-      deepZoom: null,
+      deepZoom: deepZoomFixture,
+      imageVersions: ["normalized"],
     },
   ],
 }
@@ -125,6 +144,29 @@ describe("ImageCarouselFragmentContainer", () => {
       wrapper.update()
 
       expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([0.1, 0.1, 0.1, 0.1, 1])
+    })
+
+    it(`does not show images that have no deep zoom`, async () => {
+      const wrapper = await getWrapper({
+        ...artworkFixture,
+        // delete two of the images' deepZoom
+        images: [
+          ...artworkFixture.images.slice(0, 2).map(image => ({ ...image, deepZoom: null })),
+          ...artworkFixture.images.slice(2),
+        ],
+      })
+
+      expect(wrapper.find(PaginationDot)).toHaveLength(3)
+    })
+
+    it(`only shows one image when none of the images have deep zoom`, async () => {
+      const wrapper = await getWrapper({
+        ...artworkFixture,
+        images: artworkFixture.images.map(image => ({ ...image, deepZoom: null })),
+      })
+
+      expect(wrapper.find(PaginationDot)).toHaveLength(0)
+      expect(wrapper.find(FlatList).props().scrollEnabled).toBe(false)
     })
   })
 
