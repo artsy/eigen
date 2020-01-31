@@ -36,7 +36,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
     return artists.map(artist => {
       return (
         <Box width="100%" key={artist.internalID} pb={20}>
-          <ArtistListItem artist={artist} contextModule={ContextModules.Collection} />
+          <ArtistListItem artist={artist} contextModule={ContextModules.FeaturedArtists} />
         </Box>
       )
     })
