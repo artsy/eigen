@@ -1,3 +1,15 @@
+# v1.21.31 (Fri Jan 31 2020)
+
+#### 🐛  Bug Fix
+
+- Update analytics constant for Collection/Featured Artists [#2069](https://github.com/artsy/emission/pull/2069) ([@pepopowitz](https://github.com/pepopowitz))
+
+#### Authors: 1
+
+- Steven Hicks ([@pepopowitz](https://github.com/pepopowitz))
+
+---
+
 # v1.21.30 (Thu Jan 30 2020)
 
 #### 🐛  Bug Fix
