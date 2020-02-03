@@ -323,7 +323,6 @@ export enum ContextModules {
   ExhibitionHistory = "ExhibitionHistory",
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
-  RequestConditionReport = "Request condition report",
 }
 
 export enum Flow {

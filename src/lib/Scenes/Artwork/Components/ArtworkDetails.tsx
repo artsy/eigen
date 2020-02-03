@@ -21,16 +21,15 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
   }))
   render() {
     const { artwork } = this.props
-
     const listItems = [
       { title: "Medium", value: artwork.category },
       {
         title: "Condition",
-        value: artwork.isBiddable && artwork.conditionDescription ? artwork.conditionDescription.details : null,
-      },
-      {
-        title: "Condition",
-        value: this.props.artwork.isBiddable ? <RequestConditionReportQueryRenderer artworkID={artwork.slug} /> : null,
+        value: artwork.isBiddable ? (
+          <RequestConditionReportQueryRenderer artworkID={artwork.slug} />
+        ) : (
+          artwork.conditionDescription && artwork.conditionDescription.details
+        ),
       },
       { title: "Signature", value: artwork.signatureInfo && artwork.signatureInfo.details },
       {

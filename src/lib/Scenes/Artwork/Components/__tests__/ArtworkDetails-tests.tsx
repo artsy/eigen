@@ -58,4 +58,52 @@ describe("Artwork Details", () => {
     expect(component.text()).not.toContain("Frame")
     expect(component.text()).not.toContain("Signature")
   })
+
+  it("shows condition description if present and not biddable", () => {
+    const artworkDetailsInfo = {
+      artwork: {
+        " $refType": null,
+        category: "Oil on canvas",
+        conditionDescription: {
+          details: "Amazing condition",
+        },
+        signatureInfo: null,
+        certificateOfAuthenticity: null,
+        framed: null,
+        series: null,
+        publisher: null,
+        manufacturer: null,
+        image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
+      },
+    }
+    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
+    expect(component.text()).toContain("Condition")
+    expect(component.text()).toContain("Amazing condition")
+  })
+
+  it.only("shows request condition report if biddable", () => {
+    const artworkDetailsInfo = {
+      artwork: {
+        " $refType": null,
+        category: "Oil on canvas",
+        conditionDescription: {
+          label: "Condition",
+          details: "Amazing condition",
+        },
+        isBiddable: true,
+        signatureInfo: null,
+        certificateOfAuthenticity: null,
+        framed: null,
+        series: null,
+        publisher: null,
+        manufacturer: null,
+        image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
+      },
+    }
+    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
+    expect(component.text()).toContain("Condition")
+    expect(component.text()).not.toContain("Amazing condition")
+    const requestReportQueryRenderer = component.find("RequestConditionReportQueryRenderer")
+    expect(requestReportQueryRenderer.length).toEqual(1)
+  })
 })
