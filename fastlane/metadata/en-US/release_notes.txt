@@ -1,7 +1,7 @@
-We've updated the app with a whole new search experience to help users find the artworks and artists they love, faster than ever. The app remembers your recent search results for easy access.
+This update includes a number of small bug fixes and improvements, including:
 
-We have also added a settings screen that shows users who they are logged in as, with a new ability for users to log out of the app.
-
-Finally, we've made some small bug fixes throughout the app.
+• Improved Search results for artworks with long names.
+• Fixed a rare bug that would cause the app to crash when zooming in on certain images.
+• Fixed several small bugs related to logging out.
 
 Have feedback? Email us at support@artsy.net
