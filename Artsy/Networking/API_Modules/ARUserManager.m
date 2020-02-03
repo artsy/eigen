@@ -103,9 +103,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARUserRequestedLogout" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSLog(@"Hey, we're logging out!");
-        [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
-            [[self class] logout];
-        }];
+        [[self class] logout];
     }];
     
     return self;
@@ -429,14 +427,16 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 + (void)logout
 {
-    [[self class] clearUserData];
-    [AREmission teardownSharedInstance];
-    [ARTopMenuViewController teardownSharedInstance];
-    [ARSwitchBoard teardownSharedInstance];
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        // Sync clock with server
-        [ARSystemTime sync];
-        [[ARAppDelegate sharedInstance] showOnboarding];
+    [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
+        [[self class] clearUserData];
+        [AREmission teardownSharedInstance];
+        [ARTopMenuViewController teardownSharedInstance];
+        [ARSwitchBoard teardownSharedInstance];
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+            // Sync clock with server
+            [ARSystemTime sync];
+            [[ARAppDelegate sharedInstance] showOnboarding];
+        }];
     }];
 }
 
