@@ -81,6 +81,32 @@ describe(SearchResult, () => {
     expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("an")
   })
 
+  it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
+    const tree = create(
+      <TestWrapper
+        result={{
+          ...result,
+          displayLabel: "Joãn Miró",
+        }}
+        highlight="an"
+      />
+    )
+
+    expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("ãn")
+
+    tree.update(
+      <TestWrapper
+        result={{
+          ...result,
+          displayLabel: "Joãn Miró",
+        }}
+        highlight="Miro"
+      />
+    )
+
+    expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("Miró")
+  })
+
   it(`updates recent searches by default`, async () => {
     const tree = create(<TestWrapper result={result} />)
     expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
