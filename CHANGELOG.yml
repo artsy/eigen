@@ -9,6 +9,7 @@ upcoming:
     - Opts out of new iOS 13 modal presentation style on iPhone - ash
     - Opts out of dark mode - david
     - Clear APN token on logout - david + ash + brian
+    - Use non-exiting logout function when session expires - david
   user_facing:
     -
 
