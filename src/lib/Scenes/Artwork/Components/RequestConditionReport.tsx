@@ -23,7 +23,10 @@ interface State {
   errorModalText: string
 }
 
-@track()
+@track({
+  action_name: Schema.ActionNames.RequestConditionReport,
+  context_module: Schema.ContextModules.ArtworkDetails,
+})
 export class RequestConditionReport extends React.Component<RequestConditionReportProps, State> {
   state = {
     requestingConditionReport: false,
@@ -58,40 +61,33 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
     })
   }
 
-  @track(() => ({
-    action_name: Schema.ActionNames.RequestConditionReport,
+  @track({
     action_type: Schema.ActionTypes.Fail,
-    context_module: Schema.ContextModules.ArtworkDetails,
-  }))
+  })
   presentErrorModal(errors: Error | ReadonlyArray<PayloadError>, mutationMessage: string) {
     console.error("RequestConditionReport.tsx", errors)
-
     const errorMessage = mutationMessage || "There was a problem processing your request. Please try again."
     this.setState({ showErrorModal: true, errorModalText: errorMessage, requestingConditionReport: false })
   }
 
-  @track(() => ({
-    action_name: Schema.ActionNames.RequestConditionReport,
+  @track({
     action_type: Schema.ActionTypes.Success,
-    context_module: Schema.ContextModules.ArtworkDetails,
-  }))
-  requestConditionReportSuccess() {
+  })
+  presentSuccessModal() {
     this.setState({ showConditionReportRequestedModal: true, requestingConditionReport: false })
   }
 
-  @track(() => ({
-    action_name: Schema.ActionNames.RequestConditionReport,
+  @track({
     action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkDetails,
-  }))
-  handleRequestConditionReportClick() {
+  })
+  handleRequestConditionReportTap() {
     this.setState({ requestingConditionReport: true })
 
     this.requestConditionReport()
       .then(data => {
         const theData = data as any
         if (theData.requestConditionReport) {
-          this.requestConditionReportSuccess()
+          this.presentSuccessModal()
         } else {
           this.presentErrorModal(null, null)
         }
@@ -116,7 +112,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
           size="small"
           variant="secondaryGray"
           loading={requestingConditionReport}
-          onPress={this.handleRequestConditionReportClick.bind(this)}
+          onPress={this.handleRequestConditionReportTap.bind(this)}
         >
           Request condition report
         </Button>
