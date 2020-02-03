@@ -12,7 +12,6 @@ import {
 } from "@artsy/palette"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
-import { FilterModal } from "lib/Components/FilterModal"
 import Events from "lib/NativeModules/Events"
 import { Schema, track } from "lib/utils/track"
 import { take } from "lodash"
@@ -27,10 +26,6 @@ const ApiModule = NativeModules.ARTemporaryAPIModule
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
   relay?: RelayProp
-}
-
-interface State {
-  isModalVisible: boolean
 }
 
 export const shareContent = (title, href, artists: ArtworkActions_artwork["artists"]) => {
@@ -49,11 +44,7 @@ export const shareContent = (title, href, artists: ArtworkActions_artwork["artis
 }
 
 @track()
-export class ArtworkActions extends React.Component<ArtworkActionsProps, State> {
-  state = {
-    isModalVisible: true,
-  }
-
+export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   @track((props: ArtworkActionsProps) => {
     return {
       action_name: props.artwork.is_saved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
@@ -62,10 +53,6 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps, State> 
     }
   })
   handleArtworkSave() {
-    console.log("Hello!")
-    this.setState({ isModalVisible: !this.state.isModalVisible })
-
-    return
     const { artwork, relay } = this.props
     commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
       mutation: graphql`
@@ -122,9 +109,6 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps, State> 
 
     return (
       <View>
-        <FilterModal visible={this.state.isModalVisible} closeModal={this.handleArtworkSave.bind(this)}>
-          <Sans size="3t">Hello, modal!</Sans>
-        </FilterModal>
         <Flex flexDirection="row">
           {isOpenSale ? (
             <TouchableWithoutFeedback onPress={() => this.handleArtworkSave()}>
