@@ -112,9 +112,9 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateLogOut
 {
-    return [self tappableCellDataWithTitle:@"Log Out" selection:^{
+    return [self tappableCellDataWithTitle:@"Log Out & Exit" selection:^{
         [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
-            [ARUserManager logout];
+            [ARUserManager logoutAndExit];
         }];
     }];
 }
@@ -172,7 +172,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     RCTDevSettings *devSettings = [[[AREmission sharedInstance] bridge] devSettings];
     devSettings.isShakeToShowDevMenuEnabled = YES;
-    
+
     if (!devSettings.isRemoteDebuggingAvailable) {
         return [self tappableCellDataWithTitle:@"Remote JS Debugger Unavailable" selection:^{
             UIAlertController *alertController = [UIAlertController
@@ -187,7 +187,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         }];
     } else {
         NSString *title = devSettings.isDebuggingRemotely ? @"Stop Remote JS Debugging" : @"Debug JS Remotely";
-        
+
         return [self tappableCellDataWithTitle:title selection:^{
             devSettings.isDebuggingRemotely = !devSettings.isDebuggingRemotely;
             exit(0);
@@ -461,34 +461,34 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Labs";
-    
+
     NSArray *options = [[AROptions labsOptions] sortedArrayUsingSelector:@selector(compare:)];
     for (NSInteger index = 0; index < options.count; index++) {
         NSString *key = options[index];
         NSString *title = [AROptions descriptionForOption:key];
         BOOL requiresRestart = [[AROptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
-        
+
         ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
         [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
             cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
             cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:key]];
         }];
-        
+
         [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
             BOOL currentSelection = [AROptions boolForOption:key];
             [AROptions setBool:!currentSelection forOption:key];
-            
+
             if (requiresRestart) {
                 // Show checkmark.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     exit(0);
                 });
             }
-            
+
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];
         }];
-        
+
         [labsSectionData addCellData:cellData];
     }
     return labsSectionData;
