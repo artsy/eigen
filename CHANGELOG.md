@@ -1,3 +1,15 @@
+# v1.21.32 (Mon Feb 03 2020)
+
+#### 🐛  Bug Fix
+
+- Fix sentry imports [#2070](https://github.com/artsy/emission/pull/2070) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.31 (Fri Jan 31 2020)
 
 #### 🐛  Bug Fix
