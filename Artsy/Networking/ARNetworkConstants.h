@@ -93,6 +93,7 @@ extern NSString *const AROrderedSetItemsURLFormat;
 extern NSString *const ARSiteFeaturesURL;
 
 extern NSString *const ARNewDeviceURL;
+extern NSString *const ARDeleteDeviceURL;
 extern NSString *const ARSiteUpURL;
 
 extern NSString *const ARProfilePostsURLFormat;

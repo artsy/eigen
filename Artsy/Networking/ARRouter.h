@@ -204,6 +204,7 @@
 + (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString *)email;
 + (NSURLRequest *)newSiteFeaturesRequest;
 + (NSURLRequest *)newSetDeviceAPNTokenRequest:(NSString *)token forDevice:(NSString *)device;
++ (NSURLRequest *)newDeleteDeviceRequest:(NSString *)token;
 + (NSURLRequest *)newUptimeURLRequest;
 + (NSURLRequest *)newSystemTimeRequest;
 + (NSURLRequest *)newRequestOutbidNotificationRequest;

@@ -8,6 +8,7 @@
 #import "ARRouter.h"
 #import "ARFileUtils.h"
 #import "ArtsyAPI+Private.h"
+#import "ArtsyAPI+DeviceTokens.h"
 #import "User.h"
 #import "ARAppConstants.h"
 
@@ -102,17 +103,19 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARUserRequestedLogout" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSLog(@"Hey, we're logging out!");
-        [[self class] clearUserData];
-        [AREmission teardownSharedInstance];
-        [ARTopMenuViewController teardownSharedInstance];
-        [ARSwitchBoard teardownSharedInstance];
-        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-            // Sync clock with server
-            [ARSystemTime sync];
-            [[ARAppDelegate sharedInstance] showOnboarding];
+        [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
+            [[self class] clearUserData];
+            [AREmission teardownSharedInstance];
+            [ARTopMenuViewController teardownSharedInstance];
+            [ARSwitchBoard teardownSharedInstance];
+            [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+                // Sync clock with server
+                [ARSystemTime sync];
+                [[ARAppDelegate sharedInstance] showOnboarding];
+            }];
         }];
     }];
-
+    
     return self;
 }
 
@@ -443,11 +446,13 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 + (void)logoutAndSetUseStaging:(BOOL)useStaging
 {
-    [self clearUserData:[self sharedManager] useStaging:@(useStaging)];
-    // Clearning the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        exit(0);
-    });
+    [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
+        [self clearUserData:[self sharedManager] useStaging:@(useStaging)];
+        // Clearning the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            exit(0);
+        });
+    }];
 }
 
 + (void)clearUserData

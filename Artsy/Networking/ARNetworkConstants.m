@@ -101,6 +101,7 @@ NSString *const ARNotificationsURL = @"/api/v1/me/notifications";
 NSString *const ARSiteFeaturesURL = @"/api/v1/site_features/";
 
 NSString *const ARNewDeviceURL = @"/api/v1/device";
+NSString *const ARDeleteDeviceURL = @"/api/v1/device/%@";
 NSString *const ARSiteUpURL = @"/api/v1/system/up";
 
 NSString *const ARProfilePostsURLFormat = @"/api/v1/profile/%@/posts";

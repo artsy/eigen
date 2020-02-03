@@ -1043,6 +1043,11 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:ARNewDeviceURL parameters:params];
 }
 
++ (NSURLRequest *)newDeleteDeviceRequest:(NSString *)token
+{
+    return [self requestWithMethod:@"DELETE" path:[NSString stringWithFormat:ARDeleteDeviceURL, token]];
+}
+
 + (NSURLRequest *)newUptimeURLRequest
 {
     return [self requestWithMethod:@"GET" path:ARSiteUpURL parameters:nil];
