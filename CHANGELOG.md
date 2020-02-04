@@ -1,3 +1,15 @@
+# v1.21.33 (Tue Feb 04 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-126] highlight diacritics in search results [#2071](https://github.com/artsy/emission/pull/2071) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.32 (Mon Feb 03 2020)
 
 #### 🐛  Bug Fix
