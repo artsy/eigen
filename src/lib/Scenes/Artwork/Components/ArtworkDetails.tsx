@@ -3,6 +3,7 @@ import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.gra
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
+import { NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { truncatedTextLimit } from "../hardware"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
@@ -21,15 +22,22 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
   }))
   render() {
     const { artwork } = this.props
+
+    const enableLotConditionReport =
+      NativeModules.Emission &&
+      NativeModules.Emission.options &&
+      NativeModules.Emission.options.AROptionsLotConditionReport
+
     const listItems = [
       { title: "Medium", value: artwork.category },
       {
         title: "Condition",
-        value: artwork.isBiddable ? (
-          <RequestConditionReportQueryRenderer artworkID={artwork.slug} />
-        ) : (
-          artwork.conditionDescription && artwork.conditionDescription.details
-        ),
+        value:
+          enableLotConditionReport && artwork.isBiddable ? (
+            <RequestConditionReportQueryRenderer artworkID={artwork.slug} />
+          ) : (
+            artwork.conditionDescription && artwork.conditionDescription.details
+          ),
       },
       { title: "Signature", value: artwork.signatureInfo && artwork.signatureInfo.details },
       {
