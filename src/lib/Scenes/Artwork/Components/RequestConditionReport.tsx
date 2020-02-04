@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button, Flex } from "@artsy/palette"
 import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
 import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
@@ -116,21 +116,23 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
         >
           Request condition report
         </Button>
-        <Modal
-          textAlign="center"
-          visible={showErrorModal}
-          headerText="An error occurred"
-          detailText={errorModalText}
-          closeModal={this.closeModals.bind(this)}
-        />
-        <Modal
-          textAlign="center"
-          visible={showConditionReportRequestedModal}
-          headerText="Condition Report Requested"
-          detailText={`We have received your request.\nThe condition report will be sent to ${me &&
-            me.email}.\nFor questions contact specialist@artsy.net.`}
-          closeModal={this.closeModals.bind(this)}
-        />
+        <Flex height={0}>
+          <Modal
+            textAlign="center"
+            visible={showErrorModal}
+            headerText="An error occurred"
+            detailText={errorModalText}
+            closeModal={this.closeModals.bind(this)}
+          />
+          <Modal
+            textAlign="center"
+            visible={showConditionReportRequestedModal}
+            headerText="Condition Report Requested"
+            detailText={`We have received your request.\nThe condition report will be sent to ${me &&
+              me.email}.\nFor questions contact specialist@artsy.net.`}
+            closeModal={this.closeModals.bind(this)}
+          />
+        </Flex>
       </View>
     )
   }

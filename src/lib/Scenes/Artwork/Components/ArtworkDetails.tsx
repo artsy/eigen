@@ -68,7 +68,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
                 value
               ) : (
                 <ReadMore
-                  content={value}
+                  content={value as string}
                   color="black60"
                   sans
                   maxChars={truncatedTextLimit()}

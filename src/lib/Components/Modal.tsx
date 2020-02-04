@@ -53,13 +53,13 @@ export class Modal extends React.Component<ModalProps, any> {
     const { headerText, detailText } = this.props
 
     return (
-      <View style={{ marginTop: this.state.modalVisible ? 22 : 0 }}>
+      <View style={{ marginTop: 22 }}>
         <RNModal animationType="fade" transparent={true} visible={this.state.modalVisible}>
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
             <ModalBackgroundView>
               <TouchableWithoutFeedback onPress={null}>
                 <ModalInnerView>
-                  <View style={{ paddingBottom: 20 }}>
+                  <View style={{ paddingBottom: 10 }}>
                     <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
                       {headerText}
                     </Sans>

@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
+import { NativeModules } from "react-native"
 import { ArtworkDetails } from "../ArtworkDetails"
 
 jest.unmock("react-relay")
@@ -81,7 +82,13 @@ describe("Artwork Details", () => {
     expect(component.text()).toContain("Amazing condition")
   })
 
-  it.only("shows request condition report if biddable", () => {
+  it("shows request condition report if biddable and feature flag is enabled", () => {
+    NativeModules.Emission = {
+      options: {
+        AROptionsLotConditionReport: true,
+      },
+    }
+
     const artworkDetailsInfo = {
       artwork: {
         " $refType": null,
@@ -105,5 +112,36 @@ describe("Artwork Details", () => {
     expect(component.text()).not.toContain("Amazing condition")
     const requestReportQueryRenderer = component.find("RequestConditionReportQueryRenderer")
     expect(requestReportQueryRenderer.length).toEqual(1)
+  })
+
+  it("does not show request condition report if biddable and feature flag is disabled", () => {
+    NativeModules.Emission = {
+      options: {
+        AROptionsLotConditionReport: false,
+      },
+    }
+
+    const artworkDetailsInfo = {
+      artwork: {
+        " $refType": null,
+        category: "Oil on canvas",
+        conditionDescription: {
+          label: "Condition",
+          details: "Amazing condition",
+        },
+        isBiddable: true,
+        signatureInfo: null,
+        certificateOfAuthenticity: null,
+        framed: null,
+        series: null,
+        publisher: null,
+        manufacturer: null,
+        image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
+      },
+    }
+    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
+    expect(component.text()).toContain("Amazing condition")
+    const requestReportQueryRenderer = component.find("RequestConditionReportQueryRenderer")
+    expect(requestReportQueryRenderer.length).toEqual(0)
   })
 })
