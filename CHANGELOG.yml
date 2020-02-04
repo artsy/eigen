@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.21.32
   dev:
-    - 
+    - Fixes full-bleed collections image rendering - ash & MX Knowledge Share Feb 4 2020
   user_facing:
     -
 

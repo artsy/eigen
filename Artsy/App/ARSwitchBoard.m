@@ -24,7 +24,7 @@
 #import "ARPaymentRequestWebViewController.h"
 #import "ARSerifNavigationViewController.h"
 #import "AREigenInquiryComponentViewController.h"
-#import "ARCollectionComponentViewController.h"
+#import "AREigenCollectionComponentViewController.h"
 
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
@@ -235,7 +235,7 @@ static ARSwitchBoard *sharedInstance = nil;
 
 
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {
-        return [[ARCollectionComponentViewController alloc] initWithCollectionID:parameters[@"id"]];
+        return [[AREigenCollectionComponentViewController alloc] initWithCollectionID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/conversation/:id"
