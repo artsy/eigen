@@ -1,3 +1,15 @@
+# v1.21.34 (Tue Feb 04 2020)
+
+#### 🐛  Bug Fix
+
+- Pin dep grapheme-splitter from ^1.0.4 to 1.0.4 [#2074](https://github.com/artsy/emission/pull/2074) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v1.21.33 (Tue Feb 04 2020)
 
 #### 🐛  Bug Fix
