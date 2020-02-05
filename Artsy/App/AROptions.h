@@ -13,6 +13,7 @@ extern NSString *const AROptionsDevReactEnv;
 extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsNewSearch;
+extern NSString *const AROptionsLotConditionReport;
 
 @interface AROptions : NSObject
 

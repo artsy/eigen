@@ -8,6 +8,7 @@ static NSDictionary *options = nil;
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
+NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
@@ -34,6 +35,7 @@ NSString *const AROptionsNewSearch = @"New Search";
         options = @{
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
+         AROptionsLotConditionReport : @"Lot Condition Report",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
          AROptionsNewSearch: AROptionsNewSearch,
