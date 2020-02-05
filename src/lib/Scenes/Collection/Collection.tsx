@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import { FilterModal } from "lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -73,9 +73,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
             <FilterModal
               visible={this.state.isFilterArtworksModalVisible}
               closeModal={this.handleFilterArtworksModal.bind(this)}
-            >
-              <Sans size="3t">Hello, modal!</Sans>
-            </FilterModal>
+            />
           </>
         )
       default:

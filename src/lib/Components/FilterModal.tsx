@@ -1,6 +1,6 @@
-import { Button } from "@artsy/palette"
+import { Box, Button, CloseIcon, Flex, Sans } from "@artsy/palette"
 import React from "react"
-import { LayoutAnimation, Modal as RNModal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import { LayoutAnimation, Modal as RNModal, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import styled from "styled-components/native"
 
 interface ModalProps extends ViewProperties {
@@ -66,12 +66,23 @@ export class FilterModal extends React.Component<ModalProps, State> {
     */
     return (
       <RNModal animationType="fade" transparent={true} visible={this.props.visible}>
-        <TouchableWithoutFeedback onPress={() => this.closeModal()}>
+        <TouchableWithoutFeedback>
           <ModalBackgroundView>
             <TouchableWithoutFeedback onPress={null}>
               <>
-                <View style={{ flexGrow: 1 }} />
+                <Flex onTouchStart={() => this.closeModal()} style={{ flexGrow: 1 }} />
                 <ModalInnerView visible={this.state.isComponentMounted}>
+                  <Flex flexDirection="row" justifyContent="space-between">
+                    <Flex alignItems="flex-end" mt={0.5} mb={2}>
+                      <Box onTouchEnd={() => this.closeModal()}>
+                        <CloseIcon fill="black100" />
+                      </Box>
+                    </Flex>
+                    <Sans weight="medium" size="4">
+                      Filter
+                    </Sans>
+                    <Sans size="4">Clear all</Sans>
+                  </Flex>
                   {this.props.children}
                   <Button
                     onPress={() => {
