@@ -24,6 +24,7 @@
 #import "ARAppStatus.h"
 #import "ARRouter.h"
 #import "ArtsyEcho.h"
+#import "ARReactPackagerHost.h"
 
 #import <Keys/ArtsyKeys.h>
 #import <Emission/AREmission.h>
@@ -85,7 +86,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         [self setupSharedEmissionWithPackagerURL:packagerURL];
 
     } else if ([AROptions boolForOption:AROptionsDevReactEnv]) {
-        NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
+        NSString *bundleUrlString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", [ARReactPackagerHost hostname]];
+        NSURL *packagerURL = [NSURL URLWithString:bundleUrlString];
         [self setupSharedEmissionWithPackagerURL:packagerURL];
 
     } else {

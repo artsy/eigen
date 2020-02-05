@@ -681,6 +681,9 @@
 		B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */; };
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
 		B4FDD967239ED8FF005A4F9F /* AREigenInquiryComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4FDD965239ED8FE005A4F9F /* AREigenInquiryComponentViewController.m */; };
+		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
+		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
+		B9A29FE223EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		C594DDCAE943654BE450F2EE /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */; };
 		CB206F7117C3FA8F00A4FDC4 /* ARPriceRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */; };
 		CB206F7417C569E800A4FDC4 /* ARPersonalizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */; };
@@ -1853,6 +1856,8 @@
 		B3EFC6381815B41C00F23540 /* BidderPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidderPosition.m; sourceTree = "<group>"; };
 		B4FDD965239ED8FE005A4F9F /* AREigenInquiryComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREigenInquiryComponentViewController.m; sourceTree = "<group>"; };
 		B4FDD966239ED8FE005A4F9F /* AREigenInquiryComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREigenInquiryComponentViewController.h; sourceTree = "<group>"; };
+		B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReactPackagerHost.h; sourceTree = "<group>"; };
+		B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARReactPackagerHost.m; sourceTree = "<group>"; };
 		C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
 		C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB206F6F17C3FA8F00A4FDC4 /* ARPriceRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARPriceRangeViewController.h; path = "../4-_Onboarding_New_User/ARPriceRangeViewController.h"; sourceTree = "<group>"; };
@@ -4308,6 +4313,8 @@
 				60A49F5E1676559200B9B95D /* ARNetworkConstants.h */,
 				60A49F5F1676559300B9B95D /* ARNetworkConstants.m */,
 				601C317616582BA30013E061 /* ARRouter.h */,
+				B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */,
+				B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */,
 				601C317716582BA30013E061 /* ARRouter.m */,
 				5E55295B1F1FC7A500455F8F /* ARRouter+GraphQL.h */,
 				5E55295C1F1FC7A500455F8F /* ARRouter+GraphQL.m */,
@@ -4607,6 +4614,7 @@
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
 				3DDFDE0BD89435CF2CCB5242 /* [CP] Check Pods Manifest.lock */,
+				B9A29FDB23EB0832006EE2EC /* set hostname for emission packaging server */,
 				49BA7DFB1655ABE600C06572 /* Sources */,
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
@@ -5071,6 +5079,25 @@
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
 			showEnvVarsInLog = 0;
 		};
+		B9A29FDB23EB0832006EE2EC /* set hostname for emission packaging server */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "set hostname for emission packaging server";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./scripts/set_packager_host.sh\n";
+			showEnvVarsInLog = 0;
+		};
 		D9A0D273854EEC616AB8720E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5096,6 +5123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9A29FE223EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */,
 				1C40C19F1DF8B1B7003F454F /* ArtsyRecordedTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5166,6 +5194,7 @@
 				FB994A6B21A5AD1C00AAFD55 /* ARSwitchBoard.m in Sources */,
 				1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */,
 				60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */,
+				B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */,
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
 				60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */,
 				60C2CBEF1CC11433009B30CA /* LiveAuctionToolbarView.swift in Sources */,
@@ -5614,6 +5643,7 @@
 				60ED31221C8F746A0071DD89 /* FakeSalesPerson.swift in Sources */,
 				3CAED17C188026AC00840608 /* ARUserManagerTests.m in Sources */,
 				3C5C7E4018970E8B003823BB /* UIApplicationStateEnumTests.m in Sources */,
+				B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */,
 				D35D9D5C1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m in Sources */,
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				5EC27DCC1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m in Sources */,
