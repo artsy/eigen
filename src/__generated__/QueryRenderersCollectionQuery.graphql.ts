@@ -44,7 +44,7 @@ fragment CollectionHeader_collection on MarketingCollection {
     edges {
       node {
         image {
-          url
+          url(version: "larger")
         }
         id
       }
@@ -211,25 +211,7 @@ v5 = {
   "name": "sort",
   "value": "-decayed_merch"
 },
-v6 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "image",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Image",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "url",
-      "args": null,
-      "storageKey": null
-    }
-  ]
-},
-v7 = [
+v6 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -237,18 +219,18 @@ v7 = [
   },
   (v5/*: any*/)
 ],
-v8 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v9 = [
-  (v8/*: any*/),
+v8 = [
+  (v7/*: any*/),
   (v2/*: any*/)
 ],
-v10 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
@@ -353,7 +335,30 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v6/*: any*/),
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "image",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "larger"
+                              }
+                            ],
+                            "storageKey": "url(version:\"larger\")"
+                          }
+                        ]
+                      },
                       (v2/*: any*/)
                     ]
                   }
@@ -367,7 +372,7 @@ return {
             "alias": "collectionArtworks",
             "name": "artworksConnection",
             "storageKey": "artworksConnection(first:6,sort:\"-decayed_merch\")",
-            "args": (v7/*: any*/),
+            "args": (v6/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -542,7 +547,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v9/*: any*/)
+                        "selections": (v8/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -552,9 +557,9 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v9/*: any*/)
+                        "selections": (v8/*: any*/)
                       },
-                      (v10/*: any*/),
+                      (v9/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -613,7 +618,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "args": (v7/*: any*/),
+            "args": (v6/*: any*/),
             "handle": "connection",
             "key": "Collection_collectionArtworks",
             "filters": [
@@ -667,7 +672,7 @@ return {
                   },
                   (v2/*: any*/),
                   (v3/*: any*/),
-                  (v8/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -675,7 +680,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v10/*: any*/),
+                  (v9/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": "is_followed",
@@ -704,7 +709,24 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v6/*: any*/)
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "url",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
                 ]
               },
               (v2/*: any*/)
@@ -743,7 +765,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "56a29a99f52d69b733722a480e0b81a5",
+    "id": "736a8772e152a030843c35244666b4eb",
     "text": null,
     "metadata": {}
   }
