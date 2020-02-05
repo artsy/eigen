@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.21.32
   dev:
     - Fixes full-bleed collections image rendering - ash & MX Knowledge Share Feb 4 2020
+    - Adds lab option for lot condition report - brian
   user_facing:
     -
 
