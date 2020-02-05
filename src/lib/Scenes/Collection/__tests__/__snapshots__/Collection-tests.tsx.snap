@@ -1240,7 +1240,7 @@ exports[`Collection renders a snapshot 1`] = `
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="32px"
             lineHeight="38px"
-            ml={2}
+            mx={2}
             style={
               Array [
                 Object {
@@ -1249,6 +1249,7 @@ exports[`Collection renders a snapshot 1`] = `
                   "fontSize": 32,
                   "lineHeight": 38,
                   "marginLeft": 20,
+                  "marginRight": 20,
                 },
                 Object {},
               ]
