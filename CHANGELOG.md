@@ -1,3 +1,15 @@
+# v1.21.35 (Wed Feb 05 2020)
+
+#### 🐛  Bug Fix
+
+- [FX-1789] Add right margin to collection title [#2076](https://github.com/artsy/emission/pull/2076) ([@pepopowitz](https://github.com/pepopowitz))
+
+#### Authors: 1
+
+- Steven Hicks ([@pepopowitz](https://github.com/pepopowitz))
+
+---
+
 # v1.21.34 (Tue Feb 04 2020)
 
 #### 🐛  Bug Fix
