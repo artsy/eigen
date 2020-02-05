@@ -54,7 +54,7 @@ export const CollectionHeaderContainer = createFragmentContainer(CollectionHeade
         edges {
           node {
             image {
-              url
+              url(version: "larger")
             }
           }
         }
