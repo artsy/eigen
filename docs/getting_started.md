@@ -6,7 +6,7 @@ You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) i
 
 ### Xcode Version
 
-Currently we require developers to use Xcode 10, with the latest version (10.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+Currently we require developers to use Xcode 11, with the latest version (11.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 ### Fork and Clone
 
@@ -14,12 +14,12 @@ Follow the instructions in [the README](https://github.com/artsy/eigen).
 
 ### Running Tests
 
-We can only run tests in one specific environment, today that is `10.3` on an iPhone 6. This is because we use visual snapshots for UI regressions.
+We can only run tests in one specific environment, today that is iPhone X with the iOS 12.4 Simulator. This is because we use visual snapshots for UI regressions.
 
-You can install the iOS 10 SDK by opening Xcode's preferences, going to "Components" then downloading "10.3.x".
+You can install the iOS 11 SDK by opening Xcode's preferences, going to "Components" then downloading "11.3.x".
 
 <p align="center">
-  <img src="screenshots/install-ios-10.png" />
+  <img src="screenshots/install-ios-12.png" />
 </p>
 
 Once it's all downloaded, it will show up in the dropdown in the top left corner.
