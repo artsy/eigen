@@ -123,8 +123,13 @@ const AutosuggestResultsContainer = createPaginationContainer(
     results: graphql`
       fragment AutosuggestResults_results on Query
         @argumentDefinitions(query: { type: "String!" }, count: { type: "Int!" }, cursor: { type: "String" }) {
-        results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor)
-          @connection(key: "AutosuggestResults_results") {
+        results: searchConnection(
+          query: $query
+          mode: AUTOSUGGEST
+          first: $count
+          after: $cursor
+          entities: [ARTIST, ARTWORK, FAIR, GENE, SALE]
+        ) @connection(key: "AutosuggestResults_results") {
           edges {
             node {
               imageUrl

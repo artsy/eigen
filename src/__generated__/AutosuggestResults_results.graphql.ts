@@ -63,6 +63,17 @@ const node: ReaderFragment = {
       "args": [
         {
           "kind": "Literal",
+          "name": "entities",
+          "value": [
+            "ARTIST",
+            "ARTWORK",
+            "FAIR",
+            "GENE",
+            "SALE"
+          ]
+        },
+        {
+          "kind": "Literal",
           "name": "mode",
           "value": "AUTOSUGGEST"
         },
@@ -181,5 +192,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '2bb1e9647bcff892f942c09b13cca236';
+(node as any).hash = '0fbcbffee08be80032a664f35cbd2b2f';
 export default node;
