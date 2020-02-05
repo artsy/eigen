@@ -24,7 +24,7 @@ The file `Artsy/App/Echo.json` is not checked in (a sample file is included for 
 
 ### Quick Start
 
-**Note**: We currently require using Xcode 10 for development, with the latest version (10.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+**Note**: We currently require using Xcode 11 for development, with the latest version (11.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 You'll need:
 
