@@ -1,4 +1,13 @@
 upcoming:
+  version: 6.3.1
+  date: TBD
+  emission_version: 1.21.39
+  dev:
+    - Adds lab option for filtering collections artworks - ashley
+  user_facing:
+    -
+
+upcoming:
   version: 6.3.0
   date: TBD
   emission_version: 1.21.32
