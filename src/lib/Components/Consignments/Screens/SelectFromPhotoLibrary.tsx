@@ -52,9 +52,8 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     }
   }
 
-  loadPhotos() {
-    // TODO: Need to update the RN 0.48 types on DT
-    const fetchParams: any = {
+  async loadPhotos() {
+    const fetchParams: CameraRoll.GetPhotosParams = {
       first: 20,
       assetType: "Photos",
       groupTypes: "All",
@@ -72,7 +71,21 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       return
     }
 
-    this.getCameraRollPhotos(fetchParams).then(data => this.appendAssets(data))
+    try {
+      this.appendAssets(await CameraRoll.getPhotos(fetchParams))
+    } catch (_) {
+      setTimeout(() => {
+        Alert.alert("Grant access in settings", "To upload photos, give Artsy access in your device settings.", [
+          { text: "Cancel" },
+          {
+            text: "Go to settings",
+            onPress: () => {
+              Linking.openURL("app-settings:")
+            },
+          },
+        ])
+      }, 300)
+    }
   }
 
   appendAssets(data) {
