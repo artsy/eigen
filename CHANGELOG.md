@@ -1,3 +1,15 @@
+# v1.21.37 (Thu Feb 06 2020)
+
+#### 🐛  Bug Fix
+
+- Updates Search query to allowed entities. [#2075](https://github.com/artsy/emission/pull/2075) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.36 (Wed Feb 05 2020)
 
 #### 🐛  Bug Fix
