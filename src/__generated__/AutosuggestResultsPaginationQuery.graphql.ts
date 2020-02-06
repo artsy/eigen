@@ -54,7 +54,7 @@ query AutosuggestResultsPaginationQuery(
 }
 
 fragment AutosuggestResults_results_1jWD3d on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor) {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: [ARTIST, ARTWORK, FAIR, GENE, SALE]) {
     edges {
       node {
         imageUrl
@@ -110,6 +110,17 @@ v2 = [
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
+  },
+  {
+    "kind": "Literal",
+    "name": "entities",
+    "value": [
+      "ARTIST",
+      "ARTWORK",
+      "FAIR",
+      "GENE",
+      "SALE"
+    ]
   },
   {
     "kind": "Variable",
@@ -285,7 +296,8 @@ return {
         "key": "AutosuggestResults_results",
         "filters": [
           "query",
-          "mode"
+          "mode",
+          "entities"
         ]
       }
     ]
@@ -293,7 +305,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "acb8fc7817ed4ec446e763b6ebe1bea0",
+    "id": "85bc0cc18ff844911e67635842830833",
     "text": null,
     "metadata": {}
   }
