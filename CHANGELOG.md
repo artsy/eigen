@@ -1,3 +1,15 @@
+# v1.21.39 (Thu Feb 06 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-160] Prevent crash when camera roll permission denied [#2079](https://github.com/artsy/emission/pull/2079) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.38 (Thu Feb 06 2020)
 
 #### 🐛  Bug Fix
