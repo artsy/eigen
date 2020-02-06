@@ -19,7 +19,7 @@ const me = {
 
 describe("RequestConditionReport", () => {
   it("renders correctly", () => {
-    const component = mount(<RequestConditionReport artwork={artwork} me={me} />)
+    const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     const requestReportButton = component.find(Button).at(0)
     expect(requestReportButton.length).toEqual(1)
 
@@ -36,7 +36,7 @@ describe("RequestConditionReport", () => {
   })
 
   it("shows an error modal on failure", async () => {
-    const component = mount(<RequestConditionReport artwork={artwork} me={me} />)
+    const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     component.instance().requestConditionReport = jest
       .fn()
       .mockReturnValue(Promise.reject(new Error("Condition report request failed")))
@@ -55,7 +55,7 @@ describe("RequestConditionReport", () => {
   })
 
   it("shows a success modal on success", async () => {
-    const component = mount(<RequestConditionReport artwork={artwork} me={me} />)
+    const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     component.instance().requestConditionReport = jest
       .fn()
       .mockReturnValue(Promise.resolve({ requestConditionReport: true }))

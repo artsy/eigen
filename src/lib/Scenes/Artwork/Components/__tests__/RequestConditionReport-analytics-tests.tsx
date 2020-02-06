@@ -26,7 +26,9 @@ const me = {
 beforeEach(jest.resetAllMocks)
 
 it("tracks request condition report tapped", () => {
-  const RequestConditionReportTracking = mockTracking(() => <RequestConditionReport artwork={artwork} me={me} />)
+  const RequestConditionReportTracking = mockTracking(() => (
+    <RequestConditionReport artwork={artwork} me={me} relay={null} />
+  ))
   const requestConditionReportComponent = mount(<RequestConditionReportTracking />)
 
   const requestReportButton = requestConditionReportComponent.find(Button).at(0)
@@ -39,7 +41,9 @@ it("tracks request condition report tapped", () => {
 })
 
 it("tracks request condition report success", async () => {
-  const RequestConditionReportTracking = mockTracking(() => <RequestConditionReport artwork={artwork} me={me} />)
+  const RequestConditionReportTracking = mockTracking(() => (
+    <RequestConditionReport artwork={artwork} me={me} relay={null} />
+  ))
   const trackingComponent = mount(<RequestConditionReportTracking />)
 
   const requestConditionReportComponent = trackingComponent.find("RequestConditionReport")
@@ -60,7 +64,9 @@ it("tracks request condition report success", async () => {
 })
 
 it("tracks request condition report failure", async () => {
-  const RequestConditionReportTracking = mockTracking(() => <RequestConditionReport artwork={artwork} me={me} />)
+  const RequestConditionReportTracking = mockTracking(() => (
+    <RequestConditionReport artwork={artwork} me={me} relay={null} />
+  ))
   const trackingComponent = mount(<RequestConditionReportTracking />)
 
   const requestConditionReportComponent = trackingComponent.find("RequestConditionReport")
