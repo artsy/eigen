@@ -9,6 +9,7 @@ export type AutosuggestResults_results = {
                 readonly href: string | null;
                 readonly displayLabel: string | null;
                 readonly displayType?: string | null;
+                readonly slug?: string;
             } | null;
         } | null> | null;
     } | null;
@@ -130,6 +131,13 @@ const node: ReaderFragment = {
                       "name": "displayType",
                       "args": null,
                       "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "slug",
+                      "args": null,
+                      "storageKey": null
                     }
                   ]
                 }
@@ -173,5 +181,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8dffc375c39bd6bbc40429960b1358ac';
+(node as any).hash = '2bb1e9647bcff892f942c09b13cca236';
 export default node;

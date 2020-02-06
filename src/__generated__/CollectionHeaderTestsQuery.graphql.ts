@@ -12,10 +12,13 @@ export type CollectionHeaderTestsQueryRawResponse = {
     readonly marketingCollection: ({
         readonly title: string;
         readonly headerImage: string | null;
+        readonly descriptionMarkdown: string | null;
         readonly image: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
-                    readonly imageUrl: string | null;
+                    readonly image: ({
+                        readonly url: string | null;
+                    }) | null;
                     readonly id: string | null;
                 }) | null;
             }) | null> | null;
@@ -43,10 +46,13 @@ query CollectionHeaderTestsQuery {
 fragment CollectionHeader_collection on MarketingCollection {
   title
   headerImage
-  image: artworksConnection(sort: "-merchandisability", first: 1) {
+  descriptionMarkdown
+  image: artworksConnection(sort: "-decayed_merch", first: 1) {
     edges {
       node {
-        imageUrl
+        image {
+          url(version: "larger")
+        }
         id
       }
     }
@@ -126,10 +132,17 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "descriptionMarkdown",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": "image",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:1,sort:\"-merchandisability\")",
+            "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")",
             "args": [
               {
                 "kind": "Literal",
@@ -139,7 +152,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "sort",
-                "value": "-merchandisability"
+                "value": "-decayed_merch"
               }
             ],
             "concreteType": "FilterArtworksConnection",
@@ -164,11 +177,28 @@ return {
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
+                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "imageUrl",
+                        "name": "image",
+                        "storageKey": null,
                         "args": null,
-                        "storageKey": null
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "larger"
+                              }
+                            ],
+                            "storageKey": "url(version:\"larger\")"
+                          }
+                        ]
                       },
                       (v1/*: any*/)
                     ]
@@ -186,7 +216,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionHeaderTestsQuery",
-    "id": "c867fe87521fbea7edf50318dae42ade",
+    "id": "b167d55e9973d983c1dabae6bfee28ca",
     "text": null,
     "metadata": {}
   }

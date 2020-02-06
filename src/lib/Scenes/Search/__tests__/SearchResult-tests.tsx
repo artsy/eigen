@@ -31,7 +31,7 @@ const _TestWrapper: typeof SearchResult = props => {
 }
 
 const TestWrapper: typeof SearchResult = props => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any } }}>
+  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, query: { current: "" } }}>
     <ProvideRecentSearches>
       <Theme>
         <CatchErrors>
@@ -79,6 +79,32 @@ describe(SearchResult, () => {
     const tree = create(<TestWrapper result={result} highlight="an" />)
 
     expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("an")
+  })
+
+  it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
+    const tree = create(
+      <TestWrapper
+        result={{
+          ...result,
+          displayLabel: "Joãn Miró",
+        }}
+        highlight="an"
+      />
+    )
+
+    expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("ãn")
+
+    tree.update(
+      <TestWrapper
+        result={{
+          ...result,
+          displayLabel: "Joãn Miró",
+        }}
+        highlight="Miro"
+      />
+    )
+
+    expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("Miró")
   })
 
   it(`updates recent searches by default`, async () => {

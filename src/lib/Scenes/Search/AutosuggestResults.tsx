@@ -6,7 +6,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { FlatList } from "react-native"
-import Sentry from "react-native-sentry"
+import { Sentry } from "react-native-sentry"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { SearchResult } from "./SearchResult"
 
@@ -132,6 +132,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
               displayLabel
               ... on SearchableItem {
                 displayType
+                slug
               }
             }
           }

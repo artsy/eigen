@@ -1,6 +1,8 @@
 import { Box, color, Serif } from "@artsy/palette"
 import { CollectionHeader_collection } from "__generated__/CollectionHeader_collection.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ReadMore } from "lib/Components/ReadMore"
+import { Schema } from "lib/utils/track"
 import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -9,20 +11,35 @@ interface CollectionHeaderProps {
   collection: CollectionHeader_collection
 }
 
+const HEADER_IMAGE_HEIGHT = 204
+
 export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
-  const { title, image, headerImage } = props.collection
-  const url = headerImage ? headerImage : image.edges[0].node.imageUrl
+  const { title, image, headerImage, descriptionMarkdown: collectionDescription } = props.collection
+  const defaultHeaderUrl = image?.edges[0]?.node?.image?.url || ""
+  const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")
-  const imageHeight = 204
+  const collectionTitleMargin = (collectionDescription || "").length < 1 ? 2 : 0
 
   return (
     <>
       <Box mb={2}>
-        <OpaqueImageView imageURL={url} height={imageHeight} width={screenWidth} />
+        <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Serif size="8" color={color("black100")} ml={2}>
-        {title}
-      </Serif>
+      <Box mb={collectionTitleMargin}>
+        <Serif size="8" color={color("black100")} mx={2}>
+          {title}
+        </Serif>
+      </Box>
+      {!!collectionDescription && (
+        <Box m="2">
+          <ReadMore
+            content={collectionDescription}
+            maxChars={screenWidth > 700 ? 300 : 250} // truncate at 300 characters on iPads and 250 on all other devices
+            contextModule={Schema.ContextModules.CollectionDescription}
+            trackingFlow={Schema.Flow.AboutTheCollection}
+          />
+        </Box>
+      )}
     </>
   )
 }
@@ -32,10 +49,13 @@ export const CollectionHeaderContainer = createFragmentContainer(CollectionHeade
     fragment CollectionHeader_collection on MarketingCollection {
       title
       headerImage
-      image: artworksConnection(sort: "-merchandisability", first: 1) {
+      descriptionMarkdown
+      image: artworksConnection(sort: "-decayed_merch", first: 1) {
         edges {
           node {
-            imageUrl
+            image {
+              url(version: "larger")
+            }
           }
         }
       }

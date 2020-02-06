@@ -26,13 +26,12 @@ import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
 import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
-import { Box, Flex, Theme } from "@artsy/palette"
+import { Box, Flex, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
 import { gravityURL } from "lib/relay/config"
 
-import { Gear } from "lib/Icons/Gear"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-const SettingsIcon = styled(Gear)`
+const SettingsIcon = styled(_SettingsIcon)`
   margin-right: 20px;
 `
 

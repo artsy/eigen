@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Join, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Join, Sans, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
@@ -26,13 +26,18 @@ export default class MyProfile extends React.Component {
           <View>
             <Box mb={1} mt={2}>
               <Flex alignItems="center">
-                <Serif size="5">Settings</Serif>
+                <Sans size="4">Settings</Sans>
               </Flex>
             </Box>
             <Separator />
             <Box py={1} mx={2} mt={1}>
               <Join separator={<Spacer mb={2} />}>
-                <Row title="Send feedback" />
+                <Row
+                  title="Send feedback"
+                  onPress={() =>
+                    SwitchBoard.presentEmailComposer(this, "feedback@artsy.net", "Feedback from the Artsy app")
+                  }
+                />
                 <Row
                   title="Personal data request"
                   onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}

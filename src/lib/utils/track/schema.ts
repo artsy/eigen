@@ -125,6 +125,7 @@ export enum PageNames {
   ShowAllArtists = "ShowAllArtists",
   ShowAllArtworks = "ShowAllArtworks",
   PartnerPage = "PartnerPage",
+  Collection = "Collection",
 }
 
 export enum OwnerEntityTypes {
@@ -140,6 +141,7 @@ export enum OwnerEntityTypes {
   Show = "Show",
   Invoice = "Invoice",
   Consignment = "ConsignmentSubmission",
+  Collection = "Collection",
 }
 
 export enum ActionTypes {
@@ -301,6 +303,19 @@ export enum ActionNames {
   ContextualArtist = "contextualArtist",
   ArtistName = "artistName",
   ListGallery = "listGallery",
+
+  /**
+   * Search (names preserved from eigen for searchability)
+   */
+  ARAnalyticsSearchCleared = "Cleared input in search screen",
+  // dispatch this on search input focus and again any time they type
+  ARAnalyticsSearchStartedQuery = "Searched",
+  ARAnalyticsSearchItemSelected = "Selected result from search screen",
+
+  /**
+   * Collection page events
+   */
+  ViewMore = "viewMore",
 }
 
 /**
@@ -319,15 +334,20 @@ export enum ContextModules {
   ArtworkImage = "ArtworkImage",
   ArtworkTombstone = "ArtworkTombstone",
   Bibliography = "Bibliography",
+  Collection = "Collection",
+  CollectionDescription = "CollectionDescription",
   CommercialButtons = "CommercialButtons",
   ExhibitionHistory = "ExhibitionHistory",
+  FeaturedArtists = "FeaturedArtists",
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
 }
 
 export enum Flow {
   AboutTheArtist = "AboutTheArtist",
+  AboutTheCollection = "AboutTheCollection",
   AboutTheWork = "AboutTheWork",
   ArtworkDetails = "ArtworkDetails",
+  FeaturedArtists = "FeaturedArtists",
   RecommendedArtworks = "RecommendedArtworks",
 }

@@ -45,6 +45,7 @@ function loadStories() {
   require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkHistory.story');
   require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkTombstone.story');
   require('../src/lib/Scenes/Artwork/__stories__/Artwork.story');
+  require('../src/lib/Scenes/Collection/__stories__/Collection.story');
   require('../src/lib/Scenes/Fair/__stories__/Fair.story');
   require('../src/lib/Scenes/Favorites/__stories__/Favorites.story');
   require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story');
@@ -97,6 +98,7 @@ const stories = [
   '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkHistory.story',
   '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkTombstone.story',
   '../src/lib/Scenes/Artwork/__stories__/Artwork.story',
+  '../src/lib/Scenes/Collection/__stories__/Collection.story',
   '../src/lib/Scenes/Fair/__stories__/Fair.story',
   '../src/lib/Scenes/Favorites/__stories__/Favorites.story',
   '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story',

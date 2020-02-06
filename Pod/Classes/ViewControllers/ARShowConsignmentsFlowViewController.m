@@ -7,9 +7,10 @@
     return [super initWithEmission:nil moduleName:@"Consignments" initialProperties:nil];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (void)viewDidLoad
 {
-    return UIStatusBarStyleLightContent;
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 @end

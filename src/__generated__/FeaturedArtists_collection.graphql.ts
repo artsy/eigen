@@ -1,22 +1,18 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type FeaturedArtists_collection = {
     readonly artworksConnection: {
         readonly merchandisableArtists: ReadonlyArray<{
-            readonly slug: string;
             readonly internalID: string;
-            readonly name: string | null;
-            readonly image: {
-                readonly resized: {
-                    readonly url: string | null;
-                } | null;
-            } | null;
-            readonly birthday: string | null;
-            readonly nationality: string | null;
-            readonly isFollowed: boolean | null;
+            readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
         } | null> | null;
     } | null;
+    readonly query: {
+        readonly artistIDs: ReadonlyArray<string> | null;
+    };
+    readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
     readonly " $refType": "FeaturedArtists_collection";
 };
 
@@ -27,20 +23,13 @@ const node: ReaderFragment = {
   "name": "FeaturedArtists_collection",
   "type": "MarketingCollection",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "screenWidth",
-      "type": "Int",
-      "defaultValue": 500
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     {
       "kind": "LinkedField",
       "alias": null,
       "name": "artworksConnection",
-      "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:9,sort:\"-decayed_merch\")",
+      "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")",
       "args": [
         {
           "kind": "Literal",
@@ -52,7 +41,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "size",
-          "value": 9
+          "value": 0
         },
         {
           "kind": "Literal",
@@ -67,18 +56,17 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "alias": null,
           "name": "merchandisableArtists",
-          "storageKey": null,
-          "args": null,
+          "storageKey": "merchandisableArtists(size:9)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "size",
+              "value": 9
+            }
+          ],
           "concreteType": "Artist",
           "plural": true,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "slug",
-              "args": null,
-              "storageKey": null
-            },
             {
               "kind": "ScalarField",
               "alias": null,
@@ -87,73 +75,40 @@ const node: ReaderFragment = {
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "name",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "image",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Image",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "resized",
-                  "storageKey": null,
-                  "args": [
-                    {
-                      "kind": "Variable",
-                      "name": "width",
-                      "variableName": "screenWidth"
-                    }
-                  ],
-                  "concreteType": "ResizedImageUrl",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": null,
-                      "storageKey": null
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "birthday",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "nationality",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "isFollowed",
-              "args": null,
-              "storageKey": null
+              "kind": "FragmentSpread",
+              "name": "ArtistListItem_artist",
+              "args": null
             }
           ]
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "query",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "MarketingCollectionQuery",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artistIDs",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "featuredArtistExclusionIds",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = '028eefeb0ff4442136cc27bf564109e6';
+(node as any).hash = '5945a319da0b8f99faefde2f1f2b92ed';
 export default node;

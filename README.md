@@ -11,10 +11,9 @@ Inside Emission you will find:
 ### Meta
 
 - **State:** production
-- **Point People:** [@ashfurrow](https://github.com/ashfurrow), [@ds300](https://github.com/ds300), [@kierangillen](https://github.com/kierangillen)
+- **Point People:** [@ashfurrow](https://github.com/ashfurrow), [@ds300](https://github.com/ds300)
 - **CI:**
   - React Native components: [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
-    [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fartsy%2Femission.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fartsy%2Femission?ref=badge_shield)
   - Native unit tests: [![CircleCI](https://circleci.com/gh/artsy/emission.svg?style=svg)](https://circleci.com/gh/artsy/emission)
 - **[Troubleshooting](https://github.com/artsy/emission/blob/master/docs/troubleshooting.md)**
 
@@ -95,10 +94,6 @@ We vendor some data from other repositories that you will sometimes need to upda
 ### Deploying Emission
 
 Deploys are automated on CI after each PR merge, based on the patch/minor/major label added to the PR (patch is default).
-
-### Automated Emission App Deploys
-
-The Emission app (in `Example/`) is deployed automatically to TestFlight once a week through [emission-nebula](https://github.com/artsy/emission-nebula). See that repo for more details.
 
 ### Resources
 

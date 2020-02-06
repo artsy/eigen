@@ -2,10 +2,21 @@ export const CollectionFixture = {
   slug: "street-art-now",
   id: "top-level-id",
   title: "Street Art Now",
+  descriptionMarkdown:
+    "A beach towel by [Yayoi Kusama](https://www.artsy.net/artist/yayoi-kusama), a classic print by [Alexander Calder](https://www.artsy.net/artist/alexander-calder), or a piggy bank by [Yoshitomo Nara](https://www.artsy.net/artist/yoshitomo-nara)—there are many ways to give the gift of art. Below, discover creative presents that your loved ones will treasure for years to come.",
   headerImage: "http://imageuploadedbymarketingteam.jpg",
   image: {
     id: "another-id",
-    edges: [{ node: { id: "an-id", imageUrl: "https://defaultmostmarketableartworkincollectionimage.jpg" } }],
+    edges: [
+      {
+        node: {
+          id: "an-id",
+          image: {
+            url: "https://defaultmostmarketableartworkincollectionimage.jpg",
+          },
+        },
+      },
+    ],
   },
   collectionArtworks: {
     id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U",

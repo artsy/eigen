@@ -24,6 +24,9 @@ podspec = Pod::Spec.new do |s|
   s.preserve_paths = 'Pod/Classes/**/*.generated.objc'
   s.resources      = 'Pod/Assets/{Emission.js,assets,PreHeatedGraphQLCache}'
 
+  # Required for email composer
+  s.framework = 'MessageUI'
+
   # Artsy UI dependencies
   s.dependency 'Artsy+UIColors'
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'

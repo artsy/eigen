@@ -4,10 +4,13 @@ import { ReaderFragment } from "relay-runtime";
 export type CollectionHeader_collection = {
     readonly title: string;
     readonly headerImage: string | null;
+    readonly descriptionMarkdown: string | null;
     readonly image: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly imageUrl: string | null;
+                readonly image: {
+                    readonly url: string | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
@@ -38,10 +41,17 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "descriptionMarkdown",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": "image",
       "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:1,sort:\"-merchandisability\")",
+      "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")",
       "args": [
         {
           "kind": "Literal",
@@ -51,7 +61,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "-merchandisability"
+          "value": "-decayed_merch"
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -76,11 +86,28 @@ const node: ReaderFragment = {
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
+                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "imageUrl",
+                  "name": "image",
+                  "storageKey": null,
                   "args": null,
-                  "storageKey": null
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "larger"
+                        }
+                      ],
+                      "storageKey": "url(version:\"larger\")"
+                    }
+                  ]
                 }
               ]
             }
@@ -90,5 +117,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '29324ff44b26f95096f5977c5b31414c';
+(node as any).hash = '814dd7a3fa91f84d841c781bd381e556';
 export default node;

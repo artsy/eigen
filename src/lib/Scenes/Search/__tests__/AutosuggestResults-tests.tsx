@@ -25,6 +25,7 @@ const FixturePage1: AutosuggestResultsQueryRawResponse = {
           href: "banksy-href",
           id: "banksy",
           imageUrl: "",
+          slug: "",
         },
       },
     ],
@@ -46,6 +47,7 @@ const FixturePage2: AutosuggestResultsPaginationQueryRawResponse = {
           href: "andy-warhol-href",
           id: "andy-warhol",
           imageUrl: "",
+          slug: "",
         },
       },
     ],
@@ -68,6 +70,7 @@ const FixturePage3: AutosuggestResultsPaginationQueryRawResponse = {
           href: "alex-katz-href",
           id: "alex-katz",
           imageUrl: "",
+          slug: "",
         },
       },
     ],
@@ -91,7 +94,7 @@ const FixtureEmpty: AutosuggestResultsQueryRawResponse = {
 const inputBlurMock = jest.fn()
 
 const TestWrapper: typeof AutosuggestResults = props => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any } }}>
+  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, query: { current: "" } }}>
     <Theme>
       <CatchErrors>
         <AutosuggestResults {...props} />

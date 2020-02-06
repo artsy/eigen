@@ -20,6 +20,7 @@ export type AutosuggestResultsPaginationQueryRawResponse = {
                 readonly id: string | null;
                 readonly __typename: "SearchableItem";
                 readonly displayType: string | null;
+                readonly slug: string;
             } | {
                 readonly imageUrl: string | null;
                 readonly href: string | null;
@@ -61,6 +62,7 @@ fragment AutosuggestResults_results_1jWD3d on Query {
         displayLabel
         ... on SearchableItem {
           displayType
+          slug
         }
         ... on Node {
           id
@@ -226,6 +228,13 @@ return {
                         "name": "displayType",
                         "args": null,
                         "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "slug",
+                        "args": null,
+                        "storageKey": null
                       }
                     ]
                   }
@@ -284,7 +293,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "bda784e302181ed4584ddc0fcece44a5",
+    "id": "acb8fc7817ed4ec446e763b6ebe1bea0",
     "text": null,
     "metadata": {}
   }

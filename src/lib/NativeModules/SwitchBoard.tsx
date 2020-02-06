@@ -66,7 +66,20 @@ function dismissNavigationViewController(component: React.Component<any, any>) {
   ARSwitchBoardModule.dismissNavigationViewController(reactTag)
 }
 
+function presentEmailComposer(component: React.Component<any, any>, to: string, subject: string) {
+  let reactTag
+  try {
+    reactTag = findNodeHandle(component)
+  } catch (err) {
+    console.error(`Unable to find tag in dismissNavigationViewController: ${err.message}`)
+    return
+  }
+
+  ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject)
+}
+
 export default {
+  presentEmailComposer,
   presentNavigationViewController,
   presentMediaPreviewController,
   presentModalViewController,

@@ -1,7 +1,8 @@
-import { Box, Theme } from "@artsy/palette"
+import { Box, Separator, Spacer, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
+import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,6 +16,12 @@ interface CollectionState {
   sections: Array<{ type: string; data: any }>
 }
 
+@screenTrack((props: CollectionProps) => ({
+  context_screen: Schema.PageNames.Collection,
+  context_screen_owner_slug: props.collection.slug,
+  context_screen_owner_id: props.collection.id,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+}))
 export class Collection extends Component<CollectionProps, CollectionState> {
   state = {
     sections: [],
@@ -48,6 +55,8 @@ export class Collection extends Component<CollectionProps, CollectionState> {
         return (
           <Box>
             <CollectionFeaturedArtists collection={this.props.collection} />
+            <Spacer mb={1} />
+            <Separator />
           </Box>
         )
       case "collectionArtworks":
@@ -83,9 +92,11 @@ export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
     fragment Collection_collection on MarketingCollection
       @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+      id
+      slug
       ...CollectionHeader_collection
       ...CollectionArtworks_collection
-      ...FeaturedArtists_collection @arguments(screenWidth: $screenWidth)
+      ...FeaturedArtists_collection
     }
   `,
 })

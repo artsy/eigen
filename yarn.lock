@@ -7,17 +7,17 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.1.tgz#781aaaf026d2d06520005ced032ebca284935e8c"
   integrity sha512-S6tw+x7CmTQQutt2Xqla4Y+3/Wr4RVjaZ5WYmv2V4D0ZUc/lk5UQKpI9akxlgOd5tMUcqBDPRGK6SF5pGNYP8g==
 
-"@artsy/palette@5.1.14":
-  version "5.1.14"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-5.1.14.tgz#830bc0220daa2c2322321b77483f660e759a2089"
-  integrity sha512-WvRqUSYrSH9WUVsF6t9HOMU/Ey8g2L9w4P0AfuH4izjQxhUlj7GOEXVR386NzQ9IfKciPjufcoomegZz5A85nA==
+"@artsy/palette@5.1.16":
+  version "5.1.16"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-5.1.16.tgz#d224ecc90f00a298244e1c667f04cc97db899057"
+  integrity sha512-21qZveD9aKboCOCGY7gPl/UIQVUG94Qmfv/WQ2CUUClCfoE7n5ogxkLNgYLOvSl2NnmH5x4Vo6lpLN+LxySF9A==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
     luxon "^1.15"
     rc-slider "^8.6.2"
-    react-lazy-load-image-component "^1.4.0"
+    react-lazy-load-image-component "^1.4.1-beta.0"
     react-live "^1.12.0"
     react-powerplug "^1.0.0"
     react-spring "^8.0.27"
@@ -7499,6 +7499,11 @@ graceful-fs@^4.1.3, graceful-fs@^4.1.9:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
   integrity sha1-Dovf5NHduIVNZOBOp8AOKgJuVlg=
 
+grapheme-splitter@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
+  integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
+
 graphql-tag@^2.9.2:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.1.tgz#10aa41f1cd8fae5373eaf11f1f67260a3cad5e02"
@@ -12918,10 +12923,10 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.4.tgz#90f336a68c3a29a096a3d648ab80e87ec61482a2"
   integrity sha512-PVadd+WaUDOAciICm/J1waJaSvgq+4rHE/K70j0PFqKhkTBsPv/82UGQJNXAngz1fOQLLxI6z1sEDmJDQhCTAA==
 
-react-lazy-load-image-component@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.4.0.tgz#10c73ca46afc039864b395191d6b54a46a673b60"
-  integrity sha512-o/L93CyJVvXPuA2P/ouUZI7ZXJRrdE/eqP45AH5/SakOU0bzAk2ZP6qNT/WaaXhf+JtE7hhjXxMr7KGsLNX64w==
+react-lazy-load-image-component@^1.4.1-beta.0:
+  version "1.4.1-beta.0"
+  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.4.1-beta.0.tgz#4b47fcda23b40412bc03f66442e419a23e5cae9d"
+  integrity sha512-SFYu44wAMRpN9afyoeerlSprjl3K/aokueZgTW/qbqmxkEbRLUSWubr5dM1cXEAcLxFruqGdjswzB8YI3KaPBQ==
   dependencies:
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
@@ -15421,10 +15426,10 @@ typescript-template-language-service-decorator@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
 
-typescript@3.7.4:
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.4.tgz#1743a5ec5fef6a1fa9f3e4708e33c81c73876c19"
-  integrity sha512-A25xv5XCtarLwXpcDNZzCGvW2D1S3/bACratYBx2sax8PefsFhlYmkQicKHvpYflFS8if4zne5zT5kpJ7pzuvw==
+typescript@3.7.5:
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
+  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
 
 typical@^4.0.0:
   version "4.0.0"

@@ -491,6 +491,7 @@ fragment ImageCarousel_images on Image {
   url: imageURL
   width
   height
+  imageVersions
   deepZoom {
     image: Image {
       tileSize: TileSize
@@ -1680,6 +1681,13 @@ return {
                     "storageKey": null
                   },
                   {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "imageVersions",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "deepZoom",
@@ -1898,7 +1906,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "290db1cb038dce0803b45c752137c33b",
+    "id": "3977c64bc9e5541bda7752ff3977f7d7",
     "text": null,
     "metadata": {}
   }
