@@ -5,7 +5,7 @@ import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/S
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
@@ -117,6 +117,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
   render() {
     const { isArtworkGridVisible, sections } = this.state
+    const isArtworkFilterEnabled = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
 
     return (
       <Theme>
@@ -133,13 +134,13 @@ export class Collection extends Component<CollectionProps, CollectionState> {
               </Box>
             )}
           />
-          {isArtworkGridVisible ? (
+          {isArtworkGridVisible && isArtworkFilterEnabled && (
             <FilterArtworkButtonContainer>
               <FilterArtworkButton variant="primaryBlack" onPress={this.handleFilterArtworksModal.bind(this)}>
                 Filter
               </FilterArtworkButton>
             </FilterArtworkButtonContainer>
-          ) : null}
+          )}
         </View>
       </Theme>
     )
