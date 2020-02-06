@@ -1,7 +1,10 @@
 import { Button, Flex } from "@artsy/palette"
 import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
-import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
+import {
+  RequestConditionReportMutation,
+  RequestConditionReportMutationResponse,
+} from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "lib/Components/Modal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -38,7 +41,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
 
   requestConditionReport = () => {
     const { artwork, relay } = this.props
-    return new Promise(async (resolve, reject) => {
+    return new Promise<RequestConditionReportMutationResponse>(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: resolve,
         onError: reject,
@@ -82,8 +85,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
 
     this.requestConditionReport()
       .then(data => {
-        const theData = data as any
-        if (theData.requestConditionReport) {
+        if (data.requestConditionReport) {
           this.presentSuccessModal()
         } else {
           this.presentErrorModal(null)

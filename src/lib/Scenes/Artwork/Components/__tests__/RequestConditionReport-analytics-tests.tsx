@@ -7,21 +7,25 @@ import React from "react"
 
 jest.unmock("react-tracking")
 
+import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
 import { RequestConditionReport } from "../RequestConditionReport"
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
-const artwork = {
+const artwork: RequestConditionReport_artwork = {
+  " $refType": null,
   internalID: "some-internal-id",
   slug: "pablo-picasso-guernica",
   saleArtwork: {
     internalID: "some-sale-internal-id",
   },
-} as any
-const me = {
+}
+const me: RequestConditionReport_me = {
+  " $refType": null,
   email: "someemail@testerino.net",
   internalID: "some-id",
-} as any
+}
 
 beforeEach(jest.resetAllMocks)
 

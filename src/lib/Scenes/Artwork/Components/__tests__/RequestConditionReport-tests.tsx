@@ -1,21 +1,25 @@
 import { Button } from "@artsy/palette"
+import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
 import { mount } from "enzyme"
 import { Modal } from "lib/Components/Modal"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import React from "react"
 import { RequestConditionReport } from "../RequestConditionReport"
 
-const artwork = {
+const artwork: RequestConditionReport_artwork = {
+  " $refType": null,
   internalID: "some-internal-id",
   slug: "pablo-picasso-guernica",
   saleArtwork: {
     internalID: "some-sale-internal-id",
   },
-} as any
-const me = {
+}
+const me: RequestConditionReport_me = {
+  " $refType": null,
   email: "someemail@testerino.net",
   internalID: "some-id",
-} as any
+}
 
 describe("RequestConditionReport", () => {
   it("renders correctly", () => {
