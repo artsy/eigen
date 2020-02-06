@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "ac788c93442e5221e15824cd7d9cc08c{}",
+              "identifier": "bc3659ca34d0a3d9e4807e2294e185e2{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -148,10 +148,16 @@ exports[`Collection renders a snapshot 1`] = `
                                       "selections": Array [
                                         Object {
                                           "alias": null,
-                                          "args": null,
+                                          "args": Array [
+                                            Object {
+                                              "kind": "Literal",
+                                              "name": "version",
+                                              "value": "larger",
+                                            },
+                                          ],
                                           "kind": "ScalarField",
                                           "name": "url",
-                                          "storageKey": null,
+                                          "storageKey": "url(version:\\"larger\\")",
                                         },
                                       ],
                                       "storageKey": null,
@@ -716,7 +722,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "ac788c93442e5221e15824cd7d9cc08c",
+                  "id": "bc3659ca34d0a3d9e4807e2294e185e2",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -1240,7 +1246,7 @@ exports[`Collection renders a snapshot 1`] = `
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="32px"
             lineHeight="38px"
-            ml={2}
+            mx={2}
             style={
               Array [
                 Object {
@@ -1249,6 +1255,7 @@ exports[`Collection renders a snapshot 1`] = `
                   "fontSize": 32,
                   "lineHeight": 38,
                   "marginLeft": 20,
+                  "marginRight": 20,
                 },
                 Object {},
               ]

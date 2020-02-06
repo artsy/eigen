@@ -98,8 +98,14 @@ const node: ReaderFragment = {
                       "kind": "ScalarField",
                       "alias": null,
                       "name": "url",
-                      "args": null,
-                      "storageKey": null
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "larger"
+                        }
+                      ],
+                      "storageKey": "url(version:\"larger\")"
                     }
                   ]
                 }
@@ -111,5 +117,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd76cac2d0c6c8621a89a0d37a12f57b6';
+(node as any).hash = '814dd7a3fa91f84d841c781bd381e556';
 export default node;

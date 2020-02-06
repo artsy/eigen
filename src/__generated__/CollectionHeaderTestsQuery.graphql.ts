@@ -51,7 +51,7 @@ fragment CollectionHeader_collection on MarketingCollection {
     edges {
       node {
         image {
-          url
+          url(version: "larger")
         }
         id
       }
@@ -189,8 +189,14 @@ return {
                             "kind": "ScalarField",
                             "alias": null,
                             "name": "url",
-                            "args": null,
-                            "storageKey": null
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "larger"
+                              }
+                            ],
+                            "storageKey": "url(version:\"larger\")"
                           }
                         ]
                       },
@@ -210,7 +216,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionHeaderTestsQuery",
-    "id": "7db41176e4a9c9b1185bc94ca82b5753",
+    "id": "b167d55e9973d983c1dabae6bfee28ca",
     "text": null,
     "metadata": {}
   }
