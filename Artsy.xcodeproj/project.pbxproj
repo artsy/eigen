@@ -4613,7 +4613,6 @@
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
 				3DDFDE0BD89435CF2CCB5242 /* [CP] Check Pods Manifest.lock */,
-				B9A29FDB23EB0832006EE2EC /* set hostname for emission packaging server */,
 				49BA7DFB1655ABE600C06572 /* Sources */,
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
@@ -4652,7 +4651,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3ECE8361819D1E7009F5C5B /* Build configuration list for PBXNativeTarget "Artsy Tests" */;
 			buildPhases = (
-				B9A29FE323EB39EE006EE2EC /* set react packager hostname */,
 				D9A0D273854EEC616AB8720E /* [CP] Check Pods Manifest.lock */,
 				B3ECE8221819D1E6009F5C5B /* Sources */,
 				B3ECE8231819D1E6009F5C5B /* Frameworks */,
@@ -5078,43 +5076,6 @@
 			shellPath = /bin/sh;
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
 			showEnvVarsInLog = 0;
-		};
-		B9A29FDB23EB0832006EE2EC /* set hostname for emission packaging server */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "set hostname for emission packaging server";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./scripts/set_packager_host.sh\n";
-			showEnvVarsInLog = 0;
-		};
-		B9A29FE323EB39EE006EE2EC /* set react packager hostname */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "set react packager hostname";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./scripts/set_packager_host.sh\n";
 		};
 		D9A0D273854EEC616AB8720E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

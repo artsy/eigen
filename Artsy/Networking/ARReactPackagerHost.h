@@ -1,4 +1,5 @@
-// the .m for this file is generated in a run script during the build phase
+// the .m for this file is generated in a 'pre-action' in the Artsy build scheme
+// which executes the file <projectDir>/scripts/set_packager_host.sh
 #import <Foundation/Foundation.h>
 
 @interface ARReactPackagerHost : NSObject
