@@ -28,7 +28,7 @@ interface State {
   context_module: Schema.ContextModules.ArtworkDetails,
 })
 export class RequestConditionReport extends React.Component<RequestConditionReportProps, State> {
-  state = {
+  state: State = {
     requestingConditionReport: false,
     showConditionReportRequestedModal: false,
     showErrorModal: false,
@@ -39,12 +39,8 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
     const { artwork } = this.props
     return new Promise(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(defaultEnvironment, {
-        onCompleted: data => {
-          resolve(data)
-        },
-        onError: error => {
-          reject(error)
-        },
+        onCompleted: resolve,
+        onError: reject,
         mutation: graphql`
           mutation RequestConditionReportMutation($input: RequestConditionReportInput!) {
             requestConditionReport(input: $input) {
@@ -64,17 +60,17 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
   @track({
     action_type: Schema.ActionTypes.Fail,
   })
-  presentErrorModal(errors: Error | ReadonlyArray<PayloadError>, mutationMessage: string) {
+  presentErrorModal(errors: Error | ReadonlyArray<PayloadError>) {
     console.error("RequestConditionReport.tsx", errors)
-    const errorMessage = mutationMessage || "There was a problem processing your request. Please try again."
-    this.setState({ showErrorModal: true, errorModalText: errorMessage, requestingConditionReport: false })
+    const errorMessage = "There was a problem processing your request. Please try again."
+    this.setState({ showErrorModal: true, errorModalText: errorMessage })
   }
 
   @track({
     action_type: Schema.ActionTypes.Success,
   })
   presentSuccessModal() {
-    this.setState({ showConditionReportRequestedModal: true, requestingConditionReport: false })
+    this.setState({ showConditionReportRequestedModal: true })
   }
 
   @track({
@@ -89,11 +85,13 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
         if (theData.requestConditionReport) {
           this.presentSuccessModal()
         } else {
-          this.presentErrorModal(null, null)
+          this.presentErrorModal(null)
         }
+        this.setState({ requestingConditionReport: false })
       })
       .catch(error => {
-        this.presentErrorModal(error, null)
+        this.presentErrorModal(error)
+        this.setState({ requestingConditionReport: false })
       })
   }
 

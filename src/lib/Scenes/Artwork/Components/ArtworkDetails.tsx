@@ -23,10 +23,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
   render() {
     const { artwork } = this.props
 
-    const enableLotConditionReport =
-      NativeModules.Emission &&
-      NativeModules.Emission.options &&
-      NativeModules.Emission.options.AROptionsLotConditionReport
+    const enableLotConditionReport = NativeModules.Emission?.options?.AROptionsLotConditionReport
 
     const listItems = [
       { title: "Medium", value: artwork.category },
