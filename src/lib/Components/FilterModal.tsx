@@ -8,6 +8,7 @@ interface ModalProps extends ViewProperties {
   closeModal?: () => void
 }
 
+// TODO:  Define a TypeScript interface to represent possible filter states (take a look at the Pick TypeScript generic)
 interface State {
   isComponentMounted: boolean
 }
@@ -49,21 +50,6 @@ export class FilterModal extends React.Component<ModalProps, State> {
   }
 
   render() {
-    /*
-    https://app.zeplin.io/project/5aabc5e0786bbb29b6e3dc7f/screen/5dba03df09bf3f5547162ac9
-
-    Next steps:
-
-    - Add a Navigator
-      - Configure left button to be x close
-      - Configure right button for "clear all"
-    - Define a TypeScript interface to represent possible filter states (take a look at the Pick TypeScript generic)
-    - Implement the rest of the UI
-    - Add callbacks for when filter has been cleared / reset / applied
-
-    Let's start with a single filter (sort, or medium maybe) and get it working end-to-end in Collections
-    Look at Reactions' ArtworkFilter implementation, which does something similar ^
-    */
     return (
       <RNModal animationType="fade" transparent={true} visible={this.props.visible}>
         <TouchableWithoutFeedback>
@@ -74,7 +60,7 @@ export class FilterModal extends React.Component<ModalProps, State> {
                 <ModalInnerView visible={this.state.isComponentMounted}>
                   <Flex flexDirection="row" justifyContent="space-between">
                     <Flex alignItems="flex-end" mt={0.5} mb={2}>
-                      <Box onTouchEnd={() => this.closeModal()}>
+                      <Box onTouchStart={() => this.closeModal()}>
                         <CloseIcon fill="black100" />
                       </Box>
                     </Flex>

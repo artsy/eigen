@@ -1211,7 +1211,7 @@ exports[`Collection renders a snapshot 1`] = `
     updateCellsBatchingPeriod={50}
     viewabilityConfig={
       Object {
-        "viewAreaCoveragePercentThreshold": 10,
+        "viewAreaCoveragePercentThreshold": 30,
       }
     }
     viewabilityConfigCallbackPairs={
@@ -1219,7 +1219,7 @@ exports[`Collection renders a snapshot 1`] = `
         Object {
           "onViewableItemsChanged": [Function],
           "viewabilityConfig": Object {
-            "viewAreaCoveragePercentThreshold": 10,
+            "viewAreaCoveragePercentThreshold": 30,
           },
         },
       ]
@@ -1419,7 +1419,7 @@ exports[`Collection renders a snapshot 1`] = `
           >
             <View
               accessible={true}
-              focusable={true}
+              focusable={false}
               onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
@@ -1440,10 +1440,16 @@ exports[`Collection renders a snapshot 1`] = `
               }
             >
               <View
+                onTouchStart={[Function]}
                 style={
-                  Object {
-                    "flexGrow": 1,
-                  }
+                  Array [
+                    Object {
+                      "display": "flex",
+                    },
+                    Object {
+                      "flexGrow": 1,
+                    },
+                  ]
                 }
               />
               <View
@@ -1465,23 +1471,204 @@ exports[`Collection renders a snapshot 1`] = `
                 }
                 visible={false}
               >
-                <Text
-                  fontFamily="Unica77LL-Regular"
-                  fontSize="14px"
-                  lineHeight="20px"
+                <View
+                  flexDirection="row"
+                  justifyContent="space-between"
                   style={
                     Array [
                       Object {
-                        "fontFamily": "Unica77LL-Regular",
-                        "fontSize": 14,
-                        "lineHeight": 20,
+                        "display": "flex",
+                        "flexDirection": "row",
+                        "justifyContent": "space-between",
                       },
-                      Object {},
                     ]
                   }
                 >
-                  Hello, modal!
-                </Text>
+                  <View
+                    alignItems="flex-end"
+                    mb={2}
+                    mt={0.5}
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "flex-end",
+                          "display": "flex",
+                          "marginBottom": 20,
+                          "marginTop": 5,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      onTouchStart={[Function]}
+                      style={
+                        Array [
+                          Object {},
+                        ]
+                      }
+                    >
+                      <RNSVGSvgView
+                        align="xMidYMid"
+                        bbHeight="18px"
+                        bbWidth="18px"
+                        className="Iconios__Icon-z4d8jr-0 cjvLsm"
+                        fill="black100"
+                        focusable={false}
+                        height="18px"
+                        meetOrSlice={0}
+                        minX={0}
+                        minY={0}
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "borderWidth": 0,
+                            },
+                            undefined,
+                            Object {
+                              "opacity": 1,
+                            },
+                            Object {
+                              "flex": 0,
+                              "height": 18,
+                              "width": 18,
+                            },
+                          ]
+                        }
+                        vbHeight={18}
+                        vbWidth={18}
+                        width="18px"
+                      >
+                        <RNSVGGroup
+                          fill={
+                            Array [
+                              0,
+                              4278190080,
+                            ]
+                          }
+                          fillOpacity={1}
+                          fillRule={1}
+                          font={Object {}}
+                          matrix={
+                            Array [
+                              1,
+                              0,
+                              0,
+                              1,
+                              0,
+                              0,
+                            ]
+                          }
+                          opacity={1}
+                          originX={0}
+                          originY={0}
+                          propList={
+                            Array [
+                              "fill",
+                            ]
+                          }
+                          rotation={0}
+                          scaleX={1}
+                          scaleY={1}
+                          skewX={0}
+                          skewY={0}
+                          stroke={null}
+                          strokeDasharray={null}
+                          strokeDashoffset={null}
+                          strokeLinecap={0}
+                          strokeLinejoin={0}
+                          strokeMiterlimit={4}
+                          strokeOpacity={1}
+                          strokeWidth={1}
+                          vectorEffect={0}
+                          x={0}
+                          y={0}
+                        >
+                          <RNSVGPath
+                            d="M9.88 9l4.56 4.56-.88.88L9 9.88l-4.56 4.56-.88-.88L8.12 9 3.56 4.44l.88-.88L9 8.12l4.56-4.56.88.88z"
+                            fill={
+                              Array [
+                                0,
+                                4278190080,
+                              ]
+                            }
+                            fillOpacity={1}
+                            fillRule={0}
+                            matrix={
+                              Array [
+                                1,
+                                0,
+                                0,
+                                1,
+                                0,
+                                0,
+                              ]
+                            }
+                            opacity={1}
+                            originX={0}
+                            originY={0}
+                            propList={
+                              Array [
+                                "fill",
+                                "fillRule",
+                              ]
+                            }
+                            rotation={0}
+                            scaleX={1}
+                            scaleY={1}
+                            skewX={0}
+                            skewY={0}
+                            stroke={null}
+                            strokeDasharray={null}
+                            strokeDashoffset={null}
+                            strokeLinecap={0}
+                            strokeLinejoin={0}
+                            strokeMiterlimit={4}
+                            strokeOpacity={1}
+                            strokeWidth={1}
+                            vectorEffect={0}
+                            x={0}
+                            y={0}
+                          />
+                        </RNSVGGroup>
+                      </RNSVGSvgView>
+                    </View>
+                  </View>
+                  <Text
+                    fontFamily="Unica77LL-Medium"
+                    fontSize="16px"
+                    lineHeight="26px"
+                    style={
+                      Array [
+                        Object {
+                          "fontFamily": "Unica77LL-Medium",
+                          "fontSize": 16,
+                          "lineHeight": 26,
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    Filter
+                  </Text>
+                  <Text
+                    fontFamily="Unica77LL-Regular"
+                    fontSize="16px"
+                    lineHeight="26px"
+                    style={
+                      Array [
+                        Object {
+                          "fontFamily": "Unica77LL-Regular",
+                          "fontSize": 16,
+                          "lineHeight": 26,
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    Clear all
+                  </Text>
+                </View>
                 <View
                   accessible={true}
                   flexDirection="row"
