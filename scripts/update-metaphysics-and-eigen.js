@@ -19,6 +19,9 @@ async function main() {
       message: "Update emission query map",
       update: dir => {
         log.step("Merging complete.queryMap.json")
+        // merge metaphysics into emission map first, to preserve any manual edits made in MP
+        mergeJson("data/complete.queryMap.json", path.join(dir, "src/data/complete.queryMap.json"))
+        // then merge back into metaphysics to update
         mergeJson(path.join(dir, "src/data/complete.queryMap.json"), "data/complete.queryMap.json")
       },
     })
