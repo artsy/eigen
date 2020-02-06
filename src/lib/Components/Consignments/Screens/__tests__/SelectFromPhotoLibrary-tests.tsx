@@ -1,8 +1,9 @@
+import CameraRoll from "@react-native-community/cameraroll"
 import React from "react"
 import { Alert, Linking, NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
-jest.mock("@react-native-community/cameraroll", () => jest.fn())
+jest.mock("@react-native-community/cameraroll", () => ({ getPhotos: jest.fn() }))
 
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 const realAlert = Alert.alert
@@ -49,8 +50,9 @@ it("adds new photo to the list, and selects it", () => {
   const select = new SelectFromPhotoLibrary(emptyProps)
 
   select.setState = jest.fn()
-  const newPhoto = { image: { url: "https://image.com" } }
-  select.getCameraRollPhotos = () => Promise.resolve({ edges: [{ node: newPhoto }] }) as any
+  ;(CameraRoll.getPhotos as jest.Mock).mockResolvedValue({
+    edges: [{ node: { image: { url: "https://image.com" } } }],
+  } as any)
 
   expect.hasAssertions()
   return select.onPressNewPhoto().then(() => {

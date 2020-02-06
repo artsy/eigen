@@ -3,7 +3,18 @@ import CameraRoll from "@react-native-community/cameraroll"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { Alert, Dimensions, Linking, NativeModules, Route, ScrollView, View, ViewProperties } from "react-native"
+import {
+  Alert,
+  Dimensions,
+  Linking,
+  NativeModules,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Route,
+  ScrollView,
+  View,
+  ViewProperties,
+} from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
@@ -52,9 +63,8 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     }
   }
 
-  loadPhotos() {
-    // TODO: Need to update the RN 0.48 types on DT
-    const fetchParams: any = {
+  async loadPhotos() {
+    const fetchParams: CameraRoll.GetPhotosParams = {
       first: 20,
       assetType: "Photos",
       groupTypes: "All",
@@ -72,10 +82,24 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       return
     }
 
-    this.getCameraRollPhotos(fetchParams).then(data => this.appendAssets(data))
+    try {
+      this.appendAssets(await CameraRoll.getPhotos(fetchParams))
+    } catch (_) {
+      setTimeout(() => {
+        Alert.alert("Grant access in settings", "To upload photos, give Artsy access in your device settings.", [
+          { text: "Cancel" },
+          {
+            text: "Go to settings",
+            onPress: () => {
+              Linking.openURL("app-settings:")
+            },
+          },
+        ])
+      }, 300)
+    }
   }
 
-  appendAssets(data) {
+  appendAssets(data: CameraRoll.PhotoIdentifiersPage) {
     const assets = data.edges
 
     if (assets.length === 0) {
@@ -93,7 +117,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     }
   }
 
-  onScroll(e) {
+  onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const windowHeight = Dimensions.get("window").height
     const height = e.nativeEvent.contentSize.height
     const offset = e.nativeEvent.contentOffset.y
@@ -103,82 +127,72 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     }
   }
 
-  endReached() {
-    if (!this.state.noMorePhotos) {
-      this.tryPhotoLoad()
-    }
-  }
-
   doneTapped = () => {
     this.props.updateWithPhotos([...this.state.selection.values()])
     this.props.navigator.pop()
   }
 
-  getCameraRollPhotos = (params: any) => CameraRoll.getPhotos(params)
+  onPressNewPhoto = async () => {
+    try {
+      const success = await triggerCamera(this)
+      if (success) {
+        // Grab the most recent photo
+        // and add it to the top
 
-  onPressNewPhoto = () => {
-    return triggerCamera(this)
-      .then(success => {
-        if (success) {
-          // Grab the most recent photo
-          // and add it to the top
+        const fetchParams: any = {
+          first: 1,
+          assetType: "Photos",
+          groupTypes: "All",
+        }
 
-          const fetchParams: any = {
-            first: 1,
-            assetType: "Photos",
-            groupTypes: "All",
-          }
-
-          this.getCameraRollPhotos(fetchParams).then(photos => {
-            if (!photos.edges || photos.edges.length === 0) {
-              console.error("SelectFromLibrary: Got no photos when looking for most recent")
-            } else {
-              const photo = photos.edges.map(e => e.node)[0]
-
-              // Update selection
-              this.setState({
-                selection: [...this.state.selection, photo.image.uri],
-                // An item in cameraImage is a subset of the photo that we pass in,
-                // so we `as any` to avoid a compiler error
-                cameraImages: [photo].concat(this.state.cameraImages as any),
-              })
-            }
-          })
+        const photos = await CameraRoll.getPhotos(fetchParams)
+        if (!photos.edges || photos.edges.length === 0) {
+          console.error("SelectFromLibrary: Got no photos when looking for most recent")
         } else {
-          console.log("SelectFromLibrary: Did not receive a photo from call to getPhotos")
+          const photo = photos.edges.map(e => e.node)[0]
+
+          // Update selection
+          this.setState({
+            selection: [...this.state.selection, photo.image.uri],
+            // An item in cameraImage is a subset of the photo that we pass in,
+            // so we `as any` to avoid a compiler error
+            cameraImages: [photo].concat(this.state.cameraImages as any),
+          })
         }
-      })
-      .catch(error => {
-        const errors = ARTakeCameraPhotoModule.errorCodes
-        switch (error.code) {
-          case errors.cameraNotAvailable:
-          case errors.imageMediaNotAvailable:
-            Alert.alert(error.message)
-            break
+      } else {
+        console.log("SelectFromLibrary: Did not receive a photo from call to getPhotos")
+      }
+    } catch (error) {
+      const errors = ARTakeCameraPhotoModule.errorCodes
+      switch (error.code) {
+        case errors.cameraNotAvailable:
+        case errors.imageMediaNotAvailable:
+          Alert.alert(error.message)
+          break
 
-          case errors.cameraAccessDenied:
-            Alert.alert(
-              error.message,
-              "Please enable camera access from Settings to be able to take photos of your artwork.",
-              [
-                { text: "Cancel" },
-                {
-                  text: "Settings",
-                  onPress: () => Linking.openURL(ARCocoaConstantsModule.UIApplicationOpenSettingsURLString),
-                },
-              ]
-            )
-            break
+        case errors.cameraAccessDenied:
+          Alert.alert(
+            error.message,
+            "Please enable camera access from Settings to be able to take photos of your artwork.",
+            [
+              { text: "Cancel" },
+              {
+                text: "Settings",
+                onPress: () => Linking.openURL(ARCocoaConstantsModule.UIApplicationOpenSettingsURLString),
+              },
+            ]
+          )
+          break
 
-          case errors.saveFailed:
-            const underlyingError = error.userInfo && error.userInfo.NSUnderlyingError
-            Alert.alert(error.message, underlyingError && `${underlyingError.message} (${underlyingError.code})`)
-            break
+        case errors.saveFailed:
+          const underlyingError = error.userInfo && error.userInfo.NSUnderlyingError
+          Alert.alert(error.message, underlyingError && `${underlyingError.message} (${underlyingError.code})`)
+          break
 
-          default:
-            console.error(error)
-        }
-      })
+        default:
+          console.error(error)
+      }
+    }
   }
 
   onNewSelectionState = (selection: string[]) => this.setState({ selection })
@@ -188,12 +202,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       <Theme>
         <ProvideScreenDimensions>
           <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-            <ScrollView
-              style={{ flex: 1 }}
-              scrollsToTop={true}
-              onScroll={this.onScroll.bind(this)}
-              scrollEventThrottle={50}
-            >
+            <ScrollView style={{ flex: 1 }} scrollsToTop={true} onScroll={this.onScroll} scrollEventThrottle={50}>
               <View style={{ paddingTop: 40 }}>
                 <Box px={2}>
                   <Serif size="4" style={{ textAlign: "center" }}>
