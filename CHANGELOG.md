@@ -1,3 +1,15 @@
+# v1.21.38 (Thu Feb 06 2020)
+
+#### 🐛  Bug Fix
+
+- Preserve changes made manually to the MP query map [#2078](https://github.com/artsy/emission/pull/2078) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.37 (Thu Feb 06 2020)
 
 #### 🐛  Bug Fix
