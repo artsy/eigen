@@ -9,6 +9,7 @@ NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent"
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
+NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
@@ -36,6 +37,7 @@ NSString *const AROptionsNewSearch = @"New Search";
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
          AROptionsLotConditionReport : @"Lot Condition Report",
+         AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
          AROptionsNewSearch: AROptionsNewSearch,

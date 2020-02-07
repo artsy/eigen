@@ -1,10 +1,11 @@
 upcoming:
   version: 6.3.0
   date: TBD
-  emission_version: 1.21.32
+  emission_version: 1.21.39
   dev:
     - Fixes full-bleed collections image rendering - ash & MX Knowledge Share Feb 4 2020
     - Adds lab option for lot condition report - brian
+    - Adds lab option for filtering collections artworks - ashley
   user_facing:
     -
 
