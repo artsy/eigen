@@ -2,7 +2,6 @@
 #import "UIViewController+SimpleChildren.h"
 #import "ARPendingOperationViewController.h"
 #import "ARTopMenuViewController.h"
-#import "ARAppSearchViewController.h"
 
 
 @interface ARTestingHidesBackButtonViewController : UIViewController <ARMenuAwareViewController>
@@ -26,7 +25,6 @@
 @interface ARNavigationController (Testing)
 - (IBAction)back:(id)sender;
 @property (readwrite, nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
-@property (readwrite, nonatomic, strong) ARAppSearchViewController *searchViewController;
 @end
 
 
@@ -70,35 +68,6 @@ describe(@"stack manipulation", ^{
         [navigationController pushViewController:viewController2 animated:NO];
         [navigationController removeViewControllerFromStack:navigationController.rootViewController];
         expect(navigationController.viewControllers).to.equal(@[viewController2]);
-    });
-});
-
-describe(@"search", ^{
-    before(^{
-        navigationController.searchViewController = [ARAppSearchViewController new];
-        id mockTopViewController = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
-        [[[mockTopViewController stub] andReturn:navigationController] rootNavigationController];
-    });
-
-    it(@"presents the search VC", ^{
-        [navigationController showSearch];
-        [navigationController callDidShowVCDelegateMethod];
-        expect(navigationController.topViewController).to.equal(navigationController.searchViewController);
-    });
-
-    it(@"removes the search VC from the stack after presenting another view controller on top of it", ^{
-        [navigationController showSearch];
-        UIViewController *other = [UIViewController new];
-        [navigationController pushViewController:other animated:NO];
-        [navigationController callDidShowVCDelegateMethod];
-        expect(navigationController.viewControllers).to.equal(@[navigationController.rootViewController, other]);
-    });
-
-    it(@"removes the search view controller from any other stack before showing it", ^{
-        ARNavigationController *other = [[ARNavigationController alloc] initWithRootViewController:navigationController.searchViewController];
-        [navigationController showSearch];
-        expect(navigationController.searchViewController.navigationController).to.equal(navigationController);
-        expect(other.viewControllers).to.beEmpty();
     });
 });
 

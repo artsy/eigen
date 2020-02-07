@@ -1,9 +1,7 @@
 #import "ARNavigationTransitionController.h"
 
-#import "ARAppSearchTransition.h"
 #import "ARDefaultNavigationTransition.h"
 
-#import "ARAppSearchViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>
 #import "ARViewInRoomViewController.h"
 
@@ -14,14 +12,7 @@
                                          fromViewController:(UIViewController *)fromVC
                                            toViewController:(UIViewController *)toVC
 {
-    ARNavigationTransition *transition = nil;
-
-   if ([toVC isKindOfClass:[ARAppSearchViewController class]] || [fromVC isKindOfClass:[ARAppSearchViewController class]]) {
-        transition = [[ARAppSearchTransition alloc] init];
-    } else {
-        transition = [[ARDefaultNavigationTransition alloc] init];
-    }
-
+    ARNavigationTransition *transition = [[ARDefaultNavigationTransition alloc] init];
     transition.operationType = operation;
     return transition;
 }

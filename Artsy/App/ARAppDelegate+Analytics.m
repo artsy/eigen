@@ -29,7 +29,6 @@
 
 // View Controllers
 #import "ARProfileViewController.h"
-#import "ARAppSearchViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
@@ -41,7 +40,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARArtistBiographyViewController.h"
 #import "ARBrowseViewController.h"
-#import "ARSearchViewController.h"
 #import "ARNavigationController.h"
 #import "ARSentryAnalyticsProvider.h"
 #import "ARAugmentedRealityConfig.h"
@@ -142,29 +140,6 @@
                                 return @{
                                     @"profile_id" : controller.profileID ?: @"",
                                     @"user_id" : [[ARUserManager sharedManager] currentUser].userID ?: @""
-                                };
-                            }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARAppSearchViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSearchItemSelected,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(selectedResult:ofType:fromQuery:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARAppSearchViewController *controller, NSArray *parameters) {
-                                NSString *type = parameters[1];
-                                return type != nil;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARAppSearchViewController *controller, NSArray *parameters) {
-                                SearchResult *result = parameters[0];
-                                NSString *type = parameters[1];
-                                NSString *query = parameters[2];
-
-                                return @{
-                                    type : result.modelID ?: @"",
-                                    @"query" : query ?: @"",
                                 };
                             }
                         }
@@ -449,39 +424,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARAppSearchViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSearchClosed,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(viewDidDisappear:)
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSearchStartedQuery,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(fetchSearchResults:replace:),
-                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"query": parameters.firstObject ?: @""
-                                };
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSearchCleared,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(clearSearchAnimated:)
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSearchItemSelected,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(selectedResult:ofType:fromQuery:),
-                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"query": parameters[2] ?: @"",
-                                    @"selected_object_type": parameters[1] ?: @"",
-                                    @"selected_object_slug": [parameters[0] modelID] ?: @""
-                                };
-                            }
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARNavigationController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -638,14 +580,6 @@
                         }
                     ]
                 }, // ========== PRIMARY NAVIGATION ==========
-                @{
-                    ARAnalyticsClass: ARAppSearchViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Search",
-                        }
-                    ]
-                },
                 // ========== CORE CONTENT SCREENS ==========
                 @{
                     ARAnalyticsClass: ARArtistComponentViewController.class,

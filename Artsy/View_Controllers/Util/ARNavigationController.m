@@ -8,7 +8,6 @@
 #import "UIViewController+SimpleChildren.h"
 
 #import "ARAppConstants.h"
-#import "ARAppSearchViewController.h"
 #import "ARNavigationTransitionController.h"
 #import "ARPendingOperationViewController.h"
 #import "ARNavigationController.h"
@@ -47,7 +46,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 @property (readwrite, nonatomic, strong) AIMultiDelegate *multiDelegate;
 @property (readwrite, nonatomic, strong) UIViewController<ARMenuAwareViewController> *observedViewController;
 @property (readwrite, nonatomic, strong) UIPercentDrivenInteractiveTransition *interactiveTransitionHandler;
-@property (readwrite, nonatomic, strong) ARAppSearchViewController *searchViewController;
 
 @end
 
@@ -220,10 +218,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
-
-    if ((id)viewController != self.searchViewController) {
-        [self removeViewControllerFromStack:self.searchViewController];
-    }
 }
 
 - (void)didUpdateStatusBarForTopViewControllerAnimated:(BOOL)animated
@@ -485,37 +479,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     } else {
         [navigationController.navigationController popViewControllerAnimated:YES];
     }
-}
-
-- (void)toggleSearch
-{
-    if (self.isShowingSearch) {
-        [self closeSearch];
-        return;
-    }
-
-    [self showSearch];
-}
-
-- (BOOL)isShowingSearch
-{
-    return [[[ARTopMenuViewController sharedController] rootNavigationController] topViewController] == self.searchViewController;
-}
-
-- (void)showSearch
-{
-    if (self.searchViewController == nil) {
-        self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
-    }
-
-    if ([[[ARTopMenuViewController sharedController] rootNavigationController] topViewController] != self.searchViewController) {
-        [[[ARTopMenuViewController sharedController] rootNavigationController] pushViewController:self.searchViewController animated:ARPerformWorkAsynchronously];
-    }
-}
-
-- (void)closeSearch
-{
-    [self.searchViewController closeSearch:self];
 }
 
 @end
