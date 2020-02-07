@@ -50,12 +50,8 @@
 #import <Emission/ARGeneComponentViewController.h>
 
 // Views
-#import "ARHeartButton.h"
 #import "ARButtonWithImage.h"
 #import "ARTabContentView.h"
-#import "ARSwitchView.h"
-#import "ARSwitchView+Favorites.h"
-#import "ARSwitchView+Artist.h"
 #import "ARAppStatus.h"
 
 // Models

@@ -1,6 +1,5 @@
 #import "ARNavigationController.h"
 #import "UIViewController+SimpleChildren.h"
-#import "ARPendingOperationViewController.h"
 #import "ARTopMenuViewController.h"
 
 
@@ -24,7 +23,6 @@
 
 @interface ARNavigationController (Testing)
 - (IBAction)back:(id)sender;
-@property (readwrite, nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
 @end
 
 

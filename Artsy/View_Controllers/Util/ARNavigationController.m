@@ -9,7 +9,6 @@
 
 #import "ARAppConstants.h"
 #import "ARNavigationTransitionController.h"
-#import "ARPendingOperationViewController.h"
 #import "ARNavigationController.h"
 #import "ARMenuAwareViewController.h"
 #import "ARTopMenuViewController.h"
@@ -42,7 +41,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 @property (nonatomic, strong) NSLayoutConstraint *statusBarVerticalConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *backButtonTopConstraint;
 
-@property (readwrite, nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
 @property (readwrite, nonatomic, strong) AIMultiDelegate *multiDelegate;
 @property (readwrite, nonatomic, strong) UIViewController<ARMenuAwareViewController> *observedViewController;
 @property (readwrite, nonatomic, strong) UIPercentDrivenInteractiveTransition *interactiveTransitionHandler;
