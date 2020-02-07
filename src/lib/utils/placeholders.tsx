@@ -50,7 +50,7 @@ export const Placeholder: React.FC<ViewStyle> = styles => {
   return (
     <Animated.View
       ref={ref}
-      style={[styles, { opacity, backgroundColor: color("black10") }] as any}
+      style={[{ borderRadius: 2 }, styles, { opacity, backgroundColor: color("black10") }] as any}
       onLayout={() => {
         ref.current.getNode().measureInWindow((_w, h, _x, y) => {
           verticalOffset.setValue(-y + h / 2)
