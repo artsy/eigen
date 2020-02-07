@@ -198,7 +198,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (void)restartVideo:(NSNotification *)notification
 {
     AVPlayerItem *item = notification.object;
-    [item seekToTime:kCMTimeZero];
+    [item seekToTime:kCMTimeZero completionHandler:nil];
     [self.avPlayer play];
 }
 
