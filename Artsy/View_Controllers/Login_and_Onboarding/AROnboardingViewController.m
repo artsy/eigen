@@ -244,12 +244,12 @@
 
 - (void)showTermsAndConditions
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/terms"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/terms"] options:@{} completionHandler:nil];
 }
 
 - (void)showPrivacyPolicy
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/privacy"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/privacy"] options:@{} completionHandler:nil];
 }
 
 

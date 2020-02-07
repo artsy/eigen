@@ -283,7 +283,7 @@ static ARAppDelegate *_sharedInstance = nil;
                                               style:UIAlertActionStyleDefault
                                               handler:^(UIAlertAction * action) {
                                                   NSString *iTunesLink = @"https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080";
-                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink] options:@{} completionHandler:nil];
                                                   // We wait 1 second to make sure the view controller hierarchy has been set up.
                                                   ar_dispatch_after(1, ^{
                                                       exit(0);

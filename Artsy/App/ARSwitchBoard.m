@@ -448,14 +448,14 @@ static ARSwitchBoard *sharedInstance = nil;
     } else if ([ARRouter isWebURL:url]) {
         /// Is is a webpage we could open in webkit?, or need to break out to safari (see PR #1195)
         if (ARIsRunningInDemoMode || [url.query containsString:AREscapeSandboxQueryString]) {
-            [[UIApplication sharedApplication] openURL:url];
+            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
             return nil;
         } else {
             return [self viewControllerForUnroutedDomain:url];
         }
     } else if ([ARRouter isTelURL:url]) {
         // Handle via OS telephony service
-        [[UIApplication sharedApplication] openURL:url];
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
         return nil;
     }
 
@@ -501,7 +501,7 @@ static ARSwitchBoard *sharedInstance = nil;
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
 
     [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {
-        [[UIApplication sharedApplication] openURL:url];
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
     }]];
 
     [controller addAction:[UIAlertAction actionWithTitle:@"Go back to Artsy" style:UIAlertActionStyleCancel handler:^(UIAlertAction *_Nonnull action) {
