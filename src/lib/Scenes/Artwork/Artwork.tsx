@@ -1,4 +1,4 @@
-import { Box, Theme } from "@artsy/palette"
+import { Box, space, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
@@ -6,11 +6,12 @@ import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Placeholder, RaggedText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
@@ -224,24 +225,20 @@ export class Artwork extends React.Component<Props, State> {
 
   render() {
     return (
-      <Theme>
-        <ProvideScreenDimensions>
-          <FlatList
-            data={this.sections()}
-            ItemSeparatorComponent={() => (
-              <Box px={2} mx={2} my={3}>
-                <Separator />
-              </Box>
-            )}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-            contentInset={{ bottom: 40 }}
-            keyExtractor={(item, index) => item.type + String(index)}
-            renderItem={item =>
-              item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
-            }
-          />
-        </ProvideScreenDimensions>
-      </Theme>
+      <FlatList
+        data={this.sections()}
+        ItemSeparatorComponent={() => (
+          <Box px={2} mx={2} my={3}>
+            <Separator />
+          </Box>
+        )}
+        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
+        contentInset={{ bottom: 40 }}
+        keyExtractor={(item, index) => item.type + String(index)}
+        renderItem={item =>
+          item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
+        }
+      />
     )
   }
 }
@@ -340,24 +337,67 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
     <RetryErrorBoundary
       render={({ isRetry }) => {
         return (
-          <QueryRenderer<ArtworkQuery>
-            environment={defaultEnvironment}
-            query={graphql`
-              query ArtworkQuery($artworkID: String!) {
-                artwork(id: $artworkID) {
-                  ...Artwork_artwork
-                }
-              }
-            `}
-            variables={{ artworkID }}
-            cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
-            }}
-            render={renderWithLoadProgress(ArtworkContainer, others)}
-          />
+          <Theme>
+            <ProvideScreenDimensions>
+              <QueryRenderer<ArtworkQuery>
+                environment={defaultEnvironment}
+                query={graphql`
+                  query ArtworkQuery($artworkID: String!) {
+                    artwork(id: $artworkID) {
+                      ...Artwork_artwork
+                    }
+                  }
+                `}
+                variables={{ artworkID }}
+                cacheConfig={{
+                  // Bypass Relay cache on retries.
+                  ...(isRetry && { force: true }),
+                }}
+                render={renderWithPlaceholder({
+                  Container: ArtworkContainer,
+                  initialProps: others,
+                  renderPlaceholder: () => <ArtworkPlaceholder />,
+                })}
+              />
+            </ProvideScreenDimensions>
+          </Theme>
         )
       }}
     />
+  )
+}
+
+const ArtworkPlaceholder: React.FC<{}> = ({}) => {
+  const screenDimensions = useScreenDimensions()
+  // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  const artworkHeight = screenDimensions.width >= 375 ? 340 : 290
+
+  return (
+    <View style={{ flex: 1, padding: space(2) }}>
+      {/* Artwork thumbnail */}
+      <Placeholder height={artworkHeight} />
+      <Spacer mb={2} />
+      {/* save/share buttons */}
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
+        <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
+      </View>
+      <Spacer mb={2} />
+      {/* Artist name */}
+      <Placeholder width={100} height={space(1)} />
+      <Spacer mb={2} />
+      {/* Artwork tombstone details */}
+      <View style={{ width: 130 }}>
+        <RaggedText numLines={5} />
+      </View>
+      <Spacer mb={2} />
+      {/* more junk */}
+      <Placeholder width={190} height={space(1)} marginBottom={5} />
+      <Spacer mb={2} />
+      <RaggedText numLines={6} />
+      <Spacer mb={2} />
+      {/* commerce button */}
+      <Placeholder height={60} />
+    </View>
   )
 }

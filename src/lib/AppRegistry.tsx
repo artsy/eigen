@@ -51,6 +51,7 @@ import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
+  "Warning: RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
   // Deprecated, we'll transition when it's removed.
   "Warning: ListView is deprecated and will be removed in a future release. See https://fb.me/nolistview for more information",
 
