@@ -155,7 +155,7 @@
     return attributedString;
 }
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
 {
     UIViewController *viewController = nil;
     if ([URL.scheme isEqualToString:@"applewebdata"]) {
