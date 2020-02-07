@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import { ArtworkTestsQuery } from "__generated__/ArtworkTestsQuery.graphql"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
@@ -8,6 +9,7 @@ import {
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { extractText } from "lib/tests/extractText"
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { merge } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -26,24 +28,28 @@ jest.unmock("react-relay")
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = ({ isVisible = true }) => (
-    <QueryRenderer<ArtworkTestsQuery>
-      environment={environment}
-      query={graphql`
-        query ArtworkTestsQuery @relay_test_operation {
-          artwork(id: "doesn't matter") {
-            ...Artwork_artwork
-          }
-        }
-      `}
-      variables={{ hello: true }}
-      render={({ props, error }) => {
-        if (props) {
-          return <ArtworkContainer artwork={props.artwork} isVisible={isVisible} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
+    <Theme>
+      <ProvidePlaceholderContext>
+        <QueryRenderer<ArtworkTestsQuery>
+          environment={environment}
+          query={graphql`
+            query ArtworkTestsQuery @relay_test_operation {
+              artwork(id: "doesn't matter") {
+                ...Artwork_artwork
+              }
+            }
+          `}
+          variables={{ hello: true }}
+          render={({ props, error }) => {
+            if (props) {
+              return <ArtworkContainer artwork={props.artwork} isVisible={isVisible} />
+            } else if (error) {
+              console.log(error)
+            }
+          }}
+        />
+      </ProvidePlaceholderContext>
+    </Theme>
   )
 
   beforeEach(() => {
