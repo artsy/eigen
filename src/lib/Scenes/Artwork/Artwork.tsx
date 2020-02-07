@@ -367,6 +367,9 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
 }
 
 const ArtworkPlaceholder: React.FC<{}> = ({}) => {
+  if (process?.env?.NODE_ENV === "test") {
+    return <View />
+  }
   const screenDimensions = useScreenDimensions()
   // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   const artworkHeight = screenDimensions.width >= 375 ? 340 : 290

@@ -895,14 +895,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1006,14 +1007,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1160,14 +1162,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1656,14 +1659,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1862,14 +1866,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -2432,14 +2437,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -2951,14 +2957,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
