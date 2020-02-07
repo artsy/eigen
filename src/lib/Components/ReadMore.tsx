@@ -31,7 +31,7 @@ export const ReadMore = React.memo(
         ...basicRules.paragraph,
         react: (node, output, state) => {
           return (
-            <TextComponent size="3t" color={color || "black100"} key={state.key}>
+            <TextComponent size="3" color={color || "black100"} key={state.key}>
               {!isExpanded && Number(state.key) > 0 ? "⁠ — " : null}
               {output(node.content, state)}
             </TextComponent>

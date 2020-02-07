@@ -1100,14 +1100,14 @@ exports[`Artwork renders a snapshot 1`] = `
           color="black100"
           fontFamily="ReactNativeAGaramondPro-Regular"
           fontSize="16px"
-          lineHeight="20px"
+          lineHeight="24px"
           style={
             Array [
               Object {
                 "color": "#000",
                 "fontFamily": "ReactNativeAGaramondPro-Regular",
                 "fontSize": 16,
-                "lineHeight": 20,
+                "lineHeight": 24,
               },
               Object {},
             ]
@@ -1159,14 +1159,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black100"
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="16px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1279,14 +1279,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1326,14 +1326,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1373,14 +1373,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1420,14 +1420,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1467,14 +1467,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1514,14 +1514,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1561,14 +1561,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1608,14 +1608,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1655,14 +1655,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black60"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 14,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1749,14 +1749,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black100"
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="16px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1805,14 +1805,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black100"
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="16px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -1861,14 +1861,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black100"
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="16px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
@@ -2431,14 +2431,14 @@ exports[`Artwork renders a snapshot 1`] = `
             color="black100"
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="16px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
