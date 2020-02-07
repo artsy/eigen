@@ -28,7 +28,7 @@ storiesOf("Artwork/Screens")
     return (
       <ArtworkRenderer
         isVisible
-        artworkID="pablo-picasso-buste-de-femme-assise-dans-un-fauteuil"
+        artworkID="lita-albuquerque-sun-and-moon-trajectories-number-5"
         safeAreaInsets={safeAreaInsets}
       />
     )

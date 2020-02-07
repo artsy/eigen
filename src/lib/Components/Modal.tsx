@@ -1,4 +1,5 @@
 import { Button, Sans } from "@artsy/palette"
+import { TextAlignProperty } from "csstype"
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
@@ -8,6 +9,7 @@ interface ModalProps extends ViewProperties {
   headerText: string
   detailText: string
   visible?: boolean
+  textAlign?: TextAlignProperty
   closeModal?: () => void
 }
 
@@ -58,12 +60,12 @@ export class Modal extends React.Component<ModalProps, any> {
               <TouchableWithoutFeedback onPress={null}>
                 <ModalInnerView>
                   <View style={{ paddingBottom: 10 }}>
-                    <Sans size="3" weight="medium">
+                    <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
                       {headerText}
                     </Sans>
                   </View>
                   <View style={{ paddingBottom: 30 }}>
-                    <Sans size="3" color={theme.colors.black60}>
+                    <Sans size="3" color={theme.colors.black60} textAlign={this.props.textAlign}>
                       {detailText}
                     </Sans>
                   </View>

@@ -3,8 +3,10 @@ import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.gra
 import { ReadMore } from "lib/Components/ReadMore"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
+import { NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { truncatedTextLimit } from "../hardware"
+import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork
@@ -19,22 +21,31 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
     context_module: Schema.ContextModules.ArtworkDetails,
   }))
   render() {
+    const { artwork } = this.props
+
+    const enableLotConditionReport = NativeModules.Emission?.options?.AROptionsLotConditionReport
+
     const listItems = [
-      { title: "Medium", value: this.props.artwork.category },
+      { title: "Medium", value: artwork.category },
       {
         title: "Condition",
-        value: this.props.artwork.conditionDescription ? this.props.artwork.conditionDescription.details : null,
+        value:
+          enableLotConditionReport && artwork.isBiddable ? (
+            <RequestConditionReportQueryRenderer artworkID={artwork.slug} />
+          ) : (
+            artwork.conditionDescription && artwork.conditionDescription.details
+          ),
       },
-      { title: "Signature", value: this.props.artwork.signatureInfo && this.props.artwork.signatureInfo.details },
+      { title: "Signature", value: artwork.signatureInfo && artwork.signatureInfo.details },
       {
         title: "Certificate of Authenticity",
-        value: this.props.artwork.certificateOfAuthenticity && this.props.artwork.certificateOfAuthenticity.details,
+        value: artwork.certificateOfAuthenticity && artwork.certificateOfAuthenticity.details,
       },
-      { title: "Frame", value: this.props.artwork.framed && this.props.artwork.framed.details },
-      { title: "Series", value: this.props.artwork.series },
-      { title: "Publisher", value: this.props.artwork.publisher },
-      { title: "Manufacturer", value: this.props.artwork.manufacturer },
-      { title: "Image rights", value: this.props.artwork.image_rights },
+      { title: "Frame", value: artwork.framed && artwork.framed.details },
+      { title: "Series", value: artwork.series },
+      { title: "Publisher", value: artwork.publisher },
+      { title: "Manufacturer", value: artwork.manufacturer },
+      { title: "Image rights", value: artwork.image_rights },
     ]
 
     const displayItems = listItems.filter(i => i.value != null && i.value !== "")
@@ -50,14 +61,18 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
               <Sans size="3t" weight="regular">
                 {title}
               </Sans>
-              <ReadMore
-                content={value}
-                color="black60"
-                sans
-                maxChars={truncatedTextLimit()}
-                trackingFlow={Schema.Flow.ArtworkDetails}
-                contextModule={Schema.ContextModules.ArtworkDetails}
-              />
+              {React.isValidElement(value) ? (
+                value
+              ) : (
+                <ReadMore
+                  content={value as string}
+                  color="black60"
+                  sans
+                  maxChars={truncatedTextLimit()}
+                  trackingFlow={Schema.Flow.ArtworkDetails}
+                  contextModule={Schema.ContextModules.ArtworkDetails}
+                />
+              )}
             </React.Fragment>
           ))}
         </Join>
@@ -69,6 +84,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
 export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDetails, {
   artwork: graphql`
     fragment ArtworkDetails_artwork on Artwork {
+      slug
       category
       conditionDescription {
         label
@@ -90,6 +106,10 @@ export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDe
       publisher
       manufacturer
       image_rights: imageRights
+      isBiddable
+      saleArtwork {
+        internalID
+      }
     }
   `,
 })

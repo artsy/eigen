@@ -191,6 +191,7 @@ export enum ActionNames {
   IncreaseMaxBid = "increaseMaxBid",
   ReadMore = "readMore",
   RegisterToBid = "registerToBid",
+  RequestConditionReport = "requestConditionReport",
   Share = "share",
   ShowMoreArtworksDetails = "showMoreArtworksDetails",
   ViewAll = "viewAll",
