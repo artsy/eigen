@@ -1,9 +1,8 @@
-import { Box, space, Spacer, Theme } from "@artsy/palette"
+import { Box, Separator, space, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
-import Separator from "lib/Components/Separator"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Placeholder, RaggedText } from "lib/utils/placeholders"
@@ -381,6 +380,7 @@ const ArtworkPlaceholder: React.FC<{}> = ({}) => {
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
         <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
+        <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
       </View>
       <Spacer mb={2} />
       {/* Artist name */}
@@ -388,13 +388,13 @@ const ArtworkPlaceholder: React.FC<{}> = ({}) => {
       <Spacer mb={2} />
       {/* Artwork tombstone details */}
       <View style={{ width: 130 }}>
-        <RaggedText numLines={5} />
+        <RaggedText numLines={4} />
       </View>
-      <Spacer mb={2} />
+      <Spacer mb={3} />
       {/* more junk */}
-      <Placeholder width={190} height={space(1)} marginBottom={5} />
-      <Spacer mb={2} />
-      <RaggedText numLines={6} />
+      <Separator />
+      <Spacer mb={3} />
+      <RaggedText numLines={3} />
       <Spacer mb={2} />
       {/* commerce button */}
       <Placeholder height={60} />

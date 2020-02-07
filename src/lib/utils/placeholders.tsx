@@ -1,4 +1,4 @@
-import { color, space } from "@artsy/palette"
+import { color } from "@artsy/palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
@@ -61,6 +61,8 @@ export const Placeholder: React.FC<ViewStyle> = styles => {
 }
 
 export const RaggedText: React.FC<{ numLines: number }> = ({ numLines }) => {
+  const marginHeight = 7
+  const textHeight = 12
   const lengths = useMemo(() => {
     const result = []
     for (let i = 0; i < numLines - 1; i++) {
@@ -71,9 +73,11 @@ export const RaggedText: React.FC<{ numLines: number }> = ({ numLines }) => {
   }, [numLines])
 
   return (
-    <View style={{ flexDirection: "column", justifyContent: "flex-start", height: (space(0.5) + space(1)) * numLines }}>
+    <View
+      style={{ flexDirection: "column", justifyContent: "flex-start", height: (marginHeight + textHeight) * numLines }}
+    >
       {lengths.map((length, key) => (
-        <View key={key} style={{ flexDirection: "row", marginBottom: space(0.5), height: space(1) }}>
+        <View key={key} style={{ flexDirection: "row", marginBottom: marginHeight, height: textHeight }}>
           <Placeholder flex={length} />
         </View>
       ))}
