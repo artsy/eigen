@@ -765,4 +765,10 @@ static ARTopMenuViewController *_sharedManager = nil;
     [self presentRootViewControllerAtIndex:1 animated:NO];
 }
 
+- (void)showFavs
+{
+    // iPad doesn't have City Guides
+    [self presentRootViewControllerAtIndex:([UIDevice isPhone] ? 4 : 3) animated:NO];
+}
+
 @end

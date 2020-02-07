@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)descriptionForNavIndex:(NSInteger)index;
 
 - (void)showSearch;
+- (void)showFavs;
 
 @end
 

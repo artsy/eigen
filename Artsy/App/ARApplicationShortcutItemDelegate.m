@@ -39,12 +39,7 @@
 
 - (void)openFavorites
 {
-    // TODO: Is this correct? Are we sure?
-    ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
-    UIViewController *favourites = [[ARSwitchBoard sharedInstance] loadPath:@"/favorites"];
-    if (favourites) {
-        [rootNavigationController pushViewController:favourites animated:YES];
-    }
+    [[ARTopMenuViewController sharedController] showFavs];
 }
 
 @end
