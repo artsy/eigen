@@ -1,7 +1,7 @@
 #import "ARNavigationTransitionController.h"
 
 #import "ARAppSearchTransition.h"
-#import "ARDefaultNavigationTransition.h"å
+#import "ARDefaultNavigationTransition.h"
 
 #import "ARAppSearchViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>

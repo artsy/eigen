@@ -19,7 +19,6 @@
 #import "ARDefaults.h"
 #import "ARSwitchBoard.h"
 #import "ArtsyEcho.h"
-#import "ArtsyEcho+LocalDisco.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -138,7 +137,7 @@
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
 {
-    BOOL showLocalDiscovery = [self.echo shouldShowLocalDiscovery];
+    BOOL showLocalDiscovery = YES;
 
     switch (index) {
         case ARTopTabControllerIndexHome:

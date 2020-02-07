@@ -16,7 +16,6 @@
 #import "ARSystemTime.h"
 
 #import "ArtsyEcho.h"
-#import "ArtsyEcho+BNMO.h"
 #import <KSDeferred/KSPromise.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -386,9 +385,7 @@ return [navigationButtons copy];
 - (BOOL)showMakeOfferButton
 {
     // We don't have a UI to select from multiple edition sets yet, so don't show the Make Offer UI at all for those works.
-    return (self.artwork.isOfferable.boolValue &&
-            self.echo.isMakeOfferAccessible &&
-            !self.artwork.hasMultipleEditions);
+    return (self.artwork.isOfferable.boolValue && !self.artwork.hasMultipleEditions);
 }
 
 - (BOOL)showAuctionControls
