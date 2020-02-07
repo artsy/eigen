@@ -577,8 +577,6 @@
 		60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F0F11662AADF007C9587 /* ARAppConstants.m */; };
 		60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F13816638785007C9587 /* ArtsyAPI.m */; };
 		60B6F13E16638815007C9587 /* Artwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F13D16638815007C9587 /* Artwork.m */; };
-		60B79B84182C346700945FFF /* ARQuicksilverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B79B82182C346700945FFF /* ARQuicksilverViewController.m */; };
-		60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */; };
 		60B8D1241CBB7C1D006C3E42 /* TextStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B8D1231CBB7C1D006C3E42 /* TextStackTests.swift */; };
 		60BB9FE916695A8F001FA20A /* PhotoContentLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 49433300166920B3005AB483 /* PhotoContentLink.m */; };
 		60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */; };
@@ -1652,10 +1650,6 @@
 		60B6F13816638785007C9587 /* ArtsyAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyAPI.m; sourceTree = "<group>"; };
 		60B6F13C16638815007C9587 /* Artwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Artwork.h; sourceTree = "<group>"; };
 		60B6F13D16638815007C9587 /* Artwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Artwork.m; sourceTree = "<group>"; };
-		60B79B81182C346700945FFF /* ARQuicksilverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuicksilverViewController.h; sourceTree = "<group>"; };
-		60B79B82182C346700945FFF /* ARQuicksilverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuicksilverViewController.m; sourceTree = "<group>"; };
-		60B79B87182C54CE00945FFF /* ARQuicksilverSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuicksilverSearchBar.h; sourceTree = "<group>"; };
-		60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuicksilverSearchBar.m; sourceTree = "<group>"; };
 		60B8D1231CBB7C1D006C3E42 /* TextStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextStackTests.swift; path = Auction/Views/TextStackTests.swift; sourceTree = "<group>"; };
 		60BC390718182227003F34E7 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		60BC92F11BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARApplicationShortcutItemDelegate.h; sourceTree = "<group>"; };
@@ -3047,7 +3041,6 @@
 		6008A59116D815E5007E8E26 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
-				60B79B86182C549900945FFF /* Quicksilver */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -4010,17 +4003,6 @@
 			);
 			name = "API Models";
 			path = API_Models;
-			sourceTree = "<group>";
-		};
-		60B79B86182C549900945FFF /* Quicksilver */ = {
-			isa = PBXGroup;
-			children = (
-				60B79B81182C346700945FFF /* ARQuicksilverViewController.h */,
-				60B79B82182C346700945FFF /* ARQuicksilverViewController.m */,
-				60B79B87182C54CE00945FFF /* ARQuicksilverSearchBar.h */,
-				60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */,
-			);
-			path = Quicksilver;
 			sourceTree = "<group>";
 		};
 		60B8D1221CBB7BEA006C3E42 /* Views */ = {
@@ -5045,7 +5027,6 @@
 				60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */,
 				B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */,
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
-				60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */,
 				60C2CBEF1CC11433009B30CA /* LiveAuctionToolbarView.swift in Sources */,
 				5EF8407E1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
 				51C863151EAB81F00069E9AC /* ArtsyAPI+Sailthru.m in Sources */,
@@ -5087,7 +5068,6 @@
 				499A58A516669CD6004B0E2F /* ARPostFeedItem.m in Sources */,
 				607BF5AB1C2413810034B519 /* ARAppStatus.m in Sources */,
 				3CAA412F18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m in Sources */,
-				60B79B84182C346700945FFF /* ARQuicksilverViewController.m in Sources */,
 				3CEE0B6218A16F6900FEA6E6 /* ArtsyAPI+Posts.m in Sources */,
 				3CE0DA2F18A12335000E537A /* Video.m in Sources */,
 				4953E8321668021D00A09726 /* Image.m in Sources */,
