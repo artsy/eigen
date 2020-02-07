@@ -55,7 +55,6 @@
 		342F953528DFA7BCEAC0552A /* ArtsyAPI+Shows.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9300791CEBAEC9D58AD0 /* ArtsyAPI+Shows.m */; };
 		342F95D6D6422286C9F5A33A /* ARStandardDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F3E8A0C15DD0DB437D1 /* ARStandardDateFormatter.m */; };
 		342F95DB4E709752C0EC1FE2 /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9C11DC281B1C4DC1FB8C /* Map.m */; };
-		342F95E4121D5C70F42DF9A2 /* ARFeedStatusIndicatorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F919D0897DFE221EC5E73 /* ARFeedStatusIndicatorTableViewCell.m */; };
 		342F961978DD1D771928472A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97B49335330C4FD569B4 /* UIDevice-Hardware.m */; };
 		342F96505F255C0F443B5EAA /* UIViewController+SimpleChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9331632309600346BD90 /* UIViewController+SimpleChildren.m */; };
 		342F9654C7AF4AEF8C21BC11 /* ARActionButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F937DAA05F0E703D7A020 /* ARActionButtonsView.m */; };
@@ -137,7 +136,6 @@
 		3C6BDCBD18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BDCBC18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m */; };
 		3C6BDCC018E0B3E40028EF5D /* MutableNSURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */; };
 		3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60418ABC7BB008DFE3B /* UserTests.m */; };
-		3C6CB60918ABD8D2008DFE3B /* ARPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */; };
 		3C6CB61018ABFB8D008DFE3B /* ARRelatedArtistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */; };
 		3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7880BB18B9081C00595E30 /* ARNotificationView.m */; };
 		3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A7FA618C6EDAB00E8D336 /* ArtworkTests.m */; };
@@ -520,7 +518,6 @@
 		608B708B17D4A1C80088A56C /* SidebarButtonBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B705917D4A1C80088A56C /* SidebarButtonBG@2x.png */; };
 		608B708C17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B705A17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png */; };
 		608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */; };
-		608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B709817D4F6520088A56C /* ARSearchTableViewCell.m */; };
 		608C6DC71FAA11630044E235 /* nav_messaging@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608C6DBD1FAA115F0044E235 /* nav_messaging@2x.png */; };
 		608C6DC81FAA11630044E235 /* nav_favs@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608C6DBE1FAA11600044E235 /* nav_favs@2x.png */; };
 		608C6DC91FAA11630044E235 /* nav_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608C6DBF1FAA11610044E235 /* nav_search@2x.png */; };
@@ -571,7 +568,6 @@
 		60AF60C91CB2D8BD0041B430 /* LiveAuctionPlaceMaxBidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF60C81CB2D8BD0041B430 /* LiveAuctionPlaceMaxBidViewController.swift */; };
 		60AF60CB1CB395600041B430 /* LiveAuctionBidButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF60CA1CB395600041B430 /* LiveAuctionBidButtonTests.swift */; };
 		60AFD9A820AC9FA50013D74B /* ARInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AFD9A720AC9FA50013D74B /* ARInformationView.m */; };
-		60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B617D21815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m */; };
 		60B6E5981C88BEF3003B1D46 /* LiveSale.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6E5971C88BEF3003B1D46 /* LiveSale.m */; };
 		60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F0F11662AADF007C9587 /* ARAppConstants.m */; };
 		60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F13816638785007C9587 /* ArtsyAPI.m */; };
@@ -832,7 +828,6 @@
 		342F91131CCE3110E3E44E19 /* ARSplitStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSplitStackView.m; sourceTree = "<group>"; };
 		342F9175329F0389E644C194 /* NSDate+DateRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DateRange.m"; sourceTree = "<group>"; };
 		342F918CC4304843C82ED43C /* ARBidButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBidButton.h; sourceTree = "<group>"; };
-		342F919D0897DFE221EC5E73 /* ARFeedStatusIndicatorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeedStatusIndicatorTableViewCell.m; sourceTree = "<group>"; };
 		342F91AA54E8417472868A61 /* UIViewController+FullScreenLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FullScreenLoading.h"; sourceTree = "<group>"; };
 		342F924737155CB0C5A439F9 /* UIViewController+FullScreenLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FullScreenLoading.m"; sourceTree = "<group>"; };
 		342F92656D83DA29BDA2094D /* ArtsyAPI+Shows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Shows.h"; sourceTree = "<group>"; };
@@ -853,7 +848,6 @@
 		342F94F249E33303787DC61E /* MTLModel+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MTLModel+JSON.h"; sourceTree = "<group>"; };
 		342F954D3ABCF82AAC1640D9 /* ARSharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSharingController.h; sourceTree = "<group>"; };
 		342F955C47585DAE288DCC7F /* ARScrollNavigationChief.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollNavigationChief.h; sourceTree = "<group>"; };
-		342F95C4453C7D80AC5A9154 /* ARFeedStatusIndicatorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedStatusIndicatorTableViewCell.h; sourceTree = "<group>"; };
 		342F95F94C5759B9CA05AB59 /* Artwork+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artwork+Extensions.h"; sourceTree = "<group>"; };
 		342F96255EEC90B05A4FF213 /* ARFeedImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedImageLoader.h; sourceTree = "<group>"; };
 		342F9629B03A1BEB6888BD4B /* ARBidButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButton.m; sourceTree = "<group>"; };
@@ -970,8 +964,6 @@
 		3C6BDCBE18E0B3E40028EF5D /* MutableNSURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableNSURLResponse.h; sourceTree = "<group>"; };
 		3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableNSURLResponse.m; sourceTree = "<group>"; };
 		3C6CB60418ABC7BB008DFE3B /* UserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTests.m; sourceTree = "<group>"; };
-		3C6CB60718ABD8D2008DFE3B /* ARPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostsViewController.h; sourceTree = "<group>"; };
-		3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPostsViewController.m; sourceTree = "<group>"; };
 		3C6CB60E18ABFB8D008DFE3B /* ARRelatedArtistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRelatedArtistsViewController.h; sourceTree = "<group>"; };
 		3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRelatedArtistsViewController.m; sourceTree = "<group>"; };
 		3C7880BA18B9081C00595E30 /* ARNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNotificationView.h; sourceTree = "<group>"; };
@@ -1554,8 +1546,6 @@
 		608B705917D4A1C80088A56C /* SidebarButtonBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SidebarButtonBG@2x.png"; sourceTree = "<group>"; };
 		608B705A17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SidebarButtonHighlightBG@2x.png"; sourceTree = "<group>"; };
 		608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLarge@2x.png"; sourceTree = "<group>"; };
-		608B709717D4F6520088A56C /* ARSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchTableViewCell.h; sourceTree = "<group>"; };
-		608B709817D4F6520088A56C /* ARSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchTableViewCell.m; sourceTree = "<group>"; };
 		608C6DBD1FAA115F0044E235 /* nav_messaging@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_messaging@2x.png"; sourceTree = "<group>"; };
 		608C6DBE1FAA11600044E235 /* nav_favs@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_favs@2x.png"; sourceTree = "<group>"; };
 		608C6DBF1FAA11610044E235 /* nav_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_search@2x.png"; sourceTree = "<group>"; };
@@ -1633,8 +1623,6 @@
 		60AF60CA1CB395600041B430 /* LiveAuctionBidButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidButtonTests.swift; path = Live_Auction/LiveAuctionBidButtonTests.swift; sourceTree = "<group>"; };
 		60AFD9A620AC9FA50013D74B /* ARInformationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARInformationView.h; sourceTree = "<group>"; };
 		60AFD9A720AC9FA50013D74B /* ARInformationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARInformationView.m; sourceTree = "<group>"; };
-		60B617D11815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionArtworkTableViewCell.h; sourceTree = "<group>"; };
-		60B617D21815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionArtworkTableViewCell.m; sourceTree = "<group>"; };
 		60B6E5961C88BEF3003B1D46 /* LiveSale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LiveSale.h; path = Live/LiveSale.h; sourceTree = "<group>"; };
 		60B6E5971C88BEF3003B1D46 /* LiveSale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiveSale.m; path = Live/LiveSale.m; sourceTree = "<group>"; };
 		60B6F0F01662AADF007C9587 /* ARAppConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppConstants.h; sourceTree = "<group>"; };
@@ -2335,15 +2323,6 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
-		3C6CB60618ABD8C1008DFE3B /* Post */ = {
-			isa = PBXGroup;
-			children = (
-				3C6CB60718ABD8D2008DFE3B /* ARPostsViewController.h */,
-				3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */,
-			);
-			path = Post;
-			sourceTree = "<group>";
-		};
 		3C7880B918B9080B00595E30 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -2537,12 +2516,6 @@
 			isa = PBXGroup;
 			children = (
 				499A5806165AE24C004B0E2F /* Feed Items */,
-				342F919D0897DFE221EC5E73 /* ARFeedStatusIndicatorTableViewCell.m */,
-				342F95C4453C7D80AC5A9154 /* ARFeedStatusIndicatorTableViewCell.h */,
-				608B709717D4F6520088A56C /* ARSearchTableViewCell.h */,
-				608B709817D4F6520088A56C /* ARSearchTableViewCell.m */,
-				60B617D11815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.h */,
-				60B617D21815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m */,
 			);
 			path = Table_View_Cells;
 			sourceTree = "<group>";
@@ -3517,7 +3490,6 @@
 				83FF73BA1CB87D64002B53FA /* RefinementOptions */,
 				60D8E63718D256A30040BEFD /* Demo */,
 				342F91DD9B57A51A8352877C /* Util */,
-				3C6CB60618ABD8C1008DFE3B /* Post */,
 				60FFE3DE188E97FE0012B485 /* Fair */,
 				5E47F34B1C3EC98200EC0751 /* Auction */,
 				6019A9041C7E648700E292FA /* Live Auctions */,
@@ -4950,7 +4922,6 @@
 				608B2F6F1657D1D10046956C /* User.m in Sources */,
 				1C6C00CE1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m in Sources */,
 				5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */,
-				60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */,
 				516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */,
 				6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */,
 				60745DEA165802D9006CE156 /* ARUserManager.m in Sources */,
@@ -4970,7 +4941,6 @@
 				49A77237165ADB9400BC6FD3 /* ARPartnerShowFeedItem.m in Sources */,
 				49A77238165ADB9400BC6FD3 /* ARPublishedArtworkSetFeedItem.m in Sources */,
 				49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */,
-				608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */,
 				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
 				229364D31EC65CDC00D2045E /* SaleStatusView.swift in Sources */,
 				0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */,
@@ -5144,7 +5114,6 @@
 				609F985F1AC1054D0079FE21 /* PartnerShowCoordinates.m in Sources */,
 				3CEE0B6818A16F9000FEA6E6 /* ArtsyAPI+Genes.m in Sources */,
 				3CD36799189A9B7A00285DF7 /* ARPostFeedItemLinkView.m in Sources */,
-				342F95E4121D5C70F42DF9A2 /* ARFeedStatusIndicatorTableViewCell.m in Sources */,
 				5EA0128B1CAC3B55009D9AFE /* LiveAuctionBidHistoryViewController.swift in Sources */,
 				60A612B8189673F4008FC19D /* ARGeneArtworksNetworkModel.m in Sources */,
 				60D8E63B18D256BB0040BEFD /* ARDemoSplashViewController.m in Sources */,
@@ -5254,7 +5223,6 @@
 				6033D7771DA3EDFA00EAC2F5 /* GeneRefineSettings.swift in Sources */,
 				837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */,
 				5E70AA8E1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */,
-				3C6CB60918ABD8D2008DFE3B /* ARPostsViewController.m in Sources */,
 				342F96505F255C0F443B5EAA /* UIViewController+SimpleChildren.m in Sources */,
 				342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */,
 				342F9A60D7F0C30310535232 /* UIImage+ImageFromColor.m in Sources */,
