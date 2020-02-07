@@ -760,4 +760,9 @@ static ARTopMenuViewController *_sharedManager = nil;
     return ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) ? rootView : nil;
 }
 
+- (void)showSearch
+{
+    [self presentRootViewControllerAtIndex:1 animated:NO];
+}
+
 @end

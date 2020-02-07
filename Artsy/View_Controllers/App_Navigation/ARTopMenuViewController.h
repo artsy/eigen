@@ -80,6 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used by analytics to get the tab name for a particular idnex
 - (NSString *)descriptionForNavIndex:(NSInteger)index;
 
+- (void)showSearch;
+
 @end
 
 NS_ASSUME_NONNULL_END

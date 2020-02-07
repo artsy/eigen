@@ -34,12 +34,12 @@
 
 - (void)openSearch
 {
-    ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
-    [rootNavigationController showSearch];
+    [[ARTopMenuViewController sharedController] showSearch];
 }
 
 - (void)openFavorites
 {
+    // TODO: Is this correct? Are we sure?
     ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
     UIViewController *favourites = [[ARSwitchBoard sharedInstance] loadPath:@"/favorites"];
     if (favourites) {

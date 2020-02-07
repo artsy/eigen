@@ -251,39 +251,35 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     emission.switchBoardModule.presentModalViewController = ^(UIViewController *_Nonnull fromViewController,
                                                               NSString *_Nonnull route) {
-        if ([route isEqualToString:@"/search"]) {
-            [[ARTopMenuViewController sharedController].rootNavigationController toggleSearch];
-        } else {
-            UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
-            UIViewController *targetViewController = [ARTopMenuViewController sharedController];
+        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
+        UIViewController *targetViewController = [ARTopMenuViewController sharedController];
 
-            // We need to accomodate presenting a modal _on top_ of an existing modal view controller. Consignments
-            // and BidFlow are presented modally, and we want to let them present modal view controllers on top of themselves.
-            if (targetViewController.presentedViewController) {
-                targetViewController = targetViewController.presentedViewController;
-            }
-
-            // When presenting modally, view controller generally have to be wrapped in a navigation controller
-            // so the user can hit the close button. Consignments is the exception, and it has its own close button.
-            if (!([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[LiveAuctionViewController class]])) {
-                viewController = [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-            }
-            // Explanation for this behaviour is described in ARTopMenuViewController's
-            // pushViewController:animated: method. Once that is removed, we can remove this.
-            if ([UIDevice isPhone]) {
-                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            } else {
-                // BNMO goes through this code path instead of the one in ARTopMenuViewController.
-                if ([viewController isKindOfClass:ARSerifNavigationViewController.class] &&
-                    [[[(ARInternalMobileWebViewController *)[(ARSerifNavigationViewController *)viewController topViewController] initialURL] absoluteString] containsString:@"/orders/"]) {
-                    viewController.modalPresentationStyle = UIModalPresentationFormSheet;
-                }
-            }
-
-            [targetViewController presentViewController:viewController
-                                               animated:ARPerformWorkAsynchronously
-                                             completion:nil];
+        // We need to accomodate presenting a modal _on top_ of an existing modal view controller. Consignments
+        // and BidFlow are presented modally, and we want to let them present modal view controllers on top of themselves.
+        if (targetViewController.presentedViewController) {
+            targetViewController = targetViewController.presentedViewController;
         }
+
+        // When presenting modally, view controller generally have to be wrapped in a navigation controller
+        // so the user can hit the close button. Consignments is the exception, and it has its own close button.
+        if (!([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[LiveAuctionViewController class]])) {
+            viewController = [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
+        }
+        // Explanation for this behaviour is described in ARTopMenuViewController's
+        // pushViewController:animated: method. Once that is removed, we can remove this.
+        if ([UIDevice isPhone]) {
+            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        } else {
+            // BNMO goes through this code path instead of the one in ARTopMenuViewController.
+            if ([viewController isKindOfClass:ARSerifNavigationViewController.class] &&
+                [[[(ARInternalMobileWebViewController *)[(ARSerifNavigationViewController *)viewController topViewController] initialURL] absoluteString] containsString:@"/orders/"]) {
+                viewController.modalPresentationStyle = UIModalPresentationFormSheet;
+            }
+        }
+
+        [targetViewController presentViewController:viewController
+                                           animated:ARPerformWorkAsynchronously
+                                         completion:nil];
     };
 
 #pragma mark - Native Module: Events/Analytics
