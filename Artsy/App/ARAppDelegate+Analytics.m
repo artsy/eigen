@@ -39,7 +39,6 @@
 #import "ARSharingController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARArtistBiographyViewController.h"
-#import "ARBrowseViewController.h"
 #import "ARNavigationController.h"
 #import "ARSentryAnalyticsProvider.h"
 #import "ARAugmentedRealityConfig.h"
@@ -403,23 +402,6 @@
                                     @"service" : activityType ?: @""
                                 };
                             },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARBrowseViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsExploreTap,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(collectionView:didSelectItemAtIndexPath:),
-                            ARAnalyticsProperties:^NSDictionary *(ARBrowseViewController *controller, NSArray *parameters) {
-                                NSIndexPath *indexPath = parameters[1];
-                                FeaturedLink *link = [controller.networkModel.links objectAtIndex:indexPath.row];
-
-                                return @{
-                                    @"type": link.title ?: @""
-                                };
-                            }
                         }
                     ]
                 },

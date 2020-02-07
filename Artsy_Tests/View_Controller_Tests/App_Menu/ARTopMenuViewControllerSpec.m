@@ -6,7 +6,6 @@
 #import "ARUserManager+Stubs.h"
 #import "AROnboardingViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
-#import "ARBrowseViewController.h"
 #import "ARSwitchBoard.h"
 
 #import <Emission/ARWorksForYouComponentViewController.h>
@@ -16,7 +15,6 @@
 
 
 @interface ARTopMenuNavigationDataSource (Test)
-@property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
 
 @end

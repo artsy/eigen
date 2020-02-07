@@ -1,6 +1,5 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARNavigationController.h"
-#import "ARBrowseViewController.h"
 
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Artworks.h"
