@@ -6,6 +6,7 @@ upcoming:
     - Fixes full-bleed collections image rendering - ash & MX Knowledge Share Feb 4 2020
     - Adds lab option for lot condition report - brian
     - Adds lab option for filtering collections artworks - ashley
+    - Removes a lot of unused code - ash
   user_facing:
     -
 
