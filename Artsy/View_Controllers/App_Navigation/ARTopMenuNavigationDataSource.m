@@ -12,6 +12,7 @@
 
 #import "AREigenMapContainerViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
+#import "UIDevice-Hardware.h"
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
 #import "ARNavigationController.h"
@@ -137,7 +138,7 @@
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
 {
-    BOOL showLocalDiscovery = YES;
+    BOOL showLocalDiscovery = [UIDevice isPhone];
 
     switch (index) {
         case ARTopTabControllerIndexHome:

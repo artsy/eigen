@@ -412,13 +412,22 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (NSArray *)buttons
 {
+    if ([UIDevice isPhone]) {
+        return @[
+             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+             [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
+             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+            ];
+    }
+
     return @[
-         [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
-         [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
-         [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
-         [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
-         [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-        ];
+             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+             ];
 }
 
 - (void)updateButtons;
