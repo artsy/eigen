@@ -1,3 +1,15 @@
+# v1.21.40 (Fri Feb 07 2020)
+
+#### 🐛  Bug Fix
+
+- [AUCT-744] iOS request condition report [#2050](https://github.com/artsy/emission/pull/2050) ([@bhoggard](https://github.com/bhoggard))
+
+#### Authors: 1
+
+- Barry Hoggard ([@bhoggard](https://github.com/bhoggard))
+
+---
+
 # v1.21.39 (Thu Feb 06 2020)
 
 #### 🐛  Bug Fix
