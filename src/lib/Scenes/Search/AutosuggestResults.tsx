@@ -128,7 +128,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
           mode: AUTOSUGGEST
           first: $count
           after: $cursor
-          entities: [ARTIST, ARTWORK, FAIR, GENE, SALE]
+          entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE]
         ) @connection(key: "AutosuggestResults_results") {
           edges {
             node {
