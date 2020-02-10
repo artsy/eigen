@@ -1,3 +1,17 @@
+# v1.21.41 (Mon Feb 10 2020)
+
+#### 🐛  Bug Fix
+
+- [FX-1748] Fix line-height in ReadMore component [#2081](https://github.com/artsy/emission/pull/2081) ([@anandaroop](https://github.com/anandaroop))
+- [MX-158] add placeholder loading state for artwork page [#2080](https://github.com/artsy/emission/pull/2080) ([@ds300](https://github.com/ds300))
+
+#### Authors: 2
+
+- Anandaroop Roy ([@anandaroop](https://github.com/anandaroop))
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.40 (Fri Feb 07 2020)
 
 #### 🐛  Bug Fix
