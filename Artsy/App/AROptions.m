@@ -23,7 +23,6 @@ NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 NSString *const AROptionsUseVCR = @"Use offline recording";
 
 NSString *const AROptionsPriceTransparency = @"Price Transparency";
-NSString *const AROptionsNewSearch = @"New Search";
 
 @implementation AROptions
 
@@ -40,7 +39,6 @@ NSString *const AROptionsNewSearch = @"New Search";
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
-         AROptionsNewSearch: AROptionsNewSearch,
 
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };

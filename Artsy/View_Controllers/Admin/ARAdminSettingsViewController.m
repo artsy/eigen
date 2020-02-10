@@ -3,7 +3,6 @@
 #import <AdSupport/ASIdentifierManager.h>
 
 #import "ARAdminSettingsViewController.h"
-#import "ARQuicksilverViewController.h"
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
@@ -75,7 +74,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
         [self showSentryBreadcrumbs],
-        [self generateQuicksilver],
+    
         [self generateEchoContents],
     ]];
 
@@ -200,14 +199,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"Show React Native Dev Menu" selection:^{
         // It'd be nice to use the constant here, but it won't compile on CI
         [[NSNotificationCenter defaultCenter] postNotificationName:@"RCTShowDevMenuNotification" object:nil];
-    }];
-}
-
-- (ARCellData *)generateQuicksilver
-{
-    return [self tappableCellDataWithTitle:@"Quicksilver" selection:^{
-        ARQuicksilverViewController *quicksilver = [[ARQuicksilverViewController alloc] init];
-        [self.navigationController pushViewController:quicksilver animated:YES];
     }];
 }
 

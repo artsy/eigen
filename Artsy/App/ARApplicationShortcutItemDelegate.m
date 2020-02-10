@@ -34,17 +34,12 @@
 
 - (void)openSearch
 {
-    ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
-    [rootNavigationController showSearch];
+    [[ARTopMenuViewController sharedController] showSearch];
 }
 
 - (void)openFavorites
 {
-    ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
-    UIViewController *favourites = [[ARSwitchBoard sharedInstance] loadPath:@"/favorites"];
-    if (favourites) {
-        [rootNavigationController pushViewController:favourites animated:YES];
-    }
+    [[ARTopMenuViewController sharedController] showFavs];
 }
 
 @end

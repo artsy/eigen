@@ -12,6 +12,7 @@
 
 #import "AREigenMapContainerViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
+#import "UIDevice-Hardware.h"
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
 #import "ARNavigationController.h"
@@ -19,7 +20,6 @@
 #import "ARDefaults.h"
 #import "ARSwitchBoard.h"
 #import "ArtsyEcho.h"
-#import "ArtsyEcho+LocalDisco.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -138,7 +138,7 @@
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
 {
-    BOOL showLocalDiscovery = [self.echo shouldShowLocalDiscovery];
+    BOOL showLocalDiscovery = [UIDevice isPhone];
 
     switch (index) {
         case ARTopTabControllerIndexHome:
@@ -149,9 +149,7 @@
             }
 
         case ARTopTabControllerIndexSearch:
-            if ([AROptions boolForOption:AROptionsNewSearch] || self.echo.features[@"AREnableNewSearch"].state) {
-                return self.searchNavigationController;
-            }
+            return self.searchNavigationController;
 
         case ARTopTabControllerIndexMessaging:
             if (showLocalDiscovery) {

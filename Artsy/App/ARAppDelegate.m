@@ -22,7 +22,6 @@
 
 #import "UIViewController+InnermostTopViewController.h"
 #import "ARAdminSettingsViewController.h"
-#import "ARQuicksilverViewController.h"
 #import "ARRouter.h"
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
@@ -283,7 +282,7 @@ static ARAppDelegate *_sharedInstance = nil;
                                               style:UIAlertActionStyleDefault
                                               handler:^(UIAlertAction * action) {
                                                   NSString *iTunesLink = @"https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080";
-                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink] options:@{} completionHandler:nil];
                                                   // We wait 1 second to make sure the view controller hierarchy has been set up.
                                                   ar_dispatch_after(1, ^{
                                                       exit(0);
@@ -354,10 +353,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
         [self rageShakeNotificationRecieved];
-    }];
-
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORSpaceKey:^{
-        [self showQuicksilver];
     }];
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey:^{
@@ -468,25 +463,6 @@ static ARAppDelegate *_sharedInstance = nil;
         [navigationController pushViewController:adminSettings animated:YES];
     }
 
-}
-
-- (void)showQuicksilver
-{
-    UINavigationController *navigationController = ARTopMenuViewController.sharedController.rootNavigationController;
-
-    // As this is hooked up to return everywhere, it shouldn't be able to
-    // call itself when it's just finished showing
-    NSInteger count = navigationController.viewControllers.count;
-
-    if (count > 1) {
-        id oldVC = navigationController.viewControllers[count - 2];
-        if ([oldVC isKindOfClass:[ARQuicksilverViewController class]]) {
-            return;
-        }
-    }
-
-    ARQuicksilverViewController *adminSettings = [[ARQuicksilverViewController alloc] init];
-    [navigationController pushViewController:adminSettings animated:YES];
 }
 
 - (void)countNumberOfRuns

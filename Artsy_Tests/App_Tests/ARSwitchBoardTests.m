@@ -124,7 +124,7 @@ describe(@"ARSwitchboard", ^{
 
             it(@"does not load browser", ^{
                 id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-                [[sharedAppMock reject] openURL:OCMOCK_ANY];
+                [[sharedAppMock reject] openURL:OCMOCK_ANY options:OCMOCK_ANY completionHandler:OCMOCK_ANY];
 
                 NSURL *internalURL = [[NSURL alloc] initWithString:@"mailto:email@mail.com"];
                 [switchboard loadURL:internalURL];
@@ -135,7 +135,7 @@ describe(@"ARSwitchboard", ^{
         describe(@"with tel schemed url", ^{
             it(@"opens with the OS for tel schemed links", ^{
                 id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-                [[sharedAppMock expect] openURL:OCMOCK_ANY];
+                [[sharedAppMock expect] openURL:OCMOCK_ANY options:OCMOCK_ANY completionHandler:OCMOCK_ANY];
 
                 NSURL *telephoneURL = [[NSURL alloc] initWithString:@"tel:111111"];
 
@@ -146,7 +146,7 @@ describe(@"ARSwitchboard", ^{
 
         it(@"handles breaking out of the eigen routing sandbox when needed", ^{
             id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-            [[sharedAppMock expect] openURL:OCMOCK_ANY];
+            [[sharedAppMock expect] openURL:OCMOCK_ANY options:OCMOCK_ANY completionHandler:OCMOCK_ANY];
 
             NSURL *internalURL = [[NSURL alloc] initWithString:@"http://mysitethatmustbeopenedinsafari.com?eigen_escape_sandbox=true"];
             [switchboard loadURL:internalURL];
@@ -158,7 +158,7 @@ describe(@"ARSwitchboard", ^{
             it(@"does not load browser", ^{
                 NSURL *internalURL = [[NSURL alloc] initWithString:@"applewebdata://EF86F744-3F4F-4732-8A4B-3E5E94D6D7DA/some/path"];
                 id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-                [[sharedAppMock reject] openURL:OCMOCK_ANY];
+                [[sharedAppMock reject] openURL:OCMOCK_ANY options:OCMOCK_ANY completionHandler:OCMOCK_ANY];
                 [switchboard loadURL:internalURL];
                 [sharedAppMock verify];
 

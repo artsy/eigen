@@ -418,7 +418,11 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 {
     NSString *userDataPath = [ARFileUtils userDocumentsPathWithFile:@"User.data"];
     if (userDataPath) {
+        // We'll be moving this to React Native pretty soon anyway.
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [NSKeyedArchiver archiveRootObject:self.currentUser toFile:userDataPath];
+        #pragma clang diagnostic pop
 
         [ARUserManager identifyAnalyticsUser];
 

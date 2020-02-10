@@ -12,7 +12,6 @@ extern NSString *const AROptionsStagingReactEnv;
 extern NSString *const AROptionsDevReactEnv;
 extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsPriceTransparency;
-extern NSString *const AROptionsNewSearch;
 extern NSString *const AROptionsLotConditionReport;
 extern NSString *const AROptionsFilterCollectionsArtworks;
 

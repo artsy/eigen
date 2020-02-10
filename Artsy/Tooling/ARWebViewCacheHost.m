@@ -68,18 +68,7 @@
 
     // Make inline video playback work.
     config.allowsInlineMediaPlayback = YES;
-    if ([config respondsToSelector:@selector(setMediaTypesRequiringUserActionForPlayback:)]) {
-        // iOS 10
-        int audiovisualMediaTypeNone = 0; // WKAudiovisualMediaTypeNone
-        NSMethodSignature *signature = [WKWebViewConfiguration instanceMethodSignatureForSelector:@selector(setMediaTypesRequiringUserActionForPlayback:)];
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-        invocation.selector = @selector(setMediaTypesRequiringUserActionForPlayback:);
-        [invocation setArgument:&audiovisualMediaTypeNone atIndex:2];
-        [invocation invokeWithTarget:config];
-    } else if ([config respondsToSelector:@selector(setRequiresUserActionForMediaPlayback:)]) {
-        // iOS 9
-        config.requiresUserActionForMediaPlayback = NO;
-    }
+    config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeNone;
 
     // Allow hooking up to the web inspector
     if(ARAppStatus.isBetaDevOrAdmin) {

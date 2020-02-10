@@ -5,7 +5,6 @@
 // View Controllers
 #import "ARAdminSettingsViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>
-#import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"

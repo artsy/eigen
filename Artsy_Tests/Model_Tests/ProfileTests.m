@@ -1,3 +1,7 @@
+// We want to ignore the NSKeyedUnarchiver, since we'll be moving this to React Native pretty soon anyway.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(Profile);
 
 __block Profile *profile;
@@ -189,3 +193,5 @@ describe(@"imageURL", ^{
 });
 
 SpecEnd;
+
+#pragma clang diagnostic pop

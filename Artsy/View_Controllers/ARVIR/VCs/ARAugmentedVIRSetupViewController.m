@@ -198,7 +198,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (void)restartVideo:(NSNotification *)notification
 {
     AVPlayerItem *item = notification.object;
-    [item seekToTime:kCMTimeZero];
+    [item seekToTime:kCMTimeZero completionHandler:nil];
     [self.avPlayer play];
 }
 
@@ -220,7 +220,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (void)sendToSettings
 {
     self.hasSentToSettings = YES;
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
 }
 
 - (void)next

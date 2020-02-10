@@ -1,3 +1,7 @@
+// We want to ignore the NSKeyedUnarchiver, since we'll be moving this to React Native pretty soon anyway.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(User);
 
 describe(@"with profile", ^{
@@ -41,3 +45,5 @@ it(@"loads model version 1", ^{
 });
 
 SpecEnd;
+
+#pragma clang diagnostic pop

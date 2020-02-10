@@ -402,7 +402,7 @@
 #pragma mark -
 #pragma mark Text View Delegate
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
 {
     NSString *path = [[URL.absoluteString componentsSeparatedByString:@"/"] lastObject];
     if ([path isEqualToString:@"terms"]) {
