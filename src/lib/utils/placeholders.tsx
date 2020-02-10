@@ -67,13 +67,20 @@ export const PlaceholderText: React.FC<ViewStyle> = ({ ...props }) => {
   return <PlaceholderBox height={TEXT_HEIGHT} marginBottom={TEXT_MARGIN} {...props} />
 }
 
-export const PlaceholderRaggedText: React.FC<{ numLines: number }> = ({ numLines }) => {
+export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number }> = ({ numLines, seed = 10 }) => {
   const lengths = useMemo(() => {
+    // create our own little deterministic math.random() to avoid snapshot churn
+    let x = seed
+    function random() {
+      const y = Math.sin(x++) * 10000
+      return y - Math.floor(y)
+    }
+
     const result = []
     for (let i = 0; i < numLines - 1; i++) {
-      result.push(Math.random() * 0.15 + 0.85)
+      result.push(random() * 0.15 + 0.85)
     }
-    result.push(Math.random() * 0.3 + 0.2)
+    result.push(random() * 0.3 + 0.2)
     return result
   }, [numLines])
 
