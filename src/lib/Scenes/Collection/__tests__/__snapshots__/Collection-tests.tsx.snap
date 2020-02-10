@@ -1281,14 +1281,14 @@ exports[`Collection renders a snapshot 1`] = `
             color="black100"
             fontFamily="ReactNativeAGaramondPro-Regular"
             fontSize="16px"
-            lineHeight="20px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "ReactNativeAGaramondPro-Regular",
                   "fontSize": 16,
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 Object {},
               ]
