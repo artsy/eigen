@@ -179,56 +179,19 @@ exports[`Artwork renders a snapshot 1`] = `
                     ]
                   }
                 >
-                  <View
+                  <AROpaqueImageView
+                    aspectRatio={1}
+                    highPriority={true}
+                    imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=84&height=84&quality=80&src=%3Cmock-value-for-field-%22url%22%3E"
+                    onLoad={[Function]}
                     style={
                       Object {
                         "height": 42,
-                        "position": "absolute",
                         "width": 42,
                       }
                     }
-                  >
-                    <AROpaqueImageView
-                      aspectRatio={1}
-                      highPriority={true}
-                      imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=84&height=84&quality=80&src=%3Cmock-value-for-field-%22url%22%3E"
-                      noAnimation={true}
-                      onLoad={[Function]}
-                      style={
-                        Object {
-                          "height": 42,
-                          "width": 42,
-                        }
-                      }
-                      useRawURL={true}
-                    />
-                  </View>
-                  <View
-                    style={
-                      Object {
-                        "backgroundColor": "white",
-                        "flex": 1,
-                        "height": 42,
-                        "opacity": 1,
-                        "position": "absolute",
-                        "width": 42,
-                      }
-                    }
-                  >
-                    <View
-                      style={
-                        Object {
-                          "alignItems": "center",
-                          "backgroundColor": "#F8F8F8",
-                          "flex": 1,
-                          "justifyContent": "center",
-                          "opacity": 0,
-                        }
-                      }
-                    >
-                      <ARSpinner />
-                    </View>
-                  </View>
+                    useRawURL={true}
+                  />
                 </View>
               </View>
             </View>
@@ -932,14 +895,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1043,14 +1007,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1197,14 +1162,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1693,14 +1659,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -1899,14 +1866,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -2469,14 +2437,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
@@ -2988,14 +2957,15 @@ exports[`Artwork renders a snapshot 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "height": 1,
-                "marginLeft": -40,
-                "marginRight": -40,
+                "borderBottomWidth": 0,
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "width": "100%",
               },
-              undefined,
             ]
           }
+          width="100%"
         />
       </View>
     </View>
