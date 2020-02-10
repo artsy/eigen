@@ -35,7 +35,7 @@ describe("Artwork", () => {
           query={graphql`
             query ArtworkTestsQuery @relay_test_operation {
               artwork(id: "doesn't matter") {
-                ...Artwork_artwork
+                ...Artwork_artworkAboveTheFold
               }
             }
           `}
