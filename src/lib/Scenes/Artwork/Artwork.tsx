@@ -5,7 +5,7 @@ import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { Placeholder, RaggedText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -377,30 +377,30 @@ const ArtworkPlaceholder: React.FC<{}> = ({}) => {
   return (
     <View style={{ flex: 1, padding: space(2) }}>
       {/* Artwork thumbnail */}
-      <Placeholder height={artworkHeight} />
+      <PlaceholderBox height={artworkHeight} />
       <Spacer mb={2} />
       {/* save/share buttons */}
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
-        <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
-        <Placeholder width={50} height={space(2)} marginHorizontal={space(1)} />
+        <PlaceholderText width={50} marginHorizontal={space(1)} />
+        <PlaceholderText width={50} marginHorizontal={space(1)} />
+        <PlaceholderText width={50} marginHorizontal={space(1)} />
       </View>
       <Spacer mb={2} />
       {/* Artist name */}
-      <Placeholder width={100} height={space(1)} />
+      <PlaceholderText width={100} />
       <Spacer mb={2} />
       {/* Artwork tombstone details */}
       <View style={{ width: 130 }}>
-        <RaggedText numLines={4} />
+        <PlaceholderRaggedText numLines={4} />
       </View>
       <Spacer mb={3} />
       {/* more junk */}
       <Separator />
       <Spacer mb={3} />
-      <RaggedText numLines={3} />
+      <PlaceholderRaggedText numLines={3} />
       <Spacer mb={2} />
       {/* commerce button */}
-      <Placeholder height={60} />
+      <PlaceholderBox height={60} />
     </View>
   )
 }

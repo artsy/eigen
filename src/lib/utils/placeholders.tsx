@@ -31,7 +31,7 @@ export const ProvidePlaceholderContext: React.FC<{}> = ({ children }) => {
   return <PlaceholderContext.Provider value={{ clock }} children={children} />
 }
 
-export const Placeholder: React.FC<ViewStyle> = styles => {
+export const PlaceholderBox: React.FC<ViewStyle> = styles => {
   const ctx = useContext(PlaceholderContext)
   if (!ctx) {
     throw new Error("You're using a Placeholder outside of a PlaceholderContext")
@@ -60,9 +60,14 @@ export const Placeholder: React.FC<ViewStyle> = styles => {
   )
 }
 
-export const RaggedText: React.FC<{ numLines: number }> = ({ numLines }) => {
-  const marginHeight = 7
-  const textHeight = 12
+const TEXT_HEIGHT = 12
+const TEXT_MARGIN = 7
+
+export const PlaceholderText: React.FC<ViewStyle> = ({ ...props }) => {
+  return <PlaceholderBox height={TEXT_HEIGHT} marginBottom={TEXT_MARGIN} {...props} />
+}
+
+export const PlaceholderRaggedText: React.FC<{ numLines: number }> = ({ numLines }) => {
   const lengths = useMemo(() => {
     const result = []
     for (let i = 0; i < numLines - 1; i++) {
@@ -73,12 +78,10 @@ export const RaggedText: React.FC<{ numLines: number }> = ({ numLines }) => {
   }, [numLines])
 
   return (
-    <View
-      style={{ flexDirection: "column", justifyContent: "flex-start", height: (marginHeight + textHeight) * numLines }}
-    >
+    <View style={{ justifyContent: "flex-start" }}>
       {lengths.map((length, key) => (
-        <View key={key} style={{ flexDirection: "row", marginBottom: marginHeight, height: textHeight }}>
-          <Placeholder flex={length} />
+        <View style={{ flexDirection: "row" }}>
+          <PlaceholderText flex={length} key={key}></PlaceholderText>
         </View>
       ))}
     </View>
