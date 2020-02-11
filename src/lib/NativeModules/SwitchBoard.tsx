@@ -66,7 +66,7 @@ function dismissNavigationViewController(component: React.Component<any, any>) {
   ARSwitchBoardModule.dismissNavigationViewController(reactTag)
 }
 
-function presentEmailComposer(component: React.Component<any, any>, to: string, subject: string) {
+function presentEmailComposer(component: React.Component<any, any>, to: string, subject: string, body?: string) {
   let reactTag
   try {
     reactTag = findNodeHandle(component)
@@ -75,7 +75,7 @@ function presentEmailComposer(component: React.Component<any, any>, to: string, 
     return
   }
 
-  ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject)
+  ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject, body)
 }
 
 export default {

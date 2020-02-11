@@ -39,7 +39,14 @@ export class PrivacyRequest extends React.Component {
                 block
                 size="large"
                 mt={1}
-                onPress={() => SwitchBoard.presentEmailComposer(this, "privacy@artsy.net", "Personal Data Request")}
+                onPress={() =>
+                  SwitchBoard.presentEmailComposer(
+                    this,
+                    "privacy@artsy.net",
+                    "Personal Data Request",
+                    "Hello, I'm contacting you to ask that..."
+                  )
+                }
               >
                 Do not sell my personal information
               </Button>
