@@ -1,3 +1,15 @@
+# v1.21.43 (Tue Feb 11 2020)
+
+#### 🐛  Bug Fix
+
+- Specifies email body in privacy requests [#2082](https://github.com/artsy/emission/pull/2082) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.42 (Tue Feb 11 2020)
 
 #### 🐛  Bug Fix
