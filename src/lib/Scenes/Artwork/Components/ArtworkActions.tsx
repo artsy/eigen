@@ -130,17 +130,16 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </TouchableWithoutFeedback>
           )}
 
-          {Constants.AREnabled &&
-            is_hangable && (
-              <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-                <UtilButton pr={3}>
-                  <Box mr={0.5}>
-                    <EyeOpenedIcon />
-                  </Box>
-                  <Sans size="3">View in Room</Sans>
-                </UtilButton>
-              </TouchableWithoutFeedback>
-            )}
+          {Constants.AREnabled && is_hangable && (
+            <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
+              <UtilButton pr={3}>
+                <Box mr={0.5}>
+                  <EyeOpenedIcon />
+                </Box>
+                <Sans size="3">View in Room</Sans>
+              </UtilButton>
+            </TouchableWithoutFeedback>
+          )}
           <TouchableWithoutFeedback onPress={() => this.handleArtworkShare()}>
             <UtilButton>
               <Box mr={0.5}>

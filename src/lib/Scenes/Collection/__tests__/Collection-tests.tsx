@@ -3,7 +3,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { CollectionContainer } from "../Collection"
+import { CollectionContainer, FilterArtworkButton, FilterArtworkButtonContainer } from "../Collection"
 
 jest.unmock("react-relay")
 
@@ -44,5 +44,21 @@ describe("Collection", () => {
       return MockPayloadGenerator.generate(operation)
     })
     expect(renderer.toJSON()).toMatchSnapshot()
+  })
+
+  it("does not display a filter artworks button by default", () => {
+    const root = ReactTestRenderer.create(<TestRenderer />).root
+
+    expect(root.findAllByType(FilterArtworkButtonContainer)).toHaveLength(0)
+    expect(root.findAllByType(FilterArtworkButton)).toHaveLength(0)
+  })
+
+  /**  TODO: Pair with MX to complete get these assertions to pass
+   * How do we mock an update to the state object and the Native Emission Module to
+   * get these components to render
+   */
+  xit("does display a filter artworks button when artworks grid when artworks grid is in view", () => {
+    // expect(root.findAllByType(FilterArtworkButtonContainer)).toHaveLength(1)
+    // expect(root.findAllByType(FilterArtworkButton)).toHaveLength(1)
   })
 })
