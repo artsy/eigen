@@ -1,3 +1,15 @@
+# v1.21.42 (Tue Feb 11 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-180] Adds profiles to search entities [#2083](https://github.com/artsy/emission/pull/2083) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.41 (Mon Feb 10 2020)
 
 #### 🐛  Bug Fix
