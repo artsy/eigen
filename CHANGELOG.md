@@ -1,3 +1,16 @@
+# v1.21.44 (Tue Feb 11 2020)
+
+#### 🐛  Bug Fix
+
+- Collections Artwork Filter Container [#2073](https://github.com/artsy/emission/pull/2073) ([@ashfurrow](https://github.com/ashfurrow) [@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 2
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.43 (Tue Feb 11 2020)
 
 #### 🐛  Bug Fix
