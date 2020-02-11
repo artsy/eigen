@@ -69,7 +69,8 @@ const node: ReaderFragment = {
             "ARTWORK",
             "FAIR",
             "GENE",
-            "SALE"
+            "SALE",
+            "PROFILE"
           ]
         },
         {
@@ -192,5 +193,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0fbcbffee08be80032a664f35cbd2b2f';
+(node as any).hash = '80992e8499da02860677e631f22d0fcd';
 export default node;
