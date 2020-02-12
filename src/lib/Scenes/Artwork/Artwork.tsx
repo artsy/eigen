@@ -6,13 +6,19 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
+import {
+  PlaceholderBox,
+  PlaceholderRaggedText,
+  PlaceholderText,
+  ProvidePlaceholderContext,
+} from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { FlatList, View } from "react-native"
+import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
+import { Sentry } from "react-native-sentry"
 import { commitMutation, createFragmentContainer, fetchQuery, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
@@ -85,13 +91,13 @@ export class Artwork extends React.Component<Props, State> {
 
   componentDidMount() {
     this.markArtworkAsRecentlyViewed()
-    this.getFullArtwork()
+    this.loadFullArtwork()
   }
 
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.forceRefetch()
+      this.loadFullArtwork()
       this.markArtworkAsRecentlyViewed()
     }
   }
@@ -118,13 +124,22 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
-  onRefresh = () => {
+  onRefresh = async () => {
     if (this.state.refreshing) {
       return
     }
 
     this.setState({ refreshing: true })
-    this.forceRefetch(() => this.setState({ refreshing: false }))
+    try {
+      await this.loadFullArtwork()
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        Sentry.captureMessage("failed to refresh artwork", { slug: this.props.artworkAboveTheFold.slug })
+      }
+    }
+    this.setState({ refreshing: false })
   }
 
   markArtworkAsRecentlyViewed = () => {
@@ -144,83 +159,85 @@ export class Artwork extends React.Component<Props, State> {
     })
   }
 
-  forceRefetch = async (onComplete?: () => void) => {
-    await this.getFullArtwork()
-    onComplete()
-  }
-
-  sections = () => {
+  sections(): ArtworkPageSection[] {
     const { artworkFull } = this.state
+    const { artworkAboveTheFold } = this.props
 
-    const sections = []
+    const sections: ArtworkPageSection[] = []
 
-    sections.push("header")
-    sections.push("commercialInformation")
+    sections.push({
+      key: "header",
+      element: <ArtworkHeader artwork={artworkFull || artworkAboveTheFold} />,
+      excludePadding: true,
+    })
+    sections.push({
+      key: "commercialInformation",
+      element: <CommercialInformation artwork={artworkFull || artworkAboveTheFold} />,
+    })
 
     if (!artworkFull) {
+      sections.push({
+        key: "belowTheFoldPlaceholder",
+        element: <BelowTheFoldPlaceholder />,
+      })
       return sections
     }
 
     const { artist, context } = artworkFull
+
     if (artworkFull.description || artworkFull.additional_information) {
-      sections.push("aboutWork")
+      sections.push({
+        key: "aboutWork",
+        element: <AboutWork artwork={artworkFull} />,
+      })
     }
 
     if (this.shouldRenderDetails()) {
-      sections.push("details")
+      sections.push({
+        key: "artworkDetails",
+        element: <ArtworkDetails artwork={artworkFull} />,
+      })
     }
 
     if (artworkFull.provenance || artworkFull.exhibition_history || artworkFull.literature) {
-      sections.push("history")
+      sections.push({
+        key: "history",
+        element: <ArtworkHistory artwork={artworkFull} />,
+      })
     }
 
     if (artist && artist.biography_blurb) {
-      sections.push("aboutArtist")
+      sections.push({
+        key: "aboutArtist",
+        element: <AboutArtist artwork={artworkFull} />,
+      })
     }
 
     if (this.shouldRenderPartner()) {
-      sections.push("partnerCard")
+      sections.push({
+        key: "partnerCard",
+        element: <PartnerCard artwork={artworkFull} />,
+      })
     }
 
     if (context && context.__typename === "Sale" && context.isAuction) {
-      sections.push("contextCard")
+      sections.push({
+        key: "contextCard",
+        element: <ContextCard artwork={artworkFull} />,
+      })
     }
 
     if (this.shouldRenderOtherWorks()) {
-      sections.push("otherWorks")
+      sections.push({
+        key: "otherWorks",
+        element: <OtherWorks artwork={artworkFull} />,
+      })
     }
 
     return sections
   }
 
-  renderItem = ({ item: section }) => {
-    const { artworkAboveTheFold } = this.props
-    const { artworkFull } = this.state
-    switch (section) {
-      case "header":
-        return <ArtworkHeader artwork={artworkFull || artworkAboveTheFold} />
-      case "commercialInformation":
-        return <CommercialInformation artwork={artworkFull || artworkAboveTheFold} />
-      case "aboutWork":
-        return <AboutWork artwork={artworkFull} />
-      case "details":
-        return <ArtworkDetails artwork={artworkFull} />
-      case "history":
-        return <ArtworkHistory artwork={artworkFull} />
-      case "aboutArtist":
-        return <AboutArtist artwork={artworkFull} />
-      case "partnerCard":
-        return <PartnerCard artwork={artworkFull} />
-      case "contextCard":
-        return <ContextCard artwork={artworkFull} />
-      case "otherWorks":
-        return <OtherWorks artwork={artworkFull} />
-      default:
-        return null
-    }
-  }
-
-  async getFullArtwork() {
+  async loadFullArtwork() {
     const result = await fetchQuery<ArtworkFullQuery>(
       this.props.relay.environment,
       graphql`
@@ -309,7 +326,7 @@ export class Artwork extends React.Component<Props, State> {
 
   render() {
     return (
-      <FlatList
+      <FlatList<ArtworkPageSection>
         data={this.sections()}
         ItemSeparatorComponent={() => (
           <Box px={2} mx={2} my={3}>
@@ -318,13 +335,16 @@ export class Artwork extends React.Component<Props, State> {
         )}
         refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
         contentInset={{ bottom: 40 }}
-        keyExtractor={(item, index) => item.type + String(index)}
-        renderItem={item =>
-          item.item === "header" ? this.renderItem(item) : <Box px={2}>{this.renderItem(item)}</Box>
-        }
+        renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
       />
     )
   }
+}
+
+interface ArtworkPageSection {
+  key: string
+  element: JSX.Element
+  excludePadding?: boolean
 }
 
 export const ArtworkContainer = createFragmentContainer(Artwork, {
@@ -415,5 +435,24 @@ const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
       {/* commerce button */}
       <PlaceholderBox height={60} />
     </View>
+  )
+}
+
+const BelowTheFoldPlaceholder: React.FC<{}> = ({}) => {
+  return (
+    <ProvidePlaceholderContext>
+      <Separator />
+      <Spacer mb={3} />
+      {/* About the artwork title */}
+      <PlaceholderText width={60} />
+      <Spacer mb={2} />
+      {/* About the artwork copy */}
+      <PlaceholderRaggedText numLines={4} />
+      <Spacer mb={3} />
+      <Separator />
+      <Spacer mb={3} />
+      <ActivityIndicator />
+      <Spacer mb={3} />
+    </ProvidePlaceholderContext>
   )
 }
