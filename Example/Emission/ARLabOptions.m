@@ -23,7 +23,8 @@ static NSDictionary *options = nil;
     //
     options = @{
        @"AROptionsPriceTransparency": @"Price transparency",
-       @"AROptionsLotConditionReport": @"Lot Condition Report"
+       @"AROptionsLotConditionReport": @"Lot Condition Report",
+       @"AROptionsFilterCollectionsArtworks": @"Filter Collections Artworks"
     };
   });
 

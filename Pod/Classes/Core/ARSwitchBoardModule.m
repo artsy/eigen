@@ -63,7 +63,7 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
   self.updateShouldHideBackButton(shouldHide);
 }
 
-RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(NSString *)toAddress subject:(NSString *)subject)
+RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
 {
 
   [self invokeCallback:^(UIViewController *fromViewController, UIView *originatingView) {
@@ -72,6 +72,9 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(NSString
       composer.mailComposeDelegate = self;
       [composer setToRecipients:@[toAddress]];
       [composer setSubject:subject];
+      if (body) {
+        [composer setMessageBody:body isHTML:NO];
+      }
       [fromViewController presentViewController:composer animated:YES completion:nil];
     } else {
       UIAlertController *alert = [UIAlertController
