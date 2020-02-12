@@ -122,7 +122,7 @@ describe("Artwork", () => {
     })
   })
 
-  it("refetches on re-appear", () => {
+  it("refetches on re-appear", async () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkTestsQuery")
@@ -134,12 +134,9 @@ describe("Artwork", () => {
     tree.update(<TestRenderer isVisible={false} />)
     tree.update(<TestRenderer isVisible={true} />)
 
-    expect(environment.mock.getAllOperations()).toHaveLength(2)
-
-    expect(environment.mock.getAllOperations().map(op => op.request.node.operation.name)).toEqual([
-      "ArtworkFullQuery", // refetch full data
-      "ArtworkMarkAsRecentlyViewedQuery", // retrigger recently viewed
-    ])
+    mockMostRecentOperation("ArtworkFullQuery")
+    await flushPromiseQueue()
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
