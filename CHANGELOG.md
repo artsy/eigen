@@ -1,3 +1,15 @@
+# v1.21.47 (Wed Feb 12 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-161] Return early if event data doesn't make sense [#2086](https://github.com/artsy/emission/pull/2086) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.46 (Wed Feb 12 2020)
 
 #### 🐛  Bug Fix
