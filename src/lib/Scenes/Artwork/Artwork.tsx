@@ -97,8 +97,9 @@ export class Artwork extends React.Component<Props, State> {
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.loadFullArtwork()
-      this.markArtworkAsRecentlyViewed()
+      this.loadFullArtwork().then(() => {
+        this.markArtworkAsRecentlyViewed()
+      })
     }
   }
 
@@ -167,12 +168,12 @@ export class Artwork extends React.Component<Props, State> {
 
     sections.push({
       key: "header",
-      element: <ArtworkHeader artwork={artworkFull || artworkAboveTheFold} />,
+      element: <ArtworkHeader artwork={artworkAboveTheFold} />,
       excludePadding: true,
     })
     sections.push({
       key: "commercialInformation",
-      element: <CommercialInformation artwork={artworkFull || artworkAboveTheFold} />,
+      element: <CommercialInformation artwork={artworkAboveTheFold} />,
     })
 
     if (!artworkFull) {
@@ -303,17 +304,10 @@ export class Artwork extends React.Component<Props, State> {
             ...ContextCard_artwork
             ...ArtworkHistory_artwork
 
-            # this should be duplicated from Artwork_aboveTheFold
-            ...ArtworkHeader_artwork
-            ...CommercialInformation_artwork
-            slug
-            internalID
-            id
-            is_acquireable: isAcquireable
-            is_offerable: isOfferable
-            is_biddable: isBiddable
-            is_inquireable: isInquireable
-            availability
+            # DO NOT DELETE this is needed to update the relay cache entries
+            # for the above-the-fold content when the user refreshes (which in
+            # turn updates the props.artworkAboveTheFold prop)
+            ...Artwork_artworkAboveTheFold
           }
         }
       `,

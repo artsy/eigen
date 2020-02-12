@@ -19,7 +19,7 @@ import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { ArtworkContainer } from "../Artwork"
+import { Artwork, ArtworkContainer } from "../Artwork"
 import { ArtworkDetails } from "../Components/ArtworkDetails"
 import { BidButton } from "../Components/CommercialButtons/BidButton"
 import { CommercialInformation } from "../Components/CommercialInformation"
@@ -140,6 +140,53 @@ describe("Artwork", () => {
       "ArtworkFullQuery", // refetch full data
       "ArtworkMarkAsRecentlyViewedQuery", // retrigger recently viewed
     ])
+  })
+
+  it("updates the above-the-fold content on re-appear", async () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+
+    mockMostRecentOperation("ArtworkTestsQuery", {
+      Artwork() {
+        return { id: "artwork-id", slug: "my-special-artwork" }
+      },
+    })
+    mockMostRecentOperation("ArtworkFullQuery", {
+      Artwork() {
+        return { id: "artwork-id", slug: "my-special-artwork" }
+      },
+    })
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+
+    expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
+
+    tree.update(<TestRenderer isVisible={false} />)
+    tree.update(<TestRenderer isVisible={true} />)
+
+    mockMostRecentOperation("ArtworkFullQuery", {
+      Artwork() {
+        return { id: "artwork-id", slug: "completely-different-slug" }
+      },
+    })
+
+    await flushPromiseQueue()
+
+    expect(environment.mock.getMostRecentOperation()).toMatchObject({
+      request: {
+        node: {
+          operation: {
+            name: "ArtworkMarkAsRecentlyViewedQuery",
+          },
+        },
+        variables: {
+          input: {
+            artwork_id: "completely-different-slug",
+          },
+        },
+      },
+    })
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+
+    expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("completely-different-slug")
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", async () => {
