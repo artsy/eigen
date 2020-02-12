@@ -9,17 +9,26 @@ import {
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { extractText } from "lib/tests/extractText"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { merge } from "lodash"
 import React from "react"
+import { ActivityIndicator } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtworkContainer } from "../Artwork"
+import { ArtworkDetails } from "../Components/ArtworkDetails"
 import { BidButton } from "../Components/CommercialButtons/BidButton"
+import { CommercialInformation } from "../Components/CommercialInformation"
 import { CommercialPartnerInformation } from "../Components/CommercialPartnerInformation"
 import { ContextCard } from "../Components/ContextCard"
+import { ImageCarousel } from "../Components/ImageCarousel/ImageCarousel"
+import { OtherWorksFragmentContainer } from "../Components/OtherWorks/OtherWorks"
+
+type ArtworkQueries = "ArtworkTestsQuery" | "ArtworkFullQuery" | "ArtworkMarkAsRecentlyViewedQuery"
 
 const trackEvent = jest.fn()
 
@@ -27,6 +36,10 @@ jest.unmock("react-relay")
 
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
+  function mockMostRecentOperation(name: ArtworkQueries, mockResolvers: MockResolvers = {}) {
+    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
+    environment.mock.resolveMostRecentOperation(operation => MockPayloadGenerator.generate(operation, mockResolvers))
+  }
   const TestRenderer = ({ isVisible = true }) => (
     <Theme>
       <ProvidePlaceholderContext>
@@ -42,7 +55,7 @@ describe("Artwork", () => {
           variables={{ hello: true }}
           render={({ props, error }) => {
             if (props) {
-              return <ArtworkContainer artwork={props.artwork} isVisible={isVisible} />
+              return <ArtworkContainer artworkAboveTheFold={props.artwork} isVisible={isVisible} />
             } else if (error) {
               console.log(error)
             }
@@ -65,25 +78,38 @@ describe("Artwork", () => {
     jest.clearAllMocks()
   })
 
-  it("renders a snapshot", () => {
-    const renderer = ReactTestRenderer.create(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation)
-    })
-    expect(renderer.toJSON()).toMatchSnapshot()
+  it("renders above the fold content before the full query has been resolved", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockMostRecentOperation("ArtworkTestsQuery")
+    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
+    expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
+    expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(0)
+  })
+
+  it("renders all content after the full query has been resolved", async () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockMostRecentOperation("ArtworkTestsQuery")
+    mockMostRecentOperation("ArtworkFullQuery")
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+    await flushPromiseQueue()
+    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
+    expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
+    expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(0)
+    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
   })
 
   it("marks the artwork as viewed", () => {
     ReactTestRenderer.create(<TestRenderer />)
     const slug = "test artwork id"
 
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation, {
-        Artwork() {
-          return { slug }
-        },
-      })
+    mockMostRecentOperation("ArtworkTestsQuery", {
+      Artwork() {
+        return { slug }
+      },
     })
+
+    mockMostRecentOperation("ArtworkFullQuery")
 
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
       request: {
@@ -99,17 +125,9 @@ describe("Artwork", () => {
   it("refetches on re-appear", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtworkTestsQuery")
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation)
-    })
-
-    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "ArtworkMarkAsRecentlyViewedQuery"
-    )
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation)
-    })
+    mockMostRecentOperation("ArtworkTestsQuery")
+    mockMostRecentOperation("ArtworkFullQuery")
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
 
     expect(environment.mock.getAllOperations()).toHaveLength(0)
 
@@ -119,39 +137,43 @@ describe("Artwork", () => {
     expect(environment.mock.getAllOperations()).toHaveLength(2)
 
     expect(environment.mock.getAllOperations().map(op => op.request.node.operation.name)).toEqual([
-      "ArtworkRefetchQuery",
-      "ArtworkMarkAsRecentlyViewedQuery",
+      "ArtworkFullQuery", // refetch full data
+      "ArtworkMarkAsRecentlyViewedQuery", // retrigger recently viewed
     ])
   })
 
-  it("does not show a contextCard if the work is in a non-auction sale", () => {
+  it("does not show a contextCard if the work is in a non-auction sale", async () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation, {
-        Sale() {
-          return {
-            isAuction: false,
-          }
-        },
-      })
+    mockMostRecentOperation("ArtworkTestsQuery")
+    mockMostRecentOperation("ArtworkFullQuery", {
+      Sale() {
+        return {
+          isAuction: false,
+        }
+      },
     })
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+    await flushPromiseQueue()
 
     expect(tree.root.findAllByType(ContextCard)).toHaveLength(0)
+    expect(tree.root.findAllByType(OtherWorksFragmentContainer)).toHaveLength(1)
   })
 
-  it("does show a contextCard if the work is in an auction", () => {
+  it("does show a contextCard if the work is in an auction", async () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation, {
-        Sale() {
-          return {
-            isAuction: true,
-          }
-        },
-      })
+    mockMostRecentOperation("ArtworkTestsQuery")
+    mockMostRecentOperation("ArtworkFullQuery", {
+      Sale() {
+        return {
+          isAuction: true,
+        }
+      },
     })
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+
+    await flushPromiseQueue()
 
     expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
   })
@@ -161,12 +183,10 @@ describe("Artwork", () => {
       it("for which I am registered", () => {
         const tree = ReactTestRenderer.create(<TestRenderer />)
 
-        environment.mock.resolveMostRecentOperation(operation => {
-          return MockPayloadGenerator.generate(operation, {
-            Artwork() {
-              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, RegisteredBidder)
-            },
-          })
+        mockMostRecentOperation("ArtworkTestsQuery", {
+          Artwork() {
+            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, RegisteredBidder)
+          },
         })
 
         expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
@@ -178,12 +198,10 @@ describe("Artwork", () => {
       it("for which I am not registered and registration is open", () => {
         const tree = ReactTestRenderer.create(<TestRenderer />)
 
-        environment.mock.resolveMostRecentOperation(operation => {
-          return MockPayloadGenerator.generate(operation, {
-            Artwork() {
-              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
-            },
-          })
+        mockMostRecentOperation("ArtworkTestsQuery", {
+          Artwork() {
+            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
+          },
         })
 
         expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
@@ -196,12 +214,10 @@ describe("Artwork", () => {
       it("for which I am not registered and registration is closed", () => {
         const tree = ReactTestRenderer.create(<TestRenderer />)
 
-        environment.mock.resolveMostRecentOperation(operation => {
-          return MockPayloadGenerator.generate(operation, {
-            Artwork() {
-              return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
-            },
-          })
+        mockMostRecentOperation("ArtworkTestsQuery", {
+          Artwork() {
+            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
+          },
         })
 
         expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
