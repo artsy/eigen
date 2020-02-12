@@ -76,7 +76,7 @@ class Favorites extends React.Component<Props, null> {
                     onPress={() => SwitchBoard.presentNavigationViewController(this, "ios-settings")}
                   >
                     <Box>
-                      <SettingsIcon />
+                      <SettingsIcon width={24} height={24} />
                     </Box>
                   </TouchableWithoutFeedback>
                 </Flex>
