@@ -1,3 +1,15 @@
+# v1.21.45 (Wed Feb 12 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-158] Artwork page: separating queries for above-the-fold and below-the-fold content [#2085](https://github.com/artsy/emission/pull/2085) ([@ds300](https://github.com/ds300))
+
+#### Authors: 1
+
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
 # v1.21.44 (Tue Feb 11 2020)
 
 #### 🐛  Bug Fix
