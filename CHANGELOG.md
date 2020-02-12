@@ -1,3 +1,15 @@
+# v1.21.46 (Wed Feb 12 2020)
+
+#### 🐛  Bug Fix
+
+- [MX-170] Increases Settings icon size [#2087](https://github.com/artsy/emission/pull/2087) ([@ashfurrow](https://github.com/ashfurrow))
+
+#### Authors: 1
+
+- Ash Furrow ([@ashfurrow](https://github.com/ashfurrow))
+
+---
+
 # v1.21.45 (Wed Feb 12 2020)
 
 #### 🐛  Bug Fix
