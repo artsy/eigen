@@ -101,20 +101,19 @@ static CGFloat exitButtonDimension = 40;
 
         // Add button to hierarchy and constrain layout.
         [self.view addSubview:exitButton];
-        // Top and trailing constraint constants were determined experimentally.
-        // Constraints differ on iPad, but we can't rely on our own view's trait collection because, when presented modally on iPad,
-        // its horizontalSizeClass will always be compact.
-        if (UIApplication.sharedApplication.keyWindow.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
-            // iPhone X support
-            if (UIScreen.mainScreen.bounds.size.height == 812) {
-                [exitButton alignTopEdgeWithView:self.view predicate:@"54"];
-            } else {
-                [exitButton alignTopEdgeWithView:self.view predicate:@"31"];
-            }
-            [exitButton alignTrailingEdgeWithView:self.view predicate:@"-6"];
-        } else {
-            [exitButton alignTopEdgeWithView:self.view predicate:@"12"];
-            [exitButton alignTrailingEdgeWithView:self.view predicate:@"-19"];
+
+        // Top and trailing constraint constants were determined experimentally, constraints differ on iPad
+        if (UIApplication.sharedApplication.keyWindow.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+            UILayoutGuide *safeAreaLayoutGuide = self.view.safeAreaLayoutGuide;
+            [NSLayoutConstraint activateConstraints:@[
+                [exitButton.topAnchor constraintEqualToAnchor:safeAreaLayoutGuide.topAnchor constant:14],
+                [exitButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-10]
+            ]];
+        } else { // iPad
+            [NSLayoutConstraint activateConstraints:@[
+                [exitButton.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:14],
+                [exitButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-19]
+            ]];
         }
     }
 }
