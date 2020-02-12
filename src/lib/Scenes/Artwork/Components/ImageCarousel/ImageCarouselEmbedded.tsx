@@ -1,6 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useCallback, useContext } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { Sentry } from "react-native-sentry"
 import { isPad } from "../../hardware"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
@@ -57,6 +58,15 @@ export const ImageCarouselEmbedded = () => {
     // if either of those is above a certain threshold then we don't condiser it a 'tap'.
 
     const info = touchBank[indexOfSingleActiveTouch]
+
+    // We were seeing a very rare exception thrown in production where info would be undefined here
+    // https://artsyproduct.atlassian.net/browse/MX-161
+    if (!info) {
+      if (!__DEV__) {
+        Sentry.captureMessage("touchBank has unexpected structure", { touchBank, indexOfSingleActiveTouch })
+      }
+      return
+    }
 
     const duration = info.currentTimeStamp - info.startTimeStamp
 
