@@ -54,7 +54,7 @@ query AutosuggestResultsPaginationQuery(
 }
 
 fragment AutosuggestResults_results_1jWD3d on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE]) {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION]) {
     edges {
       node {
         imageUrl
@@ -120,7 +120,8 @@ v2 = [
       "FAIR",
       "GENE",
       "SALE",
-      "PROFILE"
+      "PROFILE",
+      "COLLECTION"
     ]
   },
   {
@@ -306,7 +307,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "e4098d5f3df8c301e3129df348d14457",
+    "id": "9e7fa812ce7710330d7b73678fd8aa1e",
     "text": null,
     "metadata": {}
   }
