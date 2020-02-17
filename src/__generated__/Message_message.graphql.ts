@@ -10,10 +10,6 @@ export type Message_message = {
         readonly name: string | null;
         readonly email: string | null;
     } | null;
-    readonly invoice: {
-        readonly payment_url: string | null;
-        readonly " $fragmentRefs": FragmentRefs<"InvoicePreview_invoice">;
-    } | null;
     readonly attachments: ReadonlyArray<{
         readonly id: string;
         readonly internalID: string;
@@ -83,29 +79,6 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "invoice",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Invoice",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": "payment_url",
-          "name": "paymentURL",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "FragmentSpread",
-          "name": "InvoicePreview_invoice",
-          "args": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
       "name": "attachments",
       "storageKey": null,
       "args": null,
@@ -161,5 +134,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3616264879c312d8f66303b13ca273d0';
+(node as any).hash = 'e87e0a2f78edb5b5f30bd98cbe4234f4';
 export default node;

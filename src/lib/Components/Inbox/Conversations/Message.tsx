@@ -12,7 +12,6 @@ import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typ
 import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
-import InvoicePreview from "./Preview/InvoicePreview"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
 
@@ -153,16 +152,10 @@ export class Message extends React.Component<Props> {
   }
 
   render() {
-    const { artworkPreview, initials, message, senderName, showPreview, conversationId } = this.props
+    const { artworkPreview, initials, message, senderName, showPreview } = this.props
     const isPending = !message.created_at
 
     const fromName = message.from.name
-    let previewInvoice
-    if (message.invoice) {
-      previewInvoice = () => {
-        SwitchBoard.presentModalViewController(this, message.invoice.payment_url)
-      }
-    }
     return (
       <Container>
         <Content>
@@ -179,16 +172,6 @@ export class Message extends React.Component<Props> {
             {!!artworkPreview && <PreviewContainer>{artworkPreview}</PreviewContainer>}
 
             {!!showPreview && <PreviewContainer>{showPreview}</PreviewContainer>}
-
-            {message.invoice && (
-              <PreviewContainer>
-                <InvoicePreview
-                  invoice={message.invoice as any}
-                  onSelected={previewInvoice}
-                  conversationId={conversationId}
-                />
-              </PreviewContainer>
-            )}
 
             {this.renderAttachmentPreviews(message.attachments)}
 
@@ -212,10 +195,6 @@ export default createFragmentContainer(Message, {
       from {
         name
         email
-      }
-      invoice {
-        payment_url: paymentURL
-        ...InvoicePreview_invoice
       }
       attachments {
         id
