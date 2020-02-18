@@ -1,7 +1,7 @@
 This update includes a number of small bug fixes and improvements, including:
 
-• Improved Search results for artworks with long names.
-• Fixed a rare bug that would cause the app to crash when zooming in on certain images.
-• Fixed several small bugs related to logging out.
+• Added support for Artsy Collections of artworks.
+• Decreased the app's download/update size.
+• Fixed a rare, intermittent bug related to browsing artwork images.
 
 Have feedback? Email us at support@artsy.net
