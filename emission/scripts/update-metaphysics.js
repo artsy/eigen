@@ -10,9 +10,11 @@ const path = require("path")
 const spawnSync = require("child_process").spawnSync
 const chalk = require("chalk").default
 const Octokit = require("@octokit/rest")
+const awaitPreviousBuilds = require("./await-previous-builds")
 
 async function main() {
   try {
+    await awaitPreviousBuilds()
     await updateRepo({
       repo: { owner: "artsy", repo: "metaphysics" },
       branch: "update-emission-query-map",
@@ -25,17 +27,6 @@ async function main() {
         mergeJson(path.join(dir, "src/data/complete.queryMap.json"), "data/complete.queryMap.json")
       },
     })
-    // TODO: figure out how to get 'bundle exec pod update Emission' running on circle
-    // await updateRepo({
-    //   repo: { owner: "artsy", repo: "eigen" },
-    //   branch: "update-emission",
-    //   message: "Update emission",
-    //   update: dir => {
-    //     log.step("Updating Emission pod")
-    //     exec("bundle install", dir)
-    //     exec("bundle exec pod update Emission", dir)
-    //   },
-    // })
   } catch (e) {
     if (e instanceof ShellError) {
       console.error(chalk.red(e.message))
