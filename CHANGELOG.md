@@ -1,3 +1,15 @@
+# v1.21.49 (Tue Feb 18 2020)
+
+#### 🐛  Bug Fix
+
+- Sync makefile node version with nvmrc #trivial [#2094](https://github.com/artsy/emission/pull/2094) ([@brainbicycle](https://github.com/brainbicycle))
+
+#### Authors: 1
+
+- Brian Beckerle ([@brainbicycle](https://github.com/brainbicycle))
+
+---
+
 # v1.21.48 (Tue Feb 18 2020)
 
 #### 🐛  Bug Fix
