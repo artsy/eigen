@@ -11,8 +11,8 @@ endif
 
 ifndef NVM
 	@echo "Installing NVM"
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-	nvm install 10.13.0
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+	nvm install 12
 endif
 
 ifndef YARN
