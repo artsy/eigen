@@ -1,10 +1,9 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif } from "@artsy/palette"
-import { SortOptions } from "lib/data/ArtworkFilterOptions"
+import { ArrowLeftIcon, ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif } from "@artsy/palette"
 import React from "react"
 import { FlatList, LayoutAnimation, Modal as RNModal, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-// import { SortOptionsScreen } from "./SortOptionsScreen"
+// import { SortOptions } from "./SortOptions"
 
 interface ModalProps extends ViewProperties {
   // visible: boolean
@@ -46,19 +45,6 @@ export class FilterModalNavigator extends React.Component<ModalProps, State> {
     }
   }
 
-  _handleBackPress() {
-    this.props.navigator.pop()
-  }
-
-  handleNextPress(type) {
-    console.log("navvvvvv", this)
-
-    return this.refs.filterNav.navigator.push({
-      title: "Sort Modal",
-      component: SortOptionsScreen,
-      passProps: { ...this.props },
-    })
-  }
   render() {
     const { sortableItems } = this.state
     const { isFilterArtworksModalVisible } = this.props
@@ -139,25 +125,43 @@ const SortRowItem = styled(Flex)`
   width: 100%;
 `
 
-class SortOptionsScreen extends React.Component {
+interface SortOptionsScreenProps {
+  navigator: NavigatorIOS
+}
+class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
   goBack() {
     this.props.navigator.pop()
+  }
+
+  renderSortOption = ({ item }) => {
+    console.log("TCL: SortOptionsScreen -> item", item)
+    return (
+      <SortRowItem>
+        <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
+          <Serif size="3">{item}</Serif>
+        </Flex>
+      </SortRowItem>
+    )
   }
 
   render() {
     return (
       <Flex>
-        <SortRowItem>
-          <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-            <Serif size="3">Sort By</Serif>
-            <Flex flexDirection="row" onTouchEnd={null}>
-              <Serif color={color("black60")} size="3">
-                Sort By
-              </Serif>
-              <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
-            </Flex>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Flex alignItems="flex-end" mt={0.5} mb={2}>
+            <Box ml={2} mt={2} onTouchStart={() => this.goBack()}>
+              <ArrowLeftIcon fill="black100" />
+            </Box>
           </Flex>
-        </SortRowItem>
+          <Sans mt={2} weight="medium" size="4">
+            Sort
+          </Sans>
+        </Flex>
+        <FlatList
+          keyExtractor={(_item, index) => String(index)}
+          data={SortOptions}
+          renderItem={item => <Box>{this.renderSortOption(item)}</Box>}
+        />
       </Flex>
     )
   }
@@ -169,6 +173,7 @@ interface FilterOptionsState {
 
 interface FilterOptionsProps {
   closeModal: () => void
+  navigator: NavigatorIOS
 }
 
 class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsState> {
@@ -182,9 +187,7 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
 
     sortableItems.push({
       type: "Sort by",
-      data: {
-        sort: [],
-      },
+      onTap: this.navigateToSort,
     })
 
     this.setState({
@@ -192,12 +195,18 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
     })
   }
 
-  renderFilterOption = ({ item: { type } }) => {
+  navigateToSort = () => {
+    this.props.navigator.push({
+      component: SortOptionsScreen,
+    })
+  }
+
+  renderFilterOption = ({ item: { type, onTap } }) => {
     return (
       <SortRowItem>
         <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
           <Serif size="3">{type}</Serif>
-          <Flex flexDirection="row" onTouchEnd={null}>
+          <Flex flexDirection="row" onTouchEnd={() => onTap()}>
             <Serif color={color("black60")} size="3">
               Default
             </Serif>
@@ -235,3 +244,13 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
     )
   }
 }
+
+const SortOptions = [
+  "Default",
+  "Price (low to high)",
+  "Price (high to low)",
+  "Recently Updated",
+  "Recently Added",
+  "Artwork year (descending)",
+  "Artwork year (ascending)",
+]
