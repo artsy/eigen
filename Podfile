@@ -134,8 +134,8 @@ target 'Artsy' do
   pod 'Extraction'
 
   # To link to Emission locally, for development, comment out the line below, and uncomment the line below it.
-  pod 'Emission', EMISSION_VERSION
-#  pod 'Emission', path: '../emission' # Local Development Emission
+  # pod 'Emission', EMISSION_VERSION
+ pod 'Emission', path: '../emission' # Local Development Emission
 
   npm_vendored_podspecs.each do |pod_name, props|
     pod pod_name.to_s, props

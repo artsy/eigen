@@ -46,6 +46,7 @@
 #import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARPrivacyRequestComponentViewController.h>
+#import <Emission/ARCollectionFullFeaturedArtistListComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -235,6 +236,10 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {
         return [[AREigenCollectionComponentViewController alloc] initWithCollectionID:parameters[@"id"]];
+    }];
+    
+    [self.routes addRoute:@"/collection/:id/artists" handler:JLRouteParams {
+        return [[ARCollectionFullFeaturedArtistListComponentViewController alloc] initWithCollectionID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/conversation/:id"
