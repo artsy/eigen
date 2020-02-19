@@ -27,11 +27,16 @@ export class SortModal extends React.Component<SortModalProps, SortModalState> {
 
   render() {
     const { visible } = this.props
+    console.log("TCL: SortModal -> render -> this.props", this.props)
 
     return (
-      <Box>
-        <Sans size="16">THIS IS THE NEXT SCREEN</Sans>
-      </Box>
+      <TouchableWithoutFeedback>
+        <ModalInnerView>
+          <Box>
+            <Sans size="16">THIS IS THE NEXT SCREEN</Sans>
+          </Box>
+        </ModalInnerView>
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -60,10 +65,19 @@ const ModalBackgroundView = styled.View`
   flex-direction: column;
 `
 
-const ModalInnerView = styled.View<{ visible: boolean }>`
+// const ModalInnerView = styled.View<{ visible: boolean }>`
+//   flex-direction: column;
+//   background-color: white;
+//   height: ${({ visible }) => (visible ? "auto" : "0")};
+//   border-top-left-radius: 10px;
+//   border-top-right-radius: 10px;
+// `
+
+const ModalInnerView = styled(Flex)`
   flex-direction: column;
-  background-color: white;
-  height: ${({ visible }) => (visible ? "auto" : "0")};
+  background-color: red;
+  height: 1000px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  flex: 1;
 `

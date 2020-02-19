@@ -1,18 +1,17 @@
 import { Box, Button, Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
-import { FilterModal, FilterModalNavigator } from "lib/Components/FilterModal"
+import { FilterModalNavigator } from "lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
-import { FlatList, NativeModules, NavigatorIOS, View } from "react-native"
+import { FlatList, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
   collection: Collection_collection
-  navigator: NavigatorIOS
 }
 
 interface CollectionState {
@@ -75,6 +74,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
             <FilterModalNavigator
               {...this.props}
               isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
+              closeModal={this.handleFilterArtworksModal.bind(this)}
             />
             {/*this.state.isFilterArtworksModalVisible && (
               <FilterModal
@@ -102,6 +102,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     })
   }
   handleFilterArtworksModal() {
+    console.log("TCL: handleFilterArtworksModal -> handleFilterArtworksModal")
     this.setState(_prevState => {
       return { isFilterArtworksModalVisible: !_prevState.isFilterArtworksModalVisible }
     })
