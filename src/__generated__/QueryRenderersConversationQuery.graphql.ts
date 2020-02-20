@@ -109,11 +109,6 @@ fragment Message_message on Message {
     name
     email
   }
-  invoice {
-    payment_url: paymentURL
-    ...InvoicePreview_invoice
-    id
-  }
   attachments {
     id
     internalID
@@ -159,13 +154,6 @@ fragment ShowPreview_show on Show {
       id
     }
   }
-}
-
-fragment InvoicePreview_invoice on Invoice {
-  payment_url: paymentURL
-  state
-  total
-  lewitt_invoice_id: lewittInvoiceID
 }
 
 fragment ImagePreview_attachment on Attachment {
@@ -526,46 +514,6 @@ return {
                               (v5/*: any*/)
                             ]
                           },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "invoice",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Invoice",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": "payment_url",
-                                "name": "paymentURL",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "state",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "total",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "lewitt_invoice_id",
-                                "name": "lewittInvoiceID",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v2/*: any*/)
-                            ]
-                          },
                           (v7/*: any*/)
                         ]
                       }
@@ -709,7 +657,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersConversationQuery",
-    "id": "8d6fce17dc34f3c4786d5584a88cf4b2",
+    "id": "ddd51d3ef3265148a045443bcddca6a1",
     "text": null,
     "metadata": {}
   }
