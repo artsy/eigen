@@ -51,7 +51,6 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
                     navigationBarHidden={true}
                     initialRoute={{
                       component: FilterOptions,
-                      title: "",
                       passProps: { closeModal: this.props.closeModal },
                     }}
                     style={{ flex: 1 }}
@@ -79,7 +78,7 @@ interface FilterOptionsProps {
   closeModal: () => void
   navigator: NavigatorIOS
 }
-class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsState> {
+export class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsState> {
   state = {
     filterOptions: [],
   }
@@ -108,12 +107,12 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
       <OptionListItem>
         <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
           <Serif size="3">{type}</Serif>
-          <Flex flexDirection="row" onTouchEnd={() => onTap()}>
+          <TouchableOptionListItemRow onTouchStart={() => onTap()}>
             <Serif color={color("black60")} size="3">
               Default
             </Serif>
             <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
-          </Flex>
+          </TouchableOptionListItemRow>
         </Flex>
       </OptionListItem>
     )
@@ -126,13 +125,13 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
       <Flex flexGrow={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex alignItems="flex-end" mt={0.5} mb={2}>
-            <Box ml={2} mt={2} onTouchStart={() => this.props.closeModal()}>
+            <CloseIconContainer onTouchStart={() => this.props.closeModal()}>
               <CloseIcon fill="black100" />
-            </Box>
+            </CloseIconContainer>
           </Flex>
-          <Sans mt={2} weight="medium" size="4">
+          <FilterHeader weight="medium" size="4">
             Filter
-          </Sans>
+          </FilterHeader>
           <Sans mr={2} mt={2} size="4">
             Clear all
           </Sans>
@@ -149,6 +148,10 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
     )
   }
 }
+
+export const FilterHeader = styled(Sans)`
+  margin-top: 20px;
+`
 
 export const BackgroundFill = styled(Flex)`
   background-color: ${color("black10")};
@@ -167,6 +170,14 @@ export const FilterArtworkButtonContainer = styled(Flex)`
 export const FilterArtworkButton = styled(Button)`
   border-radius: 100;
   width: 110px;
+`
+
+export const TouchableOptionListItemRow = styled(Flex)`
+  flex-direction: row;
+`
+export const CloseIconContainer = styled(Box)`
+  margin-left: 20px;
+  margin-top: 20px;
 `
 
 export const OptionListItem = styled(Flex)`
@@ -194,10 +205,3 @@ const ModalInnerView = styled.View<{ visible: boolean }>`
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 `
-
-/**
- * TODOS:
- * 4) Add tests  (check out Bid Flow + Consignments flow)
- *  e.g. when you click sort the correct component renders in the nav stack
- *
- */

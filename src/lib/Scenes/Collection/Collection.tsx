@@ -96,7 +96,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     })
   }
   handleFilterArtworksModal() {
-    console.log("TCL: handleFilterArtworksModal -> handleFilterArtworksModal")
     this.setState(_prevState => {
       return { isFilterArtworksModalVisible: !_prevState.isFilterArtworksModalVisible }
     })

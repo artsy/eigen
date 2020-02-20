@@ -29,9 +29,9 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
       <Flex flexGrow={1}>
         <SortHeader>
           <Flex alignItems="flex-end" mt={0.5} mb={2}>
-            <Box ml={2} mt={2} onTouchStart={() => this.handleBackNavigation()}>
+            <ArrowLeftIconContainer onTouchStart={() => this.handleBackNavigation()}>
               <ArrowLeftIcon fill="black100" />
-            </Box>
+            </ArrowLeftIconContainer>
           </Flex>
           <Sans mt={2} weight="medium" size="4">
             Sort
@@ -61,8 +61,13 @@ const SortOptions = [
   "Artwork year (ascending)",
 ]
 
-const SortHeader = styled(Flex)`
+export const SortHeader = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   padding-right: 20px;
+`
+
+export const ArrowLeftIconContainer = styled(Box)`
+  margin-top: 20px;
+  margin-left: 20px;
 `
