@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not have an activity when searching  1`] = `
+<View
+  style={
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+        "maxHeight": 40,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "height": 40,
+      }
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      autoCorrect={false}
+      clearButtonMode="while-editing"
+      keyboardAppearance="dark"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      placeholderTextColor="#666"
+      rejectResponderTermination={true}
+      selectionColor="#666"
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+        ]
+      }
+      underlineColorAndroid="transparent"
+      value="My mocked"
+    />
+    <ActivityIndicator
+      animating={true}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#666",
+        "height": 1,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`shows an activity indicator when searching  1`] = `
+<View
+  style={
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+        "maxHeight": 40,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "height": 40,
+      }
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      autoCorrect={false}
+      clearButtonMode="while-editing"
+      keyboardAppearance="dark"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      placeholderTextColor="#666"
+      rejectResponderTermination={true}
+      selectionColor="#666"
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+        ]
+      }
+      underlineColorAndroid="transparent"
+      value="My mocked"
+    />
+    <ActivityIndicator
+      animating={true}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#666",
+        "height": 1,
+      }
+    }
+  />
+</View>
+`;

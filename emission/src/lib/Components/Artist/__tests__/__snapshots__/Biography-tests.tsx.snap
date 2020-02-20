@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": 50,
+      "marginRight": 50,
+    }
+  }
+>
+  <Text
+    fontFamily="Unica77LL-Medium"
+    fontSize="14px"
+    lineHeight="20px"
+    style={
+      Array [
+        Object {
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 14,
+          "lineHeight": 20,
+        },
+        Object {},
+      ]
+    }
+  >
+    Biography
+  </Text>
+  <View
+    mb={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 20,
+        },
+      ]
+    }
+  />
+  <Text
+    numberOfLines={0}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontSize": 16,
+          "lineHeight": 20,
+          "marginBottom": 20,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Once lived in a room with a live coyote for several days to protest the Vietnam War
+  </Text>
+  <Text
+    numberOfLines={0}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontSize": 16,
+          "lineHeight": 20,
+          "marginBottom": 20,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Born 1922, Germany
+  </Text>
+</View>
+`;

@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Carousel renders properly 1`] = `
+Array [
+  <RCTScrollView
+    horizontal={true}
+    onLayout={[Function]}
+    onScroll={[Function]}
+    pagingEnabled={true}
+    scrollEventThrottle={160}
+    showsHorizontalScrollIndicator={false}
+    style={
+      Array [
+        Object {
+          "height": 250,
+        },
+      ]
+    }
+  >
+    <View>
+      <View
+        height={250}
+        style={
+          Array [
+            Object {
+              "height": 250,
+            },
+          ]
+        }
+      />
+    </View>
+  </RCTScrollView>,
+  <View
+    alignItems="center"
+    flexDirection="row"
+    justifyContent="center"
+    mb={1}
+    mt={1}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "marginBottom": 10,
+          "marginTop": 10,
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isActive={true}
+      isLast={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#000",
+            "borderRadius": 3,
+            "height": 6,
+            "marginRight": 0,
+            "width": 6,
+          },
+        ]
+      }
+    />
+  </View>,
+]
+`;

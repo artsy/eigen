@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "borderColor": "white",
+        "borderRadius": 40,
+        "borderWidth": 2,
+        "height": 80,
+        "justifyContent": "center",
+        "width": 80,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    source={
+      Object {
+        "testUri": "../../../images/consignments/email.png",
+      }
+    }
+  />
+</View>
+`;

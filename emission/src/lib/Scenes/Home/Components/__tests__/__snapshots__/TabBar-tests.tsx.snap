@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  px={2}
+  style={
+    Array [
+      Object {
+        "borderBottomColor": "#C2C2C2",
+        "borderBottomWidth": 1,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+          "height": 50,
+          "justifyContent": "space-around",
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Page 1"
+      accessible={true}
+      active={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexGrow": 1,
+            "justifyContent": "center",
+            "paddingTop": 5,
+          },
+        ]
+      }
+    >
+      <Text
+        color="#C2C2C2"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="24px"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "#C2C2C2",
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 24,
+            },
+            Object {},
+          ]
+        }
+      >
+        Page 1
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Page 2"
+      accessible={true}
+      active={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexGrow": 1,
+            "justifyContent": "center",
+            "paddingTop": 5,
+          },
+        ]
+      }
+    >
+      <Text
+        color="#C2C2C2"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="24px"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "#C2C2C2",
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 24,
+            },
+            Object {},
+          ]
+        }
+      >
+        Page 2
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Page 3"
+      accessible={true}
+      active={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexGrow": 1,
+            "justifyContent": "center",
+            "paddingTop": 5,
+          },
+        ]
+      }
+    >
+      <Text
+        color="#C2C2C2"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="24px"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "#C2C2C2",
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 24,
+            },
+            Object {},
+          ]
+        }
+      >
+        Page 3
+      </Text>
+    </View>
+  </View>
+</View>
+`;

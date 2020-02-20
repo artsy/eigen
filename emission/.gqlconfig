@@ -1,0 +1,20 @@
+{
+  "schema": {
+    "files": "data/schema.graphql"
+  },
+  "query": {
+    "files": [
+      {
+        "match": "src/**/*.ts*",
+        "parser": ["EmbeddedQueryParser", { "startTag": "graphql(\\.experimental)?`", "endTag": "`" }],
+        "isRelay": true,
+        "validate": {
+          "extends": "gql-rules-query-relay",
+          "rules": {
+            "KnownDirectives": "off"
+          }
+        }
+      }
+    ]
+  }
+}

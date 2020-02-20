@@ -1,0 +1,73 @@
+***************
+*** 4,10 ****
+  import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+  import { observer } from "mobx-react"
+  import React, { useContext, useMemo } from "react"
+- import { Animated } from "react-native"
+  import { createFragmentContainer, graphql } from "react-relay"
+  import { isPad } from "../../hardware"
+  import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
+--- 4,10 ----
+  import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+  import { observer } from "mobx-react"
+  import React, { useContext, useMemo } from "react"
++ import { Animated, PixelRatio } from "react-native"
+  import { createFragmentContainer, graphql } from "react-relay"
+  import { isPad } from "../../hardware"
+  import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
+***************
+*** 34,40 ****
+      () =>
+        props.images
+          .map(image => {
+-           if (!image.height || !image.width || !image.image_url) {
+              // something is very wrong
+              return null
+            }
+--- 34,40 ----
+      () =>
+        props.images
+          .map(image => {
++           if (!image.height || !image.width || !image.url) {
+              // something is very wrong
+              return null
+            }
+***************
+*** 43,51 ****
+              width,
+              height,
+              url: createGeminiUrl({
+-               imageURL: image.image_url.replace(":version", "normalized"),
+-               width,
+-               height,
+              }),
+              deepZoom: image.deepZoom,
+            }
+--- 43,52 ----
+              width,
+              height,
+              url: createGeminiUrl({
++               imageURL: image.url.replace(":version", "normalized"),
++               // upscale to match screen resolution
++               width: width * PixelRatio.get(),
++               height: height * PixelRatio.get(),
+              }),
+              deepZoom: image.deepZoom,
+            }
+***************
+*** 106,112 ****
+  export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
+    images: graphql`
+      fragment ImageCarousel_images on Image @relay(plural: true) {
+-       image_url: imageURL
+        width
+        height
+        deepZoom {
+--- 107,113 ----
+  export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
+    images: graphql`
+      fragment ImageCarousel_images on Image @relay(plural: true) {
++       url: imageURL
+        width
+        height
+        deepZoom {

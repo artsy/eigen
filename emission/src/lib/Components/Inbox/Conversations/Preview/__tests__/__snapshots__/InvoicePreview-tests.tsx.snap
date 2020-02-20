@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InvoicePreview renders correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "borderColor": "#e5e5e5",
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "height": 72,
+      },
+    ]
+  }
+>
+  <Image
+    source={
+      Object {
+        "testUri": "../../../images/payment_request.png",
+      }
+    }
+    style={
+      Array [
+        Object {
+          "marginBottom": 12,
+          "marginLeft": 12,
+          "marginRight": 12,
+          "marginTop": 12,
+          "resizeMode": "contain",
+          "width": 40,
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "flexBasis": 0,
+          "flexDirection": "column",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Payment request
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 14,
+            "fontWeight": "bold",
+          },
+        ]
+      }
+    >
+      $420
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "height": 25,
+          "marginRight": 15,
+          "width": 78,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#cccccc",
+            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 12,
+            "lineHeight": 25,
+            "textAlign": "right",
+          },
+        ]
+      }
+    >
+      Refunded
+    </Text>
+  </View>
+</View>
+`;

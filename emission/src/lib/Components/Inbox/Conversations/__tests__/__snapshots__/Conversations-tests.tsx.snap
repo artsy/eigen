@@ -1,0 +1,618 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`messaging inbox looks correct when rendered 1`] = `
+<View>
+  <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "black",
+            "fontSize": 30,
+            "paddingLeft": 20,
+            "paddingRight": 20,
+            "textAlign": "left",
+          },
+          Array [
+            Object {
+              "marginBottom": -10,
+              "marginTop": 20,
+            },
+          ],
+          Object {
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Messages
+    </Text>
+  </View>
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "created_at": "2017-06-01T14:14:35.538Z",
+          "from": Object {
+            "email": "luc+messaging@artsymail.com",
+            "name": "Jean-Luc Collecteur",
+          },
+          "id": "582",
+          "inquiryId": "59302144275b244a81d0f9c6",
+          "items": Array [
+            Object {
+              "item": Object {
+                "__typename": "Artwork",
+                "artistNames": "Bradley Theodore",
+                "date": "2016",
+                "href": "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
+                "id": "bradley-theodore-karl-and-anna-face-off-diptych",
+                "image": Object {
+                  "imageUrl": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+                  "url": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+                },
+                "title": "Karl and Anna Face Off (Diptych)",
+              },
+              "title": "Karl and Anna Face Off (Diptych)",
+            },
+          ],
+          "lastMessage": "Karl and Anna... Fab!",
+          "to": Object {
+            "name": "ACA Galleries",
+          },
+        },
+        Object {
+          "createdAt": "2017-06-01T14:12:19.155Z",
+          "from": Object {
+            "email": "luc+messaging@artsymail.com",
+            "name": "Jean-Luc Collecteur",
+          },
+          "id": "581",
+          "inquiry_id": "593020be8b3b814f9f86f2fd",
+          "items": Array [
+            Object {
+              "item": Object {
+                "__typename": "Artwork",
+                "artistNames": "Aida Muluneh",
+                "date": "2016",
+                "href": "/artwork/aida-muluneh-darkness-give-way-to-light-1",
+                "id": "aida-muluneh-darkness-give-way-to-light-1",
+                "image": Object {
+                  "imageUrl": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+                  "url": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
+                },
+                "title": "Darkness Give Way to Light",
+              },
+              "title": "Darkness Give Way to Light",
+            },
+          ],
+          "lastMessage": "Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?",
+          "to": Object {
+            "name": "David Krut Projects",
+          },
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={500}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Array [
+              Object {
+                "height": 120,
+                "marginLeft": 20,
+                "marginRight": 20,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "row",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "maxWidth": 708,
+                },
+              ]
+            }
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                    "borderRadius": 2,
+                    "height": 80,
+                    "width": 80,
+                  },
+                ]
+              }
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                    "flexBasis": 0,
+                    "flexDirection": "column",
+                    "flexGrow": 1,
+                    "flexShrink": 1,
+                    "marginLeft": 10,
+                    "maxHeight": 70,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontSize": 11,
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      Object {},
+                      Object {
+                        "fontFamily": "AvantGardeGothicITC",
+                      },
+                    ]
+                  }
+                >
+                  ACA GALLERIES
+                </Text>
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flexBasis": 0,
+                        "flexDirection": "row",
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "justifyContent": "flex-end",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontSize": 16,
+                        "textAlign": "left",
+                      },
+                      Object {},
+                      Object {
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 16,
+                        },
+                      ]
+                    }
+                  >
+                    Bradley Theodore · 
+                  </Text>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontFamily": "ReactNativeAGaramondPro-Italic",
+                          "fontSize": 16,
+                        },
+                      ]
+                    }
+                  >
+                    Karl and Anna Face Off (Diptych), 
+                  </Text>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 16,
+                        },
+                      ]
+                    }
+                  >
+                    2016
+                  </Text>
+                </Text>
+              </View>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                Karl and Anna... Fab!
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#cccccc",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "AvantGardeGothicITC",
+                    },
+                  ]
+                }
+              >
+                A FEW SECONDS AGO
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignSelf": "center",
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "width": 708,
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Array [
+              Object {
+                "height": 120,
+                "marginLeft": 20,
+                "marginRight": 20,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "row",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "maxWidth": 708,
+                },
+              ]
+            }
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg"
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                    "borderRadius": 2,
+                    "height": 80,
+                    "width": 80,
+                  },
+                ]
+              }
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                    "flexBasis": 0,
+                    "flexDirection": "column",
+                    "flexGrow": 1,
+                    "flexShrink": 1,
+                    "marginLeft": 10,
+                    "maxHeight": 70,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontSize": 11,
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      Object {},
+                      Object {
+                        "fontFamily": "AvantGardeGothicITC",
+                      },
+                    ]
+                  }
+                >
+                  DAVID KRUT PROJECTS
+                </Text>
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flexBasis": 0,
+                        "flexDirection": "row",
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "justifyContent": "flex-end",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontSize": 16,
+                        "textAlign": "left",
+                      },
+                      Object {},
+                      Object {
+                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 16,
+                        },
+                      ]
+                    }
+                  >
+                    Aida Muluneh · 
+                  </Text>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontFamily": "ReactNativeAGaramondPro-Italic",
+                          "fontSize": 16,
+                        },
+                      ]
+                    }
+                  >
+                    Darkness Give Way to Light, 
+                  </Text>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontFamily": "ReactNativeAGaramondPro-Regular",
+                          "fontSize": 16,
+                        },
+                      ]
+                    }
+                  >
+                    2016
+                  </Text>
+                </Text>
+              </View>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#cccccc",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "AvantGardeGothicITC",
+                    },
+                  ]
+                }
+              >
+                A FEW SECONDS AGO
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignSelf": "center",
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "width": 708,
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`messaging inbox looks correct when rendered without messages 1`] = `
+<View>
+  <View />
+  <RCTScrollView
+    data={Array []}
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={500}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;

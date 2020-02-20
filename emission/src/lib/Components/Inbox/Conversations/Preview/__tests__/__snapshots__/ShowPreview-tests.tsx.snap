@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly for a fair booth 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={null}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderColor": "#e5e5e5",
+          "borderWidth": 1,
+          "flexDirection": "row",
+        },
+        null,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
+      style={
+        Array [
+          Object {
+            "height": 55,
+            "marginBottom": 12,
+            "marginLeft": 12,
+            "marginRight": 12,
+            "marginTop": 12,
+            "width": 80,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "alignSelf": "center",
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginTop": 25,
+          },
+        ]
+      }
+    >
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "fontSize": 14,
+              },
+            ],
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Catty Partner
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexGrow": 3,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Italic",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Catty Show
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`renders correctly for a regular show 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={null}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderColor": "#e5e5e5",
+          "borderWidth": 1,
+          "flexDirection": "row",
+        },
+        null,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
+      style={
+        Array [
+          Object {
+            "height": 55,
+            "marginBottom": 12,
+            "marginLeft": 12,
+            "marginRight": 12,
+            "marginTop": 12,
+            "width": 80,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "alignSelf": "center",
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginTop": 25,
+          },
+        ]
+      }
+    >
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "fontSize": 14,
+              },
+            ],
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Catty Partner
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexGrow": 3,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Italic",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Catty Show
+      </Text>
+    </View>
+  </View>
+</View>
+`;

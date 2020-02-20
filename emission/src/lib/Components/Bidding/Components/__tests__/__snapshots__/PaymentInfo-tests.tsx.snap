@@ -1,0 +1,308 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View>
+  <View
+    border={1}
+    borderBottomWidth={0}
+    borderColor="black10"
+    style={
+      Array [
+        Object {
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    alignItems="center"
+    flexDirection="row"
+    focusable={true}
+    justifyContent="space-between"
+    mb={1}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    p={4}
+    pb={3}
+    style={
+      Array [
+        Object {
+          "marginBottom": 3,
+          "paddingBottom": 10,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 20,
+        },
+      ]
+    }
+  >
+    <View
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="ReactNativeAGaramondPro-Semibold"
+        fontSize="16px"
+        lineHeight="24px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Semibold",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            Object {},
+          ]
+        }
+      >
+        Credit card
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="24px"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            Object {},
+          ]
+        }
+      >
+        VISA •••• 4242
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={null}
+      flexBasis="auto"
+      flexGrow={0}
+      flexShrink={0}
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        color="purple100"
+        fontFamily="Unica77LL-Regular"
+        fontSize="12px"
+        lineHeight="16px"
+        mb={1}
+        ml={3}
+        style={
+          Array [
+            Object {
+              "color": "#6E1EFF",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 12,
+              "lineHeight": 16,
+              "marginBottom": 3,
+              "marginLeft": 10,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edit
+      </Text>
+    </View>
+  </View>
+  <View
+    border={1}
+    borderBottomWidth={0}
+    borderColor="black10"
+    style={
+      Array [
+        Object {
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    alignItems="center"
+    flexDirection="row"
+    focusable={true}
+    justifyContent="space-between"
+    mb={1}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    p={4}
+    pb={3}
+    style={
+      Array [
+        Object {
+          "marginBottom": 3,
+          "paddingBottom": 10,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 20,
+        },
+      ]
+    }
+  >
+    <View
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="ReactNativeAGaramondPro-Semibold"
+        fontSize="16px"
+        lineHeight="24px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Semibold",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            Object {},
+          ]
+        }
+      >
+        Billing address
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="24px"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            Object {},
+          ]
+        }
+      >
+        401 Broadway 25th floor New York NY
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={null}
+      flexBasis="auto"
+      flexGrow={0}
+      flexShrink={0}
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        color="purple100"
+        fontFamily="Unica77LL-Regular"
+        fontSize="12px"
+        lineHeight="16px"
+        mb={1}
+        ml={3}
+        style={
+          Array [
+            Object {
+              "color": "#6E1EFF",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 12,
+              "lineHeight": 16,
+              "marginBottom": 3,
+              "marginLeft": 10,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edit
+      </Text>
+    </View>
+  </View>
+  <View
+    border={1}
+    borderBottomWidth={0}
+    borderColor="black10"
+    style={
+      Array [
+        Object {
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;

@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`has the expected tree 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "borderColor": "black",
+        "borderRadius": 16,
+        "borderWidth": 1,
+        "height": 34,
+        "width": 64,
+      },
+      Object {
+        "backgroundColor": "white",
+      },
+    ]
+  }
+>
+  <View
+    style={null}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginLeft": 8,
+            "marginRight": 8,
+            "marginTop": 9,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "fontFamily": "AvantGardeGothicITC",
+              "fontSize": 11,
+              "letterSpacing": 0.75,
+              "textAlign": "center",
+              "width": 24,
+            },
+            Object {
+              "color": "black",
+            },
+          ]
+        }
+      >
+        L
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "fontFamily": "AvantGardeGothicITC",
+              "fontSize": 11,
+              "letterSpacing": 0.75,
+              "textAlign": "center",
+              "width": 24,
+            },
+            Object {
+              "color": "black",
+            },
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "left": 6,
+            "position": "absolute",
+            "right": 6,
+            "top": 4,
+          },
+          Object {
+            "flexDirection": "row-reverse",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderColor": "black",
+              "borderRadius": 12,
+              "borderWidth": 1,
+              "height": 24,
+              "width": 24,
+            },
+            Object {
+              "borderColor": "black",
+            },
+          ]
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

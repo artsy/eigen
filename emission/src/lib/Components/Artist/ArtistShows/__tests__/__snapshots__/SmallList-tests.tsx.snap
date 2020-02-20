@@ -1,0 +1,343 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<RCTScrollView
+  ItemSeparatorComponent={[Function]}
+  data={
+    Array [
+      Object {
+        "cover_image": Object {
+          "url": "artsy.net/image-url",
+        },
+        "exhibition_period": "Jan 1 - March 1",
+        "href": "artsy.net/show",
+        "kind": "solo",
+        "location": Object {
+          "city": "Berlin",
+        },
+        "name": "Expansive Exhibition",
+        "partner": Object {
+          "name": "Gallery",
+        },
+        "status": "running",
+        "status_update": "Closing in 2 days",
+      },
+      Object {
+        "cover_image": Object {
+          "url": "artsy.net/image-url",
+        },
+        "exhibition_period": "Jan 1 - March 1",
+        "href": "artsy.net/show",
+        "kind": "fair",
+        "location": Object {
+          "city": "Berlin",
+        },
+        "name": "Expansive Exhibition",
+        "partner": Object {
+          "name": "A Different Gallery",
+        },
+        "status": "running",
+        "status_update": "Closing in 2 days",
+      },
+    ]
+  }
+  disableVirtualization={false}
+  getItem={[Function]}
+  getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
+  keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
+  numColumns={1}
+  onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
+  onLayout={[Function]}
+  onMomentumScrollEnd={[Function]}
+  onScroll={[Function]}
+  onScrollBeginDrag={[Function]}
+  onScrollEndDrag={[Function]}
+  removeClippedSubviews={false}
+  renderItem={[Function]}
+  scrollEventThrottle={50}
+  scrollsToTop={false}
+  stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  viewabilityConfigCallbackPairs={Array []}
+  windowSize={21}
+>
+  <View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "marginTop": -8,
+          }
+        }
+      >
+        <AROpaqueImageView
+          imageURL="artsy.net/image-url"
+          style={
+            Object {
+              "height": 75,
+              "marginBottom": 20,
+              "marginRight": 15,
+              "marginTop": 20,
+              "width": 75,
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "justifyContent": "flex-start",
+              "marginTop": 10,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+                "fontSize": 12,
+                "margin": 2,
+                "marginLeft": 0,
+                "textAlign": "left",
+              }
+            }
+          >
+            GALLERY
+          </Text>
+          <Text
+            style={
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+                "fontSize": 12,
+                "margin": 2,
+                "marginLeft": 0,
+                "textAlign": "left",
+              }
+            }
+          >
+            SOLO SHOW
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "margin": 2,
+                  "marginLeft": 0,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Expansive Exhibition
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "margin": 2,
+                    "marginLeft": 0,
+                  },
+                  Object {
+                    "color": "grey",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Berlin, Jan 1 - March 1
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#f7625a",
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Closing in 2 days
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+          }
+        }
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "marginTop": -8,
+          }
+        }
+      >
+        <AROpaqueImageView
+          imageURL="artsy.net/image-url"
+          style={
+            Object {
+              "height": 75,
+              "marginBottom": 20,
+              "marginRight": 15,
+              "marginTop": 20,
+              "width": 75,
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "justifyContent": "flex-start",
+              "marginTop": 10,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+                "fontSize": 12,
+                "margin": 2,
+                "marginLeft": 0,
+                "textAlign": "left",
+              }
+            }
+          >
+            A DIFFERENT GALLERY
+          </Text>
+          <Text
+            style={
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+                "fontSize": 12,
+                "margin": 2,
+                "marginLeft": 0,
+                "textAlign": "left",
+              }
+            }
+          >
+            FAIR BOOTH
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "margin": 2,
+                  "marginLeft": 0,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Expansive Exhibition
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "margin": 2,
+                    "marginLeft": 0,
+                  },
+                  Object {
+                    "color": "grey",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Berlin, Jan 1 - March 1
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#f7625a",
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Closing in 2 days
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

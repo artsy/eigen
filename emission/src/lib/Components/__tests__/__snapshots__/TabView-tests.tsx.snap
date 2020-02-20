@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
+<View>
+  <SwitchView
+    onSelectionChange={[Function]}
+    selectedIndex={1}
+    style={
+      Object {
+        "marginBottom": 30,
+        "marginLeft": 0,
+        "marginRight": 0,
+        "marginTop": 30,
+      }
+    }
+    titles={
+      Array [
+        "one",
+        "two",
+      ]
+    }
+  />
+  <View />
+</View>
+`;

@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BidResult component high bidder renders winning screen properly 1`] = `
+<View
+  flex={1}
+  flexDirection="column"
+  justifyContent="space-between"
+  m={4}
+  mt={6}
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "marginBottom": 20,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 40,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <View
+      alignItems="center"
+      style={
+        Array [
+          Object {},
+          undefined,
+        ]
+      }
+    >
+      <Image
+        height={20}
+        source={
+          Object {
+            "testUri": "../../../images/circle-check-green.png",
+          }
+        }
+        style={
+          Array [
+            Object {
+              "height": 20,
+              "width": 20,
+            },
+            undefined,
+          ]
+        }
+        width={20}
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={5}
+        lineHeight={9}
+        m={4}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Semibold",
+              "fontSize": 22,
+              "lineHeight": 32,
+              "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 20,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        You're the highest bidder
+      </Text>
+      <View
+        alignItems="center"
+        style={
+          Array [
+            Object {},
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={1}
+          lineHeight={1}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Live 
+          Dec 31, 7pm
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={2}
+          lineHeight={5}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 14,
+                "lineHeight": 24,
+              },
+              undefined,
+            ]
+          }
+        >
+          22
+          d
+            
+          03
+          h
+            
+          40
+          m
+            
+          27
+          s
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    collapsable={undefined}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(255, 255, 255, 1)",
+        "borderColor": "rgba(229, 229, 229, 1)",
+        "borderWidth": 1,
+        "height": 50,
+        "justifyContent": "center",
+      }
+    }
+    testID={undefined}
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+          },
+          Object {
+            "color": "rgba(0, 0, 0, 1)",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 14,
+            "opacity": 1,
+          },
+          Object {
+            "fontFamily": "AvantGardeGothicITC",
+          },
+        ]
+      }
+    >
+      CONTINUE
+    </Text>
+  </View>
+</View>
+`;

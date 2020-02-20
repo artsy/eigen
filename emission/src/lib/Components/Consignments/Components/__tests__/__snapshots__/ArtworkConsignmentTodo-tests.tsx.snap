@@ -1,0 +1,5158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TODO states: Looks right when Empty Metadata 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With Artist 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With Just Metadata 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With Location 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With Long 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With Metadata 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With One 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With Photos 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
+
+exports[`TODO states: Looks right when With Provenance 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Artist/Designer name
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Photos
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Work details
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Edition & Authenticity
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Location
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessible={true}
+    focusable={false}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      flexDirection="row"
+      justifyContent="space-between"
+      py={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingBottom": 8,
+            "paddingTop": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="16px"
+        lineHeight="26px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 16,
+              "lineHeight": 26,
+            },
+            Object {},
+          ]
+        }
+      >
+        Provenance
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "black",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;

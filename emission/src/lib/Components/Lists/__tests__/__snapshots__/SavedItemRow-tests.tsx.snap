@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Object {
+        "height": 70,
+        "marginBottom": 0,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 9,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "height": 50,
+            "overflow": "hidden",
+            "width": 50,
+          },
+          Object {
+            "borderRadius": 25,
+          },
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/GeP7pPxLcVRva8UTzBBGXQ/large.jpg"
+        style={
+          Array [
+            Object {
+              "height": 50,
+              "width": 50,
+            },
+          ]
+        }
+      />
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 12,
+            "letterSpacing": 0.5,
+            "marginBottom": 2,
+            "marginLeft": 10,
+            "marginRight": 10,
+            "marginTop": 6,
+          },
+        ]
+      }
+    >
+      PETRA COLLINS
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+          "marginTop": 9,
+          "width": "100%",
+        },
+      ]
+    }
+  />
+</View>
+`;

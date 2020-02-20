@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
+<react-native-parallax-scroll-view
+  backgroundColor="white"
+  backgroundScrollSpeed={1}
+  contentBackgroundColor="white"
+  fadeOutForeground={false}
+  onChangeHeaderVisibility={[Function]}
+  parallaxHeaderContainerStyles={
+    Object {
+      "marginBottom": 0,
+    }
+  }
+  parallaxHeaderHeight={200}
+  renderBodyComponentHeader={[Function]}
+  renderForeground={[Function]}
+  renderStickyHeader={[Function]}
+  scrollsToTop={true}
+  stickyHeaderHeight={64}
+  stickyHeaderIndices={
+    Array [
+      1,
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "marginTop": 20,
+        "paddingLeft": 40,
+        "paddingRight": 40,
+      }
+    }
+  >
+    <ArtworksGrid
+      filtered_artworks={
+        Object {
+          "aggregations": Array [
+            Object {
+              "counts": Object {
+                "count": "Yep",
+                "id": "OK",
+                "name": "Sure",
+              },
+              "slice": "1212",
+            },
+          ],
+          "total": 12,
+        }
+      }
+      mapPropsToArtworksConnection={[Function]}
+      medium="painting"
+      priceRange="*-100000"
+      sort="-partner_updated_at"
+    />
+  </View>
+</react-native-parallax-scroll-view>
+`;

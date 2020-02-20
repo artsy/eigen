@@ -1,0 +1,343 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not show artist avatar if no avatar image exists 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": 20,
+      "marginRight": 20,
+      "marginTop": 20,
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": null,
+        }
+      }
+      style={
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderRadius": 20,
+          "height": 40,
+          "marginRight": 10,
+          "width": 40,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            Object {
+              "fontSize": 12,
+            },
+          ]
+        }
+      >
+        JEAN-MICHEL BASQUIAT
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "marginTop": 2,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        1 Work Added
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginBottom": 20,
+        "marginTop": 20,
+      }
+    }
+  >
+    <View
+      onLayout={[Function]}
+    >
+      <View
+        accessibilityLabel="Artworks Content View"
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`lays out correctly for read notification 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": 20,
+      "marginRight": 20,
+      "marginTop": 20,
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "cloudfront.url",
+        }
+      }
+      style={
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderRadius": 20,
+          "height": 40,
+          "marginRight": 10,
+          "width": 40,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            Object {
+              "fontSize": 12,
+            },
+          ]
+        }
+      >
+        JEAN-MICHEL BASQUIAT
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "marginTop": 2,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        1 Work Added
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginBottom": 20,
+        "marginTop": 20,
+      }
+    }
+  >
+    <View
+      onLayout={[Function]}
+    >
+      <View
+        accessibilityLabel="Artworks Content View"
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`lays out correctly for unread notification 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": 20,
+      "marginRight": 20,
+      "marginTop": 20,
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "cloudfront.url",
+        }
+      }
+      style={
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderRadius": 20,
+          "height": 40,
+          "marginRight": 10,
+          "width": 40,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            Object {
+              "fontSize": 12,
+            },
+          ]
+        }
+      >
+        JEAN-MICHEL BASQUIAT
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "marginTop": 2,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        1 Work Added
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginBottom": 20,
+        "marginTop": 20,
+      }
+    }
+  >
+    <View
+      onLayout={[Function]}
+    >
+      <View
+        accessibilityLabel="Artworks Content View"
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
