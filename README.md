@@ -43,6 +43,10 @@ make oss # or make artsy
 
 bundle exec pod install --repo-update
 open Artsy.xcworkspace
+
+# finally start the react-native bundler
+cd emission
+yarn start
 ```
 
 This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Product > Run` (or ⌘R).
