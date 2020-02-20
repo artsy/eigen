@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.21.49
   dev:
-    - 
+    - combine emission and eigen into one repo - david
   user_facing:
     -
 
@@ -18,7 +18,7 @@ releases:
       - Removes a lot of unused code - ash
     user_facing:
       -
-        
+
   - version: 6.2.1
     date: Feb 4, 2020
     emission_version: 1.21.32
