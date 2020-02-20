@@ -6,117 +6,7 @@ orbs:
   node: circleci/node@1.1.6
 
 jobs:
-  build-and-test-emission:
-    # Specify the Xcode version to use
-    macos:
-      xcode: "11.3.0"
-
-    shell: /bin/bash --login -eo pipefail
-
-    environment:
-      # WARNING: These env vars are passed to PRs on forks.
-      # WARNING: DO NOT PUT SENSITIVE INFORMATION HERE.
-      ArtsyAPIClientSecret: "-"
-      ArtsyAPIClientKey: "-"
-      StripePublishableKey: "-"
-      MapBoxAPIClientKey: "-"
-
-      # For caching gems, relative to current directory
-      BUNDLE_PATH: vendor/bundle
-      BUNDLER_VERSION: 2.0.2
-
-    steps:
-      - run:
-          name: List Simulators
-          command: xcrun simctl list
-
-      - run:
-          name: Install Node 12 (Required for Yarn)
-          command: |
-            set +e
-            touch $BASH_ENV
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v12.13.1' >> $BASH_ENV
-            echo 'nvm alias default v12.13.1' >> $BASH_ENV
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - v3-gems-{{ checksum "emission/Example/Gemfile.lock" }}
-            # Fall back to using the latest cache if no exact match is found.
-            - v3-gems-
-
-      - run:
-          name: Bundle install
-          command: cd emission/Example ; yarn ci:skip-native-if-possible || bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-
-      - save_cache:
-          key: v3-gems-{{ checksum "emission/Example/Gemfile.lock" }}
-          paths:
-            - emission/Example/vendor/bundle
-
-      - restore_cache:
-          keys:
-            - v3-yarn-{{ checksum "emission/yarn.lock" }}
-            # Fall back to using the latest cache if no exact match is found.
-            - v3-yarn-
-
-      - run:
-          name: Install Yarn Dependencies
-          command: cd emission && yarn ci:skip-native-if-possible || yarn install --ignore-engines
-
-      - save_cache:
-          key: v3-yarn-{{ checksum "emission/yarn.lock" }}
-          paths:
-            - emission/node_modules
-
-      - restore_cache:
-          keys:
-            - v9-pods-{{ checksum "emission/package.json" }}
-
-      - run:
-          name: Install CocoaPods If Necessary
-          command: cd emission;
-            yarn ci:skip-native-if-possible || { cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod
-            install ; }
-
-      - save_cache:
-          key: v9-pods-{{ checksum "emission/package.json" }}
-          paths:
-            - emission/Example/Pods
-
-      - run:
-          name: Package JavaScript for Testing
-          command: cd emission;
-            yarn ci:skip-native-if-possible || yarn bundle-for-native-ci
-
-      - run:
-          name: Set up build artefact directories
-          command: mkdir -p /tmp/test_results/xcode
-
-      - run:
-          name: Run Unit Tests
-          command: cd emission;
-            yarn ci:skip-native-if-possible || { cd Example ; set -o pipefail && xcodebuild -workspace
-            Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination
-            "platform=iOS Simulator,OS=12.4,name=iPhone X" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS
-            RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output
-            /tmp/test_results/xcode/results.xml ; }
-
-      - store_test_results:
-          path: /tmp/test_results/
-
-      - store_artifacts:
-          path: /tmp/xcode_test_raw.log
-          prefix: tests
-
-  build-and-test-eigen:
+  build-and-test:
     environment:
       # Public - Yay
       UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
@@ -278,8 +168,7 @@ workflows:
   version: 2
   build-test:
     jobs:
-      - build-and-test-eigen
-      - build-and-test-emission
+      - build-and-test
       - update-metaphysics:
           filters:
             branches:
