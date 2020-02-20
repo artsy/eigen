@@ -15,6 +15,7 @@ import {
   CityFairListRenderer,
   CitySavedListRenderer,
   CitySectionListRenderer,
+  CollectionFullFeaturedArtistListRenderer,
   CollectionRenderer,
   ConversationRenderer,
   FairRenderer,
@@ -30,6 +31,7 @@ import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionC
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import { CollectionContainer } from "./Scenes/Collection/Collection"
+import { CollectionFeaturedArtistsContainer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -181,6 +183,15 @@ const Collection: React.SFC<CollectionProps> = ({ collectionID }) => {
     <CollectionRenderer
       collectionID={collectionID}
       render={renderWithLoadProgress(CollectionContainer, { collectionID })}
+    />
+  )
+}
+
+const FullFeaturedArtistList: React.SFC<CollectionProps> = ({ collectionID }) => {
+  return (
+    <CollectionFullFeaturedArtistListRenderer
+      collectionID={collectionID}
+      render={renderWithLoadProgress(CollectionFeaturedArtistsContainer, { collectionID })}
     />
   )
 }
@@ -398,3 +409,4 @@ AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
 AppRegistry.registerComponent("Collection", () => Collection)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
+AppRegistry.registerComponent("FullFeaturedArtistList", () => FullFeaturedArtistList)
