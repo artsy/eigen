@@ -52,7 +52,7 @@ query AutosuggestResultsQuery(
 }
 
 fragment AutosuggestResults_results_1bcUq5 on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE]) {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION]) {
     edges {
       node {
         imageUrl
@@ -107,7 +107,8 @@ v2 = [
       "FAIR",
       "GENE",
       "SALE",
-      "PROFILE"
+      "PROFILE",
+      "COLLECTION"
     ]
   },
   {
@@ -288,7 +289,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsQuery",
-    "id": "3f3a581209373c22b1945f702e2d513d",
+    "id": "fd1eefda70e3fe678ddf05baca63c2df",
     "text": null,
     "metadata": {}
   }
