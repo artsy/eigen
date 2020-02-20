@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShowEventSection renders 1`] = `"<text font-family=\\"Unica77LL-Medium\\" font-size=\\"14px\\" lineheight=\\"20px\\" mb=\\"2\\">Opening Reception</text>"`;

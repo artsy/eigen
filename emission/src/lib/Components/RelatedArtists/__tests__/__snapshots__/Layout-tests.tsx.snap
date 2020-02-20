@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lays out correctly 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Object {
+      "flexDirection": "column",
+    }
+  }
+>
+  <Text
+    fontFamily="Unica77LL-Medium"
+    fontSize="14px"
+    lineHeight="20px"
+    style={
+      Array [
+        Object {
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 14,
+          "lineHeight": 20,
+        },
+        Object {},
+      ]
+    }
+  >
+    Related artists
+  </Text>
+  <View
+    mb={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 8,
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      Object {
+        "alignItems": "flex-start",
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "justifyContent": "space-around",
+        "marginLeft": -10,
+        "marginRight": -10,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "margin": 5,
+          "paddingBottom": 20,
+          "width": 242,
+        }
+      }
+    >
+      <AROpaqueImageView
+        style={
+          Object {
+            "height": 161,
+            "width": 242,
+          }
+        }
+      />
+      <View
+        mb={0.5}
+        style={
+          Array [
+            Object {
+              "marginBottom": 0.5,
+            },
+          ]
+        }
+      />
+      <Text
+        fontFamily="Unica77LL-Regular"
+        fontSize="12px"
+        lineHeight="16px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 12,
+              "lineHeight": 16,
+            },
+            Object {},
+          ]
+        }
+      >
+        Sarah Scott
+      </Text>
+      <Text
+        color="#666"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="14px"
+        lineHeight="18px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 14,
+              "lineHeight": 18,
+            },
+            Object {},
+          ]
+        }
+      >
+        4 works
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "height": 161,
+          "width": 242,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "height": 161,
+          "width": 242,
+        }
+      }
+    />
+  </View>
+</View>
+`;

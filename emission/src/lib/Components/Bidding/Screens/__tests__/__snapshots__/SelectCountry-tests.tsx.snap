@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sets up the right view hierarchy 1`] = `
+<View
+  flex={1}
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+    ]
+  }
+>
+  <Image
+    accessible={true}
+    focusable={true}
+    left={10}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    position="absolute"
+    source={
+      Object {
+        "testUri": "../../../images/angle-left.png",
+      }
+    }
+    style={
+      Array [
+        Object {
+          "position": "absolute",
+        },
+        Object {
+          "zIndex": 10,
+        },
+      ]
+    }
+    top={10}
+  />
+  <View
+    flex={1}
+    flexDirection="column"
+    justifyContent="space-between"
+    m={4}
+    mb={0}
+    style={
+      Array [
+        Object {
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "marginBottom": 0,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+        },
+      ]
+    }
+  >
+    <Text
+      fontFamily="ReactNativeAGaramondPro-Semibold"
+      fontSize="22px"
+      lineHeight="28px"
+      m={4}
+      mt={0}
+      style={
+        Array [
+          Object {
+            "fontFamily": "ReactNativeAGaramondPro-Semibold",
+            "fontSize": 22,
+            "lineHeight": 28,
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 0,
+            "textAlign": "center",
+          },
+          Object {},
+        ]
+      }
+      textAlign="center"
+    >
+      Select country
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      autoCorrect={false}
+      autoFocus={false}
+      border={1}
+      borderColor="black10"
+      clearButtonMode="while-editing"
+      fontSize={3}
+      mb={3}
+      onBlur={[Function]}
+      onChangeText={[Function]}
+      onFocus={[Function]}
+      p={3}
+      pb={2}
+      placeholder="Country"
+      rejectResponderTermination={true}
+      returnKeyType="search"
+      style={
+        Array [
+          Object {
+            "borderColor": "#E5E5E5",
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 16,
+            "height": 40,
+            "marginBottom": 10,
+            "paddingBottom": 5,
+            "paddingLeft": 10,
+            "paddingRight": 10,
+            "paddingTop": 10,
+          },
+        ]
+      }
+      underlineColorAndroid="transparent"
+    />
+    <RCTScrollView
+      keyboardShouldPersistTaps="always"
+      scrollEnabled={false}
+    >
+      <View />
+    </RCTScrollView>
+  </View>
+</View>
+`;

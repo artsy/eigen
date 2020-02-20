@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`doesn't show placeholder when initial text is present 1`] = `
+<View
+  style={
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="sentences"
+      keyboardAppearance="dark"
+      multiline={true}
+      onChangeText={[Function]}
+      rejectResponderTermination={true}
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "color": "#000",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 20,
+            "height": "100%",
+          },
+        ]
+      }
+      underlineColorAndroid="transparent"
+      value="any text at all"
+    />
+  </View>
+</View>
+`;
+
+exports[`shows the placeholder when text is empty 1`] = `
+<View
+  style={
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 20,
+            "marginTop": 5,
+            "position": "absolute",
+            "width": "100%",
+            "zIndex": -1,
+          },
+        ]
+      }
+    >
+      some placeholder text
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="sentences"
+      keyboardAppearance="dark"
+      multiline={true}
+      onChangeText={[Function]}
+      rejectResponderTermination={true}
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "color": "#000",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 20,
+            "height": "100%",
+          },
+        ]
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>
+</View>
+`;

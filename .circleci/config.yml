@@ -1,9 +1,10 @@
 # .circleci/config.yml
 
-# Specify the config version - version 2 is latest.
-version: 2
+version: 2.1
 
-# Define the jobs for the current project.
+orbs:
+  node: circleci/node@1.1.6
+
 jobs:
   build-and-test:
     environment:
@@ -33,12 +34,23 @@ jobs:
 
     # Specify the Xcode version to use.
     macos:
-      xcode: '11.3.0'
+      xcode: "11.3.0"
 
     # Define the steps required to build the project.
     steps:
       # Get the code from the VCS provider.
       - checkout
+
+      - run:
+          name: Install Node 12 (Required for Yarn)
+          command: |
+            set +e
+            touch $BASH_ENV
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+            echo 'nvm install v12.13.1' >> $BASH_ENV
+            echo 'nvm alias default v12.13.1' >> $BASH_ENV
 
       - restore_cache:
           keys:
@@ -77,6 +89,10 @@ jobs:
           name: Install Pods
           command: bundle exec pod check || bundle exec pod install
 
+      - run:
+          name: Bundle emission
+          command: cd emission && yarn bundle-for-native-ci
+
       - save_cache:
           key: v4-pods-{{ checksum "Podfile.lock" }}
           paths:
@@ -104,8 +120,7 @@ jobs:
 
       - run:
           name: Danger
-          command:
-            bundle exec danger --danger_id=circle
+          command: bundle exec danger --danger_id=circle
             --dangerfile=Dangerfile.circle.rb --verbose
 
       - run:
@@ -116,8 +131,48 @@ jobs:
           name: Promote if app_store_submission
           command: make promote_if_app_store_submission_branch
 
+  update-metaphysics:
+    executor:
+      name: node/default
+      tag: "12.13.1"
+
+    shell: /bin/bash --login -eo pipefail
+
+    steps:
+      - checkout
+
+      - add_ssh_keys:
+          fingerprints:
+            - "23:11:82:24:bb:cb:a8:1e:7a:eb:b1:f3:d6:e1:55:32"
+
+      - restore_cache:
+          keys:
+            - v3-yarn-{{ checksum "emission/yarn.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v3-yarn-
+
+      - run:
+          name: Install Yarn Dependencies
+          command: cd emission && yarn install --ignore-engines
+
+      - save_cache:
+          key: v3-yarn-{{ checksum "emission/yarn.lock" }}
+          paths:
+            - emission/node_modules
+
+      - run:
+          name: Deploy via auto-release
+          command: cd emission && yarn update-metaphysics
+
 workflows:
   version: 2
   build-test:
     jobs:
       - build-and-test
+      - update-metaphysics:
+          filters:
+            branches:
+              only:
+                - master
+                - beta
+                - app_store_submission

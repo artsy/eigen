@@ -1,0 +1,190 @@
+{
+  "predictions": [
+    {
+      "description": "Ottawa, ON, Canada",
+      "id": "0ced1998ab9dc5aeb480b2c00bb11c3a1a994688",
+      "matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJrxNRX7IFzkwR7RXdMeFRaoo",
+      "reference": "CjQqAAAAHA8KIKuLCvH7f36D_2F73od2_elutGmP_M33mreD1QG5enizxDGa0xTBAJmIP27EEhC1xakvUZzxG3JkuWQxc4KXGhTk-c_og971Qhng7XxIpV1xE9P5bA",
+      "structured_formatting": {
+        "main_text": "Ottawa",
+        "main_text_matched_substrings": [
+          {
+            "length": 2,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "ON, Canada"
+      },
+      "terms": [
+        {
+          "offset": 0,
+          "value": "Ottawa"
+        },
+        {
+          "offset": 8,
+          "value": "ON"
+        },
+        {
+          "offset": 12,
+          "value": "Canada"
+        }
+      ],
+      "types": ["locality", "political", "geocode"]
+    },
+    {
+      "description": "Ottsville, PA, United States",
+      "id": "36ea2fd18c3eb5ca3c496adafd02758d03723e79",
+      "matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJ46Mfo64axIkRjzaTFyIAJLE",
+      "reference": "CkQ0AAAAt--U_hFt6aGnL3GlWYaVJ-mOO4SeSbfjWnyE892OaGdWKvEEfoYQ2JtQ5HbQk8OdZsffetKGsocX8Fts9UKIdxIQl1vUB4Hc1PW50IXxQ4dGtxoUhfIGkPA9QZ2Q3AlJuoeuq-CgsZA",
+      "structured_formatting": {
+        "main_text": "Ottsville",
+        "main_text_matched_substrings": [
+          {
+            "length": 2,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "PA, United States"
+      },
+      "terms": [
+        {
+          "offset": 0,
+          "value": "Ottsville"
+        },
+        {
+          "offset": 11,
+          "value": "PA"
+        },
+        {
+          "offset": 15,
+          "value": "United States"
+        }
+      ],
+      "types": ["locality", "political", "geocode"]
+    },
+    {
+      "description": "Otisville, NY, United States",
+      "id": "2e68e85544882b8653fb5ed269b1ef76442da3e4",
+      "matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJMYQ-51U0w4kR2QZ2y3rWlfw",
+      "reference": "CkQ0AAAAwo6llZ6BtOQCNwnH9iQhQRDLXvEppvxK1ucr0Z0atRgsjpPmXlKEe1wd9xuZqxDzo7e3i7f9YadI8jK2Q0QYsBIQNabI-cLZJDWfnM6Imy3B0BoUCtfzVjNIfKevvXiYknX-2u8zpz4",
+      "structured_formatting": {
+        "main_text": "Otisville",
+        "main_text_matched_substrings": [
+          {
+            "length": 2,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "NY, United States"
+      },
+      "terms": [
+        {
+          "offset": 0,
+          "value": "Otisville"
+        },
+        {
+          "offset": 11,
+          "value": "NY"
+        },
+        {
+          "offset": 15,
+          "value": "United States"
+        }
+      ],
+      "types": ["locality", "political", "geocode"]
+    },
+    {
+      "description": "Otis, MA, United States",
+      "id": "c07cbbd49458edbe9132953fc0aa1ff96887a715",
+      "matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJGUPe-1xq54kRmFSE2ye05ds",
+      "reference": "CjQvAAAADvqQGIj1Tl52BRAW_--l1sPlZegliDnaCE7L8krVsjrGz1Lufbb_sKiw4ZLIGEi4EhBeRlkMHW7hVtoSg7afxp2JGhT2rwntDcu0svrywyKShwUxl3_SIA",
+      "structured_formatting": {
+        "main_text": "Otis",
+        "main_text_matched_substrings": [
+          {
+            "length": 2,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "MA, United States"
+      },
+      "terms": [
+        {
+          "offset": 0,
+          "value": "Otis"
+        },
+        {
+          "offset": 6,
+          "value": "MA"
+        },
+        {
+          "offset": 10,
+          "value": "United States"
+        }
+      ],
+      "types": ["locality", "political", "geocode"]
+    },
+    {
+      "description": "Otego, NY, United States",
+      "id": "1cbad77a96fe6aaf563cf480a529c187196aeeac",
+      "matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJb1QyCTSQ24kR0C7d0wzgiMg",
+      "reference": "CjQwAAAAMeGROcPI5b1RzE8O-9ll9zt6k33VgAqoa0yTXJeOHYFe-r0MJ_Hm63Da2LNmlsrnEhAv__MSK-2USvbPnTIrf8yoGhQxcXVl_U4kVgPpNpS0hB2u1Wr0DA",
+      "structured_formatting": {
+        "main_text": "Otego",
+        "main_text_matched_substrings": [
+          {
+            "length": 2,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "NY, United States"
+      },
+      "terms": [
+        {
+          "offset": 0,
+          "value": "Otego"
+        },
+        {
+          "offset": 7,
+          "value": "NY"
+        },
+        {
+          "offset": 11,
+          "value": "United States"
+        }
+      ],
+      "types": ["locality", "political", "geocode"]
+    }
+  ],
+  "status": "OK"
+}

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": 50,
+      "marginRight": 50,
+    }
+  }
+>
+  <Text
+    numberOfLines={0}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontSize": 16,
+          "lineHeight": 20,
+          "marginBottom": 20,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Watercolor painting is very nice
+  </Text>
+</View>
+`;

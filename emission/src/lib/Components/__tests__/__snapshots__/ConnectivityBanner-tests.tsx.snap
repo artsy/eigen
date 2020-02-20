@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#fdefd1",
+        "height": 30,
+        "justifyContent": "center",
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#f1af1b",
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
+          "fontSize": 16,
+          "paddingTop": 5,
+          "textAlign": "center",
+        },
+      ]
+    }
+  >
+     No Internet Connection
+  </Text>
+</View>
+`;

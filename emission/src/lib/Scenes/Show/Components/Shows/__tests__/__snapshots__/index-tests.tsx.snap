@@ -1,0 +1,1991 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+Array [
+  <View
+    alignItems="center"
+    flexDirection="row"
+    justifyContent="space-between"
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        },
+      ]
+    }
+  >
+    <Text
+      fontFamily="ReactNativeAGaramondPro-Regular"
+      fontSize="22px"
+      lineHeight="32px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 22,
+            "lineHeight": 32,
+          },
+          Object {},
+        ]
+      }
+    >
+      More shows nearby
+    </Text>
+  </View>,
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-delicate-power-the-delicacy-and-complexity-of-egg-tempera",
+            "images": Array [
+              Object {
+                "aspect_ratio": 0.99,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/6HYZ-tKaXLrcqXCfYxNZQQ/large.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Delicate Power: The Delicacy and Complexity of Egg Tempera",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-summer-discoveries-group-exhibition",
+            "images": Array [
+              Object {
+                "aspect_ratio": 0.7,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/f4ohqDUBJS298uXRvqgZvA/medium.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/fNxBjRZaoaRqhP37ea7icw/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.53,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/06Q9iVOgwuL8EQRtHumMPQ/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.52,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/85gyeUsLchpgvrNPnznSjg/larger.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Summer Discoveries: Group Exhibition",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-winter-invitational",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.55,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/YonNiufAG-b6H6ynPQCVnQ/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Winter Invitational",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-the-temporal-painter",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.59,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/X8vGjbeGeRdpnwLGiyv8PA/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "The Temporal Painter",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-incidental-edges",
+            "images": Array [
+              Object {
+                "aspect_ratio": 0.97,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/-a1QlTsxnM_pYBCFvYbeDA/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/XZB4YX6Sm8XXu45yC888xg/square.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.75,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/slC2Ku-FWPsv5mwJye9dUQ/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.5,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/SZe2F00EjboNMaWx1Dr8Jg/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Incidental Edges",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-reimagine-everything",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/9SYq8mu4dH_Z3uf5JYCEIA/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/r_UqK-DrK9NwTCxA0as2JA/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.5,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/zry0PMvh1rviEl36hiiNxA/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Reimagine Everything",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-crossroads",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.34,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/u1p0egGUb1xma9vnSC2gcQ/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Crossroads",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-boundless-the-abstract-landscapes-of-carole-pierce",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.67,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/Cj1xcyiT6GqgMr2Lun3LeQ/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Boundless: The Abstract Landscapes of Carole Pierce",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-nature-is-the-fountains-head",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.27,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/TSm-rJdHshNGSrB_A-cZnA/large.jpg",
+              },
+              Object {
+                "aspect_ratio": 2.54,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/ruMA8KSaw3TB39aC7mhcqg/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.75,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/l2FXEhKeqRkyO0Of-Kh3VA/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.75,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/DmKXcg3QZ2otQcClcOSejw/larger.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Nature is the Fountain's Head",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-2018-winter-invitational",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.46,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/h8fZL59xBrQWNCy_9qrULg/medium.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.6,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/qCa4_K9BafXpAOc394UIYA/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/cB1IVhKa7oicvTeYhPcbsg/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/ag1lMjtbrctQlURSbU4Qyw/featured.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "2018 Winter Invitational",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-past-meets-present-the-paintings-of-john-c-traynor",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.25,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/5OvTwHbBAhbaWTwUfAgjzg/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Past Meets Present: The Paintings of John C. Traynor",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-out-of-the-ether-landscapes-by-maureen-chatfield",
+            "images": Array [
+              Object {
+                "aspect_ratio": 2,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/bHAU1lrkn3weqaoJtluqhQ/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Out of the Ether: Landscapes by Maureen Chatfield",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-power-through-color",
+            "images": Array [
+              Object {
+                "aspect_ratio": 0.85,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/cbgKNAsDMKVsyHu8uzdmlw/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Power Through Color",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-2018-summer-showcase",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.55,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/y_EcJOYZxauQNtQzrcQOKg/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "2018 Summer Showcase",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-interpreting-natures-palette",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/DV78cH6zf1xMEJiCw_JQNA/larger.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Interpreting Nature's Palette",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "j-cacciola-gallery-dimensions-discovered",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.01,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/zLd4lCdTDbb6cHMpZIvV5g/medium.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "35 Mill Street",
+              "address_2": "",
+              "postal_code": "07924",
+              "state": "NJ",
+            },
+            "name": "Dimensions Discovered",
+            "partner": Object {
+              "name": "J. Cacciola Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "aced-gallery-nordstrom-synergy-art-and-fashion",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/O4QxsEUzI8baeougo9XRvQ/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/JS6OlrlcHY8XmLEif779CQ/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.66,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/Iu7J_DS9Mk7uiHY5RdP9Cg/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.5,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/OvPZq-mEmZmNF0AcduHFMg/medium.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.67,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/peuMHT4Q83ZArC80T7ivKw/medium.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.75,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/2hwzFi79uWnd7mSGLcQDoQ/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/34VMugMOPvlmqIbYcG6O4g/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/CTXXUczGRdROv8ODi22bwg/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.75,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/imWmXQH6Naxtsm77Rj3cDQ/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/54vb7N5Jj9C32G5Bb3SjCg/larger.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "NORDSTROM",
+              "address_2": "3710 U.S. 9",
+              "postal_code": "07728",
+              "state": "NJ",
+            },
+            "name": "NORDSTROM \\"SYNERGY\\" ART & FASHION",
+            "partner": Object {
+              "name": "ACED GALLERY",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "kolodzei-art-foundation-this-leads-to-fire-russian-art-from-nonconformism-to-global-capitalism-selections-from-the-kolodzei-art-foundation-collection-at-the-neuberger-museum-of-art-purchase-college-purchase-ny",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/s-xmI5kE16KXGqyFoD2PCQ/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/zlhp1EY3Z2SIyMcl_jYKbg/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.59,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/pR1tcjjE3KA5S-RlA_WyIA/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/VArVbjgdUzk8oA__IRC8ug/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/URiujC0o6LCA7UFruWgSvA/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.77,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/KaGEuxNOhB2hOju4RhWuZQ/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/44qZ1ElCc8FpR_KRZEhn3Q/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/hmU_lFQI5jnx-TIgaVnOaQ/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/ZKSWnVw4dhhEyJbnCU9cnw/tall.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.78,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/JGqDgdSnUcXGhTv9Gbe8OA/tall.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "123 South Adelaide Avenue #1N",
+              "address_2": "",
+              "postal_code": "08904",
+              "state": "NJ",
+            },
+            "name": "This Leads to Fire: Russian Art from Nonconformism to Global Capitalism, Selections from the Kolodzei Art Foundation Collection, At the Neuberger Museum of Art Purchase College,Purchase, NY",
+            "partner": Object {
+              "name": "Kolodzei Art Foundation",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "kolodzei-art-foundation-finding-freedom-in-russian-art-1961-2014-selections-from-the-kolodzei-art-foundation-and-the-collection-of-dr-wayne-f-yakes-paul-and-lulu-hilliard-university-art-museum-university-of-louisiana-at-lafayette-lafayette-la",
+            "images": Array [],
+            "location": Object {
+              "address": "123 South Adelaide Avenue #1N",
+              "address_2": "",
+              "postal_code": "08904",
+              "state": "NJ",
+            },
+            "name": "Finding Freedom in Russian Art, 1961-2014. Selections from the Kolodzei Art Foundation and the Collection of Dr. Wayne F. Yakes. Paul and Lulu Hilliard University Art Museum, University of Louisiana at Lafayette,  Lafayette, LA",
+            "partner": Object {
+              "name": "Kolodzei Art Foundation",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "arts-unbound-heroes-and-villains",
+            "images": Array [
+              Object {
+                "aspect_ratio": 1.33,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/IxhlHUC5FlbQsAI9ExMn-g/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 1.49,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/WHCJ1egPkvrHydPBXXds8A/larger.jpg",
+              },
+              Object {
+                "aspect_ratio": 0.75,
+                "url": "https://d32dm0rphc51dk.cloudfront.net/HBmt1liQuZC3kz9M44BrVA/larger.jpg",
+              },
+            ],
+            "location": Object {
+              "address": "544 Freeman St",
+              "address_2": "",
+              "postal_code": "07050",
+              "state": "NJ",
+            },
+            "name": "Heroes and Villains",
+            "partner": Object {
+              "name": "Arts Unbound",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "mindy-solomon-gallery-mindy-solomon-gallery-at-volta-ny-2014",
+            "images": Array [],
+            "location": Object {
+              "address": null,
+              "address_2": null,
+              "postal_code": null,
+              "state": null,
+            },
+            "name": "Mindy Solomon Gallery at VOLTA NY 2014",
+            "partner": Object {
+              "name": "Mindy Solomon Gallery",
+            },
+          },
+        },
+        Object {
+          "node": Object {
+            "id": "galerie-kleindienst-galerie-kleindienst-at-volta-ny-2014",
+            "images": Array [],
+            "location": Object {
+              "address": null,
+              "address_2": null,
+              "postal_code": null,
+              "state": null,
+            },
+            "name": "Galerie Kleindienst at VOLTA NY 2014",
+            "partner": Object {
+              "name": "Galerie Kleindienst",
+            },
+          },
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={true}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    showsHorizontalScrollIndicator={false}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/6HYZ-tKaXLrcqXCfYxNZQQ/large.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Delicate Power: The Delicacy and Complexity of Egg Tempera
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/f4ohqDUBJS298uXRvqgZvA/medium.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Summer Discoveries: Group Exhibition
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/YonNiufAG-b6H6ynPQCVnQ/medium.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Winter Invitational
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/X8vGjbeGeRdpnwLGiyv8PA/medium.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                The Temporal Painter
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/-a1QlTsxnM_pYBCFvYbeDA/larger.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Incidental Edges
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/9SYq8mu4dH_Z3uf5JYCEIA/larger.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Reimagine Everything
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/u1p0egGUb1xma9vnSC2gcQ/medium.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Crossroads
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/Cj1xcyiT6GqgMr2Lun3LeQ/medium.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Boundless: The Abstract Landscapes of Carole Pierce
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/TSm-rJdHshNGSrB_A-cZnA/large.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Nature is the Fountain's Head
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            height={200}
+            mr={2}
+            my={15}
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "height": 200,
+                  "marginBottom": 15,
+                  "marginRight": 20,
+                  "marginTop": 15,
+                  "width": 650,
+                },
+              ]
+            }
+            width={650}
+          >
+            <AROpaqueImageView
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/h8fZL59xBrQWNCy_9qrULg/medium.jpg"
+              style={
+                Array [
+                  Object {
+                    "height": 120,
+                    "width": "100%",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
+                ]
+              }
+            />
+            <View
+              my={2}
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "marginBottom": 20,
+                    "marginTop": 20,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                mb={0.5}
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                      "marginBottom": 5,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                2018 Winter Invitational
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                J. Cacciola Gallery
+              </Text>
+              <Text
+                color="black60"
+                fontFamily="ReactNativeAGaramondPro-Regular"
+                fontSize="14px"
+                lineHeight="18px"
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                    },
+                    Object {},
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "width": 0,
+          }
+        }
+      />
+    </View>
+  </RCTScrollView>,
+]
+`;

@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+source "https://rubygems.org"
+
+gem "cocoapods", "~> 1.7.2"
+
+# So we know if we need to run `pod install`
+gem 'cocoapods-check'
+
+# To manage our secret keys
+gem "cocoapods-keys"
+
+# To avoid ambiguous Podfile.lock contents
+gem "psych"

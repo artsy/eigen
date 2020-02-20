@@ -1,0 +1,21 @@
+{
+  "processors": ["stylelint-processor-styled-components"],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-styled-components"
+  ],
+  "syntax": "scss",
+  "rules": {
+    "selector-type-no-unknown": [true, { "ignoreTypes": ["checkbox", "twitterwidget"] }],
+    "property-no-unknown": [true, { "ignoreProperties": ["resize-mode", "flexgrow"] }],
+    "block-opening-brace-space-after": null,
+    "block-closing-brace-space-before": null,
+    "declaration-colon-newline-after": null,
+    "value-list-comma-newline-after": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "color-hex-length": null,
+    "block-no-empty": null,
+    "declaration-empty-line-before": null,
+    "function-calc-no-unspaced-operator": null
+  }
+}

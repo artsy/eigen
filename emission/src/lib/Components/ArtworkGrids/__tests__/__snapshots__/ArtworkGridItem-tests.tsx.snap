@@ -1,0 +1,1268 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`in a closed sale renders bid when an auction is about to open, but not closed or finished 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 5,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    flexDirection="row"
+    mb="2px"
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 2,
+        },
+      ]
+    }
+  >
+    <Text
+      color="#000"
+      fontFamily="Unica77LL-Medium"
+      fontSize="13px"
+      lineHeight="18px"
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 13,
+            "lineHeight": 18,
+          },
+          Object {},
+        ]
+      }
+    >
+      $200
+       
+    </Text>
+    <Text
+      color="#666"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          Object {},
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Array [
+          Object {
+            "color": "#666666",
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
+          },
+          Object {
+            "fontWeight": "bold",
+          },
+        ],
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Mikael Olson
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Array [
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
+            },
+            Object {
+              "fontStyle": "italic",
+            },
+          ],
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Some Kind of Dinosaur
+    </Text>
+    , 2015
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Gallery 1261
+  </Text>
+</View>
+`;
+
+exports[`in a closed sale renders without any price information 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 5,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    flexDirection="row"
+    mb="2px"
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 2,
+        },
+      ]
+    }
+  >
+    <Text
+      color="#000"
+      fontFamily="Unica77LL-Medium"
+      fontSize="13px"
+      lineHeight="18px"
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 13,
+            "lineHeight": 18,
+          },
+          Object {},
+        ]
+      }
+    >
+      $200
+       
+    </Text>
+    <Text
+      color="#666"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          Object {},
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Array [
+          Object {
+            "color": "#666666",
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
+          },
+          Object {
+            "fontWeight": "bold",
+          },
+        ],
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Mikael Olson
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Array [
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
+            },
+            Object {
+              "fontStyle": "italic",
+            },
+          ],
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Some Kind of Dinosaur
+    </Text>
+    , 2015
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Gallery 1261
+  </Text>
+</View>
+`;
+
+exports[`in an open sale renders with current bid 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 5,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    flexDirection="row"
+    mb="2px"
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 2,
+        },
+      ]
+    }
+  >
+    <Text
+      color="#000"
+      fontFamily="Unica77LL-Medium"
+      fontSize="13px"
+      lineHeight="18px"
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 13,
+            "lineHeight": 18,
+          },
+          Object {},
+        ]
+      }
+    >
+      $200
+       
+    </Text>
+    <Text
+      color="#666"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          Object {},
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Array [
+          Object {
+            "color": "#666666",
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
+          },
+          Object {
+            "fontWeight": "bold",
+          },
+        ],
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Mikael Olson
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Array [
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
+            },
+            Object {
+              "fontStyle": "italic",
+            },
+          ],
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Some Kind of Dinosaur
+    </Text>
+    , 2015
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Gallery 1261
+  </Text>
+</View>
+`;
+
+exports[`in an open sale renders with starting bid 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 5,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    flexDirection="row"
+    mb="2px"
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 2,
+        },
+      ]
+    }
+  >
+    <Text
+      color="#000"
+      fontFamily="Unica77LL-Medium"
+      fontSize="13px"
+      lineHeight="18px"
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 13,
+            "lineHeight": 18,
+          },
+          Object {},
+        ]
+      }
+    >
+       
+    </Text>
+    <Text
+      color="#666"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          Object {},
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Array [
+          Object {
+            "color": "#666666",
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
+          },
+          Object {
+            "fontWeight": "bold",
+          },
+        ],
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Mikael Olson
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Array [
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
+            },
+            Object {
+              "fontStyle": "italic",
+            },
+          ],
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Some Kind of Dinosaur
+    </Text>
+    , 2015
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Gallery 1261
+  </Text>
+</View>
+`;
+
+exports[`renders properly 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 5,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 6,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          fontFamily="Unica77LL-Medium"
+          fontSize="8px"
+          lineHeight="8px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 8,
+                "lineHeight": 8,
+              },
+              Object {},
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    flexDirection="row"
+    mb="2px"
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 2,
+        },
+      ]
+    }
+  >
+    <Text
+      color="#000"
+      fontFamily="Unica77LL-Medium"
+      fontSize="13px"
+      lineHeight="18px"
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 13,
+            "lineHeight": 18,
+          },
+          Object {},
+        ]
+      }
+    >
+      Bidding closed
+       
+    </Text>
+    <Text
+      color="#666"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          Object {},
+        ]
+      }
+    />
+  </View>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Array [
+          Object {
+            "color": "#666666",
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
+          },
+          Object {
+            "fontWeight": "bold",
+          },
+        ],
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Mikael Olson
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Array [
+            Object {
+              "color": "#666666",
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
+            },
+            Object {
+              "fontStyle": "italic",
+            },
+          ],
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Some Kind of Dinosaur
+    </Text>
+    , 2015
+  </Text>
+  <Text
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Gallery 1261
+  </Text>
+</View>
+`;

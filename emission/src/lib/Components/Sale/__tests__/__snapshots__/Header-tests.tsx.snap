@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "height": 36,
+        "justifyContent": "center",
+        "marginTop": 15,
+        "paddingLeft": 40,
+        "paddingRight": 40,
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+          },
+          Object {
+            "fontFamily": "AvantGardeGothicITC",
+          },
+          Object {
+            "fontSize": 20,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      THE AWESOME SALE
+    </Text>
+  </View>
+</View>
+`;

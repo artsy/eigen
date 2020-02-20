@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`displays a connectivity banner when network is down 1`] = `ShallowWrapper {}`;
+
+exports[`looks correct when rendered 1`] = `ShallowWrapper {}`;

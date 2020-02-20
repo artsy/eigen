@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<RCTScrollView
+  ListFooterComponent={
+    <ForwardRef
+      animating={false}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  }
+  data={
+    Array [
+      Object {
+        "attachments": Array [],
+        "body": "Adoro! Por favor envie-me mais informações",
+        "first_message": undefined,
+        "from": Object {
+          "email": "percy@cat.com",
+          "name": "Percy",
+        },
+        "from_email_address": "anita@garibaldi.br",
+        "gravityID": "unique-id",
+        "id": 222,
+        "impulse_id": "impulse:222",
+        "is_from_user": true,
+        "key": "some-cursor",
+      },
+    ]
+  }
+  disableVirtualization={false}
+  getItem={[Function]}
+  getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
+  invertStickyHeaders={true}
+  inverted={true}
+  keyExtractor={[Function]}
+  keyboardShouldPersistTaps="always"
+  maxToRenderPerBatch={10}
+  numColumns={1}
+  onContentSizeChange={[Function]}
+  onEndReached={[Function]}
+  onEndReachedThreshold={0.2}
+  onLayout={[Function]}
+  onMomentumScrollEnd={[Function]}
+  onScroll={[Function]}
+  onScrollBeginDrag={[Function]}
+  onScrollEndDrag={[Function]}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  removeClippedSubviews={false}
+  renderItem={[Function]}
+  scrollEventThrottle={50}
+  stickyHeaderIndices={Array []}
+  style={
+    Array [
+      Object {
+        "transform": Array [
+          Object {
+            "scaleY": -1,
+          },
+        ],
+      },
+      Object {
+        "alignSelf": "center",
+        "width": 708,
+      },
+    ]
+  }
+  updateCellsBatchingPeriod={50}
+  viewabilityConfigCallbackPairs={Array []}
+  windowSize={21}
+>
+  <RCTRefreshControl />
+  <View>
+    <View
+      onLayout={[Function]}
+      style={
+        Array [
+          Object {
+            "flexDirection": "column-reverse",
+          },
+          Object {
+            "transform": Array [
+              Object {
+                "scaleY": -1,
+              },
+            ],
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "flexDirection": "row",
+                "marginBottom": 10,
+                "marginTop": 15,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "borderRadius": 15,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                    "color": "white",
+                    "fontFamily": "AvantGardeGothicITC",
+                    "fontSize": 10,
+                    "marginTop": 8,
+                  },
+                ]
+              }
+              user={true}
+            >
+              AG
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginTop": 7,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "stretch",
+                    "flexDirection": "row",
+                    "marginBottom": 10,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#cccccc",
+                    },
+                    Array [
+                      Object {
+                        "fontSize": 11.5,
+                        "marginRight": 6,
+                      },
+                    ],
+                    Object {
+                      "fontFamily": "AvantGardeGothicITC",
+                    },
+                  ]
+                }
+              >
+                ANITA GARIBALDI
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#cccccc",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Array [
+                      Object {
+                        "color": "#f1af1b",
+                        "fontSize": 11.5,
+                      },
+                    ],
+                    Object {
+                      "fontFamily": "AvantGardeGothicITC",
+                    },
+                  ]
+                }
+              >
+                PENDING
+              </Text>
+            </View>
+            <View
+              linkStyle={
+                Object {
+                  "color": "#6e1fff",
+                  "textDecorationLine": "underline",
+                }
+              }
+              onPress={[Function]}
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#cccccc",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "ReactNativeAGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                Adoro! Por favor envie-me mais informações
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "transform": Array [
+            Object {
+              "scaleY": -1,
+            },
+          ],
+        }
+      }
+    >
+      <ActivityIndicator
+        animating={false}
+        color="#999999"
+        hidesWhenStopped={true}
+        size="small"
+        style={
+          Array [
+            Object {
+              "marginTop": 40,
+            },
+          ]
+        }
+      />
+    </View>
+  </View>
+</RCTScrollView>
+`;

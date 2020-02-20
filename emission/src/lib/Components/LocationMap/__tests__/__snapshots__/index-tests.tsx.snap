@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "opacity": 1,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderColor": "#E5E5E5",
+          "borderWidth": 1,
+          "display": "flex",
+        },
+      ]
+    }
+  >
+    <View
+      my={2}
+      style={
+        Array [
+          Object {
+            "marginBottom": 20,
+            "marginTop": 20,
+          },
+        ]
+      }
+    >
+      <Text
+        color="black100"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="24px"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 24,
+              "textAlign": "center",
+            },
+            Object {},
+          ]
+        }
+        textAlign="center"
+      >
+        Joseph K. Levene Fine Art, Ltd.
+      </Text>
+      <Text
+        color="black60"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="20px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 20,
+              "textAlign": "center",
+            },
+            Object {},
+          ]
+        }
+        textAlign="center"
+      >
+        25 Central Park West
+      </Text>
+      <Text
+        color="black60"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="20px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 20,
+              "textAlign": "center",
+            },
+            Object {},
+          ]
+        }
+        textAlign="center"
+      >
+        New York
+      </Text>
+    </View>
+  </View>
+</View>
+`;

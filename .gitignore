@@ -55,6 +55,9 @@ Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 # React Native pods. See: Podfile
 rn_pods
 
+# regular Pods. No longer a submodule
+Pods
+
 # build artefacts
 derived_data
 Artsy/Networking/ARReactPackagerHost.m

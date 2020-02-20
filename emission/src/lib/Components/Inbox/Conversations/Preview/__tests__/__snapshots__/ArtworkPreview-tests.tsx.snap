@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handles dateless artworks 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={null}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderColor": "#e5e5e5",
+          "borderWidth": 1,
+          "flexDirection": "row",
+        },
+        null,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
+      style={
+        Array [
+          Object {
+            "height": 55,
+            "marginBottom": 12,
+            "marginLeft": 12,
+            "marginRight": 12,
+            "marginTop": 12,
+            "width": 80,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "alignSelf": "center",
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+        ]
+      }
+    >
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "fontSize": 14,
+              },
+            ],
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Bradley Theodore
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "flex-start",
+              "marginRight": 12,
+              "marginTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          ellipsizeMode="middle"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 14,
+              },
+              Object {},
+              Object {
+                "fontFamily": "ReactNativeAGaramondPro-Italic",
+              },
+            ]
+          }
+        >
+          Karl and Anna Face Off (Diptych)
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            , 
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={null}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderColor": "#e5e5e5",
+          "borderWidth": 1,
+          "flexDirection": "row",
+        },
+        null,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
+      style={
+        Array [
+          Object {
+            "height": 55,
+            "marginBottom": 12,
+            "marginLeft": 12,
+            "marginRight": 12,
+            "marginTop": 12,
+            "width": 80,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "alignSelf": "center",
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+        ]
+      }
+    >
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "fontSize": 14,
+              },
+            ],
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Bradley Theodore
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "flex-start",
+              "marginRight": 12,
+              "marginTop": 3,
+            },
+          ]
+        }
+      >
+        <Text
+          ellipsizeMode="middle"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 14,
+              },
+              Object {},
+              Object {
+                "fontFamily": "ReactNativeAGaramondPro-Italic",
+              },
+            ]
+          }
+        >
+          Karl and Anna Face Off (Diptych)
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            , 2016
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -1,0 +1,1530 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search states:  Looks right when Found four results 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        undefined,
+        Object {
+          "flex": 1,
+          "maxHeight": 40,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": 40,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        autoFocus={false}
+        clearButtonMode="while-editing"
+        keyboardAppearance="dark"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Artist/Designer Name"
+        placeholderTextColor="#666"
+        rejectResponderTermination={true}
+        returnKeyType="search"
+        selectionColor="#666"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 20,
+              "height": 40,
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="bank"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#666",
+          "height": 1,
+        }
+      }
+    />
+  </View>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Ada Van Hoorebeke
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Kathleen Adair Brown
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Linda Adair
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Hector Adalid
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found no results 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        undefined,
+        Object {
+          "flex": 1,
+          "maxHeight": 40,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": 40,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        autoFocus={false}
+        clearButtonMode="while-editing"
+        keyboardAppearance="dark"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Artist/Designer Name"
+        placeholderTextColor="#666"
+        rejectResponderTermination={true}
+        returnKeyType="search"
+        selectionColor="#666"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 20,
+              "height": 40,
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="ba"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#666",
+          "height": 1,
+        }
+      }
+    />
+  </View>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    scrollEnabled={false}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <Text
+        color="#666"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="20px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 20,
+            },
+            Object {},
+          ]
+        }
+      >
+        Unfortunately we are not accepting consignments for works by
+         
+        ba
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found one result 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        undefined,
+        Object {
+          "flex": 1,
+          "maxHeight": 40,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": 40,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        autoFocus={false}
+        clearButtonMode="while-editing"
+        keyboardAppearance="dark"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Artist/Designer Name"
+        placeholderTextColor="#666"
+        rejectResponderTermination={true}
+        returnKeyType="search"
+        selectionColor="#666"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 20,
+              "height": 40,
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="ban"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#666",
+          "height": 1,
+        }
+      }
+    />
+  </View>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found one result, and searching 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        undefined,
+        Object {
+          "flex": 1,
+          "maxHeight": 40,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": 40,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        autoFocus={false}
+        clearButtonMode="while-editing"
+        keyboardAppearance="dark"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Artist/Designer Name"
+        placeholderTextColor="#666"
+        rejectResponderTermination={true}
+        returnKeyType="search"
+        selectionColor="#666"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 20,
+              "height": 40,
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="ban"
+      />
+      <ActivityIndicator
+        animating={true}
+        color="#999999"
+        hidesWhenStopped={true}
+        size="small"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#666",
+          "height": 1,
+        }
+      }
+    />
+  </View>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found two results 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        undefined,
+        Object {
+          "flex": 1,
+          "maxHeight": 40,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": 40,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        autoFocus={false}
+        clearButtonMode="while-editing"
+        keyboardAppearance="dark"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Artist/Designer Name"
+        placeholderTextColor="#666"
+        rejectResponderTermination={true}
+        returnKeyType="search"
+        selectionColor="#666"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 20,
+              "height": 40,
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="bank"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#666",
+          "height": 1,
+        }
+      }
+    />
+  </View>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="nowrap"
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                },
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 20,
+                    "height": 40,
+                    "width": 40,
+                  },
+                ]
+              }
+            />
+            <View
+              mr={1}
+              style={
+                Array [
+                  Object {
+                    "marginRight": 4,
+                  },
+                ]
+              }
+            />
+            <View
+              alignItems="center"
+              flexDirection="row"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "flexDirection": "row",
+                  },
+                  Object {
+                    "height": 35,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Banksy's Brother
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 4,
+              },
+            ]
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Looking for new results 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        undefined,
+        Object {
+          "flex": 1,
+          "maxHeight": 40,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": 40,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        autoFocus={false}
+        clearButtonMode="while-editing"
+        keyboardAppearance="dark"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Artist/Designer Name"
+        placeholderTextColor="#666"
+        rejectResponderTermination={true}
+        returnKeyType="search"
+        selectionColor="#666"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 20,
+              "height": 40,
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="ba"
+      />
+      <ActivityIndicator
+        animating={true}
+        color="#999999"
+        hidesWhenStopped={true}
+        size="small"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#666",
+          "height": 1,
+        }
+      }
+    />
+  </View>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    scrollEnabled={false}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when No query 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        undefined,
+        Object {
+          "flex": 1,
+          "maxHeight": 40,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": 40,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoCorrect={false}
+        autoFocus={false}
+        clearButtonMode="while-editing"
+        keyboardAppearance="dark"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Artist/Designer Name"
+        placeholderTextColor="#666"
+        rejectResponderTermination={true}
+        returnKeyType="search"
+        selectionColor="#666"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 20,
+              "height": 40,
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value={null}
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#666",
+          "height": 1,
+        }
+      }
+    />
+  </View>
+  <RCTScrollView
+    keyboardShouldPersistTaps="always"
+    scrollEnabled={false}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;

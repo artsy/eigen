@@ -1,0 +1,130 @@
+using_bundler = defined? Bundler
+unless using_bundler
+  puts "\nPlease re-run using:".red
+  puts "  bundle exec pod install\n\n"
+  exit(1)
+end
+
+unless Dir.exist? '../node_modules'
+  puts "\nYou will need to run:".red
+  puts "  yarn install\n\n"
+  exit(1)
+end
+
+# TODO: Get autolinking working after RN upgrade
+# require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+require "rbconfig"
+expected_ruby_version = File.read(File.expand_path("../../.ruby-version", __FILE__)).strip
+actual_ruby_version = RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]
+unless actual_ruby_version == expected_ruby_version
+  puts "\nYou are running #{actual_ruby_version}. Please re-run using Ruby version:".red
+  puts "  #{expected_ruby_version}\n\n"
+  exit(1)
+end
+
+source 'https://github.com/artsy/Specs.git'
+source 'https://cdn.cocoapods.org/'
+
+inhibit_all_warnings!
+platform :ios, '12.0'
+
+require 'json'
+npm_vendored_podspecs = JSON.parse(File.read('../npm-podspecs.json'), symbolize_names: true)
+npm_vendored_podspecs.update(npm_vendored_podspecs) do |_pod_name, props|
+  if props[:path]
+    props.merge path: File.join('../', props[:path])
+  else
+    props.merge podspec: File.join('../', props[:podspec])
+  end
+end
+
+target 'Emission' do
+  pod 'Emission', path: '../', inhibit_warnings: false
+
+  npm_vendored_podspecs.each do |pod_name, props|
+    pod pod_name.to_s, props
+  end
+
+  pod 'Sentry', subspecs: %w[Core KSCrash]
+  # Got to make it look right
+  pod 'Artsy+UIFonts'
+
+  # Native UI tweaks
+  pod 'FLKAutoLayout'
+
+  # This is mostly tableviews, handle them easier, we use this in Eigen/Energy too
+  pod 'ARGenericTableViewController'
+
+  # Storing Credentials
+  pod 'SAMKeychain'
+
+  # custom zoom animation for image carousel
+  pod 'INTUAnimationEngine'
+
+  # Authiung with Artsy
+  pod 'Artsy+Authentication', subspecs: %w[email],
+                              git: 'https://github.com/artsy/Artsy-Authentication.git',
+                              branch: 'fetch-user-details'
+
+  # Bottom Sheet view controller for Map view
+  pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
+
+  target 'EmissionTests' do
+    inherit! :search_paths
+
+    # Used for standard Objective-C unit tests, analagous to Jest.
+    pod 'Specta'
+    pod 'Expecta'
+
+    # Necessary because we're bypassing the RCTTestCase subspec.
+    pod 'FBSnapshotTestCase'
+  end
+end
+
+plugin 'cocoapods-keys',
+       target: 'Emission',
+       keys: [
+         'ArtsyAPIClientSecret',   # Authing to the Artsy API
+         'ArtsyAPIClientKey',      #
+         'StripePublishableKey',   # Used in Auctions registration flow
+         'MapBoxAPIClientKey',     # Used in City Maps
+         'SentryProductionDSN',    # Used in the Emission betas
+         'GoogleMapsAPIKey'        #
+       ]
+
+post_install do |installer|
+  # Mark the project as having been checked for Swift 5.
+  SWIFT_MAGIC_STRING = "1020"
+  installer.pods_project.root_object.attributes['LastSwiftUpdateCheck'] = SWIFT_MAGIC_STRING
+  installer.pods_project.root_object.attributes['LastUpgradeCheck'] = SWIFT_MAGIC_STRING
+
+  installer.pods_project.targets.each do |target|
+    # Pulley and FBSnapshotTestCase contain pre-5.0 Swift code. Let's mark them as having been migrated.
+    # Note: This is the equivalent of opening Xcode's conversion warning, un-checking 'remind me', and clicking "convert later".
+    #       It does not change the contents of the Pods.
+    if %w(Pulley FBSnapshotTestCase).include? target.name
+      target.project.root_object.attributes['TargetAttributes'] ||= {}
+      target.project.root_object.attributes['TargetAttributes'][target.uuid] = { 'LastSwiftMigration' => SWIFT_MAGIC_STRING }
+    end
+
+    target.build_configurations.each do |config|
+      # CocoaPods setting the deployment target to be less than the actual deployable target is causing many Xcode warnings. This silences them. See: https://github.com/CocoaPods/CocoaPods/issues/7314
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
+  end
+  emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
+  emission.build_configurations.each do |config|
+    config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
+    # We treat warnings as errors, but currently have outstanding deprecation warnings to deal with, so we ignore deprecation warnings.
+    # See: https://artsyproduct.atlassian.net/browse/MX-119
+    config.build_settings['GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS'] = 'NO'
+    # Work around https://github.com/rs/SDWebImage/issues/2022, because we don't want to upgrade to SDWebImage 4 atm.
+    config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
+    # Use dynamic queries by default in development mode.
+    if config.name == 'Debug'
+      query_map = '../data/complete.queryMap.json'
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) USE_DYNAMIC_GRAPHQL_MAP='#{query_map}'"
+    end
+  end
+end

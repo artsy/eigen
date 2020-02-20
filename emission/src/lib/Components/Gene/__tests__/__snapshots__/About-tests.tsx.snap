@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`shows trending artists correctly 1`] = `
+<View>
+  <View>
+    <View
+      style={
+        Object {
+          "marginLeft": 50,
+          "marginRight": 50,
+        }
+      }
+    >
+      <Text
+        numberOfLines={0}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontSize": 16,
+              "lineHeight": 20,
+              "marginBottom": 20,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Deep time refers to the concept of an expansive time that stretches far beyond human history to
+                  include the approximately 4.5 billion-year geological history of Earth and the estimated 13.8
+                  billion-year history of the universe. In art, deep time could be explored in works that deal with the
+                  long-term processes of geological formation and the cosmos. Such concerns are important, for example,
+                  to Hiroshi Sugimoto’s waterscapes and Darren Almond’s landscapes, both of
+                  which use long-exposure photography to capture a sense of expanded time.
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "marginBottom": 20,
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flexDirection": "column",
+      }
+    }
+  >
+    <Text
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="20px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 20,
+          },
+          Object {},
+        ]
+      }
+    >
+      Related artists
+    </Text>
+    <View
+      mb={2}
+      style={
+        Array [
+          Object {
+            "marginBottom": 20,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignItems": "flex-start",
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "justifyContent": "space-around",
+          "marginLeft": -10,
+          "marginRight": -10,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "margin": 5,
+            "paddingBottom": 20,
+            "width": 1,
+          }
+        }
+      >
+        <AROpaqueImageView
+          imageURL="cloudfront.net/some-url"
+          style={
+            Object {
+              "height": 1,
+              "width": 1,
+            }
+          }
+        />
+        <View
+          mb={0.5}
+          style={
+            Array [
+              Object {
+                "marginBottom": 5,
+              },
+            ]
+          }
+        />
+        <Text
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              Object {},
+            ]
+          }
+        >
+          Lita Albuquerque
+        </Text>
+        <Text
+          color="#666"
+          fontFamily="ReactNativeAGaramondPro-Regular"
+          fontSize="14px"
+          lineHeight="18px"
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 14,
+                "lineHeight": 18,
+              },
+              Object {},
+            ]
+          }
+        >
+          36 works
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "margin": 5,
+            "paddingBottom": 20,
+            "width": 1,
+          }
+        }
+      >
+        <AROpaqueImageView
+          imageURL="cloudfront.net/some-url"
+          style={
+            Object {
+              "height": 1,
+              "width": 1,
+            }
+          }
+        />
+        <View
+          mb={0.5}
+          style={
+            Array [
+              Object {
+                "marginBottom": 5,
+              },
+            ]
+          }
+        />
+        <Text
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              Object {},
+            ]
+          }
+        >
+          Doug Argue
+        </Text>
+        <Text
+          color="#666"
+          fontFamily="ReactNativeAGaramondPro-Regular"
+          fontSize="14px"
+          lineHeight="18px"
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+                "fontSize": 14,
+                "lineHeight": 18,
+              },
+              Object {},
+            ]
+          }
+        >
+          31 works
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

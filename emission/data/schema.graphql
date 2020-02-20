@@ -1,0 +1,7523 @@
+directive @principalField on FIELD
+
+type AccountRequest {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  notes: String
+}
+
+input AddAssetToConsignmentSubmissionInput {
+  # The type of the asset
+  assetType: String!
+
+  # The token provided by Gemini for your asset
+  geminiToken: String!
+
+  # The id of the submission you want to attach an asset to
+  submissionID: String!
+  clientMutationId: String
+}
+
+type AddAssetToConsignmentSubmissionPayload {
+  asset: Asset
+  clientMutationId: String
+}
+
+# One item in an aggregation
+type AggregationCount {
+  value: String!
+  count: Int!
+  name: String!
+}
+
+type AnalyticsArtist {
+  entityId: String!
+}
+
+type AnalyticsArtwork {
+  entityId: String!
+}
+
+# Publish artwork Series Stats
+type AnalyticsArtworksPublishedStats {
+  percentageChanged: Int!
+  period: AnalyticsQueryPeriodEnum!
+  timeSeries: [AnalyticsPartnerTimeSeriesStats!]!
+  totalCount: Int!
+}
+
+# An ISO 8601 datetime
+scalar AnalyticsDateTime
+
+# Visitor countries, device, referals and session page
+type AnalyticsGroupedStats {
+  groupedEntity: AnalyticsGroupedStatsUnion!
+  period: AnalyticsQueryPeriodEnum!
+}
+
+# The connection type for GroupedStats.
+type AnalyticsGroupedStatsConnection {
+  # A list of edges.
+  edges: [AnalyticsGroupedStatsEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsGroupedStats]
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+}
+
+# An edge in a connection.
+type AnalyticsGroupedStatsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsGroupedStats
+}
+
+enum AnalyticsGroupedStatsMetricEnum {
+  # visitor_by_device
+  VISITOR_BY_DEVICE
+
+  # visitor_by_landing_page
+  VISITOR_BY_LANDING_PAGE
+
+  # visitor_by_location
+  VISITOR_BY_LOCATION
+
+  # visitor_by_referral
+  VISITOR_BY_REFERRAL
+}
+
+enum AnalyticsGroupedStatsObjectTypeEnum {
+  # country
+  COUNTRY
+
+  # device type
+  DEVICE
+
+  # landing page
+  LANDING_PAGE
+
+  # referral
+  REFERRAL
+}
+
+# A grouped stat item: country or device etc.
+union AnalyticsGroupedStatsUnion =
+    AnalyticsVisitorsByCountry
+  | AnalyticsVisitorsByDevice
+  | AnalyticsVisitorsByLandingPage
+  | AnalyticsVisitorsByReferral
+
+# A histogram bin
+type AnalyticsHistogramBin {
+  maxPriceCents: Int!
+  minPriceCents: Int!
+  numArtworks: Int!
+  minPrice(
+    decimal: String = "."
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  maxPrice(
+    decimal: String = "."
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# Information about pagination in a connection.
+type AnalyticsPageInfo {
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+}
+
+# Stats for pageviews of partner content
+type AnalyticsPageviewStats {
+  artworkViews: Int
+  galleryViews: Int
+  percentageChanged: Int!
+  period: AnalyticsQueryPeriodEnum!
+  showViews: Int
+  timeSeries: [AnalyticsPartnerTimeSeriesStats!]!
+  totalCount: Int!
+  uniqueVisitors: Int
+}
+
+# Audience stats of a partner
+type AnalyticsPartnerAudienceStats {
+  commercialVisitors: Int!
+  partnerId: String!
+  period: AnalyticsQueryPeriodEnum!
+  uniqueVisitors: Int!
+}
+
+# Inquiry count time series data of a partner
+type AnalyticsPartnerInquiryCountTimeSeriesStats {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
+}
+
+# Inquiry stats of a partner
+type AnalyticsPartnerInquiryStats {
+  inquiryCount: Int!
+  inquiryResponseTime: Int
+  partnerId: String!
+  period: AnalyticsQueryPeriodEnum!
+
+  # Partner inquiry count time series
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
+}
+
+# Sales stats of a partner
+type AnalyticsPartnerSalesStats {
+  orderCount: Int!
+  orderResponseTime: Int
+  partnerId: String!
+  period: AnalyticsQueryPeriodEnum!
+
+  # Partner sales time series
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerSalesTimeSeriesStats!]
+  totalCents: Int!
+  total(
+    decimal: String = "."
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# Sales time series data of a partner
+type AnalyticsPartnerSalesTimeSeriesStats {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
+  totalCents: Int!
+  total(
+    decimal: String = "."
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# Partner Stats
+type AnalyticsPartnerStats {
+  # Time series data on number of artworks published
+  artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
+
+  # Audience stats
+  audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
+
+  # Visitor countries, device, referals and session page
+  groupedStats(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    metric: AnalyticsGroupedStatsMetricEnum!
+    objectType: AnalyticsGroupedStatsObjectTypeEnum!
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsGroupedStatsConnection
+
+  # Inquiry stats
+  inquiry(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerInquiryStats
+
+  # Different types of partner pageviews
+  pageviews(period: AnalyticsQueryPeriodEnum!): AnalyticsPageviewStats
+  partnerId: String!
+
+  # Artworks, shows, or artists ranked by views. Capped at 20 by the underlying sql query.
+  rankedStats(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    objectType: AnalyticsRankedStatsObjectTypeEnum!
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsRankedStatsConnection
+
+  # Sales stats
+  sales(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerSalesStats
+
+  # Top artworks ranked by views
+  topArtworks(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): AnalyticsRankedStatsConnection @deprecated(reason: "Use rankedStats(objectType: ) instead")
+
+  # Number of unique visitors
+  uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
+    @deprecated(reason: "Use audience() { uniqueVisitors } instead")
+}
+
+# Partner Time Series Stats
+type AnalyticsPartnerTimeSeriesStats {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
+}
+
+# Price Context Filter Type
+type AnalyticsPriceContextFilterType {
+  category: AnalyticsPricingContextCategoryEnum
+  dimension: AnalyticsPricingContextDimensionEnum
+}
+
+# Pricing Context Histogram
+type AnalyticsPricingContext {
+  appliedFilters: AnalyticsPriceContextFilterType!
+  bins: [AnalyticsHistogramBin!]!
+  appliedFiltersDisplay: String
+}
+
+enum AnalyticsPricingContextCategoryEnum {
+  # Architecture
+  ARCHITECTURE
+
+  # Books and Portfolios
+  BOOKS_AND_PORTFOLIOS
+
+  # Design/Decorative Art
+  DESIGN_DECORATIVE_ART
+
+  # Drawing, Collage or other Work on Paper
+  DRAWING_COLLAGE_OTHER_WORK_ON_PAPER
+
+  # Fashion Design and Wearable Art
+  FASHION
+
+  # Installation
+  INSTALLATION
+
+  # Jewelry
+  JEWELRY
+
+  # Mixed Media
+  MIXED_MEDIA
+
+  # Other
+  OTHER
+
+  # Painting
+  PAINTING
+
+  # Performance Art
+  PERFORMANCE
+
+  # Photography
+  PHOTOGRAPHY
+
+  # Posters
+  POSTERS
+
+  # Print
+  PRINT
+
+  # Sculpture
+  SCULPTURE
+
+  # Sound
+  SOUND
+
+  # Textile Arts
+  TEXTILE
+
+  # Video/Film/Animation
+  VIDEO_FILM_ANIMATION
+
+  # Work on Paper
+  WORK_ON_PAPER
+}
+
+enum AnalyticsPricingContextDimensionEnum {
+  # Large
+  LARGE
+
+  # Medium
+  MEDIUM
+
+  # Small
+  SMALL
+}
+
+enum AnalyticsQueryPeriodEnum {
+  # Four weeks
+  FOUR_WEEKS
+
+  # One year
+  ONE_YEAR
+
+  # Sixteen weeks
+  SIXTEEN_WEEKS
+}
+
+union AnalyticsRankedEntityUnion = Artwork | Show | Artist
+
+# Top artworks, shows, or artists from a partner
+type AnalyticsRankedStats {
+  period: AnalyticsQueryPeriodEnum!
+  rankedEntity: AnalyticsRankedStatsUnion!
+  value: Int!
+  entity: AnalyticsRankedEntityUnion
+}
+
+# The connection type for RankedStats.
+type AnalyticsRankedStatsConnection {
+  # A list of edges.
+  edges: [AnalyticsRankedStatsEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsRankedStats]
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+}
+
+# An edge in a connection.
+type AnalyticsRankedStatsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsRankedStats
+}
+
+enum AnalyticsRankedStatsObjectTypeEnum {
+  # Artist
+  ARTIST
+
+  # Artwork
+  ARTWORK
+
+  # Show
+  SHOW
+}
+
+# An artwork, artist, or show
+union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | AnalyticsShow
+
+type AnalyticsShow {
+  entityId: String!
+}
+
+type AnalyticsVisitorsByCountry {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
+}
+
+type AnalyticsVisitorsByDevice {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
+}
+
+type AnalyticsVisitorsByLandingPage {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
+}
+
+type AnalyticsVisitorsByReferral {
+  metric: String!
+  name: String!
+  percent: Float!
+  type: String!
+  value: Int!
+}
+
+type Article implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  cached: Int
+  author: Author
+  channelID: String
+  contributingAuthors: [Author]
+  href: String
+  publishedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  slug: String
+  thumbnailTitle: String
+  thumbnailTeaser: String
+  thumbnailImage: Image
+  tier: Int
+  title: String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+}
+
+# A connection to a list of items.
+type ArticleConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArticleEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArticleEdge {
+  # The item at the end of the edge
+  node: Article
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+enum ArticleSorts {
+  PUBLISHED_AT_ASC
+  PUBLISHED_AT_DESC
+}
+
+type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInterface {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  alternateNames: [String]
+  articlesConnection(
+    sort: ArticleSorts
+    limit: Int
+    inEditorialFeed: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArticleConnection
+  artworksConnection(
+    # List of artwork IDs to exclude from the response.
+    exclude: [String]
+    filter: [ArtistArtworksFilters]
+    published: Boolean = true
+    sort: ArtworkSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
+  auctionResultsConnection(
+    sort: AuctionResultSorts
+
+    # When true, will only return records for allowed artists.
+    recordsTrusted: Boolean = false
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): AuctionResultConnection
+  bio: String
+
+  # The Artist biography article written by Artsy
+  biography: Article
+  biographyBlurb(
+    # If true, will return featured bio over Artsy one.
+    partnerBio: Boolean = false
+    format: Format
+  ): ArtistBlurb
+  birthday: String
+  blurb(format: Format): String
+  carousel: ArtistCarousel
+  collections: [String]
+  contemporary(
+    # The number of Artists to return
+    size: Int
+    excludeArtistsWithoutArtworks: Boolean = true
+  ): [Artist]
+  counts: ArtistCounts
+  currentEvent: CurrentEvent
+  deathday: String
+  disablePriceContext: Boolean
+
+  # Custom-sorted list of shows for an artist, in order of significance.
+  exhibitionHighlights(
+    # The number of Shows to return
+    size: Int = 5
+  ): [Show]
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+
+  # A string showing the total number of works and those for sale
+  formattedArtworksCount: String
+
+  # A string of the form "Nationality, Birthday (or Birthday-Deathday)"
+  formattedNationalityAndBirthday: String
+
+  # A list of genes associated with an artist
+  genes: [Gene]
+  gender: String
+  href: String
+  hasMetadata: Boolean
+  hometown: String
+  image: Image
+  imageUrl: String
+  initials(length: Int = 3): String
+  insights: [ArtistInsight]
+  isConsignable: Boolean
+
+  # Only specific Artists should show a link to auction results.
+  isDisplayAuctionLink: Boolean
+  isFollowed: Boolean
+  isPublic: Boolean
+  isShareable: Boolean
+  displayLabel: String
+  location: String
+  meta: ArtistMeta
+  nationality: String
+  name: String
+  partnersConnection(
+    representedBy: Boolean
+    partnerCategory: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): PartnerArtistConnection
+  partnerArtists(
+    # The number of PartnerArtists to return
+    size: Int
+  ): [PartnerArtist]
+  related: ArtistRelatedData
+  sales(
+    live: Boolean
+    isAuction: Boolean
+
+    # The number of Sales to return
+    size: Int
+    sort: SaleSorts
+  ): [Sale]
+  showsConnection(
+    active: Boolean
+    atAFair: Boolean
+    isReference: Boolean
+
+    # The number of PartnerShows to return
+    size: Int
+    soloShow: Boolean
+    status: String
+    topTier: Boolean
+    visibleToPublic: Boolean
+    sort: ShowSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+
+  # Use this attribute to sort by when sorting a collection of Artists
+  sortableID: String
+  statuses: ArtistStatuses
+  highlights: ArtistHighlights
+  years: String
+  marketingCollections(size: Int): [MarketingCollection]
+}
+
+type ArtistArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
+enum ArtistArtworksFilters {
+  IS_FOR_SALE
+  IS_NOT_FOR_SALE
+}
+
+type ArtistBlurb {
+  credit: String
+  text: String
+
+  # The partner id of the partner who submitted the featured bio.
+  partnerID: String
+}
+
+type ArtistCarousel {
+  images: [Image]
+}
+
+# A connection to a list of items.
+type ArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtistEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+type ArtistCounts {
+  artworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  follows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  forSaleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  partnerShows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  relatedArtists: Int
+  articles: Int
+  ecommerceArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  hasMakeOfferArtworks: Boolean
+  auctionArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+# An edge in a connection.
+type ArtistEdge {
+  # The item at the end of the edge
+  node: Artist
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ArtistGroup {
+  # Letter artists group belongs to
+  letter: String
+
+  # Artists sorted by last name
+  items: [Artist]
+}
+
+type ArtistHighlights {
+  partnersConnection(
+    representedBy: Boolean
+    partnerCategory: [String]
+    displayOnPartnerProfile: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): PartnerArtistConnection
+}
+
+type ArtistInsight {
+  # The type of insight.
+  type: String
+
+  # Label to use when displaying the insight.
+  label: String
+
+  # List of entities relevant to the insight.
+  entities: [String]
+}
+
+type ArtistMeta {
+  description: String
+  title: String
+}
+
+# A connection to a list of items.
+type ArtistPartnerConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtistPartnerEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtistPartnerEdge {
+  # The item at the end of the edge
+  node: Artist
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  artist: Artist
+  biography: String
+  counts: PartnerArtistCounts
+  isDisplayOnPartnerProfile: Boolean
+  representedBy: Boolean
+  isUseDefaultBiography: Boolean
+  partner: Partner
+  sortableID: String
+}
+
+type ArtistRelatedData {
+  genes(after: String, first: Int, before: String, last: Int): GeneConnection
+  artistsConnection(
+    excludeArtistsWithoutArtworks: Boolean = true
+    minForsaleArtworks: Int
+    kind: RelatedArtistsKind
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
+
+  # A list of the current user’s suggested artists, based on a single artist
+  suggestedConnection(
+    # Exclude artists without for sale works
+    excludeArtistsWithoutForsaleArtworks: Boolean
+
+    # Exclude artists without any artworks
+    excludeArtistsWithoutArtworks: Boolean
+
+    # Exclude artists the user already follows
+    excludeFollowedArtists: Boolean
+
+    # Exclude these ids from results, may result in all artists being excluded.
+    excludeArtistIDs: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
+}
+
+enum ArtistSorts {
+  SORTABLE_ID_ASC
+  SORTABLE_ID_DESC
+  TRENDING_DESC
+}
+
+type ArtistStatuses {
+  artists: Boolean
+  articles: Boolean
+  artworks: Boolean
+  auctionLots: Boolean
+  biography: Boolean
+  contemporary: Boolean
+  cv(
+    # Suppress the cv tab when artist show count is less than this.
+    minShowCount: Int = 15
+  ): Boolean
+  shows: Boolean
+}
+
+type Artwork implements Node & Searchable & Sellable {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  additionalInformation(format: Format): String
+  artist(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Artist
+  artists(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): [Artist]
+  artistNames: String
+  articles(size: Int): [Article]
+  availability: String
+  category: String
+
+  # Attribution class object
+  attributionClass: AttributionClass
+  collectingInstitution: String
+  contactLabel: String
+
+  # Pre-filled inquiry text
+  contactMessage: String
+
+  # Returns the associated Fair/Sale/Show
+  context: ArtworkContext
+  contextGrids: [ArtworkContextGrid]
+  culturalMaker: String
+  date: String
+  description(format: Format): String
+  dimensions: dimensions
+
+  # Returns an HTML string representing the embedded content (video)
+  embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
+  editionOf: String
+  editionSets(sort: EditionSetSorts): [EditionSet]
+  exhibitionHistory(format: Format): String
+  fair: Fair
+
+  # Formatted artwork metadata, including artist, title, date and partner; e.g., 'Andy Warhol, Truck, 1980, Westward Gallery'.
+  formattedMetadata: String
+
+  # Returns the highlighted shows and articles
+  highlights: [ArtworkHighlight]
+  href: String
+  image: Image
+  imageUrl: String
+  imageRights: String
+  imageTitle: String
+  images(size: Int): [Image]
+
+  # Private text field for partner use
+  inventoryId: String
+
+  # Whether a work can be purchased through e-commerce
+  isAcquireable: Boolean
+
+  # Whether a user can make an offer on a work
+  isOfferable: Boolean
+
+  # Is this artwork part of an auction that is currently running?
+  isBiddable: Boolean
+
+  # When in an auction, can the work be bought immediately
+  isBuyNowable: Boolean
+  isComparableWithAuctionResults: Boolean
+  isDownloadable: Boolean
+  isEmbeddableVideo: Boolean
+  isForSale: Boolean
+  isHangable: Boolean
+
+  # Do we want to encourage inquiries on this work?
+  isInquireable: Boolean
+
+  # Is this artwork part of an auction?
+  isInAuction: Boolean
+
+  # Is this artwork part of a current show
+  isInShow: Boolean
+  isNotForSale: String
+  isOnHold: String
+  isPriceHidden: Boolean
+  isPriceRange: Boolean
+  isSaved: Boolean
+  isShareable: Boolean
+  isSold: Boolean
+  isUnique: Boolean
+  displayLabel: String
+  layer(id: String): ArtworkLayer
+  layers: [ArtworkLayer]
+  literature(format: Format): String
+  manufacturer(format: Format): String
+  medium: String
+  meta: ArtworkMeta
+  myLotStanding(live: Boolean = null): [LotStanding!]
+  partner(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Partner
+  pickupAvailable: Boolean
+  listPrice: ListPrice
+  priceCurrency: String
+  priceIncludesTax: Boolean
+  priceIncludesTaxDisplay: String
+
+  # Is this work available for shipping only within the Contenental US?
+  shipsToContinentalUSOnly: Boolean
+    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
+
+  # Is this work only available for shipping domestically?
+  onlyShipsDomestically: Boolean
+
+  # The string that describes domestic and international shipping.
+  shippingInfo: String
+
+  # Minimal location information describing from where artwork will be shipped.
+  shippingOrigin: String
+
+  # The country an artwork will be shipped from.
+  shippingCountry: String
+  provenance(format: Format): String
+  publisher(format: Format): String
+  related(size: Int): [Artwork]
+  sale: Sale
+  saleArtwork(saleID: String = null): SaleArtwork
+  saleMessage: String
+  series(format: Format): String
+  show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
+  shows(size: Int, active: Boolean, atAFair: Boolean, sort: ShowSorts): [Show]
+  signature(format: Format): String
+  title: String
+
+  # Whether this Artwork is Published of not
+  published: Boolean!
+
+  # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
+  website: String
+  framed: ArtworkInfoRow
+  signatureInfo: ArtworkInfoRow
+  conditionDescription: ArtworkInfoRow
+
+  # Returns true when artwork has a certificate of authenticity
+  hasCertificateOfAuthenticity: Boolean
+
+  # Returns the display label and detail for artwork certificate of authenticity
+  certificateOfAuthenticity: ArtworkInfoRow
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  widthCm: Float
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  heightCm: Float
+
+  # score assigned to an artwork based on its dimensions
+  sizeScore: Float
+  pricingContext: AnalyticsPricingContext
+}
+
+enum ArtworkAggregation {
+  COLOR
+  DIMENSION_RANGE
+  FOLLOWED_ARTISTS
+  MAJOR_PERIOD
+  MEDIUM
+  MERCHANDISABLE_ARTISTS
+  GALLERY
+  INSTITUTION
+  PARTNER_CITY
+  PERIOD
+  PRICE_RANGE
+  TOTAL
+}
+
+# A connection to a list of items.
+type ArtworkConnection implements ArtworkConnectionInterface {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtworkEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+interface ArtworkConnectionInterface {
+  pageCursors: PageCursors!
+  pageInfo: PageInfo!
+  edges: [ArtworkEdgeInterface]
+}
+
+union ArtworkContext = Fair | Sale | Show
+
+# A specific grid.
+interface ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
+# An edge in a connection.
+type ArtworkEdge implements ArtworkEdgeInterface {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+interface ArtworkEdgeInterface {
+  node: Artwork
+  cursor: String
+}
+
+union ArtworkFilterFacet = Tag | Gene
+
+union ArtworkHighlight = Show | Article
+
+type ArtworkInfoRow {
+  # Label for information row
+  label: String
+
+  # Additional details about given attribute
+  details: String
+}
+
+# An inquiry on an Artwork
+type ArtworkInquiry {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  artwork: Artwork!
+  impulseConversationID: String
+}
+
+# A connection to a list of items.
+type ArtworkInquiryConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtworkInquiryEdge]
+}
+
+# An edge in a connection.
+type ArtworkInquiryEdge {
+  # The item at the end of the edge
+  node: ArtworkInquiry
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ArtworkLayer {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # A connection of artworks from a Layer.
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  description: String
+  href: String
+  name: String
+  type: String
+}
+
+type ArtworkMeta {
+  description(limit: Int = 155): String
+  image: String
+  share: String
+  title: String
+}
+
+# The results for one of the requested aggregations
+type ArtworksAggregationResults {
+  counts: [AggregationCount]
+  slice: ArtworkAggregation
+}
+
+enum ArtworkSorts {
+  AVAILABILITY_ASC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  DELETED_AT_ASC
+  DELETED_AT_DESC
+  ICONICITY_DESC
+  MERCHANDISABILITY_DESC
+  PARTNER_UPDATED_AT_DESC
+  PUBLISHED_AT_ASC
+  PUBLISHED_AT_DESC
+  TITLE_ASC
+  TITLE_DESC
+}
+
+type ArtworkVersion {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Artwork title
+  title: String
+
+  # The Image id
+  defaultImageID: String
+
+  # The artists related to this Artwork Version
+  artists: String
+
+  # The names for the artists related to this Artwork Version
+  artistNames: String
+
+  # The image representing the Artwork Version
+  image: Image
+}
+
+# An asset which is assigned to a consignment submission
+type Asset {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # The convection submission ID
+  submissionID: String
+
+  # The gemini token for the asset
+  geminiToken: String
+
+  # The type of the asset
+  assetType: String
+}
+
+# Fields of an attachment (currently from Radiation)
+type Attachment {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Content type of file.
+  contentType: String!
+
+  # File name.
+  fileName: String!
+  downloadURL: String!
+}
+
+# Collection of fields that describe attribution class
+type AttributionClass {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Shortest form of attribution class display
+  name: String
+
+  # Descriptive phrase used as companion for attribution class name display
+  info: String
+
+  # Longer version of attribution class display
+  shortDescription: String
+
+  # Long descriptive phrase used as companion for short_description
+  longDescription: String
+}
+
+type AuctionArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
+# In centimeters.
+type AuctionLotDimensions {
+  width: Float
+  height: Float
+  depth: Float
+}
+
+type AuctionLotEstimate {
+  low: Float
+  high: Float
+  display: String
+}
+
+type AuctionLotImages {
+  larger: Image
+  thumbnail: Image
+}
+
+type AuctionResult implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  title: String
+  artistID: String!
+  date(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  dateText: String
+  mediumText: String
+  categoryText: String
+  dimensionText: String
+  dimensions: AuctionLotDimensions
+  organization: String
+  saleDate(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  saleDateText: String
+  saleTitle: String
+  currency: String
+  description: String
+  externalURL: String
+  images: AuctionLotImages
+  estimate: AuctionLotEstimate
+  priceRealized: AuctionResultPriceRealized
+}
+
+# A connection to a list of items.
+type AuctionResultConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [AuctionResultEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type AuctionResultEdge {
+  # The item at the end of the edge
+  node: AuctionResult
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type AuctionResultPriceRealized {
+  cents: Float
+  centsUSD: Float
+  display(
+    # Passes in to numeral, such as `'0.00'`
+    format: String = ""
+  ): String
+}
+
+enum AuctionResultSorts {
+  DATE_DESC
+  PRICE_AND_DATE_DESC
+  ESTIMATE_AND_DATE_DESC
+}
+
+type Author {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  name: String
+  profileHandle: String
+}
+
+type Bidder implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  pin: String
+  qualifiedForBidding: Boolean
+  user: User
+  sale: Sale
+}
+
+type BidderPosition {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  processedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  highestBid: HighestBid
+  isActive: Boolean
+  isRetracted: Boolean
+  isWithBidMax: Boolean
+  isWinning: Boolean
+  maxBid: BidderPositionMaxBid
+  saleArtwork: SaleArtwork
+  suggestedNextBid: BidderPositionSuggestedNextBid
+}
+
+input BidderPositionInput {
+  saleID: String!
+  artworkID: String!
+  maxBidAmountCents: Float!
+  clientMutationId: String
+}
+
+type BidderPositionMaxBid {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+type BidderPositionPayload {
+  result: BidderPositionResult
+  clientMutationId: String
+}
+
+type BidderPositionResult {
+  status: String!
+  messageHeader: String
+  messageDescriptionMD: String
+  position: BidderPosition
+}
+
+type BidderPositionSuggestedNextBid {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+type BidIncrement {
+  amount: Int
+  from: Int
+  to: Int
+}
+
+type BidIncrementsFormatted {
+  cents: Float
+  display: String
+}
+
+type BuyersPremium {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  cents: Int
+  percent: Float
+}
+
+type CalculatedCost {
+  bidAmount: Money
+  buyersPremium: Money
+  subtotal: Money
+}
+
+# Autogenerated input type of CaptureHold
+input CaptureHoldInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # Globally unique ID for the hold.
+  inventoryHoldId: ID!
+
+  # Globally unique ID for the requester of the hold. Ex. Exchange Order ID.
+  referenceId: String!
+}
+
+# Autogenerated return type of CaptureHold
+type CaptureHoldPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  holdOrError: InventoryHoldOrErrorUnion!
+}
+
+type City {
+  slug: String
+  name: String
+  coordinates: LatLng
+  showsConnection(
+    sort: ShowSorts
+
+    # Filter shows by chronological event status
+    status: EventStatus = CURRENT
+
+    # Filter shows by partner type
+    partnerType: PartnerShowPartnerType
+
+    # Only used when status is CLOSING_SOON or UPCOMING. Number of days used to filter upcoming and closing soon shows
+    dayThreshold: Int
+
+    # Whether to include local discovery stubs
+    includeStubShows: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+  fairsConnection(
+    sort: FairSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FairConnection
+  sponsoredContent: CitySponsoredContent
+}
+
+type CitySponsoredContent {
+  introText: String
+  artGuideUrl: String
+  featuredShows: [Show]
+  showsConnection(
+    sort: ShowSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+}
+
+enum CollectionSorts {
+  POSITION_ASC
+  POSITION_DESC
+}
+
+type CollectorProfileType {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  email: String
+  name: String
+  confirmedBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  collectorLevel: Int
+  selfReportedPurchases: String
+  loyaltyApplicantAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  professionalBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  professionalBuyerAppliedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  intents: [String]
+}
+
+# Autogenerated input type of AddInitialOfferToOrder
+input CommerceAddInitialOfferToOrderInput {
+  amountCents: Int!
+
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  note: String
+  orderId: ID!
+}
+
+# Autogenerated return type of AddInitialOfferToOrder
+type CommerceAddInitialOfferToOrderPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# An generic error type for mutations
+type CommerceApplicationError {
+  # Code of this error
+  code: String!
+
+  # What caused the error
+  data: String
+
+  # Type of this error
+  type: String!
+}
+
+# Autogenerated input type of ApproveOrder
+input CommerceApproveOrderInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  id: ID!
+}
+
+# Autogenerated return type of ApproveOrder
+type CommerceApproveOrderPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of BuyerAcceptOffer
+input CommerceBuyerAcceptOfferInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  offerId: ID!
+}
+
+# Autogenerated return type of BuyerAcceptOffer
+type CommerceBuyerAcceptOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of BuyerCounterOffer
+input CommerceBuyerCounterOfferInput {
+  amountCents: Int!
+
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  note: String
+  offerId: ID!
+}
+
+# Autogenerated return type of BuyerCounterOffer
+type CommerceBuyerCounterOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of BuyerRejectOffer
+input CommerceBuyerRejectOfferInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  offerId: ID!
+  rejectReason: CommerceCancelReasonTypeEnum
+}
+
+# Autogenerated return type of BuyerRejectOffer
+type CommerceBuyerRejectOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+type CommerceBuyOrder implements CommerceOrder {
+  buyer: CommerceOrderPartyUnion!
+  buyerPhoneNumber: String
+  buyerTotalCents: Int
+  code: String!
+  commissionFeeCents: Int
+  commissionRate: Float
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  creditCardId: String
+  currencyCode: String!
+  displayCommissionRate: String
+  id: ID!
+  internalID: ID!
+
+  # Item total in cents, for Offer Orders this field reflects current offer
+  itemsTotalCents: Int
+  lastApprovedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  lastSubmittedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  lastTransactionFailed: Boolean
+  lineItems(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): CommerceLineItemConnection
+  mode: CommerceOrderModeEnum
+  requestedFulfillment: CommerceRequestedFulfillmentUnion
+  seller: CommerceOrderPartyUnion!
+  sellerTotalCents: Int
+  shippingTotalCents: Int
+  state: CommerceOrderStateEnum!
+  stateExpiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  stateReason: String
+  stateUpdatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  taxTotalCents: Int
+  totalListPriceCents: Int!
+  transactionFeeCents: Int
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  buyerDetails: OrderParty
+  sellerDetails: OrderParty
+  creditCard: CreditCard
+  itemsTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  sellerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  commissionFee(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  totalListPrice(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  buyerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  taxTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  shippingTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  transactionFee(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+enum CommerceCancelReasonTypeEnum {
+  # cancelation reason is: admin_canceled
+  ADMIN_CANCELED
+
+  # cancelation reason is: buyer_lapsed
+  BUYER_LAPSED
+
+  # cancelation reason is: buyer_rejected
+  BUYER_REJECTED
+
+  # cancelation reason is: seller_lapsed
+  SELLER_LAPSED
+
+  # cancelation reason is: seller_rejected
+  SELLER_REJECTED
+
+  # cancelation reason is: seller_rejected_artwork_unavailable
+  SELLER_REJECTED_ARTWORK_UNAVAILABLE
+
+  # cancelation reason is: seller_rejected_offer_too_low
+  SELLER_REJECTED_OFFER_TOO_LOW
+
+  # cancelation reason is: seller_rejected_other
+  SELLER_REJECTED_OTHER
+
+  # cancelation reason is: seller_rejected_shipping_unavailable
+  SELLER_REJECTED_SHIPPING_UNAVAILABLE
+}
+
+# Autogenerated input type of ConfirmFulfillment
+input CommerceConfirmFulfillmentInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  id: ID!
+}
+
+# Autogenerated return type of ConfirmFulfillment
+type CommerceConfirmFulfillmentPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of ConfirmPickup
+input CommerceConfirmPickupInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  id: ID!
+}
+
+# Autogenerated return type of ConfirmPickup
+type CommerceConfirmPickupPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of CreateOfferOrderWithArtwork
+input CommerceCreateOfferOrderWithArtworkInput {
+  # Artwork Id
+  artworkId: String!
+
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # EditionSet Id
+  editionSetId: String
+
+  # When set to false, we will create a new order. Otherwise if current user has
+  # pending/submitted orders on same artwork/edition with same quantity, we will return that
+  findActiveOrCreate: Boolean = true
+
+  # Number of items in the line item, default is 1
+  quantity: Int
+}
+
+# Autogenerated return type of CreateOfferOrderWithArtwork
+type CommerceCreateOfferOrderWithArtworkPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure. If find_active_or_create is not false, it will
+  # return existing pending/submitted order for current user if exists, otherwise
+  # it will return newly created order
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of CreateOrderWithArtwork
+input CommerceCreateOrderWithArtworkInput {
+  # Artwork Id
+  artworkId: String!
+
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # EditionSet Id
+  editionSetId: String
+
+  # Number of items in the line item
+  quantity: Int
+}
+
+# Autogenerated return type of CreateOrderWithArtwork
+type CommerceCreateOrderWithArtworkPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Date in YYYY-MM-DD format
+scalar CommerceDate
+
+# An ISO 8601 datetime
+scalar CommerceDateTime
+
+# Autogenerated input type of FixFailedPayment
+input CommerceFixFailedPaymentInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  creditCardId: String!
+  offerId: ID!
+}
+
+# Autogenerated return type of FixFailedPayment
+type CommerceFixFailedPaymentPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of FulfillAtOnce
+input CommerceFulfillAtOnceInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  fulfillment: CommerceFulfillmentAttributes!
+  id: ID!
+}
+
+# Autogenerated return type of FulfillAtOnce
+type CommerceFulfillAtOncePayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# A Fulfillment for an order
+type CommerceFulfillment {
+  courier: String!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  estimatedDelivery(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  id: ID!
+  internalID: ID!
+  notes: String
+  trackingId: String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+}
+
+# Attributes of a Fulfillment
+input CommerceFulfillmentAttributes {
+  courier: String!
+  estimatedDelivery: CommerceDate
+  notes: String
+  trackingId: String
+}
+
+# The connection type for Fulfillment.
+type CommerceFulfillmentConnection {
+  # A list of edges.
+  edges: [CommerceFulfillmentEdge]
+
+  # A list of nodes.
+  nodes: [CommerceFulfillment]
+
+  # Information to aid in pagination.
+  pageInfo: CommercePageInfo!
+}
+
+# An edge in a connection.
+type CommerceFulfillmentEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: CommerceFulfillment
+}
+
+# A Line Item
+type CommerceLineItem {
+  artworkId: String!
+  artworkVersionId: String!
+  commissionFeeCents: Int
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  editionSetId: String
+  fulfillments(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): CommerceFulfillmentConnection
+  id: ID!
+  internalID: ID!
+  listPriceCents: Int!
+  order: CommerceOrder!
+  priceCents: Int! @deprecated(reason: "switch to use listPriceCents")
+  quantity: Int!
+  shippingTotalCents: Int
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  artwork: Artwork
+  artworkVersion: ArtworkVersion
+  shippingTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  listPrice(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  commissionFee(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# The connection type for LineItem.
+type CommerceLineItemConnection {
+  # A list of edges.
+  edges: [CommerceLineItemEdge]
+
+  # A list of nodes.
+  nodes: [CommerceLineItem]
+
+  # Information to aid in pagination.
+  pageInfo: CommercePageInfo!
+}
+
+# An edge in a connection.
+type CommerceLineItemEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: CommerceLineItem
+}
+
+# An Offer
+type CommerceOffer {
+  amountCents: Int!
+  buyerTotalCents: Int
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  creatorId: String!
+  currencyCode: String!
+  from: CommerceOrderPartyUnion!
+  fromParticipant: CommerceOrderParticipantEnum
+  id: ID!
+  internalID: ID!
+  note: String
+  order: CommerceOrder!
+  respondsTo: CommerceOffer
+  shippingTotalCents: Int
+  submittedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  taxTotalCents: Int
+  fromDetails: OrderParty
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  taxTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  shippingTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  buyerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# The connection type for Offer.
+type CommerceOfferConnection {
+  # A list of edges.
+  edges: [CommerceOfferEdge]
+
+  # A list of nodes.
+  nodes: [CommerceOffer]
+
+  # Information to aid in pagination.
+  pageInfo: CommercePageInfo!
+}
+
+# An edge in a connection.
+type CommerceOfferEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: CommerceOffer
+}
+
+type CommerceOfferOrder implements CommerceOrder {
+  awaitingResponseFrom: CommerceOrderParticipantEnum
+  buyer: CommerceOrderPartyUnion!
+  buyerPhoneNumber: String
+  buyerTotalCents: Int
+  code: String!
+  commissionFeeCents: Int
+  commissionRate: Float
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  creditCardId: String
+  currencyCode: String!
+  displayCommissionRate: String
+  id: ID!
+  internalID: ID!
+
+  # Item total in cents, for Offer Orders this field reflects current offer
+  itemsTotalCents: Int
+  lastApprovedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # Last submitted offer
+  lastOffer: CommerceOffer
+  lastSubmittedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  lastTransactionFailed: Boolean
+  lineItems(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): CommerceLineItemConnection
+  mode: CommerceOrderModeEnum
+  myLastOffer: CommerceOffer
+  offers(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+    fromId: String
+    fromType: String
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): CommerceOfferConnection
+  requestedFulfillment: CommerceRequestedFulfillmentUnion
+  seller: CommerceOrderPartyUnion!
+  sellerTotalCents: Int
+  shippingTotalCents: Int
+  state: CommerceOrderStateEnum!
+  stateExpiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  stateReason: String
+  stateUpdatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  taxTotalCents: Int
+  totalListPriceCents: Int!
+  transactionFeeCents: Int
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  buyerDetails: OrderParty
+  sellerDetails: OrderParty
+  creditCard: CreditCard
+  itemsTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  sellerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  commissionFee(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  totalListPrice(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  buyerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  taxTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  shippingTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  transactionFee(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  offerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# Order
+interface CommerceOrder {
+  buyer: CommerceOrderPartyUnion!
+  buyerPhoneNumber: String
+  buyerTotalCents: Int
+  code: String!
+  commissionFeeCents: Int
+  commissionRate: Float
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  creditCardId: String
+  currencyCode: String!
+  displayCommissionRate: String
+  id: ID!
+  internalID: ID!
+
+  # Item total in cents, for Offer Orders this field reflects current offer
+  itemsTotalCents: Int
+  lastApprovedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  lastSubmittedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  lastTransactionFailed: Boolean
+  lineItems(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): CommerceLineItemConnection
+  mode: CommerceOrderModeEnum
+  requestedFulfillment: CommerceRequestedFulfillmentUnion
+  seller: CommerceOrderPartyUnion!
+  sellerTotalCents: Int
+  shippingTotalCents: Int
+  state: CommerceOrderStateEnum!
+  stateExpiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  stateReason: String
+  stateUpdatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  taxTotalCents: Int
+  totalListPriceCents: Int!
+  transactionFeeCents: Int
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  buyerDetails: OrderParty
+  sellerDetails: OrderParty
+  creditCard: CreditCard
+  itemsTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  sellerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  commissionFee(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  totalListPrice(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  buyerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  taxTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  shippingTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  transactionFee(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# Order Action data
+type CommerceOrderActionData {
+  clientSecret: String!
+}
+
+# Fields to sort by
+enum CommerceOrderConnectionSortEnum {
+  # Sort by the timestamp the state of the order expires at in ascending order
+  STATE_EXPIRES_AT_ASC
+
+  # Sort by the timestamp the state of the order expires at in descending order
+  STATE_EXPIRES_AT_DESC
+
+  # Sort by the timestamp the state of order was last updated in ascending order
+  STATE_UPDATED_AT_ASC
+
+  # Sort by the timestamp the state of order was last updated in descending order
+  STATE_UPDATED_AT_DESC
+
+  # Sort by the timestamp the order was last updated in ascending order
+  UPDATED_AT_ASC
+
+  # Sort by the timestamp the order was last updated in descending order
+  UPDATED_AT_DESC
+}
+
+# The connection type for Order.
+type CommerceOrderConnectionWithTotalCount {
+  # A list of edges.
+  edges: [CommerceOrderEdge]
+
+  # A list of nodes.
+  nodes: [CommerceOrder]
+  pageCursors: CommercePageCursors
+
+  # Information to aid in pagination.
+  pageInfo: CommercePageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type CommerceOrderEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: CommerceOrder
+}
+
+enum CommerceOrderFulfillmentTypeEnum {
+  # fulfillment type is: pickup
+  PICKUP
+
+  # fulfillment type is: ship
+  SHIP
+}
+
+enum CommerceOrderModeEnum {
+  # Buy Order
+  BUY
+
+  # Offer Order
+  OFFER
+}
+
+# Represents either a resolved Order or a potential failure
+union CommerceOrderOrFailureUnion =
+    CommerceOrderRequiresAction
+  | CommerceOrderWithMutationFailure
+  | CommerceOrderWithMutationSuccess
+
+enum CommerceOrderParticipantEnum {
+  # Participant on the buyer side
+  BUYER
+
+  # Participant on the seller side
+  SELLER
+}
+
+# Represents either a partner or a user
+union CommerceOrderPartyUnion = CommercePartner | CommerceUser
+
+# Data reflecting actions required
+type CommerceOrderRequiresAction {
+  # Data related to action needed
+  actionData: CommerceOrderActionData!
+}
+
+enum CommerceOrderStateEnum {
+  # order is abandoned by buyer and never submitted
+  ABANDONED
+
+  # order is approved by seller
+  APPROVED
+
+  # order is canceled
+  CANCELED
+
+  # order is fulfilled by seller
+  FULFILLED
+
+  # order is still pending submission by buyer
+  PENDING
+
+  # order is refunded after being approved or fulfilled
+  REFUNDED
+
+  # order is submitted by buyer
+  SUBMITTED
+}
+
+# An error response for changes to an order
+type CommerceOrderWithMutationFailure {
+  error: CommerceApplicationError!
+}
+
+# A successfully returned order type
+type CommerceOrderWithMutationSuccess {
+  order: CommerceOrder!
+}
+
+type CommercePageCursor {
+  # first cursor on the page
+  cursor: String!
+
+  # is this the current page?
+  isCurrent: Boolean!
+
+  # page number out of totalPages
+  page: Int!
+}
+
+type CommercePageCursors {
+  around: [CommercePageCursor!]!
+
+  # optional, may be included in field around
+  first: CommercePageCursor
+
+  # optional, may be included in field around
+  last: CommercePageCursor
+  previous: CommercePageCursor
+}
+
+# Information about pagination in a connection.
+type CommercePageInfo {
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+}
+
+type CommercePartner {
+  id: String!
+  type: String!
+}
+
+type CommercePickup {
+  fulfillmentType: String!
+  phoneNumber: String
+}
+
+# Autogenerated input type of RejectOrder
+input CommerceRejectOrderInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  id: ID!
+}
+
+# Autogenerated return type of RejectOrder
+type CommerceRejectOrderPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Represents either a shipping information or pickup
+union CommerceRequestedFulfillmentUnion = CommercePickup | CommerceShip
+
+# Autogenerated input type of SellerAcceptOffer
+input CommerceSellerAcceptOfferInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  offerId: ID!
+}
+
+# Autogenerated return type of SellerAcceptOffer
+type CommerceSellerAcceptOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of SellerCounterOffer
+input CommerceSellerCounterOfferInput {
+  amountCents: Int!
+
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  note: String
+  offerId: ID!
+}
+
+# Autogenerated return type of SellerCounterOffer
+type CommerceSellerCounterOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of SellerRejectOffer
+input CommerceSellerRejectOfferInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  offerId: ID!
+  rejectReason: CommerceCancelReasonTypeEnum
+}
+
+# Autogenerated return type of SellerRejectOffer
+type CommerceSellerRejectOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of SetPayment
+input CommerceSetPaymentInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  creditCardId: String!
+  id: ID!
+}
+
+# Autogenerated return type of SetPayment
+type CommerceSetPaymentPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of SetShipping
+input CommerceSetShippingInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  fulfillmentType: CommerceOrderFulfillmentTypeEnum!
+  id: ID!
+  phoneNumber: String
+  shipping: CommerceShippingAttributes
+}
+
+# Autogenerated return type of SetShipping
+type CommerceSetShippingPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+type CommerceShip {
+  addressLine1: String
+  addressLine2: String
+  city: String
+  country: String
+  name: String
+  phoneNumber: String
+  postalCode: String
+  region: String
+}
+
+# Shipping information
+input CommerceShippingAttributes {
+  addressLine1: String
+  addressLine2: String
+  city: String
+  country: String
+  name: String
+  phoneNumber: String
+  postalCode: String
+  region: String
+}
+
+# Autogenerated input type of SubmitOrder
+input CommerceSubmitOrderInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  id: ID!
+}
+
+# Autogenerated return type of SubmitOrder
+type CommerceSubmitOrderPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of SubmitOrderWithOffer
+input CommerceSubmitOrderWithOfferInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  confirmedSetupIntentId: String
+  offerId: ID!
+}
+
+# Autogenerated return type of SubmitOrderWithOffer
+type CommerceSubmitOrderWithOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+# Autogenerated input type of SubmitPendingOffer
+input CommerceSubmitPendingOfferInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  offerId: ID!
+}
+
+# Autogenerated return type of SubmitPendingOffer
+type CommerceSubmitPendingOfferPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
+type CommerceUser {
+  id: String!
+}
+
+type ConditionReportRequest {
+  internalID: ID!
+  saleArtworkID: ID
+  userID: ID
+}
+
+# A work to be consigned to the user
+type ConsignmentSubmission {
+  # An optional type-specific ID.
+  internalID: ID
+
+  # The gravity ID for an Artist
+  artistID: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticityCertificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensionsMetric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  editionNumber: String
+
+  # The whole size of the set of works
+  editionSize: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  locationCity: String
+
+  # The country where the work currently resides
+  locationCountry: String
+
+  # The state where the work currently resides
+  locationState: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+
+  # The user who submitted the work
+  userID: ID
+  artist: Artist
+}
+
+# A connection to a list of items.
+type ConsignmentSubmissionConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ConsignmentSubmissionEdge]
+}
+
+# An edge in a connection.
+type ConsignmentSubmissionEdge {
+  # The item at the end of the edge
+  node: ConsignmentSubmission
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ConvectionService {
+  geminiTemplateKey: String!
+}
+
+# A conversation.
+type Conversation implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # An optional type-specific ID.
+  internalID: ID
+
+  # Gravity inquiry id.
+  inquiryID: String
+
+  # The participant who initiated the conversation
+  from: ConversationInitiator!
+
+  # The participant(s) responding to the conversation
+  to: ConversationResponder!
+  buyerOutcome: String
+  buyerOutcomeAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  fromLastViewedMessageID: String
+  initialMessage: String!
+
+  # This is a snippet of text from the last message.
+  lastMessage: String
+  lastMessageAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # Impulse id of the last message.
+  lastMessageID: String
+
+  # True if user/conversation initiator is a recipient.
+  isLastMessageToUser: Boolean
+
+  # Delivery id if the user is a recipient of the last message, null otherwise.
+  lastMessageDeliveryID: String
+
+  # Only the artworks discussed in the conversation.
+  artworks: [Artwork]
+
+  # The artworks and/or partner shows discussed in the conversation.
+  items: [ConversationItem]
+
+  # A connection for all messages in a single conversation
+  messages(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
+
+  # True if there is an unread message by the user.
+  unread: Boolean
+}
+
+# A connection to a list of items.
+type ConversationConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ConversationEdge]
+  totalUnreadCount: Int
+}
+
+# An edge in a connection.
+type ConversationEdge {
+  # The item at the end of the edge
+  node: Conversation
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# The participant who started the conversation, currently always a User
+type ConversationInitiator {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+  email: String!
+  initials(length: Int = 3): String
+}
+
+type ConversationItem {
+  item: ConversationItemType
+  title: String
+  permalink: String
+}
+
+union ConversationItemType = Artwork | Show
+
+# The participant responding to the conversation, currently always a Partner
+type ConversationResponder {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+
+  # An array of Impulse IDs that correspond to all email addresses that messages should be sent to
+  replyToImpulseIDs: [String]!
+  initials(length: Int = 3): String
+}
+
+type CreateAccountRequestMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateAccountRequestMutationInput {
+  # Message to be sent.
+  notes: String!
+
+  # Email to associate with message.
+  email: String
+
+  # Name to associate with message.
+  name: String
+
+  # Used when logged in.
+  userID: String
+
+  # Type of account request.
+  action: String
+  clientMutationId: String
+}
+
+type CreateAccountRequestMutationPayload {
+  accountRequestOrError: CreateAccountRequestMutationType
+  clientMutationId: String
+}
+
+type CreateAccountRequestMutationSuccess {
+  accountRequest: AccountRequest
+}
+
+union CreateAccountRequestMutationType = CreateAccountRequestMutationSuccess | CreateAccountRequestMutationFailure
+
+input CreateBidderInput {
+  saleID: String!
+  clientMutationId: String
+}
+
+type CreateBidderPayload {
+  bidder: Bidder
+  clientMutationId: String
+}
+
+input CreateGeminiEntryForAssetInput {
+  # The path to the file
+  sourceKey: String!
+
+  # The template key, this is `name` in the asset request
+  templateKey: String!
+
+  # The S3 bucket where the file was uploaded
+  sourceBucket: String!
+
+  # Additional JSON data to pass through gemini, should definitely contain an `id` and a `_type`
+  metadata: JSON!
+  clientMutationId: String
+}
+
+type CreateGeminiEntryForAssetPayload {
+  asset: GeminiEntry
+  clientMutationId: String
+}
+
+input CreateSubmissionMutationInput {
+  # The gravity ID for an Artist
+  artistID: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticityCertificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensionsMetric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  editionNumber: String
+
+  # The whole size of the set of works
+  editionSize: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  locationCity: String
+
+  # The country where the work currently resides
+  locationCountry: String
+
+  # The state where the work currently resides
+  locationState: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+
+  # The user who submitted the work
+  userID: ID
+  clientMutationId: String
+}
+
+type CreateSubmissionMutationPayload {
+  consignmentSubmission: ConsignmentSubmission
+  clientMutationId: String
+}
+
+# An asset which is assigned to a consignment submission
+type Credentials {
+  # The key to use with S3.
+  credentials: String!
+
+  # A base64 encoded version of the S3 policy
+  policyEncoded: String!
+
+  # The s3 policy document for your request
+  policyDocument: S3PolicyDocumentType!
+
+  # The signature for your asset.
+  signature: String!
+}
+
+type CreditCard {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Brand of credit card
+  brand: String!
+
+  # Name on the credit card
+  name: String
+
+  # Last four digits on the credit card
+  lastDigits: String!
+
+  # Credit card's expiration month
+  expirationMonth: Int!
+
+  # Credit card's expiration year
+  expirationYear: Int!
+
+  # Billing address street1
+  street1: String
+
+  # Billing address street2
+  street2: String
+
+  # Billing address city
+  city: String
+
+  # Billing address state
+  state: String
+
+  # Billing address country code
+  country: String
+
+  # Billing address postal code
+  postalCode: String
+}
+
+# A connection to a list of items.
+type CreditCardConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [CreditCardEdge]
+}
+
+# An edge in a connection.
+type CreditCardEdge {
+  # The item at the end of the edge
+  node: CreditCard
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input CreditCardInput {
+  token: String!
+  oneTimeUse: Boolean = false
+  clientMutationId: String
+}
+
+type CreditCardMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type CreditCardMutationSuccess {
+  creditCard: CreditCard
+  creditCardEdge: CreditCardEdge
+}
+
+union CreditCardMutationType = CreditCardMutationSuccess | CreditCardMutationFailure
+
+type CreditCardPayload {
+  creditCardOrError: CreditCardMutationType
+  clientMutationId: String
+}
+
+type CroppedImageUrl {
+  width: Int
+  height: Int
+  url: String
+}
+
+type CurrentEvent {
+  event: UnderlyingCurrentEvent!
+  image: Image
+
+  # The state of the event
+  status: String
+
+  # Name of the partner associated to the event
+  partner: String
+
+  # Location and date of the event if available
+  details: String
+
+  # Name of the event
+  name: String
+
+  # Link to the event
+  href: String
+}
+
+type DaySchedule {
+  startTime: Int
+  endTime: Int
+  dayOfWeek: String
+}
+
+type DeepZoom {
+  Image: DeepZoomImage
+}
+
+type DeepZoomImage {
+  Format: String
+  Overlap: Int
+  Size: DeepZoomImageSize
+  TileSize: Int
+  Url: String
+  xmlns: String
+}
+
+type DeepZoomImageSize {
+  Width: Int
+  Height: Int
+}
+
+input DeleteCreditCardInput {
+  id: String!
+  clientMutationId: String
+}
+
+type DeleteCreditCardPayload {
+  creditCardOrError: CreditCardMutationType
+  clientMutationId: String
+}
+
+# Fields of a delivery (currently from Radiation)
+type Delivery {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Masked email w/ display name.
+  fullTransformedEmail: String!
+  deliveredAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  bouncedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  openedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  clickedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+}
+
+type dimensions {
+  in: String
+  cm: String
+}
+
+type DoNotUseThisPartner {
+  displayName: String
+  display_name: String @deprecated(reason: "Use displayName")
+  givenName: String
+  given_name: String @deprecated(reason: "Use givenName")
+  id: ID!
+  relativeSize: Int
+  relative_size: Int @deprecated(reason: "Use relativeSize")
+  slug: String
+  subscriptionState: String
+  subscription_state: String @deprecated(reason: "Use subscriptionState")
+}
+
+input EditableLocation {
+  # First line of an address
+  address: String
+
+  # Second line of an address
+  address2: String
+
+  # The city the location is based in
+  city: String
+
+  # The county the location is based in
+  country: String
+
+  # An optional display string for the location
+  summary: String
+
+  # Postal code for a string
+  postalCode: String
+
+  # The (optional) name of the state for location
+  state: String
+
+  # The (optional) state code of the state for location
+  stateCode: String
+}
+
+type EditionSet implements Sellable {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  dimensions: dimensions
+  editionOf: String
+  isAcquireable: Boolean
+  isOfferable: Boolean
+  isForSale: Boolean
+  isSold: Boolean
+  listPrice: ListPrice
+
+  # score assigned to an artwork based on its dimensions
+  sizeScore: Float
+  saleMessage: String
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  widthCm: Float
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  heightCm: Float
+}
+
+enum EditionSetSorts {
+  PRICE_ASC
+}
+
+input EndSaleInput {
+  saleID: String
+  clientMutationId: String
+}
+
+type EndSalePayload {
+  sale: Sale
+  clientMutationId: String
+}
+
+interface EntityWithFilterArtworksConnectionInterface {
+  # A globally unique ID.
+  id: ID!
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+}
+
+# A user-readable error
+type Error {
+  # Error code
+  code: String!
+
+  # Extra data about error.
+  data: JSON
+
+  # A description of the error
+  message: String!
+
+  # Which input value this error came from
+  path: [String!]
+}
+
+# A user-readable list of errors
+type Errors {
+  # List of Errors.
+  errors: [Error!]!
+}
+
+enum EventStatus {
+  # End date is in the past
+  CLOSED
+
+  # Start date or end date is in the future
+  CURRENT
+
+  # Start date is in the past and end date is in the future
+  RUNNING
+
+  # Start date is in the future
+  UPCOMING
+
+  # End date is in near future
+  CLOSING_SOON
+
+  # Special filtering option which is used to show running and upcoming shows
+  RUNNING_AND_UPCOMING
+}
+
+type ExternalPartner {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  city: String
+  name: String
+}
+
+type Fair implements Node & EntityWithFilterArtworksConnectionInterface {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  about: String
+  followedContent: FollowedContent
+  artistsConnection(
+    # Sorts for artists in a fair
+    sort: FairArtistSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
+  cached: Int
+  bannerSize: String
+  counts: FairCounts
+
+  # A formatted description of the start to end dates
+  exhibitionPeriod: String
+
+  # A formatted description of when the fair starts or closes or if it is closed
+  formattedOpeningHours: String
+  hasFullFeature: Boolean
+  hasHomepageSection: Boolean
+  hasLargeBanner: Boolean
+  hasListing: Boolean
+  hours: String
+  href: String
+  image: Image
+
+  # Are we currently in the fair's active period?
+  isActive: Boolean
+  links: String
+  mobileImage: Image
+  isPublished: Boolean
+  location: Location
+  name: String
+  profile: Profile
+
+  # This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
+  showsConnection(
+    # Number of artworks to return
+    section: String
+
+    # Sorts for shows in a fair
+    sort: ShowSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+  startAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  activeStartAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  organizer: organizer
+  tagline: String
+  ticketsLink: String
+
+  # The exhibitors with booths in this fair with letter.
+  exhibitorsGroupedByName: [FairExhibitorsGroup]
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+  sponsoredContent: FairSponsoredContent
+}
+
+enum FairArtistSorts {
+  NAME_ASC
+  NAME_DESC
+}
+
+# A connection to a list of items.
+type FairConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FairEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+type FairCounts {
+  artists(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  artworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  partners(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  partnerShows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+# An edge in a connection.
+type FairEdge {
+  # The item at the end of the edge
+  node: Fair
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type FairExhibitor {
+  # A slug ID.
+  slug: ID!
+
+  # Exhibitor name
+  name: String
+
+  # Exhibitors _id
+  partnerID: String
+
+  # Partner default profile id
+  profileID: String
+}
+
+type FairExhibitorsGroup {
+  # Letter exhibitors group belongs to
+  letter: String
+
+  # The exhibitor data.
+  exhibitors: [FairExhibitor]
+}
+
+enum FairSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  NAME_ASC
+  NAME_DESC
+  START_AT_ASC
+  START_AT_DESC
+}
+
+type FairSponsoredContent {
+  activationText: String
+  pressReleaseUrl: String
+}
+
+type Feedback {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Feedback message
+  message: String!
+}
+
+# A connection to a list of items.
+type FilterArtworksConnection implements Node & ArtworkConnectionInterface {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FilterArtworksEdge]
+
+  # The ID of the object.
+  id: ID!
+
+  # Returns aggregation counts for the given filter query.
+  aggregations: [ArtworksAggregationResults]
+  counts: FilterArtworksCounts
+
+  # Artwork results.
+  hits: [Artwork] @deprecated(reason: "Prefer to use `edges`. [Will be removed in v2]")
+
+  # Returns a list of merchandisable artists sorted by merch score.
+  merchandisableArtists(
+    # The number of artists to return
+    size: Int = 12
+  ): [Artist]
+  facet: ArtworkFilterFacet
+  pageCursors: PageCursors!
+}
+
+type FilterArtworksCounts {
+  total(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  followedArtists(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+# An edge in a connection.
+type FilterArtworksEdge implements ArtworkEdgeInterface {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type FilterSaleArtworksCounts {
+  total(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  followedArtists(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+type FollowArtist {
+  artist: Artist
+  auto: Boolean
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+}
+
+# A connection to a list of items.
+type FollowArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowArtistEdge]
+}
+
+type FollowArtistCounts {
+  artists: Int
+}
+
+# An edge in a connection.
+type FollowArtistEdge {
+  # The item at the end of the edge
+  node: FollowArtist
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input FollowArtistInput {
+  artistID: String!
+  unfollow: Boolean = false
+  clientMutationId: String
+}
+
+type FollowArtistPayload {
+  artist: Artist
+
+  # Popular artists
+  popularArtists(
+    # If true, will exclude followed artists for the user
+    excludeFollowedArtists: Boolean
+
+    # Exclude these ids from results, may result in all artists being excluded.
+    excludeArtistIDs: [String]
+
+    # Number of results to return
+    size: Int
+  ): [Artist]
+  clientMutationId: String
+}
+
+type FollowArtists {
+  artists: [Artist]
+  counts: FollowArtistCounts
+}
+
+type FollowedArtistsArtworksGroup implements Node {
+  # A globally unique ID.
+  id: ID!
+  href: String
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artists: String
+  summary: String
+  image: Image
+  publishedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+}
+
+# A connection to a list of items.
+type FollowedArtistsArtworksGroupConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowedArtistsArtworksGroupEdge]
+}
+
+# An edge in a connection.
+type FollowedArtistsArtworksGroupEdge {
+  # The item at the end of the edge
+  node: FollowedArtistsArtworksGroup
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type FollowedContent {
+  artists: [Artist]
+  galleries: [Partner]
+}
+
+# A connection to a list of items.
+type FollowedFairConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowedFairEdge]
+}
+
+# An edge in a connection.
+type FollowedFairEdge {
+  # The item at the end of the edge
+  node: Fair
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A connection to a list of items.
+type FollowedShowConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowedShowEdge]
+}
+
+# An edge in a connection.
+type FollowedShowEdge {
+  # The item at the end of the edge
+  node: Show
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type FollowGene {
+  gene: Gene
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+}
+
+# A connection to a list of items.
+type FollowGeneConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowGeneEdge]
+}
+
+# An edge in a connection.
+type FollowGeneEdge {
+  # The item at the end of the edge
+  node: FollowGene
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input FollowGeneInput {
+  geneID: String
+  clientMutationId: String
+}
+
+type FollowGenePayload {
+  gene: Gene
+  clientMutationId: String
+}
+
+input FollowProfileInput {
+  profileID: String
+  unfollow: Boolean = false
+  clientMutationId: String
+}
+
+type FollowProfilePayload {
+  profile: Profile
+  clientMutationId: String
+}
+
+type FollowsAndSaves {
+  # A list of published artworks by followed artists (grouped by date and artists).
+  bundledArtworksByArtistConnection(
+    sort: ArtworkSorts
+    forSale: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FollowedArtistsArtworksGroupConnection
+
+  # A Connection of followed artists by current user
+  artistsConnection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+  artworksConnection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    private: Boolean = false
+    sort: CollectionSorts
+  ): SavedArtworksConnection
+
+  # A list of the current user’s currently followed shows
+  showsConnection(
+    status: EventStatus
+
+    # Number of days which will be used to filter upcoming and closing soon shows
+    dayThreshold: Int
+
+    # A string representing one of the supported cities in the City Guide, which
+    # are: new-york-ny-usa, los-angeles-ca-usa, london-united-kingdom,
+    # berlin-germany, paris-france, hong-kong-hong-kong
+    city: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FollowedShowConnection
+
+  # A list of the current user’s currently followed fair profiles
+  fairsConnection(after: String, first: Int, before: String, last: Int): FollowedFairConnection
+
+  # A list of the current user’s inquiry requests
+  genesConnection(after: String, first: Int, before: String, last: Int): FollowGeneConnection
+}
+
+input FollowShowInput {
+  partnerShowID: String
+  unfollow: Boolean = false
+  clientMutationId: String
+}
+
+type FollowShowPayload {
+  show: Show
+  clientMutationId: String
+}
+
+enum Format {
+  HTML
+  PLAIN
+  MARKDOWN
+}
+
+type FormattedDaySchedules {
+  days: String
+  hours: String
+}
+
+# The `FormattedNumber` type represents a number that can optionally be returnedas
+# a formatted String. It does not try to coerce the type.
+scalar FormattedNumber
+
+# An entry from gemini
+type GeminiEntry {
+  # The token that represents the gemini entry.
+  token: String!
+}
+
+type Gene implements Node & Searchable {
+  displayLabel: String
+  imageUrl: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  artistsConnection(after: String, first: Int, before: String, last: Int): ArtistConnection
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+  description: String
+  displayName: String
+  href: String
+  image: Image
+  isPublished: Boolean
+  isFollowed: Boolean
+  mode: String
+  name: String
+
+  # A list of genes similar to the specified gene
+  similar(
+    # Array of gene ids (not slugs) to exclude, may result in all genes being excluded.
+    excludeGeneIDs: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): GeneConnection
+  trendingArtists(sample: Int): [Artist]
+}
+
+# A connection to a list of items.
+type GeneConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GeneEdge]
+}
+
+# An edge in a connection.
+type GeneEdge {
+  # The item at the end of the edge
+  node: Gene
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type GravityMutationError {
+  type: String
+  message: String
+  detail: String
+  error: String
+}
+
+type HighestBid {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  number: Int
+  isCancelled: Boolean
+
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  cents: Int
+  display: String
+}
+
+type Highlights {
+  # Popular artists
+  popularArtists(
+    # If true, will exclude followed artists for the user
+    excludeFollowedArtists: Boolean
+
+    # Exclude these ids from results, may result in all artists being excluded.
+    excludeArtistIDs: [String]
+
+    # Number of results to return
+    size: Int
+  ): [Artist]
+
+  # List of curated genes that are broad collecting. (Meant for e.g. suggestions in on-boarding.)
+  broadCollectingGenes: [Gene]
+}
+
+# Autogenerated input type of HoldInventory
+input HoldInventoryInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  expiresInSeconds: Int
+  items: [InventoryHoldItemAttributes!]!
+
+  # Globally unique ID for the requester of this hold. Ex. Exchange Order ID.
+  referenceId: String!
+}
+
+# Autogenerated return type of HoldInventory
+type HoldInventoryPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  holdOrErrors: InventoryHoldOrErrorsUnion!
+}
+
+type HomePage {
+  # Single artist module to show on the home screen.
+  artistModule(
+    # Module identifier.
+    key: HomePageArtistModuleTypes
+  ): HomePageArtistModule
+
+  # Artist modules to show on the home screen
+  artistModules: [HomePageArtistModule]
+
+  # Single artwork module to show on the home screen
+  artworkModule(
+    # ID of followed artist to target for related artist rails
+    followedArtistID: String
+
+    # ID of generic gene rail to target
+    id: String
+
+    # Module key
+    key: String
+
+    # ID of related artist to target for related artist rails
+    relatedArtistID: String
+  ): HomePageArtworkModule
+
+  # Artwork modules to show on the home screen
+  artworkModules(
+    # Maximum number of followed genes to return, disable with a negative number
+    maxFollowedGeneRails: Int = 1
+
+    # Maximum number of modules to return, disable limit with a negative number
+    maxRails: Int = 8
+
+    # The preferred order of modules, defaults to order returned by Gravity
+    order: [HomePageArtworkModuleTypes]
+
+    # Exclude certain modules
+    exclude: [HomePageArtworkModuleTypes] = []
+  ): [HomePageArtworkModule]
+
+  # A list of enabled hero units to show on the requested platform
+  heroUnits(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
+  fairsModule: HomePageFairsModule
+}
+
+type HomePageArtistModule implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # Module identifier.
+  key: String
+  results: [Artist]
+}
+
+enum HomePageArtistModuleTypes {
+  # Artists recommended for the specific user.
+  SUGGESTED
+
+  # The trending artists.
+  TRENDING
+
+  # The most searched for artists.
+  POPULAR
+}
+
+type HomePageArtworkModule implements Node {
+  # A globally unique ID.
+  id: ID!
+  context: HomePageArtworkModuleContext
+  isDisplayable: Boolean
+  key: String
+  params: HomePageModulesParams
+  results: [Artwork]
+  title: String
+}
+
+union HomePageArtworkModuleContext =
+    Fair
+  | Gene
+  | Sale
+  | FollowArtists
+  | TrendingArtists
+  | HomePageFollowedArtistArtworkModule
+  | HomePageRelatedArtistArtworkModule
+
+enum HomePageArtworkModuleTypes {
+  FOLLOWED_GENES
+  GENERIC_GENES
+  ACTIVE_BIDS
+  CURRENT_FAIRS
+  FOLLOWED_ARTIST
+  FOLLOWED_ARTISTS
+  FOLLOWED_GALLERIES
+  LIVE_AUCTIONS
+  POPULAR_ARTISTS
+  RECOMMENDED_WORKS
+  RELATED_ARTISTS
+  SAVED_WORKS
+  RECENTLY_VIEWED_WORKS
+  SIMILAR_TO_RECENTLY_VIEWED
+  SIMILAR_TO_SAVED_WORKS
+}
+
+type HomePageFairsModule {
+  results: [Fair]!
+}
+
+type HomePageFollowedArtistArtworkModule {
+  artist: Artist
+}
+
+type HomePageHeroUnit {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  mode: HomePageHeroUnitMode
+  heading: String
+  href: String
+  title: String
+  titleImageURL(retina: Boolean): String
+  subtitle: String
+  linkText: String
+  creditLine: String
+
+  # The image to show, on desktop this defaults to the wide version.
+  backgroundImageURL(version: HomePageHeroUnitImageVersion): String
+}
+
+enum HomePageHeroUnitImageVersion {
+  WIDE
+  NARROW
+}
+
+enum HomePageHeroUnitMode {
+  LEFT_DARK
+  LEFT_LIGHT
+  CENTERED_DARK
+  CENTERED_LIGHT
+  RIGHT_DARK
+  RIGHT_LIGHT
+}
+
+enum HomePageHeroUnitPlatform {
+  MOBILE
+  DESKTOP
+  MARTSY
+}
+
+type HomePageModulesParams {
+  # An optional type-specific ID.
+  internalID: ID
+  followedArtistID: ID
+  geneID: String
+  medium: String
+  priceRange: String
+  relatedArtistID: ID
+}
+
+type HomePageRelatedArtistArtworkModule {
+  artist: Artist
+  basedOn: Artist
+}
+
+type Image {
+  # An optional type-specific ID.
+  internalID: ID
+  aspectRatio: Float!
+  caption: String
+  cropped(width: Int!, height: Int!, version: [String]): CroppedImageUrl
+  deepZoom: DeepZoom
+  href: String
+  height: Int
+  imageURL: String
+  imageVersions: [String]
+  isDefault: Boolean
+  isZoomable: Boolean
+  maxTiledHeight: Int
+  maxTiledWidth: Int
+  originalHeight: Int
+  originalWidth: Int
+  orientation: String
+
+  # Value to use when `padding-bottom` for fluid image placeholders
+  placeholder: String
+  position: Int
+  resized(width: Int, height: Int, version: [String]): ResizedImageUrl
+  tileBaseURL: String
+  tileFormat: String
+  tileSize: Int
+  title: String
+  width: Int
+  url(version: [String]): String
+  versions: [String]
+}
+
+enum Intents {
+  BUY_ART_AND_DESIGN
+  SELL_ART_AND_DESIGN
+  RESEARCH_ART_PRICES
+  LEARN_ABOUT_ART
+  FIND_ART_EXHIBITS
+  READ_ART_MARKET_NEWS
+}
+
+type InventoryHold {
+  capturedAt: String
+  id: ID!
+  items(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): InventoryHoldItemConnection
+  referenceId: String!
+}
+
+type InventoryHoldItem {
+  artworkId: String!
+  editionSetId: String
+  id: ID!
+  quantity: Int!
+}
+
+# Attributes for creating or updating an inventory hold item
+input InventoryHoldItemAttributes {
+  # ID of the artwork
+  artworkId: String!
+
+  # ID of edition set
+  editionSetId: String
+  quantity: Int!
+}
+
+# The connection type for InventoryHoldItem.
+type InventoryHoldItemConnection {
+  # A list of edges.
+  edges: [InventoryHoldItemEdge]
+
+  # A list of nodes.
+  nodes: [InventoryHoldItem]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type InventoryHoldItemEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: InventoryHoldItem
+}
+
+# A hold or error object
+union InventoryHoldOrErrorsUnion = Errors | InventoryHold
+
+# A hold or error object
+union InventoryHoldOrErrorUnion = Error | InventoryHold
+
+# Fields of an invoice (currently from Lewitt)
+type Invoice implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Lewitt's invoice id.
+  lewittInvoiceID: String!
+
+  # Link to public checkout page.
+  paymentURL: String
+
+  # Current state of invoice.
+  state: InvoiceState
+
+  # A formatted price with various currency formatting options.
+  total(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+enum InvoiceState {
+  UNPAID
+  PAID
+  VOID
+  REFUNDED
+}
+
+# Represents untyped JSON
+scalar JSON
+
+type LatLng {
+  lat: Float
+  lng: Float
+}
+
+union ListPrice = PriceRange | Money
+
+type Location {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  cached: Int
+  address: String
+  address2: String
+  city: String
+  country: String
+  coordinates: LatLng
+  daySchedules: [DaySchedule]
+
+  # Alternate Markdown-supporting free text representation of a location's opening hours
+  dayScheduleText: String
+
+  # Union returning opening hours in formatted structure or a string
+  openingHours: OpeningHoursUnion
+  display: String
+  phone: String
+  postalCode: String
+  state: String
+  summary: String
+}
+
+# A connection to a list of items.
+type LocationConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [LocationEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type LocationEdge {
+  # The item at the end of the edge
+  node: Location
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type LotStanding {
+  # Your bid if it is currently winning
+  activeBid: BidderPosition
+  bidder: Bidder
+
+  # You are winning and reserve is met
+  isHighestBidder: Boolean
+
+  # You are the leading bidder without regard to reserve
+  isLeadingBidder: Boolean
+
+  # Your most recent bid—which is not necessarily winning (may be higher or lower)
+  mostRecentBid: BidderPosition
+  sale: Sale
+  saleArtwork: SaleArtwork
+}
+
+# Object representing a collection page
+type MarketingCollection {
+  id: ID!
+  internalID: ID!
+
+  # slug version of title, used for pretty URLs (e.g. `kaws-prints` for Kaws Prints
+  slug: String!
+
+  # Name of the collection
+  title: String!
+
+  # Description of the collection which can include links to other collections
+  description: String
+
+  # Markdown alternate of description field contents.
+  descriptionMarkdown: String
+
+  # Background image for the header of the collection page
+  headerImage: String
+
+  # URL for Thumbnail image to be used when this collection is displayed.
+  thumbnail: String
+
+  # Set of keywords used for SEO purposes
+  keywords: String!
+
+  # Image credit for the header image
+  credit: String
+
+  # Category of the collection
+  category: String!
+
+  # Structured object used to build filtered artworks query
+  query: MarketingCollectionQuery!
+  createdAt: MarketingDateTime!
+  updatedAt: MarketingDateTime!
+
+  # Suggested average price for included works
+  price_guidance: Float @deprecated(reason: "Prefer priceGuidance")
+
+  # Suggested average price for included works
+  priceGuidance: Float
+
+  # Collection can be surfaced on editorial pages
+  show_on_editorial: Boolean! @deprecated(reason: "Prefer showOnEditorial")
+
+  # Collection can be surfaced on editorial pages
+  showOnEditorial: Boolean!
+
+  # Collection has prioritized connection to artist
+  is_featured_artist_content: Boolean! @deprecated(reason: "Prefer isFeaturedArtistContent")
+
+  # Collection has prioritized connection to artist
+  isFeaturedArtistContent: Boolean!
+
+  # CollectionGroups of this collection
+  linkedCollections: [MarketingCollectionGroup!]!
+
+  # IDs of artists that should be excluded from Featured Artists for this collection
+  featuredArtistExclusionIds: [String!]
+  relatedCollections: [MarketingCollection!]!
+  artworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+    marketable: Boolean
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+}
+
+type MarketingCollectionCategory {
+  name: String!
+  collections: [MarketingCollection!]!
+}
+
+type MarketingCollectionGroup {
+  internalID: ID
+  groupType: MarketingGroupTypes!
+  name: String!
+  members: [MarketingCollection!]!
+}
+
+type MarketingCollectionQuery {
+  id: ID
+  internalID: ID
+  acquireable: Boolean
+  aggregations: [String!]
+  artist_ids: [String!] @deprecated(reason: "Prefer artistIDs")
+  artistIDs: [String!]
+  artist_id: String @deprecated(reason: "Prefer artistID")
+  artistID: String
+  at_auction: Boolean @deprecated(reason: "Prefer atAuction")
+  atAuction: Boolean
+  color: String
+  dimension_range: String @deprecated(reason: "Prefer dimensionRange")
+  dimensionRange: String
+  extra_aggregation_gene_ids: [String!] @deprecated(reason: "prefer extraAggregationGeneIDs")
+  extraAggregationGeneIDs: [String!]
+  include_artworks_by_followed_artists: Boolean @deprecated(reason: "Prefer includeArtworksByFollowedArtists")
+  includeArtworksByFollowedArtists: Boolean
+  include_medium_filter_in_aggregation: Boolean @deprecated(reason: "Prefer includeMediumFilterInAggregation")
+  includeMediumFilterInAggregation: Boolean
+  inquireable_only: Boolean @deprecated(reason: "Prefer inquireableOnly")
+  inquireableOnly: Boolean
+  for_sale: Boolean @deprecated(reason: "Prefer forSale")
+  forSale: Boolean
+  gene_id: String @deprecated(reason: "Prefer geneID")
+  geneID: String
+  gene_ids: [String!] @deprecated(reason: "Prefer geneIDs")
+  geneIDs: [String!]
+  height: String
+  width: String
+  medium: String
+  period: String
+  periods: [String!]
+  major_periods: [String!] @deprecated(reason: "Prefer majorPeriods")
+  majorPeriods: [String!]
+  partner_id: ID @deprecated(reason: "Prefer partnerID")
+  partnerID: ID
+  partner_cities: [String!] @deprecated(reason: "Prefer partnerCities")
+  partnerCities: [String!]
+  price_range: String @deprecated(reason: "Prefer priceRange")
+  priceRange: String
+  page: Int
+  sale_id: ID @deprecated(reason: "Prefer saleID")
+  saleID: ID
+  size: Int
+  sort: String
+  tag_id: String @deprecated(reason: "Prefer tagID")
+  tagID: String
+  keyword: String
+}
+
+scalar MarketingDateTime
+
+# Available types of CollectionGroup
+enum MarketingGroupTypes {
+  ArtistSeries
+  FeaturedCollections
+  OtherCollections
+}
+
+type Me implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # A list of the current user’s consignment submissions
+  consignmentSubmissionsConnection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    completed: Boolean = true
+  ): ConsignmentSubmissionConnection
+
+  # A list of the current user’s inquiry requests
+  artworkInquiriesConnection(after: String, first: Int, before: String, last: Int): ArtworkInquiryConnection
+
+  # A list of the current user’s bidder registrations
+  bidders(
+    # The slug or ID of a Sale
+    saleID: String
+  ): [Bidder]
+
+  # The current user's status relating to bids on artworks
+  bidderStatus(artworkID: String!, saleID: String!): LotStanding
+
+  # A list of the current user's bidder positions
+  bidderPositions(
+    # Only the bidder positions on a specific artwork
+    artworkID: String
+
+    # Only the most recent bidder positions per artwork.
+    current: Boolean
+
+    # Only the bidder positions for a specific auction
+    saleID: String
+  ): [BidderPosition]
+
+  # Returns a single bidder position
+  bidderPosition(id: String!): BidderPositionResult
+
+  # A collector profile.
+  collectorProfile: CollectorProfileType
+
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): Conversation
+
+  # Conversations, usually between a user and partner.
+  conversationsConnection(after: String, first: Int, before: String, last: Int): ConversationConnection
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # A list of the current user’s credit cards
+  creditCards(after: String, first: Int, before: String, last: Int): CreditCardConnection
+  email: String
+  followsAndSaves: FollowsAndSaves
+  hasCreditCards: Boolean
+  hasQualifiedCreditCards: Boolean
+
+  # An invoice
+  invoice(
+    # The ID of the Conversation
+    conversationId: String!
+
+    # The ID of the invoice
+    invoiceId: String!
+  ): Invoice
+
+  # Sale Artworks search results
+  lotsByFollowedArtistsConnection(
+    aggregations: [SaleArtworkAggregation]
+    liveSale: Boolean
+    isAuction: Boolean
+    geneIDs: [String]
+    estimateRange: String
+    saleID: ID
+    sort: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworksConnection
+
+  # The current user's status relating to bids on artworks
+  lotStanding(artworkID: String, saleID: String, saleArtworkID: String): LotStanding
+
+  # A list of the current user's auction standings for given lots
+  lotStandings(
+    # Only includes lots on which you have a leading bidder position.
+    activePositions: Boolean
+
+    # Only the lot standings on a specific artwork
+    artworkID: String
+
+    # Only the lot standings for currently open or closed auctions.
+    live: Boolean
+
+    # Only the lot standings for a specific auction
+    saleID: String
+    saleArtworkID: String
+  ): [LotStanding]
+  name: String
+  initials(length: Int = 3): String
+  paddleNumber: String
+  recentlyViewedArtworkIds: [String]!
+
+  # A list of the current user’s recently viewed artworks.
+  recentlyViewedArtworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  type: String
+}
+
+# A message in a conversation.
+type Message implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Impulse message id.
+  impulseID: String!
+
+  # True if message is from the user to the partner.
+  isFromUser: Boolean
+  from: MessageInitiator
+
+  # Unaltered text if possible, otherwise `body`: a parsed/sanitized version from Sendgrid.
+  body: String
+  deliveries: [Delivery]
+  attachments: [Attachment]
+  invoice: Invoice
+
+  # True if message is an invoice message
+  isInvoice: Boolean
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+}
+
+# A connection to a list of items.
+type MessageConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [MessageEdge]
+}
+
+# An edge in a connection.
+type MessageEdge {
+  # The item at the end of the edge
+  node: Message
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# The participant who sent the message.
+type MessageInitiator {
+  name: String
+  email: String
+}
+
+type MetaphysicsService {
+  queryTracing: Boolean!
+  heapDumps: Boolean!
+  stitching: Boolean!
+  stitchingConvection: Boolean!
+  stitchingExchange: Boolean!
+  stitchingGravity: Boolean!
+  stitchingKaws: Boolean!
+  environment: String!
+}
+
+type Money {
+  # An amount of money expressed in minor units (like cents).
+  minor: Int!
+
+  # The ISO-4217 alphabetic currency code, as per https://en.wikipedia.org/wiki/ISO_4217
+  currencyCode: String!
+
+  # A pre-formatted price.
+  display: String
+
+  # An amount of money expressed in major units (like dollars).
+  major(
+    # ISO-4217 code of a destination currency for conversion
+    convertTo: String
+  ): Float!
+}
+
+type Mutation {
+  # Create an account request
+  createAccountRequest(input: CreateAccountRequestMutationInput!): CreateAccountRequestMutationPayload
+
+  # Create a bidder
+  createBidder(input: CreateBidderInput!): CreateBidderPayload
+
+  # Creates a bidder position
+  createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
+
+  # Create a credit card
+  createCreditCard(input: CreditCardInput!): CreditCardPayload
+
+  # Remove a credit card
+  deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
+
+  # Follow (or unfollow) an artist
+  followArtist(input: FollowArtistInput!): FollowArtistPayload
+
+  # Follow (or unfollow) a profile
+  followProfile(input: FollowProfileInput!): FollowProfilePayload
+
+  # Follow (or unfollow) an gene
+  followGene(input: FollowGeneInput!): FollowGenePayload
+
+  # Follow (or unfollow) a show
+  followShow(input: FollowShowInput!): FollowShowPayload
+
+  # Updating a collector profile (loyalty applicant status).
+  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+
+  # Update the current logged in user.
+  updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
+
+  # Update a conversation.
+  updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
+
+  # Appending a message to a conversation thread
+  sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
+
+  # Send a feedback message
+  sendFeedback(input: SendFeedbackMutationInput!): SendFeedbackMutationPayload
+
+  # Save (or remove) an artwork to (from) a users default collection.
+  saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
+
+  # Mark sale as ended.
+  endSale(input: EndSaleInput!): EndSalePayload
+
+  # Attach an gemini asset to a consignment submission
+  requestCredentialsForAssetUpload(
+    input: RequestCredentialsForAssetUploadInput!
+  ): RequestCredentialsForAssetUploadPayload
+
+  # Attach an gemini asset to a consignment submission
+  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
+
+  # Create a new consignment submission using Convection
+  createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
+
+  # Update a consignment using Convection
+  updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
+
+  # Attach an gemini asset to a consignment submission
+  addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
+  captureHold(input: CaptureHoldInput!): CaptureHoldPayload
+  holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
+  recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
+  requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
+  commerceAddInitialOfferToOrder(input: CommerceAddInitialOfferToOrderInput!): CommerceAddInitialOfferToOrderPayload
+  commerceApproveOrder(input: CommerceApproveOrderInput!): CommerceApproveOrderPayload
+  commerceBuyerAcceptOffer(input: CommerceBuyerAcceptOfferInput!): CommerceBuyerAcceptOfferPayload
+  commerceBuyerCounterOffer(input: CommerceBuyerCounterOfferInput!): CommerceBuyerCounterOfferPayload
+  commerceBuyerRejectOffer(input: CommerceBuyerRejectOfferInput!): CommerceBuyerRejectOfferPayload
+  commerceConfirmFulfillment(input: CommerceConfirmFulfillmentInput!): CommerceConfirmFulfillmentPayload
+  commerceConfirmPickup(input: CommerceConfirmPickupInput!): CommerceConfirmPickupPayload
+  commerceCreateOfferOrderWithArtwork(
+    input: CommerceCreateOfferOrderWithArtworkInput!
+  ): CommerceCreateOfferOrderWithArtworkPayload
+  commerceCreateOrderWithArtwork(input: CommerceCreateOrderWithArtworkInput!): CommerceCreateOrderWithArtworkPayload
+  commerceFixFailedPayment(input: CommerceFixFailedPaymentInput!): CommerceFixFailedPaymentPayload
+
+  # Fulfill an order with one Fulfillment, it sets this fulfillment to each line item in order
+  commerceFulfillAtOnce(input: CommerceFulfillAtOnceInput!): CommerceFulfillAtOncePayload
+  commerceRejectOrder(input: CommerceRejectOrderInput!): CommerceRejectOrderPayload
+  commerceSellerAcceptOffer(input: CommerceSellerAcceptOfferInput!): CommerceSellerAcceptOfferPayload
+  commerceSellerCounterOffer(input: CommerceSellerCounterOfferInput!): CommerceSellerCounterOfferPayload
+  commerceSellerRejectOffer(input: CommerceSellerRejectOfferInput!): CommerceSellerRejectOfferPayload
+  commerceSetPayment(input: CommerceSetPaymentInput!): CommerceSetPaymentPayload
+  commerceSetShipping(input: CommerceSetShippingInput!): CommerceSetShippingPayload
+  commerceSubmitOrder(input: CommerceSubmitOrderInput!): CommerceSubmitOrderPayload
+  commerceSubmitOrderWithOffer(input: CommerceSubmitOrderWithOfferInput!): CommerceSubmitOrderWithOfferPayload
+  commerceSubmitPendingOffer(input: CommerceSubmitPendingOfferInput!): CommerceSubmitPendingOfferPayload
+}
+
+input Near {
+  lat: Float!
+  lng: Float!
+  maxDistance: Float
+}
+
+# An object with a Globally Unique ID
+interface Node {
+  # A globally unique ID.
+  id: ID!
+}
+
+type OpeningHoursArray {
+  schedules: [FormattedDaySchedules]
+}
+
+type OpeningHoursText {
+  text: String
+}
+
+union OpeningHoursUnion = OpeningHoursArray | OpeningHoursText
+
+union OrderParty = Partner | User
+
+type organizer {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  profileID: ID
+  profile: Profile
+  website: String
+}
+
+type PageCursor {
+  cursor: String!
+  page: Int!
+  isCurrent: Boolean!
+}
+
+type PageCursors {
+  # Optional, may be included in `around` (if current page is near the beginning).
+  first: PageCursor
+
+  # Optional, may be included in `around` (if current page is near the end).
+  last: PageCursor
+
+  # Always includes current page
+  around: [PageCursor!]!
+  previous: PageCursor
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+}
+
+type Partner implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+
+  # A connection of artists at a partner.
+  artistsConnection(
+    sort: ArtistSorts
+    representedBy: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistPartnerConnection
+
+  # A connection of artworks from a Partner.
+  artworksConnection(
+    forSale: Boolean
+    sort: ArtworkSorts
+    exclude: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
+  categories: [PartnerCategory]
+  collectingInstitution: String
+  counts: PartnerCounts
+
+  # A list of the partners unique city locations
+  cities(size: Int = 25): [String]
+  defaultProfileID: String
+  hasFairPartnership: Boolean
+  href: String
+  initials(length: Int = 3): String
+  isDefaultProfilePublic: Boolean
+  isLinkable: Boolean
+  isPreQualify: Boolean
+
+  # This field is deprecated and is being used in Eigen release predating the 6.0 release
+  locations(size: Int = 25): [Location]
+    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
+
+  # A connection of locations from a Partner.
+  locationsConnection(after: String, first: Int, before: String, last: Int): LocationConnection
+  name: String
+  profile: Profile
+
+  # A connection of shows from a Partner.
+  showsConnection(
+    sort: ShowSorts
+
+    # Filter shows by chronological event status
+    status: EventStatus
+
+    # Only used when status is CLOSING_SOON or UPCOMING. Number of days used to filter upcoming and closing soon shows
+    dayThreshold: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+  type: String
+
+  # The gallery partner's web address
+  website: String
+
+  # Indicates the partner is a trusted seller on Artsy
+  isVerifiedSeller: Boolean
+  analytics: AnalyticsPartnerStats
+}
+
+type PartnerArtist {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  artist: Artist
+  biography: String
+  counts: PartnerArtistCounts
+  isDisplayOnPartnerProfile: Boolean
+  representedBy: Boolean
+  isUseDefaultBiography: Boolean
+  partner: Partner
+  sortableID: String
+}
+
+# A connection to a list of items.
+type PartnerArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [PartnerArtistEdge]
+}
+
+type PartnerArtistCounts {
+  artworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  forSaleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+# An edge in a connection.
+type PartnerArtistEdge {
+  # The item at the end of the edge
+  node: Partner
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  artist: Artist
+  biography: String
+  counts: PartnerArtistCounts
+  isDisplayOnPartnerProfile: Boolean
+  representedBy: Boolean
+  isUseDefaultBiography: Boolean
+  partner: Partner
+  sortableID: String
+}
+
+type PartnerArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
+type PartnerCategory {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  categoryType: PartnerCategoryType
+  name: String
+  internal: Boolean
+  partners(
+    defaultProfilePublic: Boolean
+    eligibleForCarousel: Boolean
+
+    # Indicates an active subscription
+    eligibleForListing: Boolean
+
+    # Indicates tier 1/2 for gallery, 1 for institution
+    eligibleForPrimaryBucket: Boolean
+
+    # Indicates tier 3/4 for gallery, 2 for institution
+    eligibleForSecondaryBucket: Boolean
+    ids: [String]
+    hasFullProfile: Boolean
+
+    # Coordinates to find partners closest to
+    near: String
+    page: Int
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #
+    partnerCategories: [String]
+    size: Int
+    sort: PartnersSortType
+
+    # term used for searching Partners
+    term: String
+    type: [PartnerClassification]
+  ): [Partner]
+}
+
+enum PartnerCategoryType {
+  GALLERY
+  INSTITUTION
+}
+
+enum PartnerClassification {
+  AUCTION
+  BRAND
+  DEMO
+  GALLERY
+  INSTITUTION
+  INSTITUTIONAL_SELLER
+  PRIVATE_COLLECTOR
+  PRIVATE_DEALER
+}
+
+type PartnerCounts {
+  artworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  artists(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  partnerArtists(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  eligibleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  publishedForSaleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  publishedNotForSaleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  shows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  displayableShows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  currentDisplayableShows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  artistDocuments(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  partnerShowDocuments(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+enum PartnerShowPartnerType {
+  GALLERY
+  MUSEUM
+}
+
+enum PartnersSortType {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  SORTABLE_ID_ASC
+  SORTABLE_ID_DESC
+  RELATIVE_SIZE_ASC
+  RELATIVE_SIZE_DESC
+  PUBLISHED_AT_DESC
+  RANDOM_SCORE_DESC
+}
+
+union PartnerTypes = Partner | ExternalPartner
+
+type PriceRange {
+  display: String
+  minPrice: Money
+  maxPrice: Money
+}
+
+type Profile {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  bio: String
+  counts: ProfileCounts
+  href: String
+  icon: Image
+  image: Image
+  initials(length: Int = 3): String
+  isFollowed: Boolean
+  isPublished: Boolean
+  name: String
+  isPubliclyVisible: Boolean
+}
+
+type ProfileCounts {
+  follows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+type Query {
+  # List of all artwork attribution classes
+  artworkAttributionClasses: [AttributionClass]
+
+  # An Artwork
+  artwork(
+    # The slug or ID of the Artwork
+    id: String!
+  ): Artwork
+
+  # Artworks Elastic Search results
+  artworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+
+  # An Artist
+  artist(
+    # The slug or ID of the Artist
+    id: String!
+  ): Artist
+
+  # A list of Artists
+  artists(
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    page: Int = 1
+    size: Int
+    sort: ArtistSorts
+  ): [Artist]
+
+  # A city-based entry point for local discovery
+  city(
+    # A slug for the city, conforming to Gravity's city slug naming conventions
+    slug: String
+
+    # A point which will be used to locate the nearest local discovery city within a threshold
+    near: Near
+  ): City
+
+  # A user's credit card
+  creditCard(
+    # The ID of the Credit Card
+    id: String!
+  ): CreditCard
+
+  # A Fair
+  fair(
+    # The slug or ID of the Fair
+    id: String!
+  ): Fair
+  gene(
+    # The slug or ID of the Gene
+    id: String!
+  ): Gene
+
+  # A list of Genes
+  genes(
+    size: Int
+
+    #
+    #         Only return genes matching specified slugs.
+    #         Accepts list of slugs.
+    #
+    slugs: [String]
+  ): [Gene]
+  highlights: Highlights
+
+  # Home screen content
+  homePage: HomePage
+  me: Me
+
+  # Fetches an object given its globally unique ID.
+  node(
+    # The globally unique ID of the node.
+    id: ID!
+  ): Node
+
+  # A Partner
+  partner(
+    # The slug or ID of the Partner
+    id: String!
+  ): Partner
+
+  # A Sale
+  sale(
+    # The slug or ID of the Sale
+    id: String!
+  ): Sale
+
+  # A list of Sales
+  salesConnection(
+    # Limit by auction.
+    isAuction: Boolean = true
+
+    # Limit by live status.
+    live: Boolean = true
+
+    # Limit by published status.
+    published: Boolean = true
+    sort: SaleSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleConnection
+
+  # Global search
+  searchConnection(
+    # Search query to perform. Required.
+    query: String!
+
+    # Entities to include in search. Default: [ARTIST, ARTWORK].
+    entities: [SearchEntity]
+
+    # Mode of search to execute. Default: SITE.
+    mode: SearchMode
+    aggregations: [SearchAggregation]
+
+    # If present, will be used for pagination instead of cursors.
+    page: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SearchableConnection
+
+  # A Show
+  show(
+    # The slug or ID of the Show
+    id: String!
+  ): Show
+
+  # Content for a specific page or view
+  staticContent(
+    # The slug or id for the view
+    id: String!
+  ): StaticContent
+
+  # Fields related to internal systems.
+  system: System
+  tag(
+    # The slug or ID of the Tag
+    id: String!
+  ): Tag
+  user(
+    # Email to search for user by
+    email: String
+
+    # ID of the user
+    id: String
+  ): User
+
+  # A wildcard used to support complex root queries in Relay
+  viewer: Viewer
+    @deprecated(reason: "Viewer has been deprecated in V2. Rely on root fields instead. [Will be removed in v2]")
+
+  # Autocomplete resolvers.
+  _unused_gravity_matchPartners(matchType: String, page: Int = 1, size: Int = 5, term: String!): [DoNotUseThisPartner!]
+
+  # Autocomplete resolvers.
+  _unused_gravity_match_partners(
+    match_type: String
+    page: Int = 1
+    size: Int = 5
+    term: String!
+  ): [DoNotUseThisPartner!] @deprecated(reason: "Use matchPartners")
+
+  # Find partners by IDs
+  _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
+
+  # Find list of competing orders
+  commerceCompetingOrders(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    orderId: ID!
+  ): CommerceOrderConnectionWithTotalCount
+  commerceLineItems(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+    artworkId: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+    editionSetId: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    orderStates: [CommerceOrderStateEnum!]
+  ): CommerceLineItemConnection
+
+  # Return my orders
+  commerceMyOrders(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    mode: CommerceOrderModeEnum
+    sellerId: String
+    sort: CommerceOrderConnectionSortEnum
+    state: CommerceOrderStateEnum
+  ): CommerceOrderConnectionWithTotalCount
+
+  # Find an order by ID
+  commerceOrder(code: String, id: ID): CommerceOrder
+
+  # Find list of orders
+  commerceOrders(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+    buyerId: String
+    buyerType: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    mode: CommerceOrderModeEnum
+    sellerId: String
+    sellerType: String
+    sort: CommerceOrderConnectionSortEnum
+    state: CommerceOrderStateEnum
+  ): CommerceOrderConnectionWithTotalCount
+
+  # Find PartnerStats
+  analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
+  marketingCollections(
+    category: String
+    randomizationSeed: String
+    size: Int
+    isFeaturedArtistContent: Boolean
+    showOnEditorial: Boolean
+    artistID: String
+  ): [MarketingCollection!]!
+  marketingCategories: [MarketingCollectionCategory!]!
+  marketingCollection(slug: String!): MarketingCollection
+  marketingHubCollections: [MarketingCollection!]!
+}
+
+# Autogenerated input type of RecordArtworkView
+input RecordArtworkViewInput {
+  artwork_id: String!
+
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+}
+
+# Autogenerated return type of RecordArtworkView
+type RecordArtworkViewPayload {
+  # Id of viewed artwork
+  artworkId: String!
+
+  # Id of viewed artwork
+  artwork_id: String! @deprecated(reason: "Use artworkId")
+
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+}
+
+enum RelatedArtistsKind {
+  MAIN
+  CONTEMPORARY
+}
+
+type RelatedArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
+# Autogenerated input type of RequestConditionReport
+input RequestConditionReportInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # ID of the sale artwork.
+  saleArtworkID: String!
+}
+
+# Autogenerated return type of RequestConditionReport
+type RequestConditionReportPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  conditionReportRequest: ConditionReportRequest!
+}
+
+input RequestCredentialsForAssetUploadInput {
+  # The gemini template you want to request
+  name: String!
+
+  # The desired access control
+  acl: String!
+  clientMutationId: String
+}
+
+type RequestCredentialsForAssetUploadPayload {
+  asset: Credentials
+  clientMutationId: String
+}
+
+type ResizedImageUrl {
+  factor: Float
+  width: Int
+  height: Int
+  url: String
+}
+
+# The conditions for uploading assets to media.artsy.net
+type S3PolicyConditionsType {
+  # The bucket to upload to.
+  bucket: String!
+
+  # The assigned access control
+  acl: String!
+
+  # A key which is prefixed on your file
+  geminiKey: String!
+
+  # The returned status code, currently always 201
+  successActionStatus: String!
+}
+
+# An policy for uploading assets to media.artsy.net
+type S3PolicyDocumentType {
+  # An expiration date string.
+  expiration: String!
+
+  # The details for the upload
+  conditions: S3PolicyConditionsType!
+}
+
+type Sale implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+
+  # Returns a connection of artworks for a sale.
+  artworksConnection(
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
+  associatedSale: Sale
+
+  # A bid increment policy that explains minimum bids in ranges.
+  bidIncrements: [BidIncrement]
+
+  # Auction's buyer's premium policy.
+  buyersPremium: [BuyersPremium]
+  coverImage: Image
+  currency: String
+  description: String
+  displayTimelyAt: String
+  eligibleSaleArtworksCount: Int
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  eventStartAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  eventEndAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # A formatted description of when the auction starts or ends or if it has ended
+  formattedStartDateTime: String
+  href: String
+  name: String
+  initials(length: Int = 3): String
+  isAuction: Boolean
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
+  isAuctionPromo: Boolean
+  isClosed: Boolean
+  isOpen: Boolean
+  isLiveOpen: Boolean
+  isPreview: Boolean
+  isPreliminary: Boolean
+  isRegistrationClosed: Boolean
+  isWithBuyersPremium: Boolean
+  liveStartAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  liveURLIfOpen: String
+  partner: Partner
+  profile: Profile
+  promotedSale: Sale
+  registrationEndsAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # A registration for this sale or null
+  registrationStatus: Bidder
+  requireBidderApproval: Boolean
+  saleArtworksConnection(
+    # List of sale artwork internal IDs to fetch
+    internalIDs: [ID]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworkConnection
+  saleType: String
+  startAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  status: String
+  saleArtwork(id: String!): SaleArtwork
+  symbol: String
+  timeZone: String
+}
+
+type SaleArtwork implements Node & ArtworkEdgeInterface {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  artwork: Artwork
+  node: Artwork
+  cursor: String
+  counts: SaleArtworkCounts
+
+  # Currency abbreviation (e.g. "USD")
+  currency: String
+  currentBid: SaleArtworkCurrentBid
+  estimate: String
+
+  # Singular estimate field, if specified
+  estimateCents: Int
+  highEstimate: SaleArtworkHighEstimate
+  highestBid: SaleArtworkHighestBid
+  increments(
+    # Whether or not to start the increments at the user's latest bid
+    useMyMaxBid: Boolean
+  ): [BidIncrementsFormatted]
+  isBidOn: Boolean
+
+  # Can bids be placed on the artwork?
+  isBiddable: Boolean
+  isWithReserve: Boolean
+  lotLabel: String
+  lowEstimate: SaleArtworkLowEstimate
+  minimumNextBid: SaleArtworkMinimumNextBid
+  openingBid: SaleArtworkOpeningBid
+  position: Float
+  reserve: SaleArtworkReserve
+  reserveMessage: String
+  reserveStatus: String
+  saleID: String
+  sale: Sale
+  calculatedCost(
+    # Max bid price for the sale artwork
+    bidAmountMinor: Int!
+  ): CalculatedCost
+
+  # Currency symbol (e.g. "$")
+  symbol: String
+}
+
+enum SaleArtworkAggregation {
+  ARTIST
+  FOLLOWED_ARTISTS
+  MEDIUM
+  TOTAL
+}
+
+# A connection to a list of items.
+type SaleArtworkConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleArtworkEdge]
+}
+
+type SaleArtworkCounts {
+  bidderPositions(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+type SaleArtworkCurrentBid {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+# An edge in a connection.
+type SaleArtworkEdge {
+  # The item at the end of the edge
+  node: SaleArtwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type SaleArtworkHighestBid {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  isCancelled: Boolean
+
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  cents: Int
+  display: String
+}
+
+type SaleArtworkHighEstimate {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+type SaleArtworkLowEstimate {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+type SaleArtworkMinimumNextBid {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+type SaleArtworkOpeningBid {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+type SaleArtworkReserve {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # An amount of money expressed in cents.
+  cents: Float
+
+  # A pre-formatted price.
+  display: String
+}
+
+# The results for one of the requested aggregations
+type SaleArtworksAggregationResults {
+  counts: [AggregationCount]
+  slice: SaleArtworkAggregation
+}
+
+# A connection to a list of items.
+type SaleArtworksConnection implements ArtworkConnectionInterface {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleArtwork]
+  pageCursors: PageCursors!
+  totalCount: Int
+
+  # Returns aggregation counts for the given filter query.
+  aggregations: [SaleArtworksAggregationResults]
+  counts: FilterSaleArtworksCounts
+}
+
+# A connection to a list of items.
+type SaleConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type SaleEdge {
+  # The item at the end of the edge
+  node: Sale
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+enum SaleSorts {
+  _ID_ASC
+  _ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  ELIGIBLE_SALE_ARTWORKS_COUNT_ASC
+  ELIGIBLE_SALE_ARTWORKS_COUNT_DESC
+  END_AT_ASC
+  END_AT_DESC
+  NAME_ASC
+  NAME_DESC
+  START_AT_ASC
+  START_AT_DESC
+  TIMELY_AT_NAME_ASC
+  TIMELY_AT_NAME_DESC
+}
+
+input SaveArtworkInput {
+  artworkID: String
+  remove: Boolean
+  clientMutationId: String
+}
+
+type SaveArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
+# A connection to a list of items.
+type SavedArtworksConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SavedArtworksEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+  description: String!
+  default: Boolean!
+  name: String!
+  private: Boolean!
+}
+
+# An edge in a connection.
+type SavedArtworksEdge {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# An object that may be searched for
+interface Searchable {
+  displayLabel: String
+  imageUrl: String
+  href: String
+}
+
+# A connection to a list of items.
+type SearchableConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SearchableEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+
+  # Returns aggregation counts for the given filter query.
+  aggregations: [SearchAggregationResults]
+}
+
+# An edge in a connection.
+type SearchableEdge {
+  # The item at the end of the edge
+  node: Searchable
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type SearchableItem implements Node & Searchable {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  description: String
+  displayLabel: String
+  imageUrl: String
+  href: String
+  displayType: String
+}
+
+enum SearchAggregation {
+  TYPE
+}
+
+# The results for a requested aggregations
+type SearchAggregationResults {
+  counts: [AggregationCount]
+  slice: SearchAggregation
+}
+
+enum SearchEntity {
+  ARTIST
+  ARTWORK
+  ARTICLE
+  CITY
+  COLLECTION
+  FAIR
+  FEATURE
+  GALLERY
+  GENE
+  INSTITUTION
+  PROFILE
+  SALE
+  SHOW
+  TAG
+}
+
+enum SearchMode {
+  AUTOSUGGEST
+  SITE
+}
+
+# A piece that can be sold
+interface Sellable {
+  dimensions: dimensions
+  editionOf: String
+
+  # Whether a piece can be purchased through e-commerce
+  isAcquireable: Boolean
+
+  # Whether a user can make an offer on the work
+  isOfferable: Boolean
+  isForSale: Boolean
+  isSold: Boolean
+  saleMessage: String
+}
+
+input SendConversationMessageMutationInput {
+  # The id of the conversation to be updated
+  id: String!
+
+  # The email address of the message sender
+  from: String!
+  bodyText: String!
+
+  # The message being replied to
+  replyToMessageID: String!
+  clientMutationId: String
+}
+
+type SendConversationMessageMutationPayload {
+  conversation: Conversation
+  messageEdge: MessageEdge
+  clientMutationId: String
+}
+
+type SendFeedbackMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input SendFeedbackMutationInput {
+  # Message to be sent.
+  message: String!
+
+  # Email to associate with message (only used if logged out).
+  email: String
+
+  # Name to associate with message (only used if logged out).
+  name: String
+
+  # URL of page where feedback originated.
+  url: String
+  clientMutationId: String
+}
+
+type SendFeedbackMutationPayload {
+  feedbackOrError: SendFeedbackMutationType
+  clientMutationId: String
+}
+
+type SendFeedbackMutationSuccess {
+  feedback: Feedback
+}
+
+union SendFeedbackMutationType = SendFeedbackMutationSuccess | SendFeedbackMutationFailure
+
+type Services {
+  convection: ConvectionService!
+  metaphysics: MetaphysicsService!
+}
+
+type Show implements Node & EntityWithFilterArtworksConnectionInterface {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+
+  # The Artists presenting in this show
+  artists: [Artist]
+
+  # The artworks featured in the show
+  artworksConnection(
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+    forSale: Boolean = false
+    published: Boolean = true
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
+
+  # Artists inside the show who do not have artworks present
+  artistsWithoutArtworks: [Artist]
+
+  # Artists in the show grouped by last name
+  artistsGroupedByName: [ArtistGroup]
+
+  # The general city, derived from a fair location, a show location or a potential city
+  city: String
+
+  # The image you should use to represent this show
+  coverImage: Image
+
+  # An object that represents some of the numbers you might want to highlight
+  counts: ShowCounts
+
+  # A description of the show
+  description: String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # Events from the partner that runs this show
+  events: [ShowEventType]
+
+  # A formatted description of the start to end dates
+  exhibitionPeriod: String
+
+  # If the show is in a Fair, then that fair
+  fair: Fair
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+
+  # A path to the show on Artsy
+  href: String
+
+  # Images that represent the show, you may be interested in meta_image or cover_image for a definitive thumbnail
+  images(
+    # Number of images to return
+    size: Int
+
+    # Pass true/false to include cover or not
+    default: Boolean
+    page: Int
+  ): [Image]
+
+  # Flag showing if show has any location.
+  hasLocation: Boolean
+
+  # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
+  isActive: Boolean
+
+  # Is this something we can display to the front-end?
+  isDisplayable: Boolean
+
+  # Does the show exist as a fair booth?
+  isFairBooth: Boolean
+
+  # Is it a show provided for historical reference?
+  isReference: Boolean
+
+  # Is it an outsourced local discovery stub show?
+  isStubShow: Boolean
+
+  # Whether the show is in a fair, group or solo
+  kind: String
+
+  # Where the show is located (Could also be a fair location)
+  location: Location
+
+  # An image representing the show, or a sharable image from an artwork in the show
+  metaImage: Image
+
+  # Is the user following this show
+  isFollowed: Boolean
+
+  # The exhibition title
+  name: String
+
+  # Shows that are near (~75km) from this show
+  nearbyShowsConnection(
+    sort: ShowSorts
+
+    # By default show only current shows
+    status: EventStatus = CURRENT
+
+    # Whether to include local discovery stubs as well as displayable shows
+    discoverable: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+
+  # Alternate Markdown-supporting free text representation of the opening reception event’s date/time
+  openingReceptionText: String
+
+  # The partner that represents this show, could be a non-Artsy partner
+  partner: PartnerTypes
+
+  # The press release for this show
+  pressRelease(format: Format): String
+
+  # Link to the press release for this show
+  pressReleaseUrl: String
+
+  # When this show starts
+  startAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # Is this show running, upcoming or closed?
+  status: String
+
+  # A formatted update on upcoming status changes
+  statusUpdate(
+    # Before this many days no update will be generated
+    maxDays: Int
+  ): String
+
+  # Is it a fair booth or a show?
+  type: String
+
+  # A Connection of followed artists by current user for this show
+  followedArtistsConnection(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
+}
+
+type ShowArtworkGrid implements ArtworkContextGrid {
+  title: String
+  ctaTitle: String
+  ctaHref: String
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+}
+
+# A connection to a list of items.
+type ShowConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ShowEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+type ShowCounts {
+  artworks(
+    # The slug or ID of an artist in the show.
+    artistID: String
+  ): Int
+  eligibleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  artists: Int
+}
+
+# An edge in a connection.
+type ShowEdge {
+  # The item at the end of the edge
+  node: Show
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ShowEventType {
+  eventType: String
+  description: String
+  title: String
+  startAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # A formatted description of the dates with hours
+  dateTimeRange: String
+
+  # A formatted description of the start to end dates
+  exhibitionPeriod: String
+}
+
+type ShowFollowArtist {
+  artist: Artist
+}
+
+# A connection to a list of items.
+type ShowFollowArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ShowFollowArtistEdge]
+}
+
+# An edge in a connection.
+type ShowFollowArtistEdge {
+  # The item at the end of the edge
+  node: ShowFollowArtist
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+enum ShowSorts {
+  START_AT_ASC
+  START_AT_DESC
+  END_AT_ASC
+  END_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  NAME_ASC
+  NAME_DESC
+  FEATURED_ASC
+  FEATURED_DESC
+  SORTABLE_NAME_ASC
+  SORTABLE_NAME_DESC
+  PARTNER_ASC
+}
+
+enum sort {
+  DESC
+  ASC
+}
+
+type StaticContent {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  name: String
+  content: String
+}
+
+enum SubmissionCategoryAggregation {
+  PAINTING
+  SCULPTURE
+  PHOTOGRAPHY
+  PRINT
+  DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER
+  MIXED_MEDIA
+  PERFORMANCE_ART
+  INSTALLATION
+  VIDEO_FILM_ANIMATION
+  ARCHITECTURE
+  FASHION_DESIGN_AND_WEARABLE_ART
+  JEWELRY
+  DESIGN_DECORATIVE_ART
+  TEXTILE_ARTS
+  OTHER
+}
+
+enum SubmissionDimensionAggregation {
+  CM
+  IN
+}
+
+enum SubmissionStateAggregation {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+type System {
+  # The schema for difference micro-service settings
+  services: Services
+
+  # Gravity system time, necessary for synchronizing device clocks.
+  time: SystemTime
+}
+
+type SystemTime {
+  day: Int
+  wday: Int
+  month: Int
+  year: Int
+  hour: Int
+  min: Int
+  sec: Int
+  dst: Boolean
+  unix: Int
+  utcOffset: Int
+  zone: String
+  iso8601: String
+}
+
+type Tag implements Node {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+  description: String
+  name: String
+  href: String
+  image: Image
+  count: Int
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+}
+
+type TrendingArtists {
+  artists: [Artist]
+}
+
+union UnderlyingCurrentEvent = Show | Sale
+
+input UpdateCollectorProfileInput {
+  loyaltyApplicant: Boolean
+  professionalBuyer: Boolean
+  selfReportedPurchases: String
+  intents: [Intents]
+  clientMutationId: String
+}
+
+type UpdateCollectorProfilePayload {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  email: String
+  name: String
+  confirmedBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  collectorLevel: Int
+  selfReportedPurchases: String
+  loyaltyApplicantAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  professionalBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  professionalBuyerAppliedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  intents: [String]
+  clientMutationId: String
+}
+
+input UpdateConversationMutationInput {
+  # The id of the conversation to be updated.
+  conversationId: String!
+
+  # The message id to mark as read.
+  fromLastViewedMessageId: String!
+  clientMutationId: String
+}
+
+type UpdateConversationMutationPayload {
+  conversation: Conversation
+  clientMutationId: String
+}
+
+input UpdateMyProfileInput {
+  # The given name of the user.
+  name: String
+
+  # The given email of the user.
+  email: String
+
+  # The given phone number of the user.
+  phone: String
+
+  # The given location of the user as structured data
+  location: EditableLocation
+
+  # The collector level for the user
+  collectorLevel: Int
+
+  # The minimum price collector has selected
+  priceRangeMin: Int
+
+  # The maximum price collector has selected
+  priceRangeMax: Float
+  clientMutationId: String
+}
+
+type UpdateMyProfilePayload {
+  user: User
+  clientMutationId: String
+}
+
+input UpdateSubmissionMutationInput {
+  # The GUID for the submission
+  id: String!
+
+  # The gravity ID for an Artist
+  artistID: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticityCertificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensionsMetric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  editionNumber: String
+
+  # The whole size of the set of works
+  editionSize: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  locationCity: String
+
+  # The country where the work currently resides
+  locationCountry: String
+
+  # The state where the work currently resides
+  locationState: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+
+  # The user who submitted the work
+  userID: ID
+  clientMutationId: String
+}
+
+type UpdateSubmissionMutationPayload {
+  consignmentSubmission: ConsignmentSubmission
+  clientMutationId: String
+}
+
+type User {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  cached: Int
+
+  # The given name of the user.
+  name: String!
+
+  # The given email of the user.
+  email: String!
+
+  # The given phone number of the user.
+  phone: String
+
+  # The given location of the user as structured data
+  location: Location
+
+  # The price range the collector has selected
+  priceRange: String
+
+  # Pin for bidding at an auction
+  pin: String
+
+  # The paddle number of the user
+  paddleNumber: String
+
+  # Check whether a user exists by email address before creating an account.
+  userAlreadyExists: Boolean
+}
+
+# A wildcard used to support complex root queries in Relay
+type Viewer {
+  # List of all artwork attribution classes
+  artworkAttributionClasses: [AttributionClass]
+
+  # An Artwork
+  artwork(
+    # The slug or ID of the Artwork
+    id: String!
+  ): Artwork
+
+  # Artworks Elastic Search results
+  artworksConnection(
+    acquireable: Boolean
+    offerable: Boolean
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    color: String
+    dimensionRange: String
+    extraAggregationGeneIDs: [String]
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    majorPeriods: [String]
+    partnerID: ID
+    partnerCities: [String]
+    priceRange: String
+    page: Int
+    saleID: ID
+    size: Int
+    sort: String
+    tagID: String
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FilterArtworksConnection
+
+  # An Artist
+  artist(
+    # The slug or ID of the Artist
+    id: String!
+  ): Artist
+
+  # A list of Artists
+  artists(
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    page: Int = 1
+    size: Int
+    sort: ArtistSorts
+  ): [Artist]
+
+  # A city-based entry point for local discovery
+  city(
+    # A slug for the city, conforming to Gravity's city slug naming conventions
+    slug: String
+
+    # A point which will be used to locate the nearest local discovery city within a threshold
+    near: Near
+  ): City
+
+  # A user's credit card
+  creditCard(
+    # The ID of the Credit Card
+    id: String!
+  ): CreditCard
+
+  # A Fair
+  fair(
+    # The slug or ID of the Fair
+    id: String!
+  ): Fair
+  gene(
+    # The slug or ID of the Gene
+    id: String!
+  ): Gene
+
+  # A list of Genes
+  genes(
+    size: Int
+
+    #
+    #         Only return genes matching specified slugs.
+    #         Accepts list of slugs.
+    #
+    slugs: [String]
+  ): [Gene]
+  highlights: Highlights
+
+  # Home screen content
+  homePage: HomePage
+  me: Me
+
+  # Fetches an object given its globally unique ID.
+  node(
+    # The globally unique ID of the node.
+    id: ID!
+  ): Node
+
+  # A Partner
+  partner(
+    # The slug or ID of the Partner
+    id: String!
+  ): Partner
+
+  # A Sale
+  sale(
+    # The slug or ID of the Sale
+    id: String!
+  ): Sale
+
+  # A list of Sales
+  salesConnection(
+    # Limit by auction.
+    isAuction: Boolean = true
+
+    # Limit by live status.
+    live: Boolean = true
+
+    # Limit by published status.
+    published: Boolean = true
+    sort: SaleSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleConnection
+
+  # Global search
+  searchConnection(
+    # Search query to perform. Required.
+    query: String!
+
+    # Entities to include in search. Default: [ARTIST, ARTWORK].
+    entities: [SearchEntity]
+
+    # Mode of search to execute. Default: SITE.
+    mode: SearchMode
+    aggregations: [SearchAggregation]
+
+    # If present, will be used for pagination instead of cursors.
+    page: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SearchableConnection
+
+  # A Show
+  show(
+    # The slug or ID of the Show
+    id: String!
+  ): Show
+
+  # Content for a specific page or view
+  staticContent(
+    # The slug or id for the view
+    id: String!
+  ): StaticContent
+
+  # Fields related to internal systems.
+  system: System
+  tag(
+    # The slug or ID of the Tag
+    id: String!
+  ): Tag
+  user(
+    # Email to search for user by
+    email: String
+
+    # ID of the user
+    id: String
+  ): User
+}

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<ArtistArtworks
+  artist={
+    Object {
+      "counts": Object {
+        "artworks": 5,
+        "for_sale_artworks": 2,
+      },
+    }
+  }
+/>
+`;

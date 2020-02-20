@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<ArtistHeader
+  artist={
+    Object {
+      "birthday": "11/17/1992",
+      "counts": Object {
+        "follows": 22,
+      },
+      "id": "marcel-duchamp",
+      "internalID": "some-id",
+      "name": "Marcel Duchamp",
+      "nationality": "French",
+    }
+  }
+/>
+`;

@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "alignSelf": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "width": 708,
+        },
+      ],
+      Object {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View
+    active={false}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderColor": "#e5e5e5",
+          "borderRadius": 3,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 0,
+        },
+      ]
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      autoFocus={false}
+      keyboardAppearance="dark"
+      multiline={true}
+      onChangeText={[Function]}
+      onEndEditing={[Function]}
+      onFocus={[Function]}
+      placeholder="Reply..."
+      placeholderTextColor="#666666"
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "flex": 1,
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
+          "fontSize": 13,
+          "paddingBottom": 10,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 13,
+        }
+      }
+      underlineColorAndroid="transparent"
+      value={null}
+    />
+    <Text
+      accessible={true}
+      disabled={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "#e5e5e5",
+            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 12,
+            "marginRight": 10,
+          },
+        ]
+      }
+    >
+      Send
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`regarding the send button disables it even if it contains text if the disabled prop is true 1`] = `ShallowWrapper {}`;
+
+exports[`regarding the send button disables it when there is no text 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "alignSelf": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "width": 708,
+        },
+      ],
+      Object {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View
+    active={false}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderColor": "#e5e5e5",
+          "borderRadius": 3,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 0,
+        },
+      ]
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      autoFocus={false}
+      keyboardAppearance="dark"
+      multiline={true}
+      onChangeText={[Function]}
+      onEndEditing={[Function]}
+      onFocus={[Function]}
+      placeholder="Reply..."
+      placeholderTextColor="#666666"
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "flex": 1,
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
+          "fontSize": 13,
+          "paddingBottom": 10,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 13,
+        }
+      }
+      underlineColorAndroid="transparent"
+      value={null}
+    />
+    <Text
+      accessible={true}
+      disabled={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "#e5e5e5",
+            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 12,
+            "marginRight": 10,
+          },
+        ]
+      }
+    >
+      Send
+    </Text>
+  </View>
+</View>
+`;

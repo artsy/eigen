@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "height": 1,
+        "marginLeft": -40,
+        "marginRight": -40,
+      },
+      undefined,
+    ]
+  }
+/>
+`;

@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  style={
+    Object {
+      "width": 320,
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "width": 300,
+      }
+    }
+  >
+    <AROpaqueImageView
+      imageURL="artsy.net/image-url"
+      style={
+        Object {
+          "height": 175,
+          "width": 300,
+        }
+      }
+    />
+    <Text
+      ellipsizeMode="tail"
+      fontFamily="ReactNativeAGaramondPro-Regular"
+      fontSize="16px"
+      lineHeight="24px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 16,
+            "lineHeight": 24,
+          },
+          Object {},
+        ]
+      }
+    >
+      Something Happened
+    </Text>
+    <Text
+      color="#666"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          Object {},
+        ]
+      }
+    >
+      John Berger
+    </Text>
+  </View>
+</View>
+`;

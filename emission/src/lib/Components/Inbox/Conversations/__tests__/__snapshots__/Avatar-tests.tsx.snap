@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct for a user with two initials 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "borderRadius": 15,
+        "height": 30,
+        "width": 30,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "white",
+          "fontFamily": "AvantGardeGothicITC",
+          "fontSize": 10,
+          "marginTop": 8,
+        },
+      ]
+    }
+    user={true}
+  >
+    MC
+  </Text>
+</View>
+`;

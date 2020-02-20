@@ -1,0 +1,708 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<RCTScrollView
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+    ]
+  }
+>
+  <RCTRefreshControl />
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "marginBottom": 40,
+            "marginTop": 20,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 30,
+              "paddingLeft": 20,
+              "paddingRight": 20,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "marginBottom": -10,
+              },
+            ],
+            Object {
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Active Bids
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "alignSelf": "center",
+              "height": 120,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "width": 708,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexBasis": 0,
+                "flexDirection": "row",
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+            ]
+          }
+        >
+          <AROpaqueImageView
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 80,
+                  "width": 80,
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "justifyContent": "center",
+                  "marginBottom": 0,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "marginTop": 0,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontSize": 11,
+                    "textAlign": "left",
+                  },
+                  Array [
+                    Object {
+                      "color": "#f7625a",
+                      "marginBottom": 3,
+                    },
+                  ],
+                  Object {
+                    "fontFamily": "AvantGardeGothicITC",
+                  },
+                ]
+              }
+            >
+              OUTBID
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  Object {},
+                  Object {
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              Lot 14 · undefined 
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  Object {},
+                  Object {
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              $1,100 (1 Bid)
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "width": "100%",
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "alignSelf": "center",
+              "height": 120,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "width": 708,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexBasis": 0,
+                "flexDirection": "row",
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+            ]
+          }
+        >
+          <AROpaqueImageView
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 80,
+                  "width": 80,
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "justifyContent": "center",
+                  "marginBottom": 0,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "marginTop": 0,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontSize": 11,
+                    "textAlign": "left",
+                  },
+                  Array [
+                    Object {
+                      "color": "#f7625a",
+                      "marginBottom": 3,
+                    },
+                  ],
+                  Object {
+                    "fontFamily": "AvantGardeGothicITC",
+                  },
+                ]
+              }
+            >
+              OUTBID
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  Object {},
+                  Object {
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              Lot 8 · undefined 
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  Object {},
+                  Object {
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              $10,000 (1 Bid)
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "width": "100%",
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "alignSelf": "center",
+              "height": 120,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "width": 708,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexBasis": 0,
+                "flexDirection": "row",
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+            ]
+          }
+        >
+          <AROpaqueImageView
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 80,
+                  "width": 80,
+                },
+              ]
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "justifyContent": "center",
+                  "marginBottom": 0,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "marginTop": 0,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontSize": 11,
+                    "textAlign": "left",
+                  },
+                  Array [
+                    Object {
+                      "color": "#f7625a",
+                      "marginBottom": 3,
+                    },
+                  ],
+                  Object {
+                    "fontFamily": "AvantGardeGothicITC",
+                  },
+                ]
+              }
+            >
+              OUTBID
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  Object {},
+                  Object {
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              Lot 2 · undefined 
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  Object {},
+                  Object {
+                    "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              $5,000 (1 Bid)
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "width": "100%",
+              },
+            ]
+          }
+        />
+      </View>
+    </View>
+    <Conversations
+      componentRef={[Function]}
+      me={
+        Object {
+          "conversations": Object {
+            "edges": Array [
+              Object {
+                "node": Object {
+                  "created_at": "2017-06-01T14:14:35.538Z",
+                  "from": Object {
+                    "email": "luc+messaging@artsymail.com",
+                    "name": "Jean-Luc Collecteur",
+                  },
+                  "id": "582",
+                  "inquiry_id": "59302144275b244a81d0f9c6",
+                  "items": Array [
+                    Object {
+                      "item": Object {
+                        "__typename": "Artwork",
+                        "artist_names": "Bradley Theodore",
+                        "date": "2016",
+                        "href": "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
+                        "id": "bradley-theodore-karl-and-anna-face-off-diptych",
+                        "image": Object {
+                          "image_url": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+                          "url": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+                        },
+                        "title": "Karl and Anna Face Off (Diptych)",
+                      },
+                      "title": "Karl and Anna Face Off (Diptych)",
+                    },
+                  ],
+                  "last_message": "Karl and Anna... Fab!",
+                  "to": Object {
+                    "name": "ACA Galleries",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "created_at": "2017-06-01T14:12:19.155Z",
+                  "from": Object {
+                    "email": "luc+messaging@artsymail.com",
+                    "name": "Jean-Luc Collecteur",
+                  },
+                  "id": "581",
+                  "inquiry_id": "593020be8b3b814f9f86f2fd",
+                  "items": Array [
+                    Object {
+                      "item": Object {
+                        "__typename": "Artwork",
+                        "artist_names": "Aida Muluneh",
+                        "date": "2016",
+                        "href": "/artwork/aida-muluneh-darkness-give-way-to-light-1",
+                        "id": "aida-muluneh-darkness-give-way-to-light-1",
+                        "image": Object {
+                          "image_url": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+                          "url": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
+                        },
+                        "title": "Darkness Give Way to Light",
+                      },
+                      "title": "Darkness Give Way to Light",
+                    },
+                  ],
+                  "last_message": "Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?",
+                  "to": Object {
+                    "name": "David Krut Projects",
+                  },
+                },
+              },
+            ],
+          },
+          "conversations_existence_check": Object {
+            "edges": Array [
+              Object {
+                "node": Object {
+                  "created_at": "2017-06-01T14:14:35.538Z",
+                  "from": Object {
+                    "email": "luc+messaging@artsymail.com",
+                    "name": "Jean-Luc Collecteur",
+                  },
+                  "id": "582",
+                  "inquiry_id": "59302144275b244a81d0f9c6",
+                  "items": Array [
+                    Object {
+                      "item": Object {
+                        "__typename": "Artwork",
+                        "artist_names": "Bradley Theodore",
+                        "date": "2016",
+                        "href": "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
+                        "id": "bradley-theodore-karl-and-anna-face-off-diptych",
+                        "image": Object {
+                          "image_url": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+                          "url": "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+                        },
+                        "title": "Karl and Anna Face Off (Diptych)",
+                      },
+                      "title": "Karl and Anna Face Off (Diptych)",
+                    },
+                  ],
+                  "last_message": "Karl and Anna... Fab!",
+                  "to": Object {
+                    "name": "ACA Galleries",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "created_at": "2017-06-01T14:12:19.155Z",
+                  "from": Object {
+                    "email": "luc+messaging@artsymail.com",
+                    "name": "Jean-Luc Collecteur",
+                  },
+                  "id": "581",
+                  "inquiry_id": "593020be8b3b814f9f86f2fd",
+                  "items": Array [
+                    Object {
+                      "item": Object {
+                        "__typename": "Artwork",
+                        "artist_names": "Aida Muluneh",
+                        "date": "2016",
+                        "href": "/artwork/aida-muluneh-darkness-give-way-to-light-1",
+                        "id": "aida-muluneh-darkness-give-way-to-light-1",
+                        "image": Object {
+                          "image_url": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+                          "url": "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
+                        },
+                        "title": "Darkness Give Way to Light",
+                      },
+                      "title": "Darkness Give Way to Light",
+                    },
+                  ],
+                  "last_message": "Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?",
+                  "to": Object {
+                    "name": "David Krut Projects",
+                  },
+                },
+              },
+            ],
+          },
+          "lot_standings": Array [
+            Object {
+              "most_recent_bid": Object {
+                "display_max_bid_amount_dollars": "$1,100",
+                "gravityID": "594934048b3b8174796e285a",
+                "id": "594934048b3b8174796e285a",
+                "max_bid": Object {
+                  "cents": 110000,
+                  "display": "$1,100",
+                },
+                "sale_artwork": Object {
+                  "artwork": Object {
+                    "artist": Object {
+                      "name": "Josephine Meckseper",
+                    },
+                    "id": "josephine-meckseper-untitled-flag-2-2017",
+                    "image": Object {
+                      "image_url": "https://d32dm0rphc51dk.cloudfront.net/3N6jyj5G_jjzYbkwbIM4tA/:version.jpg",
+                    },
+                    "title": "Untitled (Flag 2), 2017",
+                  },
+                  "counts": Object {
+                    "bidder_positions": 1,
+                  },
+                  "highest_bid": Object {
+                    "cents": 110000,
+                    "display": "$1,100",
+                  },
+                  "lot_label": "14",
+                  "lot_number": "14",
+                  "position": 14,
+                },
+              },
+            },
+            Object {
+              "most_recent_bid": Object {
+                "display_max_bid_amount_dollars": "$10,000",
+                "gravityID": "594933e6275b244305851e9c",
+                "id": "594933e6275b244305851e9c",
+                "max_bid": Object {
+                  "cents": 1000000,
+                  "display": "$10,000",
+                },
+                "sale_artwork": Object {
+                  "artwork": Object {
+                    "artist": Object {
+                      "name": "Robert Longo",
+                    },
+                    "id": "robert-longo-untitled-dividing-time",
+                    "image": Object {
+                      "image_url": "https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/:version.jpg",
+                    },
+                    "title": "Untitled (Dividing Time)",
+                  },
+                  "counts": Object {
+                    "bidder_positions": 1,
+                  },
+                  "highest_bid": Object {
+                    "cents": 1000000,
+                    "display": "$10,000",
+                  },
+                  "lot_label": "8",
+                  "lot_number": "8",
+                  "position": 8,
+                },
+              },
+            },
+            Object {
+              "most_recent_bid": Object {
+                "display_max_bid_amount_dollars": "$5,000",
+                "gravityID": "594932d0275b244305851e99",
+                "id": "594932d0275b244305851e99",
+                "max_bid": Object {
+                  "cents": 500000,
+                  "display": "$5,000",
+                },
+                "sale_artwork": Object {
+                  "artwork": Object {
+                    "artist": Object {
+                      "name": "Trevor Paglen",
+                    },
+                    "id": "trevor-paglen-weeping-angel",
+                    "image": Object {
+                      "image_url": "https://d32dm0rphc51dk.cloudfront.net/W-XblMAGxZJbhx0FfH1HtQ/:version.jpg",
+                    },
+                    "title": "Weeping Angel",
+                  },
+                  "counts": Object {
+                    "bidder_positions": 1,
+                  },
+                  "highest_bid": Object {
+                    "cents": 500000,
+                    "display": "$5,000",
+                  },
+                  "lot_label": "2",
+                  "lot_number": "2",
+                  "position": 2,
+                },
+              },
+            },
+          ],
+        }
+      }
+    />
+  </View>
+</RCTScrollView>
+`;

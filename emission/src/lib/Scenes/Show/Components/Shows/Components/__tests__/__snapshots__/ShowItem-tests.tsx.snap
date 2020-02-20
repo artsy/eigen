@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "opacity": 1,
+    }
+  }
+>
+  <View
+    height={200}
+    mr={2}
+    my={15}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "height": 200,
+          "marginBottom": 15,
+          "marginRight": 20,
+          "marginTop": 15,
+          "width": 650,
+        },
+      ]
+    }
+    width={650}
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/6HYZ-tKaXLrcqXCfYxNZQQ/large.jpg"
+      style={
+        Array [
+          Object {
+            "height": 120,
+            "width": "100%",
+          },
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+          },
+        ]
+      }
+    />
+    <View
+      my={2}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 20,
+            "marginTop": 20,
+          },
+        ]
+      }
+    >
+      <Text
+        fontFamily="Unica77LL-Medium"
+        fontSize="12px"
+        lineHeight="16px"
+        mb={0.5}
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 12,
+              "lineHeight": 16,
+              "marginBottom": 5,
+            },
+            Object {},
+          ]
+        }
+      >
+        Delicate Power: The Delicacy and Complexity of Egg Tempera
+      </Text>
+      <Text
+        color="black60"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="14px"
+        lineHeight="18px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 14,
+              "lineHeight": 18,
+            },
+            Object {},
+          ]
+        }
+      >
+        J. Cacciola Gallery
+      </Text>
+      <Text
+        color="black60"
+        fontFamily="ReactNativeAGaramondPro-Regular"
+        fontSize="14px"
+        lineHeight="18px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "ReactNativeAGaramondPro-Regular",
+              "fontSize": 14,
+              "lineHeight": 18,
+            },
+            Object {},
+          ]
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

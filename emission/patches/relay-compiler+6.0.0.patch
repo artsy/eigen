@@ -1,0 +1,41 @@
+diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
+index d0ae8f5..3d47c54 100755
+--- a/node_modules/relay-compiler/bin/relay-compiler
++++ b/node_modules/relay-compiler/bin/relay-compiler
+@@ -335,7 +335,7 @@ function highlightSourceAtLocation(source, location) {
+   var columnOffset = location.line === 1 ? firstLineColumnOffset : 0;
+   var columnNum = location.column + columnOffset;
+   var lines = body.split(/\r\n|[\n\r]/g);
+-  return "".concat(source.name, " (").concat(lineNum, ":").concat(columnNum, ")\n") + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
++  return "".concat(source.name, ":").concat(lineNum, ":").concat(columnNum, "\n") + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
+   ["".concat(lineNum - 1, ": "), lines[lineIndex - 1]], ["".concat(lineNum, ": "), lines[lineIndex]], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1, ": "), lines[lineIndex + 1]]]);
+ }
+ 
+@@ -15265,10 +15265,10 @@ module.exports = function (tagFinder) {
+ 
+     var astDefinitions = [];
+     var sources = [];
+-    memoizedTagFinder(text, baseDir, file).forEach(function (template) {
+-      var source = new GraphQL.Source(template, file.relPath);
++    memoizedTagFinder(text, baseDir, file).forEach(function (tag) {
++      var source = new GraphQL.Source(tag.template, path.join(path.relative(process.cwd(), baseDir), file.relPath), tag.sourceLocationOffset);
+       var ast = parseGraphQL(source);
+-      !ast.definitions.length ?  true ? invariant(false, 'RelaySourceModuleParser: Expected GraphQL text to contain at least one ' + 'definition (fragment, mutation, query, subscription), got `%s`.', template) : undefined : void 0;
++      !ast.definitions.length ?  true ? invariant(false, 'RelaySourceModuleParser: Expected GraphQL text to contain at least one ' + 'definition (fragment, mutation, query, subscription), got `%s`.', tag.template) : undefined : void 0;
+       sources.push(source.body);
+       astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
+     });
+@@ -15352,9 +15352,10 @@ function find(tagFinder, text, absPath) {
+   tags.forEach(function (tag) {
+     return validateTemplate(tag, moduleName, absPath);
+   });
+-  return tags.map(function (tag) {
+-    return tag.template;
+-  });
++  return tags;
++  // return tags.map(function (tag) {
++  //   return tag.template;
++  // });
+ }
+ 
+ function validateTemplate(_ref, moduleName, filePath) {

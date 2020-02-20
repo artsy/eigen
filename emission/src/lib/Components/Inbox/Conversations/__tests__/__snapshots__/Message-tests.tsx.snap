@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "paddingLeft": 20,
+        "paddingRight": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignSelf": "stretch",
+          "flexDirection": "row",
+          "marginBottom": 10,
+          "marginTop": 15,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "borderRadius": 15,
+            "height": 30,
+            "width": 30,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "alignSelf": "center",
+              "color": "white",
+              "fontFamily": "AvantGardeGothicITC",
+              "fontSize": 10,
+              "marginTop": 8,
+            },
+          ]
+        }
+        user={true}
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginTop": 7,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignSelf": "stretch",
+              "flexDirection": "row",
+              "marginBottom": 10,
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 11,
+                "textAlign": "left",
+              },
+              false,
+              Array [
+                Object {
+                  "fontSize": 11.5,
+                  "marginRight": 6,
+                },
+              ],
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+              },
+            ]
+          }
+        >
+          SARAH
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#cccccc",
+                "fontSize": 11,
+                "textAlign": "left",
+              },
+              Array [
+                Object {
+                  "color": "#cccccc",
+                  "fontSize": 11.5,
+                },
+              ],
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+              },
+            ]
+          }
+        >
+          A YEAR AGO
+        </Text>
+      </View>
+      <View
+        linkStyle={
+          Object {
+            "color": "#6e1fff",
+            "textDecorationLine": "underline",
+          }
+        }
+        onPress={[Function]}
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 16,
+                "textAlign": "left",
+              },
+              false,
+              Object {},
+              Object {
+                "fontFamily": "ReactNativeAGaramondPro-Regular",
+              },
+            ]
+          }
+        >
+          Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

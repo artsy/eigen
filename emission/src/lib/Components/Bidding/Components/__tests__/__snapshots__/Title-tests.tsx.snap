@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<Text
+  fontFamily="ReactNativeAGaramondPro-Semibold"
+  fontSize="22px"
+  lineHeight="28px"
+  m={4}
+  style={
+    Array [
+      Object {
+        "fontFamily": "ReactNativeAGaramondPro-Semibold",
+        "fontSize": 22,
+        "lineHeight": 28,
+        "marginBottom": 20,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 20,
+        "textAlign": "center",
+      },
+      Object {},
+    ]
+  }
+  textAlign="center"
+>
+  Confirm your bid
+</Text>
+`;

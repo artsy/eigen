@@ -1,0 +1,45 @@
+patch-package
+--- a/node_modules/relay-mock-network-layer/index.js
++++ b/node_modules/relay-mock-network-layer/index.js
+@@ -24,6 +24,7 @@ module.exports = function getNetworkLayer({
+     mocks,
+     resolvers,
+     resolveQueryFromOperation,
++    fieldResolver,
+
+     /** https://www.apollographql.com/docs/graphql-tools/mocking.html#Mocking-interfaces */
+     preserveResolvers = false,
+@@ -51,7 +52,9 @@ module.exports = function getNetworkLayer({
+         });
+
+         // Add mocks, modifies schema in place
+-        addMockFunctionsToSchema({ schema: executableSchema, mocks, preserveResolvers });
++        if (mocks) {
++            addMockFunctionsToSchema({ schema: executableSchema, mocks, preserveResolvers, defaultFieldResolver: fieldResolver });
++        }
+
+         const query =
+             (resolveQueryFromOperation && resolveQueryFromOperation(operation)) || operation.text;
+@@ -62,7 +65,15 @@ module.exports = function getNetworkLayer({
+             );
+         }
+
+-        return graphql(executableSchema, query, null, null, variableValues).then(
++        return graphql(
++            executableSchema,
++            query,
++            null,
++            null,
++            variableValues,
++            null,
++            fieldResolver
++        ).then(
+             // Trigger Relay error in case of GraphQL errors (or errors in mutation response)
+             // See https://github.com/facebook/relay/issues/1816
+
+@@ -74,4 +85,4 @@ module.exports = function getNetworkLayer({
+             }
+         );
+     };
+-}
++};

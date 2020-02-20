@@ -11,7 +11,6 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '12.0'
 inhibit_all_warnings!
 
-EMISSION_VERSION = '1.21.49'
 require 'down'
 require 'json'
 require 'fileutils'
@@ -23,42 +22,14 @@ installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
 npm_vendored_podspecs = {}
 if installing_pods
-  system 'mkdir rn_pods' unless File.exists?('./rn_pods')
+  system 'pushd emission; yarn install --ignore-engines; popd'
 
-  # Check if the version we're installing is the same as what we already have installed.
-  needs_install = true # Assume it's true until we know otherwise
-  if File.exists? './rn_pods/package.json'
-    emission_package = JSON.parse(File.read('./rn_pods/package.json'), symbolize_names: true)
-    needs_install = emission_package[:version] != EMISSION_VERSION
-  end
-
-  if needs_install
-    puts 'Installing Emission packages to reference locally.'
-    system 'rm -rf rn_pods/*' # Clear all existing pods.
-
-    tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/package.json")
-    FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
-
-    emission_package = JSON.parse(File.read('./rn_pods/package.json'), symbolize_names: true)
-    emission_package.merge! scripts: {}
-
-    File.write('./rn_pods/package.json', emission_package.to_json)
-
-    tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/yarn.lock")
-    FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
-    tempfile = Down.download("https://raw.githubusercontent.com/artsy/emission/v#{EMISSION_VERSION}/npm-podspecs.json")
-    FileUtils.mv(tempfile.path, "./rn_pods/#{tempfile.original_filename}")
-    system 'pushd rn_pods ; yarn install --production --ignore-engines ; popd'
-  else
-    puts 'Skipping Emission node_modules install.'
-  end
-
-  npm_vendored_podspecs = JSON.parse(File.read('./rn_pods/npm-podspecs.json'), symbolize_names: true)
+  npm_vendored_podspecs = JSON.parse(File.read('./emission/npm-podspecs.json'), symbolize_names: true)
   npm_vendored_podspecs.update(npm_vendored_podspecs) do |_pod_name, props|
     if props[:path]
-      props.merge path: File.join('./rn_pods/', props[:path])
+      props.merge path: File.join('./emission/', props[:path])
     else
-      props.merge podspec: File.join('./rn_pods/', props[:podspec])
+      props.merge podspec: File.join('./emission/', props[:podspec])
     end
   end
 
@@ -133,9 +104,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  # To link to Emission locally, for development, comment out the line below, and uncomment the line below it.
-  pod 'Emission', EMISSION_VERSION
-#  pod 'Emission', path: '../emission' # Local Development Emission
+  pod 'Emission', path: './emission'
 
   npm_vendored_podspecs.each do |pod_name, props|
     pod pod_name.to_s, props

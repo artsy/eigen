@@ -1,6 +1,3 @@
 [submodule "config/spacecommander"]
 	path = config/spacecommander
 	url = https://github.com/square/spacecommander.git
-[submodule "Pods"]
-	path = Pods
-	url = https://github.com/artsy/eigen-artefacts.git
