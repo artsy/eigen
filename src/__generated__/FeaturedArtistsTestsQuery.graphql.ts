@@ -10,6 +10,7 @@ export type FeaturedArtistsTestsQueryResponse = {
 };
 export type FeaturedArtistsTestsQueryRawResponse = {
     readonly marketingCollection: ({
+        readonly slug: string;
         readonly artworksConnection: ({
             readonly merchandisableArtists: ReadonlyArray<({
                 readonly internalID: string;
@@ -53,8 +54,9 @@ query FeaturedArtistsTestsQuery {
 }
 
 fragment FeaturedArtists_collection on MarketingCollection {
+  slug
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-    merchandisableArtists(size: 9) {
+    merchandisableArtists(size: 4) {
       internalID
       ...ArtistListItem_artist
       id
@@ -94,6 +96,13 @@ var v0 = [
   }
 ],
 v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -141,6 +150,7 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -172,12 +182,12 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "merchandisableArtists",
-                "storageKey": "merchandisableArtists(size:9)",
+                "storageKey": "merchandisableArtists(size:4)",
                 "args": [
                   {
                     "kind": "Literal",
                     "name": "size",
-                    "value": 9
+                    "value": 4
                   }
                 ],
                 "concreteType": "Artist",
@@ -190,14 +200,8 @@ return {
                     "args": null,
                     "storageKey": null
                   },
+                  (v2/*: any*/),
                   (v1/*: any*/),
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "slug",
-                    "args": null,
-                    "storageKey": null
-                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -267,7 +271,7 @@ return {
                   }
                 ]
               },
-              (v1/*: any*/)
+              (v2/*: any*/)
             ]
           },
           {
@@ -286,7 +290,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v1/*: any*/)
+              (v2/*: any*/)
             ]
           },
           {
@@ -296,7 +300,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v1/*: any*/)
+          (v2/*: any*/)
         ]
       }
     ]
@@ -304,7 +308,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FeaturedArtistsTestsQuery",
-    "id": "dc9b6cedf1bdb4040e81a84b24d28dc0",
+    "id": "e1b0ab9e571b6e1eb90ce5fdf4010261",
     "text": null,
     "metadata": {}
   }

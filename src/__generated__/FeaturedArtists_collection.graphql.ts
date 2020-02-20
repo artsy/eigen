@@ -3,6 +3,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FeaturedArtists_collection = {
+    readonly slug: string;
     readonly artworksConnection: {
         readonly merchandisableArtists: ReadonlyArray<{
             readonly internalID: string;
@@ -25,6 +26,13 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -56,12 +64,12 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "alias": null,
           "name": "merchandisableArtists",
-          "storageKey": "merchandisableArtists(size:9)",
+          "storageKey": "merchandisableArtists(size:4)",
           "args": [
             {
               "kind": "Literal",
               "name": "size",
-              "value": 9
+              "value": 4
             }
           ],
           "concreteType": "Artist",
@@ -110,5 +118,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '5945a319da0b8f99faefde2f1f2b92ed';
+(node as any).hash = 'a7a18e885dd71078dd8c05ac099c50d1';
 export default node;

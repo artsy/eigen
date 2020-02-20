@@ -12,6 +12,7 @@ import Events from "lib/NativeModules/Events"
 
 const CollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] = {
   id: "some-id",
+  slug: "some-collection",
   artworksConnection: {
     id: "connection-id",
     merchandisableArtists: [

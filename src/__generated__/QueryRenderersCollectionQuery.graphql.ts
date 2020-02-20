@@ -74,8 +74,9 @@ fragment CollectionArtworks_collection on MarketingCollection {
 }
 
 fragment FeaturedArtists_collection on MarketingCollection {
+  slug
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-    merchandisableArtists(size: 9) {
+    merchandisableArtists(size: 4) {
       internalID
       ...ArtistListItem_artist
       id
@@ -652,12 +653,12 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "merchandisableArtists",
-                "storageKey": "merchandisableArtists(size:9)",
+                "storageKey": "merchandisableArtists(size:4)",
                 "args": [
                   {
                     "kind": "Literal",
                     "name": "size",
-                    "value": 9
+                    "value": 4
                   }
                 ],
                 "concreteType": "Artist",
@@ -765,7 +766,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "736a8772e152a030843c35244666b4eb",
+    "id": "012bff8627775a5d6ac5ef306c6aaef1",
     "text": null,
     "metadata": {}
   }
