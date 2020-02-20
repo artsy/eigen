@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.21.49",
+  "version": "1.21.51",
   "native-code-version": 44,
   "description": "Artsy React(Native) components.",
   "engines": {
@@ -74,7 +74,7 @@
     "babel-core": "7.0.0-bridge.0"
   },
   "dependencies": {
-    "@artsy/palette": "5.1.16",
+    "@artsy/palette": "7.0.0",
     "@mapbox/react-native-mapbox-gl": "6.1.3",
     "@react-native-community/async-storage": "1.6.3",
     "@react-native-community/cameraroll": "1.3.0",

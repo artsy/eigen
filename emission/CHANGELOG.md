@@ -1,3 +1,22 @@
+# v1.21.51 (Thu Feb 20 2020)
+
+#### 🐛  Bug Fix
+
+- Remove invoice feature [#2091](https://github.com/artsy/emission/pull/2091) ([@ashkan18](https://github.com/ashkan18) [@ds300](https://github.com/ds300))
+
+#### Authors: 2
+
+- Ashkan Nasseri ([@ashkan18](https://github.com/ashkan18))
+- David Sheldrick ([@ds300](https://github.com/ds300))
+
+---
+
+# v1.21.50 (Thu Feb 20 2020)
+
+
+
+---
+
 # v1.21.49 (Tue Feb 18 2020)
 
 #### 🐛  Bug Fix

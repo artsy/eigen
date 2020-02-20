@@ -139,7 +139,6 @@ export enum OwnerEntityTypes {
   Partner = "Partner",
   Search = "Search",
   Show = "Show",
-  Invoice = "Invoice",
   Consignment = "ConsignmentSubmission",
   Collection = "Collection",
 }
