@@ -46,7 +46,6 @@ describe("Collection", () => {
     expect(renderer.toJSON()).toMatchSnapshot()
   })
 
-<<<<<<< Updated upstream
   it("does not display a filter artworks button by default", () => {
     const root = ReactTestRenderer.create(<TestRenderer />).root
 
@@ -61,21 +60,5 @@ describe("Collection", () => {
   xit("does display a filter artworks button when artworks grid when artworks grid is in view", () => {
     // expect(root.findAllByType(FilterArtworkButtonContainer)).toHaveLength(1)
     // expect(root.findAllByType(FilterArtworkButton)).toHaveLength(1)
-=======
-  it("does not render modal filter button when feature flag disabled", () => {
-    const renderer = ReactTestRenderer.create(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation)
-    })
-    expect(renderer.toJSON()).toMatchSnapshot()
-  })
-
-  it("does render modal filter button when feature flag enabled", () => {
-    const renderer = ReactTestRenderer.create(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation)
-    })
-    expect(renderer.toJSON()).toMatchSnapshot()
->>>>>>> Stashed changes
   })
 })
