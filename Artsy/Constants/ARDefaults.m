@@ -1,5 +1,6 @@
 #import "ARDefaults+SiteFeatures.h"
 #import "ARDefaults.h"
+#import "AROptions.h"
 
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
 NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
@@ -39,17 +40,17 @@ NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSu
 
 + (void)setup
 {
-    BOOL useStagingDefault;
+    BOOL isDebugMode;
 #if DEBUG
-    useStagingDefault = YES;
+    isDebugMode = YES;
 #else
-    useStagingDefault = NO;
+    isDebugMode = NO;
 #endif
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
         AROnboardingUserProgressionStage : @(0),
-
-        ARUseStagingDefault : @(useStagingDefault),
+        AROptionsDevReactEnv: @(isDebugMode),
+        ARUseStagingDefault : @(isDebugMode),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
         ARStagingWebURLDefault : @"https://staging.artsy.net",
         ARStagingMetaphysicsURLDefault : @"https://metaphysics-staging.artsy.net",
