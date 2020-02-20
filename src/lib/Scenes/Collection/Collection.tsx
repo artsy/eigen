@@ -76,12 +76,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
               isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
               closeModal={this.handleFilterArtworksModal.bind(this)}
             />
-            {/*this.state.isFilterArtworksModalVisible && (
-              <FilterModal
-                visible={this.state.isFilterArtworksModalVisible}
-                closeModal={this.handleFilterArtworksModal.bind(this)}
-              />
-            )*/}
           </>
         )
       default:
