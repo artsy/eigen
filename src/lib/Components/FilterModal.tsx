@@ -1,13 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif } from "@artsy/palette"
 import React from "react"
-import {
-  FlatList,
-  LayoutAnimation,
-  Modal as RNModal,
-  ScrollView,
-  TouchableWithoutFeedback,
-  ViewProperties,
-} from "react-native"
+import { FlatList, LayoutAnimation, Modal as RNModal, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 
@@ -32,6 +25,7 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
 
   render() {
     const { isFilterArtworksModalVisible } = this.props
+    const { isComponentMounted } = this.state
 
     return (
       <>
@@ -39,8 +33,8 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
           <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
             <TouchableWithoutFeedback onPress={null}>
               <ModalBackgroundView>
-                <Flex onTouchStart={null} style={{ flexGrow: 1 }} />
-                <ModalInnerView visible={this.state.isComponentMounted}>
+                <Flex onTouchStart={this.props.closeModal} style={{ flexGrow: 1 }} />
+                <ModalInnerView visible={isComponentMounted}>
                   <NavigatorIOS
                     ref="filterNav"
                     navigationBarHidden={true}
@@ -73,18 +67,18 @@ class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
 
   renderSortOption = ({ item }) => {
     return (
-      <SortRowItem>
+      <ListItem>
         <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
           <Serif size="3">{item}</Serif>
         </Flex>
-      </SortRowItem>
+      </ListItem>
     )
   }
 
   render() {
     return (
       <Flex flexGrow={1}>
-        <Flex flexDirection="row" justifyContent="space-between" pr={2}>
+        <SortHeader>
           <Flex alignItems="flex-end" mt={0.5} mb={2}>
             <Box ml={2} mt={2} onTouchStart={() => this.handleBackNavigation()}>
               <ArrowLeftIcon fill="black100" />
@@ -94,7 +88,7 @@ class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
             Sort
           </Sans>
           <Box></Box>
-        </Flex>
+        </SortHeader>
         <Flex>
           <FlatList
             keyExtractor={(_item, index) => String(index)}
@@ -134,7 +128,7 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
 
   renderFilterOption = ({ item: { type, onTap } }) => {
     return (
-      <SortRowItem>
+      <ListItem>
         <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
           <Serif size="3">{type}</Serif>
           <Flex flexDirection="row" onTouchEnd={() => onTap()}>
@@ -144,7 +138,7 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
             <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
           </Flex>
         </Flex>
-      </SortRowItem>
+      </ListItem>
     )
   }
 
@@ -179,6 +173,12 @@ class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsSta
   }
 }
 
+const SortHeader = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 20px;
+`
+
 const BackgroundFill = styled(Flex)`
   background-color: ${color("black10")};
   flex-grow: 1;
@@ -202,17 +202,19 @@ const ModalBackgroundView = styled.View`
   background-color: #00000099;
   flex: 1;
   flex-direction: column;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `
 
 const ModalInnerView = styled.View<{ visible: boolean }>`
   flex-direction: column;
   background-color: white;
-  height: 586px;
+  height: 75%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 `
 
-const SortRowItem = styled(Flex)`
+const ListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   border: solid 0.5px ${color("black10")};
@@ -259,8 +261,6 @@ interface FilterOptionsProps {
 /**
  * TODOS:
  *
- * 1) Fill the remaining sort options modal + filter options modal areas with the grey background
- * 2) UI Fixes on Sort Screen
  * 3) Close modal on background click
  * 4) Add tests  (check out Bid Flow + Consignments flow)
  *  e.g. when you click sort the correct component renders in the nav stack
