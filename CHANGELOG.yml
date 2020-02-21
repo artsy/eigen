@@ -5,7 +5,7 @@ upcoming:
   dev:
     - combine emission and eigen into one repo - david
   user_facing:
-    -
+    - Removes generic genes from For You tab - ash
 
 releases:
   - version: 6.3.0
