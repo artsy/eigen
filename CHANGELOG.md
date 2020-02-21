@@ -1,3 +1,15 @@
+# v1.21.52 (Fri Feb 21 2020)
+
+#### 🐛  Bug Fix
+
+- Implement Initial Collections Artwork Filter Navigation Stack [#2096](https://github.com/artsy/emission/pull/2096) ([@ashleyjelks](https://github.com/ashleyjelks))
+
+#### Authors: 1
+
+- Ashley Jelks ([@ashleyjelks](https://github.com/ashleyjelks))
+
+---
+
 # v1.21.51 (Thu Feb 20 2020)
 
 #### 🐛  Bug Fix
