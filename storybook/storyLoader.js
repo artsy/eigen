@@ -21,7 +21,6 @@ function loadStories() {
   require('../src/lib/Components/Consignments/__stories__/Style.story');
   require('../src/lib/Components/Consignments/__stories__/Todo.story');
   require('../src/lib/Components/Inbox/ActiveBids/__stories__/ActiveBids.story');
-  require('../src/lib/Components/Inbox/Conversations/Preview/__stories__/InvoicePreview.story');
   require('../src/lib/Components/Inbox/Conversations/__stories__/ArtworkPreview.story');
   require('../src/lib/Components/Inbox/Conversations/__stories__/Avatar.story');
   require('../src/lib/Components/Inbox/Conversations/__stories__/Composer.story');
@@ -74,7 +73,6 @@ const stories = [
   '../src/lib/Components/Consignments/__stories__/Style.story',
   '../src/lib/Components/Consignments/__stories__/Todo.story',
   '../src/lib/Components/Inbox/ActiveBids/__stories__/ActiveBids.story',
-  '../src/lib/Components/Inbox/Conversations/Preview/__stories__/InvoicePreview.story',
   '../src/lib/Components/Inbox/Conversations/__stories__/ArtworkPreview.story',
   '../src/lib/Components/Inbox/Conversations/__stories__/Avatar.story',
   '../src/lib/Components/Inbox/Conversations/__stories__/Composer.story',
