@@ -3,20 +3,21 @@
 //       let Relay re-render the cards.
 
 import React, { Component } from "react"
-import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
+import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, Track, track as _track } from "lib/utils/track"
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
-import SectionTitle from "../SectionTitle"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
+import { Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import Events from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import styled from "styled-components/native"
 
 const Animation = {
   yDelta: 20,
@@ -94,6 +95,56 @@ export class ArtistRail extends Component<Props, State> {
     })
   }
 
+  followArtistAndFetchNewSuggestion(followArtist: SuggestedArtist) {
+    return new Promise<SuggestedArtist | null>((resolve, reject) => {
+      commitMutation<ArtistRailFollowMutation>(defaultEnvironment, {
+        mutation: graphql`
+          mutation ArtistRailFollowMutation($input: FollowArtistInput!, $excludeArtistIDs: [String]!) {
+            followArtist(input: $input) {
+              artist {
+                related {
+                  suggestedConnection(
+                    first: 1
+                    excludeArtistIDs: $excludeArtistIDs
+                    excludeFollowedArtists: true
+                    excludeArtistsWithoutForsaleArtworks: true
+                  ) {
+                    edges {
+                      node {
+                        ...ArtistCard_artist
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          input: { artistID: followArtist.internalID },
+          excludeArtistIDs: this.state.artists.map(({ internalID }) => internalID),
+        },
+        onError: reject,
+        onCompleted: (response, errors) => {
+          if (errors && errors.length > 0) {
+            reject(new Error(JSON.stringify(errors)))
+          } else {
+            Events.postEvent({
+              name: "Follow artist",
+              artist_id: followArtist.internalID,
+              artist_slug: followArtist.slug,
+              source_screen: "home page",
+              context_module: "artist rail",
+            })
+
+            const [edge] = response.followArtist.artist.related.suggestedConnection.edges
+            resolve(edge ? setupSuggestedArtist(edge.node, 0, -Animation.yDelta) : null)
+          }
+        },
+      })
+    })
+  }
+
   @track((_props, _state, [followArtist]) => ({
     action_name: Schema.ActionNames.HomeArtistRailFollow,
     action_type: Schema.ActionTypes.Tap,
@@ -101,68 +152,19 @@ export class ArtistRail extends Component<Props, State> {
     owner_slug: followArtist.id,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
-  handleFollowChange(followArtist: SuggestedArtist, completionHandler: (followStatus: boolean) => void) {
-    return (
-      new Promise<SuggestedArtist | null>((resolve, reject) => {
-        commitMutation<ArtistRailFollowMutation>(defaultEnvironment, {
-          mutation: graphql`
-            mutation ArtistRailFollowMutation($input: FollowArtistInput!, $excludeArtistIDs: [String]!) {
-              followArtist(input: $input) {
-                artist {
-                  related {
-                    suggestedConnection(
-                      first: 1
-                      excludeArtistIDs: $excludeArtistIDs
-                      excludeFollowedArtists: true
-                      excludeArtistsWithoutForsaleArtworks: true
-                    ) {
-                      edges {
-                        node {
-                          ...ArtistCard_artist @relay(mask: false)
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          `,
-          variables: {
-            input: { artistID: followArtist.internalID },
-            excludeArtistIDs: this.state.artists.map(({ internalID }) => internalID),
-          },
-          onError: reject,
-          onCompleted: (response, errors) => {
-            if (errors && errors.length > 0) {
-              reject(new Error(JSON.stringify(errors)))
-            } else {
-              Events.postEvent({
-                name: "Follow artist",
-                artist_id: followArtist.internalID,
-                artist_slug: followArtist.slug,
-                source_screen: "home page",
-                context_module: "artist rail",
-              })
-
-              completionHandler(true)
-
-              const [edge] = response.followArtist.artist.related.suggestedConnection.edges
-              resolve(edge ? setupSuggestedArtist(edge.node, 0, -Animation.yDelta) : null)
-            }
-          },
-        })
-      })
-        // Animate the followed artist card away.
-        .then(suggestion => this.followedArtistAnimation(followArtist).then(() => suggestion))
-        // Replace the followed artist by the suggested one in the list of artists.
-        .then(suggestion => this.replaceFollowedArtist(followArtist, suggestion).then(() => suggestion))
-        // Finally animate the suggested artist card in, if there is a suggestion.
-        .then(suggestion => suggestion && this.suggestedArtistAnimation(suggestion))
-        .catch(error => {
-          console.warn(error)
-          completionHandler(false)
-        })
-    )
+  async handleFollowChange(followArtist: SuggestedArtist, completionHandler: (followStatus: boolean) => void) {
+    try {
+      const suggestion = await this.followArtistAndFetchNewSuggestion(followArtist)
+      completionHandler(true)
+      if (suggestion) {
+        await this.followedArtistAnimation(followArtist)
+        await this.replaceFollowedArtist(followArtist, suggestion)
+        await this.suggestedArtistAnimation(suggestion)
+      }
+    } catch (error) {
+      console.warn(error)
+      completionHandler(false)
+    }
   }
 
   renderModuleResults() {
@@ -189,19 +191,10 @@ export class ArtistRail extends Component<Props, State> {
         )
       })
       return (
-        <ScrollView
-          style={styles.cardContainer}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          scrollsToTop={false}
-        >
+        <CardScrollView>
           {cards}
-          {
-            // Adding a spacer view to have padding at the end of the rail
-            // If you add marginRight, it will cut off the cards as you scroll through
-          }
           <View style={{ width: 15 }} />
-        </ScrollView>
+        </CardScrollView>
       )
     } else {
       return <Spinner style={{ flex: 1, marginBottom: 20 }} />
@@ -209,36 +202,43 @@ export class ArtistRail extends Component<Props, State> {
   }
 
   title() {
-    return "Artists to Follow:"
-  }
-  subtitle() {
     switch (this.props.rail.key) {
       case "TRENDING":
-        return "Trending on Artsy"
+        return "Trending artists to follow"
       case "SUGGESTED":
-        return "Recommended for You"
+        return "Recommended artists to follow"
       case "POPULAR":
-        return "Popular on Artsy"
+        return "Popular artists to follow"
     }
   }
 
   render() {
-    if (!this.state.artists.length) {
-      return null
-    }
-
     return (
-      <View>
-        <View style={styles.title}>
-          <SectionTitle>{this.title()}</SectionTitle>
-          <SectionTitle style={styles.subtitle}>{this.subtitle()}</SectionTitle>
+      this.state.artists.length && (
+        <View>
+          <Title>{this.title()}</Title>
+          {this.renderModuleResults()}
+          <Separator />
         </View>
-        {this.renderModuleResults()}
-        <Separator />
-      </View>
+      )
     )
   }
 }
+
+const Title = styled(Sans).attrs({ size: "4" })`
+  margin: 10px 20px;
+`
+
+const CardScrollView = styled.ScrollView.attrs({
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
+  scrollsToTop: false,
+})`
+  flex-grow: 1;
+  flex-direction: row;
+  margin-top: 10px;
+  min-height: 320px;
+`
 
 const setupSuggestedArtist = (artist, opacity, translateY) =>
   ({
@@ -248,31 +248,6 @@ const setupSuggestedArtist = (artist, opacity, translateY) =>
       translateY: new Animated.Value(translateY),
     },
   } as SuggestedArtist)
-
-interface Styles {
-  cardContainer: ViewStyle
-  title: ViewStyle
-  subtitle: TextStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  cardContainer: {
-    flexGrow: 1,
-    flexDirection: "row",
-    marginTop: 10,
-    minHeight: 320,
-  },
-  title: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 30,
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 20,
-    fontFamily: "AGaramondPro-Regular",
-  },
-})
 
 export default createFragmentContainer(ArtistRail, {
   rail: graphql`

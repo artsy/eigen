@@ -104,11 +104,11 @@ export class ForYou extends React.Component<Props, State> {
         renderItem={({ item: { data, type } }) => {
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel key={data.id} rail={data} />
+              return null // <ArtworkCarousel key={data.id} rail={data} />
             case "artist":
               return <ArtistRail key={data.id} rail={data} />
             case "fairs":
-              return <FairsRail key={data.id} fairs_module={data} />
+              return null // <FairsRail key={data.id} fairs_module={data} />
           }
         }}
         keyExtractor={(item, index) => item.data.type + String(index)}
@@ -127,8 +127,8 @@ export default createRefetchContainer(
           maxRails: -1
           maxFollowedGeneRails: -1
           order: [
-            FOLLOWED_ARTISTS
             RELATED_ARTISTS
+            FOLLOWED_ARTISTS
             ACTIVE_BIDS
             RECENTLY_VIEWED_WORKS
             RECOMMENDED_WORKS

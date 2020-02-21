@@ -23,7 +23,7 @@ query QueryRenderersForYouQuery {
 }
 
 fragment ForYou_forYou on HomePage {
-  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS, RELATED_ARTISTS, ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
+  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [RELATED_ARTISTS, FOLLOWED_ARTISTS, ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
     id
     ...ArtworkCarousel_rail
   }
@@ -317,7 +317,7 @@ return {
             "kind": "LinkedField",
             "alias": "artwork_modules",
             "name": "artworkModules",
-            "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
+            "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"RELATED_ARTISTS\",\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
             "args": [
               {
                 "kind": "Literal",
@@ -340,8 +340,8 @@ return {
                 "kind": "Literal",
                 "name": "order",
                 "value": [
-                  "FOLLOWED_ARTISTS",
                   "RELATED_ARTISTS",
+                  "FOLLOWED_ARTISTS",
                   "ACTIVE_BIDS",
                   "RECENTLY_VIEWED_WORKS",
                   "RECOMMENDED_WORKS",
@@ -720,7 +720,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersForYouQuery",
-    "id": "a69e03f6901e6d6484282a4418010850",
+    "id": "9d725cd90f6974b382516f80bc95d9d5",
     "text": null,
     "metadata": {}
   }
