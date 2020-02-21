@@ -1,14 +1,20 @@
 import { Theme } from "@artsy/palette"
 import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
-import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "../FeaturedArtists"
+import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "../FeaturedArtists"
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 import Events from "lib/NativeModules/Events"
+
+jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
+
+const SwitchBoardMock = SwitchBoard as any
+const { anything } = expect
 
 const CollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] = {
   id: "some-id",
@@ -129,14 +135,13 @@ describe("FeaturedArtists", () => {
     const tree = await render(CollectionFixture)
 
     const entityHeaders = tree.find("EntityHeader")
-    // 4 entityHeaders, because the 'View more' option is also one.
-    expect(entityHeaders.length).toEqual(4)
+    expect(entityHeaders.length).toEqual(3)
 
     const output = tree.html()
     expect(output).toContain("Pablo Picasso")
     expect(output).toContain("Andy Warhol")
     expect(output).toContain("Joan Miro")
-    expect(output).toContain("View more")
+    expect(output).toContain("View all")
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
@@ -173,28 +178,32 @@ describe("FeaturedArtists", () => {
     })
   })
 
-  describe("View more", () => {
+  describe("View all", () => {
+    beforeEach(() => {
+      SwitchBoardMock.presentNavigationViewController.mockReset()
+    })
+
     it("shows more artists when 'View more' is tapped", async () => {
       const tree = await render(CollectionFixture)
-      let output = tree.html()
-      expect(output).toContain("View more")
+      const output = tree.html()
+      expect(output).toContain("View all")
       expect(output).not.toContain("Jean-Michel Basquiat")
       expect(output).not.toContain("Kenny Scharf")
 
-      const viewMore = tree.find("EntityHeader").filterWhere(x => x.text().includes("View more"))
-      viewMore.simulate("click")
+      const viewAll = tree.find(ViewAll)
+      viewAll.simulate("click")
 
-      output = tree.html()
-      expect(output).not.toContain("View more")
-      expect(output).toContain("Jean-Michel Basquiat")
-      expect(output).toContain("Kenny Scharf")
+      expect(SwitchBoardMock.presentNavigationViewController).toHaveBeenCalledWith(
+        anything(),
+        "/collection/some-collection/artists"
+      )
     })
 
     it("tracks an event when 'View more' is tapped", async () => {
       const tree = await render(CollectionFixture)
-      const viewMore = tree.find("EntityHeader").filterWhere(x => x.text().includes("View more"))
+      const viewAll = tree.find(ViewAll)
 
-      viewMore.simulate("click")
+      viewAll.simulate("click")
 
       expect(Events.postEvent).toHaveBeenCalledWith({
         action_type: "tap",
