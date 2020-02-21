@@ -3,7 +3,7 @@
 //       let Relay re-render the cards.
 
 import React, { Component } from "react"
-import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { Animated, Easing, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -11,7 +11,7 @@ import Separator from "../../Separator"
 import Spinner from "../../Spinner"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
-import { Sans } from "@artsy/palette"
+import { Serif } from "@artsy/palette" // TODO: Specs say this should be Sans, but let's update all Home titles at once
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
@@ -202,13 +202,14 @@ export class ArtistRail extends Component<Props, State> {
   }
 
   title() {
+    // TODO: Once Title is updated to styled-components, up the copy to spec.
     switch (this.props.rail.key) {
       case "TRENDING":
-        return "Trending artists to follow"
+        return "Trending artists"
       case "SUGGESTED":
-        return "Recommended artists to follow"
+        return "Recommended artists"
       case "POPULAR":
-        return "Popular artists to follow"
+        return "Popular artists"
     }
   }
 
@@ -225,8 +226,13 @@ export class ArtistRail extends Component<Props, State> {
   }
 }
 
-const Title = styled(Sans).attrs({ size: "4" })`
-  margin: 10px 20px;
+// TODO: See note about Serif import at top of this file. Then convert to styled-components.
+const Title = styled.Text`
+  margin: 30px 20px 10px;
+  font-size: 30px;
+  /* stylelint-disable */
+  font-family: AGaramondPro-Regular;
+  /* stylelint-enable */
 `
 
 const CardScrollView = styled.ScrollView.attrs({

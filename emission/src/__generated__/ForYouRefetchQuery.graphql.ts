@@ -23,7 +23,7 @@ query ForYouRefetchQuery {
 }
 
 fragment ForYou_forYou on HomePage {
-  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [RELATED_ARTISTS, FOLLOWED_ARTISTS, ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
+  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
     id
     ...ArtworkCarousel_rail
   }
@@ -317,7 +317,7 @@ return {
             "kind": "LinkedField",
             "alias": "artwork_modules",
             "name": "artworkModules",
-            "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"RELATED_ARTISTS\",\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
+            "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
             "args": [
               {
                 "kind": "Literal",
@@ -340,11 +340,11 @@ return {
                 "kind": "Literal",
                 "name": "order",
                 "value": [
-                  "RELATED_ARTISTS",
-                  "FOLLOWED_ARTISTS",
                   "ACTIVE_BIDS",
                   "RECENTLY_VIEWED_WORKS",
                   "RECOMMENDED_WORKS",
+                  "FOLLOWED_ARTISTS",
+                  "RELATED_ARTISTS",
                   "FOLLOWED_GALLERIES",
                   "SAVED_WORKS",
                   "LIVE_AUCTIONS",
@@ -720,7 +720,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "be51850cfd800f0b878c53525196b33a",
+    "id": "ebda234a0160cd4f89cd2625e3530b72",
     "text": null,
     "metadata": {}
   }
