@@ -38,7 +38,7 @@ return {
       "kind": "LinkedField",
       "alias": "artwork_modules",
       "name": "artworkModules",
-      "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
+      "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
       "args": [
         {
           "kind": "Literal",
@@ -61,11 +61,11 @@ return {
           "kind": "Literal",
           "name": "order",
           "value": [
+            "FOLLOWED_ARTISTS",
+            "RELATED_ARTISTS",
             "ACTIVE_BIDS",
             "RECENTLY_VIEWED_WORKS",
             "RECOMMENDED_WORKS",
-            "FOLLOWED_ARTISTS",
-            "RELATED_ARTISTS",
             "FOLLOWED_GALLERIES",
             "SAVED_WORKS",
             "LIVE_AUCTIONS",
@@ -122,5 +122,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b9a9ff5a72a7c5ec937a3dda72678564';
+(node as any).hash = '4a942b26d7cba041e4987dfe8f836426';
 export default node;

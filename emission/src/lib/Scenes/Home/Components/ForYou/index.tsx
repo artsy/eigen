@@ -127,11 +127,11 @@ export default createRefetchContainer(
           maxRails: -1
           maxFollowedGeneRails: -1
           order: [
+            FOLLOWED_ARTISTS
+            RELATED_ARTISTS
             ACTIVE_BIDS
             RECENTLY_VIEWED_WORKS
             RECOMMENDED_WORKS
-            FOLLOWED_ARTISTS
-            RELATED_ARTISTS
             FOLLOWED_GALLERIES
             SAVED_WORKS
             LIVE_AUCTIONS

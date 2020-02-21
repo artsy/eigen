@@ -27,6 +27,13 @@ const Animation = {
   easing: Easing.out(Easing.cubic),
 }
 
+interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
+  _animatedValues?: {
+    opacity: Animated.Value
+    translateY: Animated.Value
+  }
+}
+
 interface Props extends ViewProperties {
   relay: RelayProp
   rail: ArtistRail_rail
@@ -35,9 +42,8 @@ interface Props extends ViewProperties {
 interface State {
   artists: SuggestedArtist[]
 }
-// FIXME: can remove "trackWithArguments" when the third arguments parameter is added to the typings of react-tracking
+
 const track: Track<Props, State> = _track
-const trackWithArguments: any = _track
 
 @track()
 export class ArtistRail extends Component<Props, State> {
@@ -83,12 +89,12 @@ export class ArtistRail extends Component<Props, State> {
       artists.splice(index, 1)
     }
     // Resolve after re-render
-    return new Promise((resolve, _) => {
+    return new Promise(resolve => {
       this.setState({ artists }, resolve)
     })
   }
 
-  @trackWithArguments((_props, _state, [followArtist]) => ({
+  @track((_props, _state, [followArtist]) => ({
     action_name: Schema.ActionNames.HomeArtistRailFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: followArtist.internalID,
@@ -134,7 +140,6 @@ export class ArtistRail extends Component<Props, State> {
                 name: "Follow artist",
                 artist_id: followArtist.internalID,
                 artist_slug: followArtist.slug,
-                // TODO: At some point, this component might be on other screens.
                 source_screen: "home page",
                 context_module: "artist rail",
               })
@@ -268,14 +273,6 @@ const styles = StyleSheet.create<Styles>({
     fontFamily: "AGaramondPro-Regular",
   },
 })
-
-interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
-  // id: string
-  _animatedValues?: {
-    opacity: Animated.Value
-    translateY: Animated.Value
-  }
-}
 
 export default createFragmentContainer(ArtistRail, {
   rail: graphql`
