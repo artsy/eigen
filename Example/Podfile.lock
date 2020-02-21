@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Emission (1.21.51):
+  - Emission (1.21.52):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -518,7 +518,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  Emission: 7657821cbcfd431abaf30c1fa8e1ffec28a7866e
+  Emission: c0d44f4745243b1cfc750f84f30a68714283a5a7
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
   FBLazyVector: feb35a6b7f7b50f367be07f34012f34a79282fa3
