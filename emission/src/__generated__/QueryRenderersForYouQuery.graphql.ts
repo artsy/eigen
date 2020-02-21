@@ -23,7 +23,7 @@ query QueryRenderersForYouQuery {
 }
 
 fragment ForYou_forYou on HomePage {
-  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
+  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES], exclude: [FOLLOWED_ARTISTS, GENERIC_GENES]) {
     id
     ...ArtworkCarousel_rail
   }
@@ -317,13 +317,14 @@ return {
             "kind": "LinkedField",
             "alias": "artwork_modules",
             "name": "artworkModules",
-            "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
+            "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\",\"GENERIC_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
             "args": [
               {
                 "kind": "Literal",
                 "name": "exclude",
                 "value": [
-                  "FOLLOWED_ARTISTS"
+                  "FOLLOWED_ARTISTS",
+                  "GENERIC_GENES"
                 ]
               },
               {
@@ -349,8 +350,7 @@ return {
                   "SAVED_WORKS",
                   "LIVE_AUCTIONS",
                   "CURRENT_FAIRS",
-                  "FOLLOWED_GENES",
-                  "GENERIC_GENES"
+                  "FOLLOWED_GENES"
                 ]
               }
             ],
@@ -720,7 +720,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersForYouQuery",
-    "id": "2beef3144fc1d08edcfefea9aee1b3c9",
+    "id": "e78a8baa22d70bf4ce86879e716176a1",
     "text": null,
     "metadata": {}
   }

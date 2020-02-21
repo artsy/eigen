@@ -137,9 +137,8 @@ export default createRefetchContainer(
             LIVE_AUCTIONS
             CURRENT_FAIRS
             FOLLOWED_GENES
-            GENERIC_GENES
           ]
-          exclude: [FOLLOWED_ARTISTS]
+          exclude: [FOLLOWED_ARTISTS, GENERIC_GENES]
         ) {
           id
           ...ArtworkCarousel_rail
