@@ -1,7 +1,14 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif } from "@artsy/palette"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
 import { SortOptionsScreen as SortOptions } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import React from "react"
-import { FlatList, LayoutAnimation, Modal as RNModal, TouchableWithoutFeedback, ViewProperties } from "react-native"
+import {
+  FlatList,
+  LayoutAnimation,
+  Modal as RNModal,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  ViewProperties,
+} from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 
@@ -17,7 +24,7 @@ interface FilterModalState {
 }
 
 export class FilterModalNavigator extends React.Component<FilterModalProps, FilterModalState> {
-  state = {
+  state: FilterModalState = {
     isComponentMounted: false,
     sortableItems: [],
   }
@@ -45,13 +52,14 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
           <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
             <TouchableWithoutFeedback onPress={null}>
               <ModalBackgroundView>
-                <Flex onTouchStart={this.props.closeModal} style={{ flexGrow: 1 }} />
+                <TouchableOpacity onPress={this.props.closeModal} style={{ flexGrow: 1 }} />
                 <ModalInnerView visible={isComponentMounted}>
                   <NavigatorIOS
                     navigationBarHidden={true}
                     initialRoute={{
                       component: FilterOptions,
                       passProps: { closeModal: this.props.closeModal },
+                      title: "", // this property (can be an empty string) is required otherwise RN throws a warning
                     }}
                     style={{ flex: 1 }}
                   />
@@ -71,7 +79,7 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
 }
 
 interface FilterOptionsState {
-  filterOptions: Array<{ type: string; data: any }>
+  filterOptions: Array<{ type: string; onTap: () => void }>
 }
 
 interface FilterOptionsProps {
@@ -79,7 +87,7 @@ interface FilterOptionsProps {
   navigator: NavigatorIOS
 }
 export class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsState> {
-  state = {
+  state: FilterOptionsState = {
     filterOptions: [],
   }
 
@@ -102,22 +110,6 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
     })
   }
 
-  renderFilterOption = ({ item: { type, onTap } }) => {
-    return (
-      <OptionListItem>
-        <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-          <Serif size="3">{type}</Serif>
-          <TouchableOptionListItemRow onTouchStart={() => onTap()}>
-            <Serif color={color("black60")} size="3">
-              Default
-            </Serif>
-            <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
-          </TouchableOptionListItemRow>
-        </Flex>
-      </OptionListItem>
-    )
-  }
-
   render() {
     const { filterOptions } = this.state
 
@@ -125,7 +117,7 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
       <Flex flexGrow={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex alignItems="flex-end" mt={0.5} mb={2}>
-            <CloseIconContainer onTouchStart={() => this.props.closeModal()}>
+            <CloseIconContainer onPress={() => this.props.closeModal()}>
               <CloseIcon fill="black100" />
             </CloseIconContainer>
           </Flex>
@@ -137,10 +129,26 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
           </Sans>
         </Flex>
         <Flex>
-          <FlatList
+          <FlatList<{ onTap: () => void; type: string }>
             keyExtractor={(_item, index) => String(index)}
             data={filterOptions}
-            renderItem={item => <Box>{this.renderFilterOption(item)}</Box>}
+            renderItem={({ item }) => (
+              <Box>
+                {
+                  <OptionListItem>
+                    <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                      <Serif size="3">{item.type}</Serif>
+                      <TouchableOptionListItemRow onPress={() => item.onTap()}>
+                        <Serif color={color("black60")} size="3">
+                          Default
+                        </Serif>
+                        <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
+                      </TouchableOptionListItemRow>
+                    </Flex>
+                  </OptionListItem>
+                }
+              </Box>
+            )}
           />
         </Flex>
         <BackgroundFill />
@@ -172,12 +180,12 @@ export const FilterArtworkButton = styled(Button)`
   width: 110px;
 `
 
-export const TouchableOptionListItemRow = styled(Flex)`
+export const TouchableOptionListItemRow = styled(TouchableOpacity)`
   flex-direction: row;
 `
-export const CloseIconContainer = styled(Box)`
-  margin-left: 20px;
-  margin-top: 20px;
+export const CloseIconContainer = styled(TouchableOpacity)`
+  margin-left: ${space(2)};
+  margin-top: ${space(2)};
 `
 
 export const OptionListItem = styled(Flex)`
@@ -194,14 +202,14 @@ const ModalBackgroundView = styled.View`
   background-color: #00000099;
   flex: 1;
   flex-direction: column;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: ${space(1)};
+  border-top-right-radius: ${space(1)};
 `
 
 const ModalInnerView = styled.View<{ visible: boolean }>`
   flex-direction: column;
-  background-color: white;
+  background-color: ${color("white100")};
   height: 75%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: ${space(1)};
+  border-top-right-radius: ${space(1)};
 `

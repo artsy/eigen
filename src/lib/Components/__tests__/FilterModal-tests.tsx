@@ -20,7 +20,7 @@ describe("Filter modal navigation flow", () => {
     )
     const filterListItem = filterScreen.root.findByType(TouchableOptionListItemRow)
 
-    act(() => filterListItem.props.onTouchStart())
+    act(() => filterListItem.props.onPress())
 
     filterScreen = mockNavigator.nextStep()
 
@@ -44,7 +44,7 @@ describe("Filter modal navigation flow", () => {
 
     const sortBackNavigationItem = sortScreen.root.findByType(ArrowLeftIconContainer)
 
-    act(() => sortBackNavigationItem.props.onTouchStart())
+    act(() => sortBackNavigationItem.props.onPress())
 
     mockNavigator.pop()
 
@@ -64,7 +64,7 @@ describe("Filter modal navigation flow", () => {
 
     const closeModalIcon = filterScreen.root.findByType(CloseIconContainer)
 
-    act(() => closeModalIcon.props.onTouchStart())
+    act(() => closeModalIcon.props.onPress())
 
     expect(modalClosed).toHaveBeenCalled()
   })

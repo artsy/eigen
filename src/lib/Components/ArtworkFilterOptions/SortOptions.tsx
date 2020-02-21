@@ -1,7 +1,7 @@
-import { ArrowLeftIcon, Box, Flex, Sans, Serif } from "@artsy/palette"
+import { ArrowLeftIcon, Box, Flex, Sans, Serif, space } from "@artsy/palette"
 import { BackgroundFill, OptionListItem } from "lib/Components/FilterModal"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 
@@ -14,22 +14,12 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
     this.props.navigator.pop()
   }
 
-  renderSortOption = ({ item }) => {
-    return (
-      <OptionListItem>
-        <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-          <Serif size="3">{item}</Serif>
-        </Flex>
-      </OptionListItem>
-    )
-  }
-
   render() {
     return (
       <Flex flexGrow={1}>
         <SortHeader>
           <Flex alignItems="flex-end" mt={0.5} mb={2}>
-            <ArrowLeftIconContainer onTouchStart={() => this.handleBackNavigation()}>
+            <ArrowLeftIconContainer onPress={() => this.handleBackNavigation()}>
               <ArrowLeftIcon fill="black100" />
             </ArrowLeftIconContainer>
           </Flex>
@@ -39,10 +29,20 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
           <Box></Box>
         </SortHeader>
         <Flex>
-          <FlatList
+          <FlatList<string>
             keyExtractor={(_item, index) => String(index)}
             data={SortOptions}
-            renderItem={item => <Box>{this.renderSortOption(item)}</Box>}
+            renderItem={({ item }) => (
+              <Box>
+                {
+                  <OptionListItem>
+                    <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                      <Serif size="3">{item}</Serif>
+                    </Flex>
+                  </OptionListItem>
+                }
+              </Box>
+            )}
           />
         </Flex>
         <BackgroundFill />
@@ -64,10 +64,10 @@ const SortOptions = [
 export const SortHeader = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
-  padding-right: 20px;
+  padding-right: ${space(2)};
 `
 
-export const ArrowLeftIconContainer = styled(Box)`
-  margin-top: 20px;
-  margin-left: 20px;
+export const ArrowLeftIconContainer = styled(TouchableOpacity)`
+  margin-top: ${space(2)};
+  margin-left: ${space(2)};
 `
