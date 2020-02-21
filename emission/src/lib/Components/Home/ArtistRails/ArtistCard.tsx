@@ -1,13 +1,13 @@
 import React from "react"
-import { Text, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Button, Sans } from "@artsy/palette"
+import { Button, Flex, Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import styled from "styled-components/native"
 import { compact } from "lodash"
+import styled from "styled-components/native"
 
 const CARD_WIDTH = 270
 
@@ -41,21 +41,36 @@ export class ArtistCard extends React.Component<Props, State> {
   render() {
     const artist = this.props.artist
     const avatarImageURL = artist.avatar && artist.avatar.url
-    const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image.url))
+    const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image?.url))
     const artworkImageWidth = (CARD_WIDTH - (artworkImages.length - 1)) / artworkImages.length
+    console.log({ avatarImageURL })
 
     return (
       <View>
         <Card onPress={this.handleTap.bind(this)}>
           <View>
             <ArtworkImageContainer>
-              {artworkImages.map((url, index) => (
-                <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
-              ))}
+              {artworkImages.length ? (
+                artworkImages.map((url, index) => (
+                  <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
+                ))
+              ) : (
+                /* Show an empty image block if there are no images for this artist */
+                <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
+              )}
             </ArtworkImageContainer>
             <MetadataContainer>
-              <ImageView imageURL={avatarImageURL} />
-              <Sans size="3">TODO: Artist metadata will go here</Sans>
+              <ArtistAvatar>
+                <ImageView imageURL={avatarImageURL} width={40} height={40} />
+              </ArtistAvatar>
+              <Flex flexDirection="column" ml={10} mr={2}>
+                <Sans size="3t" weight="medium" numberOfLines={1}>
+                  {artist.name}
+                </Sans>
+                <Sans size="3t" numberOfLines={1}>
+                  {artist.formattedNationalityAndBirthday}
+                </Sans>
+              </Flex>
             </MetadataContainer>
             <FollowButtonContainer>
               <Button
@@ -88,8 +103,16 @@ const ArtworkImageContainer = styled.View`
   justify-content: space-between;
 `
 
+const ArtistAvatar = styled.View`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+`
+
 const MetadataContainer = styled.View`
   margin: 15px 16px 0;
+  flex-direction: row;
 `
 
 const FollowButtonContainer = styled.View`
