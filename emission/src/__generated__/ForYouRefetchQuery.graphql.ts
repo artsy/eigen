@@ -107,10 +107,19 @@ fragment ArtistCard_artist on Artist {
   internalID
   href
   name
-  formattedArtworksCount
   formattedNationalityAndBirthday
-  image {
+  avatar: image {
     url(version: "large")
+  }
+  artworksConnection(first: 3) {
+    edges {
+      node {
+        image {
+          url(version: "medium")
+        }
+        id
+      }
+    }
   }
 }
 
@@ -631,20 +640,13 @@ return {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "formattedArtworksCount",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
                     "name": "formattedNationalityAndBirthday",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "LinkedField",
-                    "alias": null,
+                    "alias": "avatar",
                     "name": "image",
                     "storageKey": null,
                     "args": null,
@@ -652,6 +654,70 @@ return {
                     "plural": false,
                     "selections": [
                       (v10/*: any*/)
+                    ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "artworksConnection",
+                    "storageKey": "artworksConnection(first:3)",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "first",
+                        "value": 3
+                      }
+                    ],
+                    "concreteType": "ArtworkConnection",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "edges",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtworkEdge",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "node",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Artwork",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "image",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Image",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "url",
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "medium"
+                                      }
+                                    ],
+                                    "storageKey": "url(version:\"medium\")"
+                                  }
+                                ]
+                              },
+                              (v0/*: any*/)
+                            ]
+                          }
+                        ]
+                      }
                     ]
                   }
                 ]
@@ -720,7 +786,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "ebda234a0160cd4f89cd2625e3530b72",
+    "id": "f916c8885638b39946d1b17220200a58",
     "text": null,
     "metadata": {}
   }

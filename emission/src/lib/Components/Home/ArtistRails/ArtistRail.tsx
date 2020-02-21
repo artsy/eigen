@@ -243,7 +243,7 @@ const CardScrollView = styled.ScrollView.attrs({
   flex-grow: 1;
   flex-direction: row;
   margin-top: 10px;
-  min-height: 320px;
+  margin-bottom: 25px;
 `
 
 const setupSuggestedArtist = (artist, opacity, translateY) =>
