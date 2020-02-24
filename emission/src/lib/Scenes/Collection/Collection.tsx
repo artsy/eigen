@@ -1,6 +1,6 @@
 import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
-import { FilterModal } from "lib/Components/FilterModal"
+import { FilterModalNavigator } from "lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "lib/utils/track"
@@ -56,6 +56,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       sections,
     })
   }
+
   renderItem = ({ item: { type } }) => {
     switch (type) {
       case "collectionFeaturedArtists":
@@ -70,8 +71,9 @@ export class Collection extends Component<CollectionProps, CollectionState> {
         return (
           <>
             <CollectionArtworks collection={this.props.collection} />
-            <FilterModal
-              visible={this.state.isFilterArtworksModalVisible}
+            <FilterModalNavigator
+              {...this.props}
+              isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
               closeModal={this.handleFilterArtworksModal.bind(this)}
             />
           </>
@@ -80,6 +82,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
         return null
     }
   }
+
   onViewableItemsChanged = ({ viewableItems }) => {
     ;(viewableItems || []).map(viewableItem => {
       const artworksRenderItem = viewableItem?.item?.type || ""
@@ -93,9 +96,10 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     })
   }
   handleFilterArtworksModal() {
-    this.setState({ isFilterArtworksModalVisible: !this.state.isFilterArtworksModalVisible })
+    this.setState(_prevState => {
+      return { isFilterArtworksModalVisible: !_prevState.isFilterArtworksModalVisible }
+    })
 
-    return
     // tslint:disable: jsdoc-format
     /**
     * TODO: Refactor this mutation code to handle filtering artworks by selected fields in the artwork filter modal
@@ -138,11 +142,8 @@ export class Collection extends Component<CollectionProps, CollectionState> {
           />
           {isArtworkGridVisible && isArtworkFilterEnabled && (
             <FilterArtworkButtonContainer>
-              <FilterArtworkButton
-                px="2"
-                onPress={this.handleFilterArtworksModal.bind(this)}>
-                <FilterIcon fill="white100" />
-                <Sans size="3t" pl="1" py="1" color="white100" weight="medium">Filter</Sans>
+              <FilterArtworkButton variant="primaryBlack" onPress={() => this.handleFilterArtworksModal()}>
+                Filter
               </FilterArtworkButton>
             </FilterArtworkButtonContainer>
           )}
