@@ -15,10 +15,10 @@ interface FeaturedArtistsProps {
   tracking?: TrackingProp
 }
 
-const track: Track<FeaturedArtistsProps, any> = _track
+const track: Track<FeaturedArtistsProps, {}> = _track
 
 @track()
-export class FeaturedArtists extends React.Component<FeaturedArtistsProps, any> {
+export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
   handleTap = (context: any, href: string) => {
     SwitchBoard.presentNavigationViewController(context, href)
   }
