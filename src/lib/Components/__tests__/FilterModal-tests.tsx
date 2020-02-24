@@ -32,7 +32,7 @@ describe("Filter modal navigation flow", () => {
   it("allows users to navigate back to filter screen from sort screen ", () => {
     const sortScreen = create(
       <Theme>
-        <SortOptionsScreen navigator={mockNavigator as any} />
+        <SortOptionsScreen navigator={mockNavigator as any} updatedSortOption={jest.fn()} />
       </Theme>
     )
 
