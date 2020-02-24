@@ -52,12 +52,42 @@ iOSInjectionProject/
 fastlane/Gemfile.lock
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
-# React Native pods. See: Podfile
-rn_pods
-
 # regular Pods. No longer a submodule
 Pods
 
 # build artefacts
 derived_data
 Artsy/Networking/ARReactPackagerHost.m
+
+# COPIED FROM EMISSION
+
+# Xcode
+
+## Build generated
+dist
+
+# Custom
+
+node_modules
+npm-debug.log
+.vscode/launchReactNative.js
+.vscode/.react/
+.vscode/typings
+.apphub
+coverage
+package-lock.json
+yarn-error.log
+.awcache
+
+# Use a custom, cached location for Jest to save transpiling
+# on every PR
+.jest/cache
+
+# Danger artifacts
+tslint-errors.json
+
+# TypeScript Logs
+tsc_raw.log
+
+# Emission bundle
+emission/Pod/Assets/Emission.js*

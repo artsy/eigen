@@ -22,16 +22,9 @@ installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
 npm_vendored_podspecs = {}
 if installing_pods
-  system 'pushd emission; yarn install --ignore-engines; popd'
+  system 'yarn install --ignore-engines'
 
-  npm_vendored_podspecs = JSON.parse(File.read('./emission/npm-podspecs.json'), symbolize_names: true)
-  npm_vendored_podspecs.update(npm_vendored_podspecs) do |_pod_name, props|
-    if props[:path]
-      props.merge path: File.join('./emission/', props[:path])
-    else
-      props.merge podspec: File.join('./emission/', props[:podspec])
-    end
-  end
+  npm_vendored_podspecs = JSON.parse(File.read('./npm-podspecs.json'), symbolize_names: true)
 
   # Remove DevSupport pod on CI builds, which are used to deploy prod builds.
   if ENV['CIRCLE_BUILD_NUM']

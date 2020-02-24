@@ -86,7 +86,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         [self setupSharedEmissionWithPackagerURL:packagerURL];
 
     } else if ([AROptions boolForOption:AROptionsDevReactEnv]) {
-        NSString *bundleUrlString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", [ARReactPackagerHost hostname]];
+        NSString *bundleUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", [ARReactPackagerHost hostname]];
         NSURL *packagerURL = [NSURL URLWithString:bundleUrlString];
         [self setupSharedEmissionWithPackagerURL:packagerURL];
 
