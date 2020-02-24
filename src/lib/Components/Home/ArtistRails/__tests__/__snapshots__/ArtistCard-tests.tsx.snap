@@ -16,7 +16,12 @@ exports[`renders correctly 1`] = `
     style={
       Array [
         Object {
+          "borderColor": "#e5e5e5",
+          "borderRadius": 4,
+          "borderStyle": "solid",
+          "borderWidth": 1,
           "marginLeft": 15,
+          "overflow": "hidden",
           "width": 270,
         },
       ]

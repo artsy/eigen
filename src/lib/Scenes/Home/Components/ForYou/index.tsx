@@ -7,7 +7,7 @@ import ArtworkCarousel from "./Components/ArtworkCarousel"
 import FairsRail from "./Components/FairsRail"
 
 import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
-import { zip, flatten, compact } from "lodash"
+import { compact, flatten, zip } from "lodash"
 
 interface Props extends ViewProperties {
   forYou: ForYou_forYou

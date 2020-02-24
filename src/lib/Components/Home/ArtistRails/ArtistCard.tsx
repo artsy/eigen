@@ -5,6 +5,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Button, Flex, Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { compact } from "lodash"
 import styled from "styled-components/native"
@@ -43,7 +44,6 @@ export class ArtistCard extends React.Component<Props, State> {
     const avatarImageURL = artist.avatar && artist.avatar.url
     const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image?.url))
     const artworkImageWidth = (CARD_WIDTH - (artworkImages.length - 1)) / artworkImages.length
-    console.log({ avatarImageURL })
 
     return (
       <View>
@@ -93,6 +93,9 @@ export class ArtistCard extends React.Component<Props, State> {
 const Card = styled.TouchableHighlight.attrs({ underlayColor: "transparent" })`
   width: ${CARD_WIDTH}px;
   margin-left: 15px;
+  border: 1px solid ${colors["gray-regular"]};
+  border-radius: 4px;
+  overflow: hidden;
 `
 
 const ArtworkImageContainer = styled.View`
