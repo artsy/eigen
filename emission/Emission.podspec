@@ -1,7 +1,7 @@
 require 'json'
 require 'date'
 
-root = ENV['EMISSION_ROOT'] || __dir__
+root = ENV['EMISSION_ROOT'] || File.join(__dir__, '../')
 pkg_version = lambda do |dir_from_root = '', version = 'version'|
   path = File.join(root, dir_from_root, 'package.json')
   JSON.load(File.read(path))[version]
@@ -58,21 +58,21 @@ podspec = Pod::Spec.new do |s|
   # React's Dependencies
   # s.dependency 'Yoga', "#{react_native_version}.React"
   react_podspecs = [
-    'node_modules/react-native/third-party-podspecs/DoubleConversion.podspec',
-    'node_modules/react-native/third-party-podspecs/Folly.podspec',
-    'node_modules/react-native/third-party-podspecs/glog.podspec'
+    '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec',
+    '../node_modules/react-native/third-party-podspecs/Folly.podspec',
+    '../node_modules/react-native/third-party-podspecs/glog.podspec'
   ]
 
   # Native dependencies of Emission, which come from node_modules
   dep_podspecs = [
-    'node_modules/tipsi-stripe/tipsi-stripe.podspec',
-    'node_modules/@mapbox/react-native-mapbox-gl/react-native-mapbox-gl.podspec',
-    'node_modules/react-native-sentry/SentryReactNative.podspec',
-    'node_modules/react-native-svg/RNSVG.podspec',
-    'node_modules/react-native-navigator-ios/react-native-navigator-ios.podspec',
-    'node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec',
-    'node_modules/@react-native-community/netinfo/react-native-netinfo.podspec',
-    'node_modules/@react-native-community/geolocation/react-native-geolocation.podspec'
+    '../node_modules/tipsi-stripe/tipsi-stripe.podspec',
+    '../node_modules/@mapbox/react-native-mapbox-gl/react-native-mapbox-gl.podspec',
+    '../node_modules/react-native-sentry/SentryReactNative.podspec',
+    '../node_modules/react-native-svg/RNSVG.podspec',
+    '../node_modules/react-native-navigator-ios/react-native-navigator-ios.podspec',
+    '../node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec',
+    '../node_modules/@react-native-community/netinfo/react-native-netinfo.podspec',
+    '../node_modules/@react-native-community/geolocation/react-native-geolocation.podspec'
   ]
 
   # Ties the exact versions so host apps don't need to guess the version

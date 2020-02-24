@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "baseUrl": "src",
+    "experimentalDecorators": true,
+    "lib": ["es2015"],
+    "jsx": "react",
+    "keyofStringsOnly": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "build",
+    "plugins": [{ "name": "typescript-styled-plugin" }],
+    "pretty": true,
+    "resolveJsonModule": true,
+    "strict": false,
+    "strictBindCallApply": true,
+    "noImplicitThis": true,
+    "strictFunctionTypes": true,
+    "target": "es6",
+    "types": ["jest", "react", "react-native"],
+    "noEmit": true
+  },
+  "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "exclude": [
+    "dangerfile.ts",
+    "node_modules",
+    "emission/Pod/Assets",
+    "externals",
+    "build",
+    "index.ios.js",
+    "**/__mocks__"
+  ]
+}

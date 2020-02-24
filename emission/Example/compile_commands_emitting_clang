@@ -1,9 +1,0 @@
-#!/bin/sh
-
-CLANG="${DT_TOOLCHAIN_DIR}/usr/bin/clang"
-
-if type -p clang-compilation-database-tool > /dev/null 2>&1; then
-  clang-compilation-database-tool dump ${CLANG} $@
-fi
-
-exec ${CLANG} $@

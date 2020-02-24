@@ -1,1 +1,0 @@
-import "../../index.tests.ios"

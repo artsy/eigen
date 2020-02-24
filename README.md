@@ -45,7 +45,6 @@ bundle exec pod install --repo-update
 open Artsy.xcworkspace
 
 # finally start the react-native bundler
-cd emission
 yarn start
 ```
 

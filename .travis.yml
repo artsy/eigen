@@ -11,19 +11,18 @@ cache:
     # General SwiftPM
     # Danger Swift plugins, like Yams
     - .build
-    - emission/node_modules
-    - emission/.jest/cache
+    - node_modules
+    - .jest/cache
 
 install:
   # Grab the latest Danger JS from npm
   - nvm use 12
   - npm install -g danger
   - npm install -g yarn
-  - pushd emission && yarn install && popd
+  - yarn install
 
 script:
   # Run the Dangerfile.swift
   - swift run danger-swift ci
-  - cd emission
   - yarn ci
   - yarn danger ci --verbose
