@@ -1,11 +1,11 @@
-import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import { FilterModalNavigator } from "lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
-import { FlatList, NativeModules, View } from "react-native"
+import { FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
@@ -142,8 +142,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
           />
           {isArtworkGridVisible && isArtworkFilterEnabled && (
             <FilterArtworkButtonContainer>
-              <FilterArtworkButton variant="primaryBlack" onPress={() => this.handleFilterArtworksModal()}>
-                Filter
+              <FilterArtworkButton variant="primaryBlack">
+                <TouchableWithoutFeedback onPress={() => this.handleFilterArtworksModal()}>
+                  <Sans color={color("white100")} size="3" p={1}>
+                    Filter
+                  </Sans>
+                </TouchableWithoutFeedback>
               </FilterArtworkButton>
             </FilterArtworkButtonContainer>
           )}
