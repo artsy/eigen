@@ -590,8 +590,8 @@
             return YES;
         }
     } else {
-        // Otherwise, new users signing up require passwords at least 6 chars long.
-        if (password.length >= 6) {
+        // Otherwise, new users signing up require passwords at least 8 chars long.
+        if (password.length >= 8) {
             return YES;
         }
     }
