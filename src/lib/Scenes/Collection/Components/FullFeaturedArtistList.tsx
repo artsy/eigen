@@ -4,7 +4,7 @@ import { ArtistListItemContainer as ArtistListItem } from "lib/Components/Artist
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components"
+import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
   collection: FullFeaturedArtistList_collection

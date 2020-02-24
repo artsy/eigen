@@ -1,34 +1,25 @@
 import { Theme } from "@artsy/palette"
-import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
 import { FeaturedArtistCollectionFixture } from "../__fixtures__/CollectionFixture"
-import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "../FeaturedArtists"
+import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "../FullFeaturedArtistList"
 jest.unmock("react-relay")
-jest.unmock("react-tracking")
-jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
-import Events from "lib/NativeModules/Events"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
-
-const SwitchBoardMock = SwitchBoard as any
-const { anything } = expect
-
-describe("FeaturedArtists", () => {
-  const render = (collection: FeaturedArtistsTestsQueryRawResponse["marketingCollection"]) =>
+describe("FullFeaturedArtistList", () => {
+  const render = (collection: FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"]) =>
     renderRelayTree({
       Component: mockTracking(({ marketingCollection }) => (
         <Theme>
-          <FeaturedArtists collection={marketingCollection} />
+          <CollectionFeaturedArtists collection={marketingCollection} />
         </Theme>
       )),
       query: graphql`
-        query FeaturedArtistsTestsQuery @raw_response_type {
+        query FullFeaturedArtistListTestsQuery @raw_response_type {
           marketingCollection(slug: "emerging-photographers") {
-            ...FeaturedArtists_collection
+            ...FullFeaturedArtistList_collection
           }
         }
       `,
@@ -46,13 +37,14 @@ describe("FeaturedArtists", () => {
     const tree = await render(FeaturedArtistCollectionFixture)
 
     const entityHeaders = tree.find("EntityHeader")
-    expect(entityHeaders.length).toEqual(3)
+    expect(entityHeaders.length).toEqual(5)
 
     const output = tree.html()
     expect(output).toContain("Pablo Picasso")
     expect(output).toContain("Andy Warhol")
     expect(output).toContain("Joan Miro")
-    expect(output).toContain("View all")
+    expect(output).toContain("Jean-Michel Basquiat")
+    expect(output).toContain("Kenny Scharf")
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
@@ -86,43 +78,6 @@ describe("FeaturedArtists", () => {
       expect(output).toContain("Andy Warhol")
       expect(output).not.toContain("Joan Miro")
       expect(output).not.toContain("Pablo Picasso")
-    })
-  })
-
-  describe("View all", () => {
-    beforeEach(() => {
-      SwitchBoardMock.presentNavigationViewController.mockReset()
-    })
-
-    it("shows more artists when 'View more' is tapped", async () => {
-      const tree = await render(FeaturedArtistCollectionFixture)
-      const output = tree.html()
-      expect(output).toContain("View all")
-      expect(output).not.toContain("Jean-Michel Basquiat")
-      expect(output).not.toContain("Kenny Scharf")
-
-      const viewAll = tree.find(ViewAll)
-      viewAll.simulate("click")
-
-      expect(SwitchBoardMock.presentNavigationViewController).toHaveBeenCalledWith(
-        anything(),
-        "/collection/some-collection/artists"
-      )
-    })
-
-    it("tracks an event when 'View more' is tapped", async () => {
-      const tree = await render(FeaturedArtistCollectionFixture)
-      const viewAll = tree.find(ViewAll)
-
-      viewAll.simulate("click")
-
-      expect(Events.postEvent).toHaveBeenCalledWith({
-        action_type: "tap",
-        action_name: "viewMore",
-        context_module: "FeaturedArtists",
-        context_screen: "Collection",
-        flow: "FeaturedArtists",
-      })
     })
   })
 })
