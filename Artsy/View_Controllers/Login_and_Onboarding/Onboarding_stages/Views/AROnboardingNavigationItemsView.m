@@ -169,15 +169,24 @@
 - (void)showError:(NSString *)text
 {
     [self hideSpinner];
-    
-    self.warningLabel.text = text;
-    
-    self.warningLabel.backgroundColor = [UIColor artsyRedRegular];
-    self.warningLabel.textColor = [UIColor whiteColor];
-    
-    self.warningLabel.hidden = NO;
-    self.next.enabled = NO;
 
+    // Allow short messages to be shown in the bottom button.
+    if (text.length < 25) {
+        self.warningLabel.text = text;
+        self.warningLabel.backgroundColor = [UIColor artsyRedRegular];
+        self.warningLabel.textColor = [UIColor whiteColor];
+
+        self.warningLabel.hidden = NO;
+        self.next.enabled = NO;
+    } else {
+        UIViewController *presentingController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:text preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [presentingController dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        [presentingController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (void)hideError
