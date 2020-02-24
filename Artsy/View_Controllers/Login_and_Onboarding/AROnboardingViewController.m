@@ -486,10 +486,8 @@
         }];
     } failure:^(NSError *error, id JSON) {
         __strong typeof (wself) sself = wself;
-        if (JSON) {
-            if (sself.state == AROnboardingStagePersonalizeName) {
-                [sself displayError:@"Could not create account"];
-            }
+        if ([JSON[@"type"] isEqualToString:@"param_error"]) {
+            [self displayError:JSON[@"message"]];
         } else {
             [sself displayNetworkFailureError];
         }
@@ -671,7 +669,15 @@
 {
     if (self.state == AROnboardingStateAcceptConditions) {
         self.shouldPresentFacebook = NO;
-        [self popViewControllerAnimated:YES];
+        // This is hacky. But the top bar isn't visible so the user doesn't know they can pop back with swipe.
+        // We pop back to the email view controller because the user can tap next from here to the
+        // actual problem.
+        // Can't wait for this to be moved to React Native.
+        if (self.viewControllers.count > 1) {
+            [self popToViewController:self.viewControllers[1] animated:YES];
+        } else {
+            [self popToRootViewControllerAnimated:YES];
+        }
     }
     [(ARPersonalizeViewController *)self.topViewController showErrorWithMessage:errorMessage];
     [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : errorMessage}];
