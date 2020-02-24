@@ -2,12 +2,12 @@ import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Button, Flex, Sans } from "@artsy/palette"
+import { Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { compact } from "lodash"
+import { compact, floor } from "lodash"
 import styled from "styled-components/native"
 
 const CARD_WIDTH = 270
@@ -44,7 +44,10 @@ export class ArtistCard extends React.Component<Props, State> {
     const avatarImageURL = artist.avatar && artist.avatar.url
     const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image?.url))
     // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
-    const artworkImageWidth = (CARD_WIDTH - (artworkImages.length - 1)) / artworkImages.length
+    // We need to floor this because the RN layout doesn't handle fractional pixels well. To get
+    // consistent spacing between the images, we'll also use a Spacer component. Any extra pixels get
+    // pushed off to the right.
+    const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
 
     return (
       <View>
@@ -52,9 +55,11 @@ export class ArtistCard extends React.Component<Props, State> {
           <View>
             <ArtworkImageContainer>
               {artworkImages.length ? (
-                artworkImages.map((url, index) => (
-                  <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
-                ))
+                <Join separator={<Spacer mr="1px" />}>
+                  {artworkImages.map((url, index) => (
+                    <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
+                  ))}
+                </Join>
               ) : (
                 /* Show an empty image block if there are no images for this artist */
                 <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
