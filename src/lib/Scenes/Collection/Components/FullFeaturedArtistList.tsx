@@ -16,10 +16,14 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     const featuredArtistExclusionIds = this.props.collection?.featuredArtistExclusionIds || []
     const artistIDs = this.props.collection?.query?.artistIDs || []
 
+    // When a collection contains artistsIDs we want to only display those artists as featured
+    // instead of all the artists in the collection.
     if (artistIDs.length > 0) {
       return allArtists.filter(artist => artistIDs.includes(artist.internalID))
     }
 
+    // Some artist even though they are within the collection shouldn't be displayed as featured artists
+    // https://artsyproduct.atlassian.net/browse/FX-1595
     if (featuredArtistExclusionIds.length > 0) {
       return allArtists.filter(artist => !featuredArtistExclusionIds.includes(artist.internalID))
     }
@@ -38,7 +42,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
           ListHeaderComponent={() => (
             <HeaderContainer mb={2}>
               <Sans size="4" textAlign="center" weight="medium">
-                Feature Artists
+                Featured Artists
               </Sans>
             </HeaderContainer>
           )}
