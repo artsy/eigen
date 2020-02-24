@@ -487,7 +487,7 @@
     } failure:^(NSError *error, id JSON) {
         __strong typeof (wself) sself = wself;
         if ([JSON[@"type"] isEqualToString:@"param_error"]) {
-            [self displayError:JSON[@"message"]];
+            [sself displayError:JSON[@"message"]];
         } else {
             [sself displayNetworkFailureError];
         }
