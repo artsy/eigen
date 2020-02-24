@@ -7,6 +7,7 @@ import ArtworkCarousel from "./Components/ArtworkCarousel"
 import FairsRail from "./Components/FairsRail"
 
 import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
+import { compact, flatten, zip } from "lodash"
 
 interface Props extends ViewProperties {
   forYou: ForYou_forYou
@@ -14,10 +15,6 @@ interface Props extends ViewProperties {
 }
 
 interface State {
-  rowData: Array<{
-    type: "artwork" | "artist" | "fairs"
-    data: any
-  }>
   isRefreshing: boolean
 }
 
@@ -26,43 +23,6 @@ export class ForYou extends React.Component<Props, State> {
 
   state = {
     isRefreshing: false,
-    rowData: [],
-  }
-
-  componentDidMount() {
-    const { forYou } = this.props
-    const rowData = []
-    const artworkModules = forYou.artwork_modules || []
-    const artistModules = forYou.artist_modules && forYou.artist_modules.concat()
-    const fairsModule = forYou.fairs_module
-
-    rowData.push({
-      type: "fairs",
-      data: fairsModule,
-    })
-
-    artworkModules.forEach((artworkModule, index) => {
-      rowData.push({
-        type: "artwork",
-        data: artworkModule,
-      })
-
-      const alternateRow = (index + 1) % 2 === 0
-
-      if (alternateRow) {
-        const artistModule = artistModules.shift()
-        if (artistModule) {
-          rowData.push({
-            type: "artist",
-            data: artistModule,
-          })
-        }
-      }
-    })
-
-    this.setState({
-      rowData,
-    })
   }
 
   handleRefresh = async () => {
@@ -82,9 +42,43 @@ export class ForYou extends React.Component<Props, State> {
   }
 
   render() {
+    const { forYou } = this.props
+    const artworkModules = forYou.artwork_modules || []
+    const artistModules = forYou.artist_modules && forYou.artist_modules.concat()
+    const fairsModule = forYou.fairs_module
+
+    const interleavedArtworkArtists = compact(
+      flatten(
+        zip(
+          artistModules.map(
+            module =>
+              ({
+                type: "artist",
+                data: module,
+              } as const)
+          ),
+          artworkModules.map(
+            module =>
+              ({
+                type: "artwork",
+                data: module,
+              } as const)
+          )
+        )
+      )
+    )
+
+    const rowData = [
+      {
+        type: "fairs",
+        data: fairsModule,
+      } as const,
+      ...interleavedArtworkArtists,
+    ]
+
     return (
       <FlatList
-        data={this.state.rowData}
+        data={rowData}
         renderScrollComponent={props => {
           return (
             <ScrollView
@@ -101,17 +95,17 @@ export class ForYou extends React.Component<Props, State> {
             />
           )
         }}
-        renderItem={({ item: { data, type } }) => {
-          switch (type) {
+        renderItem={({ item }) => {
+          switch (item.type) {
             case "artwork":
-              return <ArtworkCarousel key={data.id} rail={data} />
+              return <ArtworkCarousel rail={item.data} />
             case "artist":
-              return <ArtistRail key={data.id} rail={data} />
+              return <ArtistRail rail={item.data} />
             case "fairs":
-              return <FairsRail key={data.id} fairs_module={data} />
+              return <FairsRail fairs_module={item.data} />
           }
         }}
-        keyExtractor={(item, index) => item.data.type + String(index)}
+        keyExtractor={(_item, index) => String(index)}
         style={{ overflow: "visible" }}
       />
     )

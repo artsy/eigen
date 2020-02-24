@@ -1,6 +1,6 @@
 # v1.21.52 (Fri Feb 21 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Implement Initial Collections Artwork Filter Navigation Stack [#2096](https://github.com/artsy/emission/pull/2096) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -12,7 +12,7 @@
 
 # v1.21.51 (Thu Feb 20 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Remove invoice feature [#2091](https://github.com/artsy/emission/pull/2091) ([@ashkan18](https://github.com/ashkan18) [@ds300](https://github.com/ds300))
 
@@ -25,13 +25,11 @@
 
 # v1.21.50 (Thu Feb 20 2020)
 
-
-
 ---
 
 # v1.21.49 (Tue Feb 18 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Sync makefile node version with nvmrc #trivial [#2094](https://github.com/artsy/emission/pull/2094) ([@brainbicycle](https://github.com/brainbicycle))
 
@@ -43,7 +41,7 @@
 
 # v1.21.48 (Tue Feb 18 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Adds Collections to Search results #trivial [#2090](https://github.com/artsy/emission/pull/2090) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -55,7 +53,7 @@
 
 # v1.21.47 (Wed Feb 12 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-161] Return early if event data doesn't make sense [#2086](https://github.com/artsy/emission/pull/2086) ([@ds300](https://github.com/ds300))
 
@@ -67,7 +65,7 @@
 
 # v1.21.46 (Wed Feb 12 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-170] Increases Settings icon size [#2087](https://github.com/artsy/emission/pull/2087) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -79,7 +77,7 @@
 
 # v1.21.45 (Wed Feb 12 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-158] Artwork page: separating queries for above-the-fold and below-the-fold content [#2085](https://github.com/artsy/emission/pull/2085) ([@ds300](https://github.com/ds300))
 
@@ -91,7 +89,7 @@
 
 # v1.21.44 (Tue Feb 11 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Collections Artwork Filter Container [#2073](https://github.com/artsy/emission/pull/2073) ([@ashfurrow](https://github.com/ashfurrow) [@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -104,7 +102,7 @@
 
 # v1.21.43 (Tue Feb 11 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Specifies email body in privacy requests [#2082](https://github.com/artsy/emission/pull/2082) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -116,7 +114,7 @@
 
 # v1.21.42 (Tue Feb 11 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-180] Adds profiles to search entities [#2083](https://github.com/artsy/emission/pull/2083) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -128,7 +126,7 @@
 
 # v1.21.41 (Mon Feb 10 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [FX-1748] Fix line-height in ReadMore component [#2081](https://github.com/artsy/emission/pull/2081) ([@anandaroop](https://github.com/anandaroop))
 - [MX-158] add placeholder loading state for artwork page [#2080](https://github.com/artsy/emission/pull/2080) ([@ds300](https://github.com/ds300))
@@ -142,7 +140,7 @@
 
 # v1.21.40 (Fri Feb 07 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [AUCT-744] iOS request condition report [#2050](https://github.com/artsy/emission/pull/2050) ([@bhoggard](https://github.com/bhoggard))
 
@@ -154,7 +152,7 @@
 
 # v1.21.39 (Thu Feb 06 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-160] Prevent crash when camera roll permission denied [#2079](https://github.com/artsy/emission/pull/2079) ([@ds300](https://github.com/ds300))
 
@@ -166,7 +164,7 @@
 
 # v1.21.38 (Thu Feb 06 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Preserve changes made manually to the MP query map [#2078](https://github.com/artsy/emission/pull/2078) ([@ds300](https://github.com/ds300))
 
@@ -178,7 +176,7 @@
 
 # v1.21.37 (Thu Feb 06 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Updates Search query to allowed entities. [#2075](https://github.com/artsy/emission/pull/2075) ([@ashfurrow](https://github.com/ashfurrow))
 
@@ -190,7 +188,7 @@
 
 # v1.21.36 (Wed Feb 05 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [FX-1787] Use a larger base image for collection header [#2077](https://github.com/artsy/emission/pull/2077) ([@pepopowitz](https://github.com/pepopowitz))
 
@@ -202,7 +200,7 @@
 
 # v1.21.35 (Wed Feb 05 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [FX-1789] Add right margin to collection title [#2076](https://github.com/artsy/emission/pull/2076) ([@pepopowitz](https://github.com/pepopowitz))
 
@@ -214,7 +212,7 @@
 
 # v1.21.34 (Tue Feb 04 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Pin dep grapheme-splitter from ^1.0.4 to 1.0.4 [#2074](https://github.com/artsy/emission/pull/2074) ([@renovate-bot](https://github.com/renovate-bot))
 
@@ -226,7 +224,7 @@
 
 # v1.21.33 (Tue Feb 04 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-126] highlight diacritics in search results [#2071](https://github.com/artsy/emission/pull/2071) ([@ds300](https://github.com/ds300))
 
@@ -238,7 +236,7 @@
 
 # v1.21.32 (Mon Feb 03 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Fix sentry imports [#2070](https://github.com/artsy/emission/pull/2070) ([@ds300](https://github.com/ds300))
 
@@ -250,7 +248,7 @@
 
 # v1.21.31 (Fri Jan 31 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Update analytics constant for Collection/Featured Artists [#2069](https://github.com/artsy/emission/pull/2069) ([@pepopowitz](https://github.com/pepopowitz))
 
@@ -262,7 +260,7 @@
 
 # v1.21.30 (Thu Jan 30 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [MX-166] handle images without deep zoom [#2066](https://github.com/artsy/emission/pull/2066) ([@ds300](https://github.com/ds300) [@ashfurrow](https://github.com/ashfurrow))
 
@@ -275,7 +273,7 @@
 
 # v1.21.29 (Wed Jan 29 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - Adds conditional padding to collection title [#2065](https://github.com/artsy/emission/pull/2065) ([@ashleyjelks](https://github.com/ashleyjelks))
 
@@ -287,7 +285,7 @@
 
 # v1.21.28 (Wed Jan 29 2020)
 
-#### 🐛  Bug Fix
+#### 🐛 Bug Fix
 
 - [FX-1747] Refactor FeatureArtist component to use ArtistListItem component [#2059](https://github.com/artsy/emission/pull/2059) ([@xtina-starr](https://github.com/xtina-starr))
 
