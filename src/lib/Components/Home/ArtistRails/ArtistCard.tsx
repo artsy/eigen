@@ -43,6 +43,7 @@ export class ArtistCard extends React.Component<Props, State> {
     const artist = this.props.artist
     const avatarImageURL = artist.avatar && artist.avatar.url
     const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image?.url))
+    // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
     const artworkImageWidth = (CARD_WIDTH - (artworkImages.length - 1)) / artworkImages.length
 
     return (

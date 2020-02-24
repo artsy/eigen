@@ -213,15 +213,13 @@ export class ArtistRail extends Component<Props, State> {
   }
 
   render() {
-    return (
-      this.state.artists.length && (
-        <View>
-          <Title>{this.title()}</Title>
-          {this.renderModuleResults()}
-          <Separator />
-        </View>
-      )
-    )
+    return this.state.artists.length ? (
+      <View>
+        <Title>{this.title()}</Title>
+        {this.renderModuleResults()}
+        <Separator />
+      </View>
+    ) : null
   }
 }
 
