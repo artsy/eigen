@@ -1211,7 +1211,7 @@ exports[`Collection renders a snapshot 1`] = `
     updateCellsBatchingPeriod={50}
     viewabilityConfig={
       Object {
-        "viewAreaCoveragePercentThreshold": 30,
+        "viewAreaCoveragePercentThreshold": 75,
       }
     }
     viewabilityConfigCallbackPairs={
@@ -1219,7 +1219,7 @@ exports[`Collection renders a snapshot 1`] = `
         Object {
           "onViewableItemsChanged": [Function],
           "viewabilityConfig": Object {
-            "viewAreaCoveragePercentThreshold": 30,
+            "viewAreaCoveragePercentThreshold": 75,
           },
         },
       ]

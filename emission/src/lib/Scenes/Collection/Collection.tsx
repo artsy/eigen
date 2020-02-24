@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Separator, Spacer, Theme } from "@artsy/palette"
+import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import { FilterModal } from "lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -33,7 +33,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 30, // 30% of the artworks component should be in the screen before toggling the filter button
+    viewAreaCoveragePercentThreshold: 75, // What percentage of the artworks component should be in the screen before toggling the filter button
   }
   componentDidMount() {
     const sections = []
@@ -138,8 +138,11 @@ export class Collection extends Component<CollectionProps, CollectionState> {
           />
           {isArtworkGridVisible && isArtworkFilterEnabled && (
             <FilterArtworkButtonContainer>
-              <FilterArtworkButton variant="primaryBlack" onPress={this.handleFilterArtworksModal.bind(this)}>
-                Filter
+              <FilterArtworkButton
+                px="2"
+                onPress={this.handleFilterArtworksModal.bind(this)}>
+                <FilterIcon fill="white100" />
+                <Sans size="3t" pl="1" py="1" color="white100" weight="medium">Filter</Sans>
               </FilterArtworkButton>
             </FilterArtworkButtonContainer>
           )}
@@ -151,16 +154,20 @@ export class Collection extends Component<CollectionProps, CollectionState> {
 
 export const FilterArtworkButtonContainer = styled(Flex)`
   position: absolute;
-  bottom: 50;
+  bottom: 20;
   flex: 1;
   justify-content: center;
   width: 100%;
   flex-direction: row;
 `
 
-export const FilterArtworkButton = styled(Button)`
-  border-radius: 100;
+export const FilterArtworkButton = styled(Flex)`
   width: 110px;
+  border-radius: 20;
+  background-color: ${color("black100")};
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 `
 
 export const CollectionContainer = createFragmentContainer(Collection, {
