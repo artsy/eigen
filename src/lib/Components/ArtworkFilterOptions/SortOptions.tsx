@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Box, Flex, Sans, Serif, space } from "@artsy/palette"
+import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, Serif, space } from "@artsy/palette"
 import { BackgroundFill, OptionListItem } from "lib/Components/FilterModal"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -7,11 +7,35 @@ import styled from "styled-components/native"
 
 interface SortOptionsScreenProps {
   navigator: NavigatorIOS
+  updatedSortOption: (string: SortTypes) => void
 }
 
-export class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
+interface SortOptionsScreenState {
+  currentSelection: SortTypes
+}
+
+export class SortOptionsScreen extends React.Component<SortOptionsScreenProps, SortOptionsScreenState> {
+  state: SortOptionsScreenState = {
+    currentSelection: "Default",
+  }
+
   handleBackNavigation() {
     this.props.navigator.pop()
+  }
+
+  getCheckboxSelection(selectedOption) {
+    return (
+      selectedOption === this.state.currentSelection && (
+        <Box mb={0.1}>
+          <CheckIcon fill="black100" />
+        </Box>
+      )
+    )
+  }
+
+  selectSortOption(selectedOption) {
+    this.setState({ currentSelection: selectedOption })
+    this.props.updatedSortOption(selectedOption) // callback to set the current sort option on the Filter home screen
   }
 
   render() {
@@ -35,11 +59,14 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
             renderItem={({ item }) => (
               <Box>
                 {
-                  <OptionListItem>
-                    <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                      <Serif size="3">{item}</Serif>
-                    </Flex>
-                  </OptionListItem>
+                  <TouchableOpacity onPress={() => this.selectSortOption(item)}>
+                    <OptionListItem>
+                      <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="flex-end">
+                        <Serif size="3">{item}</Serif>
+                        {this.getCheckboxSelection(item)}
+                      </Flex>
+                    </OptionListItem>
+                  </TouchableOpacity>
                 }
               </Box>
             )}
@@ -51,7 +78,7 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps> {
   }
 }
 
-const SortOptions = [
+const SortOptions: SortTypes[] = [
   "Default",
   "Price (low to high)",
   "Price (high to low)",
@@ -71,3 +98,12 @@ export const ArrowLeftIconContainer = styled(TouchableOpacity)`
   margin-top: ${space(2)};
   margin-left: ${space(2)};
 `
+
+export type SortTypes =
+  | "Default"
+  | "Price (low to high)"
+  | "Price (high to low)"
+  | "Recently Updated"
+  | "Recently Added"
+  | "Artwork year (descending)"
+  | "Artwork year (ascending)"
