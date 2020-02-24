@@ -601,7 +601,9 @@
 
 - (void)showErrorWithMessage:(NSString *)errorMessage
 {
-    [self.onboardingTextFields enableErrorState];
+    // Since the error might not be due to the UI that's currently visible, let's not highlight
+    // text fields in red (since they error is likely unrelated).
+    // [self.onboardingTextFields enableErrorState];
     [self.onboardingNavigationItems showError:errorMessage];
 }
 
