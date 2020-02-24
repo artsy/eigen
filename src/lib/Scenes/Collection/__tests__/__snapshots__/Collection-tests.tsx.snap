@@ -1,0 +1,1426 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Collection renders a snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    ListHeaderComponent={
+      <ForwardRef(Relay(CollectionHeader))
+        collection={
+          Object {
+            "__fragmentOwner": Object {
+              "identifier": "bc3659ca34d0a3d9e4807e2294e185e2{}",
+              "node": Object {
+                "fragment": Object {
+                  "argumentDefinitions": Array [],
+                  "kind": "Fragment",
+                  "metadata": null,
+                  "name": "CollectionTestsQuery",
+                  "selections": Array [
+                    Object {
+                      "alias": null,
+                      "args": Array [
+                        Object {
+                          "kind": "Literal",
+                          "name": "slug",
+                          "value": "doesn't matter",
+                        },
+                      ],
+                      "concreteType": "MarketingCollection",
+                      "kind": "LinkedField",
+                      "name": "marketingCollection",
+                      "plural": false,
+                      "selections": Array [
+                        Object {
+                          "args": null,
+                          "kind": "FragmentSpread",
+                          "name": "Collection_collection",
+                        },
+                      ],
+                      "storageKey": "marketingCollection(slug:\\"doesn't matter\\")",
+                    },
+                  ],
+                  "type": "Query",
+                },
+                "hash": "fbe5831179fb6d1e2f66b7360c128d63",
+                "kind": "Request",
+                "operation": Object {
+                  "argumentDefinitions": Array [],
+                  "kind": "Operation",
+                  "name": "CollectionTestsQuery",
+                  "selections": Array [
+                    Object {
+                      "alias": null,
+                      "args": Array [
+                        Object {
+                          "kind": "Literal",
+                          "name": "slug",
+                          "value": "doesn't matter",
+                        },
+                      ],
+                      "concreteType": "MarketingCollection",
+                      "kind": "LinkedField",
+                      "name": "marketingCollection",
+                      "plural": false,
+                      "selections": Array [
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "id",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "slug",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "title",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "headerImage",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "descriptionMarkdown",
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": "image",
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "first",
+                              "value": 1,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-decayed_merch",
+                            },
+                          ],
+                          "concreteType": "FilterArtworksConnection",
+                          "kind": "LinkedField",
+                          "name": "artworksConnection",
+                          "plural": false,
+                          "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "FilterArtworksEdge",
+                              "kind": "LinkedField",
+                              "name": "edges",
+                              "plural": true,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Artwork",
+                                  "kind": "LinkedField",
+                                  "name": "node",
+                                  "plural": false,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "concreteType": "Image",
+                                      "kind": "LinkedField",
+                                      "name": "image",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": Array [
+                                            Object {
+                                              "kind": "Literal",
+                                              "name": "version",
+                                              "value": "larger",
+                                            },
+                                          ],
+                                          "kind": "ScalarField",
+                                          "name": "url",
+                                          "storageKey": "url(version:\\"larger\\")",
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "id",
+                                      "storageKey": null,
+                                    },
+                                  ],
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null,
+                            },
+                          ],
+                          "storageKey": "artworksConnection(first:1,sort:\\"-decayed_merch\\")",
+                        },
+                        Object {
+                          "alias": "collectionArtworks",
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "first",
+                              "value": 6,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-decayed_merch",
+                            },
+                          ],
+                          "concreteType": "FilterArtworksConnection",
+                          "kind": "LinkedField",
+                          "name": "artworksConnection",
+                          "plural": false,
+                          "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "FilterArtworksEdge",
+                              "kind": "LinkedField",
+                              "name": "edges",
+                              "plural": true,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Artwork",
+                                  "kind": "LinkedField",
+                                  "name": "node",
+                                  "plural": false,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "id",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "slug",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "concreteType": "Image",
+                                      "kind": "LinkedField",
+                                      "name": "image",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "aspectRatio",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": Array [
+                                            Object {
+                                              "kind": "Literal",
+                                              "name": "version",
+                                              "value": "large",
+                                            },
+                                          ],
+                                          "kind": "ScalarField",
+                                          "name": "url",
+                                          "storageKey": "url(version:\\"large\\")",
+                                        },
+                                        Object {
+                                          "alias": "aspect_ratio",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "aspectRatio",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "title",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "date",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "sale_message",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "saleMessage",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "is_biddable",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "isBiddable",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "is_acquireable",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "isAcquireable",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "is_offerable",
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "isOfferable",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "concreteType": "Sale",
+                                      "kind": "LinkedField",
+                                      "name": "sale",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": "is_auction",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "isAuction",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": "is_closed",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "isClosed",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": "display_timely_at",
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "displayTimelyAt",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": "sale_artwork",
+                                      "args": null,
+                                      "concreteType": "SaleArtwork",
+                                      "kind": "LinkedField",
+                                      "name": "saleArtwork",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": "current_bid",
+                                          "args": null,
+                                          "concreteType": "SaleArtworkCurrentBid",
+                                          "kind": "LinkedField",
+                                          "name": "currentBid",
+                                          "plural": false,
+                                          "selections": Array [
+                                            Object {
+                                              "alias": null,
+                                              "args": null,
+                                              "kind": "ScalarField",
+                                              "name": "display",
+                                              "storageKey": null,
+                                            },
+                                          ],
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": Array [
+                                        Object {
+                                          "kind": "Literal",
+                                          "name": "shallow",
+                                          "value": true,
+                                        },
+                                      ],
+                                      "concreteType": "Artist",
+                                      "kind": "LinkedField",
+                                      "name": "artists",
+                                      "plural": true,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "name",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": "artists(shallow:true)",
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "concreteType": "Partner",
+                                      "kind": "LinkedField",
+                                      "name": "partner",
+                                      "plural": false,
+                                      "selections": Array [
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "name",
+                                          "storageKey": null,
+                                        },
+                                        Object {
+                                          "alias": null,
+                                          "args": null,
+                                          "kind": "ScalarField",
+                                          "name": "id",
+                                          "storageKey": null,
+                                        },
+                                      ],
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "href",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "__typename",
+                                      "storageKey": null,
+                                    },
+                                  ],
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "cursor",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "id",
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "PageInfo",
+                              "kind": "LinkedField",
+                              "name": "pageInfo",
+                              "plural": false,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "hasNextPage",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "startCursor",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "endCursor",
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null,
+                            },
+                          ],
+                          "storageKey": "artworksConnection(first:6,sort:\\"-decayed_merch\\")",
+                        },
+                        Object {
+                          "alias": "collectionArtworks",
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "first",
+                              "value": 6,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-decayed_merch",
+                            },
+                          ],
+                          "filters": Array [
+                            "sort",
+                          ],
+                          "handle": "connection",
+                          "key": "Collection_collectionArtworks",
+                          "kind": "LinkedHandle",
+                          "name": "artworksConnection",
+                        },
+                        Object {
+                          "alias": null,
+                          "args": Array [
+                            Object {
+                              "kind": "Literal",
+                              "name": "aggregations",
+                              "value": Array [
+                                "MERCHANDISABLE_ARTISTS",
+                              ],
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "size",
+                              "value": 0,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "sort",
+                              "value": "-decayed_merch",
+                            },
+                          ],
+                          "concreteType": "FilterArtworksConnection",
+                          "kind": "LinkedField",
+                          "name": "artworksConnection",
+                          "plural": false,
+                          "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": Array [
+                                Object {
+                                  "kind": "Literal",
+                                  "name": "size",
+                                  "value": 9,
+                                },
+                              ],
+                              "concreteType": "Artist",
+                              "kind": "LinkedField",
+                              "name": "merchandisableArtists",
+                              "plural": true,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "internalID",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "id",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "slug",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "name",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "initials",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "href",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": "is_followed",
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "isFollowed",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "nationality",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "birthday",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "deathday",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Image",
+                                  "kind": "LinkedField",
+                                  "name": "image",
+                                  "plural": false,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "url",
+                                      "storageKey": null,
+                                    },
+                                  ],
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": "merchandisableArtists(size:9)",
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null,
+                            },
+                          ],
+                          "storageKey": "artworksConnection(aggregations:[\\"MERCHANDISABLE_ARTISTS\\"],size:0,sort:\\"-decayed_merch\\")",
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "MarketingCollectionQuery",
+                          "kind": "LinkedField",
+                          "name": "query",
+                          "plural": false,
+                          "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "artistIDs",
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null,
+                            },
+                          ],
+                          "storageKey": null,
+                        },
+                        Object {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "featuredArtistExclusionIds",
+                          "storageKey": null,
+                        },
+                      ],
+                      "storageKey": "marketingCollection(slug:\\"doesn't matter\\")",
+                    },
+                  ],
+                },
+                "params": Object {
+                  "id": "bc3659ca34d0a3d9e4807e2294e185e2",
+                  "metadata": Object {
+                    "relayTestingSelectionTypeInfo": Object {
+                      "marketingCollection": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "MarketingCollection",
+                      },
+                      "marketingCollection.artworksConnection": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FilterArtworksConnection",
+                      },
+                      "marketingCollection.artworksConnection.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "Artist",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.birthday": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.deathday": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.href": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.id": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Image",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.image.url": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.initials": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.internalID": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.is_followed": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.name": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.nationality": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.artworksConnection.merchandisableArtists.slug": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FilterArtworksConnection",
+                      },
+                      "marketingCollection.collectionArtworks.edges": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "ArtworkEdgeInterface",
+                      },
+                      "marketingCollection.collectionArtworks.edges.cursor": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Artwork",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.__typename": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.artists": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "Artist",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.artists.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.artists.name": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.date": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.href": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.id": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Image",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.image.aspectRatio": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "Float",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.image.aspect_ratio": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "Float",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.image.url": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.is_acquireable": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.is_biddable": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.is_offerable": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.partner": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Partner",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.partner.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.partner.name": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Sale",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.display_timely_at": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.is_auction": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale.is_closed": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "SaleArtwork",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork.current_bid": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "SaleArtworkCurrentBid",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork.current_bid.display": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_artwork.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.sale_message": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.slug": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.edges.node.title": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "PageInfo",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo.endCursor": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo.hasNextPage": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "Boolean",
+                      },
+                      "marketingCollection.collectionArtworks.pageInfo.startCursor": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.descriptionMarkdown": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.featuredArtistExclusionIds": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "String",
+                      },
+                      "marketingCollection.headerImage": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.id": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FilterArtworksConnection",
+                      },
+                      "marketingCollection.image.edges": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "FilterArtworksEdge",
+                      },
+                      "marketingCollection.image.edges.node": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Artwork",
+                      },
+                      "marketingCollection.image.edges.node.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.image.edges.node.image": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "Image",
+                      },
+                      "marketingCollection.image.edges.node.image.url": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.image.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.query": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "MarketingCollectionQuery",
+                      },
+                      "marketingCollection.query.artistIDs": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "String",
+                      },
+                      "marketingCollection.query.id": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ID",
+                      },
+                      "marketingCollection.slug": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.title": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
+                    },
+                  },
+                  "name": "CollectionTestsQuery",
+                  "operationKind": "query",
+                  "text": null,
+                },
+              },
+              "variables": Object {},
+            },
+            "__fragments": Object {
+              "CollectionArtworks_collection": Object {},
+              "CollectionHeader_collection": Object {},
+              "FeaturedArtists_collection": Object {},
+            },
+            "__id": "<MarketingCollection-mock-id-1>",
+            "id": "<MarketingCollection-mock-id-1>",
+            "slug": "<mock-value-for-field-\\"slug\\">",
+          }
+        }
+      />
+    }
+    data={
+      Array [
+        Object {
+          "data": Object {
+            "artists": Array [],
+          },
+          "type": "collectionFeaturedArtists",
+        },
+        Object {
+          "data": Object {
+            "artworks": Array [],
+          },
+          "type": "collectionArtworks",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    onViewableItemsChanged={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfig={
+      Object {
+        "viewAreaCoveragePercentThreshold": 75,
+      }
+    }
+    viewabilityConfigCallbackPairs={
+      Array [
+        Object {
+          "onViewableItemsChanged": [Function],
+          "viewabilityConfig": Object {
+            "viewAreaCoveragePercentThreshold": 75,
+          },
+        },
+      ]
+    }
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+      >
+        <View
+          mb={2}
+          style={
+            Array [
+              Object {
+                "marginBottom": 20,
+              },
+            ]
+          }
+        >
+          <AROpaqueImageView
+            height={204}
+            imageURL="<mock-value-for-field-\\"headerImage\\">"
+            width={750}
+          />
+        </View>
+        <View
+          mb={0}
+          style={
+            Array [
+              Object {
+                "marginBottom": 0,
+              },
+            ]
+          }
+        >
+          <Text
+            color="#000"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="32px"
+            lineHeight="38px"
+            mx={2}
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 32,
+                  "lineHeight": 38,
+                  "marginLeft": 20,
+                  "marginRight": 20,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"title"&gt;
+          </Text>
+        </View>
+        <View
+          m="2"
+          style={
+            Array [
+              Object {
+                "marginBottom": 20,
+                "marginLeft": 20,
+                "marginRight": 20,
+                "marginTop": 20,
+              },
+            ]
+          }
+        >
+          <Text
+            color="black100"
+            fontFamily="ReactNativeAGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="24px"
+            style={
+              Array [
+                Object {
+                  "color": "#000",
+                  "fontFamily": "ReactNativeAGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 24,
+                },
+                Object {},
+              ]
+            }
+          >
+            &lt;mock-value-for-field-"descriptionMarkdown"&gt;
+          </Text>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          pb={2}
+          px={2}
+          style={
+            Array [
+              Object {
+                "paddingBottom": 20,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {},
+              ]
+            }
+          >
+            <View
+              mb={1}
+              style={
+                Array [
+                  Object {
+                    "marginBottom": 10,
+                  },
+                ]
+              }
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderBottomWidth": 0,
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "width": "100%",
+                  },
+                ]
+              }
+              width="100%"
+            />
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          pb={2}
+          px={2}
+          style={
+            Array [
+              Object {
+                "paddingBottom": 20,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+              },
+            ]
+          }
+        >
+          <RCTScrollView
+            accessibilityLabel="Artworks ScrollView"
+            onLayout={[Function]}
+            onScroll={[Function]}
+            scrollEventThrottle={50}
+            scrollsToTop={false}
+          >
+            <View>
+              <View
+                px={0}
+                style={
+                  Array [
+                    Object {
+                      "paddingLeft": 0,
+                      "paddingRight": 0,
+                    },
+                  ]
+                }
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </RCTScrollView>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "height": 0,
+          }
+        }
+      />
+    </View>
+  </RCTScrollView>
+</View>
+`;

@@ -70,7 +70,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.21.51):
+  - Emission (1.21.52):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -461,22 +461,22 @@ DEPENDENCIES:
   - Artsy-UIButtons
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
-  - DoubleConversion (from `./emission/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - DoubleConversion (from `node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
   - Emission (from `./emission`)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
-  - FBLazyVector (from `./emission/node_modules/react-native/Libraries/FBLazyVector`)
-  - FBReactNativeSpec (from `./emission/node_modules/react-native/Libraries/FBReactNativeSpec`)
+  - FBLazyVector (from `node_modules/react-native/Libraries/FBLazyVector`)
+  - FBReactNativeSpec (from `node_modules/react-native/Libraries/FBReactNativeSpec`)
   - FBSDKCoreKit (~> 4.33)
   - FBSDKLoginKit (~> 4.33)
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
-  - Folly (from `./emission/node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - Folly (from `node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - Forgeries/Mocks
   - FXBlurView
-  - glog (from `./emission/node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - glog (from `node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
@@ -498,48 +498,48 @@ DEPENDENCIES:
   - ORStackView (= 2.0.3)
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - Quick
-  - RCTRequired (from `./emission/node_modules/react-native/Libraries/RCTRequired`)
-  - RCTTypeSafety (from `./emission/node_modules/react-native/Libraries/TypeSafety`)
-  - React (from `./emission/node_modules/react-native`)
-  - React-Core/DevSupport (from `./emission/node_modules/react-native`)
-  - React-CoreModules (from `./emission/node_modules/react-native/React/CoreModules`)
-  - React-cxxreact (from `./emission/node_modules/react-native/ReactCommon/cxxreact`)
-  - React-jsi (from `./emission/node_modules/react-native/ReactCommon/jsi`)
-  - React-jsiexecutor (from `./emission/node_modules/react-native/ReactCommon/jsiexecutor`)
-  - React-jsinspector (from `./emission/node_modules/react-native/ReactCommon/jsinspector`)
-  - "react-native-cameraroll (from `./emission/node_modules/@react-native-community/cameraroll`)"
-  - "react-native-geolocation (from `./emission/node_modules/@react-native-community/geolocation`)"
-  - "react-native-mapbox-gl (from `./emission/node_modules/@mapbox/react-native-mapbox-gl`)"
-  - react-native-navigator-ios (from `./emission/node_modules/react-native-navigator-ios`)
-  - "react-native-netinfo (from `./emission/node_modules/@react-native-community/netinfo`)"
-  - React-RCTActionSheet (from `./emission/node_modules/react-native/Libraries/ActionSheetIOS`)
-  - React-RCTAnimation (from `./emission/node_modules/react-native/Libraries/NativeAnimation`)
-  - React-RCTBlob (from `./emission/node_modules/react-native/Libraries/Blob`)
-  - React-RCTImage (from `./emission/node_modules/react-native/Libraries/Image`)
-  - React-RCTLinking (from `./emission/node_modules/react-native/Libraries/LinkingIOS`)
-  - React-RCTNetwork (from `./emission/node_modules/react-native/Libraries/Network`)
-  - React-RCTSettings (from `./emission/node_modules/react-native/Libraries/Settings`)
-  - React-RCTText (from `./emission/node_modules/react-native/Libraries/Text`)
-  - React-RCTVibration (from `./emission/node_modules/react-native/Libraries/Vibration`)
-  - ReactCommon/jscallinvoker (from `./emission/node_modules/react-native/ReactCommon`)
-  - ReactCommon/turbomodule/core (from `./emission/node_modules/react-native/ReactCommon`)
+  - RCTRequired (from `node_modules/react-native/Libraries/RCTRequired`)
+  - RCTTypeSafety (from `node_modules/react-native/Libraries/TypeSafety`)
+  - React (from `node_modules/react-native`)
+  - React-Core/DevSupport (from `node_modules/react-native`)
+  - React-CoreModules (from `node_modules/react-native/React/CoreModules`)
+  - React-cxxreact (from `node_modules/react-native/ReactCommon/cxxreact`)
+  - React-jsi (from `node_modules/react-native/ReactCommon/jsi`)
+  - React-jsiexecutor (from `node_modules/react-native/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `node_modules/react-native/ReactCommon/jsinspector`)
+  - "react-native-cameraroll (from `node_modules/@react-native-community/cameraroll`)"
+  - "react-native-geolocation (from `node_modules/@react-native-community/geolocation`)"
+  - "react-native-mapbox-gl (from `node_modules/@mapbox/react-native-mapbox-gl`)"
+  - react-native-navigator-ios (from `node_modules/react-native-navigator-ios`)
+  - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
+  - React-RCTActionSheet (from `node_modules/react-native/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `node_modules/react-native/Libraries/NativeAnimation`)
+  - React-RCTBlob (from `node_modules/react-native/Libraries/Blob`)
+  - React-RCTImage (from `node_modules/react-native/Libraries/Image`)
+  - React-RCTLinking (from `node_modules/react-native/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `node_modules/react-native/Libraries/Network`)
+  - React-RCTSettings (from `node_modules/react-native/Libraries/Settings`)
+  - React-RCTText (from `node_modules/react-native/Libraries/Text`)
+  - React-RCTVibration (from `node_modules/react-native/Libraries/Vibration`)
+  - ReactCommon/jscallinvoker (from `node_modules/react-native/ReactCommon`)
+  - ReactCommon/turbomodule/core (from `node_modules/react-native/ReactCommon`)
   - ReactiveObjC
-  - "RNCAsyncStorage (from `./emission/node_modules/@react-native-community/async-storage`)"
-  - RNReanimated (from `./emission/node_modules/react-native-reanimated`)
-  - RNSVG (from `./emission/node_modules/react-native-svg`)
+  - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
+  - RNReanimated (from `node_modules/react-native-reanimated`)
+  - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (>= 3.7.2)
-  - SentryReactNative (from `./emission/node_modules/react-native-sentry`)
+  - SentryReactNative (from `node_modules/react-native-sentry`)
   - Specta
   - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `./emission/node_modules/tipsi-stripe/tipsi-stripe.podspec`)
+  - tipsi-stripe (from `node_modules/tipsi-stripe/tipsi-stripe.podspec`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
   - "XCTest+OHHTTPStubSuiteCleanUp"
-  - Yoga (from `./emission/node_modules/react-native/ReactCommon/yoga`)
+  - Yoga (from `node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
@@ -609,20 +609,20 @@ EXTERNAL SOURCES:
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   DoubleConversion:
-    :podspec: "./emission/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+    :podspec: node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
   Emission:
     :path: "./emission"
   FBLazyVector:
-    :path: "./emission/node_modules/react-native/Libraries/FBLazyVector"
+    :path: node_modules/react-native/Libraries/FBLazyVector
   FBReactNativeSpec:
-    :path: "./emission/node_modules/react-native/Libraries/FBReactNativeSpec"
+    :path: node_modules/react-native/Libraries/FBReactNativeSpec
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
   Folly:
-    :podspec: "./emission/node_modules/react-native/third-party-podspecs/Folly.podspec"
+    :podspec: node_modules/react-native/third-party-podspecs/Folly.podspec
   glog:
-    :podspec: "./emission/node_modules/react-native/third-party-podspecs/glog.podspec"
+    :podspec: node_modules/react-native/third-party-podspecs/glog.podspec
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -636,68 +636,68 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/l2succes/Pulley.git
   RCTRequired:
-    :path: "./emission/node_modules/react-native/Libraries/RCTRequired"
+    :path: node_modules/react-native/Libraries/RCTRequired
   RCTTypeSafety:
-    :path: "./emission/node_modules/react-native/Libraries/TypeSafety"
+    :path: node_modules/react-native/Libraries/TypeSafety
   React:
-    :path: "./emission/node_modules/react-native"
+    :path: node_modules/react-native
   React-Core:
-    :path: "./emission/node_modules/react-native"
+    :path: node_modules/react-native
   React-CoreModules:
-    :path: "./emission/node_modules/react-native/React/CoreModules"
+    :path: node_modules/react-native/React/CoreModules
   React-cxxreact:
-    :path: "./emission/node_modules/react-native/ReactCommon/cxxreact"
+    :path: node_modules/react-native/ReactCommon/cxxreact
   React-jsi:
-    :path: "./emission/node_modules/react-native/ReactCommon/jsi"
+    :path: node_modules/react-native/ReactCommon/jsi
   React-jsiexecutor:
-    :path: "./emission/node_modules/react-native/ReactCommon/jsiexecutor"
+    :path: node_modules/react-native/ReactCommon/jsiexecutor
   React-jsinspector:
-    :path: "./emission/node_modules/react-native/ReactCommon/jsinspector"
+    :path: node_modules/react-native/ReactCommon/jsinspector
   react-native-cameraroll:
-    :path: "./emission/node_modules/@react-native-community/cameraroll"
+    :path: "node_modules/@react-native-community/cameraroll"
   react-native-geolocation:
-    :path: "./emission/node_modules/@react-native-community/geolocation"
+    :path: "node_modules/@react-native-community/geolocation"
   react-native-mapbox-gl:
-    :path: "./emission/node_modules/@mapbox/react-native-mapbox-gl"
+    :path: "node_modules/@mapbox/react-native-mapbox-gl"
   react-native-navigator-ios:
-    :path: "./emission/node_modules/react-native-navigator-ios"
+    :path: node_modules/react-native-navigator-ios
   react-native-netinfo:
-    :path: "./emission/node_modules/@react-native-community/netinfo"
+    :path: "node_modules/@react-native-community/netinfo"
   React-RCTActionSheet:
-    :path: "./emission/node_modules/react-native/Libraries/ActionSheetIOS"
+    :path: node_modules/react-native/Libraries/ActionSheetIOS
   React-RCTAnimation:
-    :path: "./emission/node_modules/react-native/Libraries/NativeAnimation"
+    :path: node_modules/react-native/Libraries/NativeAnimation
   React-RCTBlob:
-    :path: "./emission/node_modules/react-native/Libraries/Blob"
+    :path: node_modules/react-native/Libraries/Blob
   React-RCTImage:
-    :path: "./emission/node_modules/react-native/Libraries/Image"
+    :path: node_modules/react-native/Libraries/Image
   React-RCTLinking:
-    :path: "./emission/node_modules/react-native/Libraries/LinkingIOS"
+    :path: node_modules/react-native/Libraries/LinkingIOS
   React-RCTNetwork:
-    :path: "./emission/node_modules/react-native/Libraries/Network"
+    :path: node_modules/react-native/Libraries/Network
   React-RCTSettings:
-    :path: "./emission/node_modules/react-native/Libraries/Settings"
+    :path: node_modules/react-native/Libraries/Settings
   React-RCTText:
-    :path: "./emission/node_modules/react-native/Libraries/Text"
+    :path: node_modules/react-native/Libraries/Text
   React-RCTVibration:
-    :path: "./emission/node_modules/react-native/Libraries/Vibration"
+    :path: node_modules/react-native/Libraries/Vibration
   ReactCommon:
-    :path: "./emission/node_modules/react-native/ReactCommon"
+    :path: node_modules/react-native/ReactCommon
   RNCAsyncStorage:
-    :path: "./emission/node_modules/@react-native-community/async-storage"
+    :path: "node_modules/@react-native-community/async-storage"
   RNReanimated:
-    :path: "./emission/node_modules/react-native-reanimated"
+    :path: node_modules/react-native-reanimated
   RNSVG:
-    :path: "./emission/node_modules/react-native-svg"
+    :path: node_modules/react-native-svg
   SentryReactNative:
-    :path: "./emission/node_modules/react-native-sentry"
+    :path: node_modules/react-native-sentry
   SSFadingScrollView:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :podspec: "./emission/node_modules/tipsi-stripe/tipsi-stripe.podspec"
+    :podspec: node_modules/tipsi-stripe/tipsi-stripe.podspec
   Yoga:
-    :path: "./emission/node_modules/react-native/ReactCommon/yoga"
+    :path: node_modules/react-native/ReactCommon/yoga
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -754,7 +754,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 7657821cbcfd431abaf30c1fa8e1ffec28a7866e
+  Emission: c0d44f4745243b1cfc750f84f30a68714283a5a7
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -836,6 +836,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 2057bdb5dc57363490ad61e40d14bbc9d90c41a0
+PODFILE CHECKSUM: bde362cc9b474c64f2d920484e2086f123a9793a
 
 COCOAPODS: 1.7.5

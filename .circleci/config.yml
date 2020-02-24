@@ -91,7 +91,7 @@ jobs:
 
       - run:
           name: Bundle emission
-          command: cd emission && yarn bundle-for-native-ci
+          command: yarn bundle-for-native-ci
 
       - save_cache:
           key: v4-pods-{{ checksum "Podfile.lock" }}
@@ -147,22 +147,22 @@ jobs:
 
       - restore_cache:
           keys:
-            - v3-yarn-{{ checksum "emission/yarn.lock" }}
+            - v3-yarn-{{ checksum "yarn.lock" }}
             # Fall back to using the latest cache if no exact match is found.
             - v3-yarn-
 
       - run:
           name: Install Yarn Dependencies
-          command: cd emission && yarn install --ignore-engines
+          command: yarn install --ignore-engines
 
       - save_cache:
-          key: v3-yarn-{{ checksum "emission/yarn.lock" }}
+          key: v3-yarn-{{ checksum "yarn.lock" }}
           paths:
-            - emission/node_modules
+            - node_modules
 
       - run:
           name: Deploy via auto-release
-          command: cd emission && yarn update-metaphysics
+          command: yarn update-metaphysics
 
 workflows:
   version: 2
