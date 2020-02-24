@@ -1,4 +1,3 @@
-import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 
 export const CollectionFixture = {
@@ -231,11 +230,8 @@ export const CollectionFixture = {
   },
 }
 
-export const FeaturedArtistCollectionFixture:
-  | FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"]
-  | FeaturedArtistsTestsQueryRawResponse["marketingCollection"] = {
+export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"] = {
   id: "some-id",
-  slug: "some-collection",
   artworksConnection: {
     id: "connection-id",
     merchandisableArtists: [

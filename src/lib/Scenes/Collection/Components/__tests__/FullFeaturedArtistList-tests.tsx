@@ -4,7 +4,7 @@ import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
-import { FeaturedArtistCollectionFixture } from "../__fixtures__/CollectionFixture"
+import { FullFeaturedArtistListCollectionFixture } from "../__fixtures__/CollectionFixture"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "../FullFeaturedArtistList"
 jest.unmock("react-relay")
 
@@ -29,12 +29,12 @@ describe("FullFeaturedArtistList", () => {
     })
 
   it("renders properly", async () => {
-    const tree = await render(FeaturedArtistCollectionFixture)
+    const tree = await render(FullFeaturedArtistListCollectionFixture)
     expect(tree.html()).toMatchSnapshot()
   })
 
   it("renders an EntityHeader for each featured artist", async () => {
-    const tree = await render(FeaturedArtistCollectionFixture)
+    const tree = await render(FullFeaturedArtistListCollectionFixture)
 
     const entityHeaders = tree.find("EntityHeader")
     expect(entityHeaders.length).toEqual(5)
@@ -49,7 +49,7 @@ describe("FullFeaturedArtistList", () => {
 
   it("does not render an EntityHeader for excluded artists", async () => {
     const tree = await render({
-      ...FeaturedArtistCollectionFixture,
+      ...FullFeaturedArtistListCollectionFixture,
       featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
     })
 
@@ -67,7 +67,7 @@ describe("FullFeaturedArtistList", () => {
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
       const tree = await render({
-        ...FeaturedArtistCollectionFixture,
+        ...FullFeaturedArtistListCollectionFixture,
         query: { id: "some-id", artistIDs: ["34534-andy-warhols-id"] },
       })
 
