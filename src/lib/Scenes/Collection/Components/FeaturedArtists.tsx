@@ -70,7 +70,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
         </Sans>
         <Flex flexWrap="wrap">
           {truncatedArtists}
-          {artists.length > 3 && (
+          {artists.length > artistCount && (
             <TouchableHighlight
               onPress={() => {
                 SwitchBoard.presentNavigationViewController(this, `/collection/${this.props.collection.slug}/artists`)
