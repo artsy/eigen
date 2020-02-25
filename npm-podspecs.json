@@ -87,6 +87,10 @@
     "path": "node_modules/@sentry/react-native"
   },
 
+  "Sentry": {
+    "path": "node_modules/@sentry/react-native/ios/Sentry"
+  },
+
   "tipsi-stripe": {
     "podspec": "node_modules/tipsi-stripe/tipsi-stripe.podspec"
   },
