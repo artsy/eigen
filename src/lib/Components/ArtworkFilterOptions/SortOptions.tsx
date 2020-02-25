@@ -1,13 +1,13 @@
 import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, Serif, space } from "@artsy/palette"
-import { BackgroundFill, OptionListItem } from "lib/Components/FilterModal"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
+import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
   navigator: NavigatorIOS
-  updatedSortOption: (string: SortTypes) => void
+  updateSortOption: (string: SortTypes) => void
 }
 
 interface SortOptionsScreenState {
@@ -23,19 +23,9 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps, S
     this.props.navigator.pop()
   }
 
-  getCheckboxSelection(selectedOption) {
-    return (
-      selectedOption === this.state.currentSelection && (
-        <Box mb={0.1}>
-          <CheckIcon fill="black100" />
-        </Box>
-      )
-    )
-  }
-
   selectSortOption(selectedOption) {
     this.setState({ currentSelection: selectedOption })
-    this.props.updatedSortOption(selectedOption) // callback to set the current sort option on the Filter home screen
+    this.props.updateSortOption(selectedOption) // callback to set the current sort option on the Filter home screen
   }
 
   render() {
@@ -59,14 +49,18 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps, S
             renderItem={({ item }) => (
               <Box>
                 {
-                  <TouchableOpacity onPress={() => this.selectSortOption(item)}>
+                  <SortOptionListItemRow onPress={() => this.selectSortOption(item)}>
                     <OptionListItem>
-                      <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="flex-end">
-                        <Serif size="3">{item}</Serif>
-                        {this.getCheckboxSelection(item)}
-                      </Flex>
+                      <InnerOptionListItem>
+                        <SortSelection size="3">{item}</SortSelection>
+                        {item === this.state.currentSelection && (
+                          <Box mb={0.1}>
+                            <CheckIcon fill="black100" />
+                          </Box>
+                        )}
+                      </InnerOptionListItem>
                     </OptionListItem>
-                  </TouchableOpacity>
+                  </SortOptionListItemRow>
                 }
               </Box>
             )}
@@ -99,6 +93,14 @@ export const ArrowLeftIconContainer = styled(TouchableOpacity)`
   margin-left: ${space(2)};
 `
 
+export const InnerOptionListItem = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+  align-items: flex-end;
+  padding: ${space(2)}px;
+`
+
 export type SortTypes =
   | "Default"
   | "Price (low to high)"
@@ -107,3 +109,6 @@ export type SortTypes =
   | "Recently Added"
   | "Artwork year (descending)"
   | "Artwork year (ascending)"
+
+export const SortOptionListItemRow = styled(TouchableOpacity)``
+export const SortSelection = styled(Serif)``

@@ -1,5 +1,4 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import { SortOptionsScreen as SortOptions, SortTypes } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import React from "react"
 import {
   FlatList,
@@ -11,6 +10,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
+import { SortOptionsScreen as SortOptions, SortTypes } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -109,12 +109,14 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
   handleNavigationToSortScreen = () => {
     this.props.navigator.push({
       component: SortOptions,
-      passProps: { updatedSortOption: (sortOption: SortTypes) => this.getSortSelection(sortOption) },
+      passProps: { updateSortOption: (sortOption: SortTypes) => this.getSortSelection(sortOption) },
     })
   }
 
   getSortSelection(sortOption: SortTypes) {
-    this.setState({ selectedSortOption: sortOption })
+    this.setState(() => {
+      return { selectedSortOption: sortOption }
+    })
   }
 
   render() {
@@ -147,9 +149,7 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
                       <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                         <Serif size="3">{item.type}</Serif>
                         <Flex flexDirection="row">
-                          <Serif color={color("black60")} size="3">
-                            {this.state.selectedSortOption}
-                          </Serif>
+                          <CurrentOption size="3">{this.state.selectedSortOption}</CurrentOption>
                           <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
                         </Flex>
                       </Flex>
@@ -190,6 +190,7 @@ export const FilterArtworkButton = styled(Button)`
 `
 
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
+
 export const CloseIconContainer = styled(TouchableOpacity)`
   margin-left: ${space(2)};
   margin-top: ${space(2)};
@@ -219,4 +220,8 @@ const ModalInnerView = styled.View<{ visible: boolean }>`
   height: 75%;
   border-top-left-radius: ${space(1)};
   border-top-right-radius: ${space(1)};
+`
+
+export const CurrentOption = styled(Serif)`
+  color: ${color("black60")};
 `

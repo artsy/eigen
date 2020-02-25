@@ -1,13 +1,13 @@
 import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
-import { Collection_collection } from "__generated__/Collection_collection.graphql"
-import { FilterModalNavigator } from "lib/Components/FilterModal"
-import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { CollectionHeaderContainer as CollectionHeader } from "lib/Scenes/Collection/Screens/CollectionHeader"
-import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import { FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
+import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
+import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
+import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
+import { Schema, screenTrack } from "../../../lib/utils/track"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
