@@ -97,7 +97,10 @@ jobs:
           key: v4-pods-{{ checksum "Podfile.lock" }}
           paths:
             - Pods
-            - rn_pods
+
+      - run:
+          name: Copy emission bundle to Pods folder
+          command: cp emission/Pod/Assets/Emission.js* Pods/Emission/Pod/Assets/
 
       - run:
           name: Pre-Build App
