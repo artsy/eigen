@@ -85,6 +85,13 @@ jobs:
             # Fall back to using the latest cache if no exact match is found.
             - v4-pods-
 
+      # Make sure that these files exist so that `pod install` picks up on them, so
+      # that the generated Xcode project knows about them. We'll bundle them later,
+      # so the contents right now don't matter – only that they exist.
+      - run:
+          name: Touch Emission Assets
+          command: touch emission/Pod/Assets/Emission.js && touch emission/Pod/Assets/Emission.js.map
+
       - run:
           name: Install Pods
           command: bundle exec pod check || bundle exec pod install
@@ -97,7 +104,6 @@ jobs:
           key: v4-pods-{{ checksum "Podfile.lock" }}
           paths:
             - Pods
-            - rn_pods
 
       - run:
           name: Pre-Build App
