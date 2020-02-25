@@ -4,7 +4,7 @@ import * as _cache from "../../../NativeModules/GraphQLQueryCache"
 const cache: jest.Mocked<typeof _cache> = _cache as any
 
 import { NetworkError } from "lib/utils/errors"
-import { cacheMiddleware } from "../cacheMiddleware"
+import { cacheMiddleware, GraphQLRequest } from "../cacheMiddleware"
 
 describe("cacheMiddleware", () => {
   const operation = {
@@ -22,7 +22,7 @@ describe("cacheMiddleware", () => {
     variables,
     cacheConfig,
     fetchOpts: {},
-  }
+  } as GraphQLRequest
   const response = { json: { artist: { name: "Banksy" } }, status: 200, statusText: "OK" }
 
   beforeEach(() => {
@@ -173,17 +173,27 @@ describe("cacheMiddleware", () => {
         operation,
         variables,
         cacheConfig: { force: true },
-      }
+      } as GraphQLRequest
       expect(await cacheMiddleware()(mockedNext)(aRequest)).toEqual(response)
     })
 
     it("clears the cache after a mutation", async () => {
-      const bRequest = {
+      const mutation = {
         operation: { id: "SomeMutation", operationKind: "mutation" },
         variables,
         cacheConfig,
-      }
-      await cacheMiddleware()(mockedNext)(bRequest)
+      } as GraphQLRequest
+      await cacheMiddleware()(mockedNext)(mutation)
+      expect(cache.clearAll).toHaveBeenCalled()
+    })
+
+    it("ignores clearing the cache for allowed mutations", async () => {
+      const mutation = {
+        operation: { id: "ArtworkMarkAsRecentlyViewedQuery", operationKind: "mutation" },
+        variables,
+        cacheConfig,
+      } as GraphQLRequest
+      await cacheMiddleware()(mockedNext)(mutation)
       expect(cache.clearAll).toHaveBeenCalled()
     })
   })
