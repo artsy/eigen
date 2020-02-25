@@ -10,10 +10,8 @@ jest.mock("lodash", () => ({
   },
 }))
 
-jest.mock("react-native-sentry", () => ({
-  Sentry: {
-    captureMessage: jest.fn(),
-  },
+jest.mock("@sentry/react-native", () => ({
+  captureMessage: jest.fn(),
 }))
 
 jest.useFakeTimers()

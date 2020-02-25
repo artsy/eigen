@@ -114,7 +114,7 @@ jest.mock("lodash", () => ({
 jest.unmock("react-relay")
 
 // tslint:disable-next-line:no-empty
-jest.mock("react-native-sentry", () => ({ captureMessage() {} }))
+jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
 
