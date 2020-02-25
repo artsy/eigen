@@ -83,8 +83,8 @@
     "podspec": "node_modules/react-native/third-party-podspecs/glog.podspec"
   },
 
-  "SentryReactNative": {
-    "path": "node_modules/react-native-sentry"
+  "RNSentry": {
+    "path": "node_modules/@sentry/react-native"
   },
 
   "tipsi-stripe": {
