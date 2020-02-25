@@ -18,6 +18,7 @@ interface CollectionState {
   sections: Array<{ type: string; data: any }>
   isArtworkGridVisible: boolean
   isFilterArtworksModalVisible: boolean
+  filterCount: number
 }
 
 @screenTrack((props: CollectionProps) => ({
@@ -31,6 +32,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     sections: [],
     isArtworkGridVisible: false,
     isFilterArtworksModalVisible: false,
+    filterCount: 0,
   }
   viewabilityConfig = {
     viewAreaCoveragePercentThreshold: 75, // What percentage of the artworks component should be in the screen before toggling the filter button
@@ -122,7 +124,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
      */
   }
   render() {
-    const { isArtworkGridVisible, sections } = this.state
+    const { isArtworkGridVisible, filterCount, sections } = this.state
     const isArtworkFilterEnabled = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
 
     return (
@@ -143,11 +145,21 @@ export class Collection extends Component<CollectionProps, CollectionState> {
           {isArtworkGridVisible && isArtworkFilterEnabled && (
             <FilterArtworkButtonContainer>
               <TouchableWithoutFeedback onPress={this.handleFilterArtworksModal.bind(this)}>
-                <FilterArtworkButton px="2">
+                <FilterArtworkButton px="2" isFilterCountVisible={filterCount > 0 ? true : false}>
                   <FilterIcon fill="white100" />
                   <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
                     Filter
                   </Sans>
+                  {filterCount > 0 && (
+                    <>
+                      <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                        {"\u2022"}
+                      </Sans>
+                      <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                        {filterCount}
+                      </Sans>
+                    </>
+                  )}
                 </FilterArtworkButton>
               </TouchableWithoutFeedback>
             </FilterArtworkButtonContainer>
@@ -167,8 +179,8 @@ export const FilterArtworkButtonContainer = styled(Flex)`
   flex-direction: row;
 `
 
-export const FilterArtworkButton = styled(Flex)`
-  width: 110px;
+export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean }>`
+  width: ${p => (p.isFilterCountVisible ? "120" : "110")}px;
   border-radius: 20;
   background-color: ${color("black100")};
   align-items: center;

@@ -109,13 +109,22 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
   handleNavigationToSortScreen = () => {
     this.props.navigator.push({
       component: SortOptions,
-      passProps: { updateSortOption: (sortOption: SortTypes) => this.getSortSelection(sortOption) },
+      passProps: {
+        updateSortOption: (sortOption: SortTypes) => this.getSortSelection(sortOption),
+        sortScreenSortSelection: this.state.selectedSortOption,
+      },
     })
   }
 
   getSortSelection(sortOption: SortTypes) {
     this.setState(() => {
       return { selectedSortOption: sortOption }
+    })
+  }
+
+  clearAllFilters() {
+    this.setState(() => {
+      return { selectedSortOption: "Default" }
     })
   }
 
@@ -133,9 +142,11 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
           <FilterHeader weight="medium" size="4">
             Filter
           </FilterHeader>
-          <Sans mr={2} mt={2} size="4">
-            Clear all
-          </Sans>
+          <TouchableOpacity onPress={() => this.clearAllFilters()}>
+            <Sans mr={2} mt={2} size="4">
+              Clear all
+            </Sans>
+          </TouchableOpacity>
         </Flex>
         <Flex>
           <FlatList<{ onTap: () => void; type: string }>
