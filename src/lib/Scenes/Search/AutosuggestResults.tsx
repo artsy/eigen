@@ -1,4 +1,5 @@
 import { Flex, Serif, space } from "@artsy/palette"
+import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import Spinner from "lib/Components/Spinner"
@@ -6,7 +7,6 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { FlatList } from "react-native"
-import { Sentry } from "react-native-sentry"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { SearchResult } from "./SearchResult"
 
@@ -180,7 +180,7 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
             if (__DEV__) {
               console.error(error)
             } else {
-              Sentry.captureMessage(error.stack)
+              captureMessage(error.stack)
             }
             return (
               <Flex p={2} alignItems="center" justifyContent="center">

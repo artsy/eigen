@@ -1,10 +1,10 @@
 import { Flex, Spacer } from "@artsy/palette"
+import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useMemo } from "react"
 import { Animated, PixelRatio } from "react-native"
-import { Sentry } from "react-native-sentry"
 import { createFragmentContainer, graphql } from "react-relay"
 import { isPad } from "../../hardware"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
@@ -54,7 +54,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 
     if (result.some(image => !image.deepZoom)) {
       if (!__DEV__) {
-        Sentry.captureMessage(`No deep zoom for at least one image on artwork (see breadcrumbs for artwork slug)`)
+        captureMessage(`No deep zoom for at least one image on artwork (see breadcrumbs for artwork slug)`)
       }
       const filteredResult = result.filter(image => image.deepZoom)
       if (filteredResult.length === 0) {
@@ -155,7 +155,7 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   }
 
   if (!__DEV__) {
-    Sentry.captureMessage("No appropriate image size found for artwork (see breadcrumbs for artwork slug)")
+    captureMessage("No appropriate image size found for artwork (see breadcrumbs for artwork slug)")
   } else {
     console.warn("No appropriate image size found!")
   }

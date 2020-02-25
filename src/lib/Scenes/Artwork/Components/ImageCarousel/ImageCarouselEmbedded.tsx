@@ -1,7 +1,7 @@
+import * as Sentry from "@sentry/react-native"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useCallback, useContext } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
-import { Sentry } from "react-native-sentry"
 import { isPad } from "../../hardware"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
@@ -63,7 +63,10 @@ export const ImageCarouselEmbedded = () => {
     // https://artsyproduct.atlassian.net/browse/MX-161
     if (!info) {
       if (!__DEV__) {
-        Sentry.captureMessage("touchBank has unexpected structure", { touchBank, indexOfSingleActiveTouch })
+        Sentry.withScope(scope => {
+          scope.setExtra(touchBank, indexOfSingleActiveTouch)
+          Sentry.captureMessage("touchBank has unexpected structure")
+        })
       }
       return
     }
