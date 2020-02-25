@@ -1,9 +1,21 @@
-import { Sans, Theme } from "@artsy/palette"
-import { ArrowLeftIconContainer, SortOptionsScreen } from "lib/Components/ArtworkFilterOptions/SortOptions"
-import { FakeNavigator as MockNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { CloseIconContainer, FilterHeader, FilterOptions, TouchableOptionListItemRow } from "lib/Components/FilterModal"
+import { CheckIcon, Sans, Theme } from "@artsy/palette"
+import { head } from "lodash"
 import React from "react"
 import { act, create } from "react-test-renderer"
+import {
+  ArrowLeftIconContainer,
+  InnerOptionListItem,
+  SortOptionListItemRow,
+  SortOptionsScreen,
+} from "../../../lib/Components/ArtworkFilterOptions/SortOptions"
+import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import {
+  CloseIconContainer,
+  CurrentOption,
+  FilterHeader,
+  FilterOptions,
+  TouchableOptionListItemRow,
+} from "../../../lib/Components/FilterModal"
 
 let mockNavigator: MockNavigator
 
@@ -18,9 +30,9 @@ describe("Filter modal navigation flow", () => {
         <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
       </Theme>
     )
-    const filterListItem = filterScreen.root.findByType(TouchableOptionListItemRow)
+    const instance = filterScreen.root.findByType(TouchableOptionListItemRow)
 
-    act(() => filterListItem.props.onPress())
+    act(() => instance.props.onPress())
 
     filterScreen = mockNavigator.nextStep()
 
@@ -32,7 +44,7 @@ describe("Filter modal navigation flow", () => {
   it("allows users to navigate back to filter screen from sort screen ", () => {
     const sortScreen = create(
       <Theme>
-        <SortOptionsScreen navigator={mockNavigator as any} />
+        <SortOptionsScreen navigator={mockNavigator as any} updateSortOption={jest.fn()} />
       </Theme>
     )
 
@@ -42,9 +54,9 @@ describe("Filter modal navigation flow", () => {
       </Theme>
     )
 
-    const sortBackNavigationItem = sortScreen.root.findByType(ArrowLeftIconContainer)
+    const instance = sortScreen.root.findByType(ArrowLeftIconContainer)
 
-    act(() => sortBackNavigationItem.props.onPress())
+    act(() => instance.props.onPress())
 
     mockNavigator.pop()
 
@@ -62,10 +74,72 @@ describe("Filter modal navigation flow", () => {
       </Theme>
     )
 
-    const closeModalIcon = filterScreen.root.findByType(CloseIconContainer)
+    const instance = filterScreen.root.findByType(CloseIconContainer)
 
-    act(() => closeModalIcon.props.onPress())
+    act(() => instance.props.onPress())
 
     expect(modalClosed).toHaveBeenCalled()
+  })
+
+  it("only displays a check mark next to the currently selected sort option on the sort screen", () => {
+    const sortScreen = create(
+      <Theme>
+        <SortOptionsScreen navigator={mockNavigator as any} updateSortOption={jest.fn()} />
+      </Theme>
+    )
+
+    const instance = sortScreen.root.findAllByType(SortOptionListItemRow)[2]
+    act(() => instance.props.onPress())
+    const checkMark = sortScreen.root.findAllByType(CheckIcon)
+
+    let selectedRow = sortScreen.root.findAllByType(InnerOptionListItem)
+    selectedRow = head(selectedRow.filter(x => x.props.children[0].props.children === "Price (high to low)")) as any
+
+    // @ts-ignore
+    expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1) // asserts the visible check mark is a child of the selected row item
+    expect(checkMark).toHaveLength(1) // asserts only one check mark at a time is visible on the screen
+  })
+
+  it("displays the currently selected sort option on the filter screen", () => {
+    const filterScreen = create(
+      <Theme>
+        <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
+      </Theme>
+    )
+
+    const instance = filterScreen.root.findByType(FilterOptions).instance
+
+    instance.getSortSelection("Price (low to high)")
+
+    const currentSortSelection = filterScreen.root.findByType(CurrentOption).props.children
+
+    expect(currentSortSelection).toEqual("Price (low to high)")
+  })
+
+  it("displays the currently selected sort option on the filter screen", () => {
+    const filterScreen = create(
+      <Theme>
+        <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
+      </Theme>
+    )
+
+    const instance = filterScreen.root.findByType(FilterOptions).instance
+
+    instance.getSortSelection("Price (low to high)")
+
+    const currentSortSelection = filterScreen.root.findByType(CurrentOption).props.children
+
+    expect(currentSortSelection).toEqual("Price (low to high)")
+  })
+
+  it("shows the default sort option on the filter screen", () => {
+    const filterScreen = create(
+      <Theme>
+        <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
+      </Theme>
+    )
+
+    const instance = filterScreen.root.findByType(CurrentOption).props.children
+    expect(instance).toEqual("Default")
   })
 })

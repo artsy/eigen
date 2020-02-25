@@ -1,5 +1,4 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import { SortOptionsScreen as SortOptions } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import React from "react"
 import {
   FlatList,
@@ -11,6 +10,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
+import { SortOptionsScreen as SortOptions, SortTypes } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -80,6 +80,7 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
 
 interface FilterOptionsState {
   filterOptions: Array<{ type: string; onTap: () => void }>
+  selectedSortOption: SortTypes
 }
 
 interface FilterOptionsProps {
@@ -89,6 +90,7 @@ interface FilterOptionsProps {
 export class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsState> {
   state: FilterOptionsState = {
     filterOptions: [],
+    selectedSortOption: "Default",
   }
 
   componentDidMount() {
@@ -107,6 +109,13 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
   handleNavigationToSortScreen = () => {
     this.props.navigator.push({
       component: SortOptions,
+      passProps: { updateSortOption: (sortOption: SortTypes) => this.getSortSelection(sortOption) },
+    })
+  }
+
+  getSortSelection(sortOption: SortTypes) {
+    this.setState(() => {
+      return { selectedSortOption: sortOption }
     })
   }
 
@@ -135,17 +144,17 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
             renderItem={({ item }) => (
               <Box>
                 {
-                  <OptionListItem>
-                    <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                      <Serif size="3">{item.type}</Serif>
-                      <TouchableOptionListItemRow onPress={() => item.onTap()}>
-                        <Serif color={color("black60")} size="3">
-                          Default
-                        </Serif>
-                        <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
-                      </TouchableOptionListItemRow>
-                    </Flex>
-                  </OptionListItem>
+                  <TouchableOptionListItemRow onPress={() => item.onTap()}>
+                    <OptionListItem>
+                      <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                        <Serif size="3">{item.type}</Serif>
+                        <Flex flexDirection="row">
+                          <CurrentOption size="3">{this.state.selectedSortOption}</CurrentOption>
+                          <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
+                        </Flex>
+                      </Flex>
+                    </OptionListItem>
+                  </TouchableOptionListItemRow>
                 }
               </Box>
             )}
@@ -180,9 +189,8 @@ export const FilterArtworkButton = styled(Button)`
   width: 110px;
 `
 
-export const TouchableOptionListItemRow = styled(TouchableOpacity)`
-  flex-direction: row;
-`
+export const TouchableOptionListItemRow = styled(TouchableOpacity)``
+
 export const CloseIconContainer = styled(TouchableOpacity)`
   margin-left: ${space(2)};
   margin-top: ${space(2)};
@@ -212,4 +220,8 @@ const ModalInnerView = styled.View<{ visible: boolean }>`
   height: 75%;
   border-top-left-radius: ${space(1)};
   border-top-right-radius: ${space(1)};
+`
+
+export const CurrentOption = styled(Serif)`
+  color: ${color("black60")};
 `

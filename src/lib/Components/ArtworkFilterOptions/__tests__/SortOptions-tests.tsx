@@ -1,8 +1,8 @@
 import { Theme } from "@artsy/palette"
-import { FakeNavigator as MockNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { OptionListItem } from "lib/Components/FilterModal"
 import React from "react"
 import * as renderer from "react-test-renderer"
+import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { SortOptionsScreen as SortOptions } from "../SortOptions"
 
 describe("Sort Options Screen", () => {
@@ -15,7 +15,7 @@ describe("Sort Options Screen", () => {
   it("renders the correct number of sort options", () => {
     const root = renderer.create(
       <Theme>
-        <SortOptions navigator={mockNavigator as any} />
+        <SortOptions navigator={mockNavigator as any} updateSortOption={jest.fn()} />
       </Theme>
     ).root
 
