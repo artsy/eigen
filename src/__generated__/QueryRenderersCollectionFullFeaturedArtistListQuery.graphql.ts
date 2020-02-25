@@ -2,61 +2,35 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FeaturedArtistsTestsQueryVariables = {};
-export type FeaturedArtistsTestsQueryResponse = {
-    readonly marketingCollection: {
-        readonly " $fragmentRefs": FragmentRefs<"FeaturedArtists_collection">;
+export type QueryRenderersCollectionFullFeaturedArtistListQueryVariables = {
+    collectionID: string;
+    screenWidth?: number | null;
+};
+export type QueryRenderersCollectionFullFeaturedArtistListQueryResponse = {
+    readonly collection: {
+        readonly " $fragmentRefs": FragmentRefs<"FullFeaturedArtistList_collection">;
     } | null;
 };
-export type FeaturedArtistsTestsQueryRawResponse = {
-    readonly marketingCollection: ({
-        readonly slug: string;
-        readonly artworksConnection: ({
-            readonly merchandisableArtists: ReadonlyArray<({
-                readonly internalID: string;
-                readonly id: string;
-                readonly slug: string;
-                readonly name: string | null;
-                readonly initials: string | null;
-                readonly href: string | null;
-                readonly is_followed: boolean | null;
-                readonly nationality: string | null;
-                readonly birthday: string | null;
-                readonly deathday: string | null;
-                readonly image: ({
-                    readonly url: string | null;
-                }) | null;
-            }) | null> | null;
-            readonly id: string | null;
-        }) | null;
-        readonly query: {
-            readonly artistIDs: ReadonlyArray<string> | null;
-            readonly id: string | null;
-        };
-        readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
-        readonly id: string | null;
-    }) | null;
-};
-export type FeaturedArtistsTestsQuery = {
-    readonly response: FeaturedArtistsTestsQueryResponse;
-    readonly variables: FeaturedArtistsTestsQueryVariables;
-    readonly rawResponse: FeaturedArtistsTestsQueryRawResponse;
+export type QueryRenderersCollectionFullFeaturedArtistListQuery = {
+    readonly response: QueryRenderersCollectionFullFeaturedArtistListQueryResponse;
+    readonly variables: QueryRenderersCollectionFullFeaturedArtistListQueryVariables;
 };
 
 
 
 /*
-query FeaturedArtistsTestsQuery {
-  marketingCollection(slug: "emerging-photographers") {
-    ...FeaturedArtists_collection
+query QueryRenderersCollectionFullFeaturedArtistListQuery(
+  $collectionID: String!
+) {
+  collection: marketingCollection(slug: $collectionID) {
+    ...FullFeaturedArtistList_collection_2qE49v
     id
   }
 }
 
-fragment FeaturedArtists_collection on MarketingCollection {
-  slug
+fragment FullFeaturedArtistList_collection_2qE49v on MarketingCollection {
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-    merchandisableArtists(size: 4) {
+    merchandisableArtists {
       internalID
       ...ArtistListItem_artist
       id
@@ -90,18 +64,25 @@ fragment ArtistListItem_artist on Artist {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "slug",
-    "value": "emerging-photographers"
+    "kind": "LocalArgument",
+    "name": "collectionID",
+    "type": "String!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "screenWidth",
+    "type": "Int",
+    "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "slug",
+    "variableName": "collectionID"
+  }
+],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
@@ -113,24 +94,30 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "FeaturedArtistsTestsQuery",
+    "name": "QueryRenderersCollectionFullFeaturedArtistListQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": null,
+        "alias": "collection",
         "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"emerging-photographers\")",
-        "args": (v0/*: any*/),
+        "storageKey": null,
+        "args": (v1/*: any*/),
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "FeaturedArtists_collection",
-            "args": null
+            "name": "FullFeaturedArtistList_collection",
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "screenWidth",
+                "variableName": "screenWidth"
+              }
+            ]
           }
         ]
       }
@@ -138,19 +125,18 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FeaturedArtistsTestsQuery",
-    "argumentDefinitions": [],
+    "name": "QueryRenderersCollectionFullFeaturedArtistListQuery",
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": null,
+        "alias": "collection",
         "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"emerging-photographers\")",
-        "args": (v0/*: any*/),
+        "storageKey": null,
+        "args": (v1/*: any*/),
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -182,14 +168,8 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "merchandisableArtists",
-                "storageKey": "merchandisableArtists(size:4)",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "size",
-                    "value": 4
-                  }
-                ],
+                "storageKey": null,
+                "args": null,
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
@@ -201,7 +181,13 @@ return {
                     "storageKey": null
                   },
                   (v2/*: any*/),
-                  (v1/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "slug",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -307,12 +293,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "FeaturedArtistsTestsQuery",
-    "id": "e1b0ab9e571b6e1eb90ce5fdf4010261",
+    "name": "QueryRenderersCollectionFullFeaturedArtistListQuery",
+    "id": "220ea0b1af1281887136b507a17d260c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b052d942acd32e0160c794935f46ac33';
+(node as any).hash = '3e7891a8ccdf6b7a416c1d116c06d4bb';
 export default node;

@@ -2,8 +2,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FeaturedArtists_collection = {
-    readonly slug: string;
+export type FullFeaturedArtistList_collection = {
     readonly artworksConnection: {
         readonly merchandisableArtists: ReadonlyArray<{
             readonly internalID: string;
@@ -14,25 +13,25 @@ export type FeaturedArtists_collection = {
         readonly artistIDs: ReadonlyArray<string> | null;
     };
     readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
-    readonly " $refType": "FeaturedArtists_collection";
+    readonly " $refType": "FullFeaturedArtistList_collection";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "FeaturedArtists_collection",
+  "name": "FullFeaturedArtistList_collection",
   "type": "MarketingCollection",
   "metadata": null,
-  "argumentDefinitions": [],
-  "selections": [
+  "argumentDefinitions": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
+      "kind": "LocalArgument",
+      "name": "screenWidth",
+      "type": "Int",
+      "defaultValue": 500
+    }
+  ],
+  "selections": [
     {
       "kind": "LinkedField",
       "alias": null,
@@ -64,14 +63,8 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "alias": null,
           "name": "merchandisableArtists",
-          "storageKey": "merchandisableArtists(size:4)",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "size",
-              "value": 4
-            }
-          ],
+          "storageKey": null,
+          "args": null,
           "concreteType": "Artist",
           "plural": true,
           "selections": [
@@ -118,5 +111,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a7a18e885dd71078dd8c05ac099c50d1';
+(node as any).hash = '65e7cd642c93df5819954a6ff0c68fdd';
 export default node;

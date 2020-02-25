@@ -1,4 +1,4 @@
-import { Box, EntityHeader, Flex, Sans } from "@artsy/palette"
+import { Box, Flex, Sans } from "@artsy/palette"
 import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -8,24 +8,17 @@ import React from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
+import styled from "styled-components/native"
 
 interface FeaturedArtistsProps {
   collection: FeaturedArtists_collection
   tracking?: TrackingProp
 }
 
-interface FeaturedArtistsState {
-  showMore: boolean
-}
-
-const track: Track<FeaturedArtistsProps, FeaturedArtistsState> = _track
+const track: Track<FeaturedArtistsProps, {}> = _track
 
 @track()
-export class FeaturedArtists extends React.Component<FeaturedArtistsProps, FeaturedArtistsState> {
-  state = {
-    showMore: false,
-  }
-
+export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
   handleTap = (context: any, href: string) => {
     SwitchBoard.presentNavigationViewController(context, href)
   }
@@ -66,7 +59,6 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
     const hasMultipleArtists = artists.length > 1
 
     const artistCount = 3
-    const remainingCount = artists.length - artistCount
     const truncatedArtists = this.getFeaturedArtistEntityCollection(artists).slice(0, artistCount)
     const headlineLabel = "Featured Artist" + (hasMultipleArtists ? "s" : "")
     const { tracking } = this.props
@@ -77,26 +69,22 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
           {headlineLabel}
         </Sans>
         <Flex flexWrap="wrap">
-          {this.state.showMore || artists.length <= artistCount ? (
-            this.getFeaturedArtistEntityCollection(artists)
-          ) : (
-            <>
-              {truncatedArtists}
-              <TouchableHighlight
-                onPress={() => {
-                  this.setState({ showMore: true })
-                  tracking.trackEvent({
-                    action_type: Schema.ActionTypes.Tap,
-                    action_name: Schema.ActionNames.ViewMore,
-                    context_screen: Schema.PageNames.Collection,
-                    context_module: Schema.ContextModules.FeaturedArtists,
-                    flow: Schema.Flow.FeaturedArtists,
-                  })
-                }}
-              >
-                <EntityHeader initials={`+ ${remainingCount}`} name="View more" />
-              </TouchableHighlight>
-            </>
+          {truncatedArtists}
+          {artists.length > artistCount && (
+            <TouchableHighlight
+              onPress={() => {
+                SwitchBoard.presentNavigationViewController(this, `/collection/${this.props.collection.slug}/artists`)
+                tracking.trackEvent({
+                  action_type: Schema.ActionTypes.Tap,
+                  action_name: Schema.ActionNames.ViewMore,
+                  context_screen: Schema.PageNames.Collection,
+                  context_module: Schema.ContextModules.FeaturedArtists,
+                  flow: Schema.Flow.FeaturedArtists,
+                })
+              }}
+            >
+              <ViewAll size="4">View all</ViewAll>
+            </TouchableHighlight>
           )}
         </Flex>
       </Box>
@@ -107,8 +95,9 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, Featu
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FeaturedArtists, {
   collection: graphql`
     fragment FeaturedArtists_collection on MarketingCollection {
+      slug
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-        merchandisableArtists(size: 9) {
+        merchandisableArtists(size: 4) {
           internalID
           ...ArtistListItem_artist
         }
@@ -120,3 +109,8 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
     }
   `,
 })
+
+export const ViewAll = styled(Sans)`
+  text-decoration: underline;
+  text-align: center;
+`

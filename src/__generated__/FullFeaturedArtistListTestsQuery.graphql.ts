@@ -2,15 +2,14 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FeaturedArtistsTestsQueryVariables = {};
-export type FeaturedArtistsTestsQueryResponse = {
+export type FullFeaturedArtistListTestsQueryVariables = {};
+export type FullFeaturedArtistListTestsQueryResponse = {
     readonly marketingCollection: {
-        readonly " $fragmentRefs": FragmentRefs<"FeaturedArtists_collection">;
+        readonly " $fragmentRefs": FragmentRefs<"FullFeaturedArtistList_collection">;
     } | null;
 };
-export type FeaturedArtistsTestsQueryRawResponse = {
+export type FullFeaturedArtistListTestsQueryRawResponse = {
     readonly marketingCollection: ({
-        readonly slug: string;
         readonly artworksConnection: ({
             readonly merchandisableArtists: ReadonlyArray<({
                 readonly internalID: string;
@@ -37,26 +36,25 @@ export type FeaturedArtistsTestsQueryRawResponse = {
         readonly id: string | null;
     }) | null;
 };
-export type FeaturedArtistsTestsQuery = {
-    readonly response: FeaturedArtistsTestsQueryResponse;
-    readonly variables: FeaturedArtistsTestsQueryVariables;
-    readonly rawResponse: FeaturedArtistsTestsQueryRawResponse;
+export type FullFeaturedArtistListTestsQuery = {
+    readonly response: FullFeaturedArtistListTestsQueryResponse;
+    readonly variables: FullFeaturedArtistListTestsQueryVariables;
+    readonly rawResponse: FullFeaturedArtistListTestsQueryRawResponse;
 };
 
 
 
 /*
-query FeaturedArtistsTestsQuery {
+query FullFeaturedArtistListTestsQuery {
   marketingCollection(slug: "emerging-photographers") {
-    ...FeaturedArtists_collection
+    ...FullFeaturedArtistList_collection
     id
   }
 }
 
-fragment FeaturedArtists_collection on MarketingCollection {
-  slug
+fragment FullFeaturedArtistList_collection on MarketingCollection {
   artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-    merchandisableArtists(size: 4) {
+    merchandisableArtists {
       internalID
       ...ArtistListItem_artist
       id
@@ -98,13 +96,6 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
@@ -113,7 +104,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "FeaturedArtistsTestsQuery",
+    "name": "FullFeaturedArtistListTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -129,7 +120,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "FeaturedArtists_collection",
+            "name": "FullFeaturedArtistList_collection",
             "args": null
           }
         ]
@@ -138,7 +129,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FeaturedArtistsTestsQuery",
+    "name": "FullFeaturedArtistListTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -150,7 +141,6 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -182,14 +172,8 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "merchandisableArtists",
-                "storageKey": "merchandisableArtists(size:4)",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "size",
-                    "value": 4
-                  }
-                ],
+                "storageKey": null,
+                "args": null,
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
@@ -200,8 +184,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/),
                   (v1/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "slug",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -271,7 +261,7 @@ return {
                   }
                 ]
               },
-              (v2/*: any*/)
+              (v1/*: any*/)
             ]
           },
           {
@@ -290,7 +280,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/)
+              (v1/*: any*/)
             ]
           },
           {
@@ -300,19 +290,19 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v1/*: any*/)
         ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
-    "name": "FeaturedArtistsTestsQuery",
-    "id": "e1b0ab9e571b6e1eb90ce5fdf4010261",
+    "name": "FullFeaturedArtistListTestsQuery",
+    "id": "d4b6545797b142e7938e9de021be29e3",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b052d942acd32e0160c794935f46ac33';
+(node as any).hash = '10a2988fe05b4ed23f13205ad2f8e18a';
 export default node;
