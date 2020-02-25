@@ -84,11 +84,6 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
               }}
             >
               <ViewAll size="4">View all</ViewAll>
-              {/* <Box>
-                <Sans size="4" style={{ textDecoration: "underline", textAlign: "center" }}>
-                  View all
-                </Sans>
-              </Box> */}
             </TouchableHighlight>
           )}
         </Flex>
