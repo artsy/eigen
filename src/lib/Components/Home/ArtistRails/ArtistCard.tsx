@@ -52,7 +52,7 @@ export class ArtistCard extends React.Component<Props, State> {
         <View>
           <ArtworkImageContainer>
             {artworkImages.length ? (
-              <Join separator={<Spacer mr="1px" />}>
+              <Join separator={<Division />}>
                 {artworkImages.map((url, index) => (
                   <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
                 ))}
@@ -114,6 +114,12 @@ const MetadataContainer = styled.View`
 
 const FollowButtonContainer = styled.View`
   margin: 12px 16px;
+`
+
+export const Division = styled.View`
+  border: 1px solid white;
+  border-bottom-width: 0;
+  width: 1px;
 `
 
 export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
