@@ -1,9 +1,26 @@
 import { captureMessage } from "@sentry/react-native"
 import { NetworkError } from "lib/utils/errors"
+import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 
+type Mutable<T> = { -readonly [P in keyof T]: T[P] } // Remove readonly
+type GraphQLRequestOperation = Mutable<RequestParameters>
+
+interface CacheConfig extends RelayCacheConfig {
+  emissionCacheTTLSeconds?: number
+}
+
+export interface GraphQLRequest {
+  cacheConfig: CacheConfig
+  variables: object
+  operation: GraphQLRequestOperation
+  fetchOpts: any
+}
+
+const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
+
 export const cacheMiddleware = () => {
-  return next => async req => {
+  return next => async (req: GraphQLRequest) => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
     const queryID = operation.id
@@ -20,7 +37,7 @@ export const cacheMiddleware = () => {
 
     // Get query body either from local queryMap or
     // send queryID to metaphysics
-    let body: { variables?: object; query?: object; documentID?: string } = {}
+    let body: { variables?: object; query?: string; documentID?: string } = {}
     if (__DEV__) {
       body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
       req.operation.text = body.query
@@ -64,7 +81,10 @@ export const cacheMiddleware = () => {
           clearCacheAndThrowError()
         }
       } else {
-        cache.clearAll()
+        // Clear the entire cache if a mutation is made (unless it's in the allowlist).
+        if (!IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST.includes(req.operation.name)) {
+          cache.clearAll()
+        }
       }
       return response
     } else {

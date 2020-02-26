@@ -5,6 +5,7 @@ upcoming:
   dev:
     - combine emission and eigen into one repo - david
     - Update sentry, add patch - ash, brian, david
+    - Fixes cacheMiddleware to allow ArtworkMarkAsRecentlyViewedQuery mutations without clearing cache - ash
   user_facing:
     - Removes generic genes from For You tab - ash
     - Improves error-handling during signup failures due to password problems - ash

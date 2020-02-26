@@ -4,12 +4,15 @@ import * as _cache from "../../../NativeModules/GraphQLQueryCache"
 const cache: jest.Mocked<typeof _cache> = _cache as any
 
 import { NetworkError } from "lib/utils/errors"
-import { cacheMiddleware } from "../cacheMiddleware"
+import { cacheMiddleware, GraphQLRequest } from "../cacheMiddleware"
 
 describe("cacheMiddleware", () => {
   const operation = {
     id: "SomeQueryID",
     operationKind: "query",
+    name: "SomeQueryName",
+    text: null,
+    metadata: {},
   }
   const variables = {
     id: "banksy",
@@ -17,7 +20,7 @@ describe("cacheMiddleware", () => {
   const cacheConfig = {
     force: false,
   }
-  const request = {
+  const request: GraphQLRequest = {
     operation,
     variables,
     cacheConfig,
@@ -169,22 +172,47 @@ describe("cacheMiddleware", () => {
     })
 
     it("does perform a fetch when forced", async () => {
-      const aRequest = {
+      const aRequest: GraphQLRequest = {
         operation,
         variables,
         cacheConfig: { force: true },
+        fetchOpts: {},
       }
       expect(await cacheMiddleware()(mockedNext)(aRequest)).toEqual(response)
     })
 
     it("clears the cache after a mutation", async () => {
-      const bRequest = {
-        operation: { id: "SomeMutation", operationKind: "mutation" },
+      const mutation: GraphQLRequest = {
+        operation: {
+          id: "SomeMutationID",
+          operationKind: "mutation",
+          text: null,
+          metadata: {},
+          name: "SomeMutationName",
+        },
         variables,
         cacheConfig,
+        fetchOpts: {},
       }
-      await cacheMiddleware()(mockedNext)(bRequest)
+      await cacheMiddleware()(mockedNext)(mutation)
       expect(cache.clearAll).toHaveBeenCalled()
+    })
+
+    it("ignores clearing the cache for allowed mutations", async () => {
+      const mutation: GraphQLRequest = {
+        operation: {
+          id: "ArtworkMarkAsRecentlyViewedQueryID",
+          operationKind: "mutation",
+          text: null,
+          metadata: {},
+          name: "ArtworkMarkAsRecentlyViewedQuery",
+        },
+        variables,
+        cacheConfig,
+        fetchOpts: {},
+      }
+      await cacheMiddleware()(mockedNext)(mutation)
+      expect(cache.clearAll).not.toHaveBeenCalled()
     })
   })
 })
