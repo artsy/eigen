@@ -10,6 +10,9 @@ describe("cacheMiddleware", () => {
   const operation = {
     id: "SomeQueryID",
     operationKind: "query",
+    name: "SomeQueryName",
+    text: null,
+    metadata: {},
   }
   const variables = {
     id: "banksy",
@@ -17,12 +20,12 @@ describe("cacheMiddleware", () => {
   const cacheConfig = {
     force: false,
   }
-  const request = {
+  const request: GraphQLRequest = {
     operation,
     variables,
     cacheConfig,
     fetchOpts: {},
-  } as GraphQLRequest
+  }
   const response = { json: { artist: { name: "Banksy" } }, status: 200, statusText: "OK" }
 
   beforeEach(() => {
@@ -169,32 +172,47 @@ describe("cacheMiddleware", () => {
     })
 
     it("does perform a fetch when forced", async () => {
-      const aRequest = {
+      const aRequest: GraphQLRequest = {
         operation,
         variables,
         cacheConfig: { force: true },
-      } as GraphQLRequest
+        fetchOpts: {},
+      }
       expect(await cacheMiddleware()(mockedNext)(aRequest)).toEqual(response)
     })
 
     it("clears the cache after a mutation", async () => {
-      const mutation = {
-        operation: { id: "SomeMutation", operationKind: "mutation" },
+      const mutation: GraphQLRequest = {
+        operation: {
+          id: "SomeMutationID",
+          operationKind: "mutation",
+          text: null,
+          metadata: {},
+          name: "SomeMutationName",
+        },
         variables,
         cacheConfig,
-      } as GraphQLRequest
+        fetchOpts: {},
+      }
       await cacheMiddleware()(mockedNext)(mutation)
       expect(cache.clearAll).toHaveBeenCalled()
     })
 
     it("ignores clearing the cache for allowed mutations", async () => {
-      const mutation = {
-        operation: { id: "ArtworkMarkAsRecentlyViewedQuery", operationKind: "mutation" },
+      const mutation: GraphQLRequest = {
+        operation: {
+          id: "ArtworkMarkAsRecentlyViewedQueryID",
+          operationKind: "mutation",
+          text: null,
+          metadata: {},
+          name: "ArtworkMarkAsRecentlyViewedQuery",
+        },
         variables,
         cacheConfig,
-      } as GraphQLRequest
+        fetchOpts: {},
+      }
       await cacheMiddleware()(mockedNext)(mutation)
-      expect(cache.clearAll).toHaveBeenCalled()
+      expect(cache.clearAll).not.toHaveBeenCalled()
     })
   })
 })
