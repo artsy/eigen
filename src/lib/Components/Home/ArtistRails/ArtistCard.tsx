@@ -138,13 +138,13 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       name
       formattedNationalityAndBirthday
       avatar: image {
-        url(version: "large")
+        url(version: "small")
       }
       artworksConnection(first: 3) {
         edges {
           node {
             image {
-              url(version: "medium")
+              url(version: "small")
             }
           }
         }
