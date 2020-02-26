@@ -5,12 +5,10 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { compact, floor } from "lodash"
 import styled from "styled-components/native"
-
-const CARD_WIDTH = 270
+import { Card, CARD_WIDTH } from "../CardScrollView"
 
 interface Props {
   artist: ArtistCard_artist
@@ -50,59 +48,49 @@ export class ArtistCard extends React.Component<Props, State> {
     const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
 
     return (
-      <View>
-        <Card onPress={this.handleTap.bind(this)}>
-          <View>
-            <ArtworkImageContainer>
-              {artworkImages.length ? (
-                <Join separator={<Spacer mr="1px" />}>
-                  {artworkImages.map((url, index) => (
-                    <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
-                  ))}
-                </Join>
-              ) : (
-                /* Show an empty image block if there are no images for this artist */
-                <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
-              )}
-            </ArtworkImageContainer>
-            <MetadataContainer>
-              <ArtistAvatar>
-                <ImageView imageURL={avatarImageURL} width={40} height={40} />
-              </ArtistAvatar>
-              <Flex flexDirection="column" ml={10} mr={2}>
-                <Sans size="3t" weight="medium" numberOfLines={1}>
-                  {artist.name}
-                </Sans>
-                <Sans size="3t" numberOfLines={1}>
-                  {artist.formattedNationalityAndBirthday}
-                </Sans>
-              </Flex>
-            </MetadataContainer>
-            <FollowButtonContainer>
-              <Button
-                variant={this.state.following ? "secondaryOutline" : "secondaryGray"}
-                onPress={this.handleFollowChange}
-                size="small"
-                block
-                loading={this.state.processingChange}
-              >
-                {this.state.following ? "Following" : "Follow"}
-              </Button>
-            </FollowButtonContainer>
-          </View>
-        </Card>
-      </View>
+      <Card onPress={this.handleTap.bind(this)}>
+        <View>
+          <ArtworkImageContainer>
+            {artworkImages.length ? (
+              <Join separator={<Spacer mr="1px" />}>
+                {artworkImages.map((url, index) => (
+                  <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
+                ))}
+              </Join>
+            ) : (
+              /* Show an empty image block if there are no images for this artist */
+              <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
+            )}
+          </ArtworkImageContainer>
+          <MetadataContainer>
+            <ArtistAvatar>
+              <ImageView imageURL={avatarImageURL} width={40} height={40} />
+            </ArtistAvatar>
+            <Flex flexDirection="column" ml={10} mr={2}>
+              <Sans size="3t" weight="medium" numberOfLines={1}>
+                {artist.name}
+              </Sans>
+              <Sans size="3t" numberOfLines={1}>
+                {artist.formattedNationalityAndBirthday}
+              </Sans>
+            </Flex>
+          </MetadataContainer>
+          <FollowButtonContainer>
+            <Button
+              variant={this.state.following ? "secondaryOutline" : "secondaryGray"}
+              onPress={this.handleFollowChange}
+              size="small"
+              block
+              loading={this.state.processingChange}
+            >
+              {this.state.following ? "Following" : "Follow"}
+            </Button>
+          </FollowButtonContainer>
+        </View>
+      </Card>
     )
   }
 }
-
-const Card = styled.TouchableHighlight.attrs({ underlayColor: "transparent" })`
-  width: ${CARD_WIDTH}px;
-  margin-left: 15px;
-  border: 1px solid ${colors["gray-regular"]};
-  border-radius: 4px;
-  overflow: hidden;
-`
 
 const ArtworkImageContainer = styled.View`
   width: 100%;

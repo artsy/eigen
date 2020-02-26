@@ -25,7 +25,23 @@ export type ArtistCard_artist = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "url",
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "version",
+        "value": "small"
+      }
+    ],
+    "storageKey": "url(version:\"small\")"
+  }
+];
+return {
   "kind": "Fragment",
   "name": "ArtistCard_artist",
   "type": "Artist",
@@ -82,21 +98,7 @@ const node: ReaderFragment = {
       "args": null,
       "concreteType": "Image",
       "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "url",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "version",
-              "value": "large"
-            }
-          ],
-          "storageKey": "url(version:\"large\")"
-        }
-      ]
+      "selections": (v0/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -139,21 +141,7 @@ const node: ReaderFragment = {
                   "args": null,
                   "concreteType": "Image",
                   "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "version",
-                          "value": "medium"
-                        }
-                      ],
-                      "storageKey": "url(version:\"medium\")"
-                    }
-                  ]
+                  "selections": (v0/*: any*/)
                 }
               ]
             }
@@ -163,5 +151,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3e4254072f1a4757ae1f594288fd1c59';
+})();
+(node as any).hash = 'fb129982e9b203c029da7fd576477b68';
 export default node;
