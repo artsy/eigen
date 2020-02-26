@@ -1,0 +1,51 @@
+diff --git a/node_modules/@sentry/react-native/.DS_Store b/node_modules/@sentry/react-native/.DS_Store
+new file mode 100644
+index 0000000..7083c2c
+Binary files /dev/null and b/node_modules/@sentry/react-native/.DS_Store differ
+diff --git a/node_modules/@sentry/react-native/ios/.DS_Store b/node_modules/@sentry/react-native/ios/.DS_Store
+new file mode 100644
+index 0000000..ea161e3
+Binary files /dev/null and b/node_modules/@sentry/react-native/ios/.DS_Store differ
+diff --git a/node_modules/@sentry/react-native/ios/Sentry/.DS_Store b/node_modules/@sentry/react-native/ios/Sentry/.DS_Store
+new file mode 100644
+index 0000000..e320348
+Binary files /dev/null and b/node_modules/@sentry/react-native/ios/Sentry/.DS_Store differ
+diff --git a/node_modules/@sentry/react-native/ios/Sentry/Sources/Sentry/SentryNSURLRequest.m b/node_modules/@sentry/react-native/ios/Sentry/Sources/Sentry/SentryNSURLRequest.m
+index a9733fc..e6026ce 100644
+--- a/node_modules/@sentry/react-native/ios/Sentry/Sources/Sentry/SentryNSURLRequest.m
++++ b/node_modules/@sentry/react-native/ios/Sentry/Sources/Sentry/SentryNSURLRequest.m
+@@ -27,6 +27,8 @@
+ 
+ #endif
+ 
++#import <ObjectiveSugar/NSArray+ObjectiveSugar.h>
++
+ NS_ASSUME_NONNULL_BEGIN
+ 
+ NSString *const SentryServerVersionString = @"7";
+@@ -46,7 +48,25 @@ - (_Nullable instancetype)initStoreRequestWithDsn:(SentryDsn *)dsn
+     NSData *jsonData;
+     if (nil != event.json) {
+         // If we have event.json, this has been set from JS and should be sent directly
++        NSDictionary *nativeSerialized = [event serialize];
++        
+         jsonData = event.json;
++        NSMutableDictionary *javascriptJson = [[NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:nil] mutableCopy]; // Maybe add error-handling
++
++        NSISO8601DateFormatter *formatter = [[NSISO8601DateFormatter alloc] init];
++        NSArray *nativeBreadcrumbs = nativeSerialized[@"breadcrumbs"];
++        NSArray *nativeBreadcrumbsTransformed = [nativeBreadcrumbs map:^id(NSDictionary *object) {
++            NSMutableDictionary *mutableObject = object.mutableCopy;
++            mutableObject[@"timestamp"] = [@([[formatter dateFromString:mutableObject[@"timestamp"]] timeIntervalSince1970]) stringValue];
++            return mutableObject;
++        }];
++        
++        javascriptJson[@"breadcrumbs"] = [[javascriptJson[@"breadcrumbs"] arrayByAddingObjectsFromArray:nativeBreadcrumbsTransformed] sortedArrayUsingComparator:^NSComparisonResult(NSDictionary*  _Nonnull obj1, NSDictionary*  _Nonnull obj2) {
++            return [[obj1[@"timestamp"] stringValue] compare:[obj2[@"timestamp"] stringValue] options:NSNumericSearch];
++        }];
++        
++        jsonData = [NSJSONSerialization dataWithJSONObject:javascriptJson options:0 error:nil];
++        
+         [SentryLog logWithMessage:@"Using event->json attribute instead of serializing event" andLevel:kSentryLogLevelVerbose];
+     } else {
+         NSDictionary *serialized = [event serialize];

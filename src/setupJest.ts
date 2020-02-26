@@ -39,12 +39,8 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   },
 }))
 
-jest.mock("react-native-sentry", () => ({
-  Sentry: {
-    // tslint:disable-next-line:no-empty
-    captureMessage() {},
-  },
-}))
+// tslint:disable-next-line:no-empty
+jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn())

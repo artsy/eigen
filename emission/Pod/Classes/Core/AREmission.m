@@ -10,8 +10,6 @@
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
 
-#import <SentryReactNative/RNSentry.h>
-
 NSString *const AREnvProduction = @"production";
 NSString *const AREnvStaging = @"staging";
 NSString *const AREnvTest = @"test";
@@ -152,10 +150,6 @@ static AREmission *_sharedInstance = nil;
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
                                      launchOptions:nil];
-
-    if (config.sentryDSN) {
-      [RNSentry installWithBridge:_bridge];
-    }
   }
   return self;
 }

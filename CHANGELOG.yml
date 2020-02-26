@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.21.49
   dev:
     - combine emission and eigen into one repo - david
+    - Update sentry, add patch - ash, brian, david
   user_facing:
     - Removes generic genes from For You tab - ash
     - Improves error-handling during signup failures due to password problems - ash

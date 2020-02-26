@@ -93,9 +93,9 @@ PODS:
     - React-RCTLinking (= 0.61.4)
     - React-RCTNetwork (= 0.61.4)
     - React-RCTText (= 0.61.4)
+    - RNSentry (= 1.3.2)
     - RNSVG (= 9.13.3)
     - SDWebImage (< 4, >= 3.7.2)
-    - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 7.5.0)
   - Expecta (1.0.5)
   - "Expecta+Snapshots (3.0.0)":
@@ -167,16 +167,6 @@ PODS:
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - Keys (1.0.1)
-  - KSCrash/Core (1.15.21):
-    - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.21):
-    - KSCrash/Recording/Tools (= 1.15.21)
-  - KSCrash/Recording/Tools (1.15.21)
-  - KSCrash/Reporting/Filters/Base (1.15.21):
-    - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.21):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
   - KSDeferred (0.2.0)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
@@ -412,22 +402,18 @@ PODS:
     - React
   - RNReanimated (1.4.0):
     - React
+  - RNSentry (1.3.2):
+    - React
+    - Sentry (~> 4.4.0)
   - RNSVG (9.13.3):
     - React
   - RSSwizzle (0.1.0)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - Sentry (3.9.1):
-    - Sentry/Core (= 3.9.1)
-    - Sentry/KSCrash (= 3.9.1)
-  - Sentry/Core (3.9.1)
-  - Sentry/KSCrash (3.9.1):
-    - KSCrash/Core (~> 1.15.12)
-  - SentryReactNative (0.30.3):
-    - React
-    - Sentry (~> 3.9.0)
-    - Sentry/KSCrash (~> 3.9.0)
+  - Sentry (4.4.0):
+    - Sentry/Core (= 4.4.0)
+  - Sentry/Core (4.4.0)
   - Specta (1.0.5)
   - SSFadingScrollView (1.1.0)
   - Starscream (3.0.4)
@@ -526,9 +512,10 @@ DEPENDENCIES:
   - ReactiveObjC
   - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
   - RNReanimated (from `node_modules/react-native-reanimated`)
+  - "RNSentry (from `node_modules/@sentry/react-native`)"
   - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (>= 3.7.2)
-  - SentryReactNative (from `node_modules/react-native-sentry`)
+  - "Sentry (from `node_modules/@sentry/react-native/ios/Sentry`)"
   - Specta
   - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
   - Starscream
@@ -562,7 +549,6 @@ SPEC REPOS:
     - INTUAnimationEngine
     - JSDecoupledAppDelegate
     - JWTDecode
-    - KSCrash
     - KSDeferred
     - Mantle
     - MARKRangeSlider
@@ -580,7 +566,6 @@ SPEC REPOS:
     - ReactiveObjC
     - RSSwizzle
     - SDWebImage
-    - Sentry
     - Specta
     - Starscream
     - Stripe
@@ -687,10 +672,12 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-community/async-storage"
   RNReanimated:
     :path: node_modules/react-native-reanimated
+  RNSentry:
+    :path: "node_modules/@sentry/react-native"
   RNSVG:
     :path: node_modules/react-native-svg
-  SentryReactNative:
-    :path: node_modules/react-native-sentry
+  Sentry:
+    :path: "node_modules/@sentry/react-native/ios/Sentry"
   SSFadingScrollView:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -754,7 +741,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: c0d44f4745243b1cfc750f84f30a68714283a5a7
+  Emission: 19e487433eb901206dfd02ee4217d217d1ee1a4b
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -775,7 +762,6 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
-  KSCrash: 47bc2f48bb5537f112432cfbea9a359aaf7a6cc5
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
@@ -818,11 +804,11 @@ SPEC CHECKSUMS:
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
+  RNSentry: 2ec85f3e314c6a650b1c51b30ff764b6103ed7e2
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
-  SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
+  Sentry: 26650184fe71eb7476dfd2737acb5ea6cc64b4b1
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26

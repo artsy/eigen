@@ -1,4 +1,5 @@
 import { Box, Separator, space, Spacer, Theme } from "@artsy/palette"
+import * as Sentry from "@sentry/react-native"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkFullQuery, ArtworkFullQueryResponse } from "__generated__/ArtworkFullQuery.graphql"
@@ -18,7 +19,6 @@ import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScree
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
-import { Sentry } from "react-native-sentry"
 import { commitMutation, createFragmentContainer, fetchQuery, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
@@ -137,7 +137,10 @@ export class Artwork extends React.Component<Props, State> {
       if (__DEV__) {
         console.error(e)
       } else {
-        Sentry.captureMessage("failed to refresh artwork", { slug: this.props.artworkAboveTheFold.slug })
+        Sentry.withScope(scope => {
+          scope.setExtra("slug", this.props.artworkAboveTheFold.slug)
+          Sentry.captureMessage("failed to refresh artwork")
+        })
       }
     }
     this.setState({ refreshing: false })

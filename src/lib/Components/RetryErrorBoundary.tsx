@@ -1,5 +1,5 @@
+import { captureMessage } from "@sentry/react-native"
 import React from "react"
-import { Sentry } from "react-native-sentry"
 import LoadFailureView from "./LoadFailureView"
 
 enum ErrorState {
@@ -21,7 +21,7 @@ interface State {
 export class RetryErrorBoundary extends React.Component<Props, State> {
   static getDerivedStateFromError(error) {
     console.error(error)
-    Sentry.captureMessage(error.stack)
+    captureMessage(error.stack)
     return { errorState: ErrorState.Error }
   }
 
