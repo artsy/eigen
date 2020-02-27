@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.3.1
+  version: 6.3.2
   date: TBD
   emission_version: 1.21.49
   dev:
@@ -8,12 +8,19 @@ upcoming:
     - Fixes cacheMiddleware to allow ArtworkMarkAsRecentlyViewedQuery mutations without clearing cache - ash
   user_facing:
     - Removes generic genes from For You tab - ash
-    - Improves error-handling during signup failures due to password problems - ash
-    - Increases minimum required password length from 6 to 8 - ash
     - Fix WSODs related to markdown elements not being supported in ReadMore - david
     - Fix grid.artworks null pointer bug - david
 
 releases:
+  - version: 6.3.1
+    date: Feb 27, 2020
+    emission_version: 1.21.49
+    dev:
+      -
+    user_facing:
+      - Improves error-handling during signup failures due to password problems - ash
+      - Increases minimum required password length from 6 to 8 - ash
+
   - version: 6.3.0
     date: Feb 19, 2020
     emission_version: 1.21.49
