@@ -1,7 +1,6 @@
 import { Join, Spacer } from "@artsy/palette"
 import React from "react"
-import { ScrollView as RNScrollView } from "react-native"
-import styled from "styled-components"
+import styled from "styled-components/native"
 
 export const CardScrollView: React.FC = ({ children }) => (
   <ScrollView
@@ -14,7 +13,7 @@ export const CardScrollView: React.FC = ({ children }) => (
   </ScrollView>
 )
 
-const ScrollView = styled(RNScrollView)`
+const ScrollView = styled.ScrollView`
   flex-grow: 1;
   flex-direction: row;
   margin-top: 10px;

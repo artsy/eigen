@@ -5,7 +5,7 @@ import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import { Card, CardScrollView } from "lib/Components/Home/CardScrollView"
+import { CardScrollView, CardScrollViewCard } from "lib/Components/Home/CardScrollView"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
@@ -37,7 +37,7 @@ export class FairsRail extends Component<Props, null> {
       // to avoid crashes if this assumption is broken.
       const artworkImageURLs = artworks.map(artwork => artwork.image.url)
       return (
-        <Card
+        <CardScrollViewCard
           key={result.slug}
           onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}?entity=fair`)}
         >
@@ -60,7 +60,7 @@ export class FairsRail extends Component<Props, null> {
               </Sans>
             </MetadataContainer>
           </View>
-        </Card>
+        </CardScrollViewCard>
       )
     })
 
