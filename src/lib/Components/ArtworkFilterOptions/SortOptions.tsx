@@ -1,8 +1,9 @@
 import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, Serif, space } from "@artsy/palette"
-import React from "react"
+import React, { useContext, useState } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
+import { store } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
@@ -10,66 +11,61 @@ interface SortOptionsScreenProps {
   updateSortOption: (string: SortTypes) => void
 }
 
-interface SortOptionsScreenState {
-  currentSelection: SortTypes
-}
+export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator, updateSortOption }) => {
+  const [currentSelection, setCurrentSelection] = useState("Default")
+  const globalState = useContext(store)
+  const { dispatch } = globalState
 
-export class SortOptionsScreen extends React.Component<SortOptionsScreenProps, SortOptionsScreenState> {
-  state: SortOptionsScreenState = {
-    currentSelection: "Default",
+  const handleBackNavigation = () => {
+    navigator.pop()
   }
 
-  handleBackNavigation() {
-    this.props.navigator.pop()
+  const selectSortOption = selectedOption => {
+    setCurrentSelection(selectedOption)
+    updateSortOption(selectedOption)
+    dispatch({ type: "incrementFilter" })
   }
 
-  selectSortOption(selectedOption) {
-    this.setState({ currentSelection: selectedOption })
-    this.props.updateSortOption(selectedOption) // callback to set the current sort option on the Filter home screen
-  }
-
-  render() {
-    return (
-      <Flex flexGrow={1}>
-        <SortHeader>
-          <Flex alignItems="flex-end" mt={0.5} mb={2}>
-            <ArrowLeftIconContainer onPress={() => this.handleBackNavigation()}>
-              <ArrowLeftIcon fill="black100" />
-            </ArrowLeftIconContainer>
-          </Flex>
-          <Sans mt={2} weight="medium" size="4">
-            Sort
-          </Sans>
-          <Box></Box>
-        </SortHeader>
-        <Flex>
-          <FlatList<string>
-            keyExtractor={(_item, index) => String(index)}
-            data={SortOptions}
-            renderItem={({ item }) => (
-              <Box>
-                {
-                  <SortOptionListItemRow onPress={() => this.selectSortOption(item)}>
-                    <OptionListItem>
-                      <InnerOptionListItem>
-                        <SortSelection size="3">{item}</SortSelection>
-                        {item === this.state.currentSelection && (
-                          <Box mb={0.1}>
-                            <CheckIcon fill="black100" />
-                          </Box>
-                        )}
-                      </InnerOptionListItem>
-                    </OptionListItem>
-                  </SortOptionListItemRow>
-                }
-              </Box>
-            )}
-          />
+  return (
+    <Flex flexGrow={1}>
+      <SortHeader>
+        <Flex alignItems="flex-end" mt={0.5} mb={2}>
+          <ArrowLeftIconContainer onPress={() => handleBackNavigation()}>
+            <ArrowLeftIcon fill="black100" />
+          </ArrowLeftIconContainer>
         </Flex>
-        <BackgroundFill />
+        <Sans mt={2} weight="medium" size="4">
+          Sort
+        </Sans>
+        <Box></Box>
+      </SortHeader>
+      <Flex>
+        <FlatList<string>
+          keyExtractor={(_item, index) => String(index)}
+          data={SortOptions}
+          renderItem={({ item }) => (
+            <Box>
+              {
+                <SortOptionListItemRow onPress={() => selectSortOption(item)}>
+                  <OptionListItem>
+                    <InnerOptionListItem>
+                      <SortSelection size="3">{item}</SortSelection>
+                      {item === currentSelection && (
+                        <Box mb={0.1}>
+                          <CheckIcon fill="black100" />
+                        </Box>
+                      )}
+                    </InnerOptionListItem>
+                  </OptionListItem>
+                </SortOptionListItemRow>
+              }
+            </Box>
+          )}
+        />
       </Flex>
-    )
-  }
+      <BackgroundFill />
+    </Flex>
+  )
 }
 
 const SortOptions: SortTypes[] = [

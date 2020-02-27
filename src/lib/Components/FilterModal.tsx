@@ -1,5 +1,5 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import React from "react"
+import React, { useContext } from "react"
 import {
   FlatList,
   LayoutAnimation,
@@ -10,6 +10,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
+import { store } from "../utils/ArtworkFiltersStore"
 import { SortOptionsScreen as SortOptions, SortTypes } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -44,7 +45,7 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
 
   render() {
     const { isFilterArtworksModalVisible } = this.props
-    const { isComponentMounted } = this.state
+    // how/is it possible to call dispatch from class based components
 
     return (
       <>
@@ -53,7 +54,7 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
             <TouchableWithoutFeedback onPress={null}>
               <ModalBackgroundView>
                 <TouchableOpacity onPress={this.props.closeModal} style={{ flexGrow: 1 }} />
-                <ModalInnerView visible={isComponentMounted}>
+                <ModalInnerView>
                   <NavigatorIOS
                     navigationBarHidden={true}
                     initialRoute={{
@@ -64,9 +65,7 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
                     style={{ flex: 1 }}
                   />
                   <Box p={2}>
-                    <Button onPress={() => this.closeModal()} block width={100} variant="secondaryOutline">
-                      Apply
-                    </Button>
+                    <ApplyButton closeModal={() => this.props.closeModal()} />
                   </Box>
                 </ModalInnerView>
               </ModalBackgroundView>
@@ -76,6 +75,22 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
       </>
     )
   }
+}
+
+interface ApplyButtonProps {
+  closeModal: () => void
+}
+
+const ApplyButton: React.FC<ApplyButtonProps> = ({ closeModal }) => {
+  const globalState = useContext(store)
+  const { dispatch } = globalState
+  const filterCount = dispatch({ type: "getFilterCount" })
+
+  return (
+    <Button onPress={() => closeModal()} block width={100} variant="secondaryOutline">
+      {filterCount > 0 ? "Apply" + " (" + filterCount + ")" : "Apply"}
+    </Button>
+  )
 }
 
 interface FilterOptionsState {
