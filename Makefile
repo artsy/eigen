@@ -39,6 +39,12 @@ next: update_bundle_version
 
 ### General setup
 
+# The ArtsyAPIClientKey and ArtsyAPIClientSecret are provided for open source
+# contributors to learn from the app. Please don't abuse the keys or we'll
+# need to rotate them and you'll make it harder for everyone to learn.
+#
+# As these are publicly available, they are not eligable for the Artsy Bug
+# Bounty program.
 oss:
 	git submodule update --init
 	bundle exec pod repo update
@@ -90,10 +96,10 @@ uitest:
 
 ### CI
 
-ci: 
+ci:
 	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests; else echo "Skipping test build on beta deploy."; fi
 
-ci-test: 
+ci-test:
 	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make test; else echo "Skipping test run on beta deploy."; fi
 
 deploy_if_beta_branch:

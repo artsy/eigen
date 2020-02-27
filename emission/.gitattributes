@@ -1,3 +1,0 @@
-CHANGELOG.md merge=union
-src/__generated__/*.graphql.ts linguist-generated
-src/__generated__/*.queryMap.json linguist-generated
