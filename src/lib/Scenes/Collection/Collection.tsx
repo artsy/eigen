@@ -99,27 +99,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     this.setState(_prevState => {
       return { isFilterArtworksModalVisible: !_prevState.isFilterArtworksModalVisible }
     })
-
-    // tslint:disable: jsdoc-format
-    /**
-    * TODO: Refactor this mutation code to handle filtering artworks by selected fields in the artwork filter modal
-    * const { artwork, relay } = this.props
-    commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
-      mutation: graphql`
-        mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
-          saveArtwork(input: $input) {
-            artwork {
-              id
-              is_saved: isSaved
-            }
-          }
-        }
-      `,
-      variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
-      optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
-      onCompleted: () => Events.userHadMeaningfulInteraction(),
-    })
-     */
   }
   render() {
     const { isArtworkGridVisible, sections } = this.state

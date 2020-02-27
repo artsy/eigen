@@ -98,7 +98,7 @@
     "react-tracking": "7.2.1",
     "relay-runtime": "6.0.0",
     "remove-markdown": "0.1.0",
-    "simple-markdown": "0.4.4",
+    "simple-markdown": "^0.7.2",
     "styled-components": "4.2.0",
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/ashfurrow/tipsi-stripe.git#fix-infinite-loop"
@@ -123,7 +123,7 @@
     "@types/moment-timezone": "0.5.4",
     "@types/node": "12.7.5",
     "@types/query-string": "5.0.1",
-    "@types/react": "16.8.10",
+    "@types/react": "16.9.22",
     "@types/react-native": "0.57.42",
     "@types/react-relay": "6.0.1",
     "@types/react-test-renderer": "16.8.1",

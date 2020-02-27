@@ -10,6 +10,7 @@ upcoming:
     - Removes generic genes from For You tab - ash
     - Improves error-handling during signup failures due to password problems - ash
     - Increases minimum required password length from 6 to 8 - ash
+    - Fix WSODs related to markdown elements not being supported in ReadMore - david
     - Fix grid.artworks null pointer bug - david
 
 releases:
