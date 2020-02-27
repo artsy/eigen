@@ -118,7 +118,6 @@ const FollowButtonContainer = styled.View`
 
 export const Division = styled.View`
   border: 1px solid white;
-  border-bottom-width: 0;
   width: 1px;
 `
 
@@ -138,7 +137,7 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
         edges {
           node {
             image {
-              url(version: "small")
+              url(version: "large")
             }
           }
         }

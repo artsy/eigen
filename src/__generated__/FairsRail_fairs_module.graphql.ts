@@ -14,8 +14,7 @@ export type FairsRail_fairs_module = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly image: {
-                        readonly smallImage: string | null;
-                        readonly mediumImage: string | null;
+                        readonly url: string | null;
                     } | null;
                 } | null;
             } | null> | null;
@@ -24,8 +23,7 @@ export type FairsRail_fairs_module = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly image: {
-                        readonly smallImage: string | null;
-                        readonly mediumImage: string | null;
+                        readonly url: string | null;
                     } | null;
                 } | null;
             } | null> | null;
@@ -79,29 +77,16 @@ v2 = [
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": "smallImage",
+                "alias": null,
                 "name": "url",
                 "args": [
                   {
                     "kind": "Literal",
                     "name": "version",
-                    "value": "small"
+                    "value": "large"
                   }
                 ],
-                "storageKey": "url(version:\"small\")"
-              },
-              {
-                "kind": "ScalarField",
-                "alias": "mediumImage",
-                "name": "url",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "version",
-                    "value": "medium"
-                  }
-                ],
-                "storageKey": "url(version:\"medium\")"
+                "storageKey": "url(version:\"large\")"
               }
             ]
           }
@@ -194,5 +179,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6aa9ee4a0572ca8d0b49371fc8997b7e';
+(node as any).hash = '34bbc73d00a79f3c61c3b9b1ad6e2c84';
 export default node;

@@ -35,16 +35,7 @@ export class FairsRail extends Component<Props, null> {
       // Fairs are expected to always have >= 3 artworks. We can make
       // assumptions about this in UI layout, but should still be cautious
       // to avoid crashes if this assumption is broken.
-      const artworkImageURLs: string[] = []
-      if (artworks.length > 0) {
-        artworkImageURLs.push(artworks[0].image.mediumImage)
-      }
-      if (artworks.length > 1) {
-        artworkImageURLs.push(artworks[1].image.smallImage)
-      }
-      if (artworks.length > 2) {
-        artworkImageURLs.push(artworks[2].image.smallImage)
-      }
+      const artworkImageURLs = artworks.map(artwork => artwork.image.url)
       return (
         <Card
           key={result.slug}
@@ -85,6 +76,7 @@ export class FairsRail extends Component<Props, null> {
   }
 }
 
+// TODO: Similar to the Title component in ArtistRail, we want to clean these all up at once.
 const Title = styled(SectionTitle)`
   margin-left: 20;
 `
@@ -92,7 +84,6 @@ const Title = styled(SectionTitle)`
 // Default is a vertical division
 export const Division = styled.View<{ horizontal }>`
   border: 1px solid white;
-  border-bottom-width: 0;
   ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
 `
 
@@ -124,8 +115,7 @@ export default createFragmentContainer(FairsRail, {
           edges {
             node {
               image {
-                smallImage: url(version: "small")
-                mediumImage: url(version: "medium")
+                url(version: "large")
               }
             }
           }
@@ -134,8 +124,7 @@ export default createFragmentContainer(FairsRail, {
           edges {
             node {
               image {
-                smallImage: url(version: "small")
-                mediumImage: url(version: "medium")
+                url(version: "large")
               }
             }
           }

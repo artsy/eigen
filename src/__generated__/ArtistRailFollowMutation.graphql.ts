@@ -69,7 +69,7 @@ fragment ArtistCard_artist on Artist {
     edges {
       node {
         image {
-          url(version: "small")
+          url(version: "large")
         }
         id
       }
@@ -128,22 +128,7 @@ v3 = {
   "name": "id",
   "args": null,
   "storageKey": null
-},
-v4 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "url",
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "version",
-        "value": "small"
-      }
-    ],
-    "storageKey": "url(version:\"small\")"
-  }
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -329,7 +314,21 @@ return {
                                 "args": null,
                                 "concreteType": "Image",
                                 "plural": false,
-                                "selections": (v4/*: any*/)
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "url",
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "small"
+                                      }
+                                    ],
+                                    "storageKey": "url(version:\"small\")"
+                                  }
+                                ]
                               },
                               {
                                 "kind": "LinkedField",
@@ -372,7 +371,21 @@ return {
                                             "args": null,
                                             "concreteType": "Image",
                                             "plural": false,
-                                            "selections": (v4/*: any*/)
+                                            "selections": [
+                                              {
+                                                "kind": "ScalarField",
+                                                "alias": null,
+                                                "name": "url",
+                                                "args": [
+                                                  {
+                                                    "kind": "Literal",
+                                                    "name": "version",
+                                                    "value": "large"
+                                                  }
+                                                ],
+                                                "storageKey": "url(version:\"large\")"
+                                              }
+                                            ]
                                           },
                                           (v3/*: any*/)
                                         ]
@@ -399,7 +412,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ArtistRailFollowMutation",
-    "id": "5e084c1ac7e4165288ff96c55075d5e5",
+    "id": "ecc0c65b31b05b227e71c7a37629fe5c",
     "text": null,
     "metadata": {}
   }

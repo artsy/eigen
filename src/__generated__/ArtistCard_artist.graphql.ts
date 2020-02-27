@@ -25,23 +25,7 @@ export type ArtistCard_artist = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "url",
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "version",
-        "value": "small"
-      }
-    ],
-    "storageKey": "url(version:\"small\")"
-  }
-];
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtistCard_artist",
   "type": "Artist",
@@ -98,7 +82,21 @@ return {
       "args": null,
       "concreteType": "Image",
       "plural": false,
-      "selections": (v0/*: any*/)
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "url",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "version",
+              "value": "small"
+            }
+          ],
+          "storageKey": "url(version:\"small\")"
+        }
+      ]
     },
     {
       "kind": "LinkedField",
@@ -141,7 +139,21 @@ return {
                   "args": null,
                   "concreteType": "Image",
                   "plural": false,
-                  "selections": (v0/*: any*/)
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "large"
+                        }
+                      ],
+                      "storageKey": "url(version:\"large\")"
+                    }
+                  ]
                 }
               ]
             }
@@ -151,6 +163,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = 'fb129982e9b203c029da7fd576477b68';
+(node as any).hash = '4e52f05c0f018ee6527a9e1a58f477cf';
 export default node;
