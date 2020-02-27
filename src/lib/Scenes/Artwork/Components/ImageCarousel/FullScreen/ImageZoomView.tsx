@@ -108,9 +108,9 @@ function createTransform(
  *
  *  https://css-tricks.com/animating-layouts-with-the-flip-technique/
  */
-export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoomViewProps> =
+export const ImageZoomView =
   // need to do this ref forwarding to expose the `resetZoom` method to consumers
-  React.forwardRef(({ image, index }, ref) => {
+  React.forwardRef<ImageZoomView, ImageZoomViewProps>(({ image, index }, ref) => {
     const screenDimensions = useScreenDimensions()
     const { embeddedImageRefs, dispatch, imageIndex, fullScreenState, lastImageIndex } = useContext(
       ImageCarouselContext
@@ -244,23 +244,20 @@ export const ImageZoomView: React.RefForwardingComponent<ImageZoomView, ImageZoo
       )
     )
 
-    useEffect(
-      () => {
-        // hack to get a sane starting contentOffset our ScrollView gives some _whack_ values occasionally
-        // for it's first onScroll before the user has actually done any scrolling
-        contentOffset.current = {
-          x: -imageFittedWithinScreen.marginHorizontal,
-          y: -imageFittedWithinScreen.marginVertical,
-        }
+    useEffect(() => {
+      // hack to get a sane starting contentOffset our ScrollView gives some _whack_ values occasionally
+      // for it's first onScroll before the user has actually done any scrolling
+      contentOffset.current = {
+        x: -imageFittedWithinScreen.marginHorizontal,
+        y: -imageFittedWithinScreen.marginVertical,
+      }
 
-        // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
-        if (fullScreenState.current === "entered" && scrollViewRef.current) {
-          const tag = findNodeHandle(scrollViewRef.current.getNode())
-          ARScrollViewHelpers.optOutOfParentScrollEvents(tag)
-        }
-      },
-      [fullScreenState.current]
-    )
+      // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
+      if (fullScreenState.current === "entered" && scrollViewRef.current) {
+        const tag = findNodeHandle(scrollViewRef.current.getNode())
+        ARScrollViewHelpers.optOutOfParentScrollEvents(tag)
+      }
+    }, [fullScreenState.current])
 
     const viewPortChanges = useNewEventStream<Rect>()
 

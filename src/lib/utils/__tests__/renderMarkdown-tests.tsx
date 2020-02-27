@@ -9,7 +9,9 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentModalViewController: jest.fn(),
 }))
 
+import { readFileSync } from "fs"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { join } from "path"
 
 describe("renderMarkdown", () => {
   it("returns markdown for a simple string", () => {
@@ -188,4 +190,26 @@ describe("renderMarkdown", () => {
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
   })
+
+  it(`renders all the markdown elements`, async () => {
+    const basicRules = defaultRules()
+    const kitchenSink = readFileSync(join(__dirname, "markdown-kitchen-sink.md")).toString()
+
+    const tree = renderMarkdown(kitchenSink, basicRules)
+
+    visitTree(tree, node => {
+      if (typeof node.type === "string") {
+        throw Error(`we should be supporting elements with type '${node.type}'`)
+      }
+    })
+  })
 })
+
+function visitTree(tree: unknown, visit: (node: React.ReactElement) => void) {
+  if (React.isValidElement(tree)) {
+    visit(tree)
+    React.Children.forEach((tree.props as any).children, child => visitTree(child, visit))
+  } else if (Array.isArray(tree)) {
+    tree.map(child => visitTree(child, visit))
+  }
+}
