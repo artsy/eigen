@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { store } from "../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
@@ -13,8 +13,7 @@ interface SortOptionsScreenProps {
 
 export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator, updateSortOption }) => {
   const [currentSelection, setCurrentSelection] = useState("Default")
-  const globalState = useContext(store)
-  const { dispatch } = globalState
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleBackNavigation = () => {
     navigator.pop()
@@ -23,7 +22,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
   const selectSortOption = selectedOption => {
     setCurrentSelection(selectedOption)
     updateSortOption(selectedOption)
-    dispatch({ type: "incrementFilter" })
+    dispatch({ type: "updateFilterCount", payload: state.filterCount === 0 ? 1 : state.filterCount })
   }
 
   return (
