@@ -82,7 +82,7 @@ const Title = styled(SectionTitle)`
 `
 
 // Default is a vertical division
-export const Division = styled.View<{ horizontal }>`
+export const Division = styled.View<{ horizontal?: boolean }>`
   border: 1px solid white;
   ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
 `
