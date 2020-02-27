@@ -78,7 +78,7 @@ export function defaultRules(modal: boolean = false): ParserRules {
       match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
         return (
-          <Sans size="3t" key={state.key} textAlign="center">
+          <Sans size="3t" color="black60" key={state.key} textAlign="center">
             {output(node.content, state)}
           </Sans>
         )
