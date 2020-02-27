@@ -3,13 +3,14 @@ upcoming:
   date: TBD
   emission_version: 1.21.49
   dev:
-    - combine emission and eigen into one repo - david
+    - Combine emission and eigen into one repo - david
     - Update sentry, add patch - ash, brian, david
     - Fixes cacheMiddleware to allow ArtworkMarkAsRecentlyViewedQuery mutations without clearing cache - ash
   user_facing:
     - Removes generic genes from For You tab - ash
     - Improves error-handling during signup failures due to password problems - ash
     - Increases minimum required password length from 6 to 8 - ash
+    - Fix grid.artworks null pointer bug - david
 
 releases:
   - version: 6.3.0

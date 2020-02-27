@@ -16,7 +16,7 @@ type Grid = OtherWorksGrid | ArtworkGrid
 export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
   if (grids && grids.length > 0) {
     return filter(grids, grid => {
-      return grid.artworks && grid.artworks.edges && grid.artworks.edges.length > 0
+      return grid?.artworks?.edges?.length > 0
     })
   }
 }
@@ -51,6 +51,8 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
           ))}
         </Join>
       )
+    } else {
+      return null
     }
   },
   {
