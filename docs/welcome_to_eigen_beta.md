@@ -12,7 +12,7 @@ Which should _eventually_ send an email invite, this will not be instant, and co
   <img src="screenshots/testflight-email.png" />
 </p>
 
-If you have questions and work in Artsy, ask in the #mobile slack room. If you're just interested as an outsider, tweet [@orta](https://twitter.com/orta/) / [@alloy](https://twitter.com/orta/) / [@artsyopensource](https://twitter.com/orta/) and we'll set you up.
+If you have questions and work in Artsy, ask in the #front-end-ios Slack channel. If you're just interested as an outsider, just open an issue on the repo.
 
 _For Developers:_ You can verify who is on the [Artsy Beta here](https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/703796080/testflight/information).
 
