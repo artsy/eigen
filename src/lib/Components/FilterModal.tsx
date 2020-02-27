@@ -1,5 +1,5 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import React, { useContext } from "react"
+import React from "react"
 import {
   FlatList,
   LayoutAnimation,
@@ -10,7 +10,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { store } from "../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, ResetFilterCount } from "../utils/ArtworkFiltersStore"
 import { SortOptionsScreen as SortOptions, SortTypes } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -45,7 +45,6 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
 
   render() {
     const { isFilterArtworksModalVisible } = this.props
-    // how/is it possible to call dispatch from class based components
 
     return (
       <>
@@ -60,12 +59,20 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
                     initialRoute={{
                       component: FilterOptions,
                       passProps: { closeModal: this.props.closeModal },
-                      title: "", // this property (can be an empty string) is required otherwise RN throws a warning
+                      title: "",
                     }}
                     style={{ flex: 1 }}
                   />
                   <Box p={2}>
-                    <ApplyButton closeModal={() => this.props.closeModal()} />
+                    <ArtworkFilterContext.Consumer>
+                      {value => {
+                        return (
+                          <Button onPress={null} block width={100} variant="secondaryOutline">
+                            {value.state.filterCount > 0 ? "Apply" + " (" + value.state.filterCount + ")" : "Apply"}
+                          </Button>
+                        )
+                      }}
+                    </ArtworkFilterContext.Consumer>
                   </Box>
                 </ModalInnerView>
               </ModalBackgroundView>
@@ -75,22 +82,6 @@ export class FilterModalNavigator extends React.Component<FilterModalProps, Filt
       </>
     )
   }
-}
-
-interface ApplyButtonProps {
-  closeModal: () => void
-}
-
-const ApplyButton: React.FC<ApplyButtonProps> = ({ closeModal }) => {
-  const globalState = useContext(store)
-  const { dispatch } = globalState
-  const filterCount = dispatch({ type: "getFilterCount" })
-
-  return (
-    <Button onPress={() => closeModal()} block width={100} variant="secondaryOutline">
-      {filterCount > 0 ? "Apply" + " (" + filterCount + ")" : "Apply"}
-    </Button>
-  )
 }
 
 interface FilterOptionsState {
@@ -143,6 +134,11 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
     })
   }
 
+  handleClearAll(dispatch) {
+    this.clearAllFilters()
+    dispatch({ type: "resetFilterCount" })
+  }
+
   render() {
     const { filterOptions } = this.state
 
@@ -157,11 +153,18 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
           <FilterHeader weight="medium" size="4">
             Filter
           </FilterHeader>
-          <TouchableOpacity onPress={() => this.clearAllFilters()}>
-            <Sans mr={2} mt={2} size="4">
-              Clear all
-            </Sans>
-          </TouchableOpacity>
+          <ArtworkFilterContext.Consumer>
+            {value => {
+              const clearAllDispatch = value.dispatch
+              return (
+                <TouchableOpacity onPress={() => this.handleClearAll(clearAllDispatch)}>
+                  <Sans mr={2} mt={2} size="4">
+                    Clear all
+                  </Sans>
+                </TouchableOpacity>
+              )
+            }}
+          </ArtworkFilterContext.Consumer>
         </Flex>
         <Flex>
           <FlatList<{ onTap: () => void; type: string }>
