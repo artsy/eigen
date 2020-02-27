@@ -1,19 +1,28 @@
 upcoming:
-  version: 6.3.0
+  version: 6.3.1
   date: TBD
-  emission_version: 1.21.40
+  emission_version: 1.21.49
   dev:
-    - Fixes full-bleed collections image rendering - ash & MX Knowledge Share Feb 4 2020
-    - Adds lab option for lot condition report - brian
-    - Adds lab option for filtering collections artworks - ashley
-    - Removes a lot of unused code - ash
-  user_facing:
     -
-    - Removes generic genes from For You tab - ash
+  user_facing:
     - Improves error-handling during signup failures due to password problems - ash
     - Increases minimum required password length from 6 to 8 - ash
 
 releases:
+  - version: 6.3.0
+    date: Feb 19, 2020
+    emission_version: 1.21.49
+    dev:
+      - Fixes full-bleed collections image rendering - ash & MX Knowledge Share Feb 4 2020
+      - Adds lab option for lot condition report - brian
+      - Adds lab option for filtering collections artworks - ashley
+      - Removes a lot of unused code - ash
+    user_facing:
+      -
+      - Removes generic genes from For You tab - ash
+      - Improves error-handling during signup failures due to password problems - ash
+      - Increases minimum required password length from 6 to 8 - ash
+
   - version: 6.2.1
     date: Feb 4, 2020
     emission_version: 1.21.32

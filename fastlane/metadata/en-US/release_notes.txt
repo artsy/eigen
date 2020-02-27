@@ -1,7 +1,3 @@
-This update includes a number of small bug fixes and improvements, including:
-
-• Improved Search results for artworks with long names.
-• Fixed a rare bug that would cause the app to crash when zooming in on certain images.
-• Fixed several small bugs related to logging out.
+This update includes a fix for a bug affecting users signing up for Artsy. Users would see a spinner instead of an error message when their password was too short.
 
 Have feedback? Email us at support@artsy.net
