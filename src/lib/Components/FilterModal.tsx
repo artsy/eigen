@@ -12,10 +12,7 @@ interface FilterModalProps extends ViewProperties {
   isFilterArtworksModalVisible: boolean
 }
 
-type SortableItems = Array<{ type: string; data: any }>
-
 export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, isFilterArtworksModalVisible }) => {
-  const [sortableItems, setSortableItems] = useState<SortableItems>([])
   const { dispatch, state: globalFilterState } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {

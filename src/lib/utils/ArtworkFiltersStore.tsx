@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, Reducer, useReducer } from "react"
 
-const initialState: ArtworkFilterContextState = {
+const filterState: ArtworkFilterContextState = {
   filterCount: 0,
 }
 
@@ -40,8 +40,9 @@ interface ArtworkFilterContext {
 export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
 
 export const ArtworkFilterGlobalStateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>((filterState, action) => {
+  const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>((_state, action) => {
     let currentFilterCount
+
     switch (action.type) {
       case "resetFilterCount":
         return { filterCount: 0 }
@@ -54,7 +55,7 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
         currentFilterCount = action.payload
         return { filterCount: currentFilterCount + 1 }
     }
-  }, initialState)
+  }, filterState)
 
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
