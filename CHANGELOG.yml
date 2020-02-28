@@ -6,6 +6,7 @@ upcoming:
     - Combine emission and eigen into one repo - david
     - Update sentry, add patch - ash, brian, david
     - Fixes cacheMiddleware to allow ArtworkMarkAsRecentlyViewedQuery mutations without clearing cache - ash
+    - Untrack the query map and emission assets folder - david
   user_facing:
     - Removes generic genes from For You tab - ash
     - Improves error-handling during signup failures due to password problems - ash
