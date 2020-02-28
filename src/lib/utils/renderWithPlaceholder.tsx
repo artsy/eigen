@@ -1,20 +1,20 @@
 import React from "react"
-import { Container as RelayContainer, QueryRenderer } from "react-relay"
+import { QueryRenderer } from "react-relay"
 
 import LoadFailureView from "lib/Components/LoadFailureView"
 import { ProvidePlaceholderContext } from "./placeholders"
 
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
 
-export function renderWithPlaceholder<T extends RelayContainer<any>>({
+export function renderWithPlaceholder<Props>({
   Container,
   renderPlaceholder,
   initialProps = {},
 }: {
-  Container: T
+  Container: React.ComponentType<Props>
   renderPlaceholder: () => React.ReactChild
   initialProps?: object
-}): (readyState: ReadyState) => React.ReactElement<T> | null {
+}): (readyState: ReadyState) => React.ReactElement | null {
   let retrying = false
   return ({ error, props, retry }) => {
     if (error) {
