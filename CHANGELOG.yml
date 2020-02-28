@@ -11,6 +11,7 @@ upcoming:
     - Removes generic genes from For You tab - ash
     - Fix WSODs related to markdown elements not being supported in ReadMore - david
     - Fix grid.artworks null pointer bug - david
+    - Fixes issue with create password screen saying you needed 6 character but you need 8 - ash
 
 releases:
   - version: 6.3.1
