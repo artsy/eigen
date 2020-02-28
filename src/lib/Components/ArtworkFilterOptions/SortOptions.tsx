@@ -37,7 +37,7 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps, S
               <ArrowLeftIcon fill="black100" />
             </ArrowLeftIconContainer>
           </Flex>
-          <Sans mt={2} weight="medium" size="4">
+          <Sans mt={2} weight="medium" size="4" color="black100">
             Sort
           </Sans>
           <Box></Box>
@@ -52,7 +52,9 @@ export class SortOptionsScreen extends React.Component<SortOptionsScreenProps, S
                   <SortOptionListItemRow onPress={() => this.selectSortOption(item)}>
                     <OptionListItem>
                       <InnerOptionListItem>
-                        <SortSelection size="3">{item}</SortSelection>
+                        <SortSelection color="black100" size="3t">
+                          {item}
+                        </SortSelection>
                         {item === this.state.currentSelection && (
                           <Box mb={0.1}>
                             <CheckIcon fill="black100" />
@@ -76,8 +78,8 @@ const SortOptions: SortTypes[] = [
   "Default",
   "Price (low to high)",
   "Price (high to low)",
-  "Recently Updated",
-  "Recently Added",
+  "Recently updated",
+  "Recently added",
   "Artwork year (descending)",
   "Artwork year (ascending)",
 ]
@@ -105,8 +107,8 @@ export type SortTypes =
   | "Default"
   | "Price (low to high)"
   | "Price (high to low)"
-  | "Recently Updated"
-  | "Recently Added"
+  | "Recently updated"
+  | "Recently added"
   | "Artwork year (descending)"
   | "Artwork year (ascending)"
 
