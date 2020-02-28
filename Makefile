@@ -171,3 +171,14 @@ push:
 
 fpush:
 	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi
+
+flip_table:
+	# Clear caches and build files
+	@echo 'Clear yarn cache and node modules (┛ಠ_ಠ)┛彡┻━┻'
+	yarn cache clean
+	rm -rf node_modules
+	@echo 'Clear cocoapods directory and caches  (ノಠ益ಠ)ノ彡┻━┻'
+	bundle exec pod cache clean --all
+	rm -rf Pods
+	@echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
+	rm -rf ~/Library/Developer/Xcode/DerivedData/*
