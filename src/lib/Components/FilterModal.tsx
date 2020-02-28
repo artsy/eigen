@@ -1,16 +1,9 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import React from "react"
-import {
-  FlatList,
-  LayoutAnimation,
-  Modal as RNModal,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  ViewProperties,
-} from "react-native"
+import React, { useContext, useEffect, useState } from "react"
+import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, ResetFilterCount } from "../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext } from "../utils/ArtworkFiltersStore"
 import { SortOptionsScreen as SortOptions, SortTypes } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -19,175 +12,148 @@ interface FilterModalProps extends ViewProperties {
   isFilterArtworksModalVisible: boolean
 }
 
-interface FilterModalState {
-  isComponentMounted: boolean
-  sortableItems: Array<{ type: string; data: any }>
-}
+type SortableItems = Array<{ type: string; data: any }>
 
-export class FilterModalNavigator extends React.Component<FilterModalProps, FilterModalState> {
-  state: FilterModalState = {
-    isComponentMounted: false,
-    sortableItems: [],
-  }
+export const FilterModalNavigator: React.SFC<FilterModalProps> = ({
+  closeModal,
+  navigator,
+  isFilterArtworksModalVisible,
+}) => {
+  const [sortableItems, setSortableItems] = useState<SortableItems>([])
 
-  componentDidMount() {
-    setTimeout(() => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-      this.setState({ isComponentMounted: true })
-    }, 100)
-  }
-
-  closeModal() {
-    if (this.props.closeModal) {
-      this.props.closeModal()
-    }
-  }
-
-  render() {
-    const { isFilterArtworksModalVisible } = this.props
-
-    return (
-      <>
-        {isFilterArtworksModalVisible && (
-          <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
-            <TouchableWithoutFeedback onPress={null}>
-              <ModalBackgroundView>
-                <TouchableOpacity onPress={this.props.closeModal} style={{ flexGrow: 1 }} />
-                <ModalInnerView>
-                  <NavigatorIOS
-                    navigationBarHidden={true}
-                    initialRoute={{
-                      component: FilterOptions,
-                      passProps: { closeModal: this.props.closeModal },
-                      title: "",
+  return (
+    <>
+      {isFilterArtworksModalVisible && (
+        <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
+          <TouchableWithoutFeedback onPress={null}>
+            <ModalBackgroundView>
+              <TouchableOpacity onPress={closeModal} style={{ flexGrow: 1 }} />
+              <ModalInnerView>
+                <NavigatorIOS
+                  navigationBarHidden={true}
+                  initialRoute={{
+                    component: FilterOptions,
+                    passProps: { closeModal },
+                    title: "",
+                  }}
+                  style={{ flex: 1 }}
+                />
+                <Box p={2}>
+                  <ArtworkFilterContext.Consumer>
+                    {value => {
+                      return (
+                        <Button onPress={null} block width={100} variant="secondaryOutline">
+                          {value.state.filterCount > 0 ? "Apply" + " (" + value.state.filterCount + ")" : "Apply"}
+                        </Button>
+                      )
                     }}
-                    style={{ flex: 1 }}
-                  />
-                  <Box p={2}>
-                    <ArtworkFilterContext.Consumer>
-                      {value => {
-                        return (
-                          <Button onPress={null} block width={100} variant="secondaryOutline">
-                            {value.state.filterCount > 0 ? "Apply" + " (" + value.state.filterCount + ")" : "Apply"}
-                          </Button>
-                        )
-                      }}
-                    </ArtworkFilterContext.Consumer>
-                  </Box>
-                </ModalInnerView>
-              </ModalBackgroundView>
-            </TouchableWithoutFeedback>
-          </RNModal>
-        )}
-      </>
-    )
-  }
-}
-
-interface FilterOptionsState {
-  filterOptions: Array<{ type: string; onTap: () => void }>
-  selectedSortOption: SortTypes
+                  </ArtworkFilterContext.Consumer>
+                </Box>
+              </ModalInnerView>
+            </ModalBackgroundView>
+          </TouchableWithoutFeedback>
+        </RNModal>
+      )}
+    </>
+  )
 }
 
 interface FilterOptionsProps {
   closeModal: () => void
   navigator: NavigatorIOS
 }
-export class FilterOptions extends React.Component<FilterOptionsProps, FilterOptionsState> {
-  state: FilterOptionsState = {
-    filterOptions: [],
-    selectedSortOption: "Default",
-  }
 
-  componentDidMount() {
-    const filterOptions = []
+type FilterOptions = Array<{ type: string; onTap: () => void }>
+type SelectedSortOption = SortTypes
 
-    filterOptions.push({
+export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>([])
+  const [selectedSortOption, setSelectedSortOption] = useState<SelectedSortOption>("Default")
+
+  useEffect(() => {
+    const filterCategories = []
+
+    filterCategories.push({
       type: "Sort by",
-      onTap: this.handleNavigationToSortScreen,
+      onTap: handleNavigationToSortScreen,
     })
 
-    this.setState({
-      filterOptions,
-    })
-  }
+    setFilterOptions(filterCategories)
+  }, [])
 
-  handleNavigationToSortScreen = () => {
-    this.props.navigator.push({
+  const handleNavigationToSortScreen = () => {
+    navigator.push({
       component: SortOptions,
       passProps: {
-        updateSortOption: (sortOption: SortTypes) => this.getSortSelection(sortOption),
-        sortScreenSortSelection: this.state.selectedSortOption,
+        updateSortOption: (sortOption: SortTypes) => getSortSelection(sortOption),
+        sortScreenSortSelection: selectedSortOption,
       },
     })
   }
 
-  getSortSelection(sortOption: SortTypes) {
-    this.setState(() => {
-      return { selectedSortOption: sortOption }
-    })
+  const getSortSelection = (sortOption: SortTypes) => {
+    setSelectedSortOption(sortOption)
   }
 
-  clearAllFilters() {
-    this.setState(() => {
-      return { selectedSortOption: "Default" }
-    })
+  const clearAllFilters = () => {
+    setSelectedSortOption("Default")
   }
 
-  handleClearAll(dispatch) {
-    this.clearAllFilters()
+  const handleClearAll = dispatch => {
+    clearAllFilters()
     dispatch({ type: "resetFilterCount" })
   }
 
-  render() {
-    const { filterOptions } = this.state
-
-    return (
-      <Flex flexGrow={1}>
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Flex alignItems="flex-end" mt={0.5} mb={2}>
-            <CloseIconContainer onPress={() => this.props.closeModal()}>
-              <CloseIcon fill="black100" />
-            </CloseIconContainer>
-          </Flex>
-          <FilterHeader weight="medium" size="4" color="black100">
-            Filter
-          </FilterHeader>
-          <TouchableOpacity onPress={() => this.clearAllFilters()}>
-            <Sans mr={2} mt={2} size="4" color="black100">
-              Clear all
-            </Sans>
-          </TouchableOpacity>
+  return (
+    <Flex flexGrow={1}>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Flex alignItems="flex-end" mt={0.5} mb={2}>
+          <CloseIconContainer onPress={() => closeModal()}>
+            <CloseIcon fill="black100" />
+          </CloseIconContainer>
         </Flex>
-        <Flex>
-          <FlatList<{ onTap: () => void; type: string }>
-            keyExtractor={(_item, index) => String(index)}
-            data={filterOptions}
-            renderItem={({ item }) => (
-              <Box>
-                {
-                  <TouchableOptionListItemRow onPress={() => item.onTap()}>
-                    <OptionListItem>
-                      <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                        <Serif size="3t" color="black100">
-                          {item.type}
-                        </Serif>
-                        <Flex flexDirection="row">
-                          <CurrentOption size="3t">{this.state.selectedSortOption}</CurrentOption>
-                          <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
-                        </Flex>
-                      </Flex>
-                    </OptionListItem>
-                  </TouchableOptionListItemRow>
-                }
-              </Box>
-            )}
-          />
-        </Flex>
-        <BackgroundFill />
+        <FilterHeader weight="medium" size="4">
+          Filter
+        </FilterHeader>
+        <ArtworkFilterContext.Consumer>
+          {value => {
+            const clearAllDispatch = value.dispatch
+            return (
+              <TouchableOpacity onPress={() => handleClearAll(clearAllDispatch)}>
+                <Sans mr={2} mt={2} size="4">
+                  Clear all
+                </Sans>
+              </TouchableOpacity>
+            )
+          }}
+        </ArtworkFilterContext.Consumer>
       </Flex>
-    )
-  }
+      <Flex>
+        <FlatList<{ onTap: () => void; type: string }>
+          keyExtractor={(_item, index) => String(index)}
+          data={filterOptions}
+          renderItem={({ item }) => (
+            <Box>
+              {
+                <TouchableOptionListItemRow onPress={() => item.onTap()}>
+                  <OptionListItem>
+                    <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                      <Serif size="3">{item.type}</Serif>
+                      <Flex flexDirection="row">
+                        <CurrentOption size="3">{selectedSortOption}</CurrentOption>
+                        <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
+                      </Flex>
+                    </Flex>
+                  </OptionListItem>
+                </TouchableOptionListItemRow>
+              }
+            </Box>
+          )}
+        />
+      </Flex>
+      <BackgroundFill />
+    </Flex>
+  )
 }
 
 export const FilterHeader = styled(Sans)`
@@ -238,7 +204,7 @@ const ModalBackgroundView = styled.View`
   border-top-right-radius: ${space(1)};
 `
 
-const ModalInnerView = styled.View<{ visible: boolean }>`
+const ModalInnerView = styled.View`
   flex-direction: column;
   background-color: ${color("white100")};
   height: 75%;

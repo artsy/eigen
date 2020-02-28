@@ -11,8 +11,13 @@ interface SortOptionsScreenProps {
   updateSortOption: (string: SortTypes) => void
 }
 
+interface SortOptionsScreenProps {
+  navigator: NavigatorIOS
+  updateSortOption: (string: SortTypes) => void
+}
+
 export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator, updateSortOption }) => {
-  const [currentSelection, setCurrentSelection] = useState("Default")
+  const [currentSelection, setCurrentSelection] = useState<SortTypes>("Default")
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleBackNavigation = () => {
