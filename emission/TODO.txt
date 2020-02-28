@@ -1,2 +1,0 @@
-* make `sales` root field a connection
-* remove ARTemporaryAPIModule

@@ -2,7 +2,7 @@
 
 As we have built our React Native components, our understanding of how to build those components as evolved. As that understanding grows, newer components use newer techniques and older ones are often left un-updated. It can be difficult to orient oneself around what the current preferred practices are.
 
-This document is a map. Not of Emission at a specific time, but a map of how we got here and where we want to go next. This is a living document, expected to be updated regularly, of links to:
+This document is a map. Not of Eigen/Emission at a specific time, but a map of how we got here and where we want to go next. This is a living document, expected to be updated regularly, of links to:
 
 - Example code.
 - Pull requests with interesting discussions.
@@ -58,7 +58,6 @@ _Most_ interactions are made through a "switchboard" to open links. A switchboar
 Other interactions are handled by the `APIModules`, for example when Eigen needs to invoke some kind of callback.
 
 - [Switchboard routes defined in Eigen](https://github.com/artsy/eigen/blob/e0567ffc3c9619c66890998ae3cadfc026a290ae/Artsy/App/ARSwitchBoard.m#L131-L255)
-- [Emission test app route-handling](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/Example/Emission/AppDelegate.m#L160-L189)
 - [Emission switchboard to call out to Eigen](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/Pod/Classes/Core/ARSwitchBoardModule.m)
 - [Callbacks between JS and native code are set up here](https://github.com/artsy/emission/blob/24c0fdaf91aa79654a33fd6e476405047819be5b/Pod/Classes/TemporaryAPI/ARTemporaryAPIModule.m).
 
@@ -72,4 +71,6 @@ There is [extensive inline documentation](https://github.com/artsy/emission/blob
 
 ## Formerly Preferred Practices
 
-These are techniques or approaches that we _used_ to use, but which have been replaced with newer concepts above. It's an empty list so far, but will grow with time.
+These are techniques or approaches that we _used_ to use, but which have been replaced with newer concepts above. This will grow with time.
+
+- We used to have a separate repo for Emission and Eigen, but [they were merged here](https://github.com/artsy/eigen/pull/3022).
