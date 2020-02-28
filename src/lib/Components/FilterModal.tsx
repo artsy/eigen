@@ -14,12 +14,14 @@ interface FilterModalProps extends ViewProperties {
 
 type SortableItems = Array<{ type: string; data: any }>
 
-export const FilterModalNavigator: React.SFC<FilterModalProps> = ({
-  closeModal,
-  navigator,
-  isFilterArtworksModalVisible,
-}) => {
+export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, isFilterArtworksModalVisible }) => {
   const [sortableItems, setSortableItems] = useState<SortableItems>([])
+  const { dispatch, state: globalFilterState } = useContext(ArtworkFilterContext)
+
+  const handleClosingModal = () => {
+    closeModal()
+    dispatch({ type: "resetFilterCount" })
+  }
 
   return (
     <>
@@ -27,7 +29,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({
         <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
           <TouchableWithoutFeedback onPress={null}>
             <ModalBackgroundView>
-              <TouchableOpacity onPress={closeModal} style={{ flexGrow: 1 }} />
+              <TouchableOpacity onPress={() => handleClosingModal()} style={{ flexGrow: 1 }} />
               <ModalInnerView>
                 <NavigatorIOS
                   navigationBarHidden={true}
@@ -39,15 +41,9 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({
                   style={{ flex: 1 }}
                 />
                 <Box p={2}>
-                  <ArtworkFilterContext.Consumer>
-                    {value => {
-                      return (
-                        <Button onPress={null} block width={100} variant="secondaryOutline">
-                          {value.state.filterCount > 0 ? "Apply" + " (" + value.state.filterCount + ")" : "Apply"}
-                        </Button>
-                      )
-                    }}
-                  </ArtworkFilterContext.Consumer>
+                  <Button onPress={null} block width={100} variant="secondaryOutline">
+                    {globalFilterState.filterCount > 0 ? "Apply" + " (" + globalFilterState.filterCount + ")" : "Apply"}
+                  </Button>
                 </Box>
               </ModalInnerView>
             </ModalBackgroundView>
@@ -69,6 +65,7 @@ type SelectedSortOption = SortTypes
 export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>([])
   const [selectedSortOption, setSelectedSortOption] = useState<SelectedSortOption>("Default")
+  const { dispatch } = useContext(ArtworkFilterContext)
 
   useEffect(() => {
     const filterCategories = []
@@ -97,10 +94,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
 
   const clearAllFilters = () => {
     setSelectedSortOption("Default")
+    dispatch({ type: "resetFilterCount" })
   }
 
-  const handleClearAll = dispatch => {
-    clearAllFilters()
+  const handleTappingCloseIcon = () => {
+    closeModal()
     dispatch({ type: "resetFilterCount" })
   }
 
@@ -108,25 +106,18 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
     <Flex flexGrow={1}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
-          <CloseIconContainer onPress={() => closeModal()}>
+          <CloseIconContainer onPress={() => handleTappingCloseIcon()}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
         <FilterHeader weight="medium" size="4">
           Filter
         </FilterHeader>
-        <ArtworkFilterContext.Consumer>
-          {value => {
-            const clearAllDispatch = value.dispatch
-            return (
-              <TouchableOpacity onPress={() => handleClearAll(clearAllDispatch)}>
-                <Sans mr={2} mt={2} size="4">
-                  Clear all
-                </Sans>
-              </TouchableOpacity>
-            )
-          }}
-        </ArtworkFilterContext.Consumer>
+        <TouchableOpacity onPress={() => clearAllFilters()}>
+          <Sans mr={2} mt={2} size="4">
+            Clear all
+          </Sans>
+        </TouchableOpacity>
       </Flex>
       <Flex>
         <FlatList<{ onTap: () => void; type: string }>
