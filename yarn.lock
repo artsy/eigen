@@ -1651,7 +1651,7 @@
     "@sentry/types" "5.12.4"
     tslib "^1.9.3"
 
-"@sentry/react-native@^1.3.2":
+"@sentry/react-native@1.3.2":
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@sentry/react-native/-/react-native-1.3.2.tgz#0eef3516caa06c09dad7045db96ee20a81e48ac4"
   integrity sha512-0ViVh6PD17PTGxNjUpNX7VfLAIyJ4jfWpWmEzv+cSAa0N1N9om96xGf5AiMf76wQ2yR5ZvWIj3r/QZumWZkSbg==
@@ -1960,7 +1960,7 @@
   dependencies:
     "@types/jest-diff" "*"
 
-"@types/lodash@^4.14.149":
+"@types/lodash@4.14.149":
   version "4.14.149"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
   integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
@@ -14426,7 +14426,7 @@ signedsource@^1.0.0:
   resolved "https://registry.yarnpkg.com/signedsource/-/signedsource-1.0.0.tgz#1ddace4981798f93bd833973803d80d52e93ad6a"
   integrity sha1-HdrOSYF5j5O9gzlzgD2A1S6TrWo=
 
-simple-markdown@^0.7.2:
+simple-markdown@0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/simple-markdown/-/simple-markdown-0.7.2.tgz#896cc3e3dd9acd068d30e696bce70b0b97655665"
   integrity sha512-XfCvqqzMyzRj4L7eIxJgGaQ2Gaxr20GhTFMB+1yuY8q3xffjzmOg4Q5tC0kcaJPV42NNUHCQDaRK6jzi3/RhrA==
