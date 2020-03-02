@@ -69,13 +69,15 @@ export class ArtistCard extends React.Component<Props, State> {
               <ArtistAvatar>
                 <ImageView imageURL={avatarImageURL} width={40} height={40} />
               </ArtistAvatar>
-              <Flex flexDirection="column" ml={10} mr={2}>
+              <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
                 <Sans size="3t" weight="medium" numberOfLines={1}>
                   {artist.name}
                 </Sans>
-                <Sans size="3t" numberOfLines={1}>
-                  {artist.formattedNationalityAndBirthday}
-                </Sans>
+                {Boolean(artist.formattedNationalityAndBirthday) && (
+                  <Sans size="3t" numberOfLines={1} color="black60">
+                    {artist.formattedNationalityAndBirthday}
+                  </Sans>
+                )}
               </Flex>
             </MetadataContainer>
             <FollowButtonContainer>
