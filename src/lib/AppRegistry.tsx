@@ -41,7 +41,7 @@ import {
   FairMoreInfoRenderer,
 } from "./Scenes/Fair"
 import FavoritesScene from "./Scenes/Favorites"
-import HomeScene from "./Scenes/Home"
+import { Home } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { PartnerRenderer } from "./Scenes/Partner"
@@ -375,7 +375,7 @@ AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
-AppRegistry.registerComponent("Home", () => HomeScene)
+AppRegistry.registerComponent("Home", () => Home)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)

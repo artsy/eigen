@@ -112,7 +112,7 @@ export class ForYou extends React.Component<Props, State> {
   }
 }
 
-export default createRefetchContainer(
+export const ForYouFragmentContainer = createRefetchContainer(
   ForYou,
   {
     forYou: graphql`
