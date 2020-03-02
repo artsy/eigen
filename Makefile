@@ -173,12 +173,25 @@ fpush:
 	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi
 
 flip_table:
-	# Clear caches and build files
-	@echo 'Clear yarn cache and node modules (┛ಠ_ಠ)┛彡┻━┻'
-	yarn cache clean
+	# Clear local caches and build files
+	@echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 	rm -rf node_modules
-	@echo 'Clear cocoapods directory and caches  (ノಠ益ಠ)ノ彡┻━┻'
-	bundle exec pod cache clean --all
+	@echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
 	rm -rf Pods
 	@echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
 	rm -rf ~/Library/Developer/Xcode/DerivedData/*
+	@echo 'Clear relay and jest caches (┛◉Д◉)┛彡┻━┻'
+	rm -rf $TMPDIR/RelayFindGraphQLTags-*
+	rm -rf .jest
+	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
+	rm -rf emission/Pod/Assets/Emission*
+	rm -rf emission/Pod/Assets/assets
+	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
+	bundle exec pod install
+
+flip_table_extreme:
+  # Clear global and local caches and build files
+	@echo 'Clearn global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
+	yarn cache clean
+	bundle exec pod cache clean --all
+	make flip_table
