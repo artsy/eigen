@@ -1,36 +1,34 @@
+import { union } from "lodash"
 import React, { createContext, Dispatch, Reducer, useReducer } from "react"
+import { SortTypes } from "../Components/ArtworkFilterOptions/SortOptions"
 
 const filterState: ArtworkFilterContextState = {
-  filterCount: 0,
+  appliedFilters: [],
+  selectedFilters: [],
 }
 
 interface ArtworkFilterContextState {
-  filterCount: number
+  appliedFilters: SortTypes[]
+  selectedFilters: SortTypes[]
 }
 
-export interface ResetFilterCount {
-  type: "resetFilterCount"
+export interface ResetFilters {
+  type: "resetFilters"
 }
 
-// for incrementing single option only filters
-interface UpdateFilterCount {
-  type: "updateFilterCount"
-  payload: number
+// applied filters
+interface ApplyFilters {
+  type: "applyFilters"
+  payload: SortTypes[]
 }
 
-// for decrementing selected filters
-interface DecrementFilterCount {
-  type: "decrementFilterCount"
-  payload: number
+// selected (but not applied) filters
+interface SelectFilters {
+  type: "selectFilters"
+  payload: SortTypes
 }
 
-// for incrementing multiple option filters
-interface IncrementFilterCount {
-  type: "incrementFilterCount"
-  payload: number
-}
-
-type FilterActions = ResetFilterCount | UpdateFilterCount | DecrementFilterCount | IncrementFilterCount
+type FilterActions = ResetFilters | ApplyFilters | SelectFilters
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState
@@ -40,22 +38,32 @@ interface ArtworkFilterContext {
 export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
 
 export const ArtworkFilterGlobalStateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>((_state, action) => {
-    let currentFilterCount
-
-    switch (action.type) {
-      case "resetFilterCount":
-        return { filterCount: 0 }
-      case "updateFilterCount":
-        return { filterCount: action.payload }
-      case "decrementFilterCount":
-        currentFilterCount = action.payload
-        return { filterCount: currentFilterCount - 1 }
-      case "incrementFilterCount":
-        currentFilterCount = action.payload
-        return { filterCount: currentFilterCount + 1 }
-    }
-  }, filterState)
+  const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>(
+    (artworkFilterState, action) => {
+      switch (action.type) {
+        case "applyFilters":
+          const previouslyAppliedFilters = artworkFilterState.appliedFilters
+          const filtersToApply = action.payload
+          const appliedFilters = union(previouslyAppliedFilters, filtersToApply)
+          return { appliedFilters, selectedFilters: [] }
+        case "selectFilters":
+          const previouslySelectedFilters = artworkFilterState.selectedFilters
+          const currentlySelectedFilter = action.payload
+          const isFilterAlreadySelected = previouslySelectedFilters.includes(currentlySelectedFilter)
+          const selectedFilter = []
+          if (isFilterAlreadySelected) {
+            const mergedFilters = previouslySelectedFilters.push(currentlySelectedFilter)
+            return { selectedFilters: mergedFilters, appliedFilters: filterState.appliedFilters }
+          } else {
+            selectedFilter.push(currentlySelectedFilter)
+            return { selectedFilters: selectedFilter, appliedFilters: filterState.appliedFilters }
+          }
+        case "resetFilters":
+          return { appliedFilters: [], selectedFilters: [] }
+      }
+    },
+    filterState
+  )
 
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }

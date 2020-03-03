@@ -13,11 +13,22 @@ interface FilterModalProps extends ViewProperties {
 }
 
 export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, isFilterArtworksModalVisible }) => {
-  const { dispatch, state: globalFilterState } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {
     closeModal()
-    dispatch({ type: "resetFilterCount" })
+    dispatch({ type: "resetFilters" })
+  }
+
+  const applyFilters = () => {
+    dispatch({ type: "applyFilters", payload: state.selectedFilters })
+    closeModal()
+  }
+
+  const getApplyButtonCount = filterStates => {
+    const appliedFiltersSum = (filterStates.appliedFilters.length + filterStates.selectedFilters.length) as number
+
+    return appliedFiltersSum > 0 ? "Apply" + " (" + appliedFiltersSum + ")" : "Apply"
   }
 
   return (
@@ -38,8 +49,8 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                   style={{ flex: 1 }}
                 />
                 <Box p={2}>
-                  <Button onPress={null} block width={100} variant="secondaryOutline">
-                    {globalFilterState.filterCount > 0 ? "Apply" + " (" + globalFilterState.filterCount + ")" : "Apply"}
+                  <Button onPress={() => applyFilters()} block width={100} variant="secondaryOutline">
+                    {getApplyButtonCount(state)}
                   </Button>
                 </Box>
               </ModalInnerView>
@@ -90,13 +101,13 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
   }
 
   const clearAllFilters = () => {
-    setSelectedSortOption("Default")
-    dispatch({ type: "resetFilterCount" })
+    setSelectedSortOption("Default") // resets default sort
+    dispatch({ type: "resetFilters" }) // clears all applied filters
   }
 
   const handleTappingCloseIcon = () => {
     closeModal()
-    dispatch({ type: "resetFilterCount" })
+    dispatch({ type: "resetFilters" }) // clears all applied filters without saving for now
   }
 
   return (

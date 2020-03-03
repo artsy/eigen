@@ -18,16 +18,16 @@ interface SortOptionsScreenProps {
 
 export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator, updateSortOption }) => {
   const [currentSelection, setCurrentSelection] = useState<SortTypes>("Default")
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const { dispatch } = useContext(ArtworkFilterContext)
 
   const handleBackNavigation = () => {
     navigator.pop()
   }
 
-  const selectSortOption = selectedOption => {
+  const selectSortOption = (selectedOption: SortTypes) => {
     setCurrentSelection(selectedOption)
     updateSortOption(selectedOption)
-    dispatch({ type: "updateFilterCount", payload: state.filterCount === 0 ? 1 : state.filterCount })
+    dispatch({ type: "selectFilters", payload: selectedOption })
   }
 
   return (
@@ -44,7 +44,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
         <Box></Box>
       </SortHeader>
       <Flex>
-        <FlatList<string>
+        <FlatList<SortTypes>
           keyExtractor={(_item, index) => String(index)}
           data={SortOptions}
           renderItem={({ item }) => (
