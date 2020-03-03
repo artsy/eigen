@@ -1,15 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks correct when rendered 1`] = `
-<View
-  style={
-    Array [
-      Object {
-        "marginBottom": 15,
-      },
-    ]
-  }
->
+<View>
   <Text
     numberOfLines={0}
     style={
@@ -34,19 +26,15 @@ exports[`looks correct when rendered 1`] = `
     </Text>
   </Text>
   <RCTScrollView
-    horizontal={true}
-    showsHorizontalScrollIndicator={false}
-    style={
-      Array [
-        Object {
-          "flexDirection": "row",
-          "marginLeft": 16,
-          "marginRight": 16,
-          "marginTop": 10,
-          "overflow": "visible",
-        },
-      ]
+    className="sc-bdVaJa wtrcG"
+    contentContainerStyle={
+      Object {
+        "paddingHorizontal": 20,
+      }
     }
+    horizontal={true}
+    scrollsToTop={false}
+    showsHorizontalScrollIndicator={false}
   >
     <View>
       <View
@@ -61,40 +49,287 @@ exports[`looks correct when rendered 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "borderRadius": 60,
-            "height": 120,
-            "marginRight": 7,
-            "width": 120,
-          }
+          Array [
+            Object {
+              "borderColor": "#e5e5e5",
+              "borderRadius": 4,
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "overflow": "hidden",
+              "width": 270,
+            },
+          ]
         }
       >
         <View
-          style={
-            Array [
-              Object {
-                "marginLeft": 4,
-                "marginRight": 4,
-              },
-              null,
-            ]
-          }
+          style={null}
         >
-          <AROpaqueImageView
-            imageURL="https://neopets.jpg"
-            placeholderBackgroundColor="white"
+          <View
             style={
-              Object {
-                "borderRadius": 60,
-                "height": 120,
-                "marginRight": 7,
-                "width": 120,
-              }
+              Array [
+                Object {
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "height": 180,
+                  "justifyContent": "space-between",
+                  "width": "100%",
+                },
+              ]
             }
-          />
+          >
+            <AROpaqueImageView
+              height={180}
+              imageURL="https://example.com/image.jpg"
+              width={180}
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderColor": "white",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "width": 1,
+                  },
+                ]
+              }
+            />
+            <View>
+              <AROpaqueImageView
+                height={90}
+                imageURL="https://example.com/image.jpg"
+                width={90}
+              />
+              <View
+                horizontal={true}
+                style={
+                  Array [
+                    Object {
+                      "borderColor": "white",
+                      "borderStyle": "solid",
+                      "borderWidth": 1,
+                      "height": 1,
+                    },
+                  ]
+                }
+              />
+              <AROpaqueImageView
+                height={90}
+                imageURL="https://example.com/image.jpg"
+                width={90}
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "marginBottom": 13,
+                  "marginLeft": 15,
+                  "marginRight": 15,
+                  "marginTop": 15,
+                },
+              ]
+            }
+          >
+            <Text
+              fontFamily="Unica77LL-Medium"
+              fontSize="14px"
+              lineHeight="20px"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              The Fair
+            </Text>
+            <Text
+              fontFamily="Unica77LL-Regular"
+              fontSize="14px"
+              lineHeight="20px"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Monday–Friday
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "width": 15,
+            },
+          ]
+        }
+        width="15px"
+      />
+      <View
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "borderColor": "#e5e5e5",
+              "borderRadius": 4,
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "overflow": "hidden",
+              "width": 270,
+            },
+          ]
+        }
+      >
+        <View
+          style={null}
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "height": 180,
+                  "justifyContent": "space-between",
+                  "width": "100%",
+                },
+              ]
+            }
+          >
+            <AROpaqueImageView
+              height={180}
+              imageURL="https://example.com/image.jpg"
+              width={180}
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderColor": "white",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "width": 1,
+                  },
+                ]
+              }
+            />
+            <View>
+              <AROpaqueImageView
+                height={90}
+                imageURL="https://example.com/image.jpg"
+                width={90}
+              />
+              <View
+                horizontal={true}
+                style={
+                  Array [
+                    Object {
+                      "borderColor": "white",
+                      "borderStyle": "solid",
+                      "borderWidth": 1,
+                      "height": 1,
+                    },
+                  ]
+                }
+              />
+              <AROpaqueImageView
+                height={90}
+                imageURL="https://example.com/image.jpg"
+                width={90}
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "marginBottom": 13,
+                  "marginLeft": 15,
+                  "marginRight": 15,
+                  "marginTop": 15,
+                },
+              ]
+            }
+          >
+            <Text
+              fontFamily="Unica77LL-Medium"
+              fontSize="14px"
+              lineHeight="20px"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Medium",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              The Profileless Fair: You Should Not See Me in Snapshots
+            </Text>
+            <Text
+              fontFamily="Unica77LL-Regular"
+              fontSize="14px"
+              lineHeight="20px"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Unica77LL-Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                  Object {},
+                ]
+              }
+            >
+              Monday–Friday
+            </Text>
+          </View>
         </View>
       </View>
     </View>
   </RCTScrollView>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 0,
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "width": "100%",
+        },
+      ]
+    }
+    width="100%"
+  />
 </View>
 `;

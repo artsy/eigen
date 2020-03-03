@@ -50,17 +50,17 @@ export class ForYou extends React.Component<Props, State> {
     const interleavedArtworkArtists = compact(
       flatten(
         zip(
-          artistModules.map(
-            module =>
-              ({
-                type: "artist",
-                data: module,
-              } as const)
-          ),
           artworkModules.map(
             module =>
               ({
                 type: "artwork",
+                data: module,
+              } as const)
+          ),
+          artistModules.map(
+            module =>
+              ({
+                type: "artist",
                 data: module,
               } as const)
           )
