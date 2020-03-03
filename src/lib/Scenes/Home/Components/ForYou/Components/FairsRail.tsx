@@ -1,72 +1,104 @@
+import { Sans, Separator } from "@artsy/palette"
+import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
 import React, { Component } from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import { Dimensions, TouchableHighlight } from "react-native"
-
+import { CardScrollView, CardScrollViewCard } from "lib/Components/Home/CardScrollView"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 
-import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
+import { concat, take } from "lodash"
+
+const ARTWORKS_HEIGHT = 180
 
 interface Props {
   fairs_module: FairsRail_fairs_module
 }
 
 export class FairsRail extends Component<Props, null> {
-  renderFairs() {
+  render() {
     if (!this.props.fairs_module.results.length) {
       return
     }
 
-    const isPad = Dimensions.get("window").width > 700
-    const iconDimension = isPad ? 120 : 90
-    const borderRadius = iconDimension / 2
-
-    const circleIconStyle = {
-      height: iconDimension,
-      width: iconDimension,
-      borderRadius,
-      marginRight: 7,
-    }
-
-    const icons = this.props.fairs_module.results.map(fair => {
-      if (!fair.profile) {
-        return null
-      }
-
-      const selectionHandler = () => {
-        Switchboard.presentNavigationViewController(this, `${fair.slug}?entity=fair`)
-      }
-
+    const fairCards = this.props.fairs_module.results.map(result => {
+      const artworks = take(
+        concat(
+          result.followedArtistArtworks.edges.map(edge => edge.node),
+          result.otherArtworks.edges.map(edge => edge.node)
+        ),
+        3
+      )
+      // Fairs are expected to always have >= 3 artworks. We can make
+      // assumptions about this in UI layout, but should still be cautious
+      // to avoid crashes if this assumption is broken.
+      const artworkImageURLs = artworks.map(artwork => artwork.image.url)
       return (
-        <TouchableHighlight style={circleIconStyle} onPress={selectionHandler} key={fair.id}>
-          <TouchableWrapper>
-            <ImageView style={circleIconStyle} imageURL={fair.mobileImage.url} placeholderBackgroundColor="white" />
-          </TouchableWrapper>
-        </TouchableHighlight>
+        <CardScrollViewCard
+          key={result.slug}
+          onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}?entity=fair`)}
+        >
+          <View>
+            <ArtworkImageContainer>
+              <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+              <Division />
+              <View>
+                <ImageView width={ARTWORKS_HEIGHT / 2} height={ARTWORKS_HEIGHT / 2} imageURL={artworkImageURLs[1]} />
+                <Division horizontal />
+                <ImageView width={ARTWORKS_HEIGHT / 2} height={ARTWORKS_HEIGHT / 2} imageURL={artworkImageURLs[2]} />
+              </View>
+            </ArtworkImageContainer>
+            <MetadataContainer>
+              <Sans numberOfLines={1} weight="medium" size="3t">
+                {result.name}
+              </Sans>
+              <Sans numberOfLines={1} size="3t">
+                {result.exhibitionPeriod}
+              </Sans>
+            </MetadataContainer>
+          </View>
+        </CardScrollViewCard>
       )
     })
 
     return (
-      <IconCarousel horizontal={true} showsHorizontalScrollIndicator={false}>
-        {icons}
-      </IconCarousel>
-    )
-  }
-
-  render() {
-    return (
-      <Container>
+      <View>
         <Title>
           <SectionTitle>Recommended Art Fairs</SectionTitle>
         </Title>
-        {this.renderFairs()}
-      </Container>
+        <CardScrollView>{fairCards}</CardScrollView>
+        <Separator />
+      </View>
     )
   }
 }
+
+// TODO: Similar to the Title component in ArtistRail, we want to clean these all up at once.
+const Title = styled(SectionTitle)`
+  margin-left: 20;
+`
+
+// Default is a vertical division
+export const Division = styled.View<{ horizontal?: boolean }>`
+  border: 1px solid white;
+  ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
+`
+
+const ArtworkImageContainer = styled.View`
+  width: 100%;
+  height: ${ARTWORKS_HEIGHT}px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const MetadataContainer = styled.View`
+  /* 13px on bottom helps the margin feel visually consistent around all sides */
+  margin: 15px 15px 13px;
+`
 
 export default createFragmentContainer(FairsRail, {
   fairs_module: graphql`
@@ -77,31 +109,27 @@ export default createFragmentContainer(FairsRail, {
         profile {
           slug
         }
-        mobileImage {
-          url
+        name
+        exhibitionPeriod
+        followedArtistArtworks: filterArtworksConnection(first: 3, includeArtworksByFollowedArtists: true) {
+          edges {
+            node {
+              image {
+                url(version: "large")
+              }
+            }
+          }
+        }
+        otherArtworks: filterArtworksConnection(first: 3) {
+          edges {
+            node {
+              image {
+                url(version: "large")
+              }
+            }
+          }
         }
       }
     }
   `,
 })
-
-const Container = styled.View`
-  margin-bottom: 15;
-`
-
-const Title = styled(SectionTitle)`
-  margin-left: 20;
-`
-
-const IconCarousel = styled.ScrollView`
-  flex-direction: row;
-  overflow: visible;
-  margin-top: 10;
-  margin-left: 16;
-  margin-right: 16;
-`
-
-const TouchableWrapper = styled.View`
-  margin-left: 4;
-  margin-right: 4;
-`

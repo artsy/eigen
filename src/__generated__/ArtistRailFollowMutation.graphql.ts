@@ -63,13 +63,13 @@ fragment ArtistCard_artist on Artist {
   name
   formattedNationalityAndBirthday
   avatar: image {
-    url(version: "large")
+    url(version: "small")
   }
   artworksConnection(first: 3) {
     edges {
       node {
         image {
-          url(version: "medium")
+          url(version: "large")
         }
         id
       }
@@ -323,10 +323,10 @@ return {
                                       {
                                         "kind": "Literal",
                                         "name": "version",
-                                        "value": "large"
+                                        "value": "small"
                                       }
                                     ],
-                                    "storageKey": "url(version:\"large\")"
+                                    "storageKey": "url(version:\"small\")"
                                   }
                                 ]
                               },
@@ -380,10 +380,10 @@ return {
                                                   {
                                                     "kind": "Literal",
                                                     "name": "version",
-                                                    "value": "medium"
+                                                    "value": "large"
                                                   }
                                                 ],
-                                                "storageKey": "url(version:\"medium\")"
+                                                "storageKey": "url(version:\"large\")"
                                               }
                                             ]
                                           },
@@ -412,7 +412,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ArtistRailFollowMutation",
-    "id": "af5960c275694eef0972a456054aa72b",
+    "id": "ecc0c65b31b05b227e71c7a37629fe5c",
     "text": null,
     "metadata": {}
   }

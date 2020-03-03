@@ -2,15 +2,13 @@ import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Button, Flex, Join, Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { compact, floor } from "lodash"
 import styled from "styled-components/native"
-
-const CARD_WIDTH = 270
+import { CARD_WIDTH, CardScrollViewCard } from "../CardScrollView"
 
 interface Props {
   artist: ArtistCard_artist
@@ -50,61 +48,51 @@ export class ArtistCard extends React.Component<Props, State> {
     const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
 
     return (
-      <View>
-        <Card onPress={this.handleTap.bind(this)}>
-          <View>
-            <ArtworkImageContainer>
-              {artworkImages.length ? (
-                <Join separator={<Spacer mr="1px" />}>
-                  {artworkImages.map((url, index) => (
-                    <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
-                  ))}
-                </Join>
-              ) : (
-                /* Show an empty image block if there are no images for this artist */
-                <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
-              )}
-            </ArtworkImageContainer>
-            <MetadataContainer>
-              <ArtistAvatar>
-                <ImageView imageURL={avatarImageURL} width={40} height={40} />
-              </ArtistAvatar>
-              <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
-                <Sans size="3t" weight="medium" numberOfLines={1}>
-                  {artist.name}
+      <CardScrollViewCard onPress={this.handleTap.bind(this)}>
+        <View>
+          <ArtworkImageContainer>
+            {artworkImages.length ? (
+              <Join separator={<Division />}>
+                {artworkImages.map((url, index) => (
+                  <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
+                ))}
+              </Join>
+            ) : (
+              /* Show an empty image block if there are no images for this artist */
+              <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
+            )}
+          </ArtworkImageContainer>
+          <MetadataContainer>
+            <ArtistAvatar>
+              <ImageView imageURL={avatarImageURL} width={40} height={40} />
+            </ArtistAvatar>
+            <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
+              <Sans size="3t" weight="medium" numberOfLines={1}>
+                {artist.name}
+              </Sans>
+              {Boolean(artist.formattedNationalityAndBirthday) && (
+                <Sans size="3t" numberOfLines={1} color="black60">
+                  {artist.formattedNationalityAndBirthday}
                 </Sans>
-                {Boolean(artist.formattedNationalityAndBirthday) && (
-                  <Sans size="3t" numberOfLines={1} color="black60">
-                    {artist.formattedNationalityAndBirthday}
-                  </Sans>
-                )}
-              </Flex>
-            </MetadataContainer>
-            <FollowButtonContainer>
-              <Button
-                variant={this.state.following ? "secondaryOutline" : "secondaryGray"}
-                onPress={this.handleFollowChange}
-                size="small"
-                block
-                loading={this.state.processingChange}
-              >
-                {this.state.following ? "Following" : "Follow"}
-              </Button>
-            </FollowButtonContainer>
-          </View>
-        </Card>
-      </View>
+              )}
+            </Flex>
+          </MetadataContainer>
+          <FollowButtonContainer>
+            <Button
+              variant={this.state.following ? "secondaryOutline" : "secondaryGray"}
+              onPress={this.handleFollowChange}
+              size="small"
+              block
+              loading={this.state.processingChange}
+            >
+              {this.state.following ? "Following" : "Follow"}
+            </Button>
+          </FollowButtonContainer>
+        </View>
+      </CardScrollViewCard>
     )
   }
 }
-
-const Card = styled.TouchableHighlight.attrs({ underlayColor: "transparent" })`
-  width: ${CARD_WIDTH}px;
-  margin-left: 15px;
-  border: 1px solid ${colors["gray-regular"]};
-  border-radius: 4px;
-  overflow: hidden;
-`
 
 const ArtworkImageContainer = styled.View`
   width: 100%;
@@ -130,6 +118,11 @@ const FollowButtonContainer = styled.View`
   margin: 12px 16px;
 `
 
+export const Division = styled.View`
+  border: 1px solid white;
+  width: 1px;
+`
+
 export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
   artist: graphql`
     fragment ArtistCard_artist on Artist {
@@ -140,13 +133,13 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       name
       formattedNationalityAndBirthday
       avatar: image {
-        url(version: "large")
+        url(version: "small")
       }
       artworksConnection(first: 3) {
         edges {
           node {
             image {
-              url(version: "medium")
+              url(version: "large")
             }
           }
         }

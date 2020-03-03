@@ -17,6 +17,7 @@ import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation
 import Events from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import styled from "styled-components/native"
+import { CardScrollView } from "../CardScrollView"
 
 const Animation = {
   yDelta: 20,
@@ -184,17 +185,13 @@ export class ArtistRail extends Component<Props, State> {
               <ArtistCard
                 artist={artist as any}
                 onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+                key={key}
               />
             )}
           </Animated.View>
         )
       })
-      return (
-        <CardScrollView>
-          {cards}
-          <View style={{ width: 15 }} />
-        </CardScrollView>
-      )
+      return <CardScrollView>{cards}</CardScrollView>
     } else {
       return <Spinner style={{ flex: 1, marginBottom: 20 }} />
     }
@@ -231,17 +228,6 @@ const Title = styled.Text`
   /* stylelint-disable */
   font-family: AGaramondPro-Regular;
   /* stylelint-enable */
-`
-
-const CardScrollView = styled.ScrollView.attrs({
-  horizontal: true,
-  showsHorizontalScrollIndicator: false,
-  scrollsToTop: false,
-})`
-  flex-grow: 1;
-  flex-direction: row;
-  margin-top: 10px;
-  margin-bottom: 25px;
 `
 
 const setupSuggestedArtist = (artist, opacity, translateY) =>
