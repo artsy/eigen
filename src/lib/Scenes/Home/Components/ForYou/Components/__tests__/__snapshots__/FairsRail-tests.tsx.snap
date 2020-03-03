@@ -64,310 +64,487 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
   <RCTScrollView
-    className="sc-bdVaJa wtrcG"
-    contentContainerStyle={
-      Object {
-        "paddingHorizontal": 20,
-      }
-    }
-    horizontal={true}
-    scrollsToTop={false}
-    showsHorizontalScrollIndicator={false}
-  >
-    <View>
-      <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "borderColor": "#e5e5e5",
-              "borderRadius": 4,
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "overflow": "hidden",
-              "width": 270,
-            },
-          ]
-        }
-      >
-        <View
-          style={null}
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "height": 180,
-                  "justifyContent": "space-between",
-                  "width": "100%",
-                },
-              ]
-            }
-          >
-            <AROpaqueImageView
-              height={180}
-              imageURL="https://example.com/image.jpg"
-              width={180}
-            />
-            <View
-              style={
-                Array [
-                  Object {
-                    "borderColor": "white",
-                    "borderStyle": "solid",
-                    "borderWidth": 1,
-                    "width": 1,
-                  },
-                ]
-              }
-            />
-            <View>
-              <AROpaqueImageView
-                height={90}
-                imageURL="https://example.com/image.jpg"
-                width={90}
-              />
-              <View
-                horizontal={true}
-                style={
-                  Array [
-                    Object {
-                      "borderColor": "white",
-                      "borderStyle": "solid",
-                      "borderWidth": 1,
-                      "height": 1,
-                    },
-                  ]
-                }
-              />
-              <AROpaqueImageView
-                height={90}
-                imageURL="https://example.com/image.jpg"
-                width={90}
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "marginBottom": 13,
-                  "marginLeft": 15,
-                  "marginRight": 15,
-                  "marginTop": 15,
-                },
-              ]
-            }
-          >
-            <Text
-              fontFamily="Unica77LL-Medium"
-              fontSize="14px"
-              lineHeight="20px"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontFamily": "Unica77LL-Medium",
-                    "fontSize": 14,
-                    "lineHeight": 20,
-                  },
-                  Object {},
-                ]
-              }
-            >
-              The Fair
-            </Text>
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
-                  },
-                  Object {},
-                ]
-              }
-            >
-              Monday–Friday
-            </Text>
-          </View>
-        </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "width": 15,
-            },
-          ]
-        }
-        width="15px"
-      />
-      <View
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "borderColor": "#e5e5e5",
-              "borderRadius": 4,
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "overflow": "hidden",
-              "width": 270,
-            },
-          ]
-        }
-      >
-        <View
-          style={null}
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "height": 180,
-                  "justifyContent": "space-between",
-                  "width": "100%",
-                },
-              ]
-            }
-          >
-            <AROpaqueImageView
-              height={180}
-              imageURL="https://example.com/image.jpg"
-              width={180}
-            />
-            <View
-              style={
-                Array [
-                  Object {
-                    "borderColor": "white",
-                    "borderStyle": "solid",
-                    "borderWidth": 1,
-                    "width": 1,
-                  },
-                ]
-              }
-            />
-            <View>
-              <AROpaqueImageView
-                height={90}
-                imageURL="https://example.com/image.jpg"
-                width={90}
-              />
-              <View
-                horizontal={true}
-                style={
-                  Array [
-                    Object {
-                      "borderColor": "white",
-                      "borderStyle": "solid",
-                      "borderWidth": 1,
-                      "height": 1,
-                    },
-                  ]
-                }
-              />
-              <AROpaqueImageView
-                height={90}
-                imageURL="https://example.com/image.jpg"
-                width={90}
-              />
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "marginBottom": 13,
-                  "marginLeft": 15,
-                  "marginRight": 15,
-                  "marginTop": 15,
-                },
-              ]
-            }
-          >
-            <Text
-              fontFamily="Unica77LL-Medium"
-              fontSize="14px"
-              lineHeight="20px"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontFamily": "Unica77LL-Medium",
-                    "fontSize": 14,
-                    "lineHeight": 20,
-                  },
-                  Object {},
-                ]
-              }
-            >
-              The Profileless Fair: You Should Not See Me in Snapshots
-            </Text>
-            <Text
-              fontFamily="Unica77LL-Regular"
-              fontSize="14px"
-              lineHeight="20px"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontFamily": "Unica77LL-Regular",
-                    "fontSize": 14,
-                    "lineHeight": 20,
-                  },
-                  Object {},
-                ]
-              }
-            >
-              Monday–Friday
-            </Text>
-          </View>
-        </View>
-      </View>
-    </View>
-  </RCTScrollView>
-  <View
-    style={
+    ItemSeparatorComponent={[Function]}
+    ListEmptyComponent={[Function]}
+    ListFooterComponent={[Function]}
+    ListHeaderComponent={[Function]}
+    data={
       Array [
         Object {
-          "borderBottomWidth": 0,
-          "borderColor": "#E5E5E5",
-          "borderStyle": "solid",
-          "borderWidth": 1,
-          "width": "100%",
+          "exhibitionPeriod": "Monday–Friday",
+          "followedArtistArtworks": Object {
+            "edges": Array [
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+            ],
+          },
+          "id": "the-fair",
+          "name": "The Fair",
+          "otherArtworks": Object {
+            "edges": Array [
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+            ],
+          },
+          "profile": Object {
+            "href": "https://neopets.com",
+          },
+          "slug": "the-fair",
+        },
+        Object {
+          "exhibitionPeriod": "Monday–Friday",
+          "followedArtistArtworks": Object {
+            "edges": Array [
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+            ],
+          },
+          "id": "the-profileless-fair",
+          "name": "The Profileless Fair: You Should Not See Me in Snapshots",
+          "otherArtworks": Object {
+            "edges": Array [
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+              Object {
+                "node": Object {
+                  "image": Object {
+                    "url": "https://example.com/image.jpg",
+                  },
+                },
+              },
+            ],
+          },
+          "profile": null,
+          "slug": "the-profileless-fair",
         },
       ]
     }
-    width="100%"
-  />
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={true}
+    initialNumToRender={2}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    scrollsToTop={false}
+    showsHorizontalScrollIndicator={false}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={1}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+      >
+        <View
+          mr={2}
+          style={
+            Array [
+              Object {
+                "marginRight": 20,
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Array [
+              Object {
+                "borderColor": "#e5e5e5",
+                "borderRadius": 4,
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "overflow": "hidden",
+                "width": 270,
+              },
+            ]
+          }
+        >
+          <View
+            style={null}
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "row",
+                    "height": 180,
+                    "justifyContent": "space-between",
+                    "width": "100%",
+                  },
+                ]
+              }
+            >
+              <AROpaqueImageView
+                height={180}
+                imageURL="https://example.com/image.jpg"
+                width={180}
+              />
+              <View
+                style={
+                  Array [
+                    Object {
+                      "borderColor": "white",
+                      "borderStyle": "solid",
+                      "borderWidth": 1,
+                      "width": 1,
+                    },
+                  ]
+                }
+              />
+              <View>
+                <AROpaqueImageView
+                  height={90}
+                  imageURL="https://example.com/image.jpg"
+                  width={90}
+                />
+                <View
+                  horizontal={true}
+                  style={
+                    Array [
+                      Object {
+                        "borderColor": "white",
+                        "borderStyle": "solid",
+                        "borderWidth": 1,
+                        "height": 1,
+                      },
+                    ]
+                  }
+                />
+                <AROpaqueImageView
+                  height={90}
+                  imageURL="https://example.com/image.jpg"
+                  width={90}
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "marginBottom": 13,
+                    "marginLeft": 15,
+                    "marginRight": 15,
+                    "marginTop": 15,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="14px"
+                lineHeight="20px"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                The Fair
+              </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Monday–Friday
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          mr="15px"
+          style={
+            Array [
+              Object {
+                "marginRight": 15,
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Array [
+              Object {
+                "borderColor": "#e5e5e5",
+                "borderRadius": 4,
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "overflow": "hidden",
+                "width": 270,
+              },
+            ]
+          }
+        >
+          <View
+            style={null}
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "row",
+                    "height": 180,
+                    "justifyContent": "space-between",
+                    "width": "100%",
+                  },
+                ]
+              }
+            >
+              <AROpaqueImageView
+                height={180}
+                imageURL="https://example.com/image.jpg"
+                width={180}
+              />
+              <View
+                style={
+                  Array [
+                    Object {
+                      "borderColor": "white",
+                      "borderStyle": "solid",
+                      "borderWidth": 1,
+                      "width": 1,
+                    },
+                  ]
+                }
+              />
+              <View>
+                <AROpaqueImageView
+                  height={90}
+                  imageURL="https://example.com/image.jpg"
+                  width={90}
+                />
+                <View
+                  horizontal={true}
+                  style={
+                    Array [
+                      Object {
+                        "borderColor": "white",
+                        "borderStyle": "solid",
+                        "borderWidth": 1,
+                        "height": 1,
+                      },
+                    ]
+                  }
+                />
+                <AROpaqueImageView
+                  height={90}
+                  imageURL="https://example.com/image.jpg"
+                  width={90}
+                />
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "marginBottom": 13,
+                    "marginLeft": 15,
+                    "marginRight": 15,
+                    "marginTop": 15,
+                  },
+                ]
+              }
+            >
+              <Text
+                fontFamily="Unica77LL-Medium"
+                fontSize="14px"
+                lineHeight="20px"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                The Profileless Fair: You Should Not See Me in Snapshots
+              </Text>
+              <Text
+                fontFamily="Unica77LL-Regular"
+                fontSize="14px"
+                lineHeight="20px"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 20,
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                Monday–Friday
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onLayout={[Function]}
+      >
+        <View
+          mr={2}
+          style={
+            Array [
+              Object {
+                "marginRight": 20,
+              },
+            ]
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
 </View>
 `;
