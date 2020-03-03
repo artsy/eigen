@@ -10,7 +10,7 @@ const Wrapper: React.FC<{ onPress(): any }> = ({ onPress, children }) => {
       </TouchableOpacity>
     )
   } else {
-    return <>children</>
+    return <>{children}</>
   }
 }
 

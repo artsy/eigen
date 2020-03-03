@@ -3,20 +3,20 @@
 //       let Relay re-render the cards.
 
 import React, { Component } from "react"
-import { Animated, Easing, FlatList, View, ViewProperties } from "react-native"
+import { Animated, Easing, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, Track, track as _track } from "lib/utils/track"
-import Spinner from "../../Spinner"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
-import { Flex, Spacer } from "@artsy/palette"
+import { Flex } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Events from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { CardRailFlatList } from "../CardRailFlatList"
 
 const Animation = {
   yDelta: 20,
@@ -41,7 +41,6 @@ interface Props extends ViewProperties {
 
 interface State {
   artists: SuggestedArtist[]
-  userHasScrolled: boolean
 }
 
 const track: Track<Props, State> = _track
@@ -52,7 +51,7 @@ export class ArtistRail extends Component<Props, State> {
     super(props)
     if (props.rail.results) {
       const artists = props.rail.results.map(artist => setupSuggestedArtist(artist, 1, 0)) as any
-      this.state = { artists, userHasScrolled: false }
+      this.state = { artists }
     }
   }
 
@@ -169,19 +168,9 @@ export class ArtistRail extends Component<Props, State> {
 
   renderModuleResults() {
     return (
-      <FlatList<SuggestedArtist>
+      <CardRailFlatList<SuggestedArtist>
         data={this.state.artists}
-        ListHeaderComponent={() => <Spacer mr={2} />}
-        ListFooterComponent={() => <Spacer mr={2} />}
-        ItemSeparatorComponent={() => <Spacer mr="15px" />}
-        ListEmptyComponent={() => <Spinner style={{ flex: 1, marginBottom: 20 }} />}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        scrollsToTop={false}
         keyExtractor={artist => artist.id}
-        initialNumToRender={2}
-        windowSize={this.state.userHasScrolled ? 4 : 1}
-        onScrollBeginDrag={() => this.setState({ userHasScrolled: true })}
         renderItem={({ item: artist }) => {
           const key = this.props.rail.id + artist.id
           const { opacity, translateY } = artist._animatedValues

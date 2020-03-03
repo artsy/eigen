@@ -1,10 +1,11 @@
 import { Flex, Spacer, Theme } from "@artsy/palette"
-import React, { useRef, useState } from "react"
+import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { FlatList, TouchableHighlight, View } from "react-native"
+import { TouchableHighlight, View } from "react-native"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { SectionTitle } from "../../../../../Components/SectionTitle"
@@ -34,7 +35,6 @@ type ArtworkItem = ArtworkRail_rail["results"][0]
 
 const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
   const railRef = useRef()
-  const [userHasScrolled, setUserHasScrolled] = useState(false)
   const context = rail.context
   let subtitle: React.ReactChild = null
   if (context?.__typename === "HomePageRelatedArtistArtworkModule") {
@@ -51,7 +51,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
             onPress={viewAllUrl && (() => SwitchBoard.presentNavigationViewController(railRef.current, viewAllUrl))}
           />
         </Flex>
-        <FlatList<ArtworkItem>
+        <AboveTheFoldFlatList<ArtworkItem>
           horizontal
           style={{ height: RAIL_HEIGHT }}
           ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
@@ -60,8 +60,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
           showsHorizontalScrollIndicator={false}
           data={rail.results}
           initialNumToRender={4}
-          windowSize={userHasScrolled ? 3 : 1}
-          onScrollBeginDrag={() => setUserHasScrolled(true)}
+          windowSize={3}
           renderItem={({ item }) => (
             <TouchableHighlight onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
               <OpaqueImageView
@@ -72,7 +71,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
             </TouchableHighlight>
           )}
           keyExtractor={item => String(item.image.imageURL)}
-        ></FlatList>
+        />
       </View>
     </Theme>
   )
