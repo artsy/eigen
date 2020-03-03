@@ -7,6 +7,7 @@ upcoming:
     - Update sentry, add patch - ash, brian, david
     - Fixes cacheMiddleware to allow ArtworkMarkAsRecentlyViewedQuery mutations without clearing cache - ash
     - Untrack the query map and emission assets folder - david
+    - Removes Beta label in AR view - ash
   user_facing:
     - Removes generic genes from For You tab - ash
     - Fix WSODs related to markdown elements not being supported in ReadMore - david
