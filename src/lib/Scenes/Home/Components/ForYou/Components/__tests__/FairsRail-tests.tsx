@@ -6,20 +6,22 @@ import * as renderer from "react-test-renderer"
 import FairsRail from "../FairsRail"
 
 import { Theme } from "@artsy/palette"
+import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
 
 const artworkNode = {
   node: {
     image: { url: "https://example.com/image.jpg" },
   },
 }
-const fairsModule = {
+const fairsModule: Omit<FairsRail_fairs_module, " $refType"> = {
   results: [
     {
       id: "the-fair",
       name: "The Fair",
       slug: "the-fair",
       exhibitionPeriod: "Monday–Friday",
-      profile: { href: "https://neopets.com" },
+      profile: { slug: "https://neopets.com" },
+      heroImage: { url: "https://example.com/hero.jpg" },
       followedArtistArtworks: {
         edges: [artworkNode, artworkNode, artworkNode],
       },
@@ -33,6 +35,7 @@ const fairsModule = {
       name: "The Profileless Fair: You Should Not See Me in Snapshots",
       exhibitionPeriod: "Monday–Friday",
       profile: null,
+      heroImage: { url: "https://example.com/hero.jpg" },
       followedArtistArtworks: {
         edges: [artworkNode, artworkNode, artworkNode],
       },
@@ -55,7 +58,7 @@ it("looks correct when rendered", () => {
 })
 
 it("looks correct when rendered with fairs missing artworks", () => {
-  const fairsCopy = cloneDeep(fairsModule)
+  const fairsCopy = cloneDeep(fairsModule) as any // as any to make edges readwrite
   fairsCopy.results.forEach(result => {
     result.followedArtistArtworks.edges = []
     result.otherArtworks.edges = []

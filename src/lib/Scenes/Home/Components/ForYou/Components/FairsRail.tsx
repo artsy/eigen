@@ -25,17 +25,17 @@ export class FairsRail extends Component<Props, null> {
     }
 
     const fairCards = this.props.fairs_module.results.map(result => {
-      const artworks = take(
-        concat(
-          result.followedArtistArtworks.edges.map(edge => edge.node),
-          result.otherArtworks.edges.map(edge => edge.node)
-        ),
-        3
-      )
       // Fairs are expected to always have >= 3 artworks. We can make
       // assumptions about this in UI layout, but should still be cautious
       // to avoid crashes if this assumption is broken.
-      const artworkImageURLs = artworks.map(artwork => artwork.image.url)
+      const artworkImageURLs = take(
+        concat(
+          [result.heroImage.url],
+          result.followedArtistArtworks.edges.map(edge => edge.node.image.url),
+          result.otherArtworks.edges.map(edge => edge.node.image.url)
+        ),
+        3
+      )
       return (
         <CardScrollViewCard
           key={result.slug}
@@ -111,7 +111,10 @@ export default createFragmentContainer(FairsRail, {
         }
         name
         exhibitionPeriod
-        followedArtistArtworks: filterArtworksConnection(first: 3, includeArtworksByFollowedArtists: true) {
+        heroImage: image {
+          url(version: "large")
+        }
+        followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
           edges {
             node {
               image {
@@ -120,7 +123,7 @@ export default createFragmentContainer(FairsRail, {
             }
           }
         }
-        otherArtworks: filterArtworksConnection(first: 3) {
+        otherArtworks: filterArtworksConnection(first: 2) {
           edges {
             node {
               image {

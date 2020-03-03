@@ -79,7 +79,7 @@ exports[`looks correct when rendered 1`] = `
           >
             <AROpaqueImageView
               height={180}
-              imageURL="https://example.com/image.jpg"
+              imageURL="https://example.com/hero.jpg"
               width={180}
             />
             <View
@@ -223,7 +223,7 @@ exports[`looks correct when rendered 1`] = `
           >
             <AROpaqueImageView
               height={180}
-              imageURL="https://example.com/image.jpg"
+              imageURL="https://example.com/hero.jpg"
               width={180}
             />
             <View

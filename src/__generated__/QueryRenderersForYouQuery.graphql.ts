@@ -97,7 +97,10 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
     }
     name
     exhibitionPeriod
-    followedArtistArtworks: filterArtworksConnection(first: 3, includeArtworksByFollowedArtists: true) {
+    heroImage: image {
+      url(version: "large")
+    }
+    followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
       edges {
         node {
           image {
@@ -108,7 +111,7 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
       }
       id
     }
-    otherArtworks: filterArtworksConnection(first: 3) {
+    otherArtworks: filterArtworksConnection(first: 2) {
       edges {
         node {
           image {
@@ -302,15 +305,10 @@ v10 = {
   ],
   "storageKey": "url(version:\"large\")"
 },
-v11 = {
-  "kind": "Literal",
-  "name": "first",
-  "value": 3
-},
-v12 = [
-  (v11/*: any*/)
+v11 = [
+  (v10/*: any*/)
 ],
-v13 = [
+v12 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -328,14 +326,17 @@ v13 = [
         "args": null,
         "concreteType": "Image",
         "plural": false,
-        "selections": [
-          (v10/*: any*/)
-        ]
+        "selections": (v11/*: any*/)
       },
       (v0/*: any*/)
     ]
   }
 ],
+v13 = {
+  "kind": "Literal",
+  "name": "first",
+  "value": 2
+},
 v14 = [
   {
     "kind": "LinkedField",
@@ -345,7 +346,7 @@ v14 = [
     "args": null,
     "concreteType": "FilterArtworksEdge",
     "plural": true,
-    "selections": (v13/*: any*/)
+    "selections": (v12/*: any*/)
   },
   (v0/*: any*/)
 ];
@@ -741,7 +742,13 @@ return {
                     "alias": null,
                     "name": "artworksConnection",
                     "storageKey": "artworksConnection(first:3)",
-                    "args": (v12/*: any*/),
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "first",
+                        "value": 3
+                      }
+                    ],
                     "concreteType": "ArtworkConnection",
                     "plural": false,
                     "selections": [
@@ -753,7 +760,7 @@ return {
                         "args": null,
                         "concreteType": "ArtworkEdge",
                         "plural": true,
-                        "selections": (v13/*: any*/)
+                        "selections": (v12/*: any*/)
                       }
                     ]
                   }
@@ -804,11 +811,21 @@ return {
                   },
                   {
                     "kind": "LinkedField",
+                    "alias": "heroImage",
+                    "name": "image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": (v11/*: any*/)
+                  },
+                  {
+                    "kind": "LinkedField",
                     "alias": "followedArtistArtworks",
                     "name": "filterArtworksConnection",
-                    "storageKey": "filterArtworksConnection(first:3,includeArtworksByFollowedArtists:true)",
+                    "storageKey": "filterArtworksConnection(first:2,includeArtworksByFollowedArtists:true)",
                     "args": [
-                      (v11/*: any*/),
+                      (v13/*: any*/),
                       {
                         "kind": "Literal",
                         "name": "includeArtworksByFollowedArtists",
@@ -823,8 +840,10 @@ return {
                     "kind": "LinkedField",
                     "alias": "otherArtworks",
                     "name": "filterArtworksConnection",
-                    "storageKey": "filterArtworksConnection(first:3)",
-                    "args": (v12/*: any*/),
+                    "storageKey": "filterArtworksConnection(first:2)",
+                    "args": [
+                      (v13/*: any*/)
+                    ],
                     "concreteType": "FilterArtworksConnection",
                     "plural": false,
                     "selections": (v14/*: any*/)
@@ -840,7 +859,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersForYouQuery",
-    "id": "008604a9fdae364b23197ba169ccf4e5",
+    "id": "55f907742af6eed928863b488dc5ebaf",
     "text": null,
     "metadata": {}
   }
