@@ -39,6 +39,12 @@ next: update_bundle_version
 
 ### General setup
 
+# The ArtsyAPIClientKey and ArtsyAPIClientSecret are provided for open source
+# contributors to learn from the app. Please don't abuse the keys or we'll
+# need to rotate them and you'll make it harder for everyone to learn.
+#
+# As these are publicly available, they are not eligable for the Artsy Bug
+# Bounty program.
 oss:
 	git submodule update --init
 	bundle exec pod repo update
@@ -90,10 +96,10 @@ uitest:
 
 ### CI
 
-ci: 
+ci:
 	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests; else echo "Skipping test build on beta deploy."; fi
 
-ci-test: 
+ci-test:
 	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make test; else echo "Skipping test run on beta deploy."; fi
 
 deploy_if_beta_branch:
@@ -165,3 +171,27 @@ push:
 
 fpush:
 	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi
+
+flip_table:
+	# Clear local caches and build files
+	@echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
+	rm -rf node_modules
+	@echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
+	rm -rf Pods
+	@echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
+	rm -rf ~/Library/Developer/Xcode/DerivedData/*
+	@echo 'Clear relay and jest caches (┛◉Д◉)┛彡┻━┻'
+	rm -rf $TMPDIR/RelayFindGraphQLTags-*
+	rm -rf .jest
+	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
+	rm -rf emission/Pod/Assets/Emission*
+	rm -rf emission/Pod/Assets/assets
+	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
+	bundle exec pod install
+
+flip_table_extreme:
+  # Clear global and local caches and build files
+	@echo 'Clearn global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
+	yarn cache clean
+	bundle exec pod cache clean --all
+	make flip_table

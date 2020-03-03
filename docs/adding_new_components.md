@@ -1,12 +1,6 @@
 # Adding a New Component
 
-Emission is a few things:
-
-- A native example app that uses React Native components.
-- A CocoaPod to consume components as `UIViewController` subclasses.
-- An NPM module to manage these components.
-
-Adding a new component to Emission to be used in [Eigen][] involves all three! But don't worry, it's not difficult. (You can look at [this pr adding an empty component][pr] for a kind of "Hello World" for this work.)
+Adding a new component involves a few pieces of work! But don't worry, it's not difficult. (You can look at [this pr adding an empty component](https://github.com/artsy/emission/pull/1003) for a kind of "Hello World" for this work.)
 
 ## Create the React Native Component
 
@@ -22,24 +16,6 @@ export class MyNewComponent extends React.Component {
   }
 }
 ```
-
-## Add the Component to Storybooks
-
-You'll want to add your component to our storybooks so it can be rapidly iterated upon. In the directory that your new component lives in, create another directory called `__stories__` and add a file named something like `MyNewComponent.story.tsx`. Then add something _like_ the following:
-
-```tsx
-import { storiesOf } from "@storybook/react-native"
-import React from "react"
-import { MyNewComponent } from "../MyNewComponent"
-
-storiesOf("MyNewComponent").add("Show default component", () => {
-  return <MyNewComponent />
-})
-```
-
-Rerun `yarn start`. This will pick up the new storybook and modify the `storyLoader.js` to add it to Emission's storybooks. You should now be able to run the Emission app and see the component through your storybook browser.
-
-At this point, you could add any props that your component needs. For example, if it's a query renderer then it may need an initial ID of some kind for its query variables.
 
 ## Adding a Native Controller (Optional)
 
@@ -105,40 +81,4 @@ Okay now for the `.m` implementation file:
 
 Again, this will vary depending on the props that you're injecting in. Look for a `.h` file that matches your use case, and then look at its corresponding `.m` file.
 
-Okay. With the new view controllers created, `cd` into the `Example` directory and re-run `bundle exec pod install` to integrate the new view controller into the Example app.
-
-Once that's finished, open `Emission.xcworkspace` in Xcode and navigate to `ARRootViewController.m`. Add an import statement at the top, like:
-
-```objc
-#import <Emission/ARMyNewComponentViewController.h>
-```
-
-Then add a line like the following to the `jumpToViewControllersSection` method:
-
-```objc
-[sectionData addCellData:self.jumpToMyNewComponent];
-```
-
-You'll need to add the `jumpToMyNewComponent` method to this file. Let's write that here:
-
-```objc
-- (ARCellData *)jumpToMyNewComponent
-{
-  return [self tappableCellDataWithTitle:@"My New Component" selection: ^{
-    [self.navigationController pushViewController:[[ARMyNewComponentViewController alloc] initWithSomeID:@"some-id-the-component-needs"] animated:YES];
-  }];
-}
-```
-
-Add whatever example props that the controller needs here, from our `.h` and `.m` work.
-
-Recompile the app and you _should_ see it listed in the "View Controllers" section of the Emission home screen. Nice!
-
-## Next Steps
-
-In order for Eigen to use the new view controller, you'll need to cut a new release of Emission. [Deploy instructions are documented in the readme][deploy]. Once a new CocoaPod version is uploaded to the [Artsy Specs repo][specs], open Eigen. Update Emission with `bundle exec pod update Emission` and your new component can be `#import`'d and used as a native view controller. Nice!
-
-[eigen]: https://github.com/artsy/eigen
-[pr]: https://github.com/artsy/emission/pull/1003
-[deploy]: https://github.com/artsy/emission#deployment
-[specs]: https://github.com/artsy/Specs
+Okay. With the new view controllers created, re-run `bundle exec pod install` to integrate the new view controller into the app. You can now add routing to this in `ARSwitchBoard.md` ([see example PR](https://github.com/artsy/eigen/pull/3039)).

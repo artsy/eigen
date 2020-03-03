@@ -69,7 +69,7 @@ lane :ship_beta do
                           version: sentry_version,
                           finalize: false
     puts "Created a release for #{project_slug}"
-  
+
     Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
       # No need to specify `dist` as the build number is encoded in the dSYM’s Info.plist
       sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
@@ -85,7 +85,7 @@ lane :ship_beta do
       project_slug: project_slug,
       version: sentry_version,
       dist: bundle_version,
-      file: 'Pods/Emission/Pod/Assets/Emission.js'
+      file: 'emission/Pod/Assets/Emission.js'
       puts "Uploaded Emission.js for #{project_slug}"
 
       sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
@@ -93,7 +93,7 @@ lane :ship_beta do
       project_slug: project_slug,
       version: sentry_version,
       dist: bundle_version,
-      sourcemap: 'Pods/Emission/Pod/Assets/Emission.js.map',
+      sourcemap: 'emission/Pod/Assets/Emission.js.map',
       rewrite: true
       puts "Uploaded Emission.js.map for #{project_slug}"
 
@@ -155,7 +155,7 @@ lane :promote_beta do
 
   puts "Tagging submission and pushing to GitHub."
   tag_and_push(tag: "#{beta.train_version}-#{beta.build_version}-submission")
-  
+
   puts "All done."
 end
 

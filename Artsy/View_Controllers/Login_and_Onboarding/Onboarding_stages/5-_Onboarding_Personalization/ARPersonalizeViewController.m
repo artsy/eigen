@@ -178,7 +178,7 @@
         case AROnboardingStagePersonalizePassword:
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
-            [self.headerView addHelpText:@"Must be 6 characters or longer" withLargeLayout:self.useLargeLayout];
+            [self.headerView addHelpText:@"Must be 8 characters or longer" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForPasswordWithLargeLayout:self.useLargeLayout];
             [self.onboardingTextFields.passwordField becomeFirstResponder];

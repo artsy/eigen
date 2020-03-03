@@ -90,4 +90,7 @@ tslint-errors.json
 tsc_raw.log
 
 # Emission bundle
-emission/Pod/Assets/Emission.js*
+emission/Pod/Assets/*
+
+# query map
+data/complete.queryMap.json

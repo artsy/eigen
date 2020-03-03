@@ -113,7 +113,7 @@ export class CityPicker extends Component<Props, State> {
             <Flex flexDirection="row" py={1} alignItems="center">
               <TouchableOpacity onPress={() => this.navigateToBMWArtGuide()}>
                 <Flex flexDirection="row">
-                  <Logo source={require("../../../../emission/Pod/Assets/assets/images/BMW-logo.jpg")} />
+                  <Logo source={require("../../../../images/BMW-logo.jpg")} />
                   {this.handleLogo(screenHeight)}
                 </Flex>
               </TouchableOpacity>

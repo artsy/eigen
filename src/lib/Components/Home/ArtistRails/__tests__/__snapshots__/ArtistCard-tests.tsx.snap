@@ -79,6 +79,7 @@ exports[`renders correctly 1`] = `
       </View>
       <View
         flexDirection="column"
+        justifyContent="center"
         ml={10}
         mr={2}
         style={
@@ -86,6 +87,7 @@ exports[`renders correctly 1`] = `
             Object {
               "display": "flex",
               "flexDirection": "column",
+              "justifyContent": "center",
               "marginLeft": 10,
               "marginRight": 20,
             },
@@ -111,6 +113,7 @@ exports[`renders correctly 1`] = `
           Juan Gris
         </Text>
         <Text
+          color="black60"
           fontFamily="Unica77LL-Regular"
           fontSize="14px"
           lineHeight="20px"
@@ -118,6 +121,7 @@ exports[`renders correctly 1`] = `
           style={
             Array [
               Object {
+                "color": "#666",
                 "fontFamily": "Unica77LL-Regular",
                 "fontSize": 14,
                 "lineHeight": 20,

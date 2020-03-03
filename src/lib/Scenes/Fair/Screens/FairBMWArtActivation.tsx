@@ -121,7 +121,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
             <>
               <PressReleaseContainer>
                 <Box>
-                  <Logo source={require("../../../../../emission/Pod/Assets/assets/images/BMW-logo.jpg")} />
+                  <Logo source={require("../../../../../images/BMW-logo.jpg")} />
                 </Box>
                 <Sans size="3" px={1} weight="medium">
                   BMW Art Activations

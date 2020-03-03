@@ -7,7 +7,11 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 import { PriceSummary_calculatedCost } from "__generated__/PriceSummary_calculatedCost.graphql"
-import { PriceSummaryQuery, PriceSummaryQueryVariables } from "__generated__/PriceSummaryQuery.graphql"
+import {
+  PriceSummaryQuery,
+  PriceSummaryQueryResponse,
+  PriceSummaryQueryVariables,
+} from "__generated__/PriceSummaryQuery.graphql"
 
 interface PriceSummaryViewProps {
   calculatedCost: PriceSummary_calculatedCost
@@ -88,8 +92,8 @@ export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
       saleArtworkId,
       bidAmountMinor: bid.cents,
     }}
-    render={renderWithLoadProgress(({ node }) => (
-      <PriceSummaryFragmentContainer bid={bid} {...node} />
+    render={renderWithLoadProgress<PriceSummaryQueryResponse>(({ node: { calculatedCost } }) => (
+      <PriceSummaryFragmentContainer bid={bid} calculatedCost={calculatedCost} />
     ))}
   />
 )

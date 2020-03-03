@@ -79,26 +79,27 @@ jobs:
           name: List devices
           command: instruments -s device
 
+      - run:
+          name: Install node modules
+          command: yarn install
+
+      - run:
+          name: Compile query map
+          command: yarn relay
+
+      - run:
+          name: Bundle emission
+          command: yarn bundle-for-native-ci
+
       - restore_cache:
           keys:
             - v4-pods-{{ checksum "Podfile.lock" }}
             # Fall back to using the latest cache if no exact match is found.
             - v4-pods-
 
-      # Make sure that these files exist so that `pod install` picks up on them, so
-      # that the generated Xcode project knows about them. We'll bundle them later,
-      # so the contents right now don't matter – only that they exist.
-      - run:
-          name: Touch Emission Assets
-          command: touch emission/Pod/Assets/Emission.js && touch emission/Pod/Assets/Emission.js.map
-
       - run:
           name: Install Pods
           command: bundle exec pod check || bundle exec pod install
-
-      - run:
-          name: Bundle emission
-          command: yarn bundle-for-native-ci
 
       - save_cache:
           key: v4-pods-{{ checksum "Podfile.lock" }}
@@ -165,6 +166,10 @@ jobs:
           key: v3-yarn-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+
+      - run:
+          name: Compile query map
+          command: yarn relay
 
       - run:
           name: Deploy via auto-release

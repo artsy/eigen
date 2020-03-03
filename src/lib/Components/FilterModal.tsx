@@ -130,10 +130,10 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
               <CloseIcon fill="black100" />
             </CloseIconContainer>
           </Flex>
-          <FilterHeader weight="medium" size="4">
+          <FilterHeader weight="medium" size="4" color="black100">
             Filter
           </FilterHeader>
-          <Sans mr={2} mt={2} size="4">
+          <Sans mr={2} mt={2} size="3" color="black100">
             Clear all
           </Sans>
         </Flex>
@@ -147,9 +147,11 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
                   <TouchableOptionListItemRow onPress={() => item.onTap()}>
                     <OptionListItem>
                       <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                        <Serif size="3">{item.type}</Serif>
+                        <Serif size="3t" color="black100">
+                          {item.type}
+                        </Serif>
                         <Flex flexDirection="row">
-                          <CurrentOption size="3">{this.state.selectedSortOption}</CurrentOption>
+                          <CurrentOption size="3t">{this.state.selectedSortOption}</CurrentOption>
                           <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
                         </Flex>
                       </Flex>
