@@ -169,7 +169,6 @@ export const FilterArtworkButtonContainer = styled(Flex)`
 `
 
 export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean }>`
-  width: ${p => (p.isFilterCountVisible ? "120" : "110")}px;
   border-radius: 20;
   background-color: ${color("black100")};
   align-items: center;
