@@ -1,38 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks correct when rendered 1`] = `
-<View
-  style={
-    Array [
-      Object {
-        "marginBottom": 15,
-      },
-    ]
-  }
->
-  <Text
-    numberOfLines={0}
+<View>
+  <View
+    pl="2"
+    pr="2"
     style={
       Array [
         Object {
-          "marginLeft": 20,
+          "display": "flex",
+          "paddingLeft": 20,
+          "paddingRight": 20,
         },
       ]
     }
   >
-    <Text
-      numberOfLines={0}
+    <View
+      alignItems="center"
+      flexDirection="row"
+      mb="1"
+      mt="3"
       style={
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 30,
-          "textAlign": "left",
-        }
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+            "flexDirection": "row",
+            "marginBottom": 10,
+            "marginTop": 30,
+          },
+        ]
       }
     >
-      Recommended Art Fairs
-    </Text>
-  </Text>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <Text
+          data-test-id="title"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize="16px"
+          lineHeight="26px"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 16,
+                "lineHeight": 26,
+              },
+              Object {},
+            ]
+          }
+        >
+          Recommended Art Fairs
+        </Text>
+      </View>
+    </View>
+  </View>
   <RCTScrollView
     horizontal={true}
     showsHorizontalScrollIndicator={false}
@@ -42,7 +72,6 @@ exports[`looks correct when rendered 1`] = `
           "flexDirection": "row",
           "marginLeft": 16,
           "marginRight": 16,
-          "marginTop": 10,
           "overflow": "visible",
         },
       ]
