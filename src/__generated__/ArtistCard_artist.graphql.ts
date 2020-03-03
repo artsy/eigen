@@ -91,10 +91,10 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large"
+              "value": "small"
             }
           ],
-          "storageKey": "url(version:\"large\")"
+          "storageKey": "url(version:\"small\")"
         }
       ]
     },
@@ -148,10 +148,10 @@ const node: ReaderFragment = {
                         {
                           "kind": "Literal",
                           "name": "version",
-                          "value": "medium"
+                          "value": "large"
                         }
                       ],
-                      "storageKey": "url(version:\"medium\")"
+                      "storageKey": "url(version:\"large\")"
                     }
                   ]
                 }
@@ -163,5 +163,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3e4254072f1a4757ae1f594288fd1c59';
+(node as any).hash = '4e52f05c0f018ee6527a9e1a58f477cf';
 export default node;

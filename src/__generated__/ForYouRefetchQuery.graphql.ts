@@ -100,8 +100,29 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
       slug
       id
     }
-    mobileImage {
-      url
+    name
+    exhibitionPeriod
+    followedArtistArtworks: filterArtworksConnection(first: 3, includeArtworksByFollowedArtists: true) {
+      edges {
+        node {
+          image {
+            url(version: "large")
+          }
+          id
+        }
+      }
+      id
+    }
+    otherArtworks: filterArtworksConnection(first: 3) {
+      edges {
+        node {
+          image {
+            url(version: "large")
+          }
+          id
+        }
+      }
+      id
     }
   }
 }
@@ -114,13 +135,13 @@ fragment ArtistCard_artist on Artist {
   name
   formattedNationalityAndBirthday
   avatar: image {
-    url(version: "large")
+    url(version: "small")
   }
   artworksConnection(first: 3) {
     edges {
       node {
         image {
-          url(version: "medium")
+          url(version: "large")
         }
         id
       }
@@ -181,6 +202,65 @@ v6 = {
 },
 v7 = [
   (v2/*: any*/)
+],
+v8 = {
+  "kind": "Literal",
+  "name": "first",
+  "value": 3
+},
+v9 = [
+  (v8/*: any*/)
+],
+v10 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "node",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "Artwork",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "image",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Image",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "url",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "version",
+                "value": "large"
+              }
+            ],
+            "storageKey": "url(version:\"large\")"
+          }
+        ]
+      },
+      (v0/*: any*/)
+    ]
+  }
+],
+v11 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "FilterArtworksEdge",
+    "plural": true,
+    "selections": (v10/*: any*/)
+  },
+  (v0/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -440,10 +520,10 @@ return {
                           {
                             "kind": "Literal",
                             "name": "version",
-                            "value": "large"
+                            "value": "small"
                           }
                         ],
-                        "storageKey": "url(version:\"large\")"
+                        "storageKey": "url(version:\"small\")"
                       }
                     ]
                   },
@@ -452,13 +532,7 @@ return {
                     "alias": null,
                     "name": "artworksConnection",
                     "storageKey": "artworksConnection(first:3)",
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "first",
-                        "value": 3
-                      }
-                    ],
+                    "args": (v9/*: any*/),
                     "concreteType": "ArtworkConnection",
                     "plural": false,
                     "selections": [
@@ -470,44 +544,7 @@ return {
                         "args": null,
                         "concreteType": "ArtworkEdge",
                         "plural": true,
-                        "selections": [
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "node",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "LinkedField",
-                                "alias": null,
-                                "name": "image",
-                                "storageKey": null,
-                                "args": null,
-                                "concreteType": "Image",
-                                "plural": false,
-                                "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "url",
-                                    "args": [
-                                      {
-                                        "kind": "Literal",
-                                        "name": "version",
-                                        "value": "medium"
-                                      }
-                                    ],
-                                    "storageKey": "url(version:\"medium\")"
-                                  }
-                                ]
-                              },
-                              (v0/*: any*/)
-                            ]
-                          }
-                        ]
+                        "selections": (v10/*: any*/)
                       }
                     ]
                   }
@@ -548,23 +585,40 @@ return {
                       (v0/*: any*/)
                     ]
                   },
+                  (v6/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "exhibitionPeriod",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
-                    "alias": null,
-                    "name": "mobileImage",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Image",
-                    "plural": false,
-                    "selections": [
+                    "alias": "followedArtistArtworks",
+                    "name": "filterArtworksConnection",
+                    "storageKey": "filterArtworksConnection(first:3,includeArtworksByFollowedArtists:true)",
+                    "args": [
+                      (v8/*: any*/),
                       {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "url",
-                        "args": null,
-                        "storageKey": null
+                        "kind": "Literal",
+                        "name": "includeArtworksByFollowedArtists",
+                        "value": true
                       }
-                    ]
+                    ],
+                    "concreteType": "FilterArtworksConnection",
+                    "plural": false,
+                    "selections": (v11/*: any*/)
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": "otherArtworks",
+                    "name": "filterArtworksConnection",
+                    "storageKey": "filterArtworksConnection(first:3)",
+                    "args": (v9/*: any*/),
+                    "concreteType": "FilterArtworksConnection",
+                    "plural": false,
+                    "selections": (v11/*: any*/)
                   }
                 ]
               }
@@ -577,7 +631,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "704171206e65e855155376b9a218b927",
+    "id": "69a1a26cfc06fa59ee0e7a023a52bad1",
     "text": null,
     "metadata": {}
   }
