@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, Serif, space } from "@artsy/palette"
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
@@ -8,25 +8,16 @@ import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
   navigator: NavigatorIOS
-  updateSortOption: (string: SortTypes) => void
 }
 
-interface SortOptionsScreenProps {
-  navigator: NavigatorIOS
-  updateSortOption: (string: SortTypes) => void
-}
-
-export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator, updateSortOption }) => {
-  const [currentSelection, setCurrentSelection] = useState<SortTypes>("Default")
-  const { dispatch } = useContext(ArtworkFilterContext)
+export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator }) => {
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleBackNavigation = () => {
     navigator.pop()
   }
 
   const selectSortOption = (selectedOption: SortTypes) => {
-    setCurrentSelection(selectedOption)
-    updateSortOption(selectedOption)
     dispatch({ type: "selectFilters", payload: selectedOption })
   }
 
@@ -54,7 +45,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
                   <OptionListItem>
                     <InnerOptionListItem>
                       <SortSelection size="3">{item}</SortSelection>
-                      {item === currentSelection && (
+                      {item === state.selectedSortOption && (
                         <Box mb={0.1}>
                           <CheckIcon fill="black100" />
                         </Box>

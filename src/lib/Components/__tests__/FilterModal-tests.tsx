@@ -44,7 +44,7 @@ describe("Filter modal navigation flow", () => {
   it("allows users to navigate back to filter screen from sort screen ", () => {
     const sortScreen = create(
       <Theme>
-        <SortOptionsScreen navigator={mockNavigator as any} updateSortOption={jest.fn()} />
+        <SortOptionsScreen navigator={mockNavigator as any} />
       </Theme>
     )
 
@@ -84,7 +84,7 @@ describe("Filter modal navigation flow", () => {
   it("only displays a check mark next to the currently selected sort option on the sort screen", () => {
     const sortScreen = create(
       <Theme>
-        <SortOptionsScreen navigator={mockNavigator as any} updateSortOption={jest.fn()} />
+        <SortOptionsScreen navigator={mockNavigator as any} />
       </Theme>
     )
 

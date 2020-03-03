@@ -15,7 +15,7 @@ describe("Sort Options Screen", () => {
   it("renders the correct number of sort options", () => {
     const root = renderer.create(
       <Theme>
-        <SortOptions navigator={mockNavigator as any} updateSortOption={jest.fn()} />
+        <SortOptions navigator={mockNavigator as any} />
       </Theme>
     ).root
 

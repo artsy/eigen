@@ -5,11 +5,13 @@ import { SortTypes } from "../Components/ArtworkFilterOptions/SortOptions"
 const filterState: ArtworkFilterContextState = {
   appliedFilters: [],
   selectedFilters: [],
+  selectedSortOption: "Default",
 }
 
 interface ArtworkFilterContextState {
   appliedFilters: SortTypes[]
   selectedFilters: SortTypes[]
+  selectedSortOption: SortTypes
 }
 
 export interface ResetFilters {
@@ -45,7 +47,7 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
           const previouslyAppliedFilters = artworkFilterState.appliedFilters
           const filtersToApply = action.payload
           const appliedFilters = union(previouslyAppliedFilters, filtersToApply)
-          return { appliedFilters, selectedFilters: [] }
+          return { appliedFilters, selectedFilters: [], selectedSortOption: artworkFilterState.selectedSortOption }
         case "selectFilters":
           const previouslySelectedFilters = artworkFilterState.selectedFilters
           const currentlySelectedFilter = action.payload
@@ -53,13 +55,21 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
           const selectedFilter = []
           if (isFilterAlreadySelected) {
             const mergedFilters = previouslySelectedFilters.push(currentlySelectedFilter)
-            return { selectedFilters: mergedFilters, appliedFilters: filterState.appliedFilters }
+            return {
+              selectedFilters: mergedFilters,
+              appliedFilters: filterState.appliedFilters,
+              selectedSortOption: currentlySelectedFilter,
+            }
           } else {
             selectedFilter.push(currentlySelectedFilter)
-            return { selectedFilters: selectedFilter, appliedFilters: filterState.appliedFilters }
+            return {
+              selectedFilters: selectedFilter,
+              appliedFilters: filterState.appliedFilters,
+              selectedSortOption: currentlySelectedFilter,
+            }
           }
         case "resetFilters":
-          return { appliedFilters: [], selectedFilters: [] }
+          return { appliedFilters: [], selectedFilters: [], selectedSortOption: "Default" }
       }
     },
     filterState

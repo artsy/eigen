@@ -1,10 +1,10 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../utils/ArtworkFiltersStore"
-import { SortOptionsScreen as SortOptions, SortTypes } from "./ArtworkFilterOptions/SortOptions"
+import { SortOptionsScreen as SortOptions } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -25,10 +25,10 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
     closeModal()
   }
 
-  const getApplyButtonCount = filterStates => {
-    const appliedFiltersSum = (filterStates.appliedFilters.length + filterStates.selectedFilters.length) as number
+  const getApplyButtonCount = () => {
+    const selectedFiltersSum = state.selectedFilters.length
 
-    return appliedFiltersSum > 0 ? "Apply" + " (" + appliedFiltersSum + ")" : "Apply"
+    return selectedFiltersSum > 0 ? "Apply" + " (" + selectedFiltersSum + ")" : "Apply"
   }
 
   return (
@@ -50,7 +50,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                 />
                 <Box p={2}>
                   <Button onPress={() => applyFilters()} block width={100} variant="secondaryOutline">
-                    {getApplyButtonCount(state)}
+                    {getApplyButtonCount()}
                   </Button>
                 </Box>
               </ModalInnerView>
@@ -68,40 +68,23 @@ interface FilterOptionsProps {
 }
 
 type FilterOptions = Array<{ type: string; onTap: () => void }>
-type SelectedSortOption = SortTypes
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>([])
-  const [selectedSortOption, setSelectedSortOption] = useState<SelectedSortOption>("Default")
-  const { dispatch } = useContext(ArtworkFilterContext)
-
-  useEffect(() => {
-    const filterCategories = []
-
-    filterCategories.push({
-      type: "Sort by",
-      onTap: handleNavigationToSortScreen,
-    })
-
-    setFilterOptions(filterCategories)
-  }, [])
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleNavigationToSortScreen = () => {
     navigator.push({
       component: SortOptions,
-      passProps: {
-        updateSortOption: (sortOption: SortTypes) => getSortSelection(sortOption),
-        sortScreenSortSelection: selectedSortOption,
-      },
     })
   }
-
-  const getSortSelection = (sortOption: SortTypes) => {
-    setSelectedSortOption(sortOption)
-  }
+  const [filterOptions] = useState<FilterOptions>([
+    {
+      type: "Sort by",
+      onTap: handleNavigationToSortScreen,
+    },
+  ])
 
   const clearAllFilters = () => {
-    setSelectedSortOption("Default") // resets default sort
     dispatch({ type: "resetFilters" }) // clears all applied filters
   }
 
@@ -139,7 +122,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                       <Serif size="3">{item.type}</Serif>
                       <Flex flexDirection="row">
-                        <CurrentOption size="3">{selectedSortOption}</CurrentOption>
+                        <CurrentOption size="3">{state.selectedSortOption}</CurrentOption>
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
                       </Flex>
                     </Flex>
