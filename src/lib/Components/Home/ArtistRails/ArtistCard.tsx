@@ -98,7 +98,6 @@ export class ArtistCard extends React.Component<Props, State> {
 
 const Card = styled.TouchableHighlight.attrs({ underlayColor: "transparent" })`
   width: ${CARD_WIDTH}px;
-  margin-left: 15px;
   border: 1px solid ${colors["gray-regular"]};
   border-radius: 4px;
   overflow: hidden;

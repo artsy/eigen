@@ -1,13 +1,14 @@
 import React from "react"
-import { FlatList, RefreshControl, ScrollView, ViewProperties } from "react-native"
+import { FlatList, RefreshControl, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
-import ArtworkCarousel from "./Components/ArtworkCarousel"
 import FairsRail from "./Components/FairsRail"
 
+import { Spacer } from "@artsy/palette"
 import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
 import { compact, flatten, zip } from "lodash"
+import { ArtworkRailFragmentContainer } from "./Components/ArtworkRail"
 
 interface Props extends ViewProperties {
   forYou: ForYou_forYou
@@ -16,13 +17,13 @@ interface Props extends ViewProperties {
 
 interface State {
   isRefreshing: boolean
+  userHasScrolled: boolean
 }
 
 export class ForYou extends React.Component<Props, State> {
-  currentScrollOffset?: number = 0
-
-  state = {
+  state: State = {
     isRefreshing: false,
+    userHasScrolled: false,
   }
 
   handleRefresh = async () => {
@@ -79,32 +80,21 @@ export class ForYou extends React.Component<Props, State> {
     return (
       <FlatList
         data={rowData}
-        renderScrollComponent={props => {
-          return (
-            <ScrollView
-              {...props}
-              removeClippedSubviews={true}
-              automaticallyAdjustContentInsets={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={this.handleRefresh}
-                  style={{ marginBottom: 18 }}
-                />
-              }
-            />
-          )
-        }}
+        initialNumToRender={5}
+        windowSize={this.state.userHasScrolled ? 4 : 1}
+        onScrollBeginDrag={() => this.setState({ userHasScrolled: true })}
+        refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
         renderItem={({ item }) => {
           switch (item.type) {
             case "artwork":
-              return <ArtworkCarousel rail={item.data} />
+              return <ArtworkRailFragmentContainer rail={item.data} />
             case "artist":
               return <ArtistRail rail={item.data} />
             case "fairs":
               return <FairsRail fairs_module={item.data} />
           }
         }}
+        ListFooterComponent={() => <Spacer mb={3} />}
         keyExtractor={(_item, index) => String(index)}
         style={{ overflow: "visible" }}
       />
@@ -135,7 +125,7 @@ export const ForYouFragmentContainer = createRefetchContainer(
           exclude: [FOLLOWED_ARTISTS, GENERIC_GENES]
         ) {
           id
-          ...ArtworkCarousel_rail
+          ...ArtworkRail_rail
         }
         artist_modules: artistModules {
           id

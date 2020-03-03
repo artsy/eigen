@@ -2,12 +2,13 @@ import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import { Dimensions, TouchableHighlight } from "react-native"
+import { Dimensions, TouchableHighlight, View } from "react-native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 
+import { Flex } from "@artsy/palette"
 import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
 
 interface Props {
@@ -58,12 +59,12 @@ export class FairsRail extends Component<Props, null> {
 
   render() {
     return (
-      <Container>
-        <Title>
-          <SectionTitle>Recommended Art Fairs</SectionTitle>
-        </Title>
+      <View>
+        <Flex pl="2" pr="2">
+          <SectionTitle title="Recommended Art Fairs" />
+        </Flex>
         {this.renderFairs()}
-      </Container>
+      </View>
     )
   }
 }
@@ -85,18 +86,9 @@ export default createFragmentContainer(FairsRail, {
   `,
 })
 
-const Container = styled.View`
-  margin-bottom: 15;
-`
-
-const Title = styled(SectionTitle)`
-  margin-left: 20;
-`
-
 const IconCarousel = styled.ScrollView`
   flex-direction: row;
   overflow: visible;
-  margin-top: 10;
   margin-left: 16;
   margin-right: 16;
 `

@@ -5,7 +5,7 @@ import { FragmentRefs } from "relay-runtime";
 export type ForYou_forYou = {
     readonly artwork_modules: ReadonlyArray<{
         readonly id: string;
-        readonly " $fragmentRefs": FragmentRefs<"ArtworkCarousel_rail">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
     } | null> | null;
     readonly artist_modules: ReadonlyArray<{
         readonly id: string;
@@ -81,7 +81,7 @@ return {
         (v0/*: any*/),
         {
           "kind": "FragmentSpread",
-          "name": "ArtworkCarousel_rail",
+          "name": "ArtworkRail_rail",
           "args": null
         }
       ]
@@ -122,5 +122,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '62af7a670d82f26849b034c9af4901c8';
+(node as any).hash = 'a25a19593af63a0cb5c8acdfdd2062cf';
 export default node;

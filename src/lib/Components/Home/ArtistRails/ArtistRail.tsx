@@ -3,20 +3,20 @@
 //       let Relay re-render the cards.
 
 import React, { Component } from "react"
-import { Animated, Easing, View, ViewProperties } from "react-native"
+import { Animated, Easing, FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, Track, track as _track } from "lib/utils/track"
-import Separator from "../../Separator"
 import Spinner from "../../Spinner"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
+import { Flex, Spacer } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import Events from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import styled from "styled-components/native"
 
 const Animation = {
   yDelta: 20,
@@ -41,6 +41,7 @@ interface Props extends ViewProperties {
 
 interface State {
   artists: SuggestedArtist[]
+  userHasScrolled: boolean
 }
 
 const track: Track<Props, State> = _track
@@ -51,7 +52,7 @@ export class ArtistRail extends Component<Props, State> {
     super(props)
     if (props.rail.results) {
       const artists = props.rail.results.map(artist => setupSuggestedArtist(artist, 1, 0)) as any
-      this.state = { artists }
+      this.state = { artists, userHasScrolled: false }
     }
   }
 
@@ -167,37 +168,42 @@ export class ArtistRail extends Component<Props, State> {
   }
 
   renderModuleResults() {
-    if (this.state.artists.length > 0) {
-      const cards = this.state.artists.map(artist => {
-        // Compose key, because an artist may appear twice on the home view in different modules.
-        const key = this.props.rail.id + artist.id
-        const { opacity, translateY } = artist._animatedValues
-        const style = { opacity, transform: [{ translateY }] }
-        return (
-          <Animated.View key={key} style={style}>
-            {artist.hasOwnProperty("__fragments") ? (
-              <ArtistCardContainer
-                artist={artist as any}
-                onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
-              />
-            ) : (
-              <ArtistCard
-                artist={artist as any}
-                onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
-              />
-            )}
-          </Animated.View>
-        )
-      })
-      return (
-        <CardScrollView>
-          {cards}
-          <View style={{ width: 15 }} />
-        </CardScrollView>
-      )
-    } else {
-      return <Spinner style={{ flex: 1, marginBottom: 20 }} />
-    }
+    return (
+      <FlatList<SuggestedArtist>
+        data={this.state.artists}
+        ListHeaderComponent={() => <Spacer mr={2} />}
+        ListFooterComponent={() => <Spacer mr={2} />}
+        ItemSeparatorComponent={() => <Spacer mr="15px" />}
+        ListEmptyComponent={() => <Spinner style={{ flex: 1, marginBottom: 20 }} />}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        scrollsToTop={false}
+        keyExtractor={artist => artist.id}
+        initialNumToRender={2}
+        windowSize={this.state.userHasScrolled ? 4 : 1}
+        onScrollBeginDrag={() => this.setState({ userHasScrolled: true })}
+        renderItem={({ item: artist }) => {
+          const key = this.props.rail.id + artist.id
+          const { opacity, translateY } = artist._animatedValues
+          const style = { opacity, transform: [{ translateY }] }
+          return (
+            <Animated.View key={key} style={style}>
+              {artist.hasOwnProperty("__fragments") ? (
+                <ArtistCardContainer
+                  artist={artist as any}
+                  onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+                />
+              ) : (
+                <ArtistCard
+                  artist={artist as any}
+                  onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+                />
+              )}
+            </Animated.View>
+          )
+        }}
+      />
+    )
   }
 
   title() {
@@ -215,34 +221,14 @@ export class ArtistRail extends Component<Props, State> {
   render() {
     return this.state.artists.length ? (
       <View>
-        <Title>{this.title()}</Title>
+        <Flex pl="2" pr="2">
+          <SectionTitle title={this.title()} />
+        </Flex>
         {this.renderModuleResults()}
-        <Separator />
       </View>
     ) : null
   }
 }
-
-// TODO: Specs say this should be Sans, but let's update all Home titles at once
-// and convert to styled-components
-const Title = styled.Text`
-  margin: 30px 20px 10px;
-  font-size: 30px;
-  /* stylelint-disable */
-  font-family: AGaramondPro-Regular;
-  /* stylelint-enable */
-`
-
-const CardScrollView = styled.ScrollView.attrs({
-  horizontal: true,
-  showsHorizontalScrollIndicator: false,
-  scrollsToTop: false,
-})`
-  flex-grow: 1;
-  flex-direction: row;
-  margin-top: 10px;
-  margin-bottom: 25px;
-`
 
 const setupSuggestedArtist = (artist, opacity, translateY) =>
   ({
