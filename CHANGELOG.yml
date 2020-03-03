@@ -7,11 +7,14 @@ upcoming:
     - Update sentry, add patch - ash, brian, david
     - Fixes cacheMiddleware to allow ArtworkMarkAsRecentlyViewedQuery mutations without clearing cache - ash
     - Untrack the query map and emission assets folder - david
+    - Reduce number of images for initial render of for-you page - david
   user_facing:
     - Removes generic genes from For You tab - ash
     - Fix WSODs related to markdown elements not being supported in ReadMore - david
     - Fix grid.artworks null pointer bug - david
     - Fixes issue with create password screen saying you needed 6 character but you need 8 - ash
+    - Replace for-you artwork carousel with horizontal rail - david
+    - Refresh for-you header styling - david
 
 releases:
   - version: 6.3.1
