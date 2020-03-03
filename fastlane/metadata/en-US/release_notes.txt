@@ -1,7 +1,7 @@
-This update includes a number of small bug fixes and improvements, including:
+This update includes a number of bug fixes and improvements, including:
 
-• Added support for Artsy Collections of artworks.
-• Decreased the app's download/update size.
-• Fixed a rare, intermittent bug related to browsing artwork images.
+• Fixed a performance problem that made the app feel slower than it should be.
+• Improved home feed, with streamlined content and a better visual design for artists.
+• Fixed a rare issue that caused certain artworks not to load.
 
 Have feedback? Email us at support@artsy.net

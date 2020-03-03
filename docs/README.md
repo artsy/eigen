@@ -6,7 +6,6 @@
 
 - [Getting Started](getting_started.md)
 - [Getting Confident](getting_confident.md)
-- [Eigen Dev Tips](eigen_tips.md)
 
 ## Meandering Around
 

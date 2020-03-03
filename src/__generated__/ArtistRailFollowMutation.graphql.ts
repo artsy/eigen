@@ -67,13 +67,13 @@ mutation ArtistRailFollowMutation(
               name
               formattedNationalityAndBirthday
               avatar: image {
-                url(version: "large")
+                url(version: "small")
               }
               artworksConnection(first: 3) {
                 edges {
                   node {
                     image {
-                      url(version: "medium")
+                      url(version: "large")
                     }
                     id
                   }
@@ -192,10 +192,10 @@ v9 = {
         {
           "kind": "Literal",
           "name": "version",
-          "value": "large"
+          "value": "small"
         }
       ],
-      "storageKey": "url(version:\"large\")"
+      "storageKey": "url(version:\"small\")"
     }
   ]
 },
@@ -223,10 +223,10 @@ v11 = {
         {
           "kind": "Literal",
           "name": "version",
-          "value": "medium"
+          "value": "large"
         }
       ],
-      "storageKey": "url(version:\"medium\")"
+      "storageKey": "url(version:\"large\")"
     }
   ]
 };
@@ -467,7 +467,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ArtistRailFollowMutation",
-    "id": "2e54d7b33b883771a46af234747fddb5",
+    "id": "d3fd2523f4a5016b72b8065dbfaf9e54",
     "text": null,
     "metadata": {}
   }
