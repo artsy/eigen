@@ -12,6 +12,7 @@ upcoming:
     - Fix WSODs related to markdown elements not being supported in ReadMore - david
     - Fix grid.artworks null pointer bug - david
     - Fixes issue with create password screen saying you needed 6 character but you need 8 - ash
+    - Fix bug where the `Artists` tab scroll view would jump around while scrolling
 
 releases:
   - version: 6.3.1
