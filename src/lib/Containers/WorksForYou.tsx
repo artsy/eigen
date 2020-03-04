@@ -3,21 +3,10 @@ import { WorksForYou_query } from "__generated__/WorksForYou_query.graphql"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
-import colors from "lib/data/colors"
 import { PAGE_SIZE } from "lib/data/constants"
 import { get } from "lib/utils/get"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React from "react"
-import {
-  FlatList,
-  NativeModules,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native"
+import { FlatList, NativeModules, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import Events from "../NativeModules/Events"
 
@@ -29,17 +18,17 @@ interface Props {
 interface State {
   isRefreshing: boolean
   loadingContent: boolean
+  width: number | null
 }
 
 export class WorksForYou extends React.Component<Props, State> {
-  currentScrollOffset?: number = 0
-
   constructor(props: Props) {
     super(props)
 
     this.state = {
       isRefreshing: false,
       loadingContent: false,
+      width: null,
     }
   }
 
@@ -86,86 +75,53 @@ export class WorksForYou extends React.Component<Props, State> {
 
   render() {
     const notifications = get(this.props, props => props.query.me.followsAndSaves.notifications.edges)
-    const hasNotifications = notifications.length
-
     /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
     return (
-      <ScrollView
-        contentContainerStyle={hasNotifications ? {} : styles.container}
-        onScroll={isCloseToBottom(this.fetchNextPage)}
-        scrollEventThrottle={100}
-        refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-      >
-        <View style={{ flex: 1 }}>{hasNotifications ? this.renderNotifications() : this.renderEmptyState()}</View>
-      </ScrollView>
-    )
-  }
-
-  renderNotifications() {
-    const { loadingContent } = this.state
-    const notifications = get(this.props, props => props.query.me.followsAndSaves.notifications.edges)
-
-    return (
       <Theme>
-        <FlatList
-          data={notifications}
+        <FlatList<WorksForYou_query["me"]["followsAndSaves"]["notifications"]["edges"][0]>
+          data={this.state.width === null ? [] : notifications}
           keyExtractor={item => item.node.id}
-          scrollEnabled={false}
-          renderItem={data => {
-            return <Notification notification={data.item.node} />
+          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+          onLayout={event => {
+            this.setState({ width: event.nativeEvent.layout.width })
           }}
+          renderItem={data => {
+            return <Notification width={this.state.width} notification={data.item.node} />
+          }}
+          onEndReached={this.fetchNextPage}
           ItemSeparatorComponent={() => (
             <Box px={2}>
               <Separator />
             </Box>
           )}
-          ListFooterComponent={() => (
-            <>
-              {loadingContent && (
-                <Box p={2} style={{ height: 50 }}>
-                  <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                    <Spinner />
-                  </Flex>
-                </Box>
-              )}
-            </>
-          )}
+          ListFooterComponent={
+            this.state.loadingContent
+              ? () => (
+                  <Box p={2} style={{ height: 50 }}>
+                    <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                      <Spinner />
+                    </Flex>
+                  </Box>
+                )
+              : null
+          }
+          ListEmptyComponent={
+            this.state.width === null
+              ? null
+              : () => (
+                  <ZeroState
+                    title="You haven’t followed any artists yet."
+                    subtitle="Follow artists to see new works that have been added to Artsy"
+                  />
+                )
+          }
         />
       </Theme>
     )
   }
-
-  renderEmptyState() {
-    return (
-      <ZeroState
-        title="You haven’t followed any artists yet."
-        subtitle="Follow artists to see new works that have been added to Artsy"
-      />
-    )
-  }
 }
-
-interface Styles {
-  container: ViewStyle
-  title: TextStyle
-  separator: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    flex: 1,
-  },
-  title: {
-    marginTop: 20,
-    fontSize: 20,
-  },
-  separator: {
-    height: 1,
-    backgroundColor: colors["gray-regular"],
-  },
-})
 
 const WorksForYouContainer = createPaginationContainer(
   WorksForYou,
