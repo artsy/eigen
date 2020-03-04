@@ -39,6 +39,7 @@
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
+    "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema v2 ../eigen/data/",
     "test": "jest",
     "testing": "jest --watch",
     "type-check:offence-ranking": "yarn -s type-check:offence 'TS\\d+' -o | sort | uniq -c | sort -r",
