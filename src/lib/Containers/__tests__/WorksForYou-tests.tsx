@@ -67,7 +67,7 @@ interface NotificationsResponse {
             node: {
               artists: string
               summary: string
-              artworks: { edges: [{ title: string }] }
+              artworks: { edges: [{ node: { title: string } }] }
               image: {
                 resized: {
                   url: string
@@ -98,7 +98,7 @@ const notificationsResponse = () => {
                 node: {
                   artists: "Jean-Michel Basquiat",
                   summary: "1 Work Added",
-                  artworks: { edges: [{ title: "Anti-Product Postcard" }] },
+                  artworks: { edges: [{ node: { title: "Anti-Product Postcard" } }] },
                   image: {
                     resized: {
                       url: "cloudfront.url",
@@ -110,7 +110,9 @@ const notificationsResponse = () => {
                 node: {
                   artists: "Ana Mendieta",
                   summary: "2 Works Added",
-                  artworks: { edges: [{ title: "Corazón de Roca con Sangre" }, { title: "Butterfly" }] },
+                  artworks: {
+                    edges: [{ node: { title: "Corazón de Roca con Sangre" } }, { node: { title: "Butterfly" } }],
+                  },
                   image: {
                     resized: {
                       url: "cloudfront.url",
