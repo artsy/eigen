@@ -23,10 +23,10 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
           const previouslySelectedFilters = artworkFilterState.selectedFilters
           const currentlySelectedFilter = action.payload
           const isFilterAlreadySelected = some(previouslySelectedFilters, currentlySelectedFilter)
-          const selectedFilter: Array<{ type: SortOptions; filter: FilterOptions }> = []
+          const selectedFilter: Array<{ type: SortOption; filter: FilterOption }> = []
 
           if (isFilterAlreadySelected) {
-            const mergedFilters = previouslySelectedFilters.push(currentlySelectedFilter)
+            const mergedFilters = [...previouslySelectedFilters, currentlySelectedFilter]
             return {
               selectedFilters: mergedFilters,
               appliedFilters: filterState.appliedFilters,
@@ -51,9 +51,9 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
 }
 
 interface ArtworkFilterContextState {
-  appliedFilters: Array<{ type: SortOptions; filter: FilterOptions }>
-  selectedFilters: Array<{ type: SortOptions; filter: FilterOptions }>
-  selectedSortOption: SortOptions
+  readonly appliedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
+  readonly selectedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
+  readonly selectedSortOption: SortOption
 }
 
 interface ResetFilters {
@@ -62,12 +62,12 @@ interface ResetFilters {
 
 interface ApplyFilters {
   type: "applyFilters"
-  payload: Array<{ type: SortOptions; filter: FilterOptions }>
+  payload: Array<{ type: SortOption; filter: FilterOption }>
 }
 
 interface SelectFilters {
   type: "selectFilters"
-  payload: { type: SortOptions; filter: FilterOptions }
+  payload: { type: SortOption; filter: FilterOption }
 }
 
 type FilterActions = ResetFilters | ApplyFilters | SelectFilters
@@ -77,13 +77,13 @@ interface ArtworkFilterContext {
   dispatch: Dispatch<FilterActions>
 }
 
-export type SortOptions =
+export type SortOption =
   | "Default"
   | "Price (low to high)"
   | "Price (high to low)"
-  | "Recently Updated"
-  | "Recently Added"
+  | "Recently updated"
+  | "Recently added"
   | "Artwork year (descending)"
   | "Artwork year (ascending)"
 
-type FilterOptions = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"
+type FilterOption = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"

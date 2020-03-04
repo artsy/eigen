@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, SortOptions } from "../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, SortOption } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
@@ -17,7 +17,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
     navigator.pop()
   }
 
-  const selectSortOption = (selectedOption: SortOptions) => {
+  const selectSortOption = (selectedOption: SortOption) => {
     dispatch({ type: "selectFilters", payload: { type: selectedOption, filter: "sort" } })
   }
 
@@ -29,22 +29,24 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
             <ArrowLeftIcon fill="black100" />
           </ArrowLeftIconContainer>
         </Flex>
-        <Sans mt={2} weight="medium" size="4">
+        <Sans mt={2} weight="medium" size="4" color="black100">
           Sort
         </Sans>
         <Box></Box>
       </SortHeader>
       <Flex>
-        <FlatList<SortOptions>
+        <FlatList<SortOption>
           keyExtractor={(_item, index) => String(index)}
-          data={Options}
+          data={options}
           renderItem={({ item }) => (
             <Box>
               {
                 <SortOptionListItemRow onPress={() => selectSortOption(item)}>
                   <OptionListItem>
                     <InnerOptionListItem>
-                      <SortSelection size="3">{item}</SortSelection>
+                      <SortSelection color="black100" size="3t">
+                        {item}
+                      </SortSelection>
                       {item === state.selectedSortOption && (
                         <Box mb={0.1}>
                           <CheckIcon fill="black100" />
@@ -63,7 +65,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
   )
 }
 
-const Options: SortOptions[] = [
+const options: SortOption[] = [
   "Default",
   "Price (low to high)",
   "Price (high to low)",

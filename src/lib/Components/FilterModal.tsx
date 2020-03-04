@@ -27,8 +27,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
 
   const getApplyButtonCount = () => {
     const selectedFiltersSum = state.selectedFilters.length
-
-    return selectedFiltersSum > 0 ? "Apply" + " (" + selectedFiltersSum + ")" : "Apply"
+    return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
   }
 
   return (
@@ -37,7 +36,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
         <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
           <TouchableWithoutFeedback onPress={null}>
             <ModalBackgroundView>
-              <TouchableOpacity onPress={() => handleClosingModal()} style={{ flexGrow: 1 }} />
+              <TouchableOpacity onPress={handleClosingModal} style={{ flexGrow: 1 }} />
               <ModalInnerView>
                 <NavigatorIOS
                   navigationBarHidden={true}
@@ -49,7 +48,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                   style={{ flex: 1 }}
                 />
                 <Box p={2}>
-                  <Button onPress={() => applyFilters()} block width={100} variant="secondaryOutline">
+                  <Button onPress={applyFilters} block width={100} variant="secondaryOutline">
                     {getApplyButtonCount()}
                   </Button>
                 </Box>
@@ -97,15 +96,15 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
     <Flex flexGrow={1}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
-          <CloseIconContainer onPress={() => handleTappingCloseIcon()}>
+          <CloseIconContainer onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
-        <FilterHeader weight="medium" size="4">
+        <FilterHeader weight="medium" size="4" color="black100">
           Filter
         </FilterHeader>
-        <TouchableOpacity onPress={() => clearAllFilters()}>
-          <Sans mr={2} mt={2} size="4">
+        <TouchableOpacity onPress={clearAllFilters}>
+          <Sans mr={2} mt={2} size="4" color="black100">
             Clear all
           </Sans>
         </TouchableOpacity>
@@ -117,10 +116,12 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
           renderItem={({ item }) => (
             <Box>
               {
-                <TouchableOptionListItemRow onPress={() => item.onTap()}>
+                <TouchableOptionListItemRow onPress={item.onTap}>
                   <OptionListItem>
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                      <Serif size="3">{item.type}</Serif>
+                      <Serif size="3t" color="black100">
+                        {item.type}
+                      </Serif>
                       <Flex flexDirection="row">
                         <CurrentOption size="3">{state.selectedSortOption}</CurrentOption>
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
