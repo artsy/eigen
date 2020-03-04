@@ -21,7 +21,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
   }
 
   const applyFilters = () => {
-    dispatch({ type: "applyFilters", payload: state.selectedFilters })
+    dispatch({ type: "applyFilters", payload: [{ type: state.selectedFilters.type, filter: "sort" }] })
     closeModal()
   }
 

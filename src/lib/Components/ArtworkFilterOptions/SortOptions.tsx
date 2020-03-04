@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext } from "../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, SortOptions } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
@@ -17,8 +17,8 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
     navigator.pop()
   }
 
-  const selectSortOption = (selectedOption: SortTypes) => {
-    dispatch({ type: "selectFilters", payload: selectedOption })
+  const selectSortOption = (selectedOption: SortOptions) => {
+    dispatch({ type: "selectFilters", payload: { type: selectedOption, filter: "sort" } })
   }
 
   return (
@@ -35,9 +35,9 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
         <Box></Box>
       </SortHeader>
       <Flex>
-        <FlatList<SortTypes>
+        <FlatList<SortOptions>
           keyExtractor={(_item, index) => String(index)}
-          data={SortOptions}
+          data={Options}
           renderItem={({ item }) => (
             <Box>
               {
@@ -63,7 +63,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
   )
 }
 
-const SortOptions: SortTypes[] = [
+const Options: SortOptions[] = [
   "Default",
   "Price (low to high)",
   "Price (high to low)",
@@ -91,15 +91,6 @@ export const InnerOptionListItem = styled(Flex)`
   align-items: flex-end;
   padding: ${space(2)}px;
 `
-
-export type SortTypes =
-  | "Default"
-  | "Price (low to high)"
-  | "Price (high to low)"
-  | "Recently updated"
-  | "Recently added"
-  | "Artwork year (descending)"
-  | "Artwork year (ascending)"
 
 export const SortOptionListItemRow = styled(TouchableOpacity)``
 export const SortSelection = styled(Serif)``

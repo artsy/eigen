@@ -1,40 +1,10 @@
-import { union } from "lodash"
+import { some, union } from "lodash"
 import React, { createContext, Dispatch, Reducer, useReducer } from "react"
-import { SortTypes } from "../Components/ArtworkFilterOptions/SortOptions"
 
 const filterState: ArtworkFilterContextState = {
   appliedFilters: [],
   selectedFilters: [],
   selectedSortOption: "Default",
-}
-
-interface ArtworkFilterContextState {
-  appliedFilters: SortTypes[]
-  selectedFilters: SortTypes[]
-  selectedSortOption: SortTypes
-}
-
-export interface ResetFilters {
-  type: "resetFilters"
-}
-
-// applied filters
-interface ApplyFilters {
-  type: "applyFilters"
-  payload: SortTypes[]
-}
-
-// selected (but not applied) filters
-interface SelectFilters {
-  type: "selectFilters"
-  payload: SortTypes
-}
-
-type FilterActions = ResetFilters | ApplyFilters | SelectFilters
-
-interface ArtworkFilterContext {
-  state: ArtworkFilterContextState
-  dispatch: Dispatch<FilterActions>
 }
 
 export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
@@ -48,24 +18,26 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
           const filtersToApply = action.payload
           const appliedFilters = union(previouslyAppliedFilters, filtersToApply)
           return { appliedFilters, selectedFilters: [], selectedSortOption: artworkFilterState.selectedSortOption }
+
         case "selectFilters":
           const previouslySelectedFilters = artworkFilterState.selectedFilters
           const currentlySelectedFilter = action.payload
-          const isFilterAlreadySelected = previouslySelectedFilters.includes(currentlySelectedFilter)
-          const selectedFilter = []
+          const isFilterAlreadySelected = some(previouslySelectedFilters, currentlySelectedFilter)
+          const selectedFilter: Array<{ type: SortOptions; filter: FilterOptions }> = []
+
           if (isFilterAlreadySelected) {
             const mergedFilters = previouslySelectedFilters.push(currentlySelectedFilter)
             return {
               selectedFilters: mergedFilters,
               appliedFilters: filterState.appliedFilters,
-              selectedSortOption: currentlySelectedFilter,
+              selectedSortOption: currentlySelectedFilter.type,
             }
           } else {
             selectedFilter.push(currentlySelectedFilter)
             return {
               selectedFilters: selectedFilter,
               appliedFilters: filterState.appliedFilters,
-              selectedSortOption: currentlySelectedFilter,
+              selectedSortOption: currentlySelectedFilter.type,
             }
           }
         case "resetFilters":
@@ -77,3 +49,41 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
 
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
+
+interface ArtworkFilterContextState {
+  appliedFilters: Array<{ type: SortOptions; filter: FilterOptions }>
+  selectedFilters: Array<{ type: SortOptions; filter: FilterOptions }>
+  selectedSortOption: SortOptions
+}
+
+interface ResetFilters {
+  type: "resetFilters"
+}
+
+interface ApplyFilters {
+  type: "applyFilters"
+  payload: Array<{ type: SortOptions; filter: FilterOptions }>
+}
+
+interface SelectFilters {
+  type: "selectFilters"
+  payload: { type: SortOptions; filter: FilterOptions }
+}
+
+type FilterActions = ResetFilters | ApplyFilters | SelectFilters
+
+interface ArtworkFilterContext {
+  state: ArtworkFilterContextState
+  dispatch: Dispatch<FilterActions>
+}
+
+export type SortOptions =
+  | "Default"
+  | "Price (low to high)"
+  | "Price (high to low)"
+  | "Recently Updated"
+  | "Recently Added"
+  | "Artwork year (descending)"
+  | "Artwork year (ascending)"
+
+type FilterOptions = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"
