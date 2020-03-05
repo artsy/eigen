@@ -14,6 +14,9 @@ interface Props {
   isLoading?: boolean
   trackingFlow?: string
   contextModule?: string
+
+  // Give explicit width to avoid resizing after mount
+  width?: number
 }
 
 interface State {
@@ -28,21 +31,22 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
     itemMargin: 20,
   }
 
-  state = {
-    sectionDimension: 0,
-    sectionCount: 0,
-  }
+  state = this.props.width
+    ? this.layoutState(this.props.width)
+    : {
+        sectionDimension: 0,
+        sectionCount: 0,
+      }
 
   width = 0
 
-  layoutState(currentLayout): State {
-    const width = currentLayout.width
+  layoutState(width): State {
     const isPad = width > 600
     const isPadHorizontal = width > 900
 
     const sectionCount = isPad ? (isPadHorizontal ? 4 : 3) : 2
     const sectionMargins = this.props.sectionMargin * (sectionCount - 1)
-    const sectionDimension = (currentLayout.width - sectionMargins) / sectionCount
+    const sectionDimension = (width - sectionMargins) / sectionCount
 
     return {
       sectionCount,
@@ -51,11 +55,15 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   }
 
   onLayout = (event: LayoutChangeEvent) => {
+    if (this.props.width) {
+      // noop because we were given an explicit width
+      return
+    }
     const layout = event.nativeEvent.layout
     if (layout.width !== this.width) {
       // this means we've rotated or are on our initial load
       this.width = layout.width
-      this.setState(this.layoutState(layout))
+      this.setState(this.layoutState(layout.width))
     }
   }
 

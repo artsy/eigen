@@ -94,3 +94,6 @@ emission/Pod/Assets/*
 
 # query map
 data/complete.queryMap.json
+
+# native code hash
+native-code-checksum.hash

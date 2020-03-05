@@ -8,7 +8,7 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { compact, floor } from "lodash"
 import styled from "styled-components/native"
-import { CARD_WIDTH, CardScrollViewCard } from "../CardScrollView"
+import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
 
 interface Props {
   artist: ArtistCard_artist
@@ -48,7 +48,7 @@ export class ArtistCard extends React.Component<Props, State> {
     const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
 
     return (
-      <CardScrollViewCard onPress={this.handleTap.bind(this)}>
+      <CardRailCard onPress={this.handleTap.bind(this)}>
         <View>
           <ArtworkImageContainer>
             {artworkImages.length ? (
@@ -89,7 +89,7 @@ export class ArtistCard extends React.Component<Props, State> {
             </Button>
           </FollowButtonContainer>
         </View>
-      </CardScrollViewCard>
+      </CardRailCard>
     )
   }
 }

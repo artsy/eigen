@@ -11,7 +11,7 @@ import { options } from "lib/options"
 import { Router } from "lib/utils/router"
 
 import WorksForYou from "lib/Containers/WorksForYou"
-import ForYou from "./Components/ForYou"
+import { ForYouFragmentContainer } from "./Components/ForYou/ForYou"
 import Sales from "./Components/Sales"
 
 import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
@@ -72,7 +72,7 @@ const SalesTrampoline: React.FC<SalesRendererQueryResponse> = query => <Sales qu
   context_screen: screenSchemaForCurrentTab(props.initialTab),
   context_screen_owner_type: null,
 }))
-export default class Home extends React.Component<Props, State> {
+export class Home extends React.Component<Props, State> {
   tabView?: ScrollableTabView | any
 
   constructor(props) {
@@ -141,7 +141,7 @@ export default class Home extends React.Component<Props, State> {
               />
             </Tab>
             <Tab tabLabel=" For you">
-              <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
+              <ForYouRenderer render={renderWithLoadProgress(ForYouFragmentContainer)} />
             </Tab>
             <Tab tabLabel=" Auctions">
               <SalesRenderer render={renderWithLoadProgress(SalesTrampoline as any)} />

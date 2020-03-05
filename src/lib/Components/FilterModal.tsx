@@ -133,7 +133,7 @@ export class FilterOptions extends React.Component<FilterOptionsProps, FilterOpt
           <FilterHeader weight="medium" size="4" color="black100">
             Filter
           </FilterHeader>
-          <Sans mr={2} mt={2} size="3" color="black100">
+          <Sans mr={2} mt={2} size="4" color="black100">
             Clear all
           </Sans>
         </Flex>

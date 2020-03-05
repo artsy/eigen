@@ -14,7 +14,10 @@ import { Notification_notification } from "__generated__/Notification_notificati
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.
   notification: Notification_notification & { artistHref?: string }
+  width: number
 }
+
+const HORIZONTAL_PADDING = 20
 
 export class Notification extends React.Component<Props> {
   handleArtistTap() {
@@ -47,7 +50,10 @@ export class Notification extends React.Component<Props> {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
-          <GenericGrid artworks={notification.artworks.edges.map(({ node }) => node)} />
+          <GenericGrid
+            width={this.props.width - HORIZONTAL_PADDING * 2}
+            artworks={notification.artworks.edges.map(({ node }) => node)}
+          />
         </View>
       </View>
     )
@@ -67,8 +73,7 @@ interface Styles {
 const styles = StyleSheet.create<Styles>({
   container: {
     marginTop: 20,
-    marginLeft: 20,
-    marginRight: 20,
+    marginHorizontal: HORIZONTAL_PADDING,
   },
   header: {
     flexDirection: "row",

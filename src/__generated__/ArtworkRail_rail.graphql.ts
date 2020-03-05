@@ -1,69 +1,54 @@
 /* tslint:disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ArtworkRail_rail = {
-    readonly id: string;
+    readonly title: string | null;
     readonly key: string | null;
-    readonly params: {
-        readonly medium: string | null;
-        readonly price_range: string | null;
-    } | null;
+    readonly results: ReadonlyArray<{
+        readonly href: string | null;
+        readonly image: {
+            readonly imageURL: string | null;
+        } | null;
+    } | null> | null;
     readonly context: {
+        readonly __typename: "HomePageRelatedArtistArtworkModule";
         readonly artist?: {
+            readonly slug: string;
+            readonly internalID: string;
             readonly href: string | null;
+        } | null;
+        readonly basedOn?: {
+            readonly name: string | null;
         } | null;
         readonly href?: string | null;
     } | null;
-    readonly results?: ReadonlyArray<{
-        readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
-    } | null> | null;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkRailHeader_rail">;
     readonly " $refType": "ArtworkRail_rail";
 };
 
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "href",
-    "args": null,
-    "storageKey": null
-  }
-],
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
 v1 = [
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "artist",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "Artist",
-    "plural": false,
-    "selections": (v0/*: any*/)
-  }
+  (v0/*: any*/)
 ];
 return {
   "kind": "Fragment",
   "name": "ArtworkRail_rail",
   "type": "HomePageArtworkModule",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "fetchContent",
-      "type": "Boolean!",
-      "defaultValue": false
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "title",
       "args": null,
       "storageKey": null
     },
@@ -77,25 +62,30 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "params",
+      "name": "results",
       "storageKey": null,
       "args": null,
-      "concreteType": "HomePageModulesParams",
-      "plural": false,
+      "concreteType": "Artwork",
+      "plural": true,
       "selections": [
+        (v0/*: any*/),
         {
-          "kind": "ScalarField",
+          "kind": "LinkedField",
           "alias": null,
-          "name": "medium",
+          "name": "image",
+          "storageKey": null,
           "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "price_range",
-          "name": "priceRange",
-          "args": null,
-          "storageKey": null
+          "concreteType": "Image",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "imageURL",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         }
       ]
     },
@@ -110,61 +100,96 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "HomePageFollowedArtistArtworkModule",
-          "selections": (v1/*: any*/)
+          "type": "HomePageRelatedArtistArtworkModule",
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "__typename",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "artist",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artist",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "slug",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "internalID",
+                  "args": null,
+                  "storageKey": null
+                },
+                (v0/*: any*/)
+              ]
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "basedOn",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artist",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "name",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
         },
         {
           "kind": "InlineFragment",
-          "type": "HomePageRelatedArtistArtworkModule",
-          "selections": (v1/*: any*/)
+          "type": "HomePageFollowedArtistArtworkModule",
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "artist",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artist",
+              "plural": false,
+              "selections": (v1/*: any*/)
+            }
+          ]
         },
         {
           "kind": "InlineFragment",
           "type": "Fair",
-          "selections": (v0/*: any*/)
+          "selections": (v1/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "Gene",
-          "selections": (v0/*: any*/)
+          "selections": (v1/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "Sale",
-          "selections": (v0/*: any*/)
-        }
-      ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ArtworkRailHeader_rail",
-      "args": null
-    },
-    {
-      "kind": "Condition",
-      "passingValue": true,
-      "condition": "fetchContent",
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "results",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Artwork",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "FragmentSpread",
-              "name": "GenericGrid_artworks",
-              "args": null
-            }
-          ]
+          "selections": (v1/*: any*/)
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = 'c96da4feffc2958d57212bf6664e973f';
+(node as any).hash = '06ba0138ad04743753adf3dd569e2cd6';
 export default node;
