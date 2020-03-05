@@ -21,6 +21,9 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
   }
 
   const applyFilters = () => {
+    // TODO:  why is this tsc error being thrown?:
+    // Property 'type' does not exist on type 'readonly { readonly type: SortOption; readonly filter: FilterOption; }[]
+    // @ts-ignore: next-line
     dispatch({ type: "applyFilters", payload: [{ type: state.selectedFilters.type, filter: "sort" }] })
     closeModal()
   }
@@ -48,9 +51,9 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                   style={{ flex: 1 }}
                 />
                 <Box p={2}>
-                  <Button onPress={applyFilters} block width={100} variant="secondaryOutline">
+                  <ApplyButton onPress={applyFilters} block width={100} variant="secondaryOutline">
                     {getApplyButtonCount()}
-                  </Button>
+                  </ApplyButton>
                 </Box>
               </ModalInnerView>
             </ModalBackgroundView>
@@ -140,6 +143,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
 
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
+  padding-left: 35px;
 `
 
 export const BackgroundFill = styled(Flex)`
@@ -198,3 +202,4 @@ export const CurrentOption = styled(Serif)`
   color: ${color("black60")};
 `
 export const ClearAllButton = styled(TouchableOpacity)``
+export const ApplyButton = styled(Button)``

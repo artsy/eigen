@@ -1,6 +1,7 @@
 import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 
 export const CollectionFixture = {
+  " $fragmentRefs": null,
   slug: "street-art-now",
   id: "top-level-id",
   title: "Street Art Now",
