@@ -7,17 +7,16 @@ import { Animated, Easing, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, Track, track as _track } from "lib/utils/track"
-import Separator from "../../Separator"
-import Spinner from "../../Spinner"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
+import { Flex } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import Events from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import styled from "styled-components/native"
-import { CardScrollView } from "../CardScrollView"
+import { CardRailFlatList } from "../CardRailFlatList"
 
 const Animation = {
   yDelta: 20,
@@ -168,33 +167,32 @@ export class ArtistRail extends Component<Props, State> {
   }
 
   renderModuleResults() {
-    if (this.state.artists.length > 0) {
-      const cards = this.state.artists.map(artist => {
-        // Compose key, because an artist may appear twice on the home view in different modules.
-        const key = this.props.rail.id + artist.id
-        const { opacity, translateY } = artist._animatedValues
-        const style = { opacity, transform: [{ translateY }] }
-        return (
-          <Animated.View key={key} style={style}>
-            {artist.hasOwnProperty("__fragments") ? (
-              <ArtistCardContainer
-                artist={artist as any}
-                onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
-              />
-            ) : (
-              <ArtistCard
-                artist={artist as any}
-                onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
-                key={key}
-              />
-            )}
-          </Animated.View>
-        )
-      })
-      return <CardScrollView>{cards}</CardScrollView>
-    } else {
-      return <Spinner style={{ flex: 1, marginBottom: 20 }} />
-    }
+    return (
+      <CardRailFlatList<SuggestedArtist>
+        data={this.state.artists}
+        keyExtractor={artist => artist.id}
+        renderItem={({ item: artist }) => {
+          const key = this.props.rail.id + artist.id
+          const { opacity, translateY } = artist._animatedValues
+          const style = { opacity, transform: [{ translateY }] }
+          return (
+            <Animated.View key={key} style={style}>
+              {artist.hasOwnProperty("__fragments") ? (
+                <ArtistCardContainer
+                  artist={artist as any}
+                  onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+                />
+              ) : (
+                <ArtistCard
+                  artist={artist as any}
+                  onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+                />
+              )}
+            </Animated.View>
+          )
+        }}
+      />
+    )
   }
 
   title() {
@@ -212,23 +210,14 @@ export class ArtistRail extends Component<Props, State> {
   render() {
     return this.state.artists.length ? (
       <View>
-        <Title>{this.title()}</Title>
+        <Flex pl="2" pr="2">
+          <SectionTitle title={this.title()} />
+        </Flex>
         {this.renderModuleResults()}
-        <Separator />
       </View>
     ) : null
   }
 }
-
-// TODO: Specs say this should be Sans, but let's update all Home titles at once
-// and convert to styled-components
-const Title = styled.Text`
-  margin: 30px 20px 10px;
-  font-size: 30px;
-  /* stylelint-disable */
-  font-family: AGaramondPro-Regular;
-  /* stylelint-enable */
-`
 
 const setupSuggestedArtist = (artist, opacity, translateY) =>
   ({

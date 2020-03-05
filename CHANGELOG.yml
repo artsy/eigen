@@ -2,9 +2,11 @@ upcoming:
   version: 6.3.3
   date: TBD
   dev:
-    -
+    - Reduce number of images for initial render of for-you page - david
   user_facing:
     - Fix bug where the `Artists` tab scroll view would jump around while scrolling - david
+    - Replace for-you artwork carousel with horizontal rail - david
+    - Refresh for-you header styling - david
 
 releases:
   - version: 6.3.2

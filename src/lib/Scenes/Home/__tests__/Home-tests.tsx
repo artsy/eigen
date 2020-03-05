@@ -20,7 +20,7 @@ import { shallow } from "enzyme"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import { Tab } from "lib/Components/TabBar"
 import React from "react"
-import Home from "../index"
+import { Home } from "../Home"
 
 it("has the correct number of tabs", () => {
   const wrapper = shallow(<Home initialTab={0} isVisible={true} tracking={null} />)
