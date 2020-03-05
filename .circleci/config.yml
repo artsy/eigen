@@ -8,7 +8,9 @@ orbs:
 
 jobs:
   workflow-queue:
-    executor: node/build
+    executor:
+      name: node/default
+      tag: "12.13.1"
     steps:
       - queue/until_front_of_line:
           time: "30" # how long a queue will wait until the job exits
@@ -144,9 +146,19 @@ jobs:
           paths:
             - derived_data
 
+      - restore_cache:
+          keys:
+            - v4-test-success-{{ checksum "native-code-checksum.hash" }}
+
       - run:
-          name: Run tests
-          command: make ci-test
+          name: Run tests if native code has changed
+          command: "if [ ! -f xcode_test_raw.log ]; then make ci-test; fi"
+
+      - save_cache:
+          keys:
+            - v4-test-success-{{ checksum "native-code-checksum.hash" }}
+          paths:
+            - xcode_test_raw.log
 
       - store_artifacts:
           path: xcode_build_raw.log
