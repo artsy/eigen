@@ -110,7 +110,7 @@ export class ArtistRail extends Component<Props, State> {
                   ) {
                     edges {
                       node {
-                        ...ArtistCard_artist
+                        ...ArtistCard_artist @relay(mask: false)
                       }
                     }
                   }

@@ -52,7 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
-@property (nonatomic, weak, nullable) UIImageView *betaImageView;
 @property (nonatomic, weak, nullable) UIButton *backButton;
 @property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
 
@@ -200,12 +199,6 @@ NS_ASSUME_NONNULL_BEGIN
     backButton.layer.shadowOffset = CGSizeMake(0, 0);
     backButton.layer.shadowOpacity = 0.4;
 
-    // A beta button in the top right
-    UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
-    betaImage.translatesAutoresizingMaskIntoConstraints = false;
-    self.betaImageView = betaImage;
-    [self.view addSubview:betaImage];
-
     ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
     [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];
     [resetARButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
@@ -223,9 +216,6 @@ NS_ASSUME_NONNULL_BEGIN
         [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
         [backButton.heightAnchor constraintEqualToConstant:50.0],
         [backButton.widthAnchor constraintEqualToConstant:50.0],
-
-        [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
-        [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20],
 
         [resetARButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
         [resetARButton.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
@@ -425,7 +415,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     if ([self.informationView isAtLastState]) {
         [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
-            self.betaImageView.alpha = self.betaImageView.alpha == 1 ? 0 : 1;
             self.backButton.alpha = self.backButton.alpha == 1 ? 0 : 1;
             self.resetARButton.alpha = self.resetARButton.alpha == 1 ? 0 : 1;
         }];

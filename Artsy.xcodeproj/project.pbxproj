@@ -392,9 +392,6 @@
 		6016120420B7446800FD54B0 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120120B7446700FD54B0 /* ARVIRModalClose.png */; };
 		6016120520B7446800FD54B0 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120220B7446800FD54B0 /* ARVIRModalClose@2x.png */; };
 		6016120620B7446800FD54B0 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120320B7446800FD54B0 /* ARVIRModalClose@3x.png */; };
-		6016120A20B744A400FD54B0 /* ARVIRBeta@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120720B744A300FD54B0 /* ARVIRBeta@3x.png */; };
-		6016120B20B744A400FD54B0 /* ARVIRBeta.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120820B744A300FD54B0 /* ARVIRBeta.png */; };
-		6016120C20B744A400FD54B0 /* ARVIRBeta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120920B744A300FD54B0 /* ARVIRBeta@2x.png */; };
 		6016C190178C2B7F008EC8E7 /* AREmbeddedModelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6016C18F178C2B7F008EC8E7 /* AREmbeddedModelsViewController.m */; };
 		6016C198178C2C33008EC8E7 /* ARArtworkMasonryModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6016C197178C2C33008EC8E7 /* ARArtworkMasonryModule.m */; };
 		6016C199178C2C37008EC8E7 /* ARArtworkFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6016C194178C2C06008EC8E7 /* ARArtworkFlowModule.m */; };
@@ -1325,9 +1322,6 @@
 		6016120120B7446700FD54B0 /* ARVIRModalClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRModalClose.png; sourceTree = "<group>"; };
 		6016120220B7446800FD54B0 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
 		6016120320B7446800FD54B0 /* ARVIRModalClose@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@3x.png"; sourceTree = "<group>"; };
-		6016120720B744A300FD54B0 /* ARVIRBeta@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBeta@3x.png"; sourceTree = "<group>"; };
-		6016120820B744A300FD54B0 /* ARVIRBeta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRBeta.png; sourceTree = "<group>"; };
-		6016120920B744A300FD54B0 /* ARVIRBeta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBeta@2x.png"; sourceTree = "<group>"; };
 		6016C18E178C2B7F008EC8E7 /* AREmbeddedModelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelsViewController.h; sourceTree = "<group>"; };
 		6016C18F178C2B7F008EC8E7 /* AREmbeddedModelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsViewController.m; sourceTree = "<group>"; };
 		6016C193178C2C06008EC8E7 /* ARArtworkFlowModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARArtworkFlowModule.h; sourceTree = "<group>"; };
@@ -3742,9 +3736,6 @@
 				6016120120B7446700FD54B0 /* ARVIRModalClose.png */,
 				6016120220B7446800FD54B0 /* ARVIRModalClose@2x.png */,
 				6016120320B7446800FD54B0 /* ARVIRModalClose@3x.png */,
-				6016120820B744A300FD54B0 /* ARVIRBeta.png */,
-				6016120920B744A300FD54B0 /* ARVIRBeta@2x.png */,
-				6016120720B744A300FD54B0 /* ARVIRBeta@3x.png */,
 				609A42B920C1D3F000B1B933 /* ARVIRTick.png */,
 				609A42BA20C1D3F100B1B933 /* ARVIRTick@2x.png */,
 				609A42BB20C1D3F100B1B933 /* ARVIRTick@3x.png */,
@@ -4379,7 +4370,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6016120B20B744A400FD54B0 /* ARVIRBeta.png in Resources */,
 				3C4AE98319094DAA009C0E8B /* MapAnnotation_Installation@2x.png in Resources */,
 				608B706D17D4A1C80088A56C /* Artwork_Icon_VIR.png in Resources */,
 				5E80CA822093C29500BCFD82 /* CircleCheckGreen@3x.png in Resources */,
@@ -4502,7 +4492,6 @@
 				5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */,
 				3C4AE96B19094969009C0E8B /* SearchThumb_LightGrey@2x.png in Resources */,
 				51DA12251B596035001B6F2A /* RefreshIcon@2x.png in Resources */,
-				6016120C20B744A400FD54B0 /* ARVIRBeta@2x.png in Resources */,
 				6016120520B7446800FD54B0 /* ARVIRModalClose@2x.png in Resources */,
 				608B706E17D4A1C80088A56C /* Artwork_Icon_VIR@2x.png in Resources */,
 				E6FFEAB619C7925600A0D7DE /* splash_1@2x~iphone.jpg in Resources */,
@@ -4516,7 +4505,6 @@
 				0631FA6F1705E77F000A5ED3 /* mail.html in Resources */,
 				5EFB45741F22831000328A6B /* static_sale_data.graphql in Resources */,
 				3C4AE98A19094DAA009C0E8B /* MapAnnotation_VIP@2x.png in Resources */,
-				6016120A20B744A400FD54B0 /* ARVIRBeta@3x.png in Resources */,
 				3C4AE98019094DAA009C0E8B /* MapAnnotation_GenericEvent@2x.png in Resources */,
 				5EFB45721F2280CE00328A6B /* favorites.graphql in Resources */,
 				3C4AE98619094DAA009C0E8B /* MapAnnotation_Saved@2x.png in Resources */,
