@@ -10,11 +10,9 @@ const path = require("path")
 const spawnSync = require("child_process").spawnSync
 const chalk = require("chalk").default
 const Octokit = require("@octokit/rest")
-const awaitPreviousBuilds = require("./await-previous-builds")
 
 async function main() {
   try {
-    await awaitPreviousBuilds()
     await updateRepo({
       repo: { owner: "artsy", repo: "metaphysics" },
       branch: "update-emission-query-map",

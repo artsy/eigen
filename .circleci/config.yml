@@ -4,8 +4,17 @@ version: 2.1
 
 orbs:
   node: circleci/node@1.1.6
+  queue: eddiewebb/queue@1.0.110
 
 jobs:
+  workflow-queue:
+    executor: node/build
+    steps:
+      - queue/until_front_of_line:
+          time: "30" # how long a queue will wait until the job exits
+          only-on-branch: master # restrict queueing to a specific branch (default *)
+          consider-job: false # block whole workflow if any job still running
+
   build-and-test:
     environment:
       # Public - Yay
@@ -179,8 +188,15 @@ workflows:
   version: 2
   build-test:
     jobs:
-      - build-and-test
+      # make sure that previous builds have finished before deploying
+      - workflow-queue
+      - build-and-test:
+          requires:
+            - workflow-queue
       - update-metaphysics:
+          requires:
+            - workflow-queue
+            - build-and-test
           filters:
             branches:
               only:
