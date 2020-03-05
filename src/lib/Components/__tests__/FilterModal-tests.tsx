@@ -1,4 +1,4 @@
-import { CheckIcon, Sans, Theme } from "@artsy/palette"
+import { CheckIcon, Sans, Theme, CloseIcon } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { act, create } from "react-test-renderer"
@@ -21,6 +21,7 @@ import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
+let closeModalMock = jest.fn()
 
 beforeEach(() => {
   mockNavigator = new MockNavigator()
@@ -29,6 +30,10 @@ beforeEach(() => {
     selectedFilters: [],
     appliedFilters: [],
   }
+})
+
+afterEach(() => {
+  jest.resetAllMocks()
 })
 
 const MockFilterScreen = ({ initialState }) => {
@@ -42,7 +47,7 @@ const MockFilterScreen = ({ initialState }) => {
           dispatch,
         }}
       >
-        <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
+        <FilterOptions closeModal={closeModalMock} navigator={mockNavigator as any} />
       </ArtworkFilterContext.Provider>
     </Theme>
   )
@@ -111,64 +116,80 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to navigate back to filter screen from sort screen ", () => {
-    const sortScreen = create(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            dispatch: null,
-          }}
-        >
-          <SortOptionsScreen navigator={mockNavigator as any} />
-        </ArtworkFilterContext.Provider>
-      </Theme>
-    )
+    const initialState: ArtworkFilterContextState = {
+      selectedSortOption: "Default",
+      selectedFilters: [],
+      appliedFilters: [],
+    }
 
-    const filterScreen = create(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            dispatch: null,
-          }}
-        >
-          <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
-        </ArtworkFilterContext.Provider>
-      </Theme>
-    )
+    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
 
-    const instance = sortScreen.root.findByType(ArrowLeftIconContainer)
+    // const sortScreen = mount(<MockSortScreen initialState={initialState} />)
 
-    act(() => instance.props.onPress())
+    // sortScreen
+    //   .find(ArrowLeftIconContainer)
+    //   .props()
+    //   .onPress()
 
+    filterScreen
+      .find(TouchableOptionListItemRow)
+      .at(0)
+      .props()
+      .onPress()
+
+    expect(mockNavigator.nextRoute())
+    const nextRoute = mockNavigator.nextRoute()
     mockNavigator.pop()
 
-    const getPreviousScreenTitle = component => component.root.findByType(FilterHeader).props.children
+    const sortScreen = mount(
+      <Theme>
+        <ArtworkFilterContext.Provider
+          value={{
+            state,
+            dispatch: null,
+          }}
+        >
+          {React.createElement(nextRoute.component, {
+            ...nextRoute.passProps,
+            nextScreen: true,
+            navigator: MockNavigator,
+            relay: {
+              environment: null,
+            },
+          })}
+        </ArtworkFilterContext.Provider>
+      </Theme>
+    )
 
-    expect(getPreviousScreenTitle(filterScreen)).toEqual("Filter")
+    sortScreen
+      .find(ArrowLeftIconContainer)
+      .props()
+      .onPress()
+
+    const filterRoute = mockNavigator.nextRoute()
+    console.log("FILTER ROUTE?", filterRoute)
+
+    // mockNavigator.pop()
+
+    // const getPreviousScreenTitle = component => component.root.findByType(FilterHeader).props.children
+
+    // expect(getPreviousScreenTitle(filterScreen)).toEqual("Filter")
   })
 
   it("allows users to exit filter modal when selecting close icon", () => {
-    const modalClosed = jest.fn()
+    const initialState: ArtworkFilterContextState = {
+      selectedSortOption: "Price (low to high)",
+      selectedFilters: [],
+      appliedFilters: [],
+    }
 
-    const filterScreen = create(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            dispatch: () => ({ appliedFilters: [], selectedFilters: [], selectedSortOption: "Default" }),
-          }}
-        >
-          <FilterOptions closeModal={modalClosed} navigator={mockNavigator as any} />
-        </ArtworkFilterContext.Provider>
-      </Theme>
-    )
+    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
 
-    const instance = filterScreen.root.findByType(CloseIconContainer)
-
-    act(() => instance.props.onPress())
-
-    expect(modalClosed).toHaveBeenCalled()
+    filterScreen
+      .find(CloseIconContainer)
+      .props()
+      .onPress()
+    expect(closeModalMock).toHaveBeenCalled()
   })
 
   it("only displays a check mark next to the currently selected sort option on the sort screen", () => {
@@ -180,10 +201,8 @@ describe("Filter modal navigation flow", () => {
     const sortScreen = mount(<MockSortScreen initialState={initialState} />)
 
     const selectedRow = sortScreen.find(SortOptionListItemRow).at(2)
-
-    const checkMark = selectedRow.find(CheckIcon)
-
-    expect(checkMark).toHaveLength(1)
+    expect(selectedRow.text()).toEqual("Price (high to low)")
+    expect(selectedRow.find(CheckIcon)).toHaveLength(1)
   })
 
   it("displays the currently selected sort option on the filter screen", () => {
