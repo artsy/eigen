@@ -4,8 +4,19 @@ version: 2.1
 
 orbs:
   node: circleci/node@1.1.6
+  queue: eddiewebb/queue@1.0.110
 
 jobs:
+  workflow-queue:
+    executor:
+      name: node/default
+      tag: "12.13.1"
+    steps:
+      - queue/until_front_of_line:
+          time: "30" # how long a queue will wait until the job exits
+          only-on-branch: master # restrict queueing to a specific branch (default *)
+          consider-job: false # block whole workflow if any job still running
+
   build-and-test:
     environment:
       # Public - Yay
@@ -79,9 +90,20 @@ jobs:
           name: List devices
           command: instruments -s device
 
+      - restore_cache:
+          keys:
+            - v1-yarn-{{ checksum "yarn.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v1-yarn-
+
       - run:
           name: Install node modules
           command: yarn install
+
+      - save_cache:
+          key: v1-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
       - run:
           name: Compile query map
@@ -107,12 +129,34 @@ jobs:
             - Pods
 
       - run:
+          name: Generate native code checksum
+          command: node scripts/generate-native-code-checksum.js
+
+      - restore_cache:
+          keys:
+            - v4-derived-data-{{ checksum "native-code-checksum.hash" }}
+
+      - run:
           name: Pre-Build App
           command: make ci
 
+      - save_cache:
+          key: v4-derived-data-{{ checksum "native-code-checksum.hash" }}
+          paths:
+            - derived_data
+
+      - restore_cache:
+          keys:
+            - v4-test-success-{{ checksum "native-code-checksum.hash" }}
+
       - run:
-          name: Run tests
-          command: make ci-test
+          name: Run tests if native code has changed
+          command: "if [ ! -f xcode_test_raw.log ]; then make ci-test; fi"
+
+      - save_cache:
+          key: v4-test-success-{{ checksum "native-code-checksum.hash" }}
+          paths:
+            - xcode_test_raw.log
 
       - store_artifacts:
           path: xcode_build_raw.log
@@ -179,8 +223,15 @@ workflows:
   version: 2
   build-test:
     jobs:
-      - build-and-test
+      # make sure that previous builds have finished before deploying
+      - workflow-queue
+      - build-and-test:
+          requires:
+            - workflow-queue
       - update-metaphysics:
+          requires:
+            - workflow-queue
+            - build-and-test
           filters:
             branches:
               only:
