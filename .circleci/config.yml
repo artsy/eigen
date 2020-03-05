@@ -141,8 +141,7 @@ jobs:
           command: make ci
 
       - save_cache:
-          keys:
-            - v4-derived-data-{{ checksum "native-code-checksum.hash" }}
+          key: v4-derived-data-{{ checksum "native-code-checksum.hash" }}
           paths:
             - derived_data
 
@@ -155,8 +154,7 @@ jobs:
           command: "if [ ! -f xcode_test_raw.log ]; then make ci-test; fi"
 
       - save_cache:
-          keys:
-            - v4-test-success-{{ checksum "native-code-checksum.hash" }}
+          key: v4-test-success-{{ checksum "native-code-checksum.hash" }}
           paths:
             - xcode_test_raw.log
 
