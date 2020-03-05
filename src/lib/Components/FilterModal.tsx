@@ -102,11 +102,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
         <FilterHeader weight="medium" size="4" color="black100">
           Filter
         </FilterHeader>
-        <TouchableOpacity onPress={clearAllFilters}>
+        <ClearAllButton onPress={clearAllFilters}>
           <Sans mr={2} mt={2} size="4" color="black100">
             Clear all
           </Sans>
-        </TouchableOpacity>
+        </ClearAllButton>
       </Flex>
       <Flex>
         <FlatList<{ onTap: () => void; type: string }>
@@ -197,3 +197,4 @@ const ModalInnerView = styled.View`
 export const CurrentOption = styled(Serif)`
   color: ${color("black60")};
 `
+export const ClearAllButton = styled(TouchableOpacity)``
