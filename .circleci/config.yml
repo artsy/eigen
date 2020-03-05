@@ -88,9 +88,20 @@ jobs:
           name: List devices
           command: instruments -s device
 
+      - restore_cache:
+          keys:
+            - v1-yarn-{{ checksum "yarn.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v1-yarn-
+
       - run:
           name: Install node modules
           command: yarn install
+
+      - save_cache:
+          key: v1-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
       - run:
           name: Compile query map
