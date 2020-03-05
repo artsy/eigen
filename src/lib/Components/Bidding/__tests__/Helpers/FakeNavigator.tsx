@@ -24,6 +24,14 @@ export class FakeNavigator {
     return this.stack.length
   }
 
+  nextRoute() {
+    return this.stack[this.stack.length - 1]
+  }
+
+  previousRoute() {
+    return this.stack[this.stack.length - 2]
+  }
+
   nextStep() {
     const currentRoute = this.stack[this.stack.length - 1]
 

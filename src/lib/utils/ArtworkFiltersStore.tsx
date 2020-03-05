@@ -50,7 +50,7 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
-interface ArtworkFilterContextState {
+export interface ArtworkFilterContextState {
   readonly appliedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
   readonly selectedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
   readonly selectedSortOption: SortOption
@@ -70,7 +70,7 @@ interface SelectFilters {
   payload: { type: SortOption; filter: FilterOption }
 }
 
-type FilterActions = ResetFilters | ApplyFilters | SelectFilters
+export type FilterActions = ResetFilters | ApplyFilters | SelectFilters
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState
@@ -86,4 +86,4 @@ export type SortOption =
   | "Artwork year (descending)"
   | "Artwork year (ascending)"
 
-type FilterOption = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"
+export type FilterOption = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"

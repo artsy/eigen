@@ -70,7 +70,6 @@ type FilterOptions = Array<{ type: string; onTap: () => void }>
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const handleNavigationToSortScreen = () => {
     navigator.push({
       component: SortOptions,
@@ -84,12 +83,12 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
   ])
 
   const clearAllFilters = () => {
-    dispatch({ type: "resetFilters" }) // clears all applied filters
+    dispatch({ type: "resetFilters" })
   }
 
   const handleTappingCloseIcon = () => {
     closeModal()
-    dispatch({ type: "resetFilters" }) // clears all applied filters without saving for now
+    dispatch({ type: "resetFilters" })
   }
 
   return (
