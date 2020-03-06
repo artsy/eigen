@@ -60,8 +60,10 @@ it("looks correct when rendered", () => {
 it("looks correct when rendered with fairs missing artworks", () => {
   const fairsCopy = cloneDeep(fairsModule)
   fairsCopy.results.forEach(result => {
-    ;(result.followedArtistArtworks as any).edges = []
-    ;(result.otherArtworks as any).edges = []
+    // @ts-ignore
+    result.followedArtistArtworks.edges = []
+    // @ts-ignore
+    result.otherArtworks.edges = []
   })
   expect(() =>
     renderer
