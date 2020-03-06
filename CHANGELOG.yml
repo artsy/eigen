@@ -9,6 +9,7 @@ upcoming:
     - Replace for-you artwork carousel with horizontal rail - david
     - Refresh for-you header styling - david
     - All new fair cards - ash
+    - Add a sale-level toggle to the request lot condition report feature - yuki
 
 releases:
   - version: 6.3.2

@@ -61,6 +61,7 @@ export class Artwork extends React.Component<Props, State> {
   shouldRenderDetails = () => {
     const {
       category,
+      canRequestLotConditionsReport,
       conditionDescription,
       signature,
       signatureInfo,
@@ -71,8 +72,10 @@ export class Artwork extends React.Component<Props, State> {
       manufacturer,
       image_rights,
     } = this.state.artworkFull
-    if (
+
+    return !!(
       category ||
+      canRequestLotConditionsReport ||
       conditionDescription ||
       signature ||
       signatureInfo ||
@@ -82,11 +85,7 @@ export class Artwork extends React.Component<Props, State> {
       publisher ||
       manufacturer ||
       image_rights
-    ) {
-      return true
-    } else {
-      return false
-    }
+    )
   }
 
   componentDidMount() {
@@ -267,6 +266,7 @@ export class Artwork extends React.Component<Props, State> {
               isGalleryAuction
             }
             category
+            canRequestLotConditionsReport
             conditionDescription {
               details
             }

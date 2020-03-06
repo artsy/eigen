@@ -30,7 +30,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
       {
         title: "Condition",
         value:
-          enableLotConditionReport && artwork.isBiddable ? (
+          enableLotConditionReport && artwork.canRequestLotConditionsReport ? (
             <RequestConditionReportQueryRenderer artworkID={artwork.slug} />
           ) : (
             artwork.conditionDescription && artwork.conditionDescription.details
@@ -106,7 +106,7 @@ export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDe
       publisher
       manufacturer
       image_rights: imageRights
-      isBiddable
+      canRequestLotConditionsReport
       saleArtwork {
         internalID
       }
