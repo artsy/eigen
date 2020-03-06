@@ -33,7 +33,7 @@
     "prettier-write": "prettier --write",
     "relay": "relay-compiler",
     "start-packager": "rm -rf ./node_modules/.cache/babel-loader && env REACT_DEBUGGER=\"$([ -d '/Applications/React Native Debugger.app' ] && echo \"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\")\" node node_modules/react-native/local-cli/cli.js start",
-    "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
+    "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch'",
     "start": "yarn start-servers",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
