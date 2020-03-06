@@ -129,21 +129,12 @@ jobs:
             - Pods
 
       - run:
-          name: Generate native code checksum
-          command: node scripts/generate-native-code-checksum.js
-
-      - restore_cache:
-          keys:
-            - v4-derived-data-{{ checksum "native-code-checksum.hash" }}
-
-      - run:
           name: Pre-Build App
           command: make ci
 
-      - save_cache:
-          key: v4-derived-data-{{ checksum "native-code-checksum.hash" }}
-          paths:
-            - derived_data
+      - run:
+          name: Generate native code checksum
+          command: node scripts/generate-native-code-checksum.js
 
       - restore_cache:
           keys:
