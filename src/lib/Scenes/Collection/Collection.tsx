@@ -8,6 +8,7 @@ import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
+import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFiltersStore"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
@@ -105,34 +106,55 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     const isArtworkFilterEnabled = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
 
     return (
-      <Theme>
-        <View style={{ flex: 1 }}>
-          <FlatList
-            onViewableItemsChanged={this.onViewableItemsChanged}
-            viewabilityConfig={this.viewabilityConfig}
-            keyExtractor={(_item, index) => String(index)}
-            data={sections}
-            ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-            renderItem={item => (
-              <Box px={2} pb={2}>
-                {this.renderItem(item)}
-              </Box>
-            )}
-          />
-          {isArtworkGridVisible && isArtworkFilterEnabled && (
-            <FilterArtworkButtonContainer>
-              <TouchableWithoutFeedback onPress={this.handleFilterArtworksModal.bind(this)}>
-                <FilterArtworkButton px="2">
-                  <FilterIcon fill="white100" />
-                  <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                    Filter
-                  </Sans>
-                </FilterArtworkButton>
-              </TouchableWithoutFeedback>
-            </FilterArtworkButtonContainer>
-          )}
-        </View>
-      </Theme>
+      <ArtworkFilterGlobalStateProvider>
+        <ArtworkFilterContext.Consumer>
+          {value => {
+            return (
+              <Theme>
+                <View style={{ flex: 1 }}>
+                  <FlatList
+                    onViewableItemsChanged={this.onViewableItemsChanged}
+                    viewabilityConfig={this.viewabilityConfig}
+                    keyExtractor={(_item, index) => String(index)}
+                    data={sections}
+                    ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
+                    renderItem={item => (
+                      <Box px={2} pb={2}>
+                        {this.renderItem(item)}
+                      </Box>
+                    )}
+                  />
+                  {isArtworkGridVisible && isArtworkFilterEnabled && (
+                    <FilterArtworkButtonContainer>
+                      <TouchableWithoutFeedback onPress={this.handleFilterArtworksModal.bind(this)}>
+                        <FilterArtworkButton
+                          px="2"
+                          isFilterCountVisible={value.state.appliedFilters.length > 0 ? true : false}
+                        >
+                          <FilterIcon fill="white100" />
+                          <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+                            Filter
+                          </Sans>
+                          {value.state.appliedFilters.length > 0 && (
+                            <>
+                              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                                {"\u2022"}
+                              </Sans>
+                              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                                {value.state.appliedFilters.length}
+                              </Sans>
+                            </>
+                          )}
+                        </FilterArtworkButton>
+                      </TouchableWithoutFeedback>
+                    </FilterArtworkButtonContainer>
+                  )}
+                </View>
+              </Theme>
+            )
+          }}
+        </ArtworkFilterContext.Consumer>
+      </ArtworkFilterGlobalStateProvider>
     )
   }
 }
@@ -146,8 +168,7 @@ export const FilterArtworkButtonContainer = styled(Flex)`
   flex-direction: row;
 `
 
-export const FilterArtworkButton = styled(Flex)`
-  width: 110px;
+export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean }>`
   border-radius: 20;
   background-color: ${color("black100")};
   align-items: center;
