@@ -55,7 +55,7 @@ export interface MockRelayRendererState {
  * metaphysics schema.
  *
  * @note
- * Use this component in storybooks, but not tests. Because Relay works
+ * Try not to use this in tests. Because Relay works
  * asynchronously _and_ a tree may contain nested `QueryRenderer` components,
  * for tests you should usually use {@link renderRelayTree}.
  *

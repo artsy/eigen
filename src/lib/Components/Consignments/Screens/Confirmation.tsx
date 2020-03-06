@@ -10,7 +10,7 @@ import Welcome from "./Welcome"
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route
-  /** Used for testing and storybooks, it's expected to be undefined in prod */
+  /** Used for testing, it's expected to be undefined in prod */
   initialState?: SubmissionTypes
 
   /** Callback for when the spinner has been showing for after 1 second */
