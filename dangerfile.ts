@@ -43,7 +43,6 @@ const testFilesThatDontExist = correspondingTestsForAppFiles
   .filter(f => !f.includes("Routes")) // skip routes, kinda untestable
   .filter(f => !f.includes("NativeModules")) // skip modules that are native, they are untestable
   .filter(f => !f.includes("lib/relay/")) // skip modules that are native, they are untestable
-  .filter(f => !f.includes("Storybooks/")) // skip modules that are native, they are untestable
   .filter(f => !f.includes("fixtures")) // skip modules that are native, they are untestable
   .filter(f => !fs.existsSync(f))
 

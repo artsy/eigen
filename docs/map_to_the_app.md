@@ -30,12 +30,6 @@ Links should point to specific commits, and not a branch (in case the branch or 
 - Our use of [styled-components](https://www.styled-components.com) was supplemented by [styled-system](https://github.com/jxnblk/styled-system) in [#1016](https://github.com/artsy/emission/pull/1016).
 - [Example pull request migrating a component from styled-components to styled-system](https://github.com/artsy/emission/pull/1031)
 
-### Storybooks
-
-We use storybooks for rapid prototyping and quick feedback when we change code.
-
-- [New Bid Flow stories](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/lib/Components/Bidding/__stories__/BidFlow.story.tsx)
-
 ### Unit Testing
 
 Unit testing on Emission is a bit all over the place. Here are some great examples of what tests and test coverage should look like.

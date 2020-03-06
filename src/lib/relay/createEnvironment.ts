@@ -10,7 +10,7 @@ import { timingMiddleware } from "./middlewares/timingMiddleware"
 const Emission = NativeModules.Emission
 const Constants = NativeModules.ARCocoaConstantsModule
 
-/// WARNING: Creates a whole new, separate Relay environment. Useful for testing and in Storybooks.
+/// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
 export default function createEnvironment() {
   const network = new RelayNetworkLayer([

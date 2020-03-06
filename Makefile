@@ -60,7 +60,6 @@ oss:
 	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
 
 artsy:
-	git submodule update --init
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
 

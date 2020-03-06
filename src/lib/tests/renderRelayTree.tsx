@@ -28,8 +28,7 @@ export const RelayFinishedLoading: RenderUntilPredicate<any, any, any> = tree =>
  * by default.
  *
  * @note
- * Use this function in tests, but not storybooks. For storybooks you should
- * usually use {@link MockRelayRenderer}.
+ * Use this function in tests.
  *
  * @param params
  * See {@link MockRelayRenderer}
