@@ -32,17 +32,17 @@ export class FairsRail extends Component<Props, null> {
         <CardRailFlatList<FairItem>
           data={this.props.fairs_module.results}
           renderItem={({ item: result }) => {
-            const artworks = take(
+            // Fairs are expected to always have >= 2 artworks and a hero image.
+            // We can make assumptions about this in UI layout, but should still
+            // be cautious to avoid crashes if this assumption is broken.
+            const artworkImageURLs = take(
               concat(
-                result.followedArtistArtworks.edges.map(edge => edge.node),
-                result.otherArtworks.edges.map(edge => edge.node)
+                [result.image.url],
+                result.followedArtistArtworks.edges.map(edge => edge.node.image.url),
+                result.otherArtworks.edges.map(edge => edge.node.image.url)
               ),
               3
             )
-            // Fairs are expected to always have >= 3 artworks. We can make
-            // assumptions about this in UI layout, but should still be cautious
-            // to avoid crashes if this assumption is broken.
-            const artworkImageURLs = artworks.map(artwork => artwork.image.url)
             return (
               <CardRailCard
                 key={result.slug}
@@ -96,6 +96,7 @@ const ArtworkImageContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  overflow: hidden;
 `
 
 const MetadataContainer = styled.View`
@@ -114,7 +115,10 @@ export default createFragmentContainer(FairsRail, {
         }
         name
         exhibitionPeriod
-        followedArtistArtworks: filterArtworksConnection(first: 3, includeArtworksByFollowedArtists: true) {
+        image {
+          url(version: "large")
+        }
+        followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
           edges {
             node {
               image {
@@ -123,7 +127,7 @@ export default createFragmentContainer(FairsRail, {
             }
           }
         }
-        otherArtworks: filterArtworksConnection(first: 3) {
+        otherArtworks: filterArtworksConnection(first: 2) {
           edges {
             node {
               image {

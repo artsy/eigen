@@ -98,6 +98,9 @@ exports[`looks correct when rendered 1`] = `
             ],
           },
           "id": "the-fair",
+          "image": Object {
+            "url": "https://example.com/hero.jpg",
+          },
           "name": "The Fair",
           "otherArtworks": Object {
             "edges": Array [
@@ -125,7 +128,7 @@ exports[`looks correct when rendered 1`] = `
             ],
           },
           "profile": Object {
-            "href": "https://neopets.com",
+            "slug": "https://neopets.com",
           },
           "slug": "the-fair",
         },
@@ -147,26 +150,15 @@ exports[`looks correct when rendered 1`] = `
                   },
                 },
               },
-              Object {
-                "node": Object {
-                  "image": Object {
-                    "url": "https://example.com/image.jpg",
-                  },
-                },
-              },
             ],
           },
           "id": "the-profileless-fair",
+          "image": Object {
+            "url": "https://example.com/hero.jpg",
+          },
           "name": "The Profileless Fair: You Should Not See Me in Snapshots",
           "otherArtworks": Object {
             "edges": Array [
-              Object {
-                "node": Object {
-                  "image": Object {
-                    "url": "https://example.com/image.jpg",
-                  },
-                },
-              },
               Object {
                 "node": Object {
                   "image": Object {
@@ -274,6 +266,7 @@ exports[`looks correct when rendered 1`] = `
                     "flexDirection": "row",
                     "height": 180,
                     "justifyContent": "space-between",
+                    "overflow": "hidden",
                     "width": "100%",
                   },
                 ]
@@ -281,7 +274,7 @@ exports[`looks correct when rendered 1`] = `
             >
               <AROpaqueImageView
                 height={180}
-                imageURL="https://example.com/image.jpg"
+                imageURL="https://example.com/hero.jpg"
                 width={180}
               />
               <View
@@ -430,6 +423,7 @@ exports[`looks correct when rendered 1`] = `
                     "flexDirection": "row",
                     "height": 180,
                     "justifyContent": "space-between",
+                    "overflow": "hidden",
                     "width": "100%",
                   },
                 ]
@@ -437,7 +431,7 @@ exports[`looks correct when rendered 1`] = `
             >
               <AROpaqueImageView
                 height={180}
-                imageURL="https://example.com/image.jpg"
+                imageURL="https://example.com/hero.jpg"
                 width={180}
               />
               <View
