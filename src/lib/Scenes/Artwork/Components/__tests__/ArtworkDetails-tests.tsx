@@ -28,7 +28,7 @@ describe("Artwork Details", () => {
       manufacturer: null,
       image_rights: null,
       slug: "some-slug",
-      isBiddable: false,
+      canRequestLotConditionsReport: false,
       saleArtwork: {
         internalID: "some-id",
       },
@@ -59,7 +59,7 @@ describe("Artwork Details", () => {
       manufacturer: null,
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
-      isBiddable: false,
+      canRequestLotConditionsReport: false,
       saleArtwork: {
         internalID: "some-id",
       },
@@ -75,7 +75,7 @@ describe("Artwork Details", () => {
     expect(component.text()).not.toContain("Signature")
   })
 
-  it("shows condition description if present and not biddable", () => {
+  it("shows condition description if present and lot condition report disabled", () => {
     const testArtwork: ArtworkDetails_artwork = {
       " $refType": null,
       category: "Oil on canvas",
@@ -91,7 +91,7 @@ describe("Artwork Details", () => {
       manufacturer: null,
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
-      isBiddable: false,
+      canRequestLotConditionsReport: false,
       saleArtwork: {
         internalID: "some-id",
       },
@@ -106,7 +106,7 @@ describe("Artwork Details", () => {
     expect(component.text()).toContain("Amazing condition")
   })
 
-  it("shows request condition report if biddable and feature flag is enabled", () => {
+  it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
     NativeModules.Emission = {
       options: {
         AROptionsLotConditionReport: true,
@@ -128,7 +128,7 @@ describe("Artwork Details", () => {
       manufacturer: null,
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
-      isBiddable: true,
+      canRequestLotConditionsReport: true,
       saleArtwork: {
         internalID: "some-id",
       },
@@ -145,7 +145,7 @@ describe("Artwork Details", () => {
     expect(requestReportQueryRenderer.length).toEqual(1)
   })
 
-  it("does not show request condition report if biddable and feature flag is disabled", () => {
+  it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
     NativeModules.Emission = {
       options: {
         AROptionsLotConditionReport: false,
@@ -167,7 +167,7 @@ describe("Artwork Details", () => {
       manufacturer: null,
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
-      isBiddable: true,
+      canRequestLotConditionsReport: true,
       saleArtwork: {
         internalID: "some-id",
       },

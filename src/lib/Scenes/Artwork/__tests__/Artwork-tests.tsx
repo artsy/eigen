@@ -99,6 +99,31 @@ describe("Artwork", () => {
     expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
   })
 
+  it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockMostRecentOperation("ArtworkTestsQuery")
+    mockMostRecentOperation("ArtworkFullQuery", {
+      Artwork() {
+        return {
+          category: null,
+          canRequestLotConditionsReport: true,
+          conditionDescription: null,
+          signature: null,
+          signatureInfo: null,
+          certificateOfAuthenticity: null,
+          framed: null,
+          series: null,
+          publisher: null,
+          manufacturer: null,
+          image_rights: null,
+        }
+      }
+    })
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+    await flushPromiseQueue()
+    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
+  })
+
   it("marks the artwork as viewed", () => {
     ReactTestRenderer.create(<TestRenderer />)
     const slug = "test artwork id"
