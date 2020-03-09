@@ -1,9 +1,9 @@
-import { Box, Message, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, Flex, Message, Separator, Serif, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { FlatList, ViewProperties } from "react-native"
+import { ActivityIndicator, FlatList, ViewProperties } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
@@ -29,6 +29,7 @@ interface State {
   }>
   boothCount: number
   extraData?: { animatedValue: { height: number } }
+  width: number | null
 }
 const track: Track<Props, State> = _track
 
@@ -42,6 +43,7 @@ export class FairDetail extends React.Component<Props, State> {
   state: State = {
     sections: [],
     boothCount: 0,
+    width: null,
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -157,7 +159,7 @@ export class FairDetail extends React.Component<Props, State> {
         const renderSeparator = this.state.boothCount - 1 > showIndex ? true : false
         return (
           <>
-            <FairBoothPreview {...data} Component={this} />
+            <FairBoothPreview {...data} Component={this} width={this.state.width - 40} />
             {!!renderSeparator && <Separator mt={2} />}
           </>
         )
@@ -218,13 +220,15 @@ export class FairDetail extends React.Component<Props, State> {
         <FlatList
           keyExtractor={(item, index) => item.type + String(index)}
           extraData={extraData}
-          data={sections}
+          onLayout={ev => this.setState({ width: ev.nativeEvent.layout.width })}
+          data={this.state.width ? sections : []}
           ListHeaderComponent={<FairHeader fair={fair} />}
           renderItem={item => (
             <Box px={2} pb={2}>
               {this.renderItem(item)}
             </Box>
           )}
+          ListFooterComponent={this.props.relay.hasMore() ? Loading : null}
           onEndReached={this.fetchNextPage}
           automaticallyAdjustContentInsets={false}
         />
@@ -232,6 +236,12 @@ export class FairDetail extends React.Component<Props, State> {
     )
   }
 }
+
+const Loading = () => (
+  <Flex alignItems="center" justifyContent="center" pb={3}>
+    <ActivityIndicator />
+  </Flex>
+)
 
 function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
   return props => ({
