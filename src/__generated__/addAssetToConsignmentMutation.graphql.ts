@@ -2,10 +2,10 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type AddAssetToConsignmentSubmissionInput = {
-    readonly assetType: string;
-    readonly geminiToken: string;
-    readonly submissionID: string;
     readonly clientMutationId?: string | null;
+    readonly submissionID: string;
+    readonly geminiToken: string;
+    readonly assetType?: string | null;
 };
 export type addAssetToConsignmentMutationVariables = {
     input: AddAssetToConsignmentSubmissionInput;
@@ -84,7 +84,7 @@ return {
             "name": "asset",
             "storageKey": null,
             "args": null,
-            "concreteType": "Asset",
+            "concreteType": "ConsignmentSubmissionCategoryAsset",
             "plural": false,
             "selections": [
               (v2/*: any*/)
@@ -114,7 +114,7 @@ return {
             "name": "asset",
             "storageKey": null,
             "args": null,
-            "concreteType": "Asset",
+            "concreteType": "ConsignmentSubmissionCategoryAsset",
             "plural": false,
             "selections": [
               (v2/*: any*/),

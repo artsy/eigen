@@ -1,16 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type SubmissionCategoryAggregation = "ARCHITECTURE" | "DESIGN_DECORATIVE_ART" | "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" | "FASHION_DESIGN_AND_WEARABLE_ART" | "INSTALLATION" | "JEWELRY" | "MIXED_MEDIA" | "OTHER" | "PAINTING" | "PERFORMANCE_ART" | "PHOTOGRAPHY" | "PRINT" | "SCULPTURE" | "TEXTILE_ARTS" | "VIDEO_FILM_ANIMATION" | "%future added value";
-export type SubmissionDimensionAggregation = "CM" | "IN" | "%future added value";
-export type SubmissionStateAggregation = "APPROVED" | "DRAFT" | "REJECTED" | "SUBMITTED" | "%future added value";
+export type ConsignmentSubmissionCategoryAggregation = "ARCHITECTURE" | "DESIGN_DECORATIVE_ART" | "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" | "FASHION_DESIGN_AND_WEARABLE_ART" | "INSTALLATION" | "JEWELRY" | "MIXED_MEDIA" | "OTHER" | "PAINTING" | "PERFORMANCE_ART" | "PHOTOGRAPHY" | "PRINT" | "SCULPTURE" | "TEXTILE_ARTS" | "VIDEO_FILM_ANIMATION" | "%future added value";
+export type ConsignmentSubmissionStateAggregation = "APPROVED" | "DRAFT" | "REJECTED" | "SUBMITTED" | "%future added value";
 export type UpdateSubmissionMutationInput = {
+    readonly clientMutationId?: string | null;
     readonly id: string;
-    readonly artistID: string;
+    readonly additionalInfo?: string | null;
+    readonly artistID?: string | null;
     readonly authenticityCertificate?: boolean | null;
-    readonly category?: SubmissionCategoryAggregation | null;
+    readonly category?: ConsignmentSubmissionCategoryAggregation | null;
+    readonly currency?: string | null;
     readonly depth?: string | null;
-    readonly dimensionsMetric?: SubmissionDimensionAggregation | null;
+    readonly dimensionsMetric?: string | null;
     readonly edition?: boolean | null;
     readonly editionNumber?: string | null;
     readonly editionSize?: number | null;
@@ -19,14 +21,13 @@ export type UpdateSubmissionMutationInput = {
     readonly locationCountry?: string | null;
     readonly locationState?: string | null;
     readonly medium?: string | null;
+    readonly minimumPriceDollars?: number | null;
     readonly provenance?: string | null;
     readonly signature?: boolean | null;
+    readonly state?: ConsignmentSubmissionStateAggregation | null;
     readonly title?: string | null;
-    readonly state?: SubmissionStateAggregation | null;
     readonly width?: string | null;
     readonly year?: string | null;
-    readonly userID?: string | null;
-    readonly clientMutationId?: string | null;
 };
 export type updateConsignmentSubmissionMutationVariables = {
     input: UpdateSubmissionMutationInput;
@@ -52,6 +53,7 @@ mutation updateConsignmentSubmissionMutation(
   updateConsignmentSubmission(input: $input) {
     consignmentSubmission {
       internalID
+      id
     }
   }
 }
@@ -68,41 +70,18 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "updateConsignmentSubmission",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
-    ],
-    "concreteType": "UpdateSubmissionMutationPayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "consignmentSubmission",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "ConsignmentSubmission",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -111,18 +90,73 @@ return {
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "updateConsignmentSubmission",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateSubmissionMutationPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "consignmentSubmission",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ConsignmentSubmission",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "updateConsignmentSubmissionMutation",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "updateConsignmentSubmission",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateSubmissionMutationPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "consignmentSubmission",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ConsignmentSubmission",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "mutation",
     "name": "updateConsignmentSubmissionMutation",
-    "id": "15aa0a85a06807f72c1b64cbb3c312e8",
+    "id": "27f3c226b08051fc14a0ffbdb4c96b5c",
     "text": null,
     "metadata": {}
   }
