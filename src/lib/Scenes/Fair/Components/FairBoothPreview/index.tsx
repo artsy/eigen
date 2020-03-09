@@ -12,6 +12,7 @@ import { FairBoothPreviewHeader } from "./Components/FairBoothPreviewHeader"
 interface Props {
   show: FairBoothPreview_show
   relay: RelayProp
+  width: number
 }
 
 interface State {
@@ -162,7 +163,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
           url={coverImage && coverImage.url}
           onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
         />
-        <Box mt={1}>{<GenericGrid artworks={artworks.edges.map(a => a.node) as any} />}</Box>
+        <Box mt={1}>{<GenericGrid width={this.props.width} artworks={artworks.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>
           <CaretButton
             text={artworkCount > 1 ? `View all ${artworkCount} works` : `View 1 work`}
