@@ -5,7 +5,7 @@ import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { ViewProperties } from "react-native"
@@ -19,8 +19,12 @@ interface State {
   tabs: any[]
 }
 
-// screen views are tracked in eigen
-@track()
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ArtistPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+  context_screen_owner_slug: props.artist.slug,
+  context_screen_owner_id: props.artist.internalID,
+}))
 export class Artist extends React.Component<Props, State> {
   state = {
     tabs: [],
