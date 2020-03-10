@@ -64,13 +64,13 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
           renderItem={({ item }) => (
             <TouchableHighlight onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
               <OpaqueImageView
-                imageURL={item.image.imageURL.replace(":version", "square")}
+                imageURL={item.image?.imageURL.replace(":version", "square")}
                 width={RAIL_HEIGHT}
                 height={RAIL_HEIGHT}
               ></OpaqueImageView>
             </TouchableHighlight>
           )}
-          keyExtractor={item => String(item.image.imageURL)}
+          keyExtractor={(item, index) => String(item.image?.imageURL || index)}
         />
       </View>
     </Theme>
