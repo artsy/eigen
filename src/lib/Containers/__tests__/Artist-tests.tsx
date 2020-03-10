@@ -1,6 +1,6 @@
 import { Artist_artist } from "__generated__/Artist_artist.graphql"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
-import Artist from "lib/Containers/Artist"
+import { ArtistFragmentContainer } from "lib/Containers/Artist"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import "react-native"
@@ -12,7 +12,7 @@ describe("availableTabs", () => {
   const getWrapper = async (artist: Omit<Artist_artist, " $fragmentRefs">) =>
     await renderRelayTree({
       Component: (props: any) => {
-        return <Artist isPad={false} artist={{ ...artist }} {...props} />
+        return <ArtistFragmentContainer isPad={false} artist={{ ...artist }} {...props} />
       },
       query: graphql`
         query ArtistTestsQuery($isPad: Boolean!) @raw_response_type {

@@ -8,7 +8,6 @@ import Fair from "../Scenes/Fair"
 import { Home } from "../Scenes/Home/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Show from "../Scenes/Show"
-import Artist from "./Artist"
 import BidFlow from "./BidFlow"
 import Conversation from "./Conversation"
 import Gene from "./Gene"
@@ -18,7 +17,6 @@ import RegistrationFlow from "./RegistrationFlow"
 import WorksForYou from "./WorksForYou"
 
 export default {
-  Artist,
   Artwork,
   BidFlow,
   CitySavedList,
