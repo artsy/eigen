@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type RequestConditionReport_artwork = {
     readonly internalID: string;
     readonly slug: string;
@@ -8,6 +10,11 @@ export type RequestConditionReport_artwork = {
         readonly internalID: string;
     } | null;
     readonly " $refType": "RequestConditionReport_artwork";
+};
+export type RequestConditionReport_artwork$data = RequestConditionReport_artwork;
+export type RequestConditionReport_artwork$key = {
+    readonly " $data"?: RequestConditionReport_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"RequestConditionReport_artwork">;
 };
 
 

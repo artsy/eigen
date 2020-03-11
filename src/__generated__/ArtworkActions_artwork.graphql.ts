@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkActions_artwork = {
     readonly id: string;
     readonly internalID: string;
@@ -22,6 +24,11 @@ export type ArtworkActions_artwork = {
     readonly widthCm: number | null;
     readonly heightCm: number | null;
     readonly " $refType": "ArtworkActions_artwork";
+};
+export type ArtworkActions_artwork$data = ArtworkActions_artwork;
+export type ArtworkActions_artwork$key = {
+    readonly " $data"?: ArtworkActions_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkActions_artwork">;
 };
 
 

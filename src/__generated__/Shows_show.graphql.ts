@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,6 +14,11 @@ export type Shows_show = {
         } | null> | null;
     } | null;
     readonly " $refType": "Shows_show";
+};
+export type Shows_show$data = Shows_show;
+export type Shows_show$key = {
+    readonly " $data"?: Shows_show$data;
+    readonly " $fragmentRefs": FragmentRefs<"Shows_show">;
 };
 
 

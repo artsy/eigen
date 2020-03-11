@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type AuctionPrice_artwork = {
     readonly sale: {
         readonly internalID: string;
@@ -28,6 +30,11 @@ export type AuctionPrice_artwork = {
         } | null;
     }> | null;
     readonly " $refType": "AuctionPrice_artwork";
+};
+export type AuctionPrice_artwork$data = AuctionPrice_artwork;
+export type AuctionPrice_artwork$key = {
+    readonly " $data"?: AuctionPrice_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"AuctionPrice_artwork">;
 };
 
 

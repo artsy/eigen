@@ -1,10 +1,12 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 2cab9275f236b2a776e769e278a81687 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateConversationMutationInput = {
-    readonly conversationId: string;
-    readonly fromLastViewedMessageId: string;
-    readonly clientMutationId?: string | null;
+    conversationId: string;
+    fromLastViewedMessageId: string;
+    clientMutationId?: string | null;
 };
 export type UpdateConversationMutationVariables = {
     input: UpdateConversationMutationInput;

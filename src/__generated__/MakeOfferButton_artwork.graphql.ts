@@ -1,9 +1,16 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type MakeOfferButton_artwork = {
     readonly internalID: string;
     readonly " $refType": "MakeOfferButton_artwork";
+};
+export type MakeOfferButton_artwork$data = MakeOfferButton_artwork;
+export type MakeOfferButton_artwork$key = {
+    readonly " $data"?: MakeOfferButton_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"MakeOfferButton_artwork">;
 };
 
 

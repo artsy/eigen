@@ -1,12 +1,19 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ShowEventSection_event = {
     readonly event_type: string | null;
     readonly description: string | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
     readonly " $refType": "ShowEventSection_event";
+};
+export type ShowEventSection_event$data = ShowEventSection_event;
+export type ShowEventSection_event$key = {
+    readonly " $data"?: ShowEventSection_event$data;
+    readonly " $fragmentRefs": FragmentRefs<"ShowEventSection_event">;
 };
 
 

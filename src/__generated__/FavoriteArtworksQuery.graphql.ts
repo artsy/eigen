@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 60dc9bc5efd09645ade78d603189a43d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,35 +23,6 @@ query FavoriteArtworksQuery {
     ...Artworks_me
     id
   }
-}
-
-fragment Artworks_me on Me {
-  followsAndSaves {
-    artworks: artworksConnection(private: true, first: 10, after: "") {
-      pageInfo {
-        startCursor
-        endCursor
-        hasPreviousPage
-        hasNextPage
-      }
-      edges {
-        node {
-          ...GenericGrid_artworks
-          id
-          __typename
-        }
-        cursor
-      }
-    }
-  }
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -85,6 +58,35 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment Artworks_me on Me {
+  followsAndSaves {
+    artworks: artworksConnection(private: true, first: 10, after: "") {
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        node {
+          ...GenericGrid_artworks
+          id
+          __typename
+        }
+        cursor
+      }
+    }
+  }
+}
+
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
 }
 */
 
@@ -457,7 +459,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "f1cec110977c7b8026cba7481b97d38d",
+    "id": "079db3beb38cefc81489517acc7fad83",
     "text": null,
     "metadata": {}
   }

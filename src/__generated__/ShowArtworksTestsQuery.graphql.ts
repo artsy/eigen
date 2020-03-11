@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash ea5b1cf7f7c9da8d20f3b2cbd39f3d0b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,11 +90,39 @@ query ShowArtworksTestsQuery {
   }
 }
 
-fragment ShowArtworks_show on Show {
-  id
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
   slug
-  internalID
-  ...FilteredInfiniteScrollGrid_entity
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
 }
 
 fragment FilteredInfiniteScrollGrid_entity on EntityWithFilterArtworksConnectionInterface {
@@ -147,39 +177,11 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
+fragment ShowArtworks_show on Show {
+  id
   slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
-    }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
+  internalID
+  ...FilteredInfiniteScrollGrid_entity
 }
 */
 
@@ -608,7 +610,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksTestsQuery",
-    "id": "38671bd324b45e1cafe35ba0191d7279",
+    "id": "857a4e1ea40df564306c7f1ca208eef9",
     "text": null,
     "metadata": {}
   }

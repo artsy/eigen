@@ -1,8 +1,8 @@
 diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
-index d0ae8f5..3d47c54 100755
+index 391ae11..27c397f 100755
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
-@@ -335,7 +335,7 @@ function highlightSourceAtLocation(source, location) {
+@@ -309,7 +309,7 @@ function highlightSourceAtLocation(source, location) {
    var columnOffset = location.line === 1 ? firstLineColumnOffset : 0;
    var columnNum = location.column + columnOffset;
    var lines = body.split(/\r\n|[\n\r]/g);
@@ -11,7 +11,7 @@ index d0ae8f5..3d47c54 100755
    ["".concat(lineNum - 1, ": "), lines[lineIndex - 1]], ["".concat(lineNum, ": "), lines[lineIndex]], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1, ": "), lines[lineIndex + 1]]]);
  }
  
-@@ -15265,10 +15265,10 @@ module.exports = function (tagFinder) {
+@@ -17512,10 +17512,10 @@ module.exports = function (tagFinder, getFileFilter) {
  
      var astDefinitions = [];
      var sources = [];
@@ -25,7 +25,7 @@ index d0ae8f5..3d47c54 100755
        sources.push(source.body);
        astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
      });
-@@ -15352,9 +15352,10 @@ function find(tagFinder, text, absPath) {
+@@ -17600,9 +17600,7 @@ function find(tagFinder, text, absPath) {
    tags.forEach(function (tag) {
      return validateTemplate(tag, moduleName, absPath);
    });
@@ -33,9 +33,6 @@ index d0ae8f5..3d47c54 100755
 -    return tag.template;
 -  });
 +  return tags;
-+  // return tags.map(function (tag) {
-+  //   return tag.template;
-+  // });
  }
  
  function validateTemplate(_ref, moduleName, filePath) {

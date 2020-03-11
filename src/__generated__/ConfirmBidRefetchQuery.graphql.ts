@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 8b7ecce1be46f506381aa0311de0b598 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConfirmBidRefetchQueryVariables = {

@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash c7f52ad3f35310dfb0474ff8b0b5ddb1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -129,12 +131,55 @@ query FairBoothTestsQuery {
   }
 }
 
-fragment FairBooth_show on Show {
-  slug
+fragment ArtistListItem_artist on Artist {
+  id
   internalID
-  ...FairBoothHeader_show
-  ...ShowArtworksPreview_show
-  ...ShowArtistsPreview_show
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
+}
+
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
 }
 
 fragment FairBoothHeader_show on Show {
@@ -174,19 +219,20 @@ fragment FairBoothHeader_show on Show {
   }
 }
 
-fragment ShowArtworksPreview_show on Show {
+fragment FairBooth_show on Show {
+  slug
+  internalID
+  ...FairBoothHeader_show
+  ...ShowArtworksPreview_show
+  ...ShowArtistsPreview_show
+}
+
+fragment GenericGrid_artworks on Artwork {
   id
-  counts {
-    artworks
+  image {
+    aspect_ratio: aspectRatio
   }
-  artworks: artworksConnection(first: 6) {
-    edges {
-      node {
-        ...GenericGrid_artworks
-        id
-      }
-    }
-  }
+  ...ArtworkGridItem_artwork
 }
 
 fragment ShowArtistsPreview_show on Show {
@@ -208,63 +254,19 @@ fragment ShowArtistsPreview_show on Show {
   }
 }
 
-fragment ArtistListItem_artist on Artist {
+fragment ShowArtworksPreview_show on Show {
   id
-  internalID
-  slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
+  counts {
+    artworks
   }
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
-}
-
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
+  artworks: artworksConnection(first: 6) {
+    edges {
+      node {
+        ...GenericGrid_artworks
+        id
+      }
     }
-    id
   }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
 }
 */
 
@@ -744,7 +746,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothTestsQuery",
-    "id": "cc929182d54987e7c21da6ac1c0aca11",
+    "id": "bff4ac53e74209169dddfb76e70f4785",
     "text": null,
     "metadata": {}
   }

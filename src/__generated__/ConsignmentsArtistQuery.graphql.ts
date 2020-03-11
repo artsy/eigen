@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash dc875d96755a1900a8dbc110872aaac2 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentsArtistQueryVariables = {

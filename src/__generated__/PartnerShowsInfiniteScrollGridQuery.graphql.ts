@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 8328f0058c06566c989f013798c3db1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,39 +33,15 @@ query PartnerShowsInfiniteScrollGridQuery(
   }
 }
 
-fragment PartnerShows_partner_1G22uz on Partner {
-  slug
+fragment PartnerShowRailItem_show on Show {
   internalID
-  recentShows: showsConnection(status: CURRENT, first: 1) {
-    edges {
-      node {
-        id
-      }
-    }
+  slug
+  name
+  exhibitionPeriod
+  endAt
+  images {
+    url
   }
-  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: $count, after: $cursor) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        name
-        slug
-        exhibitionPeriod
-        coverImage {
-          url
-          aspectRatio
-        }
-        href
-        __typename
-      }
-      cursor
-    }
-  }
-  ...PartnerShowsRail_partner
 }
 
 fragment PartnerShowsRail_partner on Partner {
@@ -105,15 +83,39 @@ fragment PartnerShowsRail_partner on Partner {
   }
 }
 
-fragment PartnerShowRailItem_show on Show {
-  internalID
+fragment PartnerShows_partner_1G22uz on Partner {
   slug
-  name
-  exhibitionPeriod
-  endAt
-  images {
-    url
+  internalID
+  recentShows: showsConnection(status: CURRENT, first: 1) {
+    edges {
+      node {
+        id
+      }
+    }
   }
+  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: $count, after: $cursor) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        name
+        slug
+        exhibitionPeriod
+        coverImage {
+          url
+          aspectRatio
+        }
+        href
+        __typename
+      }
+      cursor
+    }
+  }
+  ...PartnerShowsRail_partner
 }
 */
 
@@ -544,7 +546,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsInfiniteScrollGridQuery",
-    "id": "965cb4ab46453e6cd3fb7a53c688016a",
+    "id": "f345b510e9788f180f6f2bcf2ec350c2",
     "text": null,
     "metadata": {}
   }

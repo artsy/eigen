@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 9a76985efa9fda906cf3d2f1f1cb912f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,28 +55,6 @@ fragment ArtistArtworks_artist_1G22uz on Artist {
   }
 }
 
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
-}
-
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -108,6 +88,28 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 */
 
@@ -531,7 +533,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistArtworksQuery",
-    "id": "119a98778a076a1308217a437edcabed",
+    "id": "64cf06de6364b0632aa07f9ed939a4a2",
     "text": null,
     "metadata": {}
   }

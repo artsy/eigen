@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,6 +19,11 @@ export type CommercialButtons_artwork = {
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"BuyNowButton_artwork" | "BidButton_artwork" | "MakeOfferButton_artwork">;
     readonly " $refType": "CommercialButtons_artwork";
+};
+export type CommercialButtons_artwork$data = CommercialButtons_artwork;
+export type CommercialButtons_artwork$key = {
+    readonly " $data"?: CommercialButtons_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_artwork">;
 };
 
 

@@ -1,12 +1,14 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 731960ba872998267190c62302f5e63b */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateGeminiEntryForAssetInput = {
-    readonly sourceKey: string;
-    readonly templateKey: string;
-    readonly sourceBucket: string;
-    readonly metadata: unknown;
-    readonly clientMutationId?: string | null;
+    sourceKey: string;
+    templateKey: string;
+    sourceBucket: string;
+    metadata: unknown;
+    clientMutationId?: string | null;
 };
 export type createGeminiAssetWithS3CredentialsMutationVariables = {
     input: CreateGeminiEntryForAssetInput;

@@ -27,7 +27,7 @@
     ".jest/": true,
     "build": true,
     ".awcache": true,
-    ".happypack": true,
+    ".happypack": true
   },
   "search.exclude": {
     "**/node_modules": true,

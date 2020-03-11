@@ -179,9 +179,10 @@ flip_table:
 	rm -rf Pods
 	@echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
 	rm -rf ~/Library/Developer/Xcode/DerivedData/*
-	@echo 'Clear relay and jest caches (┛◉Д◉)┛彡┻━┻'
+	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 	rm -rf $TMPDIR/RelayFindGraphQLTags-*
 	rm -rf .jest
+	rm -fr $TMPDIR/metro*
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets

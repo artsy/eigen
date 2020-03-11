@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 85a663404ec02b032409b9210e1c80c9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,6 +27,41 @@ query FairArtworksQuery(
     ...FairArtworks_fair
     id
   }
+}
+
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
 }
 
 fragment FairArtworks_fair on Fair {
@@ -84,41 +121,6 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
       id
     }
   }
-}
-
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
-    }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
 }
 */
 
@@ -555,7 +557,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtworksQuery",
-    "id": "13452b3965fea39155549ff276ce98e5",
+    "id": "e3cb42ba310f5147b481f375b282d662",
     "text": null,
     "metadata": {}
   }

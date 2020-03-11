@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 13f60827d0b1346c0de9a7d254b961f2 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FairBMWArtActivationTestsQueryVariables = {};

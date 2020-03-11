@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash eb7af20eb029ede6af28f4d338f027bd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,33 +94,6 @@ query ArtistTestsQuery {
   }
 }
 
-fragment Artist_artistAboveTheFold on Artist {
-  internalID
-  slug
-  has_metadata: hasMetadata
-  counts {
-    artworks
-    partner_shows: partnerShows
-    related_artists: relatedArtists
-    articles
-  }
-  ...ArtistHeader_artist
-  ...ArtistArtworks_artist
-}
-
-fragment ArtistHeader_artist on Artist {
-  id
-  internalID
-  slug
-  isFollowed
-  name
-  nationality
-  birthday
-  counts {
-    follows
-  }
-}
-
 fragment ArtistArtworks_artist on Artist {
   id
   artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", aggregations: [TOTAL]) {
@@ -138,26 +113,31 @@ fragment ArtistArtworks_artist on Artist {
   }
 }
 
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
+fragment ArtistHeader_artist on Artist {
+  id
+  internalID
+  slug
+  isFollowed
+  name
+  nationality
+  birthday
+  counts {
+    follows
   }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
+}
+
+fragment Artist_artistAboveTheFold on Artist {
+  internalID
+  slug
+  has_metadata: hasMetadata
+  counts {
+    artworks
+    partner_shows: partnerShows
+    related_artists: relatedArtists
+    articles
   }
+  ...ArtistHeader_artist
+  ...ArtistArtworks_artist
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -193,6 +173,28 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 */
 
@@ -651,7 +653,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistTestsQuery",
-    "id": "a94d5300355b3fe5c3b8a73fbd216529",
+    "id": "fe07e12b4fb9752a1fc45990cb71fda3",
     "text": null,
     "metadata": {}
   }

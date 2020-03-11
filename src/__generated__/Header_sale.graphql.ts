@@ -1,9 +1,16 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type Header_sale = {
     readonly name: string | null;
     readonly " $refType": "Header_sale";
+};
+export type Header_sale$data = Header_sale;
+export type Header_sale$key = {
+    readonly " $data"?: Header_sale$data;
+    readonly " $fragmentRefs": FragmentRefs<"Header_sale">;
 };
 
 

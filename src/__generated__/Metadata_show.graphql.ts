@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type Metadata_show = {
     readonly kind: string | null;
     readonly name: string | null;
@@ -14,6 +16,11 @@ export type Metadata_show = {
         readonly city: string | null;
     } | null;
     readonly " $refType": "Metadata_show";
+};
+export type Metadata_show$data = Metadata_show;
+export type Metadata_show$key = {
+    readonly " $data"?: Metadata_show$data;
+    readonly " $fragmentRefs": FragmentRefs<"Metadata_show">;
 };
 
 

@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 65a96a64c6d0d1ef670a397c2c43f92f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,18 +33,21 @@ query ArtistFullQuery(
   }
 }
 
-fragment Artist_artistAboveTheFold on Artist {
-  internalID
-  slug
-  has_metadata: hasMetadata
-  counts {
-    artworks
-    partner_shows: partnerShows
-    related_artists: relatedArtists
-    articles
+fragment Article_article on Article {
+  thumbnail_title: thumbnailTitle
+  href
+  author {
+    name
+    id
   }
-  ...ArtistHeader_artist
-  ...ArtistArtworks_artist
+  thumbnail_image: thumbnailImage {
+    url(version: "large")
+  }
+}
+
+fragment Articles_articles on Article {
+  id
+  ...Article_article
 }
 
 fragment ArtistAbout_artist on Artist {
@@ -68,6 +73,48 @@ fragment ArtistAbout_artist on Artist {
       }
     }
   }
+}
+
+fragment ArtistArtworks_artist on Artist {
+  id
+  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", aggregations: [TOTAL]) {
+    edges {
+      node {
+        id
+        __typename
+      }
+      cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    id
+  }
+}
+
+fragment ArtistHeader_artist on Artist {
+  id
+  internalID
+  slug
+  isFollowed
+  name
+  nationality
+  birthday
+  counts {
+    follows
+  }
+}
+
+fragment ArtistShow_show on Show {
+  slug
+  href
+  is_fair_booth: isFairBooth
+  cover_image: coverImage {
+    url(version: "large")
+  }
+  ...Metadata_show
 }
 
 fragment ArtistShows_artist on Artist {
@@ -105,142 +152,18 @@ fragment ArtistShows_artist on Artist {
   }
 }
 
-fragment VariableSizeShowsList_shows on Show {
-  id
-  ...ArtistShow_show
-}
-
-fragment SmallList_shows on Show {
-  id
-  ...ArtistShow_show
-}
-
-fragment ArtistShow_show on Show {
-  slug
-  href
-  is_fair_booth: isFairBooth
-  cover_image: coverImage {
-    url(version: "large")
-  }
-  ...Metadata_show
-}
-
-fragment Metadata_show on Show {
-  kind
-  name
-  exhibition_period: exhibitionPeriod
-  status_update: statusUpdate
-  status
-  partner {
-    __typename
-    ... on Partner {
-      name
-    }
-    ... on ExternalPartner {
-      name
-      id
-    }
-    ... on Node {
-      id
-    }
-  }
-  location {
-    city
-    id
-  }
-}
-
-fragment Biography_artist on Artist {
-  bio
-  blurb
-}
-
-fragment RelatedArtists_artists on Artist {
-  id
-  ...RelatedArtist_artist
-}
-
-fragment Articles_articles on Article {
-  id
-  ...Article_article
-}
-
-fragment Article_article on Article {
-  thumbnail_title: thumbnailTitle
-  href
-  author {
-    name
-    id
-  }
-  thumbnail_image: thumbnailImage {
-    url(version: "large")
-  }
-}
-
-fragment RelatedArtist_artist on Artist {
-  href
-  name
-  counts {
-    forSaleArtworks
-    artworks
-  }
-  image {
-    url(version: "large")
-  }
-}
-
-fragment ArtistHeader_artist on Artist {
-  id
+fragment Artist_artistAboveTheFold on Artist {
   internalID
   slug
-  isFollowed
-  name
-  nationality
-  birthday
+  has_metadata: hasMetadata
   counts {
-    follows
+    artworks
+    partner_shows: partnerShows
+    related_artists: relatedArtists
+    articles
   }
-}
-
-fragment ArtistArtworks_artist on Artist {
-  id
-  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", aggregations: [TOTAL]) {
-    edges {
-      node {
-        id
-        __typename
-      }
-      cursor
-    }
-    ...InfiniteScrollArtworksGrid_connection
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    id
-  }
-}
-
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
+  ...ArtistHeader_artist
+  ...ArtistArtworks_artist
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -276,6 +199,85 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment Biography_artist on Artist {
+  bio
+  blurb
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
+}
+
+fragment Metadata_show on Show {
+  kind
+  name
+  exhibition_period: exhibitionPeriod
+  status_update: statusUpdate
+  status
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      id
+    }
+    ... on Node {
+      id
+    }
+  }
+  location {
+    city
+    id
+  }
+}
+
+fragment RelatedArtist_artist on Artist {
+  href
+  name
+  counts {
+    forSaleArtworks
+    artworks
+  }
+  image {
+    url(version: "large")
+  }
+}
+
+fragment RelatedArtists_artists on Artist {
+  id
+  ...RelatedArtist_artist
+}
+
+fragment SmallList_shows on Show {
+  id
+  ...ArtistShow_show
+}
+
+fragment VariableSizeShowsList_shows on Show {
+  id
+  ...ArtistShow_show
 }
 */
 
@@ -1131,7 +1133,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistFullQuery",
-    "id": "2b2ade4c86ac4b53c0f83c0a63430bdd",
+    "id": "579c2a5e1beaf9760aff36c4685bfe1e",
     "text": null,
     "metadata": {}
   }

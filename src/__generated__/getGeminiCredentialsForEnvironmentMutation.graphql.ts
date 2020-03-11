@@ -1,10 +1,12 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 2e13fda169954c5cc132e5e3a1dd1db8 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type RequestCredentialsForAssetUploadInput = {
-    readonly name: string;
-    readonly acl: string;
-    readonly clientMutationId?: string | null;
+    name: string;
+    acl: string;
+    clientMutationId?: string | null;
 };
 export type getGeminiCredentialsForEnvironmentMutationVariables = {
     input: RequestCredentialsForAssetUploadInput;
