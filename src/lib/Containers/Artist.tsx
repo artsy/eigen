@@ -1,13 +1,12 @@
 import { Flex, Separator, Spacer, Theme } from "@artsy/palette"
-import { captureMessage, withScope } from "@sentry/react-native"
-import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
-import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import {
-  ArtistFullQuery,
-  ArtistFullQueryResponse,
-  ArtistFullQueryVariables,
-} from "__generated__/ArtistFullQuery.graphql"
-import { ArtistQuery, ArtistQueryResponse, ArtistQueryVariables } from "__generated__/ArtistQuery.graphql"
+  ArtistAboveTheFoldQuery,
+  ArtistAboveTheFoldQueryVariables,
+} from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import {
+  ArtistBelowTheFoldQuery,
+  ArtistBelowTheFoldQueryVariables,
+} from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import ArtistAbout from "lib/Components/Artist/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
@@ -16,11 +15,10 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderImage, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideTracking } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useEffect, useMemo, useState } from "react"
-import { createFragmentContainer, fetchQuery, graphql, QueryRenderer, RelayProp } from "react-relay"
+import React from "react"
+import { graphql } from "react-relay"
 
 export const Artist: React.FC<{
   artistAboveTheFold: ArtistAboveTheFoldQuery["response"]["artist"] | null
@@ -71,7 +69,7 @@ export const Artist: React.FC<{
   )
 }
 
-export const ArtistQueryRenderer: React.SFC<ArtistQueryVariables & ArtistFullQueryVariables> = ({
+export const ArtistQueryRenderer: React.SFC<ArtistAboveTheFoldQueryVariables & ArtistBelowTheFoldQueryVariables> = ({
   artistID,
   isPad,
 }) => {
