@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 0ce7ca86fc9cbde529c3cb6f6339b24e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,21 +41,16 @@ query QueryRenderersBidFlowQuery(
   }
 }
 
-fragment BidFlow_me on Me {
-  ...SelectMaxBid_me
-}
-
 fragment BidFlow_sale_artwork on SaleArtwork {
   ...SelectMaxBid_sale_artwork
 }
 
-fragment BidResult_sale_artwork on SaleArtwork {
-  sale {
-    liveStartAt
-    endAt
-    slug
-    id
-  }
+fragment BidFlow_me on Me {
+  ...SelectMaxBid_me
+}
+
+fragment SelectMaxBid_me on Me {
+  ...ConfirmBid_me
 }
 
 fragment ConfirmBid_me on Me {
@@ -65,6 +58,15 @@ fragment ConfirmBid_me on Me {
   bidders(saleID: $saleID) {
     id
   }
+}
+
+fragment SelectMaxBid_sale_artwork on SaleArtwork {
+  id
+  increments(useMyMaxBid: true) {
+    display
+    cents
+  }
+  ...ConfirmBid_sale_artwork
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
@@ -95,17 +97,13 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
   ...BidResult_sale_artwork
 }
 
-fragment SelectMaxBid_me on Me {
-  ...ConfirmBid_me
-}
-
-fragment SelectMaxBid_sale_artwork on SaleArtwork {
-  id
-  increments(useMyMaxBid: true) {
-    display
-    cents
+fragment BidResult_sale_artwork on SaleArtwork {
+  sale {
+    liveStartAt
+    endAt
+    slug
+    id
   }
-  ...ConfirmBid_sale_artwork
 }
 */
 
@@ -441,7 +439,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersBidFlowQuery",
-    "id": "1f1940617b5b7da42b458b1880dac5a1",
+    "id": "eb8986e2daea7ba7b84e51c49110a48c",
     "text": null,
     "metadata": {}
   }

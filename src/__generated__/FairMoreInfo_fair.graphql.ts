@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type FairMoreInfo_fair = {
     readonly organizer: {
         readonly website: string | null;
@@ -12,11 +10,6 @@ export type FairMoreInfo_fair = {
     readonly about: string | null;
     readonly ticketsLink: string | null;
     readonly " $refType": "FairMoreInfo_fair";
-};
-export type FairMoreInfo_fair$data = FairMoreInfo_fair;
-export type FairMoreInfo_fair$key = {
-    readonly " $data"?: FairMoreInfo_fair$data;
-    readonly " $fragmentRefs": FragmentRefs<"FairMoreInfo_fair">;
 };
 
 

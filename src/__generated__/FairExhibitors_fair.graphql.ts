@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type FairExhibitors_fair = {
     readonly slug: string;
     readonly internalID: string;
@@ -16,11 +14,6 @@ export type FairExhibitors_fair = {
         } | null> | null;
     } | null> | null;
     readonly " $refType": "FairExhibitors_fair";
-};
-export type FairExhibitors_fair$data = FairExhibitors_fair;
-export type FairExhibitors_fair$key = {
-    readonly " $data"?: FairExhibitors_fair$data;
-    readonly " $fragmentRefs": FragmentRefs<"FairExhibitors_fair">;
 };
 
 

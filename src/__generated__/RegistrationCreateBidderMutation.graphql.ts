@@ -1,11 +1,9 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash d3dfa949a27b71c81b74e4cb3199a91a */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateBidderInput = {
-    saleID: string;
-    clientMutationId?: string | null;
+    readonly saleID: string;
+    readonly clientMutationId?: string | null;
 };
 export type RegistrationCreateBidderMutationVariables = {
     input: CreateBidderInput;

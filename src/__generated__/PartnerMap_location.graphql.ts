@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type PartnerMap_location = {
     readonly id: string;
     readonly internalID: string;
@@ -16,11 +14,6 @@ export type PartnerMap_location = {
         readonly lng: number | null;
     } | null;
     readonly " $refType": "PartnerMap_location";
-};
-export type PartnerMap_location$data = PartnerMap_location;
-export type PartnerMap_location$key = {
-    readonly " $data"?: PartnerMap_location$data;
-    readonly " $fragmentRefs": FragmentRefs<"PartnerMap_location">;
 };
 
 

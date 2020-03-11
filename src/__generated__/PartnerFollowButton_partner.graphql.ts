@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type PartnerFollowButton_partner = {
     readonly internalID: string;
     readonly slug: string;
@@ -12,11 +10,6 @@ export type PartnerFollowButton_partner = {
         readonly isFollowed: boolean | null;
     } | null;
     readonly " $refType": "PartnerFollowButton_partner";
-};
-export type PartnerFollowButton_partner$data = PartnerFollowButton_partner;
-export type PartnerFollowButton_partner$key = {
-    readonly " $data"?: PartnerFollowButton_partner$data;
-    readonly " $fragmentRefs": FragmentRefs<"PartnerFollowButton_partner">;
 };
 
 

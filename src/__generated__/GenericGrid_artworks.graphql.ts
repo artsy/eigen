@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,11 +9,6 @@ export type GenericGrid_artworks = ReadonlyArray<{
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">;
     readonly " $refType": "GenericGrid_artworks";
-}>;
-export type GenericGrid_artworks$data = GenericGrid_artworks;
-export type GenericGrid_artworks$key = ReadonlyArray<{
-    readonly " $data"?: GenericGrid_artworks$data;
-    readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
 }>;
 
 

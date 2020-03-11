@@ -1,12 +1,10 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 2acea0193c8ef86a1e0e7b2bd720a38a */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
-    profileID?: string | null;
-    unfollow?: boolean | null;
-    clientMutationId?: string | null;
+    readonly profileID?: string | null;
+    readonly unfollow?: boolean | null;
+    readonly clientMutationId?: string | null;
 };
 export type SavedFairItemRowMutationVariables = {
     input: FollowProfileInput;

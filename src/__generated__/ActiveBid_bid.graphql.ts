@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ActiveBid_bid = {
     readonly is_leading_bidder: boolean | null;
     readonly sale: {
@@ -30,11 +28,6 @@ export type ActiveBid_bid = {
         } | null;
     } | null;
     readonly " $refType": "ActiveBid_bid";
-};
-export type ActiveBid_bid$data = ActiveBid_bid;
-export type ActiveBid_bid$key = {
-    readonly " $data"?: ActiveBid_bid$data;
-    readonly " $fragmentRefs": FragmentRefs<"ActiveBid_bid">;
 };
 
 

@@ -1,17 +1,10 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ArtworkAttributionClassFAQ_artworkAttributionClasses = ReadonlyArray<{
     readonly name: string | null;
     readonly longDescription: string | null;
     readonly " $refType": "ArtworkAttributionClassFAQ_artworkAttributionClasses";
-}>;
-export type ArtworkAttributionClassFAQ_artworkAttributionClasses$data = ArtworkAttributionClassFAQ_artworkAttributionClasses;
-export type ArtworkAttributionClassFAQ_artworkAttributionClasses$key = ReadonlyArray<{
-    readonly " $data"?: ArtworkAttributionClassFAQ_artworkAttributionClasses$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkAttributionClassFAQ_artworkAttributionClasses">;
 }>;
 
 

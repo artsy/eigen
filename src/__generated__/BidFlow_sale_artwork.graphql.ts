@@ -1,16 +1,10 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type BidFlow_sale_artwork = {
     readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_sale_artwork">;
     readonly " $refType": "BidFlow_sale_artwork";
-};
-export type BidFlow_sale_artwork$data = BidFlow_sale_artwork;
-export type BidFlow_sale_artwork$key = {
-    readonly " $data"?: BidFlow_sale_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"BidFlow_sale_artwork">;
 };
 
 

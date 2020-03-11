@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 16b3523b78d832143fd4bd67fbc77353 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,22 +61,6 @@ query ShowArtistsPreviewTestsQuery {
   }
 }
 
-fragment ArtistListItem_artist on Artist {
-  id
-  internalID
-  slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
-  }
-}
-
 fragment ShowArtistsPreview_show on Show {
   internalID
   slug
@@ -95,6 +77,22 @@ fragment ShowArtistsPreview_show on Show {
     slug
     href
     ...ArtistListItem_artist
+  }
+}
+
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
   }
 }
 */
@@ -271,7 +269,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsPreviewTestsQuery",
-    "id": "4dc5bb7b20b8372673e592dd93fc284c",
+    "id": "42cf1410af60e9e4f5dde954d1ab44d2",
     "text": null,
     "metadata": {}
   }

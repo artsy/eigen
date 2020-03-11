@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 028a318aca99094dd506faff3af8273a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,77 +27,19 @@ query PartnerQuery(
   }
 }
 
-fragment ArtistListItem_artist on Artist {
+fragment Partner_partner on Partner {
   id
   internalID
   slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
-  }
-}
-
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
+  profile {
     id
+    isFollowed
+    internalID
   }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
-    }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
-}
-
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
+  ...PartnerArtwork_partner
+  ...PartnerOverview_partner
+  ...PartnerShows_partner
+  ...PartnerHeader_partner
 }
 
 fragment PartnerArtwork_partner on Partner {
@@ -117,39 +57,6 @@ fragment PartnerArtwork_partner on Partner {
       endCursor
       hasNextPage
     }
-  }
-}
-
-fragment PartnerFollowButton_partner on Partner {
-  internalID
-  slug
-  profile {
-    id
-    internalID
-    isFollowed
-  }
-}
-
-fragment PartnerHeader_partner on Partner {
-  name
-  profile {
-    counts {
-      follows
-    }
-    id
-  }
-  counts {
-    eligibleArtworks
-  }
-  ...PartnerFollowButton_partner
-}
-
-fragment PartnerLocationSection_partner on Partner {
-  slug
-  name
-  cities
-  locations: locationsConnection(first: 0) {
-    totalCount
   }
 }
 
@@ -183,14 +90,62 @@ fragment PartnerOverview_partner on Partner {
   ...PartnerLocationSection_partner
 }
 
-fragment PartnerShowRailItem_show on Show {
+fragment PartnerShows_partner on Partner {
+  slug
+  internalID
+  recentShows: showsConnection(status: CURRENT, first: 1) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: 32) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        name
+        slug
+        exhibitionPeriod
+        coverImage {
+          url
+          aspectRatio
+        }
+        href
+        __typename
+      }
+      cursor
+    }
+  }
+  ...PartnerShowsRail_partner
+}
+
+fragment PartnerHeader_partner on Partner {
+  name
+  profile {
+    counts {
+      follows
+    }
+    id
+  }
+  counts {
+    eligibleArtworks
+  }
+  ...PartnerFollowButton_partner
+}
+
+fragment PartnerFollowButton_partner on Partner {
   internalID
   slug
-  name
-  exhibitionPeriod
-  endAt
-  images {
-    url
+  profile {
+    id
+    internalID
+    isFollowed
   }
 }
 
@@ -233,54 +188,97 @@ fragment PartnerShowsRail_partner on Partner {
   }
 }
 
-fragment PartnerShows_partner on Partner {
-  slug
+fragment PartnerShowRailItem_show on Show {
   internalID
-  recentShows: showsConnection(status: CURRENT, first: 1) {
-    edges {
-      node {
-        id
-      }
-    }
+  slug
+  name
+  exhibitionPeriod
+  endAt
+  images {
+    url
   }
-  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: 32) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        name
-        slug
-        exhibitionPeriod
-        coverImage {
-          url
-          aspectRatio
-        }
-        href
-        __typename
-      }
-      cursor
-    }
-  }
-  ...PartnerShowsRail_partner
 }
 
-fragment Partner_partner on Partner {
+fragment ArtistListItem_artist on Artist {
   id
   internalID
   slug
-  profile {
-    id
-    isFollowed
-    internalID
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
   }
-  ...PartnerArtwork_partner
-  ...PartnerOverview_partner
-  ...PartnerShows_partner
-  ...PartnerHeader_partner
+}
+
+fragment PartnerLocationSection_partner on Partner {
+  slug
+  name
+  cities
+  locations: locationsConnection(first: 0) {
+    totalCount
+  }
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
+}
+
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
 }
 */
 
@@ -1124,7 +1122,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "2daa62ad988acc7e827bd219872fbf9e",
+    "id": "55021af72c6f14169e9e012755eb8573",
     "text": null,
     "metadata": {}
   }

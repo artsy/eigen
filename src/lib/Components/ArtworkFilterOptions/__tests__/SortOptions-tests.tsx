@@ -16,6 +16,7 @@ describe("Sort Options Screen", () => {
       selectedSortOption: "Default",
       selectedFilters: [],
       appliedFilters: [],
+      applyFilters: false,
     }
   })
 

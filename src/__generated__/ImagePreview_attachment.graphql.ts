@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -7,11 +6,6 @@ export type ImagePreview_attachment = {
     readonly download_url: string;
     readonly " $fragmentRefs": FragmentRefs<"AttachmentPreview_attachment">;
     readonly " $refType": "ImagePreview_attachment";
-};
-export type ImagePreview_attachment$data = ImagePreview_attachment;
-export type ImagePreview_attachment$key = {
-    readonly " $data"?: ImagePreview_attachment$data;
-    readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment">;
 };
 
 

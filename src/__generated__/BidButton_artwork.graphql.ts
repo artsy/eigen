@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type BidButton_artwork = {
     readonly slug: string;
     readonly sale: {
@@ -28,11 +26,6 @@ export type BidButton_artwork = {
         } | null> | null;
     } | null;
     readonly " $refType": "BidButton_artwork";
-};
-export type BidButton_artwork$data = BidButton_artwork;
-export type BidButton_artwork$key = {
-    readonly " $data"?: BidButton_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"BidButton_artwork">;
 };
 
 

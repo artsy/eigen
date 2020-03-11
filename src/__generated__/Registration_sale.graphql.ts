@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type Registration_sale = {
     readonly slug: string;
     readonly end_at: string | null;
@@ -11,11 +9,6 @@ export type Registration_sale = {
     readonly name: string | null;
     readonly start_at: string | null;
     readonly " $refType": "Registration_sale";
-};
-export type Registration_sale$data = Registration_sale;
-export type Registration_sale$key = {
-    readonly " $data"?: Registration_sale$data;
-    readonly " $fragmentRefs": FragmentRefs<"Registration_sale">;
 };
 
 

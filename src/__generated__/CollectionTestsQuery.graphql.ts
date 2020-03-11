@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 850e88f4728c551cf00fc93063e44318 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,6 +23,68 @@ query CollectionTestsQuery {
   }
 }
 
+fragment Collection_collection on MarketingCollection {
+  id
+  slug
+  ...CollectionHeader_collection
+  ...CollectionArtworks_collection
+  ...FeaturedArtists_collection
+}
+
+fragment CollectionHeader_collection on MarketingCollection {
+  title
+  headerImage
+  descriptionMarkdown
+  image: artworksConnection(sort: "-decayed_merch", first: 1) {
+    edges {
+      node {
+        image {
+          url(version: "larger")
+        }
+        id
+      }
+    }
+    id
+  }
+}
+
+fragment CollectionArtworks_collection on MarketingCollection {
+  slug
+  id
+  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10) {
+    edges {
+      node {
+        id
+        __typename
+      }
+      cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    id
+  }
+}
+
+fragment FeaturedArtists_collection on MarketingCollection {
+  slug
+  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
+    merchandisableArtists(size: 4) {
+      internalID
+      ...ArtistListItem_artist
+      id
+    }
+    id
+  }
+  query {
+    artistIDs
+    id
+  }
+  featuredArtistExclusionIds
+}
+
 fragment ArtistListItem_artist on Artist {
   id
   internalID
@@ -38,6 +98,28 @@ fragment ArtistListItem_artist on Artist {
   deathday
   image {
     url
+  }
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
   }
 }
 
@@ -74,90 +156,6 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
-}
-
-fragment CollectionArtworks_collection on MarketingCollection {
-  slug
-  id
-  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 6) {
-    edges {
-      node {
-        id
-        __typename
-      }
-      cursor
-    }
-    ...InfiniteScrollArtworksGrid_connection
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    id
-  }
-}
-
-fragment CollectionHeader_collection on MarketingCollection {
-  title
-  headerImage
-  descriptionMarkdown
-  image: artworksConnection(sort: "-decayed_merch", first: 1) {
-    edges {
-      node {
-        image {
-          url(version: "larger")
-        }
-        id
-      }
-    }
-    id
-  }
-}
-
-fragment Collection_collection on MarketingCollection {
-  id
-  slug
-  ...CollectionHeader_collection
-  ...CollectionArtworks_collection
-  ...FeaturedArtists_collection
-}
-
-fragment FeaturedArtists_collection on MarketingCollection {
-  slug
-  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-    merchandisableArtists(size: 4) {
-      internalID
-      ...ArtistListItem_artist
-      id
-    }
-    id
-  }
-  query {
-    artistIDs
-    id
-  }
-  featuredArtistExclusionIds
-}
-
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
 }
 */
 
@@ -199,7 +197,7 @@ v5 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 6
+    "value": 10
   },
   (v4/*: any*/)
 ],
@@ -415,7 +413,7 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:6,sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(first:10,sort:\"-decayed_merch\")",
             "args": (v5/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -809,7 +807,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "fce8e5ec261e73441b490dd2a277ecf2",
+    "id": "5dc093d7edf2a124b577a785950d2406",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {

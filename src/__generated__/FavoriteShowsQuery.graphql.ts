@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 63b5263e5c256dd9db7a374d176d70fe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,6 +20,27 @@ query FavoriteShowsQuery {
   me {
     ...Shows_me
     id
+  }
+}
+
+fragment Shows_me on Me {
+  followsAndSaves {
+    shows: showsConnection(first: 10) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          ...ShowItemRow_show
+          __typename
+        }
+        cursor
+      }
+    }
   }
 }
 
@@ -58,27 +77,6 @@ fragment ShowItemRow_show on Show {
   }
   is_fair_booth: isFairBooth
   end_at: endAt
-}
-
-fragment Shows_me on Me {
-  followsAndSaves {
-    shows: showsConnection(first: 10) {
-      pageInfo {
-        startCursor
-        endCursor
-        hasPreviousPage
-        hasNextPage
-      }
-      edges {
-        node {
-          id
-          ...ShowItemRow_show
-          __typename
-        }
-        cursor
-      }
-    }
-  }
 }
 */
 
@@ -399,7 +397,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteShowsQuery",
-    "id": "8f38701cdeaa1d14d8efb1a371d8e01a",
+    "id": "9ecd89570c0c0540ab703b2aa64b3e84",
     "text": null,
     "metadata": {}
   }

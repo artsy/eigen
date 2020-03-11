@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,11 +26,6 @@ export type ConfirmBid_sale_artwork = {
     readonly lot_label: string | null;
     readonly " $fragmentRefs": FragmentRefs<"BidResult_sale_artwork">;
     readonly " $refType": "ConfirmBid_sale_artwork";
-};
-export type ConfirmBid_sale_artwork$data = ConfirmBid_sale_artwork;
-export type ConfirmBid_sale_artwork$key = {
-    readonly " $data"?: ConfirmBid_sale_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_sale_artwork">;
 };
 
 

@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type FairBMWArtActivation_fair = {
     readonly slug: string;
     readonly internalID: string;
@@ -11,11 +9,6 @@ export type FairBMWArtActivation_fair = {
         readonly pressReleaseUrl: string | null;
     } | null;
     readonly " $refType": "FairBMWArtActivation_fair";
-};
-export type FairBMWArtActivation_fair$data = FairBMWArtActivation_fair;
-export type FairBMWArtActivation_fair$key = {
-    readonly " $data"?: FairBMWArtActivation_fair$data;
-    readonly " $fragmentRefs": FragmentRefs<"FairBMWArtActivation_fair">;
 };
 
 

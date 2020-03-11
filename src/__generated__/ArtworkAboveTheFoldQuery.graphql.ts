@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash c33da345eb2c802902fb0997becdb7ce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,28 +27,105 @@ query ArtworkAboveTheFoldQuery(
   }
 }
 
-fragment ArtworkActions_artwork on Artwork {
-  id
-  internalID
+fragment Artwork_artworkAboveTheFold on Artwork {
+  ...ArtworkHeader_artwork
+  ...CommercialInformation_artwork
   slug
-  title
-  href
-  is_saved: isSaved
-  is_hangable: isHangable
+  internalID
+  id
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  is_biddable: isBiddable
+  is_inquireable: isInquireable
+  availability
+}
+
+fragment ArtworkHeader_artwork on Artwork {
+  ...ArtworkActions_artwork
+  ...ArtworkTombstone_artwork
+  images {
+    ...ImageCarousel_images
+  }
+}
+
+fragment CommercialInformation_artwork on Artwork {
+  isAcquireable
+  isOfferable
+  isInquireable
+  isInAuction
+  availability
+  saleMessage
+  isForSale
   artists {
-    name
+    isConsignable
     id
   }
-  image {
-    url
+  editionSets {
+    id
   }
   sale {
+    isClosed
     isAuction
+    isLiveOpen
+    isPreview
+    liveStartAt
+    endAt
+    startAt
+    id
+  }
+  ...CommercialButtons_artwork
+  ...CommercialPartnerInformation_artwork
+  ...CommercialEditionSetInformation_artwork
+  ...ArtworkExtraLinks_artwork
+  ...AuctionPrice_artwork
+}
+
+fragment CommercialButtons_artwork on Artwork {
+  slug
+  isAcquireable
+  isOfferable
+  isInquireable
+  isInAuction
+  isBuyNowable
+  isForSale
+  editionSets {
+    id
+  }
+  sale {
     isClosed
     id
   }
-  widthCm
-  heightCm
+  ...BuyNowButton_artwork
+  ...BidButton_artwork
+  ...MakeOfferButton_artwork
+}
+
+fragment CommercialPartnerInformation_artwork on Artwork {
+  availability
+  isAcquireable
+  isForSale
+  isOfferable
+  shippingOrigin
+  shippingInfo
+  priceIncludesTaxDisplay
+  partner {
+    name
+    id
+  }
+}
+
+fragment CommercialEditionSetInformation_artwork on Artwork {
+  editionSets {
+    id
+    internalID
+    saleMessage
+    editionOf
+    dimensions {
+      in
+      cm
+    }
+  }
+  ...CommercialPartnerInformation_artwork
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
@@ -79,12 +154,99 @@ fragment ArtworkExtraLinks_artwork on Artwork {
   }
 }
 
-fragment ArtworkHeader_artwork on Artwork {
-  ...ArtworkActions_artwork
-  ...ArtworkTombstone_artwork
-  images {
-    ...ImageCarousel_images
+fragment AuctionPrice_artwork on Artwork {
+  sale {
+    internalID
+    isWithBuyersPremium
+    isClosed
+    isLiveOpen
+    id
   }
+  saleArtwork {
+    reserveMessage
+    currentBid {
+      display
+    }
+    counts {
+      bidderPositions
+    }
+    id
+  }
+  myLotStanding(live: true) {
+    activeBid {
+      isWinning
+      id
+    }
+    mostRecentBid {
+      maxBid {
+        display
+      }
+      id
+    }
+  }
+}
+
+fragment BuyNowButton_artwork on Artwork {
+  internalID
+  saleMessage
+}
+
+fragment BidButton_artwork on Artwork {
+  slug
+  sale {
+    slug
+    registrationStatus {
+      qualifiedForBidding
+      id
+    }
+    isPreview
+    isLiveOpen
+    isClosed
+    isRegistrationClosed
+    id
+  }
+  myLotStanding(live: true) {
+    mostRecentBid {
+      maxBid {
+        cents
+      }
+      id
+    }
+  }
+  saleArtwork {
+    increments {
+      cents
+    }
+    id
+  }
+}
+
+fragment MakeOfferButton_artwork on Artwork {
+  internalID
+}
+
+fragment ArtworkActions_artwork on Artwork {
+  id
+  internalID
+  slug
+  title
+  href
+  is_saved: isSaved
+  is_hangable: isHangable
+  artists {
+    name
+    id
+  }
+  image {
+    url
+  }
+  sale {
+    isAuction
+    isClosed
+    id
+  }
+  widthCm
+  heightCm
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
@@ -123,173 +285,6 @@ fragment ArtworkTombstone_artwork on Artwork {
   }
 }
 
-fragment Artwork_artworkAboveTheFold on Artwork {
-  ...ArtworkHeader_artwork
-  ...CommercialInformation_artwork
-  slug
-  internalID
-  id
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  is_biddable: isBiddable
-  is_inquireable: isInquireable
-  availability
-}
-
-fragment AuctionPrice_artwork on Artwork {
-  sale {
-    internalID
-    isWithBuyersPremium
-    isClosed
-    isLiveOpen
-    id
-  }
-  saleArtwork {
-    reserveMessage
-    currentBid {
-      display
-    }
-    counts {
-      bidderPositions
-    }
-    id
-  }
-  myLotStanding(live: true) {
-    activeBid {
-      isWinning
-      id
-    }
-    mostRecentBid {
-      maxBid {
-        display
-      }
-      id
-    }
-  }
-}
-
-fragment BidButton_artwork on Artwork {
-  slug
-  sale {
-    slug
-    registrationStatus {
-      qualifiedForBidding
-      id
-    }
-    isPreview
-    isLiveOpen
-    isClosed
-    isRegistrationClosed
-    id
-  }
-  myLotStanding(live: true) {
-    mostRecentBid {
-      maxBid {
-        cents
-      }
-      id
-    }
-  }
-  saleArtwork {
-    increments {
-      cents
-    }
-    id
-  }
-}
-
-fragment BuyNowButton_artwork on Artwork {
-  internalID
-  saleMessage
-}
-
-fragment CommercialButtons_artwork on Artwork {
-  slug
-  isAcquireable
-  isOfferable
-  isInquireable
-  isInAuction
-  isBuyNowable
-  isForSale
-  editionSets {
-    id
-  }
-  sale {
-    isClosed
-    id
-  }
-  ...BuyNowButton_artwork
-  ...BidButton_artwork
-  ...MakeOfferButton_artwork
-}
-
-fragment CommercialEditionSetInformation_artwork on Artwork {
-  editionSets {
-    id
-    internalID
-    saleMessage
-    editionOf
-    dimensions {
-      in
-      cm
-    }
-  }
-  ...CommercialPartnerInformation_artwork
-}
-
-fragment CommercialInformation_artwork on Artwork {
-  isAcquireable
-  isOfferable
-  isInquireable
-  isInAuction
-  availability
-  saleMessage
-  isForSale
-  artists {
-    isConsignable
-    id
-  }
-  editionSets {
-    id
-  }
-  sale {
-    isClosed
-    isAuction
-    isLiveOpen
-    isPreview
-    liveStartAt
-    endAt
-    startAt
-    id
-  }
-  ...CommercialButtons_artwork
-  ...CommercialPartnerInformation_artwork
-  ...CommercialEditionSetInformation_artwork
-  ...ArtworkExtraLinks_artwork
-  ...AuctionPrice_artwork
-}
-
-fragment CommercialPartnerInformation_artwork on Artwork {
-  availability
-  isAcquireable
-  isForSale
-  isOfferable
-  shippingOrigin
-  shippingInfo
-  priceIncludesTaxDisplay
-  partner {
-    name
-    id
-  }
-}
-
-fragment FollowArtistButton_artist on Artist {
-  id
-  slug
-  internalID
-  is_followed: isFollowed
-}
-
 fragment ImageCarousel_images on Image {
   url: imageURL
   width
@@ -308,8 +303,11 @@ fragment ImageCarousel_images on Image {
   }
 }
 
-fragment MakeOfferButton_artwork on Artwork {
+fragment FollowArtistButton_artist on Artist {
+  id
+  slug
   internalID
+  is_followed: isFollowed
 }
 */
 
@@ -1086,7 +1084,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "6e1216621d5d8db98334fc6b4af21afc",
+    "id": "e2e9afb4e55fc53ec3734e7f7d9d65f9",
     "text": null,
     "metadata": {}
   }

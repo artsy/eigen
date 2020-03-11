@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ArtworkExtraLinks_artwork = {
     readonly isAcquireable: boolean | null;
     readonly isInAuction: boolean | null;
@@ -24,11 +22,6 @@ export type ArtworkExtraLinks_artwork = {
         readonly name: string | null;
     } | null;
     readonly " $refType": "ArtworkExtraLinks_artwork";
-};
-export type ArtworkExtraLinks_artwork$data = ArtworkExtraLinks_artwork;
-export type ArtworkExtraLinks_artwork$key = {
-    readonly " $data"?: ArtworkExtraLinks_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkExtraLinks_artwork">;
 };
 
 

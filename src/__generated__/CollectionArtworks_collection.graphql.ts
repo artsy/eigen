@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,11 +14,6 @@ export type CollectionArtworks_collection = {
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
     readonly " $refType": "CollectionArtworks_collection";
-};
-export type CollectionArtworks_collection$data = CollectionArtworks_collection;
-export type CollectionArtworks_collection$key = {
-    readonly " $data"?: CollectionArtworks_collection$data;
-    readonly " $fragmentRefs": FragmentRefs<"CollectionArtworks_collection">;
 };
 
 
@@ -53,7 +47,7 @@ return {
       "kind": "LocalArgument",
       "name": "count",
       "type": "Int",
-      "defaultValue": 6
+      "defaultValue": 10
     },
     {
       "kind": "LocalArgument",
@@ -164,5 +158,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bc1cfff22a04c7110466e2cbb918fa8d';
+(node as any).hash = '5523a420924cb6ab1494c67047cf391b';
 export default node;

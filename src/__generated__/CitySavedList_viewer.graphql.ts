@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type CitySavedList_viewer = {
     readonly city: {
         readonly name: string | null;
@@ -48,11 +46,6 @@ export type CitySavedList_viewer = {
         } | null;
     } | null;
     readonly " $refType": "CitySavedList_viewer";
-};
-export type CitySavedList_viewer$data = CitySavedList_viewer;
-export type CitySavedList_viewer$key = {
-    readonly " $data"?: CitySavedList_viewer$data;
-    readonly " $fragmentRefs": FragmentRefs<"CitySavedList_viewer">;
 };
 
 

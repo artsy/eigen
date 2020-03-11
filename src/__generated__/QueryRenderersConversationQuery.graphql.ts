@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 6d8aee7aca42fefdf8d9e0c7a24a724f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,21 +27,6 @@ query QueryRenderersConversationQuery(
   }
 }
 
-fragment ArtworkPreview_artwork on Artwork {
-  slug
-  internalID
-  title
-  artist_names: artistNames
-  date
-  image {
-    url
-  }
-}
-
-fragment AttachmentPreview_attachment on Attachment {
-  internalID
-}
-
 fragment Conversation_me on Me {
   conversation(id: $conversationID) {
     internalID
@@ -59,30 +42,6 @@ fragment Conversation_me on Me {
       id
     }
     ...Messages_conversation
-  }
-}
-
-fragment ImagePreview_attachment on Attachment {
-  download_url: downloadURL
-  ...AttachmentPreview_attachment
-}
-
-fragment Message_message on Message {
-  body
-  created_at: createdAt
-  is_from_user: isFromUser
-  from {
-    name
-    email
-  }
-  attachments {
-    id
-    internalID
-    content_type: contentType
-    download_url: downloadURL
-    file_name: fileName
-    ...ImagePreview_attachment
-    ...PDFPreview_attachment
   }
 }
 
@@ -142,9 +101,34 @@ fragment Messages_conversation on Conversation {
   }
 }
 
-fragment PDFPreview_attachment on Attachment {
-  file_name: fileName
-  ...AttachmentPreview_attachment
+fragment Message_message on Message {
+  body
+  created_at: createdAt
+  is_from_user: isFromUser
+  from {
+    name
+    email
+  }
+  attachments {
+    id
+    internalID
+    content_type: contentType
+    download_url: downloadURL
+    file_name: fileName
+    ...ImagePreview_attachment
+    ...PDFPreview_attachment
+  }
+}
+
+fragment ArtworkPreview_artwork on Artwork {
+  slug
+  internalID
+  title
+  artist_names: artistNames
+  date
+  image {
+    url
+  }
 }
 
 fragment ShowPreview_show on Show {
@@ -170,6 +154,20 @@ fragment ShowPreview_show on Show {
       id
     }
   }
+}
+
+fragment ImagePreview_attachment on Attachment {
+  download_url: downloadURL
+  ...AttachmentPreview_attachment
+}
+
+fragment PDFPreview_attachment on Attachment {
+  file_name: fileName
+  ...AttachmentPreview_attachment
+}
+
+fragment AttachmentPreview_attachment on Attachment {
+  internalID
 }
 */
 
@@ -659,7 +657,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersConversationQuery",
-    "id": "d2a7a133084755a737564ee88a1d3894",
+    "id": "ddd51d3ef3265148a045443bcddca6a1",
     "text": null,
     "metadata": {}
   }

@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type GlobalMap_viewer = {
     readonly city: {
         readonly name: string | null;
@@ -157,11 +155,6 @@ export type GlobalMap_viewer = {
         } | null;
     } | null;
     readonly " $refType": "GlobalMap_viewer";
-};
-export type GlobalMap_viewer$data = GlobalMap_viewer;
-export type GlobalMap_viewer$key = {
-    readonly " $data"?: GlobalMap_viewer$data;
-    readonly " $fragmentRefs": FragmentRefs<"GlobalMap_viewer">;
 };
 
 

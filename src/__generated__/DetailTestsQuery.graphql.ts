@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash e0768159925a0acd39dcccf3ab73fb80 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -201,57 +199,6 @@ query DetailTestsQuery {
   }
 }
 
-fragment ArtistListItem_artist on Artist {
-  id
-  internalID
-  slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
-  }
-}
-
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
-    }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
-}
-
 fragment Detail_show on Show {
   internalID
   slug
@@ -295,79 +242,6 @@ fragment Detail_show on Show {
     }
     ... on ExternalPartner {
       id
-    }
-  }
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
-}
-
-fragment LocationMap_location on Location {
-  id
-  internalID
-  city
-  address
-  address_2: address2
-  postal_code: postalCode
-  summary
-  coordinates {
-    lat
-    lng
-  }
-  day_schedules: daySchedules {
-    start_time: startTime
-    end_time: endTime
-    day_of_week: dayOfWeek
-  }
-  openingHours {
-    __typename
-    ... on OpeningHoursArray {
-      schedules {
-        days
-        hours
-      }
-    }
-    ... on OpeningHoursText {
-      text
-    }
-  }
-}
-
-fragment ShowArtistsPreview_show on Show {
-  internalID
-  slug
-  artists {
-    id
-    internalID
-    slug
-    href
-    ...ArtistListItem_artist
-  }
-  artists_without_artworks: artistsWithoutArtworks {
-    id
-    internalID
-    slug
-    href
-    ...ArtistListItem_artist
-  }
-}
-
-fragment ShowArtworksPreview_show on Show {
-  id
-  counts {
-    artworks
-  }
-  artworks: artworksConnection(first: 6) {
-    edges {
-      node {
-        ...GenericGrid_artworks
-        id
-      }
     }
   }
 }
@@ -425,6 +299,83 @@ fragment ShowHeader_show on Show {
   }
 }
 
+fragment ShowArtworksPreview_show on Show {
+  id
+  counts {
+    artworks
+  }
+  artworks: artworksConnection(first: 6) {
+    edges {
+      node {
+        ...GenericGrid_artworks
+        id
+      }
+    }
+  }
+}
+
+fragment ShowArtistsPreview_show on Show {
+  internalID
+  slug
+  artists {
+    id
+    internalID
+    slug
+    href
+    ...ArtistListItem_artist
+  }
+  artists_without_artworks: artistsWithoutArtworks {
+    id
+    internalID
+    slug
+    href
+    ...ArtistListItem_artist
+  }
+}
+
+fragment Shows_show on Show {
+  nearbyShows: nearbyShowsConnection(first: 20) {
+    edges {
+      node {
+        id
+        name
+        ...ShowItem_show
+      }
+    }
+  }
+}
+
+fragment LocationMap_location on Location {
+  id
+  internalID
+  city
+  address
+  address_2: address2
+  postal_code: postalCode
+  summary
+  coordinates {
+    lat
+    lng
+  }
+  day_schedules: daySchedules {
+    start_time: startTime
+    end_time: endTime
+    day_of_week: dayOfWeek
+  }
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
+}
+
 fragment ShowItem_show on Show {
   internalID
   slug
@@ -448,16 +399,63 @@ fragment ShowItem_show on Show {
   }
 }
 
-fragment Shows_show on Show {
-  nearbyShows: nearbyShowsConnection(first: 20) {
-    edges {
-      node {
-        id
-        name
-        ...ShowItem_show
-      }
-    }
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
   }
+}
+
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
+}
+
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
 }
 */
 
@@ -1284,7 +1282,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "DetailTestsQuery",
-    "id": "51c22356fd21bed76e8d03af55c6cf59",
+    "id": "3246783c98a187d39b92d8b24bb6fddc",
     "text": null,
     "metadata": {}
   }

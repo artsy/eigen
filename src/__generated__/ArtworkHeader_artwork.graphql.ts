@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,11 +8,6 @@ export type ArtworkHeader_artwork = {
     } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkActions_artwork" | "ArtworkTombstone_artwork">;
     readonly " $refType": "ArtworkHeader_artwork";
-};
-export type ArtworkHeader_artwork$data = ArtworkHeader_artwork;
-export type ArtworkHeader_artwork$key = {
-    readonly " $data"?: ArtworkHeader_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkHeader_artwork">;
 };
 
 

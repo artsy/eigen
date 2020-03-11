@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 7deab5f23648732104e1c2ea55177f84 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,6 +16,58 @@ export type QueryRenderersWorksForYouQuery = {
 /*
 query QueryRenderersWorksForYouQuery {
   ...WorksForYou_query
+}
+
+fragment WorksForYou_query on Query {
+  me {
+    followsAndSaves {
+      notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: 10) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          node {
+            id
+            ...Notification_notification
+            __typename
+          }
+          cursor
+        }
+      }
+    }
+    id
+  }
+}
+
+fragment Notification_notification on FollowedArtistsArtworksGroup {
+  summary
+  artists
+  artworks: artworksConnection(first: 10) {
+    edges {
+      node {
+        artists(shallow: true) {
+          href
+          id
+        }
+        ...GenericGrid_artworks
+        id
+      }
+    }
+  }
+  image {
+    resized(height: 80, width: 80) {
+      url
+    }
+  }
+}
+
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -53,58 +103,6 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
-}
-
-fragment Notification_notification on FollowedArtistsArtworksGroup {
-  summary
-  artists
-  artworks: artworksConnection(first: 10) {
-    edges {
-      node {
-        artists(shallow: true) {
-          href
-          id
-        }
-        ...GenericGrid_artworks
-        id
-      }
-    }
-  }
-  image {
-    resized(height: 80, width: 80) {
-      url
-    }
-  }
-}
-
-fragment WorksForYou_query on Query {
-  me {
-    followsAndSaves {
-      notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: 10) {
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-        edges {
-          node {
-            id
-            ...Notification_notification
-            __typename
-          }
-          cursor
-        }
-      }
-    }
-    id
-  }
 }
 */
 
@@ -543,7 +541,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersWorksForYouQuery",
-    "id": "79a4db59a4b3cc42e61b47ea5f69ec93",
+    "id": "6882bc1c8166b63b8ef717e7a54f20fe",
     "text": null,
     "metadata": {}
   }

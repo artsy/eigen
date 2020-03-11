@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash f48952e9ab10ceceaf70f5bde089f01b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +28,46 @@ query PartnerArtworkInfiniteScrollGridQuery(
   partner(id: $id) {
     ...PartnerArtwork_partner_1G22uz
     id
+  }
+}
+
+fragment PartnerArtwork_partner_1G22uz on Partner {
+  internalID
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: $count, after: $cursor) {
+    edges {
+      node {
+        id
+        __typename
+      }
+      cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
   }
 }
 
@@ -66,46 +104,6 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
-}
-
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
-}
-
-fragment PartnerArtwork_partner_1G22uz on Partner {
-  internalID
-  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: $count, after: $cursor) {
-    edges {
-      node {
-        id
-        __typename
-      }
-      cursor
-    }
-    ...InfiniteScrollArtworksGrid_connection
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
 }
 */
 
@@ -513,7 +511,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkInfiniteScrollGridQuery",
-    "id": "b5659dc392fe29223802d69b36a860c7",
+    "id": "b9de1a1ee6bb013c31503749d2ba28c0",
     "text": null,
     "metadata": {}
   }

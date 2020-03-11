@@ -1,17 +1,10 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type BuyNowButton_artwork = {
     readonly internalID: string;
     readonly saleMessage: string | null;
     readonly " $refType": "BuyNowButton_artwork";
-};
-export type BuyNowButton_artwork$data = BuyNowButton_artwork;
-export type BuyNowButton_artwork$key = {
-    readonly " $data"?: BuyNowButton_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"BuyNowButton_artwork">;
 };
 
 

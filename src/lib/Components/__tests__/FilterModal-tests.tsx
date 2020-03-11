@@ -33,6 +33,7 @@ beforeEach(() => {
     selectedSortOption: "Default",
     selectedFilters: [],
     appliedFilters: [],
+    applyFilters: false,
   }
   NativeModules.Emission = {
     options: {
@@ -146,6 +147,7 @@ describe("Filter modal navigation flow", () => {
       selectedSortOption: "Default",
       selectedFilters: [],
       appliedFilters: [],
+      applyFilters: false,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
@@ -202,11 +204,12 @@ describe("Filter modal navigation flow", () => {
     // expect(getPreviousScreenTitle(filterScreen)).toEqual("Filter")
   })
 
-  it("allows users to eit filter modal when selecting close icon", () => {
+  it("allows users to exit filter modal screen when selecting close icon", () => {
     const initialState: ArtworkFilterContextState = {
       selectedSortOption: "Price (low to high)",
       selectedFilters: [],
       appliedFilters: [],
+      applyFilters: false,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
@@ -223,6 +226,7 @@ describe("Filter modal navigation flow", () => {
       selectedSortOption: "Price (high to low)",
       selectedFilters: [],
       appliedFilters: [],
+      applyFilters: false,
     }
     const sortScreen = mount(<MockSortScreen initialState={initialState} />)
 
@@ -236,6 +240,7 @@ describe("Filter modal navigation flow", () => {
       selectedSortOption: "Price (low to high)",
       selectedFilters: [],
       appliedFilters: [],
+      applyFilters: false,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
@@ -248,6 +253,7 @@ describe("Filter modal navigation flow", () => {
       selectedSortOption: "Default",
       selectedFilters: [],
       appliedFilters: [],
+      applyFilters: false,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
@@ -262,6 +268,7 @@ describe("Clearing filters", () => {
       selectedSortOption: "Price (low to high)",
       selectedFilters: [{ type: "Price (low to high)", filter: "sort" }],
       appliedFilters: [{ type: "Recently added", filter: "sort" }],
+      applyFilters: false,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
@@ -281,6 +288,7 @@ describe("Clearing filters", () => {
       selectedSortOption: "Price (high to low)",
       selectedFilters: [{ type: "Price (high to low)", filter: "sort" }],
       appliedFilters: [{ type: "Recently added", filter: "sort" }],
+      applyFilters: true,
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={initialState} />)

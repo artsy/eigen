@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,11 +29,6 @@ export type Detail_show = {
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"ShowHeader_show" | "ShowArtworksPreview_show" | "ShowArtistsPreview_show" | "Shows_show">;
     readonly " $refType": "Detail_show";
-};
-export type Detail_show$data = Detail_show;
-export type Detail_show$key = {
-    readonly " $data"?: Detail_show$data;
-    readonly " $fragmentRefs": FragmentRefs<"Detail_show">;
 };
 
 

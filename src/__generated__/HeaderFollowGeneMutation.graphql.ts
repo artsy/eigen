@@ -1,11 +1,9 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash d1e6be8b4a5b3e882629f36f9b8ce35d */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowGeneInput = {
-    geneID?: string | null;
-    clientMutationId?: string | null;
+    readonly geneID?: string | null;
+    readonly clientMutationId?: string | null;
 };
 export type HeaderFollowGeneMutationVariables = {
     input: FollowGeneInput;

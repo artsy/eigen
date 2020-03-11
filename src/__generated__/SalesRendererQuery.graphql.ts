@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 0f36ae9c158a22d98c1c80531ded8790 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,6 +16,73 @@ export type SalesRendererQuery = {
 /*
 query SalesRendererQuery {
   ...Sales_query
+}
+
+fragment Sales_query on Query {
+  salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
+    edges {
+      node {
+        ...SaleListItem_sale
+        live_start_at: liveStartAt
+        id
+      }
+    }
+  }
+  ...LotsByFollowedArtists_query
+}
+
+fragment SaleListItem_sale on Sale {
+  name
+  href
+  liveURLIfOpen
+  liveStartAt
+  displayTimelyAt
+  coverImage {
+    url(version: "large")
+  }
+}
+
+fragment LotsByFollowedArtists_query on Query {
+  me {
+    lotsByFollowedArtistsConnection(first: 10, liveSale: true, isAuction: true) {
+      edges {
+        cursor
+        node {
+          __typename
+          id
+        }
+        id
+      }
+      ...InfiniteScrollArtworksGrid_connection
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+    id
+  }
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -53,73 +118,6 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
-}
-
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
-}
-
-fragment LotsByFollowedArtists_query on Query {
-  me {
-    lotsByFollowedArtistsConnection(first: 10, liveSale: true, isAuction: true) {
-      edges {
-        cursor
-        node {
-          __typename
-          id
-        }
-        id
-      }
-      ...InfiniteScrollArtworksGrid_connection
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-    }
-    id
-  }
-}
-
-fragment SaleListItem_sale on Sale {
-  name
-  href
-  liveURLIfOpen
-  liveStartAt
-  displayTimelyAt
-  coverImage {
-    url(version: "large")
-  }
-}
-
-fragment Sales_query on Query {
-  salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
-    edges {
-      node {
-        ...SaleListItem_sale
-        live_start_at: liveStartAt
-        id
-      }
-    }
-  }
-  ...LotsByFollowedArtists_query
 }
 */
 
@@ -569,7 +567,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SalesRendererQuery",
-    "id": "9837881bbf02bb16ea04d724a69761cb",
+    "id": "ab88257156b8275d75cf08e24c1d6bb7",
     "text": null,
     "metadata": {}
   }

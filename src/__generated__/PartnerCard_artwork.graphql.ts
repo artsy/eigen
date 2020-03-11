@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type PartnerCard_artwork = {
     readonly sale: {
         readonly isBenefit: boolean | null;
@@ -27,11 +25,6 @@ export type PartnerCard_artwork = {
         } | null;
     } | null;
     readonly " $refType": "PartnerCard_artwork";
-};
-export type PartnerCard_artwork$data = PartnerCard_artwork;
-export type PartnerCard_artwork$key = {
-    readonly " $data"?: PartnerCard_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"PartnerCard_artwork">;
 };
 
 

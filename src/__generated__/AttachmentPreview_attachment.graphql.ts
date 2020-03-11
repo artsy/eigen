@@ -1,16 +1,9 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type AttachmentPreview_attachment = {
     readonly internalID: string;
     readonly " $refType": "AttachmentPreview_attachment";
-};
-export type AttachmentPreview_attachment$data = AttachmentPreview_attachment;
-export type AttachmentPreview_attachment$key = {
-    readonly " $data"?: AttachmentPreview_attachment$data;
-    readonly " $fragmentRefs": FragmentRefs<"AttachmentPreview_attachment">;
 };
 
 

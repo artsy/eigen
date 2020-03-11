@@ -1,19 +1,12 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type FollowArtistButton_artist = {
     readonly id: string;
     readonly slug: string;
     readonly internalID: string;
     readonly is_followed: boolean | null;
     readonly " $refType": "FollowArtistButton_artist";
-};
-export type FollowArtistButton_artist$data = FollowArtistButton_artist;
-export type FollowArtistButton_artist$key = {
-    readonly " $data"?: FollowArtistButton_artist$data;
-    readonly " $fragmentRefs": FragmentRefs<"FollowArtistButton_artist">;
 };
 
 

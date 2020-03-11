@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash dc784d12a169533d28a6fcbf160e3f63 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,45 +33,6 @@ query MessagesQuery(
       id
     }
     id
-  }
-}
-
-fragment ArtworkPreview_artwork on Artwork {
-  slug
-  internalID
-  title
-  artist_names: artistNames
-  date
-  image {
-    url
-  }
-}
-
-fragment AttachmentPreview_attachment on Attachment {
-  internalID
-}
-
-fragment ImagePreview_attachment on Attachment {
-  download_url: downloadURL
-  ...AttachmentPreview_attachment
-}
-
-fragment Message_message on Message {
-  body
-  created_at: createdAt
-  is_from_user: isFromUser
-  from {
-    name
-    email
-  }
-  attachments {
-    id
-    internalID
-    content_type: contentType
-    download_url: downloadURL
-    file_name: fileName
-    ...ImagePreview_attachment
-    ...PDFPreview_attachment
   }
 }
 
@@ -133,9 +92,34 @@ fragment Messages_conversation_2QE1um on Conversation {
   }
 }
 
-fragment PDFPreview_attachment on Attachment {
-  file_name: fileName
-  ...AttachmentPreview_attachment
+fragment Message_message on Message {
+  body
+  created_at: createdAt
+  is_from_user: isFromUser
+  from {
+    name
+    email
+  }
+  attachments {
+    id
+    internalID
+    content_type: contentType
+    download_url: downloadURL
+    file_name: fileName
+    ...ImagePreview_attachment
+    ...PDFPreview_attachment
+  }
+}
+
+fragment ArtworkPreview_artwork on Artwork {
+  slug
+  internalID
+  title
+  artist_names: artistNames
+  date
+  image {
+    url
+  }
 }
 
 fragment ShowPreview_show on Show {
@@ -161,6 +145,20 @@ fragment ShowPreview_show on Show {
       id
     }
   }
+}
+
+fragment ImagePreview_attachment on Attachment {
+  download_url: downloadURL
+  ...AttachmentPreview_attachment
+}
+
+fragment PDFPreview_attachment on Attachment {
+  file_name: fileName
+  ...AttachmentPreview_attachment
+}
+
+fragment AttachmentPreview_attachment on Attachment {
+  internalID
 }
 */
 
@@ -673,7 +671,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "d5401fbd049722de6e2426172ac15930",
+    "id": "ba202ce30abf8629e001332cf0782e09",
     "text": null,
     "metadata": {}
   }

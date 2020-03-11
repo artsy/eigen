@@ -5,6 +5,7 @@ const filterState: ArtworkFilterContextState = {
   appliedFilters: [],
   selectedFilters: [],
   selectedSortOption: "Default",
+  applyFilters: false,
 }
 
 export const reducer = (
@@ -16,7 +17,12 @@ export const reducer = (
       const previouslyAppliedFilters = artworkFilterState.appliedFilters
       const filtersToApply = action.payload
       const appliedFilters = union(previouslyAppliedFilters, filtersToApply)
-      return { appliedFilters, selectedFilters: [], selectedSortOption: artworkFilterState.selectedSortOption }
+      return {
+        applyFilters: true,
+        appliedFilters,
+        selectedFilters: [],
+        selectedSortOption: artworkFilterState.selectedSortOption,
+      }
 
     case "selectFilters":
       const previouslySelectedFilters = artworkFilterState.selectedFilters
@@ -27,6 +33,7 @@ export const reducer = (
       if (isFilterAlreadySelected) {
         const mergedFilters = [...previouslySelectedFilters, currentlySelectedFilter]
         return {
+          applyFilters: false,
           selectedFilters: mergedFilters,
           appliedFilters: filterState.appliedFilters,
           selectedSortOption: currentlySelectedFilter.type,
@@ -34,13 +41,14 @@ export const reducer = (
       } else {
         selectedFilter.push(currentlySelectedFilter)
         return {
+          applyFilters: false,
           selectedFilters: selectedFilter,
           appliedFilters: filterState.appliedFilters,
           selectedSortOption: currentlySelectedFilter.type,
         }
       }
     case "resetFilters":
-      return { appliedFilters: [], selectedFilters: [], selectedSortOption: "Default" }
+      return { applyFilters: false, appliedFilters: [], selectedFilters: [], selectedSortOption: "Default" }
   }
 }
 
@@ -56,6 +64,7 @@ export interface ArtworkFilterContextState {
   readonly appliedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
   readonly selectedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
   readonly selectedSortOption: SortOption
+  readonly applyFilters: boolean
 }
 
 interface ResetFilters {
@@ -89,3 +98,13 @@ export type SortOption =
   | "Artwork year (ascending)"
 
 export type FilterOption = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"
+
+export enum ArtworkSorts {
+  "Default" = "-decayed_merch",
+  "Price (high to low)" = "sold,-has_price,-prices",
+  "Price (low to high)" = "sold,-has_price,prices",
+  "Recently updated" = "-partner_updated_at",
+  "Recently added" = "-published_at",
+  "Artwork year (descending)" = "-year",
+  "Artwork year (ascending)" = "year",
+}

@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash deed06ce2888b5d39f834fb867d15bd0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,6 +20,15 @@ query ActiveBidsRefetchQuery {
   me {
     ...ActiveBids_me
     id
+  }
+}
+
+fragment ActiveBids_me on Me {
+  lot_standings: lotStandings(live: true) {
+    most_recent_bid: mostRecentBid {
+      id
+    }
+    ...ActiveBid_bid
   }
 }
 
@@ -53,15 +60,6 @@ fragment ActiveBid_bid on LotStanding {
       reserve_status: reserveStatus
       id
     }
-  }
-}
-
-fragment ActiveBids_me on Me {
-  lot_standings: lotStandings(live: true) {
-    most_recent_bid: mostRecentBid {
-      id
-    }
-    ...ActiveBid_bid
   }
 }
 */
@@ -286,7 +284,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ActiveBidsRefetchQuery",
-    "id": "8d5a4748dd2ad464ff59d390f6186cd5",
+    "id": "21dba509602d1fec7a5c41c674613da0",
     "text": null,
     "metadata": {}
   }

@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type CommercialInformationSizeInfo_piece = {
     readonly dimensions: {
         readonly in: string | null;
@@ -10,11 +8,6 @@ export type CommercialInformationSizeInfo_piece = {
     } | null;
     readonly editionOf: string | null;
     readonly " $refType": "CommercialInformationSizeInfo_piece";
-};
-export type CommercialInformationSizeInfo_piece$data = CommercialInformationSizeInfo_piece;
-export type CommercialInformationSizeInfo_piece$key = {
-    readonly " $data"?: CommercialInformationSizeInfo_piece$data;
-    readonly " $fragmentRefs": FragmentRefs<"CommercialInformationSizeInfo_piece">;
 };
 
 

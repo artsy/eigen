@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,11 +20,6 @@ export type WorksForYou_query = {
         } | null;
     } | null;
     readonly " $refType": "WorksForYou_query";
-};
-export type WorksForYou_query$data = WorksForYou_query;
-export type WorksForYou_query$key = {
-    readonly " $data"?: WorksForYou_query$data;
-    readonly " $fragmentRefs": FragmentRefs<"WorksForYou_query">;
 };
 
 

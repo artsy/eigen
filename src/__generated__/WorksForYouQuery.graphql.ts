@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 8435f60e600e1ec443f7fd03722b2489 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,6 +22,58 @@ query WorksForYouQuery(
   $cursor: String
 ) {
   ...WorksForYou_query_1G22uz
+}
+
+fragment WorksForYou_query_1G22uz on Query {
+  me {
+    followsAndSaves {
+      notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          node {
+            id
+            ...Notification_notification
+            __typename
+          }
+          cursor
+        }
+      }
+    }
+    id
+  }
+}
+
+fragment Notification_notification on FollowedArtistsArtworksGroup {
+  summary
+  artists
+  artworks: artworksConnection(first: 10) {
+    edges {
+      node {
+        artists(shallow: true) {
+          href
+          id
+        }
+        ...GenericGrid_artworks
+        id
+      }
+    }
+  }
+  image {
+    resized(height: 80, width: 80) {
+      url
+    }
+  }
+}
+
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -59,58 +109,6 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
-}
-
-fragment Notification_notification on FollowedArtistsArtworksGroup {
-  summary
-  artists
-  artworks: artworksConnection(first: 10) {
-    edges {
-      node {
-        artists(shallow: true) {
-          href
-          id
-        }
-        ...GenericGrid_artworks
-        id
-      }
-    }
-  }
-  image {
-    resized(height: 80, width: 80) {
-      url
-    }
-  }
-}
-
-fragment WorksForYou_query_1G22uz on Query {
-  me {
-    followsAndSaves {
-      notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor) {
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-        edges {
-          node {
-            id
-            ...Notification_notification
-            __typename
-          }
-          cursor
-        }
-      }
-    }
-    id
-  }
 }
 */
 
@@ -582,7 +580,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouQuery",
-    "id": "f3068de8ac199b537d65536800356e8a",
+    "id": "233fefb662c9aabcdda8d976ab43f755",
     "text": null,
     "metadata": {}
   }

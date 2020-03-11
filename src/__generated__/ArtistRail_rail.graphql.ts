@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,11 +11,6 @@ export type ArtistRail_rail = {
         readonly " $fragmentRefs": FragmentRefs<"ArtistCard_artist">;
     } | null> | null;
     readonly " $refType": "ArtistRail_rail";
-};
-export type ArtistRail_rail$data = ArtistRail_rail;
-export type ArtistRail_rail$key = {
-    readonly " $data"?: ArtistRail_rail$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistRail_rail">;
 };
 
 

@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type AutosuggestResults_results = {
     readonly results: {
         readonly edges: ReadonlyArray<{
@@ -16,11 +14,6 @@ export type AutosuggestResults_results = {
         } | null> | null;
     } | null;
     readonly " $refType": "AutosuggestResults_results";
-};
-export type AutosuggestResults_results$data = AutosuggestResults_results;
-export type AutosuggestResults_results$key = {
-    readonly " $data"?: AutosuggestResults_results$data;
-    readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
 
 

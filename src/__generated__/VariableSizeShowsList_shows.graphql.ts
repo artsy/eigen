@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -7,11 +6,6 @@ export type VariableSizeShowsList_shows = ReadonlyArray<{
     readonly id: string;
     readonly " $fragmentRefs": FragmentRefs<"ArtistShow_show">;
     readonly " $refType": "VariableSizeShowsList_shows";
-}>;
-export type VariableSizeShowsList_shows$data = VariableSizeShowsList_shows;
-export type VariableSizeShowsList_shows$key = ReadonlyArray<{
-    readonly " $data"?: VariableSizeShowsList_shows$data;
-    readonly " $fragmentRefs": FragmentRefs<"VariableSizeShowsList_shows">;
 }>;
 
 

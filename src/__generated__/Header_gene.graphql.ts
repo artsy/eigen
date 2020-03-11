@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type Header_gene = {
     readonly internalID: string;
     readonly slug: string;
@@ -10,11 +8,6 @@ export type Header_gene = {
     readonly isFollowed: boolean | null;
     readonly name: string | null;
     readonly " $refType": "Header_gene";
-};
-export type Header_gene$data = Header_gene;
-export type Header_gene$key = {
-    readonly " $data"?: Header_gene$data;
-    readonly " $fragmentRefs": FragmentRefs<"Header_gene">;
 };
 
 

@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash efd4c341fd01cb02976f28a9157c074f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,53 +38,6 @@ query GeneQuery(
     }
     id
   }
-}
-
-fragment About_gene on Gene {
-  ...Biography_gene
-  trending_artists: trendingArtists {
-    ...RelatedArtists_artists
-    id
-  }
-}
-
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
-    }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
-}
-
-fragment Biography_gene on Gene {
-  description
 }
 
 fragment Gene_gene_2jVhZq on Gene {
@@ -130,6 +81,14 @@ fragment Header_gene on Gene {
   name
 }
 
+fragment About_gene on Gene {
+  ...Biography_gene
+  trending_artists: trendingArtists {
+    ...RelatedArtists_artists
+    id
+  }
+}
+
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   pageInfo {
     hasNextPage
@@ -152,6 +111,50 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
+}
+
+fragment Biography_gene on Gene {
+  description
+}
+
+fragment RelatedArtists_artists on Artist {
+  id
+  ...RelatedArtist_artist
+}
+
 fragment RelatedArtist_artist on Artist {
   href
   name
@@ -162,11 +165,6 @@ fragment RelatedArtist_artist on Artist {
   image {
     url(version: "large")
   }
-}
-
-fragment RelatedArtists_artists on Artist {
-  id
-  ...RelatedArtist_artist
 }
 */
 
@@ -774,7 +772,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GeneQuery",
-    "id": "7742f40d87de5536d9d53896521dba96",
+    "id": "49fbcf23b33529059885936dcd6a97f2",
     "text": null,
     "metadata": {}
   }

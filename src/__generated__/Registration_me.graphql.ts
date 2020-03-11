@@ -1,16 +1,9 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type Registration_me = {
     readonly has_credit_cards: boolean | null;
     readonly " $refType": "Registration_me";
-};
-export type Registration_me$data = Registration_me;
-export type Registration_me$key = {
-    readonly " $data"?: Registration_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"Registration_me">;
 };
 
 

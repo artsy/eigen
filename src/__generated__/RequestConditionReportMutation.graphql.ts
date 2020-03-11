@@ -1,11 +1,9 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 803880a054c9c3f06b15aee11e8e4c6f */
 
 import { ConcreteRequest } from "relay-runtime";
 export type RequestConditionReportInput = {
-    clientMutationId?: string | null;
-    saleArtworkID: string;
+    readonly clientMutationId?: string | null;
+    readonly saleArtworkID: string;
 };
 export type RequestConditionReportMutationVariables = {
     input: RequestConditionReportInput;

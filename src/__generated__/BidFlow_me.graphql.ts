@@ -1,16 +1,10 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type BidFlow_me = {
     readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_me">;
     readonly " $refType": "BidFlow_me";
-};
-export type BidFlow_me$data = BidFlow_me;
-export type BidFlow_me$key = {
-    readonly " $data"?: BidFlow_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"BidFlow_me">;
 };
 
 

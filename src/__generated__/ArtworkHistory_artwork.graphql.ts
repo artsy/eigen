@@ -1,18 +1,11 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ArtworkHistory_artwork = {
     readonly provenance: string | null;
     readonly exhibition_history: string | null;
     readonly literature: string | null;
     readonly " $refType": "ArtworkHistory_artwork";
-};
-export type ArtworkHistory_artwork$data = ArtworkHistory_artwork;
-export type ArtworkHistory_artwork$key = {
-    readonly " $data"?: ArtworkHistory_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkHistory_artwork">;
 };
 
 

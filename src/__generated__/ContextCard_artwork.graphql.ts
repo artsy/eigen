@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ContextCard_artwork = {
     readonly id: string;
     readonly context: ({
@@ -43,11 +41,6 @@ export type ContextCard_artwork = {
         readonly __typename: "%other";
     }) | null;
     readonly " $refType": "ContextCard_artwork";
-};
-export type ContextCard_artwork$data = ContextCard_artwork;
-export type ContextCard_artwork$key = {
-    readonly " $data"?: ContextCard_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"ContextCard_artwork">;
 };
 
 

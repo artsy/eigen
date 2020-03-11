@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 5fef901fe37741e9ba81fbf8a8cf07d6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,6 +20,52 @@ query QueryRenderersInboxQuery {
   me {
     ...Inbox_me
     id
+  }
+}
+
+fragment Inbox_me on Me {
+  lot_standings: lotStandings(live: true) {
+    most_recent_bid: mostRecentBid {
+      id
+    }
+  }
+  conversations_existence_check: conversationsConnection(first: 1) {
+    edges {
+      node {
+        internalID
+        id
+      }
+    }
+  }
+  ...Conversations_me
+  ...ActiveBids_me
+}
+
+fragment Conversations_me on Me {
+  conversations: conversationsConnection(first: 10, after: "") {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        internalID
+        last_message: lastMessage
+        ...ConversationSnippet_conversation
+        id
+        __typename
+      }
+      cursor
+    }
+  }
+}
+
+fragment ActiveBids_me on Me {
+  lot_standings: lotStandings(live: true) {
+    most_recent_bid: mostRecentBid {
+      id
+    }
+    ...ActiveBid_bid
   }
 }
 
@@ -53,15 +97,6 @@ fragment ActiveBid_bid on LotStanding {
       reserve_status: reserveStatus
       id
     }
-  }
-}
-
-fragment ActiveBids_me on Me {
-  lot_standings: lotStandings(live: true) {
-    most_recent_bid: mostRecentBid {
-      id
-    }
-    ...ActiveBid_bid
   }
 }
 
@@ -100,43 +135,6 @@ fragment ConversationSnippet_conversation on Conversation {
       }
     }
   }
-}
-
-fragment Conversations_me on Me {
-  conversations: conversationsConnection(first: 10, after: "") {
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    edges {
-      node {
-        internalID
-        last_message: lastMessage
-        ...ConversationSnippet_conversation
-        id
-        __typename
-      }
-      cursor
-    }
-  }
-}
-
-fragment Inbox_me on Me {
-  lot_standings: lotStandings(live: true) {
-    most_recent_bid: mostRecentBid {
-      id
-    }
-  }
-  conversations_existence_check: conversationsConnection(first: 1) {
-    edges {
-      node {
-        internalID
-        id
-      }
-    }
-  }
-  ...Conversations_me
-  ...ActiveBids_me
 }
 */
 
@@ -634,7 +632,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersInboxQuery",
-    "id": "20155a74d046ff93262bbea24c186cf0",
+    "id": "6218c716f78e0e6159caac8e0906f62d",
     "text": null,
     "metadata": {}
   }

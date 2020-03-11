@@ -1,11 +1,9 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash ec07cf72fb2a770e76eb9f414222627e */
 
 import { ConcreteRequest } from "relay-runtime";
 export type RecordArtworkViewInput = {
-    artwork_id: string;
-    clientMutationId?: string | null;
+    readonly artwork_id: string;
+    readonly clientMutationId?: string | null;
 };
 export type ArtworkMarkAsRecentlyViewedQueryVariables = {
     input: RecordArtworkViewInput;

@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash aedb564b18cb405ed6b62a8eca23c744 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,35 +22,17 @@ query ForYouRefetchQuery {
   }
 }
 
-fragment ArtistCard_artist on Artist {
-  id
-  slug
-  internalID
-  href
-  name
-  formattedNationalityAndBirthday
-  avatar: image {
-    url(version: "small")
-  }
-  artworksConnection(first: 3) {
-    edges {
-      node {
-        image {
-          url(version: "large")
-        }
-        id
-      }
-    }
-  }
-}
-
-fragment ArtistRail_rail on HomePageArtistModule {
-  id
-  key
-  results {
+fragment ForYou_forYou on HomePage {
+  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES], exclude: [FOLLOWED_ARTISTS, GENERIC_GENES]) {
     id
-    internalID
-    ...ArtistCard_artist
+    ...ArtworkRail_rail
+  }
+  artist_modules: artistModules {
+    id
+    ...ArtistRail_rail
+  }
+  fairs_module: fairsModule {
+    ...FairsRail_fairs_module
   }
 }
 
@@ -102,6 +82,16 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   }
 }
 
+fragment ArtistRail_rail on HomePageArtistModule {
+  id
+  key
+  results {
+    id
+    internalID
+    ...ArtistCard_artist
+  }
+}
+
 fragment FairsRail_fairs_module on HomePageFairsModule {
   results {
     id
@@ -140,17 +130,25 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
   }
 }
 
-fragment ForYou_forYou on HomePage {
-  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES], exclude: [FOLLOWED_ARTISTS, GENERIC_GENES]) {
-    id
-    ...ArtworkRail_rail
+fragment ArtistCard_artist on Artist {
+  id
+  slug
+  internalID
+  href
+  name
+  formattedNationalityAndBirthday
+  avatar: image {
+    url(version: "small")
   }
-  artist_modules: artistModules {
-    id
-    ...ArtistRail_rail
-  }
-  fairs_module: fairsModule {
-    ...FairsRail_fairs_module
+  artworksConnection(first: 3) {
+    edges {
+      node {
+        image {
+          url(version: "large")
+        }
+        id
+      }
+    }
   }
 }
 */
@@ -643,7 +641,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "dd1f7e14d5a61390e520c78b316aa651",
+    "id": "a20d025f689f651d4dd80e2d49b49880",
     "text": null,
     "metadata": {}
   }

@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,11 +21,6 @@ export type Notification_notification = {
         } | null;
     } | null;
     readonly " $refType": "Notification_notification";
-};
-export type Notification_notification$data = Notification_notification;
-export type Notification_notification$key = {
-    readonly " $data"?: Notification_notification$data;
-    readonly " $fragmentRefs": FragmentRefs<"Notification_notification">;
 };
 
 

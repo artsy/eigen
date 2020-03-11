@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type Categories_me = {
     readonly followsAndSaves: {
         readonly genes: {
@@ -25,11 +23,6 @@ export type Categories_me = {
         } | null;
     } | null;
     readonly " $refType": "Categories_me";
-};
-export type Categories_me$data = Categories_me;
-export type Categories_me$key = {
-    readonly " $data"?: Categories_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"Categories_me">;
 };
 
 

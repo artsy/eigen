@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash ae4eb2f2e5c8f22df74e8e3bde991ed8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,13 +28,13 @@ query SelectMaxBidRefetchQuery(
   }
 }
 
-fragment BidResult_sale_artwork on SaleArtwork {
-  sale {
-    liveStartAt
-    endAt
-    slug
-    id
+fragment SelectMaxBid_sale_artwork on SaleArtwork {
+  id
+  increments(useMyMaxBid: true) {
+    display
+    cents
   }
+  ...ConfirmBid_sale_artwork
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
@@ -67,13 +65,13 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
   ...BidResult_sale_artwork
 }
 
-fragment SelectMaxBid_sale_artwork on SaleArtwork {
-  id
-  increments(useMyMaxBid: true) {
-    display
-    cents
+fragment BidResult_sale_artwork on SaleArtwork {
+  sale {
+    liveStartAt
+    endAt
+    slug
+    id
   }
-  ...ConfirmBid_sale_artwork
 }
 */
 
@@ -339,7 +337,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SelectMaxBidRefetchQuery",
-    "id": "1939fe4a6df3a703a583108eb1a316b7",
+    "id": "14dff0d3ce3985b4e185101949e5eb4f",
     "text": null,
     "metadata": {}
   }

@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash b683bd919dc6ca09f5274bbd6c333e9e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,6 +34,11 @@ query RequestConditionReportQuery(
   }
 }
 
+fragment RequestConditionReport_me on Me {
+  email
+  internalID
+}
+
 fragment RequestConditionReport_artwork on Artwork {
   internalID
   slug
@@ -43,11 +46,6 @@ fragment RequestConditionReport_artwork on Artwork {
     internalID
     id
   }
-}
-
-fragment RequestConditionReport_me on Me {
-  email
-  internalID
 }
 */
 
@@ -187,7 +185,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "RequestConditionReportQuery",
-    "id": "472196dd4778c5c10158b014f69275ca",
+    "id": "c4071a0d7c31ccc4a1c6ceba9bda34ce",
     "text": null,
     "metadata": {}
   }

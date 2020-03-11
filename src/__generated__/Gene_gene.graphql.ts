@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,11 +27,6 @@ export type Gene_gene = {
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"Header_gene" | "About_gene">;
     readonly " $refType": "Gene_gene";
-};
-export type Gene_gene$data = Gene_gene;
-export type Gene_gene$key = {
-    readonly " $data"?: Gene_gene$data;
-    readonly " $fragmentRefs": FragmentRefs<"Gene_gene">;
 };
 
 

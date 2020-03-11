@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,11 +12,6 @@ export type LotsByFollowedArtists_query = {
         } | null;
     } | null;
     readonly " $refType": "LotsByFollowedArtists_query";
-};
-export type LotsByFollowedArtists_query$data = LotsByFollowedArtists_query;
-export type LotsByFollowedArtists_query$key = {
-    readonly " $data"?: LotsByFollowedArtists_query$data;
-    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_query">;
 };
 
 

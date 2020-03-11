@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,11 +8,6 @@ export type FairArtworks_fair = {
     readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"FilteredInfiniteScrollGrid_entity">;
     readonly " $refType": "FairArtworks_fair";
-};
-export type FairArtworks_fair$data = FairArtworks_fair;
-export type FairArtworks_fair$key = {
-    readonly " $data"?: FairArtworks_fair$data;
-    readonly " $fragmentRefs": FragmentRefs<"FairArtworks_fair">;
 };
 
 

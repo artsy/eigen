@@ -8,7 +8,11 @@ import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  ArtworkFilterGlobalStateProvider,
+} from "../../utils/ArtworkFiltersStore"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
@@ -58,7 +62,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     })
   }
 
-  renderItem = ({ item: { type } }) => {
+  renderItem = ({ item: { type } }, contextState: ArtworkFilterContextState) => {
     switch (type) {
       case "collectionFeaturedArtists":
         return (
@@ -71,7 +75,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       case "collectionArtworks":
         return (
           <>
-            <CollectionArtworks collection={this.props.collection} />
+            <CollectionArtworks collection={this.props.collection} context={contextState} />
             <FilterModalNavigator
               {...this.props}
               isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
@@ -109,6 +113,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
           {value => {
+            const state = value.state
             return (
               <Theme>
                 <View style={{ flex: 1 }}>
@@ -120,7 +125,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
                     renderItem={item => (
                       <Box px={2} pb={2}>
-                        {this.renderItem(item)}
+                        {this.renderItem(item, state)}
                       </Box>
                     )}
                   />

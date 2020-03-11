@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 9b81cad46197566caad692add6738ae0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +27,35 @@ query ArtworksQuery(
     ...Artworks_me_1G22uz
     id
   }
+}
+
+fragment Artworks_me_1G22uz on Me {
+  followsAndSaves {
+    artworks: artworksConnection(private: true, first: $count, after: $cursor) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        node {
+          ...GenericGrid_artworks
+          id
+          __typename
+        }
+        cursor
+      }
+    }
+  }
+}
+
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -64,35 +91,6 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
-}
-
-fragment Artworks_me_1G22uz on Me {
-  followsAndSaves {
-    artworks: artworksConnection(private: true, first: $count, after: $cursor) {
-      pageInfo {
-        startCursor
-        endCursor
-        hasPreviousPage
-        hasNextPage
-      }
-      edges {
-        node {
-          ...GenericGrid_artworks
-          id
-          __typename
-        }
-        cursor
-      }
-    }
-  }
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
 }
 */
 
@@ -490,7 +488,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksQuery",
-    "id": "30006a967afa27f35b2d198a68e35554",
+    "id": "7bccc77f16ad18b94cf64d34c1b2c537",
     "text": null,
     "metadata": {}
   }

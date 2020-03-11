@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type CommercialPartnerInformation_artwork = {
     readonly availability: string | null;
     readonly isAcquireable: boolean | null;
@@ -15,11 +13,6 @@ export type CommercialPartnerInformation_artwork = {
         readonly name: string | null;
     } | null;
     readonly " $refType": "CommercialPartnerInformation_artwork";
-};
-export type CommercialPartnerInformation_artwork$data = CommercialPartnerInformation_artwork;
-export type CommercialPartnerInformation_artwork$key = {
-    readonly " $data"?: CommercialPartnerInformation_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"CommercialPartnerInformation_artwork">;
 };
 
 

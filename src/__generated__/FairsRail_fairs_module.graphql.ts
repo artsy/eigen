@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<{
         readonly id: string;
@@ -35,11 +33,6 @@ export type FairsRail_fairs_module = {
         } | null;
     } | null>;
     readonly " $refType": "FairsRail_fairs_module";
-};
-export type FairsRail_fairs_module$data = FairsRail_fairs_module;
-export type FairsRail_fairs_module$key = {
-    readonly " $data"?: FairsRail_fairs_module$data;
-    readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairs_module">;
 };
 
 

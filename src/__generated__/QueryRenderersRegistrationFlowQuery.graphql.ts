@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 339fa6de8d9a6a8f72e3a5efe8239f42 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,12 +36,12 @@ query QueryRenderersRegistrationFlowQuery(
   }
 }
 
-fragment RegistrationFlow_me on Me {
-  ...Registration_me
-}
-
 fragment RegistrationFlow_sale on Sale {
   ...Registration_sale
+}
+
+fragment RegistrationFlow_me on Me {
+  ...Registration_me
 }
 
 fragment Registration_me on Me {
@@ -211,7 +209,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersRegistrationFlowQuery",
-    "id": "a2a1384808bdca6155d1ef92432247ab",
+    "id": "2f122dcbf2ba168b4064dbda946e403c",
     "text": null,
     "metadata": {}
   }

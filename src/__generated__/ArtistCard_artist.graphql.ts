@@ -1,8 +1,6 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ArtistCard_artist = {
     readonly id: string;
     readonly slug: string;
@@ -23,11 +21,6 @@ export type ArtistCard_artist = {
         } | null> | null;
     } | null;
     readonly " $refType": "ArtistCard_artist";
-};
-export type ArtistCard_artist$data = ArtistCard_artist;
-export type ArtistCard_artist$key = {
-    readonly " $data"?: ArtistCard_artist$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistCard_artist">;
 };
 
 

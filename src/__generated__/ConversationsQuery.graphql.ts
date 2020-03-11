@@ -1,6 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
-/* @relayHash 5826dd9b4889a64491e04198004a88dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +26,25 @@ query ConversationsQuery(
   me {
     ...Conversations_me_1G22uz
     id
+  }
+}
+
+fragment Conversations_me_1G22uz on Me {
+  conversations: conversationsConnection(first: $count, after: $cursor) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        internalID
+        last_message: lastMessage
+        ...ConversationSnippet_conversation
+        id
+        __typename
+      }
+      cursor
+    }
   }
 }
 
@@ -64,25 +81,6 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Node {
         id
       }
-    }
-  }
-}
-
-fragment Conversations_me_1G22uz on Me {
-  conversations: conversationsConnection(first: $count, after: $cursor) {
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    edges {
-      node {
-        internalID
-        last_message: lastMessage
-        ...ConversationSnippet_conversation
-        id
-        __typename
-      }
-      cursor
     }
   }
 }
@@ -418,7 +416,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationsQuery",
-    "id": "a50bbadafca9ca9b89e2e53b2058eb4b",
+    "id": "4587fa958ec869e9700b9d66df269bc3",
     "text": null,
     "metadata": {}
   }

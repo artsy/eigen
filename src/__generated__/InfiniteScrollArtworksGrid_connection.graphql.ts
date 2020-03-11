@@ -1,5 +1,4 @@
 /* tslint:disable */
-/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,11 +19,6 @@ export type InfiniteScrollArtworksGrid_connection = {
         } | null;
     } | null> | null;
     readonly " $refType": "InfiniteScrollArtworksGrid_connection";
-};
-export type InfiniteScrollArtworksGrid_connection$data = InfiniteScrollArtworksGrid_connection;
-export type InfiniteScrollArtworksGrid_connection$key = {
-    readonly " $data"?: InfiniteScrollArtworksGrid_connection$data;
-    readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
 };
 
 
