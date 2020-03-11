@@ -1,6 +1,7 @@
 import { Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { captureMessage, withScope } from "@sentry/react-native"
-import { Artist_artistAboveTheFold } from "__generated__/Artist_artistAboveTheFold.graphql"
+import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import {
   ArtistFullQuery,
   ArtistFullQueryResponse,
@@ -13,7 +14,8 @@ import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderBox, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
+import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { PlaceholderBox, PlaceholderImage, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideTracking } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -21,46 +23,12 @@ import React, { useEffect, useMemo, useState } from "react"
 import { createFragmentContainer, fetchQuery, graphql, QueryRenderer, RelayProp } from "react-relay"
 
 export const Artist: React.FC<{
-  artistAboveTheFold: Artist_artistAboveTheFold
-  relay: RelayProp
-  isPad: boolean
-}> = ({ artistAboveTheFold, relay, isPad }) => {
-  const [artistFull, setArtistFull] = useState<null | ArtistFullQueryResponse["artist"]>(null)
-  useEffect(() => {
-    fetchQuery<ArtistFullQuery>(
-      relay.environment,
-      graphql`
-        query ArtistFullQuery($artistID: String!, $isPad: Boolean!) {
-          artist(id: $artistID) {
-            ...Artist_artistAboveTheFold
-            ...ArtistAbout_artist
-            ...ArtistShows_artist
-          }
-        }
-      `,
-      {
-        artistID: artistAboveTheFold.internalID,
-        isPad,
-      }
-    )
-      .then(result => {
-        if ("errors" in result) {
-          throw new Error((result as any).errors)
-        }
-        setArtistFull(result.artist)
-      })
-      .catch(error => {
-        if (__DEV__) {
-          console.error(`Couldn't fetch full artist`, error)
-        } else {
-          withScope(scope => {
-            scope.setExtra("slug", artistAboveTheFold.slug)
-            scope.setExtra("stack", error.stack)
-            captureMessage("couldn't fetch full artist")
-          })
-        }
-      })
-  }, [])
+  artistAboveTheFold: ArtistAboveTheFoldQuery["response"]["artist"] | null
+  artistBelowTheFold: ArtistBelowTheFoldQuery["response"]["artist"] | null
+}> = ({ artistAboveTheFold, artistBelowTheFold }) => {
+  if (!artistAboveTheFold) {
+    return <ArtistPlaceholder />
+  }
 
   const tabs = []
   const displayAboutSection =
@@ -71,7 +39,7 @@ export const Artist: React.FC<{
   if (displayAboutSection) {
     tabs.push({
       title: "About",
-      content: artistFull ? <ArtistAbout artist={artistFull} /> : <ArtistAboutPlaceholder />,
+      content: artistBelowTheFold ? <ArtistAbout artist={artistBelowTheFold} /> : <ArtistAboutPlaceholder />,
     })
   }
 
@@ -86,7 +54,7 @@ export const Artist: React.FC<{
   if (artistAboveTheFold.counts.partner_shows) {
     tabs.push({
       title: "Shows",
-      content: artistFull ? <ArtistShows artist={artistFull} /> : <ArtistShowsPlaceholder />,
+      content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <ArtistShowsPlaceholder />,
     })
   }
 
@@ -103,89 +71,112 @@ export const Artist: React.FC<{
   )
 }
 
-export const ArtistFragmentContainer = createFragmentContainer(Artist, {
-  artistAboveTheFold: graphql`
-    fragment Artist_artistAboveTheFold on Artist {
-      internalID
-      slug
-      has_metadata: hasMetadata
-      counts {
-        artworks
-        partner_shows: partnerShows
-        related_artists: relatedArtists
-        articles
-      }
-      ...ArtistHeader_artist
-      ...ArtistArtworks_artist
-    }
-  `,
-})
-
 export const ArtistQueryRenderer: React.SFC<ArtistQueryVariables & ArtistFullQueryVariables> = ({
   artistID,
   isPad,
 }) => {
-  const Container = useMemo(() => {
-    return ({ artist }) => <ArtistFragmentContainer artistAboveTheFold={artist} isPad={isPad} />
-  }, [isPad])
   return (
-    <QueryRenderer<ArtistQuery>
+    <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query ArtistQuery($artistID: String!) {
-          artist(id: $artistID) {
-            ...Artist_artistAboveTheFold
+      above={{
+        query: graphql`
+          query ArtistAboveTheFoldQuery($artistID: String!) {
+            artist(id: $artistID) {
+              internalID
+              slug
+              has_metadata: hasMetadata
+              counts {
+                artworks
+                partner_shows: partnerShows
+                related_artists: relatedArtists
+                articles
+              }
+              ...ArtistHeader_artist
+              ...ArtistArtworks_artist
+            }
           }
-        }
-      `}
-      variables={{ artistID }}
-      render={renderWithPlaceholder<ArtistQueryResponse>({
-        Container,
+        `,
+        variables: { artistID },
+      }}
+      below={{
+        query: graphql`
+          query ArtistBelowTheFoldQuery($artistID: String!, $isPad: Boolean!) {
+            artist(id: $artistID) {
+              ...ArtistAbout_artist
+              ...ArtistShows_artist
+            }
+          }
+        `,
+        variables: { artistID, isPad },
+      }}
+      render={{
         renderPlaceholder: () => <ArtistPlaceholder />,
-      })}
+        renderComponent: ({ above, below }) => (
+          <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} />
+        ),
+      }}
     />
   )
+  // return (
+  //   <QueryRenderer<ArtistQuery>
+  //     environment={defaultEnvironment}
+  //     query={graphql`
+  //       query ArtistQuery($artistID: String!) {
+  //         artist(id: $artistID) {
+  //           ...Artist_artistAboveTheFold
+  //         }
+  //       }
+  //     `}
+  //     variables={{ artistID }}
+  //     render={renderWithPlaceholder<ArtistQueryResponse>({
+  //       Container,
+  //       renderPlaceholder: () => <ArtistPlaceholder />,
+  //     })}
+  //   />
+  // )
 }
 
 const ArtistPlaceholder: React.FC = () => (
-  <Theme>
-    <Flex>
-      <Flex alignItems="center">
-        <Spacer mb={45} />
-        {/* artist name */}
-        <PlaceholderText width={120} />
+  <ProvidePlaceholderContext>
+    <Theme>
+      <Flex>
+        <Flex alignItems="center">
+          <Spacer mb={45} />
+          {/* artist name */}
+          <PlaceholderText width={120} />
+          <Spacer mb={1} />
+          {/* birthday, followers */}
+          <PlaceholderText width={150} />
+        </Flex>
         <Spacer mb={1} />
-        {/* birthday, followers */}
-        <PlaceholderText width={150} />
-      </Flex>
-      <Spacer mb={1} />
-      {/* follow buton */}
-      <PlaceholderBox height={42} marginHorizontal={20} />
-      <Spacer mb={3} />
-      {/* tabs */}
-      <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width={40} />
-        <PlaceholderText width={50} />
-        <PlaceholderText width={40} />
-      </Flex>
-      <Spacer mb={1} />
-      <Separator />
-      <Spacer mb={3} />
-      {/* masonry grid */}
-      <Flex mx={2} flexDirection="row">
-        <Flex mr={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={92} />
-          <PlaceholderImage height={172} />
-          <PlaceholderImage height={82} />
+        {/* follow buton */}
+        <PlaceholderBox height={42} marginHorizontal={20} />
+        <Spacer mb={3} />
+        {/* tabs */}
+        <Flex justifyContent="space-around" flexDirection="row" px={2}>
+          <PlaceholderText width={40} />
+          <PlaceholderText width={50} />
+          <PlaceholderText width={40} />
         </Flex>
-        <Flex ml={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={182} />
-          <PlaceholderImage height={132} />
-          <PlaceholderImage height={86} />
+        <Spacer mb={1} />
+        <Separator />
+        <Spacer mb={3} />
+        {/* masonry grid */}
+        <Flex mx={2} flexDirection="row">
+          <Flex mr={1} style={{ flex: 1 }}>
+            <PlaceholderImage height={92} />
+            <PlaceholderImage height={172} />
+            <PlaceholderImage height={82} />
+          </Flex>
+          <Flex ml={1} style={{ flex: 1 }}>
+            <PlaceholderImage height={182} />
+            <PlaceholderImage height={132} />
+            <PlaceholderImage height={86} />
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
-  </Theme>
+    </Theme>
+  </ProvidePlaceholderContext>
 )
 
 const ArtistAboutPlaceholder: React.FC = () => {

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { QueryRenderer } from "react-relay"
 
 import LoadFailureView from "lib/Components/LoadFailureView"
@@ -8,13 +8,22 @@ type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"
 
 export function renderWithPlaceholder<Props>({
   Container,
+  render,
   renderPlaceholder,
   initialProps = {},
 }: {
-  Container: React.ComponentType<Props>
+  Container?: React.ComponentType<Props>
+  render?: (props: Props) => React.ReactChild
   renderPlaceholder: () => React.ReactChild
   initialProps?: object
 }): (readyState: ReadyState) => React.ReactElement | null {
+  if (!Container && !render) {
+    throw new Error("Please supply one of `render` or `Component` to renderWithPlaceholder")
+  }
+  if (Container && render) {
+    throw new Error("Please supply only one of `render` or `Component` to renderWithPlaceholder")
+  }
+
   let retrying = false
   return ({ error, props, retry }) => {
     if (error) {
@@ -48,7 +57,11 @@ export function renderWithPlaceholder<Props>({
         return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
       }
     } else if (props) {
-      return <Container {...initialProps} {...(props as any)} />
+      if (render) {
+        return <>{render({ ...initialProps, ...(props as any) })}</>
+      } else {
+        return <Container {...initialProps} {...(props as any)} />
+      }
     } else {
       return <ProvidePlaceholderContext>{renderPlaceholder()}</ProvidePlaceholderContext>
     }
