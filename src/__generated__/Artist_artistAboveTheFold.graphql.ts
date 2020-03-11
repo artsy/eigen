@@ -2,7 +2,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Artist_artist = {
+export type Artist_artistAboveTheFold = {
     readonly internalID: string;
     readonly slug: string;
     readonly has_metadata: boolean | null;
@@ -12,15 +12,15 @@ export type Artist_artist = {
         readonly related_artists: number | null;
         readonly articles: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist" | "ArtistAbout_artist" | "ArtistShows_artist" | "ArtistArtworks_artist">;
-    readonly " $refType": "Artist_artist";
+    readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist" | "ArtistArtworks_artist">;
+    readonly " $refType": "Artist_artistAboveTheFold";
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Artist_artist",
+  "name": "Artist_artistAboveTheFold",
   "type": "Artist",
   "metadata": null,
   "argumentDefinitions": [],
@@ -92,20 +92,10 @@ const node: ReaderFragment = {
     },
     {
       "kind": "FragmentSpread",
-      "name": "ArtistAbout_artist",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ArtistShows_artist",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
       "name": "ArtistArtworks_artist",
       "args": null
     }
   ]
 };
-(node as any).hash = 'fdbddf65bd6badfcca6c1bb991f9d51f';
+(node as any).hash = '17e84f5efbe35b6dacdd1e3ea0980649';
 export default node;

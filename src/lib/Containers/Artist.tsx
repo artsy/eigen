@@ -1,6 +1,12 @@
 import { Flex, Separator, Spacer, Theme } from "@artsy/palette"
-import { Artist_artist } from "__generated__/Artist_artist.graphql"
-import { ArtistQuery, ArtistQueryVariables } from "__generated__/ArtistQuery.graphql"
+import { captureMessage, withScope } from "@sentry/react-native"
+import { Artist_artistAboveTheFold } from "__generated__/Artist_artistAboveTheFold.graphql"
+import {
+  ArtistFullQuery,
+  ArtistFullQueryResponse,
+  ArtistFullQueryVariables,
+} from "__generated__/ArtistFullQuery.graphql"
+import { ArtistQuery, ArtistQueryResponse, ArtistQueryVariables } from "__generated__/ArtistQuery.graphql"
 import ArtistAbout from "lib/Components/Artist/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
@@ -9,61 +15,97 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { track } from "lib/utils/track"
+import { ProvideTracking } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
-import React from "react"
-import { ViewProperties } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import React, { useEffect, useMemo, useState } from "react"
+import { createFragmentContainer, fetchQuery, graphql, QueryRenderer, RelayProp } from "react-relay"
 
-interface Props extends ViewProperties {
-  artist: Artist_artist
-}
-
-// screen views are tracked in eigen
-@track()
-export class Artist extends React.Component<Props> {
-  render() {
-    const { artist } = this.props
-    const tabs = []
-    const displayAboutSection = artist.has_metadata || artist.counts.articles > 0 || artist.counts.related_artists > 0
-
-    if (displayAboutSection) {
-      tabs.push({
-        title: "About",
-        content: <ArtistAbout artist={artist} />,
+export const Artist: React.FC<{
+  artistAboveTheFold: Artist_artistAboveTheFold
+  relay: RelayProp
+  isPad: boolean
+}> = ({ artistAboveTheFold, relay, isPad }) => {
+  const [artistFull, setArtistFull] = useState<null | ArtistFullQueryResponse["artist"]>(null)
+  useEffect(() => {
+    fetchQuery<ArtistFullQuery>(
+      relay.environment,
+      graphql`
+        query ArtistFullQuery($artistID: String!, $isPad: Boolean!) {
+          artist(id: $artistID) {
+            ...Artist_artistAboveTheFold
+            ...ArtistAbout_artist
+            ...ArtistShows_artist
+          }
+        }
+      `,
+      {
+        artistID: artistAboveTheFold.internalID,
+        isPad,
+      }
+    )
+      .then(result => {
+        if ("errors" in result) {
+          throw new Error((result as any).errors)
+        }
+        setArtistFull(result.artist)
       })
-    }
-
-    if (artist.counts.artworks) {
-      tabs.push({
-        title: "Artworks",
-        initial: true,
-        content: <ArtistArtworks artist={artist} />,
+      .catch(error => {
+        if (__DEV__) {
+          console.error(`Couldn't fetch full artist`, error)
+        } else {
+          withScope(scope => {
+            scope.setExtra("slug", artistAboveTheFold.slug)
+            scope.setExtra("stack", error.stack)
+            captureMessage("couldn't fetch full artist")
+          })
+        }
       })
-    }
+  }, [])
 
-    if (artist.counts.partner_shows) {
-      tabs.push({
-        title: "Shows",
-        content: <ArtistShows artist={artist} />,
-      })
-    }
+  const tabs = []
+  const displayAboutSection =
+    artistAboveTheFold.has_metadata ||
+    artistAboveTheFold.counts.articles > 0 ||
+    artistAboveTheFold.counts.related_artists > 0
 
-    return (
+  if (displayAboutSection) {
+    tabs.push({
+      title: "About",
+      content: artistFull ? <ArtistAbout artist={artistFull} /> : <ArtistAboutPlaceholder />,
+    })
+  }
+
+  if (artistAboveTheFold.counts.artworks) {
+    tabs.push({
+      title: "Artworks",
+      initial: true,
+      content: <ArtistArtworks artist={artistAboveTheFold} />,
+    })
+  }
+
+  if (artistAboveTheFold.counts.partner_shows) {
+    tabs.push({
+      title: "Shows",
+      content: artistFull ? <ArtistShows artist={artistFull} /> : <ArtistShowsPlaceholder />,
+    })
+  }
+
+  return (
+    <ProvideTracking>
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <StickyTabPage headerContent={<ArtistHeader artist={artist} />} tabs={tabs} />
+            <StickyTabPage headerContent={<ArtistHeader artist={artistAboveTheFold} />} tabs={tabs} />
           </Flex>
         </ProvideScreenDimensions>
       </Theme>
-    )
-  }
+    </ProvideTracking>
+  )
 }
 
 export const ArtistFragmentContainer = createFragmentContainer(Artist, {
-  artist: graphql`
-    fragment Artist_artist on Artist {
+  artistAboveTheFold: graphql`
+    fragment Artist_artistAboveTheFold on Artist {
       internalID
       slug
       has_metadata: hasMetadata
@@ -74,27 +116,31 @@ export const ArtistFragmentContainer = createFragmentContainer(Artist, {
         articles
       }
       ...ArtistHeader_artist
-      ...ArtistAbout_artist
-      ...ArtistShows_artist
       ...ArtistArtworks_artist
     }
   `,
 })
 
-export const ArtistQueryRenderer: React.SFC<ArtistQueryVariables> = ({ artistID, isPad }) => {
+export const ArtistQueryRenderer: React.SFC<ArtistQueryVariables & ArtistFullQueryVariables> = ({
+  artistID,
+  isPad,
+}) => {
+  const Container = useMemo(() => {
+    return ({ artist }) => <ArtistFragmentContainer artistAboveTheFold={artist} isPad={isPad} />
+  }, [isPad])
   return (
     <QueryRenderer<ArtistQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtistQuery($artistID: String!, $isPad: Boolean!) {
+        query ArtistQuery($artistID: String!) {
           artist(id: $artistID) {
-            ...Artist_artist
+            ...Artist_artistAboveTheFold
           }
         }
       `}
-      variables={{ artistID, isPad }}
-      render={renderWithPlaceholder({
-        Container: ArtistFragmentContainer,
+      variables={{ artistID }}
+      render={renderWithPlaceholder<ArtistQueryResponse>({
+        Container,
         renderPlaceholder: () => <ArtistPlaceholder />,
       })}
     />
@@ -141,3 +187,10 @@ const ArtistPlaceholder: React.FC = () => (
     </Flex>
   </Theme>
 )
+
+const ArtistAboutPlaceholder: React.FC = () => {
+  return null
+}
+const ArtistShowsPlaceholder: React.FC = () => {
+  return null
+}

@@ -52,7 +52,7 @@ class ArtistAbout extends React.Component<Props> {
   }
 
   articles() {
-    if (this.props.artist.articles.edges.length) {
+    if (this.props.artist.articles?.edges.length) {
       return (
         <>
           <Box my={3}>

@@ -3,6 +3,7 @@ import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 import Events from "lib/NativeModules/Events"
 
 // The schema definition for analytics tracking lives inside `./schema`, not here.
+import React from "react"
 import * as Schema from "./schema"
 export { Schema }
 
@@ -86,6 +87,13 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
  *      ```
  */
 export const track: Track = _track
+
+@track()
+export class ProvideTracking extends React.Component {
+  render() {
+    return React.createElement(React.Fragment, null, this.props.children)
+  }
+}
 
 /**
  * A typed page view decorator for the top level component for your screen. This is the

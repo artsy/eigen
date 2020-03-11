@@ -1,4 +1,4 @@
-import { Artist_artist } from "__generated__/Artist_artist.graphql"
+import { Artist_artistAboveTheFold } from "__generated__/Artist_artistAboveTheFold.graphql"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { ArtistFragmentContainer } from "lib/Containers/Artist"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -9,21 +9,18 @@ import { graphql } from "react-relay"
 jest.unmock("react-relay")
 
 describe("availableTabs", () => {
-  const getWrapper = async (artist: Omit<Artist_artist, " $fragmentRefs">) =>
+  const getWrapper = async (artist: Omit<Artist_artistAboveTheFold, " $fragmentRefs">) =>
     await renderRelayTree({
       Component: (props: any) => {
         return <ArtistFragmentContainer isPad={false} artist={{ ...artist }} {...props} />
       },
       query: graphql`
-        query ArtistTestsQuery($isPad: Boolean!) @raw_response_type {
+        query ArtistTestsQuery @raw_response_type {
           artist(id: "andy-warhol") {
-            ...Artist_artist
+            ...Artist_artistAboveTheFold
           }
         }
       `,
-      variables: {
-        isPad: false,
-      },
       mockData: {
         artist,
       },
