@@ -1,0 +1,30 @@
+diff --git a/node_modules/relay-mock-network-layer/dist/index.cjs.js b/node_modules/relay-mock-network-layer/dist/index.cjs.js
+index 14dc1f4..e3921a9 100644
+--- a/node_modules/relay-mock-network-layer/dist/index.cjs.js
++++ b/node_modules/relay-mock-network-layer/dist/index.cjs.js
+@@ -138,11 +138,15 @@ function getNetworkLayer(_a) {
+     if (typeof schema === 'object' && schema.data) {
+         schema = graphql.printSchema(graphql.buildClientSchema(schema.data));
+     }
++
+     var executableSchema = graphqlTools.makeExecutableSchema(__assign({
+         // @ts-ignore
+         typeDefs: schema, resolvers: resolvers }, schemaDefinitionOptions));
++    var fieldResolver = _a.fieldResolver
+     // Add mocks, modifies schema in place
+-    graphqlTools.addMockFunctionsToSchema({ schema: executableSchema, mocks: mocks, preserveResolvers: preserveResolvers });
++    if (mocks) {
++        graphqlTools.addMockFunctionsToSchema({ schema: executableSchema, mocks: mocks, preserveResolvers: preserveResolvers });
++    }
+     return function fetchQuery(request, variables) {
+         var _a;
+         return __awaiter(this, void 0, void 0, function () {
+@@ -154,7 +158,7 @@ function getNetworkLayer(_a) {
+                         if (!query) {
+                             throw new Error('Could not find query, ensure operation.text exists or pass resolveQueryFromOperation.');
+                         }
+-                        return [4 /*yield*/, graphql.graphql(executableSchema, query, null, null, variables)];
++                        return [4 /*yield*/, graphql.graphql(executableSchema, query, null, null, variables, null, fieldResolver)];
+                     case 1:
+                         _b = _c.sent(), errors = _b.errors, data = _b.data;
+                         // Trigger Relay error in case of GraphQL errors (or errors in mutation response)
