@@ -9,7 +9,7 @@ import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
-import Events from "lib/NativeModules/Events"
+import { postEvent } from "lib/NativeModules/Events"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
 
@@ -205,7 +205,7 @@ describe("FeaturedArtists", () => {
 
       viewAll.simulate("click")
 
-      expect(Events.postEvent).toHaveBeenCalledWith({
+      expect(postEvent).toHaveBeenCalledWith({
         action_type: "tap",
         action_name: "viewMore",
         context_module: "FeaturedArtists",

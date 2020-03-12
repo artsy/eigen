@@ -14,7 +14,7 @@ import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import Events from "lib/NativeModules/Events"
+import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CardRailFlatList } from "../CardRailFlatList"
 
@@ -128,7 +128,7 @@ export class ArtistRail extends Component<Props, State> {
           if (errors && errors.length > 0) {
             reject(new Error(JSON.stringify(errors)))
           } else {
-            Events.postEvent({
+            postEvent({
               name: "Follow artist",
               artist_id: followArtist.internalID,
               artist_slug: followArtist.slug,

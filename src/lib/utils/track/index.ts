@@ -1,6 +1,6 @@
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
-import Events from "lib/NativeModules/Events"
+import { postEvent } from "lib/NativeModules/Events"
 
 // The schema definition for analytics tracking lives inside `./schema`, not here.
 import React from "react"
@@ -150,7 +150,7 @@ export class ProvideScreenTracking extends React.Component<ProvideScreenTracking
  */
 export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
-    dispatch: data => Events.postEvent(data),
+    dispatch: data => postEvent(data),
     dispatchOnMount: true,
   })
 }
@@ -194,7 +194,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *        overview.submissionDraftCreated()
  *
  *        // Check that the native event for the analytics call is sent
- *        expect(Event.postEvent).toBeCalledWith({
+ *        expect(postEvent).toBeCalledWith({
  *          action_name: "consignmentDraftCreated",
  *          action_type: "success",
  *          context_screen: "ConsignmentsOverview",

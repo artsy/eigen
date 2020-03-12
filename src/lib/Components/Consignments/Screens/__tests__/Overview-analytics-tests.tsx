@@ -1,11 +1,11 @@
 import { shallow } from "enzyme"
-import Event from "lib/NativeModules/Events"
 import React from "react"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 jest.unmock("react-tracking")
 
+import { postEvent } from "lib/NativeModules/Events"
 import Overview from "../Overview"
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
@@ -19,7 +19,7 @@ it("calls the draft created event", () => {
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftCreated()
-  expect(Event.postEvent).toBeCalledWith({
+  expect(postEvent).toBeCalledWith({
     action_name: "consignmentDraftCreated",
     action_type: "success",
     context_screen: "ConsignmentsOverview",
@@ -35,7 +35,7 @@ it("calls the draft created event", () => {
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftSubmitted()
-  expect(Event.postEvent).toBeCalledWith({
+  expect(postEvent).toBeCalledWith({
     action_name: "consignmentSubmitted",
     action_type: "success",
     context_screen: "ConsignmentsOverview",

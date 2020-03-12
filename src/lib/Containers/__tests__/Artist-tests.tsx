@@ -12,13 +12,20 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "../Artist"
 
 jest.unmock("react-relay")
+jest.unmock("react-tracking")
+
+jest.mock("lib/NativeModules/Events", () => ({
+  postEvent: jest.fn(),
+}))
 
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
 
 describe("availableTabs", () => {
   let environment = createMockEnvironment()
+  const postEvent = require("lib/NativeModules/Events").postEvent as jest.Mock
   beforeEach(() => {
     environment = createMockEnvironment()
+    postEvent.mockClear()
   })
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
@@ -114,5 +121,19 @@ describe("availableTabs", () => {
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
     expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(1)
     expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
+  })
+
+  it("tracks a page view", () => {
+    create(<TestWrapper />)
+    mockMostRecentOperation("ArtistAboveTheFoldQuery")
+    expect(postEvent).toHaveBeenCalledTimes(1)
+    expect(postEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
+      Object {
+        "context_screen": "Artist",
+        "context_screen_owner_id": "<mock-value-for-field-\\"internalID\\">",
+        "context_screen_owner_slug": "<mock-value-for-field-\\"slug\\">",
+        "context_screen_owner_type": "Artist",
+      }
+    `)
   })
 })
