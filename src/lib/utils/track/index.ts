@@ -88,8 +88,11 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
  */
 export const track: Track = _track
 
-@track()
-export class ProvideTracking extends React.Component {
+interface ProvideScreenTrackingProps {
+  info: Schema.PageView
+}
+@screenTrack<ProvideScreenTrackingProps>(props => props.info)
+export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
   render() {
     return React.createElement(React.Fragment, null, this.props.children)
   }
