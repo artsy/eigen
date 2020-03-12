@@ -52,7 +52,13 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                   style={{ flex: 1 }}
                 />
                 <Box p={2}>
-                  <ApplyButton onPress={applyFilters} block width={100} variant="secondaryOutline">
+                  <ApplyButton
+                    disabled={state.selectedFilters.length < 1}
+                    onPress={applyFilters}
+                    block
+                    width={100}
+                    variant="secondaryOutline"
+                  >
                     {getApplyButtonCount()}
                   </ApplyButton>
                 </Box>
