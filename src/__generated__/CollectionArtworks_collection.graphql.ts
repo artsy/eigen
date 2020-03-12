@@ -53,7 +53,7 @@ return {
       "kind": "LocalArgument",
       "name": "cursor",
       "type": "String",
-      "defaultValue": null
+      "defaultValue": ""
     },
     {
       "kind": "LocalArgument",
@@ -158,5 +158,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5523a420924cb6ab1494c67047cf391b';
+(node as any).hash = '16d6e6940ee6bfb25064f05ae19605a0';
 export default node;

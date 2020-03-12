@@ -4,8 +4,8 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CollectionArtworksInfiniteScrollGridQueryVariables = {
     id: string;
-    cursor?: string | null;
     count: number;
+    cursor?: string | null;
     sort?: string | null;
 };
 export type CollectionArtworksInfiniteScrollGridQueryResponse = {
@@ -23,8 +23,8 @@ export type CollectionArtworksInfiniteScrollGridQuery = {
 /*
 query CollectionArtworksInfiniteScrollGridQuery(
   $id: String!
-  $cursor: String
   $count: Int!
+  $cursor: String
   $sort: String
 ) {
   marketingCollection(slug: $id) {
@@ -121,14 +121,14 @@ var v0 = [
   },
   {
     "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
+    "name": "count",
+    "type": "Int!",
     "defaultValue": null
   },
   {
     "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
+    "name": "cursor",
+    "type": "String",
     "defaultValue": null
   },
   {
@@ -519,11 +519,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "d00974bcc4d4b1b948998dd64179f236",
+    "id": "c6ead10dd8f8af2079fb723b9415a6ab",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '28e033d8774bf59f7be4934e0348405d';
+(node as any).hash = '32c22a89ec9f25ae12fc79950664aca2';
 export default node;

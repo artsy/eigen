@@ -152,13 +152,6 @@ describe("Filter modal navigation flow", () => {
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
 
-    // const sortScreen = mount(<MockSortScreen initialState={initialState} />)
-
-    // sortScreen
-    //   .find(ArrowLeftIconContainer)
-    //   .props()
-    //   .onPress()
-
     filterScreen
       .find(TouchableOptionListItemRow)
       .at(0)
@@ -193,15 +186,6 @@ describe("Filter modal navigation flow", () => {
       .find(ArrowLeftIconContainer)
       .props()
       .onPress()
-
-    const filterRoute = mockNavigator.nextRoute()
-    console.log("FILTER ROUTE?", filterRoute)
-
-    // mockNavigator.pop()
-
-    // const getPreviousScreenTitle = component => component.root.findByType(FilterHeader).props.children
-
-    // expect(getPreviousScreenTitle(filterScreen)).toEqual("Filter")
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {

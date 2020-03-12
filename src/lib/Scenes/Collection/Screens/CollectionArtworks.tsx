@@ -1,32 +1,33 @@
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { ArtworkFilterContextState, ArtworkSorts } from "../../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkSorts } from "../../../utils/ArtworkFiltersStore"
 
+const PAGE_SIZE = 10
 export const CollectionArtworks: React.FC<{
   collection: CollectionArtworks_collection
   relay: RelayPaginationProp
-  context: ArtworkFilterContextState
-}> = ({ collection, relay, context }) => {
+}> = ({ collection, relay }) => {
   const artworks = get(collection, p => p.collectionArtworks)
+  const { state } = useContext(ArtworkFilterContext)
 
   useEffect(() => {
-    if (context.applyFilters) {
+    if (state.applyFilters) {
       relay.refetchConnection(
-        10,
+        PAGE_SIZE,
         error => {
           if (error) {
-            console.log("Collection/CollectionArtworks sort", error.message)
+            throw new Error("Collection/CollectionArtworks sort: " + error.message)
           }
         },
         {
-          sort: ArtworkSorts[context.selectedSortOption],
+          sort: ArtworkSorts[state.selectedSortOption],
         }
       )
     }
-  })
+  }, [state.appliedFilters])
 
   return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
 }
@@ -38,7 +39,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
       fragment CollectionArtworks_collection on MarketingCollection
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
+          cursor: { type: "String", defaultValue: "" }
           sort: { type: "String", defaultValue: "-decayed_merch" }
         ) {
         slug
@@ -58,7 +59,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.collection && props.collection.collectionArtworks
+      return props?.collection?.collectionArtworks
     },
     getFragmentVariables(previousVariables, totalCount) {
       return {
@@ -66,18 +67,19 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, { count, cursor }) {
+    getVariables(props, { count, cursor }, fragmentVariables) {
       return {
+        ...fragmentVariables,
         id: props.collection.slug,
         count,
         cursor,
-        sort: ArtworkSorts[props?.context?.selectedSortOption],
+        sort: fragmentVariables.sort,
       }
     },
     query: graphql`
-      query CollectionArtworksInfiniteScrollGridQuery($id: String!, $cursor: String, $count: Int!, $sort: String) {
+      query CollectionArtworksInfiniteScrollGridQuery($id: String!, $count: Int!, $cursor: String, $sort: String) {
         marketingCollection(slug: $id) {
-          ...CollectionArtworks_collection @arguments(cursor: $cursor, count: $count, sort: $sort)
+          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor, sort: $sort)
         }
       }
     `,

@@ -51,7 +51,7 @@ fragment CollectionHeader_collection on MarketingCollection {
 fragment CollectionArtworks_collection on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10) {
+  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10, after: "") {
     edges {
       node {
         id
@@ -194,6 +194,11 @@ v4 = {
   "value": "-decayed_merch"
 },
 v5 = [
+  {
+    "kind": "Literal",
+    "name": "after",
+    "value": ""
+  },
   {
     "kind": "Literal",
     "name": "first",
@@ -413,7 +418,7 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:10,sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(after:\"\",first:10,sort:\"-decayed_merch\")",
             "args": (v5/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -807,7 +812,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "5dc093d7edf2a124b577a785950d2406",
+    "id": "90167c5055268f64697150386320812c",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
