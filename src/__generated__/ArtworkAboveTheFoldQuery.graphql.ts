@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 56a02c0530d3f51387177249486d9e10 */
+/* @relayHash c33da345eb2c802902fb0997becdb7ce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -8,7 +8,7 @@ export type ArtworkAboveTheFoldQueryVariables = {
     artworkID: string;
 };
 export type ArtworkAboveTheFoldQueryResponse = {
-    readonly artworkAboveTheFold: {
+    readonly artwork: {
         readonly " $fragmentRefs": FragmentRefs<"Artwork_artworkAboveTheFold">;
     } | null;
 };
@@ -23,7 +23,7 @@ export type ArtworkAboveTheFoldQuery = {
 query ArtworkAboveTheFoldQuery(
   $artworkID: String!
 ) {
-  artworkAboveTheFold: artwork(id: $artworkID) {
+  artwork(id: $artworkID) {
     ...Artwork_artworkAboveTheFold
     id
   }
@@ -435,7 +435,7 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": "artworkAboveTheFold",
+        "alias": null,
         "name": "artwork",
         "storageKey": null,
         "args": (v1/*: any*/),
@@ -458,7 +458,7 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": "artworkAboveTheFold",
+        "alias": null,
         "name": "artwork",
         "storageKey": null,
         "args": (v1/*: any*/),
@@ -1086,11 +1086,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "c4469cf9f9134d21833a00fb2b4887e5",
+    "id": "6e1216621d5d8db98334fc6b4af21afc",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4eafa95c9788af843b033b40a78a396f';
+(node as any).hash = 'c346c86fa8221804db4e2442f518e1e8';
 export default node;

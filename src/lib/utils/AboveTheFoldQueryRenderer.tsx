@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { QueryRenderer } from "react-relay"
-import { GraphQLTaggedNode, OperationType } from "relay-runtime"
+import { CacheConfig, GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
@@ -23,6 +23,7 @@ interface AboveTheFoldQueryRendererProps<AboveQuery extends OperationType, Below
         }) => React.ReactChild
         renderPlaceholder: () => React.ReactChild
       }
+  cacheConfig?: CacheConfig | null
 }
 
 interface RenderArgs<Response> {
@@ -78,7 +79,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
             ? render({
                 // make props null if we haven't received the above-the-fold result yet
                 // to make sure `renderWithPlaceholder` works properly
-                props: aboveArgs?.props ? { above: aboveArgs?.props, below: belowArgs?.props } : null,
+                props: aboveArgs?.props ? { above: aboveArgs.props, below: belowArgs?.props || null } : null,
                 error,
                 retry,
               })
