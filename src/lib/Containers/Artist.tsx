@@ -14,7 +14,7 @@ import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { PlaceholderBox, PlaceholderImage, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { PlaceholderButton, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { ProvideTracking } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
@@ -24,10 +24,6 @@ export const Artist: React.FC<{
   artistAboveTheFold: ArtistAboveTheFoldQuery["response"]["artist"] | null
   artistBelowTheFold: ArtistBelowTheFoldQuery["response"]["artist"] | null
 }> = ({ artistAboveTheFold, artistBelowTheFold }) => {
-  if (!artistAboveTheFold) {
-    return <ArtistPlaceholder />
-  }
-
   const tabs = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -115,66 +111,47 @@ export const ArtistQueryRenderer: React.SFC<ArtistAboveTheFoldQueryVariables & A
       }}
     />
   )
-  // return (
-  //   <QueryRenderer<ArtistQuery>
-  //     environment={defaultEnvironment}
-  //     query={graphql`
-  //       query ArtistQuery($artistID: String!) {
-  //         artist(id: $artistID) {
-  //           ...Artist_artistAboveTheFold
-  //         }
-  //       }
-  //     `}
-  //     variables={{ artistID }}
-  //     render={renderWithPlaceholder<ArtistQueryResponse>({
-  //       Container,
-  //       renderPlaceholder: () => <ArtistPlaceholder />,
-  //     })}
-  //   />
-  // )
 }
 
 const ArtistPlaceholder: React.FC = () => (
-  <ProvidePlaceholderContext>
-    <Theme>
-      <Flex>
-        <Flex alignItems="center">
-          <Spacer mb={45} />
-          {/* artist name */}
-          <PlaceholderText width={120} />
-          <Spacer mb={1} />
-          {/* birthday, followers */}
-          <PlaceholderText width={150} />
-        </Flex>
+  <Theme>
+    <Flex>
+      <Flex alignItems="center">
+        <Spacer mb={45} />
+        {/* artist name */}
+        <PlaceholderText width={120} />
         <Spacer mb={1} />
-        {/* follow buton */}
-        <PlaceholderBox height={42} marginHorizontal={20} />
-        <Spacer mb={3} />
-        {/* tabs */}
-        <Flex justifyContent="space-around" flexDirection="row" px={2}>
-          <PlaceholderText width={40} />
-          <PlaceholderText width={50} />
-          <PlaceholderText width={40} />
+        {/* birthday, followers */}
+        <PlaceholderText width={150} />
+      </Flex>
+      <Spacer mb={1} />
+      {/* follow buton */}
+      <PlaceholderButton marginHorizontal={20} />
+      <Spacer mb={3} />
+      {/* tabs */}
+      <Flex justifyContent="space-around" flexDirection="row" px={2}>
+        <PlaceholderText width={40} />
+        <PlaceholderText width={50} />
+        <PlaceholderText width={40} />
+      </Flex>
+      <Spacer mb={1} />
+      <Separator />
+      <Spacer mb={3} />
+      {/* masonry grid */}
+      <Flex mx={2} flexDirection="row">
+        <Flex mr={1} style={{ flex: 1 }}>
+          <PlaceholderImage height={92} />
+          <PlaceholderImage height={172} />
+          <PlaceholderImage height={82} />
         </Flex>
-        <Spacer mb={1} />
-        <Separator />
-        <Spacer mb={3} />
-        {/* masonry grid */}
-        <Flex mx={2} flexDirection="row">
-          <Flex mr={1} style={{ flex: 1 }}>
-            <PlaceholderImage height={92} />
-            <PlaceholderImage height={172} />
-            <PlaceholderImage height={82} />
-          </Flex>
-          <Flex ml={1} style={{ flex: 1 }}>
-            <PlaceholderImage height={182} />
-            <PlaceholderImage height={132} />
-            <PlaceholderImage height={86} />
-          </Flex>
+        <Flex ml={1} style={{ flex: 1 }}>
+          <PlaceholderImage height={182} />
+          <PlaceholderImage height={132} />
+          <PlaceholderImage height={86} />
         </Flex>
       </Flex>
-    </Theme>
-  </ProvidePlaceholderContext>
+    </Flex>
+  </Theme>
 )
 
 const ArtistAboutPlaceholder: React.FC = () => {

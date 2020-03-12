@@ -14,10 +14,15 @@ interface AboveTheFoldQueryRendererProps<AboveQuery extends OperationType, Below
     query: GraphQLTaggedNode
     variables: BelowQuery["variables"]
   }
-  render: {
-    renderComponent: (args: { above: AboveQuery["response"]; below: BelowQuery["response"] | null }) => React.ReactChild
-    renderPlaceholder: () => React.ReactChild
-  }
+  render:
+    | ((args: RenderArgs<{ above: AboveQuery["response"]; below: BelowQuery["response"] }>) => React.ReactChild)
+    | {
+        renderComponent: (args: {
+          above: AboveQuery["response"]
+          below: BelowQuery["response"] | null
+        }) => React.ReactChild
+        renderPlaceholder: () => React.ReactChild
+      }
 }
 
 interface RenderArgs<Response> {
@@ -34,11 +39,14 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
   // We want to debounce the initial render in case there is a cache hit for both queries
   // If we didn't debounce we'd end up calling render twice in quick succession, once without below-the-fold data and then again with
   // That would create [ ja n  k]
-  const [debouncing, setDebouncing] = useState(true)
+  const [hasFinishedDebouncing, setHasFinishedDebouncing] = useState(false)
+  useEffect(() => {
+    setTimeout(() => setHasFinishedDebouncing(true), 30)
+  }, [])
 
   // we should call render if we have all the data already
   // we should also call render if we are no longer waiting for a debounce
-  const shouldCallRender = (aboveArgs?.props && belowArgs?.props) || !debouncing
+  const shouldCallRender = (aboveArgs?.props && belowArgs?.props) || hasFinishedDebouncing
 
   const render = useMemo(
     () =>
@@ -57,10 +65,6 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
     belowArgs?.retry?.()
   }
 
-  useEffect(() => {
-    setTimeout(() => setDebouncing(false), 30)
-  }, [])
-
   return (
     <>
       <QueryRenderer
@@ -70,15 +74,15 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
         variables={props.above.variables}
         render={args => {
           setAboveArgs(args)
-          return (
-            shouldCallRender &&
-            render({
-              // make props null if we haven't received the above-the-fold result yet
-              props: aboveArgs?.props ? { above: aboveArgs?.props, below: belowArgs?.props } : null,
-              error,
-              retry,
-            })
-          )
+          return shouldCallRender
+            ? render({
+                // make props null if we haven't received the above-the-fold result yet
+                // to make sure `renderWithPlaceholder` works properly
+                props: aboveArgs?.props ? { above: aboveArgs?.props, below: belowArgs?.props } : null,
+                error,
+                retry,
+              })
+            : null
         }}
       />
       {aboveArgs?.props && (
