@@ -29,7 +29,6 @@
 
 // View Controllers
 #import "ARProfileViewController.h"
-#import <Emission/ARArtworkComponentViewController.h>
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
 #import "ARPersonalizeViewController.h"
@@ -46,7 +45,6 @@
 #import "ARAugmentedFloorBasedVIRViewController.h"
 
 #import <Emission/ARWorksForYouComponentViewController.h>
-#import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 
 // Views
@@ -558,20 +556,6 @@
                     ]
                 }, // ========== PRIMARY NAVIGATION ==========
                 // ========== CORE CONTENT SCREENS ==========
-                @{
-                    ARAnalyticsClass: ARArtistComponentViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Artist",
-                            ARAnalyticsProperties: ^NSDictionary *(ARArtistComponentViewController *controller, NSArray *_) {
-                                return @{
-                                     @"owner_type": @"artist",
-                                     @"owner_slug": controller.artistID ?: @""
-                                 };
-                            }
-                        }
-                    ]
-                },
                 @{
                     ARAnalyticsClass: ARGeneComponentViewController.class,
                     ARAnalyticsDetails: @[

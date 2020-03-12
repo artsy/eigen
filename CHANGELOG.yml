@@ -2,6 +2,7 @@ upcoming:
   version: 6.3.3
   date: TBD
   dev:
+    - Fixes problem where artist follows on Artist page weren't being tracked - ash
     - Reduce number of images for initial render of for-you page - david
     - Fixes WSOD on home feed with artworks that have missing images - ash
   user_facing:
