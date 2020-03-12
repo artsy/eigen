@@ -26,7 +26,7 @@ import {
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
-import { ArtworkRenderer } from "./Scenes/Artwork"
+import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
@@ -77,11 +77,10 @@ YellowBox.ignoreWarnings([
 
 interface ArtworkProps {
   artworkID: string
-  safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
 
-const Artwork: React.SFC<ArtworkProps> = props => <ArtworkRenderer {...props} />
+const Artwork: React.SFC<ArtworkProps> = props => <ArtworkQueryRenderer {...props} />
 
 interface PartnerProps {
   partnerID: string

@@ -363,7 +363,7 @@ export const ArtworkContainer = createRefetchContainer(
 export const ArtworkQueryRenderer: React.SFC<{
   artworkID: string
   isVisible: boolean
-  environment: RelayModernEnvironment
+  environment?: RelayModernEnvironment
 }> = ({ artworkID, environment, ...others }) => {
   return (
     <RetryErrorBoundary
