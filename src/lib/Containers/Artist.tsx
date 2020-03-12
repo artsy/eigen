@@ -18,6 +18,7 @@ import { PlaceholderButton, PlaceholderImage, PlaceholderText } from "lib/utils/
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
+import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -34,7 +35,7 @@ export const Artist: React.FC<{
   if (displayAboutSection) {
     tabs.push({
       title: "About",
-      content: artistBelowTheFold ? <ArtistAbout artist={artistBelowTheFold} /> : <ArtistAboutPlaceholder />,
+      content: artistBelowTheFold ? <ArtistAbout artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
@@ -49,7 +50,7 @@ export const Artist: React.FC<{
   if (artistAboveTheFold.counts.partner_shows) {
     tabs.push({
       title: "Shows",
-      content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <ArtistShowsPlaceholder />,
+      content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
@@ -163,9 +164,16 @@ const ArtistPlaceholder: React.FC = () => (
   </Theme>
 )
 
-const ArtistAboutPlaceholder: React.FC = () => {
-  return null
-}
-const ArtistShowsPlaceholder: React.FC = () => {
-  return null
+/**
+ * Be lazy and just have a simple loading spinner for the below-the-fold tabs
+ * (as opposed to nice fancy placeholder screens) since people are really
+ * unlikely to tap into them quick enough to see the loading state
+ * @param param0
+ */
+const LoadingPage: React.FC<{}> = ({}) => {
+  return (
+    <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+      <ActivityIndicator />
+    </View>
+  )
 }
