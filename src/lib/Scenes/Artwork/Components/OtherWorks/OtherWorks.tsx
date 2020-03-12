@@ -1,5 +1,5 @@
 import { Box, Join, Separator, Spacer } from "@artsy/palette"
-import { ArtworkFullQueryResponse } from "__generated__/ArtworkFullQuery.graphql"
+import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { Schema } from "lib/utils/track"
@@ -10,7 +10,7 @@ import { ContextGridCTA } from "./ContextGridCTA"
 import { Header } from "./Header"
 
 type OtherWorksGrid = OtherWorks_artwork["contextGrids"][number]
-type ArtworkGrid = ArtworkFullQueryResponse["artwork"]["contextGrids"][number]
+type ArtworkGrid = Artwork_artworkBelowTheFold["contextGrids"][number]
 type Grid = OtherWorksGrid | ArtworkGrid
 
 export const populatedGrids = (grids: ReadonlyArray<Grid>) => {

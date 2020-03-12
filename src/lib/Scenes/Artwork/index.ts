@@ -1,1 +1,1 @@
-export { ArtworkContainer, ArtworkRenderer } from "./Artwork"
+export { ArtworkContainer, ArtworkQueryRenderer as ArtworkRenderer } from "./Artwork"

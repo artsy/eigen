@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e043f0777d3298628db4aa1c431a34e4 */
+/* @relayHash fe091ce1bd05f4201f2e251acac88c62 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -85,10 +85,6 @@ fragment ArtworkDetails_artwork on Artwork {
   manufacturer
   image_rights: imageRights
   canRequestLotConditionsReport
-  saleArtwork {
-    internalID
-    id
-  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -1072,19 +1068,6 @@ return {
             ]
           },
           (v4/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "saleArtwork",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "SaleArtwork",
-            "plural": false,
-            "selections": [
-              (v7/*: any*/),
-              (v2/*: any*/)
-            ]
-          },
           (v2/*: any*/)
         ]
       }
@@ -1093,7 +1076,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "76b0be1507a8a01bde91d13daca08445",
+    "id": "c0ae6d6c48c4c3944d66b3c77cc94bb7",
     "text": null,
     "metadata": {}
   }

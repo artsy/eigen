@@ -27,9 +27,6 @@ export type ArtworkDetails_artwork = {
     readonly manufacturer: string | null;
     readonly image_rights: string | null;
     readonly canRequestLotConditionsReport: boolean | null;
-    readonly saleArtwork: {
-        readonly internalID: string;
-    } | null;
     readonly " $refType": "ArtworkDetails_artwork";
 };
 export type ArtworkDetails_artwork$data = ArtworkDetails_artwork;
@@ -152,27 +149,9 @@ return {
       "name": "canRequestLotConditionsReport",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "saleArtwork",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "SaleArtwork",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "internalID",
-          "args": null,
-          "storageKey": null
-        }
-      ]
     }
   ]
 };
 })();
-(node as any).hash = '01a455e105f296b32e9bbcf5ccf7b01a';
+(node as any).hash = '3cc0f87b9e60b49ae31967b73aa43cd2';
 export default node;

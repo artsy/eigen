@@ -6,7 +6,6 @@ import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import {
   PlaceholderBox,
@@ -20,6 +19,7 @@ import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -94,7 +94,14 @@ export class Artwork extends React.Component<Props, State> {
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.props.relay.refetch({ artistID: this.props.artworkAboveTheFold.internalID }, null, null, { force: true })
+      this.props.relay.refetch(
+        { artistID: this.props.artworkAboveTheFold.internalID },
+        null,
+        () => {
+          this.markArtworkAsRecentlyViewed()
+        },
+        { force: true }
+      )
     }
   }
 
@@ -169,7 +176,11 @@ export class Artwork extends React.Component<Props, State> {
 
     sections.push({
       key: "commercialInformation",
-      element: <CommercialInformation artwork={artworkAboveTheFold} />,
+      element: (
+        // <Suspense fallback={() => null}>
+        <CommercialInformation artwork={artworkAboveTheFold} />
+        // </Suspense>
+      ),
     })
 
     if (!artworkBelowTheFold) {
@@ -349,10 +360,11 @@ export const ArtworkContainer = createRefetchContainer(
   `
 )
 
-export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: SafeAreaInsets; isVisible: boolean }> = ({
-  artworkID,
-  ...others
-}) => {
+export const ArtworkQueryRenderer: React.SFC<{
+  artworkID: string
+  isVisible: boolean
+  environment: RelayModernEnvironment
+}> = ({ artworkID, environment, ...others }) => {
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {
@@ -360,7 +372,7 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
           <Theme>
             <ProvideScreenDimensions>
               <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-                environment={defaultEnvironment}
+                environment={environment || defaultEnvironment}
                 above={{
                   query: graphql`
                     query ArtworkAboveTheFoldQuery($artworkID: String!) {
@@ -383,13 +395,15 @@ export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: Saf
                 }}
                 render={{
                   renderPlaceholder: () => <AboveTheFoldPlaceholder />,
-                  renderComponent: ({ above, below }) => (
-                    <ArtworkContainer
-                      artworkAboveTheFold={above.artwork}
-                      artworkBelowTheFold={below?.artwork ?? null}
-                      {...others}
-                    />
-                  ),
+                  renderComponent: ({ above, below }) => {
+                    return (
+                      <ArtworkContainer
+                        artworkAboveTheFold={above.artwork}
+                        artworkBelowTheFold={below?.artwork ?? null}
+                        {...others}
+                      />
+                    )
+                  },
                 }}
                 cacheConfig={{
                   // Bypass Relay cache on retries.

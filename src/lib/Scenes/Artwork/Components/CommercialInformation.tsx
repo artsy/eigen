@@ -142,13 +142,12 @@ export class CommercialInformation extends React.Component<CommercialInformation
       <>
         {this.renderPriceInformation()}
         <Box>
-          {canTakeCommercialAction &&
-            !isInClosedAuction && (
-              <>
-                {!hidesPriceInformation && <Spacer mb={2} />}
-                <CommercialButtons artwork={artwork} auctionState={timerState} editionSetID={editionSetID} />
-              </>
-            )}
+          {canTakeCommercialAction && !isInClosedAuction && (
+            <>
+              {!hidesPriceInformation && <Spacer mb={2} />}
+              <CommercialButtons artwork={artwork} auctionState={timerState} editionSetID={editionSetID} />
+            </>
+          )}
           {isBiddableInAuction && (
             <>
               <Spacer mb={2} />

@@ -107,9 +107,6 @@ export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDe
       manufacturer
       image_rights: imageRights
       canRequestLotConditionsReport
-      saleArtwork {
-        internalID
-      }
     }
   `,
 })

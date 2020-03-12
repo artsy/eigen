@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f43b8a5682632de11065c3ee04d2adad */
+/* @relayHash cf9fc1225b8e23de1a876f7a2ed42e1e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -110,10 +110,6 @@ fragment ArtworkDetails_artwork on Artwork {
   manufacturer
   image_rights: imageRights
   canRequestLotConditionsReport
-  saleArtwork {
-    internalID
-    id
-  }
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
@@ -1151,8 +1147,7 @@ return {
                     "storageKey": null
                   }
                 ]
-              },
-              (v3/*: any*/)
+              }
             ]
           },
           {
@@ -1910,7 +1905,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "d4b2de2f9a8d6f858776bb7d52291b38",
+    "id": "a06f8e5c2ffbf3ec6966fb7a0095973e",
     "text": null,
     "metadata": {}
   }
