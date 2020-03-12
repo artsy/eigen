@@ -19,6 +19,7 @@ import { ProvideTracking } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { graphql } from "react-relay"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export const Artist: React.FC<{
   artistAboveTheFold: ArtistAboveTheFoldQuery["response"]["artist"] | null
@@ -65,13 +66,14 @@ export const Artist: React.FC<{
   )
 }
 
-export const ArtistQueryRenderer: React.SFC<ArtistAboveTheFoldQueryVariables & ArtistBelowTheFoldQueryVariables> = ({
-  artistID,
-  isPad,
-}) => {
+interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
+  environment?: RelayModernEnvironment
+}
+
+export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artistID, isPad, environment }) => {
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
-      environment={defaultEnvironment}
+      environment={environment || defaultEnvironment}
       above={{
         query: graphql`
           query ArtistAboveTheFoldQuery($artistID: String!) {

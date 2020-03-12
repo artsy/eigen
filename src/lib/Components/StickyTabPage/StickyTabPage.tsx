@@ -32,9 +32,18 @@ export const StickyTabPage: React.FC<{
   headerContent: JSX.Element
 }> = ({ tabs, headerContent }) => {
   const { width } = useScreenDimensions()
-  const initialTabIndex = useMemo(() => Math.max(tabs.findIndex(tab => tab.initial), 0), [])
+  const initialTabIndex = useMemo(
+    () =>
+      Math.max(
+        tabs.findIndex(tab => tab.initial),
+        0
+      ),
+    []
+  )
   const activeTabIndex = useAnimatedValue(initialTabIndex)
-  const [headerHeight, setHeaderHeightNativeWrapper] = useState<Animated.Value<number>>(null)
+  const [headerHeight, setHeaderHeightNativeWrapper] = useState<Animated.Value<number>>(
+    process.env.NODE_ENV === "test" ? new Animated.Value(300) : null
+  )
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>()
