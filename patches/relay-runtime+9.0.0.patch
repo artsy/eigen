@@ -1,12 +1,13 @@
 diff --git a/node_modules/relay-runtime/lib/query/GraphQLTag.js b/node_modules/relay-runtime/lib/query/GraphQLTag.js
-index da8d986..0d22327 100644
+index da8d986..e9e0767 100644
 --- a/node_modules/relay-runtime/lib/query/GraphQLTag.js
 +++ b/node_modules/relay-runtime/lib/query/GraphQLTag.js
-@@ -27,14 +27,19 @@ function graphql(strings) {
+@@ -27,14 +27,20 @@ function graphql(strings) {
  function getNode(taggedNode) {
    var node = taggedNode;
  
 -  if (typeof node === 'function') {
++  // This patch is just to make an error message more helpful. It can be deleted safely.
 +  if (typeof taggedNode === 'function') {
      node = node();
 -    process.env.NODE_ENV !== "production" ? warning(false, 'RelayGraphQLTag: node `%s` unexpectedly wrapped in a function.', node.kind === 'Fragment' ? node.name : node.operation.name) : void 0;

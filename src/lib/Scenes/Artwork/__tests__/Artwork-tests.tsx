@@ -69,6 +69,7 @@ describe("Artwork", () => {
     environment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ID({ path }) {
+          // need to make sure the artwork has a stable ID between Above and Below queries otherwise bad cache behaviour
           if (_.isEqual(path, ["artwork", "id"])) {
             return "artwork-id"
           }
@@ -79,6 +80,8 @@ describe("Artwork", () => {
     })
   }
   const TestRenderer = ({ isVisible = true }) => (
+    // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
+    // use suspense and one of the containers in our tree is suspending itself only in tests :|
     <Suspense fallback={() => null}>
       <ArtworkQueryRenderer isVisible={isVisible} artworkID="ignored" environment={environment} />
     </Suspense>
@@ -249,23 +252,12 @@ describe("Artwork", () => {
   it("does show a contextCard if the work is in an auction", async () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-      Artwork({ path }, id) {
-        return {
-          id: path.length === 1 ? "artwork-id" : `artwork-id-${id()}`,
-        }
-      },
-    })
+    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
       Sale() {
         return {
           isAuction: true,
-        }
-      },
-      Artwork({ path }, id) {
-        return {
-          id: path.length === 1 ? "artwork-id" : `artwork-id-${id()}`,
         }
       },
     })

@@ -176,11 +176,7 @@ export class Artwork extends React.Component<Props, State> {
 
     sections.push({
       key: "commercialInformation",
-      element: (
-        // <Suspense fallback={() => null}>
-        <CommercialInformation artwork={artworkAboveTheFold} />
-        // </Suspense>
-      ),
+      element: <CommercialInformation artwork={artworkAboveTheFold} />,
     })
 
     if (!artworkBelowTheFold) {

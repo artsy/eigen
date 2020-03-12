@@ -1893,12 +1893,12 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/relay-runtime@*", "@types/relay-runtime@8.0.6", "@types/relay-runtime@^8.0.6":
+"@types/relay-runtime@*", "@types/relay-runtime@8.0.6":
   version "8.0.6"
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-8.0.6.tgz#931c640f9a37b4c328aaa4e5159e0c85e5ffbbfa"
   integrity sha512-05MJfbE/1TAz4ttx9a9x9xjaOe0KAYymWo/FcqGh+wRvz5ZvRdRPEssmIwcNsdJZVWTB3R/VBAYx6IvXMHIPNQ==
 
-"@types/relay-test-utils@^6.0.1":
+"@types/relay-test-utils@6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-6.0.1.tgz#3a06fe64c298aa79a01b36572b6385316c020989"
   integrity sha512-8Wp1t9xk1l0vCQEmx7pHQ4fVL1gsEJU7r8E5n8au2JOhuUxeHkEQXPNSie9OT7RmDmDaKmh5hbzRNzu3aSihKg==
@@ -2642,7 +2642,7 @@ babel-plugin-macros@^2.0.0:
     cosmiconfig "^5.2.0"
     resolve "^1.10.0"
 
-babel-plugin-relay@^9.0.0:
+babel-plugin-relay@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-relay/-/babel-plugin-relay-9.0.0.tgz#05b25bb7296151a9c7c91338a8e71f7d95a83b64"
   integrity sha512-2v+7fPI8Iv/MKcutAma8iryVGkwe5Hfmb6rIo0B9USZpMnOYS3TamCq8SwaQLBR5R9RrkbHsx5vxz2cUvhSeOg==
@@ -10252,7 +10252,7 @@ react-relay-network-modern@2.5.1:
   resolved "https://registry.yarnpkg.com/react-relay-network-modern/-/react-relay-network-modern-2.5.1.tgz#a081ae2691dbf2cfa53129cd6eb41a1e91a071aa"
   integrity sha512-Edp9XWAWLiAntrtNmfeLZMPMcwUmTpBhAoxHCaSKcet7gWN5RS0Z2OhKpVhKg3p1qZz+VLMMvWg8eQghBe0auQ==
 
-react-relay@^9.0.0:
+react-relay@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-9.0.0.tgz#e2e48eaf38560e81d601f4ec997156d05391b4fa"
   integrity sha512-5K0SGkeGBCscS+7d9x0D5czI6ZZtWbmeBu2C6nBFEX4qPKvh0poIn8oJNN1cyXPCmdQPzQBaAbxLbI7v4Vpxiw==
@@ -10546,7 +10546,7 @@ regjsparser@^0.6.0:
   dependencies:
     jsesc "~0.5.0"
 
-relay-compiler-language-typescript@^12.0.0:
+relay-compiler-language-typescript@12.0.0:
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-12.0.0.tgz#65f6fa969483dbf37aa3f3bd97c8e9f9854e7dc7"
   integrity sha512-jTg6aO3FcC6P1mnp6AKdfJcwGx8WQ+ui3HQz9Wn25SbKiqzW4FHBAg9Q38cS/YYOk7a4otcYQPLIcaKE0HXksg==
@@ -10554,7 +10554,7 @@ relay-compiler-language-typescript@^12.0.0:
     immutable "^4.0.0-rc.12"
     invariant "^2.2.4"
 
-relay-compiler@^9.0.0:
+relay-compiler@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-9.0.0.tgz#821c2fb972598ea8479db27fc5198133babec6c0"
   integrity sha512-V509bPZMqVvITUcgXFgvO9pcnAKzF7pJXObnxfglOl3JsfJeDwTW1fu/CzPtvk5suxVMK6Cn9fMxZK2GdRXqYQ==
@@ -10590,7 +10590,7 @@ relay-mock-network-layer@2.0.0:
   dependencies:
     graphql-tools "^4.0.2"
 
-relay-runtime@9.0.0, relay-runtime@^9.0.0:
+relay-runtime@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-9.0.0.tgz#03633be24dc3c8b56e472062de6f103954e3d296"
   integrity sha512-bBNeNmwMOnqtCvuPnWdgflFSVwuUbGV7m7os8qHCUCSJ52DT5B/m6K4wisVh3eZ0QWYr7hheRDfmR/3UEdUe5A==
@@ -10598,7 +10598,7 @@ relay-runtime@9.0.0, relay-runtime@^9.0.0:
     "@babel/runtime" "^7.0.0"
     fbjs "^1.0.0"
 
-relay-test-utils@^9.0.0:
+relay-test-utils@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/relay-test-utils/-/relay-test-utils-9.0.0.tgz#c21890650f82f5a8026459f79952caf43c653e95"
   integrity sha512-ivOpAihkSb0fp9e+oOtHYE1LpDyXWBQK7ByopjSyMW0UTK/LD17Xw1RJfjC2OGys3fvcxlH3wdqawjdeSSCSdw==

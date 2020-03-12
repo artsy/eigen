@@ -16,6 +16,7 @@ interface AboveTheFoldQueryRendererProps<AboveQuery extends OperationType, Below
   }
   render:
     | ((args: RenderArgs<{ above: AboveQuery["response"]; below: BelowQuery["response"] }>) => React.ReactChild)
+    // convenience option for using `renderWithPlaceholder` logic without too much boilerplate
     | {
         renderComponent: (args: {
           above: AboveQuery["response"]
@@ -32,6 +33,12 @@ interface RenderArgs<Response> {
   retry: (() => void) | null
 }
 
+/**
+ * Just like a normal QueryRenderer except that it takes two sets of (query+variables) and fetches
+ * them sequentially. use for fetching 'above-the-fold' content first and 'below-the-fold' content later
+ * in cases where the 'below-the-fold' content adds significant time to the query duration.
+ * @param props
+ */
 export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, BelowQuery extends OperationType>(
   props: AboveTheFoldQueryRendererProps<AboveQuery, BelowQuery>
 ) {
@@ -39,7 +46,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
   const [belowArgs, setBelowArgs] = useState<RenderArgs<BelowQuery["response"]>>(null)
   // We want to debounce the initial render in case there is a cache hit for both queries
   // If we didn't debounce we'd end up calling render twice in quick succession, once without below-the-fold data and then again with
-  // That would create [ ja n  k]
+  // That would create a some nasy jank
   const [hasFinishedDebouncing, setHasFinishedDebouncing] = useState(process.env.NODE_ENV === "test")
   if (process.env.NODE_ENV !== "test") {
     useEffect(() => {

@@ -33,6 +33,7 @@ describe("availableTabs", () => {
     environment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ID({ path }) {
+          // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
           if (_.isEqual(path, ["artist", "id"])) {
             return "artist-id"
           }
