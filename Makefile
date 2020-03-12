@@ -178,7 +178,9 @@ flip_table:
 	@echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
 	rm -rf Pods
 	@echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
-	rm -rf ~/Library/Developer/Xcode/DerivedData/*
+	# sometimes this fails on first try even with -rf
+	# but a second try takes it home
+	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then rm -rf ~/Library/Developer/Xcode/DerivedData; fi
 	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 	rm -rf $TMPDIR/RelayFindGraphQLTags-*
 	rm -rf .jest
