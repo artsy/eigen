@@ -204,7 +204,7 @@ jobs:
 
       - run:
           name: Compile query map
-          command: yarn relay
+          command: rm -rf src/__generated__ && yarn relay
 
       - run:
           name: Deploy via auto-release
