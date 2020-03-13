@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash fe091ce1bd05f4201f2e251acac88c62 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,6 +27,105 @@ query ArtworkBelowTheFoldQuery(
     ...Artwork_artworkBelowTheFold
     id
   }
+}
+
+fragment AboutArtist_artwork on Artwork {
+  artists {
+    id
+    biography_blurb: biographyBlurb {
+      text
+    }
+    ...ArtistListItem_artist
+  }
+}
+
+fragment AboutWork_artwork on Artwork {
+  additional_information: additionalInformation
+  description
+  isInAuction
+}
+
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
+}
+
+fragment ArtworkDetails_artwork on Artwork {
+  slug
+  category
+  conditionDescription {
+    label
+    details
+  }
+  signatureInfo {
+    label
+    details
+  }
+  certificateOfAuthenticity {
+    label
+    details
+  }
+  framed {
+    label
+    details
+  }
+  series
+  publisher
+  manufacturer
+  image_rights: imageRights
+  canRequestLotConditionsReport
+}
+
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
+}
+
+fragment ArtworkHistory_artwork on Artwork {
+  provenance
+  exhibition_history: exhibitionHistory
+  literature
 }
 
 fragment Artwork_artworkBelowTheFold on Artwork {
@@ -95,91 +196,6 @@ fragment Artwork_artworkBelowTheFold on Artwork {
   ...ArtworkHistory_artwork
 }
 
-fragment PartnerCard_artwork on Artwork {
-  sale {
-    isBenefit
-    isGalleryAuction
-    id
-  }
-  partner {
-    cities
-    is_default_profile_public: isDefaultProfilePublic
-    type
-    name
-    slug
-    id
-    href
-    initials
-    profile {
-      id
-      internalID
-      is_followed: isFollowed
-      icon {
-        url(version: "square140")
-      }
-    }
-  }
-}
-
-fragment AboutWork_artwork on Artwork {
-  additional_information: additionalInformation
-  description
-  isInAuction
-}
-
-fragment OtherWorks_artwork on Artwork {
-  contextGrids {
-    __typename
-    title
-    ctaTitle
-    ctaHref
-    artworks: artworksConnection(first: 6) {
-      edges {
-        node {
-          ...GenericGrid_artworks
-          id
-        }
-      }
-    }
-  }
-}
-
-fragment AboutArtist_artwork on Artwork {
-  artists {
-    id
-    biography_blurb: biographyBlurb {
-      text
-    }
-    ...ArtistListItem_artist
-  }
-}
-
-fragment ArtworkDetails_artwork on Artwork {
-  slug
-  category
-  conditionDescription {
-    label
-    details
-  }
-  signatureInfo {
-    label
-    details
-  }
-  certificateOfAuthenticity {
-    label
-    details
-  }
-  framed {
-    label
-    details
-  }
-  series
-  publisher
-  manufacturer
-  image_rights: imageRights
-  canRequestLotConditionsReport
-}
-
 fragment ContextCard_artwork on Artwork {
   id
   context {
@@ -222,28 +238,6 @@ fragment ContextCard_artwork on Artwork {
   }
 }
 
-fragment ArtworkHistory_artwork on Artwork {
-  provenance
-  exhibition_history: exhibitionHistory
-  literature
-}
-
-fragment ArtistListItem_artist on Artist {
-  id
-  internalID
-  slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
-  }
-}
-
 fragment GenericGrid_artworks on Artwork {
   id
   image {
@@ -252,39 +246,47 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
+fragment OtherWorks_artwork on Artwork {
+  contextGrids {
+    __typename
+    title
+    ctaTitle
+    ctaHref
+    artworks: artworksConnection(first: 6) {
+      edges {
+        node {
+          ...GenericGrid_artworks
+          id
+        }
+      }
     }
-    id
   }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
+}
+
+fragment PartnerCard_artwork on Artwork {
+  sale {
+    isBenefit
+    isGalleryAuction
     id
   }
   partner {
+    cities
+    is_default_profile_public: isDefaultProfilePublic
+    type
     name
+    slug
     id
+    href
+    initials
+    profile {
+      id
+      internalID
+      is_followed: isFollowed
+      icon {
+        url(version: "square140")
+      }
+    }
   }
-  href
 }
 */
 
@@ -1074,7 +1076,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "915141135032745962c96c15da96ba86",
+    "id": "c0ae6d6c48c4c3944d66b3c77cc94bb7",
     "text": null,
     "metadata": {}
   }

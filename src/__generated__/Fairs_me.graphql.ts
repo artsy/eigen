@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type Fairs_me = {
     readonly followsAndSaves: {
         readonly fairs: {
@@ -26,6 +28,11 @@ export type Fairs_me = {
         } | null;
     } | null;
     readonly " $refType": "Fairs_me";
+};
+export type Fairs_me$data = Fairs_me;
+export type Fairs_me$key = {
+    readonly " $data"?: Fairs_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"Fairs_me">;
 };
 
 

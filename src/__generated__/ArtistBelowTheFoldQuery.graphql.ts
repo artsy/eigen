@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 722f6ac0589aab4b76b459090cfa2783 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +32,23 @@ query ArtistBelowTheFoldQuery(
   }
 }
 
+fragment Article_article on Article {
+  thumbnail_title: thumbnailTitle
+  href
+  author {
+    name
+    id
+  }
+  thumbnail_image: thumbnailImage {
+    url(version: "large")
+  }
+}
+
+fragment Articles_articles on Article {
+  id
+  ...Article_article
+}
+
 fragment ArtistAbout_artist on Artist {
   has_metadata: hasMetadata
   is_display_auction_link: isDisplayAuctionLink
@@ -53,6 +72,16 @@ fragment ArtistAbout_artist on Artist {
       }
     }
   }
+}
+
+fragment ArtistShow_show on Show {
+  slug
+  href
+  is_fair_booth: isFairBooth
+  cover_image: coverImage {
+    url(version: "large")
+  }
+  ...Metadata_show
 }
 
 fragment ArtistShows_artist on Artist {
@@ -90,24 +119,9 @@ fragment ArtistShows_artist on Artist {
   }
 }
 
-fragment VariableSizeShowsList_shows on Show {
-  id
-  ...ArtistShow_show
-}
-
-fragment SmallList_shows on Show {
-  id
-  ...ArtistShow_show
-}
-
-fragment ArtistShow_show on Show {
-  slug
-  href
-  is_fair_booth: isFairBooth
-  cover_image: coverImage {
-    url(version: "large")
-  }
-  ...Metadata_show
+fragment Biography_artist on Artist {
+  bio
+  blurb
 }
 
 fragment Metadata_show on Show {
@@ -135,33 +149,6 @@ fragment Metadata_show on Show {
   }
 }
 
-fragment Biography_artist on Artist {
-  bio
-  blurb
-}
-
-fragment RelatedArtists_artists on Artist {
-  id
-  ...RelatedArtist_artist
-}
-
-fragment Articles_articles on Article {
-  id
-  ...Article_article
-}
-
-fragment Article_article on Article {
-  thumbnail_title: thumbnailTitle
-  href
-  author {
-    name
-    id
-  }
-  thumbnail_image: thumbnailImage {
-    url(version: "large")
-  }
-}
-
 fragment RelatedArtist_artist on Artist {
   href
   name
@@ -172,6 +159,21 @@ fragment RelatedArtist_artist on Artist {
   image {
     url(version: "large")
   }
+}
+
+fragment RelatedArtists_artists on Artist {
+  id
+  ...RelatedArtist_artist
+}
+
+fragment SmallList_shows on Show {
+  id
+  ...ArtistShow_show
+}
+
+fragment VariableSizeShowsList_shows on Show {
+  id
+  ...ArtistShow_show
 }
 */
 
@@ -687,7 +689,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistBelowTheFoldQuery",
-    "id": "e0986d4438e9c880094527edd7ffd30e",
+    "id": "7e4f77da11d9a515b2b34c2edbb9255d",
     "text": null,
     "metadata": {}
   }

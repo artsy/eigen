@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type PriceSummary_calculatedCost = {
     readonly buyersPremium: {
         readonly display: string | null;
@@ -9,6 +11,11 @@ export type PriceSummary_calculatedCost = {
         readonly display: string | null;
     } | null;
     readonly " $refType": "PriceSummary_calculatedCost";
+};
+export type PriceSummary_calculatedCost$data = PriceSummary_calculatedCost;
+export type PriceSummary_calculatedCost$key = {
+    readonly " $data"?: PriceSummary_calculatedCost$data;
+    readonly " $fragmentRefs": FragmentRefs<"PriceSummary_calculatedCost">;
 };
 
 

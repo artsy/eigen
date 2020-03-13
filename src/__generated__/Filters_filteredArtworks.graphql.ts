@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type Filters_filteredArtworks = {
     readonly aggregations: ReadonlyArray<{
@@ -11,6 +13,11 @@ export type Filters_filteredArtworks = {
         } | null> | null;
     } | null> | null;
     readonly " $refType": "Filters_filteredArtworks";
+};
+export type Filters_filteredArtworks$data = Filters_filteredArtworks;
+export type Filters_filteredArtworks$key = {
+    readonly " $data"?: Filters_filteredArtworks$data;
+    readonly " $fragmentRefs": FragmentRefs<"Filters_filteredArtworks">;
 };
 
 

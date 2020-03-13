@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,6 +20,11 @@ export type PartnerLocations_partner = {
         } | null> | null;
     } | null;
     readonly " $refType": "PartnerLocations_partner";
+};
+export type PartnerLocations_partner$data = PartnerLocations_partner;
+export type PartnerLocations_partner$key = {
+    readonly " $data"?: PartnerLocations_partner$data;
+    readonly " $fragmentRefs": FragmentRefs<"PartnerLocations_partner">;
 };
 
 

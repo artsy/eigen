@@ -1,10 +1,12 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 3b089d694c42c815b27054efbbbdf35d */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowShowInput = {
-    readonly partnerShowID?: string | null;
-    readonly unfollow?: boolean | null;
-    readonly clientMutationId?: string | null;
+    partnerShowID?: string | null;
+    unfollow?: boolean | null;
+    clientMutationId?: string | null;
 };
 export type EventMutationVariables = {
     input: FollowShowInput;

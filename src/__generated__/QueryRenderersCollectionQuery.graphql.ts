@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash a3d4df1b566a139fd810982cbb0a4f41 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,68 +30,6 @@ query QueryRenderersCollectionQuery(
   }
 }
 
-fragment Collection_collection_2qE49v on MarketingCollection {
-  id
-  slug
-  ...CollectionHeader_collection
-  ...CollectionArtworks_collection
-  ...FeaturedArtists_collection
-}
-
-fragment CollectionHeader_collection on MarketingCollection {
-  title
-  headerImage
-  descriptionMarkdown
-  image: artworksConnection(sort: "-decayed_merch", first: 1) {
-    edges {
-      node {
-        image {
-          url(version: "larger")
-        }
-        id
-      }
-    }
-    id
-  }
-}
-
-fragment CollectionArtworks_collection on MarketingCollection {
-  slug
-  id
-  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10, after: "") {
-    edges {
-      node {
-        id
-        __typename
-      }
-      cursor
-    }
-    ...InfiniteScrollArtworksGrid_connection
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    id
-  }
-}
-
-fragment FeaturedArtists_collection on MarketingCollection {
-  slug
-  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-    merchandisableArtists(size: 4) {
-      internalID
-      ...ArtistListItem_artist
-      id
-    }
-    id
-  }
-  query {
-    artistIDs
-    id
-  }
-  featuredArtistExclusionIds
-}
-
 fragment ArtistListItem_artist on Artist {
   id
   internalID
@@ -103,28 +43,6 @@ fragment ArtistListItem_artist on Artist {
   deathday
   image {
     url
-  }
-}
-
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
   }
 }
 
@@ -161,6 +79,90 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment CollectionArtworks_collection on MarketingCollection {
+  slug
+  id
+  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10, after: "") {
+    edges {
+      node {
+        id
+        __typename
+      }
+      cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    id
+  }
+}
+
+fragment CollectionHeader_collection on MarketingCollection {
+  title
+  headerImage
+  descriptionMarkdown
+  image: artworksConnection(sort: "-decayed_merch", first: 1) {
+    edges {
+      node {
+        image {
+          url(version: "larger")
+        }
+        id
+      }
+    }
+    id
+  }
+}
+
+fragment Collection_collection_2qE49v on MarketingCollection {
+  id
+  slug
+  ...CollectionHeader_collection
+  ...CollectionArtworks_collection
+  ...FeaturedArtists_collection
+}
+
+fragment FeaturedArtists_collection on MarketingCollection {
+  slug
+  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
+    merchandisableArtists(size: 4) {
+      internalID
+      ...ArtistListItem_artist
+      id
+    }
+    id
+  }
+  query {
+    artistIDs
+    id
+  }
+  featuredArtistExclusionIds
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 */
 
@@ -771,7 +773,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "b854da02be47d705494a6e8354a85cfa",
+    "id": "112b721917a4d098429575ec1b872958",
     "text": null,
     "metadata": {}
   }

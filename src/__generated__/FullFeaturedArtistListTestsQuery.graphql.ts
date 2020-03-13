@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 7295ca9d5f337b235e0643b089518156 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,22 +54,6 @@ query FullFeaturedArtistListTestsQuery {
   }
 }
 
-fragment FullFeaturedArtistList_collection on MarketingCollection {
-  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
-    merchandisableArtists {
-      internalID
-      ...ArtistListItem_artist
-      id
-    }
-    id
-  }
-  query {
-    artistIDs
-    id
-  }
-  featuredArtistExclusionIds
-}
-
 fragment ArtistListItem_artist on Artist {
   id
   internalID
@@ -82,6 +68,22 @@ fragment ArtistListItem_artist on Artist {
   image {
     url
   }
+}
+
+fragment FullFeaturedArtistList_collection on MarketingCollection {
+  artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
+    merchandisableArtists {
+      internalID
+      ...ArtistListItem_artist
+      id
+    }
+    id
+  }
+  query {
+    artistIDs
+    id
+  }
+  featuredArtistExclusionIds
 }
 */
 
@@ -298,7 +300,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FullFeaturedArtistListTestsQuery",
-    "id": "d4b6545797b142e7938e9de021be29e3",
+    "id": "4434cff676a09730b45382a407db9ac1",
     "text": null,
     "metadata": {}
   }

@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type CollectionHeader_collection = {
     readonly title: string;
     readonly headerImage: string | null;
@@ -15,6 +17,11 @@ export type CollectionHeader_collection = {
         } | null> | null;
     } | null;
     readonly " $refType": "CollectionHeader_collection";
+};
+export type CollectionHeader_collection$data = CollectionHeader_collection;
+export type CollectionHeader_collection$key = {
+    readonly " $data"?: CollectionHeader_collection$data;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection">;
 };
 
 

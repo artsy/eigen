@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type Article_article = {
     readonly thumbnail_title: string | null;
     readonly href: string | null;
@@ -11,6 +13,11 @@ export type Article_article = {
         readonly url: string | null;
     } | null;
     readonly " $refType": "Article_article";
+};
+export type Article_article$data = Article_article;
+export type Article_article$key = {
+    readonly " $data"?: Article_article$data;
+    readonly " $fragmentRefs": FragmentRefs<"Article_article">;
 };
 
 

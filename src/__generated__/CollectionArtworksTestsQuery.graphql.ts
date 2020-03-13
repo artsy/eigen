@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash a874034dc9660ae54b6581a48e778de5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,28 +97,6 @@ query CollectionArtworksTestsQuery {
   }
 }
 
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
-}
-
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -150,6 +130,28 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
 }
 */
 
@@ -523,7 +525,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksTestsQuery",
-    "id": "b3931ef6c51ee94508cb1e8b8ddc0a11",
+    "id": "ef2cd175b6f54e29eedc7b44e0709e73",
     "text": null,
     "metadata": {}
   }

@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash a664d82e65450abefc7bb8506ef51118 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,20 +29,6 @@ query ShowArtistsQuery(
   }
 }
 
-fragment ShowArtists_show on Show {
-  internalID
-  slug
-  artists_grouped_by_name: artistsGroupedByName {
-    letter
-    items {
-      ...ArtistListItem_artist
-      sortable_id: sortableID
-      href
-      id
-    }
-  }
-}
-
 fragment ArtistListItem_artist on Artist {
   id
   internalID
@@ -54,6 +42,20 @@ fragment ArtistListItem_artist on Artist {
   deathday
   image {
     url
+  }
+}
+
+fragment ShowArtists_show on Show {
+  internalID
+  slug
+  artists_grouped_by_name: artistsGroupedByName {
+    letter
+    items {
+      ...ArtistListItem_artist
+      sortable_id: sortableID
+      href
+      id
+    }
   }
 }
 */
@@ -252,7 +254,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsQuery",
-    "id": "eb939376879908647ec03922d6f8a30a",
+    "id": "91768bd02c32c415879a0f7c0b82864f",
     "text": null,
     "metadata": {}
   }

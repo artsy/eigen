@@ -1,12 +1,19 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ConfirmBid_me = {
     readonly has_qualified_credit_cards: boolean | null;
     readonly bidders: ReadonlyArray<{
         readonly id: string;
     } | null> | null;
     readonly " $refType": "ConfirmBid_me";
+};
+export type ConfirmBid_me$data = ConfirmBid_me;
+export type ConfirmBid_me$key = {
+    readonly " $data"?: ConfirmBid_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_me">;
 };
 
 

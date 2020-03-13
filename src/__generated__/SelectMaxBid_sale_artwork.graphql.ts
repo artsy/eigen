@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,6 +11,11 @@ export type SelectMaxBid_sale_artwork = {
     } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_sale_artwork">;
     readonly " $refType": "SelectMaxBid_sale_artwork";
+};
+export type SelectMaxBid_sale_artwork$data = SelectMaxBid_sale_artwork;
+export type SelectMaxBid_sale_artwork$key = {
+    readonly " $data"?: SelectMaxBid_sale_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_sale_artwork">;
 };
 
 

@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 67f6933b7f794e1ebdf02b805e252333 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +33,41 @@ query CollectionArtworksInfiniteScrollGridQuery(
     ...CollectionArtworks_collection_1RfMLO
     id
   }
+}
+
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
 }
 
 fragment CollectionArtworks_collection_1RfMLO on MarketingCollection {
@@ -73,41 +110,6 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
       id
     }
   }
-}
-
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
-    }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
 }
 */
 
@@ -519,7 +521,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "c6ead10dd8f8af2079fb723b9415a6ab",
+    "id": "e44ac40a781cc4760d8b7000da721df6",
     "text": null,
     "metadata": {}
   }

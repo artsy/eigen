@@ -1,33 +1,35 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash b86d7ae497181ed1659e6866a33d11cf */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentSubmissionCategoryAggregation = "ARCHITECTURE" | "DESIGN_DECORATIVE_ART" | "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" | "FASHION_DESIGN_AND_WEARABLE_ART" | "INSTALLATION" | "JEWELRY" | "MIXED_MEDIA" | "OTHER" | "PAINTING" | "PERFORMANCE_ART" | "PHOTOGRAPHY" | "PRINT" | "SCULPTURE" | "TEXTILE_ARTS" | "VIDEO_FILM_ANIMATION" | "%future added value";
 export type ConsignmentSubmissionStateAggregation = "APPROVED" | "DRAFT" | "REJECTED" | "SUBMITTED" | "%future added value";
 export type UpdateSubmissionMutationInput = {
-    readonly clientMutationId?: string | null;
-    readonly id: string;
-    readonly additionalInfo?: string | null;
-    readonly artistID?: string | null;
-    readonly authenticityCertificate?: boolean | null;
-    readonly category?: ConsignmentSubmissionCategoryAggregation | null;
-    readonly currency?: string | null;
-    readonly depth?: string | null;
-    readonly dimensionsMetric?: string | null;
-    readonly edition?: boolean | null;
-    readonly editionNumber?: string | null;
-    readonly editionSize?: number | null;
-    readonly height?: string | null;
-    readonly locationCity?: string | null;
-    readonly locationCountry?: string | null;
-    readonly locationState?: string | null;
-    readonly medium?: string | null;
-    readonly minimumPriceDollars?: number | null;
-    readonly provenance?: string | null;
-    readonly signature?: boolean | null;
-    readonly state?: ConsignmentSubmissionStateAggregation | null;
-    readonly title?: string | null;
-    readonly width?: string | null;
-    readonly year?: string | null;
+    clientMutationId?: string | null;
+    id: string;
+    additionalInfo?: string | null;
+    artistID?: string | null;
+    authenticityCertificate?: boolean | null;
+    category?: ConsignmentSubmissionCategoryAggregation | null;
+    currency?: string | null;
+    depth?: string | null;
+    dimensionsMetric?: string | null;
+    edition?: boolean | null;
+    editionNumber?: string | null;
+    editionSize?: number | null;
+    height?: string | null;
+    locationCity?: string | null;
+    locationCountry?: string | null;
+    locationState?: string | null;
+    medium?: string | null;
+    minimumPriceDollars?: number | null;
+    provenance?: string | null;
+    signature?: boolean | null;
+    state?: ConsignmentSubmissionStateAggregation | null;
+    title?: string | null;
+    width?: string | null;
+    year?: string | null;
 };
 export type updateConsignmentSubmissionMutationVariables = {
     input: UpdateSubmissionMutationInput;

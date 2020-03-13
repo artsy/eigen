@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +12,11 @@ export type Inquiry_artwork = {
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkPreview_artwork">;
     readonly " $refType": "Inquiry_artwork";
+};
+export type Inquiry_artwork$data = Inquiry_artwork;
+export type Inquiry_artwork$key = {
+    readonly " $data"?: Inquiry_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"Inquiry_artwork">;
 };
 
 

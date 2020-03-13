@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,6 +16,11 @@ export type CommercialEditionSetInformation_artwork = {
     } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"CommercialPartnerInformation_artwork">;
     readonly " $refType": "CommercialEditionSetInformation_artwork";
+};
+export type CommercialEditionSetInformation_artwork$data = CommercialEditionSetInformation_artwork;
+export type CommercialEditionSetInformation_artwork$key = {
+    readonly " $data"?: CommercialEditionSetInformation_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"CommercialEditionSetInformation_artwork">;
 };
 
 

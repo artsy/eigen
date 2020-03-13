@@ -1,10 +1,17 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type RequestConditionReport_me = {
     readonly email: string | null;
     readonly internalID: string;
     readonly " $refType": "RequestConditionReport_me";
+};
+export type RequestConditionReport_me$data = RequestConditionReport_me;
+export type RequestConditionReport_me$key = {
+    readonly " $data"?: RequestConditionReport_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"RequestConditionReport_me">;
 };
 
 

@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ShowItem_show = {
     readonly internalID: string;
     readonly slug: string;
@@ -14,6 +16,11 @@ export type ShowItem_show = {
         readonly name?: string | null;
     } | null;
     readonly " $refType": "ShowItem_show";
+};
+export type ShowItem_show$data = ShowItem_show;
+export type ShowItem_show$key = {
+    readonly " $data"?: ShowItem_show$data;
+    readonly " $fragmentRefs": FragmentRefs<"ShowItem_show">;
 };
 
 

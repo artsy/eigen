@@ -1,13 +1,15 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 92d8aa511dc401a41910d32d7781b041 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SendConversationMessageMutationInput = {
-    readonly id: string;
-    readonly from: string;
-    readonly bodyText: string;
-    readonly replyToMessageID: string;
-    readonly clientMutationId?: string | null;
+    id: string;
+    from: string;
+    bodyText: string;
+    replyToMessageID: string;
+    clientMutationId?: string | null;
 };
 export type SendConversationMessageMutationVariables = {
     input: SendConversationMessageMutationInput;
@@ -49,6 +51,15 @@ mutation SendConversationMessageMutation(
   }
 }
 
+fragment AttachmentPreview_attachment on Attachment {
+  internalID
+}
+
+fragment ImagePreview_attachment on Attachment {
+  download_url: downloadURL
+  ...AttachmentPreview_attachment
+}
+
 fragment Message_message on Message {
   body
   created_at: createdAt
@@ -68,18 +79,9 @@ fragment Message_message on Message {
   }
 }
 
-fragment ImagePreview_attachment on Attachment {
-  download_url: downloadURL
-  ...AttachmentPreview_attachment
-}
-
 fragment PDFPreview_attachment on Attachment {
   file_name: fileName
   ...AttachmentPreview_attachment
-}
-
-fragment AttachmentPreview_attachment on Attachment {
-  internalID
 }
 */
 
@@ -299,7 +301,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "58656144a3fed13537098e863b9c7e72",
+    "id": "5518cc4fbdbc60ee5dc61063dea01c6a",
     "text": null,
     "metadata": {}
   }
