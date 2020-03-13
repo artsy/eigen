@@ -88,6 +88,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     this.props.loadMore(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
+        console.error("InfiniteScrollGrid.tsx", error.message)
       }
       this.setState({ fetchingNextPage: false })
       if (!this.props.connection.pageInfo.hasNextPage) {
