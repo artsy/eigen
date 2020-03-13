@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ShowHeader_show = {
     readonly slug: string;
     readonly internalID: string;
@@ -42,6 +44,11 @@ export type ShowHeader_show = {
         readonly internalID: string;
     } | null> | null;
     readonly " $refType": "ShowHeader_show";
+};
+export type ShowHeader_show$data = ShowHeader_show;
+export type ShowHeader_show$key = {
+    readonly " $data"?: ShowHeader_show$data;
+    readonly " $fragmentRefs": FragmentRefs<"ShowHeader_show">;
 };
 
 

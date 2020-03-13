@@ -98,14 +98,13 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       <Flex flexDirection="row" flexWrap="wrap">
         <Serif size="4t">
           {artistNames}
-          {!this.state.showingMoreArtists &&
-            artists.length > 3 && (
-              <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-                <Serif size="4t" weight="semibold">
-                  {artists.length - 3} more
-                </Serif>
-              </TouchableWithoutFeedback>
-            )}
+          {!this.state.showingMoreArtists && artists.length > 3 && (
+            <TouchableWithoutFeedback onPress={this.showMoreArtists}>
+              <Serif size="4t" weight="semibold">
+                {artists.length - 3} more
+              </Serif>
+            </TouchableWithoutFeedback>
+          )}
         </Serif>
       </Flex>
     )
@@ -152,12 +151,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             {artwork.medium}
           </Serif>
         )}
-        {!!artwork.dimensions.in &&
-          !!artwork.dimensions.cm && (
-            <Serif color="black60" size="3t">
-              {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
-            </Serif>
-          )}
+        {!!artwork.dimensions.in && !!artwork.dimensions.cm && (
+          <Serif color="black60" size="3t">
+            {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
+          </Serif>
+        )}
         {!!artwork.edition_of && (
           <Serif color="black60" size="3t">
             {artwork.edition_of}
@@ -171,24 +169,21 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             .
           </Serif>
         )}
-        {!!artwork.isInAuction &&
-          !!artwork.sale &&
-          !artwork.sale.isClosed && (
-            <>
-              <Spacer mb={1} />
-              {!!artwork.partner && (
-                <Serif color="black100" size="3t" weight="semibold">
-                  {artwork.partner.name}
-                </Serif>
-              )}
-              {!!artwork.saleArtwork &&
-                !!artwork.saleArtwork.estimate && (
-                  <Serif size="3t" color="black60">
-                    Estimated value: {artwork.saleArtwork.estimate}
-                  </Serif>
-                )}
-            </>
-          )}
+        {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
+          <>
+            <Spacer mb={1} />
+            {!!artwork.partner && (
+              <Serif color="black100" size="3t" weight="semibold">
+                {artwork.partner.name}
+              </Serif>
+            )}
+            {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
+              <Serif size="3t" color="black60">
+                Estimated value: {artwork.saleArtwork.estimate}
+              </Serif>
+            )}
+          </>
+        )}
       </Box>
     )
   }

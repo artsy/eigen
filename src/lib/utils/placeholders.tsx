@@ -66,6 +66,10 @@ const TEXT_MARGIN = 7
 export const PlaceholderText: React.FC<ViewStyle> = ({ ...props }) => {
   return <PlaceholderBox height={TEXT_HEIGHT} marginBottom={TEXT_MARGIN} {...props} />
 }
+const BUTTON_HEIGHT = 42
+export const PlaceholderButton: React.FC<ViewStyle> = ({ ...props }) => {
+  return <PlaceholderBox height={BUTTON_HEIGHT} {...props} />
+}
 
 export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number }> = ({ numLines, seed = 10 }) => {
   const lengths = useMemo(() => {
@@ -91,6 +95,17 @@ export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number }
           <PlaceholderText flex={length}></PlaceholderText>
         </View>
       ))}
+    </View>
+  )
+}
+
+export const PlaceholderImage: React.FC<{ height: number }> = ({ height }) => {
+  return (
+    <View>
+      <PlaceholderBox height={height} />
+      <View style={{ marginBottom: 20 }} />
+      <PlaceholderRaggedText numLines={2} seed={height} />
+      <View style={{ marginBottom: 20 }} />
     </View>
   )
 }

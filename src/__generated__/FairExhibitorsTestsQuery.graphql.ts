@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 9bf3cad772c9cdd9da6db0ddbae6d245 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FairExhibitorsTestsQueryVariables = {};

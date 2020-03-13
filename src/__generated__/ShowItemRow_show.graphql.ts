@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ShowItemRow_show = {
     readonly id: string;
     readonly slug: string;
@@ -25,6 +27,11 @@ export type ShowItemRow_show = {
     readonly is_fair_booth: boolean | null;
     readonly end_at: string | null;
     readonly " $refType": "ShowItemRow_show";
+};
+export type ShowItemRow_show$data = ShowItemRow_show;
+export type ShowItemRow_show$key = {
+    readonly " $data"?: ShowItemRow_show$data;
+    readonly " $fragmentRefs": FragmentRefs<"ShowItemRow_show">;
 };
 
 

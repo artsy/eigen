@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ArtworkGridItem_artwork = {
     readonly title: string | null;
     readonly date: string | null;
@@ -31,6 +33,11 @@ export type ArtworkGridItem_artwork = {
     } | null;
     readonly href: string | null;
     readonly " $refType": "ArtworkGridItem_artwork";
+};
+export type ArtworkGridItem_artwork$data = ArtworkGridItem_artwork;
+export type ArtworkGridItem_artwork$key = {
+    readonly " $data"?: ArtworkGridItem_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">;
 };
 
 

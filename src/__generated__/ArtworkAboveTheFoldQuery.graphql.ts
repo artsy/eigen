@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash c33da345eb2c802902fb0997becdb7ce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -6,7 +8,7 @@ export type ArtworkAboveTheFoldQueryVariables = {
     artworkID: string;
 };
 export type ArtworkAboveTheFoldQueryResponse = {
-    readonly artworkAboveTheFold: {
+    readonly artwork: {
         readonly " $fragmentRefs": FragmentRefs<"Artwork_artworkAboveTheFold">;
     } | null;
 };
@@ -21,111 +23,34 @@ export type ArtworkAboveTheFoldQuery = {
 query ArtworkAboveTheFoldQuery(
   $artworkID: String!
 ) {
-  artworkAboveTheFold: artwork(id: $artworkID) {
+  artwork(id: $artworkID) {
     ...Artwork_artworkAboveTheFold
     id
   }
 }
 
-fragment Artwork_artworkAboveTheFold on Artwork {
-  ...ArtworkHeader_artwork
-  ...CommercialInformation_artwork
-  slug
-  internalID
+fragment ArtworkActions_artwork on Artwork {
   id
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  is_biddable: isBiddable
-  is_inquireable: isInquireable
-  availability
-}
-
-fragment ArtworkHeader_artwork on Artwork {
-  ...ArtworkActions_artwork
-  ...ArtworkTombstone_artwork
-  images {
-    ...ImageCarousel_images
-  }
-}
-
-fragment CommercialInformation_artwork on Artwork {
-  isAcquireable
-  isOfferable
-  isInquireable
-  isInAuction
-  availability
-  saleMessage
-  isForSale
-  artists {
-    isConsignable
-    id
-  }
-  editionSets {
-    id
-  }
-  sale {
-    isClosed
-    isAuction
-    isLiveOpen
-    isPreview
-    liveStartAt
-    endAt
-    startAt
-    id
-  }
-  ...CommercialButtons_artwork
-  ...CommercialPartnerInformation_artwork
-  ...CommercialEditionSetInformation_artwork
-  ...ArtworkExtraLinks_artwork
-  ...AuctionPrice_artwork
-}
-
-fragment CommercialButtons_artwork on Artwork {
+  internalID
   slug
-  isAcquireable
-  isOfferable
-  isInquireable
-  isInAuction
-  isBuyNowable
-  isForSale
-  editionSets {
-    id
-  }
-  sale {
-    isClosed
-    id
-  }
-  ...BuyNowButton_artwork
-  ...BidButton_artwork
-  ...MakeOfferButton_artwork
-}
-
-fragment CommercialPartnerInformation_artwork on Artwork {
-  availability
-  isAcquireable
-  isForSale
-  isOfferable
-  shippingOrigin
-  shippingInfo
-  priceIncludesTaxDisplay
-  partner {
+  title
+  href
+  is_saved: isSaved
+  is_hangable: isHangable
+  artists {
     name
     id
   }
-}
-
-fragment CommercialEditionSetInformation_artwork on Artwork {
-  editionSets {
-    id
-    internalID
-    saleMessage
-    editionOf
-    dimensions {
-      in
-      cm
-    }
+  image {
+    url
   }
-  ...CommercialPartnerInformation_artwork
+  sale {
+    isAuction
+    isClosed
+    id
+  }
+  widthCm
+  heightCm
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
@@ -154,99 +79,12 @@ fragment ArtworkExtraLinks_artwork on Artwork {
   }
 }
 
-fragment AuctionPrice_artwork on Artwork {
-  sale {
-    internalID
-    isWithBuyersPremium
-    isClosed
-    isLiveOpen
-    id
+fragment ArtworkHeader_artwork on Artwork {
+  ...ArtworkActions_artwork
+  ...ArtworkTombstone_artwork
+  images {
+    ...ImageCarousel_images
   }
-  saleArtwork {
-    reserveMessage
-    currentBid {
-      display
-    }
-    counts {
-      bidderPositions
-    }
-    id
-  }
-  myLotStanding(live: true) {
-    activeBid {
-      isWinning
-      id
-    }
-    mostRecentBid {
-      maxBid {
-        display
-      }
-      id
-    }
-  }
-}
-
-fragment BuyNowButton_artwork on Artwork {
-  internalID
-  saleMessage
-}
-
-fragment BidButton_artwork on Artwork {
-  slug
-  sale {
-    slug
-    registrationStatus {
-      qualifiedForBidding
-      id
-    }
-    isPreview
-    isLiveOpen
-    isClosed
-    isRegistrationClosed
-    id
-  }
-  myLotStanding(live: true) {
-    mostRecentBid {
-      maxBid {
-        cents
-      }
-      id
-    }
-  }
-  saleArtwork {
-    increments {
-      cents
-    }
-    id
-  }
-}
-
-fragment MakeOfferButton_artwork on Artwork {
-  internalID
-}
-
-fragment ArtworkActions_artwork on Artwork {
-  id
-  internalID
-  slug
-  title
-  href
-  is_saved: isSaved
-  is_hangable: isHangable
-  artists {
-    name
-    id
-  }
-  image {
-    url
-  }
-  sale {
-    isAuction
-    isClosed
-    id
-  }
-  widthCm
-  heightCm
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
@@ -285,6 +123,173 @@ fragment ArtworkTombstone_artwork on Artwork {
   }
 }
 
+fragment Artwork_artworkAboveTheFold on Artwork {
+  ...ArtworkHeader_artwork
+  ...CommercialInformation_artwork
+  slug
+  internalID
+  id
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  is_biddable: isBiddable
+  is_inquireable: isInquireable
+  availability
+}
+
+fragment AuctionPrice_artwork on Artwork {
+  sale {
+    internalID
+    isWithBuyersPremium
+    isClosed
+    isLiveOpen
+    id
+  }
+  saleArtwork {
+    reserveMessage
+    currentBid {
+      display
+    }
+    counts {
+      bidderPositions
+    }
+    id
+  }
+  myLotStanding(live: true) {
+    activeBid {
+      isWinning
+      id
+    }
+    mostRecentBid {
+      maxBid {
+        display
+      }
+      id
+    }
+  }
+}
+
+fragment BidButton_artwork on Artwork {
+  slug
+  sale {
+    slug
+    registrationStatus {
+      qualifiedForBidding
+      id
+    }
+    isPreview
+    isLiveOpen
+    isClosed
+    isRegistrationClosed
+    id
+  }
+  myLotStanding(live: true) {
+    mostRecentBid {
+      maxBid {
+        cents
+      }
+      id
+    }
+  }
+  saleArtwork {
+    increments {
+      cents
+    }
+    id
+  }
+}
+
+fragment BuyNowButton_artwork on Artwork {
+  internalID
+  saleMessage
+}
+
+fragment CommercialButtons_artwork on Artwork {
+  slug
+  isAcquireable
+  isOfferable
+  isInquireable
+  isInAuction
+  isBuyNowable
+  isForSale
+  editionSets {
+    id
+  }
+  sale {
+    isClosed
+    id
+  }
+  ...BuyNowButton_artwork
+  ...BidButton_artwork
+  ...MakeOfferButton_artwork
+}
+
+fragment CommercialEditionSetInformation_artwork on Artwork {
+  editionSets {
+    id
+    internalID
+    saleMessage
+    editionOf
+    dimensions {
+      in
+      cm
+    }
+  }
+  ...CommercialPartnerInformation_artwork
+}
+
+fragment CommercialInformation_artwork on Artwork {
+  isAcquireable
+  isOfferable
+  isInquireable
+  isInAuction
+  availability
+  saleMessage
+  isForSale
+  artists {
+    isConsignable
+    id
+  }
+  editionSets {
+    id
+  }
+  sale {
+    isClosed
+    isAuction
+    isLiveOpen
+    isPreview
+    liveStartAt
+    endAt
+    startAt
+    id
+  }
+  ...CommercialButtons_artwork
+  ...CommercialPartnerInformation_artwork
+  ...CommercialEditionSetInformation_artwork
+  ...ArtworkExtraLinks_artwork
+  ...AuctionPrice_artwork
+}
+
+fragment CommercialPartnerInformation_artwork on Artwork {
+  availability
+  isAcquireable
+  isForSale
+  isOfferable
+  shippingOrigin
+  shippingInfo
+  priceIncludesTaxDisplay
+  partner {
+    name
+    id
+  }
+}
+
+fragment FollowArtistButton_artist on Artist {
+  id
+  slug
+  internalID
+  is_followed: isFollowed
+}
+
 fragment ImageCarousel_images on Image {
   url: imageURL
   width
@@ -303,11 +308,8 @@ fragment ImageCarousel_images on Image {
   }
 }
 
-fragment FollowArtistButton_artist on Artist {
-  id
-  slug
+fragment MakeOfferButton_artwork on Artwork {
   internalID
-  is_followed: isFollowed
 }
 */
 
@@ -433,7 +435,7 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": "artworkAboveTheFold",
+        "alias": null,
         "name": "artwork",
         "storageKey": null,
         "args": (v1/*: any*/),
@@ -456,7 +458,7 @@ return {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": "artworkAboveTheFold",
+        "alias": null,
         "name": "artwork",
         "storageKey": null,
         "args": (v1/*: any*/),
@@ -1084,11 +1086,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "99334367595cff75e3de60842ffb88e7",
+    "id": "6e1216621d5d8db98334fc6b4af21afc",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4eafa95c9788af843b033b40a78a396f';
+(node as any).hash = 'c346c86fa8221804db4e2442f518e1e8';
 export default node;

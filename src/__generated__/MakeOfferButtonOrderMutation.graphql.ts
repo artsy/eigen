@@ -1,13 +1,15 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 5566c3487e05ade371ca3980b463bc26 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CommerceOrderModeEnum = "BUY" | "OFFER" | "%future added value";
 export type CommerceCreateOfferOrderWithArtworkInput = {
-    readonly artworkId: string;
-    readonly clientMutationId?: string | null;
-    readonly editionSetId?: string | null;
-    readonly findActiveOrCreate?: boolean | null;
-    readonly quantity?: number | null;
+    artworkId: string;
+    clientMutationId?: string | null;
+    editionSetId?: string | null;
+    findActiveOrCreate?: boolean | null;
+    quantity?: number | null;
 };
 export type MakeOfferButtonOrderMutationVariables = {
     input: CommerceCreateOfferOrderWithArtworkInput;

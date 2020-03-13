@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ImageCarousel_images = ReadonlyArray<{
     readonly url: string | null;
     readonly width: number | null;
@@ -18,6 +20,11 @@ export type ImageCarousel_images = ReadonlyArray<{
         } | null;
     } | null;
     readonly " $refType": "ImageCarousel_images";
+}>;
+export type ImageCarousel_images$data = ImageCarousel_images;
+export type ImageCarousel_images$key = ReadonlyArray<{
+    readonly " $data"?: ImageCarousel_images$data;
+    readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
 }>;
 
 

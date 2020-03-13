@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +12,11 @@ export type MockRelayRendererFixtures_artwork = {
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"MockRelayRendererFixtures_artworkMetadata">;
     readonly " $refType": "MockRelayRendererFixtures_artwork";
+};
+export type MockRelayRendererFixtures_artwork$data = MockRelayRendererFixtures_artwork;
+export type MockRelayRendererFixtures_artwork$key = {
+    readonly " $data"?: MockRelayRendererFixtures_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"MockRelayRendererFixtures_artwork">;
 };
 
 

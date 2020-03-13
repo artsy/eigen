@@ -1,7 +1,7 @@
 import { NativeModules } from "react-native"
 const { AREventsModule, Emission } = NativeModules
 
-function postEvent(info: any) {
+export function postEvent(info: any) {
   if (__DEV__) {
     console.log("[Event tracked]", JSON.stringify(info, null, 2))
   }
@@ -15,7 +15,7 @@ let hasRequested = false
  * This method is designed to be called often, and it encapsulates all logic necessary for
  * deciding whether or not to prompt the user for an app rating.
  */
-function userHadMeaningfulInteraction() {
+export function userHadMeaningfulInteraction() {
   const launchCount = Emission.launchCount
 
   // We choose to ask the user on their second session, as well as their 22nd, 42nd, etc.
@@ -28,5 +28,3 @@ function userHadMeaningfulInteraction() {
     }
   }
 }
-
-export default { postEvent, userHadMeaningfulInteraction }

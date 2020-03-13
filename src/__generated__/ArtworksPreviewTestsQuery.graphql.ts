@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 5452fcc5f205d2fb860584d2cc4ed955 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,31 +75,6 @@ query ArtworksPreviewTestsQuery {
   }
 }
 
-fragment ArtworksPreview_fair on Fair {
-  slug
-  id
-  filterArtworksConnection(first: 6, aggregations: [TOTAL]) {
-    counts {
-      total
-    }
-    edges {
-      node {
-        ...GenericGrid_artworks
-        id
-      }
-    }
-    id
-  }
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
-}
-
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -131,6 +108,31 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment ArtworksPreview_fair on Fair {
+  slug
+  id
+  filterArtworksConnection(first: 6, aggregations: [TOTAL]) {
+    counts {
+      total
+    }
+    edges {
+      node {
+        ...GenericGrid_artworks
+        id
+      }
+    }
+    id
+  }
+}
+
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
 }
 */
 
@@ -452,7 +454,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksPreviewTestsQuery",
-    "id": "906622d37b7d37fa846dd25088c0724d",
+    "id": "16b6089ab58f7784074662790e5c7cd7",
     "text": null,
     "metadata": {}
   }

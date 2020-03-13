@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,6 +20,11 @@ export type Message_message = {
         readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment">;
     } | null> | null;
     readonly " $refType": "Message_message";
+};
+export type Message_message$data = Message_message;
+export type Message_message$key = {
+    readonly " $data"?: Message_message$data;
+    readonly " $fragmentRefs": FragmentRefs<"Message_message">;
 };
 
 

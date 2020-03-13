@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash d978dd7b3ccbaea6b09d033848a4bfea */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,17 +29,6 @@ query QueryRenderersInquiryQuery(
   }
 }
 
-fragment Inquiry_artwork on Artwork {
-  slug
-  internalID
-  contact_message: contactMessage
-  partner {
-    name
-    id
-  }
-  ...ArtworkPreview_artwork
-}
-
 fragment ArtworkPreview_artwork on Artwork {
   slug
   internalID
@@ -47,6 +38,17 @@ fragment ArtworkPreview_artwork on Artwork {
   image {
     url
   }
+}
+
+fragment Inquiry_artwork on Artwork {
+  slug
+  internalID
+  contact_message: contactMessage
+  partner {
+    name
+    id
+  }
+  ...ArtworkPreview_artwork
 }
 */
 
@@ -201,7 +203,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersInquiryQuery",
-    "id": "3007a6190dbcdcedd305cda5048bdf59",
+    "id": "805f0d50e32c8f27909c2ec8a1f7ded9",
     "text": null,
     "metadata": {}
   }

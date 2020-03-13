@@ -12,7 +12,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
 }))
 
 jest.unmock("react-relay")
-const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 
 describe(UserProfileQueryRenderer, () => {
   it("spins until the operation resolves", () => {

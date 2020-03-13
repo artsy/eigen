@@ -1,9 +1,16 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type MockRelayRendererFixtures_artworkMetadata = {
     readonly title: string | null;
     readonly " $refType": "MockRelayRendererFixtures_artworkMetadata";
+};
+export type MockRelayRendererFixtures_artworkMetadata$data = MockRelayRendererFixtures_artworkMetadata;
+export type MockRelayRendererFixtures_artworkMetadata$key = {
+    readonly " $data"?: MockRelayRendererFixtures_artworkMetadata$data;
+    readonly " $fragmentRefs": FragmentRefs<"MockRelayRendererFixtures_artworkMetadata">;
 };
 
 

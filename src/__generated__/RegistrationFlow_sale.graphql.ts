@@ -1,10 +1,16 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type RegistrationFlow_sale = {
     readonly " $fragmentRefs": FragmentRefs<"Registration_sale">;
     readonly " $refType": "RegistrationFlow_sale";
+};
+export type RegistrationFlow_sale$data = RegistrationFlow_sale;
+export type RegistrationFlow_sale$key = {
+    readonly " $data"?: RegistrationFlow_sale$data;
+    readonly " $fragmentRefs": FragmentRefs<"RegistrationFlow_sale">;
 };
 
 

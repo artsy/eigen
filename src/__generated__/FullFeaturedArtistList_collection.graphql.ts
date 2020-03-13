@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -14,6 +15,11 @@ export type FullFeaturedArtistList_collection = {
     };
     readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
     readonly " $refType": "FullFeaturedArtistList_collection";
+};
+export type FullFeaturedArtistList_collection$data = FullFeaturedArtistList_collection;
+export type FullFeaturedArtistList_collection$key = {
+    readonly " $data"?: FullFeaturedArtistList_collection$data;
+    readonly " $fragmentRefs": FragmentRefs<"FullFeaturedArtistList_collection">;
 };
 
 

@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 8cf7fde5fdd6724b9c4412d25f3cc06c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +33,22 @@ query FairArtistsQuery(
   }
 }
 
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
+}
+
 fragment FairArtists_fair_1G22uz on Fair {
   slug
   internalID
@@ -49,22 +67,6 @@ fragment FairArtists_fair_1G22uz on Fair {
       }
       cursor
     }
-  }
-}
-
-fragment ArtistListItem_artist on Artist {
-  id
-  internalID
-  slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
   }
 }
 */
@@ -357,7 +359,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtistsQuery",
-    "id": "23c357620a5af8ece6b385299613e942",
+    "id": "671023271bd05c9cd4c5aa6dfae0c467",
     "text": null,
     "metadata": {}
   }

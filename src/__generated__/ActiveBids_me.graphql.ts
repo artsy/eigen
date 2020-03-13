@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,6 +11,11 @@ export type ActiveBids_me = {
         readonly " $fragmentRefs": FragmentRefs<"ActiveBid_bid">;
     } | null> | null;
     readonly " $refType": "ActiveBids_me";
+};
+export type ActiveBids_me$data = ActiveBids_me;
+export type ActiveBids_me$key = {
+    readonly " $data"?: ActiveBids_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"ActiveBids_me">;
 };
 
 

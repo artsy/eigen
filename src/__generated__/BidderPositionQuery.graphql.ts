@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 1a3cbbc6f322e84eea43022709e6713d */
 
 import { ConcreteRequest } from "relay-runtime";
 export type BidderPositionQueryVariables = {

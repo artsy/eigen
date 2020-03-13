@@ -29,9 +29,6 @@ describe("Artwork Details", () => {
       image_rights: null,
       slug: "some-slug",
       canRequestLotConditionsReport: false,
-      saleArtwork: {
-        internalID: "some-id",
-      },
     }
 
     const artworkDetailsInfo = {
@@ -60,9 +57,6 @@ describe("Artwork Details", () => {
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
       canRequestLotConditionsReport: false,
-      saleArtwork: {
-        internalID: "some-id",
-      },
     }
 
     const artworkDetailsInfo = {
@@ -92,9 +86,6 @@ describe("Artwork Details", () => {
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
       canRequestLotConditionsReport: false,
-      saleArtwork: {
-        internalID: "some-id",
-      },
     }
 
     const artworkDetailsInfo = {
@@ -129,9 +120,6 @@ describe("Artwork Details", () => {
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
       canRequestLotConditionsReport: true,
-      saleArtwork: {
-        internalID: "some-id",
-      },
     }
 
     const artworkDetailsInfo = {
@@ -168,9 +156,6 @@ describe("Artwork Details", () => {
       image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
       slug: "some-slug",
       canRequestLotConditionsReport: true,
-      saleArtwork: {
-        internalID: "some-id",
-      },
     }
 
     const artworkDetailsInfo = {

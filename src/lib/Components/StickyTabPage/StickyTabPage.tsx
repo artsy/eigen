@@ -32,9 +32,20 @@ export const StickyTabPage: React.FC<{
   headerContent: JSX.Element
 }> = ({ tabs, headerContent }) => {
   const { width } = useScreenDimensions()
-  const initialTabIndex = useMemo(() => Math.max(tabs.findIndex(tab => tab.initial), 0), [])
+  const initialTabIndex = useMemo(
+    () =>
+      Math.max(
+        tabs.findIndex(tab => tab.initial),
+        0
+      ),
+    []
+  )
   const activeTabIndex = useAnimatedValue(initialTabIndex)
-  const [headerHeight, setHeaderHeightNativeWrapper] = useState<Animated.Value<number>>(null)
+  const [headerHeight, setHeaderHeightNativeWrapper] = useState<Animated.Value<number>>(
+    // in test files we don't care about getting the right height for the header, so
+    // we just set it now to avoid having to trigger an 'onLayout' in every test
+    process.env.NODE_ENV === "test" ? new Animated.Value(300) : null
+  )
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>()

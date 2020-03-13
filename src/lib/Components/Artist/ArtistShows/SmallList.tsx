@@ -18,6 +18,7 @@ class SmallList extends React.Component<Props> {
       <FlatList
         data={this.props.shows}
         renderItem={({ item }) => <ArtistShow show={item} styles={showStyles} />}
+        keyExtractor={({ id }) => id}
         scrollsToTop={false}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
@@ -54,6 +55,7 @@ const showStyles = StyleSheet.create({
 export default createFragmentContainer(SmallList, {
   shows: graphql`
     fragment SmallList_shows on Show @relay(plural: true) {
+      id
       ...ArtistShow_show
     }
   `,

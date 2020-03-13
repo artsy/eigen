@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 3836dff6f69bf4efb658c5628d706c82 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,49 +24,6 @@ query LotsByFollowedArtistsQuery(
   $cursor: String
 ) {
   ...LotsByFollowedArtists_query_1G22uz
-}
-
-fragment LotsByFollowedArtists_query_1G22uz on Query {
-  me {
-    lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true) {
-      edges {
-        cursor
-        node {
-          __typename
-          id
-        }
-        id
-      }
-      ...InfiniteScrollArtworksGrid_connection
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-    }
-    id
-  }
-}
-
-fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -100,6 +59,49 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
+  }
+}
+
+fragment LotsByFollowedArtists_query_1G22uz on Query {
+  me {
+    lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true) {
+      edges {
+        cursor
+        node {
+          __typename
+          id
+        }
+        id
+      }
+      ...InfiniteScrollArtworksGrid_connection
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+    id
+  }
 }
 */
 
@@ -482,7 +484,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "LotsByFollowedArtistsQuery",
-    "id": "f2aaf56f3cf74d34c8b4e9b2e7ae7835",
+    "id": "3022ff1c11af73fb69ff7442d28f64fb",
     "text": null,
     "metadata": {}
   }

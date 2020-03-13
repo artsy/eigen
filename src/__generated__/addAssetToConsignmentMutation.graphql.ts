@@ -1,11 +1,13 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash e5270e8d2c4140f6d7acc357f41b7cde */
 
 import { ConcreteRequest } from "relay-runtime";
 export type AddAssetToConsignmentSubmissionInput = {
-    readonly clientMutationId?: string | null;
-    readonly submissionID: string;
-    readonly geminiToken: string;
-    readonly assetType?: string | null;
+    clientMutationId?: string | null;
+    submissionID: string;
+    geminiToken: string;
+    assetType?: string | null;
 };
 export type addAssetToConsignmentMutationVariables = {
     input: AddAssetToConsignmentSubmissionInput;

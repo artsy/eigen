@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash b8723efe8a0d011790a8ab13a4baf1f8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +30,17 @@ query PartnerShowsRailQuery(
   partner(id: $id) {
     ...PartnerShowsRail_partner_1G22uz
     id
+  }
+}
+
+fragment PartnerShowRailItem_show on Show {
+  internalID
+  slug
+  name
+  exhibitionPeriod
+  endAt
+  images {
+    url
   }
 }
 
@@ -67,17 +80,6 @@ fragment PartnerShowsRail_partner_1G22uz on Partner {
       }
       cursor
     }
-  }
-}
-
-fragment PartnerShowRailItem_show on Show {
-  internalID
-  slug
-  name
-  exhibitionPeriod
-  endAt
-  images {
-    url
   }
 }
 */
@@ -368,7 +370,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsRailQuery",
-    "id": "4e60ca02970f8c4f761881ab7d9986d2",
+    "id": "95b382e3b762d5c0207712abe8ae7b9d",
     "text": null,
     "metadata": {}
   }

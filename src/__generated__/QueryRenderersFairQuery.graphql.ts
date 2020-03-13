@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash af968bd90cf4fc6273dc5239333234dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,9 +29,84 @@ query QueryRenderersFairQuery(
   }
 }
 
-fragment Fair_fair on Fair {
-  id
-  ...FairDetail_fair
+fragment ArtworkGridItem_artwork on Artwork {
+  title
+  date
+  sale_message: saleMessage
+  is_biddable: isBiddable
+  is_acquireable: isAcquireable
+  is_offerable: isOfferable
+  slug
+  sale {
+    is_auction: isAuction
+    is_closed: isClosed
+    display_timely_at: displayTimelyAt
+    id
+  }
+  sale_artwork: saleArtwork {
+    current_bid: currentBid {
+      display
+    }
+    id
+  }
+  image {
+    url(version: "large")
+    aspect_ratio: aspectRatio
+  }
+  artists(shallow: true) {
+    name
+    id
+  }
+  partner {
+    name
+    id
+  }
+  href
+}
+
+fragment FairBoothPreview_show on Show {
+  slug
+  internalID
+  counts {
+    artworks
+  }
+  partner {
+    __typename
+    ... on Partner {
+      name
+      href
+      slug
+      internalID
+      id
+      profile {
+        id
+        slug
+        internalID
+        isFollowed
+      }
+    }
+    ... on Node {
+      id
+    }
+    ... on ExternalPartner {
+      id
+    }
+  }
+  coverImage {
+    url
+  }
+  location {
+    display
+    id
+  }
+  artworks: artworksConnection(first: 4) {
+    edges {
+      node {
+        ...GenericGrid_artworks
+        id
+      }
+    }
+  }
 }
 
 fragment FairDetail_fair on Fair {
@@ -125,6 +202,19 @@ fragment FairHeader_fair on Fair {
   }
 }
 
+fragment Fair_fair on Fair {
+  id
+  ...FairDetail_fair
+}
+
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
+}
+
 fragment LocationMap_location on Location {
   id
   internalID
@@ -154,94 +244,6 @@ fragment LocationMap_location on Location {
       text
     }
   }
-}
-
-fragment FairBoothPreview_show on Show {
-  slug
-  internalID
-  counts {
-    artworks
-  }
-  partner {
-    __typename
-    ... on Partner {
-      name
-      href
-      slug
-      internalID
-      id
-      profile {
-        id
-        slug
-        internalID
-        isFollowed
-      }
-    }
-    ... on Node {
-      id
-    }
-    ... on ExternalPartner {
-      id
-    }
-  }
-  coverImage {
-    url
-  }
-  location {
-    display
-    id
-  }
-  artworks: artworksConnection(first: 4) {
-    edges {
-      node {
-        ...GenericGrid_artworks
-        id
-      }
-    }
-  }
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
-}
-
-fragment ArtworkGridItem_artwork on Artwork {
-  title
-  date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  slug
-  sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
-    id
-  }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
-      display
-    }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
 }
 */
 
@@ -1123,7 +1125,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersFairQuery",
-    "id": "a5c28274df0901326eba513530cda030",
+    "id": "fe8faf6915127947dded311474e6d51a",
     "text": null,
     "metadata": {}
   }

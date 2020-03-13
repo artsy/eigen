@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 313e708a481133c2987253cd15ed7583 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +33,31 @@ query PartnerOverviewInfiniteScrollQuery(
   }
 }
 
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
+}
+
+fragment PartnerLocationSection_partner on Partner {
+  slug
+  name
+  cities
+  locations: locationsConnection(first: 0) {
+    totalCount
+  }
+}
+
 fragment PartnerOverview_partner_1G22uz on Partner {
   internalID
   name
@@ -59,31 +86,6 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     }
   }
   ...PartnerLocationSection_partner
-}
-
-fragment ArtistListItem_artist on Artist {
-  id
-  internalID
-  slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
-  }
-}
-
-fragment PartnerLocationSection_partner on Partner {
-  slug
-  name
-  cities
-  locations: locationsConnection(first: 0) {
-    totalCount
-  }
 }
 */
 
@@ -446,7 +448,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "7fbe6ec13b41bc26a2b849bd365f47c8",
+    "id": "039948e2af6ea8587ffba8e372004b09",
     "text": null,
     "metadata": {}
   }

@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,6 +16,11 @@ export type ForYou_forYou = {
         readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairs_module">;
     } | null;
     readonly " $refType": "ForYou_forYou";
+};
+export type ForYou_forYou$data = ForYou_forYou;
+export type ForYou_forYou$key = {
+    readonly " $data"?: ForYou_forYou$data;
+    readonly " $fragmentRefs": FragmentRefs<"ForYou_forYou">;
 };
 
 

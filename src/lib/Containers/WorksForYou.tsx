@@ -8,7 +8,7 @@ import { get } from "lib/utils/get"
 import React from "react"
 import { FlatList, NativeModules, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import Events from "../NativeModules/Events"
+import { postEvent } from "../NativeModules/Events"
 
 interface Props {
   relay: RelayPaginationProp
@@ -38,7 +38,7 @@ export class WorksForYou extends React.Component<Props, State> {
       if (error) {
         console.warn(error)
       } else {
-        Events.postEvent({
+        postEvent({
           name: "Notifications read",
           source_screen: "works for you page",
         })

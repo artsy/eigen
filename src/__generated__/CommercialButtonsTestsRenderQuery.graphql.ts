@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash 2d929f17b2cdbce6921e8d1ab8019c0f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,31 +69,6 @@ query CommercialButtonsTestsRenderQuery {
   }
 }
 
-fragment CommercialButtons_artwork on Artwork {
-  slug
-  isAcquireable
-  isOfferable
-  isInquireable
-  isInAuction
-  isBuyNowable
-  isForSale
-  editionSets {
-    id
-  }
-  sale {
-    isClosed
-    id
-  }
-  ...BuyNowButton_artwork
-  ...BidButton_artwork
-  ...MakeOfferButton_artwork
-}
-
-fragment BuyNowButton_artwork on Artwork {
-  internalID
-  saleMessage
-}
-
 fragment BidButton_artwork on Artwork {
   slug
   sale {
@@ -120,6 +97,31 @@ fragment BidButton_artwork on Artwork {
     }
     id
   }
+}
+
+fragment BuyNowButton_artwork on Artwork {
+  internalID
+  saleMessage
+}
+
+fragment CommercialButtons_artwork on Artwork {
+  slug
+  isAcquireable
+  isOfferable
+  isInquireable
+  isInAuction
+  isBuyNowable
+  isForSale
+  editionSets {
+    id
+  }
+  sale {
+    isClosed
+    id
+  }
+  ...BuyNowButton_artwork
+  ...BidButton_artwork
+  ...MakeOfferButton_artwork
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -397,7 +399,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsRenderQuery",
-    "id": "272ad127355c9102bfa393154c974057",
+    "id": "66a2986069a59f918c24be558fc80ebc",
     "text": null,
     "metadata": {}
   }

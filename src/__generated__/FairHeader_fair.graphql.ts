@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type FairHeader_fair = {
     readonly slug: string;
     readonly name: string | null;
@@ -39,6 +41,11 @@ export type FairHeader_fair = {
         } | null;
     } | null;
     readonly " $refType": "FairHeader_fair";
+};
+export type FairHeader_fair$data = FairHeader_fair;
+export type FairHeader_fair$key = {
+    readonly " $data"?: FairHeader_fair$data;
+    readonly " $fragmentRefs": FragmentRefs<"FairHeader_fair">;
 };
 
 

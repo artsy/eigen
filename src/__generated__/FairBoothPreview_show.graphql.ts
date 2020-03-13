@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,6 +36,11 @@ export type FairBoothPreview_show = {
         } | null> | null;
     } | null;
     readonly " $refType": "FairBoothPreview_show";
+};
+export type FairBoothPreview_show$data = FairBoothPreview_show;
+export type FairBoothPreview_show$key = {
+    readonly " $data"?: FairBoothPreview_show$data;
+    readonly " $fragmentRefs": FragmentRefs<"FairBoothPreview_show">;
 };
 
 

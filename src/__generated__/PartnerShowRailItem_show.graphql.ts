@@ -1,6 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type PartnerShowRailItem_show = {
     readonly internalID: string;
     readonly slug: string;
@@ -11,6 +13,11 @@ export type PartnerShowRailItem_show = {
         readonly url: string | null;
     } | null> | null;
     readonly " $refType": "PartnerShowRailItem_show";
+};
+export type PartnerShowRailItem_show$data = PartnerShowRailItem_show;
+export type PartnerShowRailItem_show$key = {
+    readonly " $data"?: PartnerShowRailItem_show$data;
+    readonly " $fragmentRefs": FragmentRefs<"PartnerShowRailItem_show">;
 };
 
 

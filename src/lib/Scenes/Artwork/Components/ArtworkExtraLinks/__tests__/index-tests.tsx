@@ -1,7 +1,6 @@
 import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
-import Event from "lib/NativeModules/Events"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../index"
@@ -15,6 +14,7 @@ jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
+import { postEvent } from "lib/NativeModules/Events"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { mockTracking } from "lib/tests/mockTracking"
 
@@ -334,7 +334,7 @@ describe("ArtworkExtraLinks", () => {
         .first()
         .props()
         .onPress()
-      expect(Event.postEvent).toBeCalledWith({
+      expect(postEvent).toBeCalledWith({
         action_name: "askASpecialist",
         action_type: "tap",
         context_module: "ArtworkExtraLinks",
@@ -348,7 +348,7 @@ describe("ArtworkExtraLinks", () => {
         .first()
         .props()
         .onPress()
-      expect(Event.postEvent).toBeCalledWith({
+      expect(postEvent).toBeCalledWith({
         action_name: "auctionsFAQ",
         action_type: "tap",
         context_module: "ArtworkExtraLinks",
@@ -362,7 +362,7 @@ describe("ArtworkExtraLinks", () => {
         .first()
         .props()
         .onPress()
-      expect(Event.postEvent).toBeCalledWith({
+      expect(postEvent).toBeCalledWith({
         action_name: "conditionsOfSale",
         action_type: "tap",
         context_module: "ArtworkExtraLinks",

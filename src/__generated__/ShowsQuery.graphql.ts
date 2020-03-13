@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash a338e13f70b103986fe89baf7f6e2f2d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,27 +28,6 @@ query ShowsQuery(
   me {
     ...Shows_me_1G22uz
     id
-  }
-}
-
-fragment Shows_me_1G22uz on Me {
-  followsAndSaves {
-    shows: showsConnection(first: $count, after: $cursor) {
-      pageInfo {
-        startCursor
-        endCursor
-        hasPreviousPage
-        hasNextPage
-      }
-      edges {
-        node {
-          id
-          ...ShowItemRow_show
-          __typename
-        }
-        cursor
-      }
-    }
   }
 }
 
@@ -83,6 +64,27 @@ fragment ShowItemRow_show on Show {
   }
   is_fair_booth: isFairBooth
   end_at: endAt
+}
+
+fragment Shows_me_1G22uz on Me {
+  followsAndSaves {
+    shows: showsConnection(first: $count, after: $cursor) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          ...ShowItemRow_show
+          __typename
+        }
+        cursor
+      }
+    }
+  }
 }
 */
 
@@ -433,7 +435,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowsQuery",
-    "id": "fde33fc8fb6abe35c2e600dfe236c792",
+    "id": "bf80d5ff701ad47bf2050b4d79f3a3d2",
     "text": null,
     "metadata": {}
   }

@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+/* @relayHash dc66923d03b08c4cf540a7300f1876ce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -90,39 +92,15 @@ query PartnerShowsTestsQuery {
   }
 }
 
-fragment PartnerShows_partner on Partner {
-  slug
+fragment PartnerShowRailItem_show on Show {
   internalID
-  recentShows: showsConnection(status: CURRENT, first: 1) {
-    edges {
-      node {
-        id
-      }
-    }
+  slug
+  name
+  exhibitionPeriod
+  endAt
+  images {
+    url
   }
-  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: 32) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        name
-        slug
-        exhibitionPeriod
-        coverImage {
-          url
-          aspectRatio
-        }
-        href
-        __typename
-      }
-      cursor
-    }
-  }
-  ...PartnerShowsRail_partner
 }
 
 fragment PartnerShowsRail_partner on Partner {
@@ -164,15 +142,39 @@ fragment PartnerShowsRail_partner on Partner {
   }
 }
 
-fragment PartnerShowRailItem_show on Show {
-  internalID
+fragment PartnerShows_partner on Partner {
   slug
-  name
-  exhibitionPeriod
-  endAt
-  images {
-    url
+  internalID
+  recentShows: showsConnection(status: CURRENT, first: 1) {
+    edges {
+      node {
+        id
+      }
+    }
   }
+  pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: 32) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        name
+        slug
+        exhibitionPeriod
+        coverImage {
+          url
+          aspectRatio
+        }
+        href
+        __typename
+      }
+      cursor
+    }
+  }
+  ...PartnerShowsRail_partner
 }
 */
 
@@ -567,7 +569,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsTestsQuery",
-    "id": "40d14eba87af9bea6d4bbc952edac233",
+    "id": "41abbb687c8f1ced2faccc9b29de042e",
     "text": null,
     "metadata": {}
   }

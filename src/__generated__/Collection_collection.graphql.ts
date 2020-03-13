@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -7,6 +8,11 @@ export type Collection_collection = {
     readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "FeaturedArtists_collection">;
     readonly " $refType": "Collection_collection";
+};
+export type Collection_collection$data = Collection_collection;
+export type Collection_collection$key = {
+    readonly " $data"?: Collection_collection$data;
+    readonly " $fragmentRefs": FragmentRefs<"Collection_collection">;
 };
 
 

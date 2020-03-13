@@ -2,9 +2,6 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 // tslint:disable:no-unused-expression
-import Artist from "../Containers/Artist"
-Artist
-
 import BidFlow from "../Containers/BidFlow"
 BidFlow
 
@@ -28,7 +25,6 @@ Inbox
 // tslint:enable:no-unused-expression
 
 import { EventStatus, ShowSorts } from "__generated__/CitySectionListQuery.graphql"
-import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
 import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
 import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
@@ -54,28 +50,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface ArtistRendererProps extends RendererProps {
-  artistID: string
-  isPad: boolean
-}
-
-export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistID, isPad }) => {
-  return (
-    <QueryRenderer<QueryRenderersArtistQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersArtistQuery($artistID: String!, $isPad: Boolean!) {
-          artist(id: $artistID) {
-            ...Artist_artist
-          }
-        }
-      `}
-      variables={{ artistID, isPad }}
-      render={render}
-    />
-  )
 }
 
 export interface BidderFlowRendererProps extends RendererProps {

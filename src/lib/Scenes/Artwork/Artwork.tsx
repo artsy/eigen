@@ -1,25 +1,25 @@
 import { Box, Separator, space, Spacer, Theme } from "@artsy/palette"
-import * as Sentry from "@sentry/react-native"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
+import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
-import { ArtworkFullQuery, ArtworkFullQueryResponse } from "__generated__/ArtworkFullQuery.graphql"
+import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   PlaceholderText,
   ProvidePlaceholderContext,
 } from "lib/utils/placeholders"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
-import { commitMutation, createFragmentContainer, fetchQuery, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -32,13 +32,13 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 
 interface Props {
   artworkAboveTheFold: Artwork_artworkAboveTheFold
+  artworkBelowTheFold: Artwork_artworkBelowTheFold
   isVisible: boolean
-  relay: RelayProp
+  relay: RelayRefetchProp
 }
 
 interface State {
   refreshing: boolean
-  artworkFull: ArtworkFullQueryResponse["artwork"] | null
 }
 
 @screenTrack<Props>(props => ({
@@ -55,7 +55,6 @@ interface State {
 export class Artwork extends React.Component<Props, State> {
   state = {
     refreshing: false,
-    artworkFull: null,
   }
 
   shouldRenderDetails = () => {
@@ -71,7 +70,7 @@ export class Artwork extends React.Component<Props, State> {
       publisher,
       manufacturer,
       image_rights,
-    } = this.state.artworkFull
+    } = this.props.artworkBelowTheFold
 
     return !!(
       category ||
@@ -90,20 +89,24 @@ export class Artwork extends React.Component<Props, State> {
 
   componentDidMount() {
     this.markArtworkAsRecentlyViewed()
-    this.loadFullArtwork()
   }
 
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.loadFullArtwork().then(() => {
-        this.markArtworkAsRecentlyViewed()
-      })
+      this.props.relay.refetch(
+        { artistID: this.props.artworkAboveTheFold.internalID },
+        null,
+        () => {
+          this.markArtworkAsRecentlyViewed()
+        },
+        { force: true }
+      )
     }
   }
 
   shouldRenderPartner = () => {
-    const { partner, sale } = this.state.artworkFull
+    const { partner, sale } = this.props.artworkBelowTheFold
     if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
       return false
     } else if (partner && partner.type && partner.type !== "Auction House") {
@@ -114,7 +117,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderOtherWorks = () => {
-    const { contextGrids } = this.state.artworkFull
+    const { contextGrids } = this.props.artworkBelowTheFold
     const gridsToShow = populatedGrids(contextGrids)
 
     if (gridsToShow && gridsToShow.length > 0) {
@@ -124,25 +127,23 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
-  onRefresh = async () => {
+  onRefresh = (cb?: () => any) => {
     if (this.state.refreshing) {
       return
     }
 
     this.setState({ refreshing: true })
-    try {
-      await this.loadFullArtwork()
-    } catch (e) {
-      if (__DEV__) {
-        console.error(e)
-      } else {
-        Sentry.withScope(scope => {
-          scope.setExtra("slug", this.props.artworkAboveTheFold.slug)
-          Sentry.captureMessage("failed to refresh artwork")
-        })
+    this.props.relay.refetch(
+      { artistID: this.props.artworkAboveTheFold.internalID },
+      null,
+      () => {
+        this.setState({ refreshing: false })
+        cb?.()
+      },
+      {
+        force: true,
       }
-    }
-    this.setState({ refreshing: false })
+    )
   }
 
   markArtworkAsRecentlyViewed = () => {
@@ -163,8 +164,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   sections(): ArtworkPageSection[] {
-    const { artworkFull } = this.state
-    const { artworkAboveTheFold } = this.props
+    const { artworkAboveTheFold, artworkBelowTheFold } = this.props
 
     const sections: ArtworkPageSection[] = []
 
@@ -173,12 +173,13 @@ export class Artwork extends React.Component<Props, State> {
       element: <ArtworkHeader artwork={artworkAboveTheFold} />,
       excludePadding: true,
     })
+
     sections.push({
       key: "commercialInformation",
       element: <CommercialInformation artwork={artworkAboveTheFold} />,
     })
 
-    if (!artworkFull) {
+    if (!artworkBelowTheFold) {
       sections.push({
         key: "belowTheFoldPlaceholder",
         element: <BelowTheFoldPlaceholder />,
@@ -186,139 +187,58 @@ export class Artwork extends React.Component<Props, State> {
       return sections
     }
 
-    const { artist, context } = artworkFull
+    const { artist, context } = artworkBelowTheFold
 
-    if (artworkFull.description || artworkFull.additional_information) {
+    if (artworkBelowTheFold.description || artworkBelowTheFold.additional_information) {
       sections.push({
         key: "aboutWork",
-        element: <AboutWork artwork={artworkFull} />,
+        element: <AboutWork artwork={artworkBelowTheFold} />,
       })
     }
 
     if (this.shouldRenderDetails()) {
       sections.push({
         key: "artworkDetails",
-        element: <ArtworkDetails artwork={artworkFull} />,
+        element: <ArtworkDetails artwork={artworkBelowTheFold} />,
       })
     }
 
-    if (artworkFull.provenance || artworkFull.exhibition_history || artworkFull.literature) {
+    if (artworkBelowTheFold.provenance || artworkBelowTheFold.exhibition_history || artworkBelowTheFold.literature) {
       sections.push({
         key: "history",
-        element: <ArtworkHistory artwork={artworkFull} />,
+        element: <ArtworkHistory artwork={artworkBelowTheFold} />,
       })
     }
 
     if (artist && artist.biography_blurb) {
       sections.push({
         key: "aboutArtist",
-        element: <AboutArtist artwork={artworkFull} />,
+        element: <AboutArtist artwork={artworkBelowTheFold} />,
       })
     }
 
     if (this.shouldRenderPartner()) {
       sections.push({
         key: "partnerCard",
-        element: <PartnerCard artwork={artworkFull} />,
+        element: <PartnerCard artwork={artworkBelowTheFold} />,
       })
     }
 
     if (context && context.__typename === "Sale" && context.isAuction) {
       sections.push({
         key: "contextCard",
-        element: <ContextCard artwork={artworkFull} />,
+        element: <ContextCard artwork={artworkBelowTheFold} />,
       })
     }
 
     if (this.shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
-        element: <OtherWorks artwork={artworkFull} />,
+        element: <OtherWorks artwork={artworkBelowTheFold} />,
       })
     }
 
     return sections
-  }
-
-  async loadFullArtwork() {
-    const result = await fetchQuery<ArtworkFullQuery>(
-      this.props.relay.environment,
-      graphql`
-        query ArtworkFullQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            additional_information: additionalInformation
-            description
-            provenance
-            exhibition_history: exhibitionHistory
-            literature
-            partner {
-              type
-              id
-            }
-            artist {
-              biography_blurb: biographyBlurb {
-                text
-              }
-            }
-            sale {
-              id
-              isBenefit
-              isGalleryAuction
-            }
-            category
-            canRequestLotConditionsReport
-            conditionDescription {
-              details
-            }
-            signature
-            signatureInfo {
-              details
-            }
-            certificateOfAuthenticity {
-              details
-            }
-            framed {
-              details
-            }
-            series
-            publisher
-            manufacturer
-            image_rights: imageRights
-            context {
-              __typename
-              ... on Sale {
-                isAuction
-              }
-            }
-            contextGrids {
-              artworks: artworksConnection(first: 6) {
-                edges {
-                  node {
-                    id
-                  }
-                }
-              }
-            }
-            ...PartnerCard_artwork
-            ...AboutWork_artwork
-            ...OtherWorks_artwork
-            ...AboutArtist_artwork
-            ...ArtworkDetails_artwork
-            ...ContextCard_artwork
-            ...ArtworkHistory_artwork
-
-            # DO NOT DELETE this is needed to update the relay cache entries
-            # for the above-the-fold content when the user refreshes (which in
-            # turn updates the props.artworkAboveTheFold prop)
-            ...Artwork_artworkAboveTheFold
-          }
-        }
-      `,
-      { artworkID: this.props.artworkAboveTheFold.internalID },
-      { force: true }
-    )
-
-    this.setState({ artworkFull: result.artwork })
   }
 
   render() {
@@ -344,52 +264,147 @@ interface ArtworkPageSection {
   excludePadding?: boolean
 }
 
-export const ArtworkContainer = createFragmentContainer(Artwork, {
-  artworkAboveTheFold: graphql`
-    fragment Artwork_artworkAboveTheFold on Artwork {
-      ...ArtworkHeader_artwork
-      ...CommercialInformation_artwork
-      slug
-      internalID
-      id
-      is_acquireable: isAcquireable
-      is_offerable: isOfferable
-      is_biddable: isBiddable
-      is_inquireable: isInquireable
-      availability
+export const ArtworkContainer = createRefetchContainer(
+  Artwork,
+  {
+    artworkAboveTheFold: graphql`
+      fragment Artwork_artworkAboveTheFold on Artwork {
+        ...ArtworkHeader_artwork
+        ...CommercialInformation_artwork
+        slug
+        internalID
+        id
+        is_acquireable: isAcquireable
+        is_offerable: isOfferable
+        is_biddable: isBiddable
+        is_inquireable: isInquireable
+        availability
+      }
+    `,
+    artworkBelowTheFold: graphql`
+      fragment Artwork_artworkBelowTheFold on Artwork {
+        additional_information: additionalInformation
+        description
+        provenance
+        exhibition_history: exhibitionHistory
+        literature
+        partner {
+          type
+          id
+        }
+        artist {
+          biography_blurb: biographyBlurb {
+            text
+          }
+        }
+        sale {
+          id
+          isBenefit
+          isGalleryAuction
+        }
+        category
+        canRequestLotConditionsReport
+        conditionDescription {
+          details
+        }
+        signature
+        signatureInfo {
+          details
+        }
+        certificateOfAuthenticity {
+          details
+        }
+        framed {
+          details
+        }
+        series
+        publisher
+        manufacturer
+        image_rights: imageRights
+        context {
+          __typename
+          ... on Sale {
+            isAuction
+          }
+        }
+        contextGrids {
+          artworks: artworksConnection(first: 6) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
+        ...PartnerCard_artwork
+        ...AboutWork_artwork
+        ...OtherWorks_artwork
+        ...AboutArtist_artwork
+        ...ArtworkDetails_artwork
+        ...ContextCard_artwork
+        ...ArtworkHistory_artwork
+      }
+    `,
+  },
+  graphql`
+    query ArtworkRefetchQuery($artworkID: String!) {
+      artwork(id: $artworkID) {
+        ...Artwork_artworkAboveTheFold
+        ...Artwork_artworkBelowTheFold
+      }
     }
-  `,
-})
+  `
+)
 
-export const ArtworkRenderer: React.SFC<{ artworkID: string; safeAreaInsets: SafeAreaInsets; isVisible: boolean }> = ({
-  artworkID,
-  ...others
-}) => {
+export const ArtworkQueryRenderer: React.SFC<{
+  artworkID: string
+  isVisible: boolean
+  environment?: RelayModernEnvironment
+}> = ({ artworkID, environment, ...others }) => {
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {
         return (
           <Theme>
             <ProvideScreenDimensions>
-              <QueryRenderer<ArtworkAboveTheFoldQuery>
-                environment={defaultEnvironment}
-                query={graphql`
-                  query ArtworkAboveTheFoldQuery($artworkID: String!) {
-                    artworkAboveTheFold: artwork(id: $artworkID) {
-                      ...Artwork_artworkAboveTheFold
+              <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
+                environment={environment || defaultEnvironment}
+                above={{
+                  query: graphql`
+                    query ArtworkAboveTheFoldQuery($artworkID: String!) {
+                      artwork(id: $artworkID) {
+                        ...Artwork_artworkAboveTheFold
+                      }
                     }
-                  }
-                `}
-                variables={{ artworkID }}
+                  `,
+                  variables: { artworkID },
+                }}
+                below={{
+                  query: graphql`
+                    query ArtworkBelowTheFoldQuery($artworkID: String!) {
+                      artwork(id: $artworkID) {
+                        ...Artwork_artworkBelowTheFold
+                      }
+                    }
+                  `,
+                  variables: { artworkID },
+                }}
+                render={{
+                  renderPlaceholder: () => <AboveTheFoldPlaceholder />,
+                  renderComponent: ({ above, below }) => {
+                    return (
+                      <ArtworkContainer
+                        artworkAboveTheFold={above.artwork}
+                        artworkBelowTheFold={below?.artwork ?? null}
+                        {...others}
+                      />
+                    )
+                  },
+                }}
                 cacheConfig={{
                   // Bypass Relay cache on retries.
                   ...(isRetry && { force: true }),
                 }}
-                render={renderWithPlaceholder({
-                  Container: ArtworkContainer,
-                  initialProps: others,
-                  renderPlaceholder: () => <AboveTheFoldPlaceholder />,
-                })}
               />
             </ProvideScreenDimensions>
           </Theme>

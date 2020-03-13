@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,6 +33,11 @@ export type ArtworkTombstone_artwork = {
         readonly shortDescription: string | null;
     } | null;
     readonly " $refType": "ArtworkTombstone_artwork";
+};
+export type ArtworkTombstone_artwork$data = ArtworkTombstone_artwork;
+export type ArtworkTombstone_artwork$key = {
+    readonly " $data"?: ArtworkTombstone_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkTombstone_artwork">;
 };
 
 

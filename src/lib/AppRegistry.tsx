@@ -5,10 +5,10 @@ import { Container as RelayContainer } from "react-relay"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/"
+import { ArtistQueryRenderer } from "./Containers/Artist"
 import BidFlow from "./Containers/BidFlow"
 import RegistrationFlow from "./Containers/RegistrationFlow"
 import {
-  ArtistRenderer,
   BidderFlowRendererProps,
   BidFlowRenderer,
   CityBMWListRenderer,
@@ -26,7 +26,7 @@ import {
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
-import { ArtworkRenderer } from "./Scenes/Artwork"
+import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
@@ -75,22 +75,12 @@ YellowBox.ignoreWarnings([
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
 ])
 
-interface ArtistProps {
-  artistID: string
-  isPad: boolean
-}
-
-const Artist: React.SFC<ArtistProps> = props => (
-  <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
-)
-
 interface ArtworkProps {
   artworkID: string
-  safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
 
-const Artwork: React.SFC<ArtworkProps> = props => <ArtworkRenderer {...props} />
+const Artwork: React.SFC<ArtworkProps> = props => <ArtworkQueryRenderer {...props} />
 
 interface PartnerProps {
   partnerID: string
@@ -372,7 +362,7 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithT
 })
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
-AppRegistry.registerComponent("Artist", () => Artist)
+AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
 AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
 AppRegistry.registerComponent("Home", () => Home)
