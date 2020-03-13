@@ -16,7 +16,7 @@
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
     "ci:test": "jest --outputFile test-results.json --json --ci --forceExit",
     "ci:type-check": "tsc --pretty false | tee tsc_raw.log",
-    "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && yarn relay && yarn ci:test",
+    "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
     "danger": "danger",
     "find-unused-fields": "ts-node --compiler-options '{\"types\": [\"node\"]}' scripts/find-unused-fields",
     "generate-cities-cache": "node scripts/generate-cities-cache.js",
