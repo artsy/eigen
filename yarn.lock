@@ -10583,7 +10583,7 @@ relay-config@6.0.0:
   dependencies:
     cosmiconfig "^5.0.5"
 
-relay-mock-network-layer@^3.0.0:
+relay-mock-network-layer@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/relay-mock-network-layer/-/relay-mock-network-layer-3.0.0.tgz#cdc9f116f5afcf9e1ce4092d7dc4c925b1457a2e"
   integrity sha512-gMgFvGaT1cSfI08pYKXFiuCuSxroCCDgdEq853xsaqIyjclq0myRmf2YmV0QwZ0t1ej9If1A973FC58ZZLtiYw==
