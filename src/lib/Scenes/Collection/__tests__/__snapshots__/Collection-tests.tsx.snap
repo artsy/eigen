@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "90167c5055268f64697150386320812c{}",
+              "identifier": "e1b5b69ea909e7587affc27d3002ed44{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -732,7 +732,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "90167c5055268f64697150386320812c",
+                  "id": "e1b5b69ea909e7587affc27d3002ed44",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
