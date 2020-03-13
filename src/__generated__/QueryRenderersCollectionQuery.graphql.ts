@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e8101d7557ce55b9bb607d15c4d6316c */
+/* @relayHash a3d4df1b566a139fd810982cbb0a4f41 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -84,7 +84,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment CollectionArtworks_collection on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 6) {
+  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10, after: "") {
     edges {
       node {
         id
@@ -217,8 +217,13 @@ v5 = {
 v6 = [
   {
     "kind": "Literal",
+    "name": "after",
+    "value": ""
+  },
+  {
+    "kind": "Literal",
     "name": "first",
-    "value": 6
+    "value": 10
   },
   (v5/*: any*/)
 ],
@@ -374,7 +379,7 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:6,sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(after:\"\",first:10,sort:\"-decayed_merch\")",
             "args": (v6/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -768,7 +773,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCollectionQuery",
-    "id": "27a1b57bc501c8f8f30b2fb86328dbad",
+    "id": "112b721917a4d098429575ec1b872958",
     "text": null,
     "metadata": {}
   }

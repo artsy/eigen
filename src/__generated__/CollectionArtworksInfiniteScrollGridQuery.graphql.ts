@@ -1,13 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5bc3bec5263138d02054678491642228 */
+/* @relayHash 67f6933b7f794e1ebdf02b805e252333 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CollectionArtworksInfiniteScrollGridQueryVariables = {
     id: string;
-    cursor?: string | null;
     count: number;
+    cursor?: string | null;
+    sort?: string | null;
 };
 export type CollectionArtworksInfiniteScrollGridQueryResponse = {
     readonly marketingCollection: {
@@ -24,11 +25,12 @@ export type CollectionArtworksInfiniteScrollGridQuery = {
 /*
 query CollectionArtworksInfiniteScrollGridQuery(
   $id: String!
-  $cursor: String
   $count: Int!
+  $cursor: String
+  $sort: String
 ) {
   marketingCollection(slug: $id) {
-    ...CollectionArtworks_collection_1G22uz
+    ...CollectionArtworks_collection_1RfMLO
     id
   }
 }
@@ -68,10 +70,10 @@ fragment ArtworkGridItem_artwork on Artwork {
   href
 }
 
-fragment CollectionArtworks_collection_1G22uz on MarketingCollection {
+fragment CollectionArtworks_collection_1RfMLO on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: $count, after: $cursor) {
+  collectionArtworks: artworksConnection(sort: $sort, first: $count, after: $cursor) {
     edges {
       node {
         id
@@ -121,14 +123,20 @@ var v0 = [
   },
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "cursor",
     "type": "String",
     "defaultValue": null
   },
   {
     "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
+    "name": "sort",
+    "type": "String",
     "defaultValue": null
   }
 ],
@@ -140,20 +148,25 @@ v1 = [
   }
 ],
 v2 = {
+  "kind": "Variable",
+  "name": "sort",
+  "variableName": "sort"
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = [
+v5 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -164,13 +177,9 @@ v4 = [
     "name": "first",
     "variableName": "count"
   },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-decayed_merch"
-  }
+  (v2/*: any*/)
 ],
-v5 = [
+v6 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -178,7 +187,7 @@ v5 = [
     "args": null,
     "storageKey": null
   },
-  (v3/*: any*/)
+  (v4/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -211,7 +220,8 @@ return {
                 "kind": "Variable",
                 "name": "cursor",
                 "variableName": "cursor"
-              }
+              },
+              (v2/*: any*/)
             ]
           }
         ]
@@ -232,14 +242,14 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
             "storageKey": null,
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -261,8 +271,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
+                      (v4/*: any*/),
                       (v3/*: any*/),
-                      (v2/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -373,7 +383,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -403,7 +413,7 @@ return {
                               }
                             ]
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -420,7 +430,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v5/*: any*/)
+                        "selections": (v6/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -430,7 +440,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v5/*: any*/)
+                        "selections": (v6/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -455,7 +465,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ]
               },
               {
@@ -490,14 +500,14 @@ return {
                   }
                 ]
               },
-              (v3/*: any*/)
+              (v4/*: any*/)
             ]
           },
           {
             "kind": "LinkedHandle",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "handle": "connection",
             "key": "Collection_collectionArtworks",
             "filters": [
@@ -511,11 +521,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "42287659f3c283d7e1a011a97a5647c8",
+    "id": "e44ac40a781cc4760d8b7000da721df6",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'dfbb2367b74f9f12496788a612fe6def';
+(node as any).hash = '32c22a89ec9f25ae12fc79950664aca2';
 export default node;

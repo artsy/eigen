@@ -1,4 +1,5 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { head } from "lodash"
 import React, { useContext, useState } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -16,15 +17,15 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {
+    if (!state.appliedFilters) {
+      dispatch({ type: "resetFilters" })
+    }
     closeModal()
-    dispatch({ type: "resetFilters" })
   }
 
   const applyFilters = () => {
-    // TODO:  why is this tsc error being thrown?:
-    // Property 'type' does not exist on type 'readonly { readonly type: SortOption; readonly filter: FilterOption; }[]
-    // @ts-ignore: next-line
-    dispatch({ type: "applyFilters", payload: [{ type: state.selectedFilters.type, filter: "sort" }] })
+    const { type, filter } = head(state.selectedFilters)
+    dispatch({ type: "applyFilters", payload: [{ type, filter }] })
     closeModal()
   }
 
@@ -51,7 +52,13 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                   style={{ flex: 1 }}
                 />
                 <Box p={2}>
-                  <ApplyButton onPress={applyFilters} block width={100} variant="secondaryOutline">
+                  <ApplyButton
+                    disabled={state.selectedFilters.length < 1}
+                    onPress={applyFilters}
+                    block
+                    width={100}
+                    variant="secondaryOutline"
+                  >
                     {getApplyButtonCount()}
                   </ApplyButton>
                 </Box>
@@ -91,7 +98,6 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
 
   const handleTappingCloseIcon = () => {
     closeModal()
-    dispatch({ type: "resetFilters" })
   }
 
   return (

@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "fce8e5ec261e73441b490dd2a277ecf2{}",
+              "identifier": "e1b5b69ea909e7587affc27d3002ed44{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -190,8 +190,13 @@ exports[`Collection renders a snapshot 1`] = `
                           "args": Array [
                             Object {
                               "kind": "Literal",
+                              "name": "after",
+                              "value": "",
+                            },
+                            Object {
+                              "kind": "Literal",
                               "name": "first",
-                              "value": 6,
+                              "value": 10,
                             },
                             Object {
                               "kind": "Literal",
@@ -519,15 +524,20 @@ exports[`Collection renders a snapshot 1`] = `
                               "storageKey": null,
                             },
                           ],
-                          "storageKey": "artworksConnection(first:6,sort:\\"-decayed_merch\\")",
+                          "storageKey": "artworksConnection(after:\\"\\",first:10,sort:\\"-decayed_merch\\")",
                         },
                         Object {
                           "alias": "collectionArtworks",
                           "args": Array [
                             Object {
                               "kind": "Literal",
+                              "name": "after",
+                              "value": "",
+                            },
+                            Object {
+                              "kind": "Literal",
                               "name": "first",
-                              "value": 6,
+                              "value": 10,
                             },
                             Object {
                               "kind": "Literal",
@@ -722,7 +732,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "fce8e5ec261e73441b490dd2a277ecf2",
+                  "id": "e1b5b69ea909e7587affc27d3002ed44",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {

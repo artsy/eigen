@@ -53,13 +53,13 @@ return {
       "kind": "LocalArgument",
       "name": "count",
       "type": "Int",
-      "defaultValue": 6
+      "defaultValue": 10
     },
     {
       "kind": "LocalArgument",
       "name": "cursor",
       "type": "String",
-      "defaultValue": null
+      "defaultValue": ""
     },
     {
       "kind": "LocalArgument",
@@ -164,5 +164,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bc1cfff22a04c7110466e2cbb918fa8d';
+(node as any).hash = '16d6e6940ee6bfb25064f05ae19605a0';
 export default node;
