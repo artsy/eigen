@@ -101,6 +101,10 @@ exports[`looks correct when rendered 1`] = `
           "image": Object {
             "url": "https://example.com/hero.jpg",
           },
+          "location": Object {
+            "city": null,
+            "country": null,
+          },
           "name": "The Fair",
           "otherArtworks": Object {
             "edges": Array [
@@ -155,6 +159,10 @@ exports[`looks correct when rendered 1`] = `
           "id": "the-profileless-fair",
           "image": Object {
             "url": "https://example.com/hero.jpg",
+          },
+          "location": Object {
+            "city": null,
+            "country": null,
           },
           "name": "The Profileless Fair: You Should Not See Me in Snapshots",
           "otherArtworks": Object {
@@ -346,6 +354,8 @@ exports[`looks correct when rendered 1`] = `
                 The Fair
               </Text>
               <Text
+                color="black60"
+                data-test-id="subtitle"
                 fontFamily="Unica77LL-Regular"
                 fontSize="14px"
                 lineHeight="20px"
@@ -353,6 +363,7 @@ exports[`looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
+                      "color": "#666",
                       "fontFamily": "Unica77LL-Regular",
                       "fontSize": 14,
                       "lineHeight": 20,
@@ -503,6 +514,8 @@ exports[`looks correct when rendered 1`] = `
                 The Profileless Fair: You Should Not See Me in Snapshots
               </Text>
               <Text
+                color="black60"
+                data-test-id="subtitle"
                 fontFamily="Unica77LL-Regular"
                 fontSize="14px"
                 lineHeight="20px"
@@ -510,6 +523,7 @@ exports[`looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
+                      "color": "#666",
                       "fontFamily": "Unica77LL-Regular",
                       "fontSize": 14,
                       "lineHeight": 20,

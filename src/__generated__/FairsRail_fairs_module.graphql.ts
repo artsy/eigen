@@ -15,6 +15,10 @@ export type FairsRail_fairs_module = {
         readonly image: {
             readonly url: string | null;
         } | null;
+        readonly location: {
+            readonly city: string | null;
+            readonly country: string | null;
+        } | null;
         readonly followedArtistArtworks: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -159,6 +163,31 @@ return {
         (v1/*: any*/),
         {
           "kind": "LinkedField",
+          "alias": null,
+          "name": "location",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Location",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "city",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "country",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
           "alias": "followedArtistArtworks",
           "name": "filterArtworksConnection",
           "storageKey": "filterArtworksConnection(first:2,includeArtworksByFollowedArtists:true)",
@@ -191,5 +220,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2e213c9e62250faf84f041148e61a84c';
+(node as any).hash = '1db234393ab9c46ebcff9bf56deede11';
 export default node;

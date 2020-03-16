@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash aedb564b18cb405ed6b62a8eca23c744 */
+/* @relayHash bd7d99d5b2b439d2bc48dd81fc65c640 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -114,6 +114,11 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
     exhibitionPeriod
     image {
       url(version: "large")
+    }
+    location {
+      city
+      country
+      id
     }
     followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
       edges {
@@ -605,6 +610,32 @@ return {
                   (v8/*: any*/),
                   {
                     "kind": "LinkedField",
+                    "alias": null,
+                    "name": "location",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Location",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "city",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "country",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v0/*: any*/)
+                    ]
+                  },
+                  {
+                    "kind": "LinkedField",
                     "alias": "followedArtistArtworks",
                     "name": "filterArtworksConnection",
                     "storageKey": "filterArtworksConnection(first:2,includeArtworksByFollowedArtists:true)",
@@ -643,7 +674,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "dd1f7e14d5a61390e520c78b316aa651",
+    "id": "7dd9dc3a28d75c0ca792367f6d3f4bbf",
     "text": null,
     "metadata": {}
   }
