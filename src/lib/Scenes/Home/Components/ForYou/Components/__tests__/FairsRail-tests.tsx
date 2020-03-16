@@ -4,6 +4,7 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 
 import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
+import { extractText } from "lib/tests/extractText"
 import FairsRail from "../FairsRail"
 
 import { Theme } from "@artsy/palette"
@@ -20,6 +21,10 @@ const fairsModule: Omit<FairsRail_fairs_module, " $refType"> = {
       name: "The Fair",
       slug: "the-fair",
       exhibitionPeriod: "Monday–Friday",
+      location: {
+        city: null,
+        country: null,
+      },
       profile: { slug: "https://neopets.com" },
       image: { url: "https://example.com/hero.jpg" },
       followedArtistArtworks: {
@@ -34,6 +39,10 @@ const fairsModule: Omit<FairsRail_fairs_module, " $refType"> = {
       slug: "the-profileless-fair",
       name: "The Profileless Fair: You Should Not See Me in Snapshots",
       exhibitionPeriod: "Monday–Friday",
+      location: {
+        city: null,
+        country: null,
+      },
       profile: null,
       image: { url: "https://example.com/hero.jpg" },
       followedArtistArtworks: {
@@ -74,4 +83,34 @@ it("looks correct when rendered with fairs missing artworks", () => {
       )
       .toJSON()
   ).not.toThrow()
+})
+
+describe("location", () => {
+  it("handles when the city is specified", () => {
+    const fairsCopy = cloneDeep(fairsModule)
+    // @ts-ignore
+    fairsCopy.results[0].location.city = "New Yawk"
+    const tree = renderer.create(
+      <Theme>
+        <FairsRail fairs_module={fairsCopy as any} />
+      </Theme>
+    )
+    expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
+      `"Monday–Friday  •  New Yawk"`
+    )
+  })
+
+  it("handles falls back to country when city is unspecified", () => {
+    const fairsCopy = cloneDeep(fairsModule)
+    // @ts-ignore
+    fairsCopy.results[0].location.country = "Canada"
+    const tree = renderer.create(
+      <Theme>
+        <FairsRail fairs_module={fairsCopy as any} />
+      </Theme>
+    )
+    expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
+      `"Monday–Friday  •  Canada"`
+    )
+  })
 })
