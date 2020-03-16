@@ -244,6 +244,32 @@ describe("Filter modal navigation flow", () => {
 
     expect(filterScreen.find(CurrentOption).text()).toEqual("Default")
   })
+
+  it("displays the filter screen apply button correctly when no filters are selected", () => {
+    const initialState: ArtworkFilterContextState = {
+      selectedSortOption: "Price (low to high)",
+      selectedFilters: [],
+      appliedFilters: [],
+      applyFilters: false,
+    }
+
+    const filterScreen = mount(<MockFilterModalNavigator initialState={initialState} />)
+
+    expect(filterScreen.find(ApplyButton).props().disabled).toEqual(true)
+  })
+
+  it("displays the filter screen apply button correctly when filters are selected", () => {
+    const initialState: ArtworkFilterContextState = {
+      selectedSortOption: "Price (low to high)",
+      selectedFilters: [{ type: "Price (low to high)", filter: "sort" }],
+      appliedFilters: [],
+      applyFilters: false,
+    }
+
+    const filterScreen = mount(<MockFilterModalNavigator initialState={initialState} />)
+
+    expect(filterScreen.find(ApplyButton).props().disabled).toEqual(false)
+  })
 })
 
 describe("Clearing filters", () => {
