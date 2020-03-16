@@ -57,7 +57,8 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                     onPress={applyFilters}
                     block
                     width={100}
-                    variant="secondaryOutline"
+                    variant="primaryBlack"
+                    size="large"
                   >
                     {getApplyButtonCount()}
                   </ApplyButton>
