@@ -43,6 +43,7 @@ export class FairsRail extends Component<Props, null> {
               ),
               3
             )
+            const location = result.location?.city || result.location?.country
             return (
               <CardRailCard
                 key={result.slug}
@@ -70,8 +71,9 @@ export class FairsRail extends Component<Props, null> {
                     <Sans numberOfLines={1} weight="medium" size="3t">
                       {result.name}
                     </Sans>
-                    <Sans numberOfLines={1} size="3t">
+                    <Sans numberOfLines={1} size="3t" color="black60" data-test-id="subtitle">
                       {result.exhibitionPeriod}
+                      {Boolean(location) && `  •  ${location}`}
                     </Sans>
                   </MetadataContainer>
                 </View>
@@ -117,6 +119,10 @@ export default createFragmentContainer(FairsRail, {
         exhibitionPeriod
         image {
           url(version: "large")
+        }
+        location {
+          city
+          country
         }
         followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
           edges {

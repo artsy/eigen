@@ -1,8 +1,9 @@
 import { Flex, Spacer, Theme } from "@artsy/palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
-import { TouchableHighlight, View } from "react-native"
+import { View } from "react-native"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -62,13 +63,13 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
           initialNumToRender={4}
           windowSize={3}
           renderItem={({ item }) => (
-            <TouchableHighlight onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
+            <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
               <OpaqueImageView
                 imageURL={item.image?.imageURL.replace(":version", "square")}
                 width={RAIL_HEIGHT}
                 height={RAIL_HEIGHT}
-              ></OpaqueImageView>
-            </TouchableHighlight>
+              />
+            </ArtworkCard>
           )}
           keyExtractor={(item, index) => String(item.image?.imageURL || index)}
         />
@@ -76,6 +77,11 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
     </Theme>
   )
 }
+
+const ArtworkCard = styled.TouchableHighlight`
+  border-radius: 2px;
+  overflow: hidden;
+`
 
 export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail, {
   rail: graphql`
