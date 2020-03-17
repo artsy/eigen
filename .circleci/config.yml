@@ -90,18 +90,20 @@ jobs:
           name: List devices
           command: instruments -s device
 
+      - run:
+          name: Generate node_modules checksum
+          command: cat yarn.lock patches/* | md5 > node_modules.hash
+
       - restore_cache:
           keys:
-            - v1-yarn-{{ checksum "yarn.lock" }}
-            # Fall back to using the latest cache if no exact match is found.
-            - v1-yarn-
+            - v2-yarn-{{ checksum "node_modules.hash" }}
 
       - run:
           name: Install node modules
           command: yarn install
 
       - save_cache:
-          key: v1-yarn-{{ checksum "yarn.lock" }}
+          key: v2-yarn-{{ checksum "node_modules.hash" }}
           paths:
             - node_modules
 
