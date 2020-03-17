@@ -1,7 +1,16 @@
 import { Box, color } from "@artsy/palette"
 import { Fonts } from "lib/data/fonts"
 import React, { FunctionComponent } from "react"
-import { ActivityIndicator, Image, ImageURISource, Text, TextInputProperties, View, ViewProperties } from "react-native"
+import {
+  ActivityIndicator,
+  Image,
+  ImageURISource,
+  Text,
+  TextInput,
+  TextInputProperties,
+  View,
+  ViewProperties,
+} from "react-native"
 import styled from "styled-components/native"
 
 interface ReffableTextInputProps extends TextInputProperties {
@@ -53,10 +62,25 @@ const ReadOnlyInput = (props: TextInputProps) => (
 )
 
 export default class TextInputField extends React.Component<TextInputProps, State> {
+  inputRef: TextInput | null
+  timeout: number | null
   constructor(props) {
     super(props)
     this.state = { focused: false }
   }
+
+  componentDidMount() {
+    if (this.props.text?.autoFocus) {
+      this.inputRef?.focus()
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+  }
+
   render() {
     const LocationIcon = this.props.LocationIcon
     return (
@@ -76,12 +100,14 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
             ReadOnlyInput(this.props)
           ) : (
             <Input
+              ref={ref => (this.inputRef = ref)}
               autoCorrect={false}
               clearButtonMode="while-editing"
               keyboardAppearance="dark"
               placeholderTextColor={color("black60")}
               selectionColor={color("black60")}
               {...this.props.text}
+              autoFocus={false}
               onFocus={e =>
                 this.setState(
                   { focused: true },
