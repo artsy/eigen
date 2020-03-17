@@ -188,19 +188,20 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "23:11:82:24:bb:cb:a8:1e:7a:eb:b1:f3:d6:e1:55:32"
+      - run:
+          name: Generate node_modules checksum
+          command: cat yarn.lock patches/* | md5 > node_modules.hash
 
       - restore_cache:
           keys:
-            - v3-yarn-{{ checksum "yarn.lock" }}
-            # Fall back to using the latest cache if no exact match is found.
-            - v3-yarn-
+            - v4-yarn-{{ checksum "node_modules.hash" }}
 
       - run:
           name: Install Yarn Dependencies
           command: yarn install --ignore-engines
 
       - save_cache:
-          key: v3-yarn-{{ checksum "yarn.lock" }}
+          key: v4-yarn-{{ checksum "node_modules.hash" }}
           paths:
             - node_modules
 
