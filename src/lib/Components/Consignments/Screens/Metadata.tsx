@@ -128,7 +128,7 @@ export default class Metadata extends React.Component<Props, State> {
       <Theme>
         <View style={{ flex: 1 }}>
           <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-            <ScrollView keyboardShouldPersistTaps="handled" centerContent>
+            <ScrollView keyboardShouldPersistTaps="handled" centerContent style={{ flex: 1 }}>
               <View style={{ padding: 10 }}>
                 <Row>
                   <Text
