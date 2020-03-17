@@ -1,5 +1,5 @@
 diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
-index 391ae11..27c397f 100755
+index 391ae11..22b4f4a 100755
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
 @@ -309,7 +309,7 @@ function highlightSourceAtLocation(source, location) {
@@ -11,6 +11,15 @@ index 391ae11..27c397f 100755
    ["".concat(lineNum - 1, ": "), lines[lineIndex - 1]], ["".concat(lineNum, ": "), lines[lineIndex]], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1, ": "), lines[lineIndex + 1]]]);
  }
  
+@@ -12402,7 +12402,7 @@ function writeRelayGeneratedFile(_x, _x2, _x3, _x4, _x5, _x6, _x7, _x8, _x9) {
+ function _writeRelayGeneratedFile() {
+   _writeRelayGeneratedFile = _asyncToGenerator(function* (schema, codegenDir, definition, _generatedNode, formatModule, typeText, _persistQuery, sourceHash, extension) {
+     var printModuleDependency = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : createPrintRequireModuleDependency(extension);
+-    var shouldRepersist = arguments.length > 10 ? arguments[10] : undefined;
++    var shouldRepersist = true
+     var writeQueryParameters = arguments.length > 11 ? arguments[11] : undefined;
+     var languagePlugin = arguments.length > 12 ? arguments[12] : undefined;
+     var generatedNode = _generatedNode; // Copy to const so Flow can refine.
 @@ -17512,10 +17512,10 @@ module.exports = function (tagFinder, getFileFilter) {
  
      var astDefinitions = [];
