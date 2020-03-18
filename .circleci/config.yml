@@ -190,7 +190,7 @@ jobs:
             - "23:11:82:24:bb:cb:a8:1e:7a:eb:b1:f3:d6:e1:55:32"
       - run:
           name: Generate node_modules checksum
-          command: cat yarn.lock patches/* | md5 > node_modules.hash
+          command: cat yarn.lock patches/* | md5sum > node_modules.hash
 
       - restore_cache:
           keys:
