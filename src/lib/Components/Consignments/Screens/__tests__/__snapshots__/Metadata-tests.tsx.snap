@@ -31,6 +31,11 @@ exports[`state is set up with empty consignment metadata 1`] = `
       <RCTScrollView
         centerContent={true}
         keyboardShouldPersistTaps="handled"
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
       >
         <View>
           <View
@@ -150,6 +155,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     onBlur={[Function]}
@@ -223,6 +229,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     onBlur={[Function]}
@@ -296,6 +303,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="numeric"
@@ -357,6 +365,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="numeric"
@@ -431,6 +440,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="numeric"
@@ -1097,6 +1107,11 @@ exports[`state is set up with filled consignment metadata 1`] = `
       <RCTScrollView
         centerContent={true}
         keyboardShouldPersistTaps="handled"
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
       >
         <View>
           <View
@@ -1217,6 +1232,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     onBlur={[Function]}
@@ -1291,6 +1307,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     onBlur={[Function]}
@@ -1365,6 +1382,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="numeric"
@@ -1427,6 +1445,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="numeric"
@@ -1502,6 +1521,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                   <TextInput
                     allowFontScaling={true}
                     autoCorrect={false}
+                    autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="numeric"
