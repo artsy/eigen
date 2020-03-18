@@ -156,7 +156,7 @@ lane :promote_beta do
 
   puts 'Tagging submission and pushing to GitHub.'
   target_object = "#{beta.train_version}-#{beta.build_version}" # This is computed, we expect it to exist.
-  tag_and_push(tag: "#{original_tag}-submission", target_object: original_tag)
+  tag_and_push(tag: "#{target_object}-submission", target_object: target_object)
 
   puts 'All done.'
 end
