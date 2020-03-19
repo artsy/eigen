@@ -87,6 +87,7 @@ export const RecentSearches: React.FC = () => {
           <SearchResult
             result={result}
             updateRecentSearchesOnTap={false}
+            displayingRecentResult
             onDelete={() => {
               LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 230 })
               deleteRecentSearch(result)

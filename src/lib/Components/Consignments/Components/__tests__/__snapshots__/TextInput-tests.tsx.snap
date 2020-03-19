@@ -23,6 +23,7 @@ exports[`does not have an activity when searching  1`] = `
     <TextInput
       allowFontScaling={true}
       autoCorrect={false}
+      autoFocus={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"
       onBlur={[Function]}
@@ -87,6 +88,7 @@ exports[`shows an activity indicator when searching  1`] = `
     <TextInput
       allowFontScaling={true}
       autoCorrect={false}
+      autoFocus={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"
       onBlur={[Function]}

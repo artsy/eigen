@@ -14,8 +14,9 @@ export const SearchResult: React.FC<{
   result: AutosuggestResult
   highlight?: string
   updateRecentSearchesOnTap?: boolean
+  displayingRecentResult?: boolean
   onDelete?(): void
-}> = ({ result, highlight, onDelete, updateRecentSearchesOnTap = true }) => {
+}> = ({ result, highlight, onDelete, displayingRecentResult, updateRecentSearchesOnTap = true }) => {
   const navRef = useRef<any>()
   const { notifyRecentSearch } = useRecentSearches()
   const { inputRef, query } = useContext(SearchContext)
@@ -33,7 +34,9 @@ export const SearchResult: React.FC<{
           }
         }, 20)
         trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchItemSelected,
+          action_type: displayingRecentResult
+            ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
+            : Schema.ActionNames.ARAnalyticsSearchItemSelected,
           query: query.current,
           selected_object_type: result.displayType,
           selected_object_slug: result.slug,
