@@ -1,7 +1,6 @@
 This update includes a number of bug fixes and improvements, including:
 
-• Fixed a performance problem that made the app feel slower than it should be.
-• Improved home feed, with streamlined content and a better visual design for artists.
-• Fixed a rare issue that caused certain artworks not to load.
+• Improved home feed, including more details about fairs and artists.
+• Performance improvements throughout the app, which should make using the app feel snappy.
 
 Have feedback? Email us at support@artsy.net
