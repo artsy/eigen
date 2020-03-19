@@ -1,16 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 614d6b50d7b2dd34657da6ff52763a05 */
+/* @relayHash 66422be7af9ac2b97b3d60398af4fd84 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentSubmissionCategoryAggregation = "ARCHITECTURE" | "DESIGN_DECORATIVE_ART" | "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" | "FASHION_DESIGN_AND_WEARABLE_ART" | "INSTALLATION" | "JEWELRY" | "MIXED_MEDIA" | "OTHER" | "PAINTING" | "PERFORMANCE_ART" | "PHOTOGRAPHY" | "PRINT" | "SCULPTURE" | "TEXTILE_ARTS" | "VIDEO_FILM_ANIMATION" | "%future added value";
 export type ConsignmentSubmissionStateAggregation = "APPROVED" | "DRAFT" | "REJECTED" | "SUBMITTED" | "%future added value";
 export type CreateSubmissionMutationInput = {
-    clientMutationId?: string | null;
     additionalInfo?: string | null;
     artistID: string;
     authenticityCertificate?: boolean | null;
     category?: ConsignmentSubmissionCategoryAggregation | null;
+    clientMutationId?: string | null;
     currency?: string | null;
     depth?: string | null;
     dimensionsMetric?: string | null;
