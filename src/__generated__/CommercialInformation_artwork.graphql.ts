@@ -18,12 +18,14 @@ export type CommercialInformation_artwork = {
         readonly id: string;
     } | null> | null;
     readonly sale: {
+        readonly internalID: string;
         readonly isClosed: boolean | null;
         readonly isAuction: boolean | null;
         readonly isLiveOpen: boolean | null;
         readonly isPreview: boolean | null;
         readonly liveStartAt: string | null;
         readonly endAt: string | null;
+        readonly slug: string;
         readonly startAt: string | null;
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_artwork" | "CommercialPartnerInformation_artwork" | "CommercialEditionSetInformation_artwork" | "ArtworkExtraLinks_artwork" | "AuctionPrice_artwork">;
@@ -141,6 +143,13 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
+          "name": "internalID",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
           "name": "isClosed",
           "args": null,
           "storageKey": null
@@ -183,6 +192,13 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
+          "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
           "name": "startAt",
           "args": null,
           "storageKey": null
@@ -216,5 +232,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ca265ee2cc67de8f0b62792fd7737f8d';
+(node as any).hash = 'cde2acaf4ab5f56073f54622768c5430';
 export default node;

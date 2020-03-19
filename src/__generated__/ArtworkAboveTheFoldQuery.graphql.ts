@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c33da345eb2c802902fb0997becdb7ce */
+/* @relayHash bef714ef5dbf0ded6b4889a2208e4565 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -253,12 +253,14 @@ fragment CommercialInformation_artwork on Artwork {
     id
   }
   sale {
+    internalID
     isClosed
     isAuction
     isLiveOpen
     isPreview
     liveStartAt
     endAt
+    slug
     startAt
     id
   }
@@ -562,6 +564,7 @@ return {
                 "storageKey": null
               },
               (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -590,6 +593,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              (v4/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -597,7 +601,6 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -632,7 +635,6 @@ return {
                 "storageKey": null
               },
               (v8/*: any*/),
-              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1086,7 +1088,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "6e1216621d5d8db98334fc6b4af21afc",
+    "id": "4758e63079b531b9d6c27c20ec3b1690",
     "text": null,
     "metadata": {}
   }

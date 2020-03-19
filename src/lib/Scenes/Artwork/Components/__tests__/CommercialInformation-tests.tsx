@@ -209,7 +209,10 @@ describe("CommercialInformation buttons and coundtown timer", () => {
   it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationArtworkInAuction as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkInAuction as any}
+          tracking={{ trackEvent: jest.fn() }}
+        />
       </Theme>
     )
     expect(component.find(Countdown).length).toEqual(1)
@@ -226,7 +229,10 @@ describe("CommercialInformation buttons and coundtown timer", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationSoldArtworkInAuction as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationSoldArtworkInAuction as any}
+          tracking={{ trackEvent: jest.fn() }}
+        />
       </Theme>
     )
     expect(component.find(Countdown).length).toEqual(0)
@@ -323,7 +329,10 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={nonConsignableBiddableArtwork as any} />
+        <CommercialInformationTimerWrapper
+          artwork={nonConsignableBiddableArtwork as any}
+          tracking={{ trackEvent: jest.fn() }}
+        />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
@@ -373,6 +382,8 @@ const CommercialInformationArtworkInAuction = {
   isAcquireable: false,
   isInAuction: true,
   sale: {
+    internalId: "internal-id",
+    slug: "my-sale",
     isClosed: false,
     isAuction: true,
     isLiveOpen: false,
