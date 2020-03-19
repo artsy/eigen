@@ -10,6 +10,7 @@ import {
 import { TimeOffsetProvider } from "lib/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import { Schema, track } from "lib/utils/track"
+import { TrackingProp } from "react-tracking"
 import { capitalize } from "lodash"
 import moment from "moment"
 import React from "react"
@@ -25,7 +26,7 @@ interface CommercialInformationProps {
   timerState?: AuctionTimerState
   label?: string
   duration?: moment.Duration
-  tracking?: any
+  tracking?: TrackingProp
 }
 
 interface CommercialInformationState {
