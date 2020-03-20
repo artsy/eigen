@@ -1,7 +1,11 @@
 import { CheckIcon, Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
+import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { NativeModules } from "react-native"
+import { graphql, RelayPaginationProp } from "react-relay"
 import { act, create } from "react-test-renderer"
 import * as renderer from "react-test-renderer"
 import {
@@ -309,5 +313,55 @@ describe("Clearing filters", () => {
     applyButton.props().onPress()
 
     expect(applyButton.text()).toContain("Apply")
+  })
+})
+
+describe("Applying filters", () => {
+  it("calls the relay method to refetch artworks when a filter is applied", async () => {
+    const initialState: ArtworkFilterContextState = {
+      selectedSortOption: "Price (high to low)",
+      selectedFilters: [{ type: "Price (high to low)", filter: "sort" }],
+      appliedFilters: [{ type: "Price (high to low)", filter: "sort" }],
+      applyFilters: true,
+    }
+
+    const relayMock = {
+      refetchConnection: jest.fn(),
+      environment: {} as any,
+      hasMore: jest.fn(),
+      isLoading: jest.fn(),
+      loadMore: jest.fn(),
+      refetch: undefined,
+    } as RelayPaginationProp
+
+    const render = marketingCollection =>
+      renderRelayTree({
+        Component: () => {
+          return (
+            <Theme>
+              <ArtworkFilterContext.Provider
+                value={{
+                  state: initialState,
+                  dispatch: null,
+                }}
+              >
+                <CollectionArtworks collection={{ ...marketingCollection }} relay={relayMock} />
+              </ArtworkFilterContext.Provider>
+            </Theme>
+          )
+        },
+        query: graphql`
+          query FilterModalTestsQuery @raw_response_type {
+            marketingCollection(slug: "street-art-now") {
+              ...CollectionArtworks_collection
+            }
+          }
+        `,
+        mockData: { marketingCollection },
+      })
+
+    render(CollectionFixture).then(() => {
+      expect(relayMock.refetchConnection).toHaveBeenCalled()
+    })
   })
 })
