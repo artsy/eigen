@@ -155,7 +155,15 @@ lane :promote_beta do
   )
 
   puts 'Tagging submission and pushing to GitHub.'
-  target_object = "#{beta.train_version}-#{beta.build_version}" # This is computed, we expect it to exist.
+
+  # Apple's API returns truncated version/build numbers (eg: 2020.03.19.18 becomes 2020.3.19.18)
+  # So we re-compute this based on the same information as the :ship_beta lane.
+  readme_yaml = File.read('../CHANGELOG.yml')
+  readme_data = YAML.safe_load(readme_yaml)
+  latest_version = readme_data['upcoming']['version']
+  bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
+
+  target_object = "#{latest_version}-#{bundle_version}" # This is computed, we expect it to exist.
   tag_and_push(tag: "#{target_object}-submission", target_object: target_object)
 
   puts 'All done.'
