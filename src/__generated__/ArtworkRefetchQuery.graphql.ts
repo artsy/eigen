@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash cf9fc1225b8e23de1a876f7a2ed42e1e */
+/* @relayHash 1db12dfbcb1f9d1812bc579b3a195689 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -421,12 +421,14 @@ fragment CommercialInformation_artwork on Artwork {
     id
   }
   sale {
+    internalID
     isClosed
     isAuction
     isLiveOpen
     isPreview
     liveStartAt
     endAt
+    slug
     startAt
     id
   }
@@ -960,6 +962,7 @@ return {
                 "storageKey": null
               },
               (v2/*: any*/),
+              (v3/*: any*/),
               (v14/*: any*/),
               {
                 "kind": "ScalarField",
@@ -982,6 +985,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              (v4/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -989,7 +993,6 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -1024,7 +1027,6 @@ return {
                 "storageKey": null
               },
               (v16/*: any*/),
-              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1905,7 +1907,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "a06f8e5c2ffbf3ec6966fb7a0095973e",
+    "id": "a50c25cc429ba41006e2081b31bf8fe1",
     "text": null,
     "metadata": {}
   }

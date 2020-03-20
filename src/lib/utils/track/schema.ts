@@ -188,6 +188,7 @@ export enum ActionNames {
   FollowPartner = "followPartner",
   GridArtwork = "gridArtwork",
   IncreaseMaxBid = "increaseMaxBid",
+  LotViewed = "lotViewed",
   ReadMore = "readMore",
   RegisterToBid = "registerToBid",
   RequestConditionReport = "requestConditionReport",

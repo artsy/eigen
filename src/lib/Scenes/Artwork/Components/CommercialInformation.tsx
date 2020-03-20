@@ -9,10 +9,12 @@ import {
 } from "lib/Components/Bidding/Components/Timer"
 import { TimeOffsetProvider } from "lib/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
+import { Schema, track } from "lib/utils/track"
 import { capitalize } from "lodash"
 import moment from "moment"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { TrackingProp } from "react-tracking"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
@@ -24,6 +26,7 @@ interface CommercialInformationProps {
   timerState?: AuctionTimerState
   label?: string
   duration?: moment.Duration
+  tracking?: TrackingProp
 }
 
 interface CommercialInformationState {
@@ -68,12 +71,28 @@ export class CommercialInformationTimerWrapper extends React.Component<
   }
 }
 
+@track()
 export class CommercialInformation extends React.Component<CommercialInformationProps, CommercialInformationState> {
   state = {
     editionSetID: null,
   }
 
   interval = null
+
+  componentDidMount = () => {
+    const { artwork, timerState } = this.props
+    const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
+
+    if (artworkIsInActiveAuction) {
+      this.props.tracking.trackEvent({
+        action_name: Schema.ActionNames.LotViewed,
+        action_type: Schema.ActionTypes.Session,
+        context_module: null,
+        sale_id: artwork.sale.internalID,
+        sale_slug: artwork.sale.slug,
+      })
+    }
+  }
 
   renderSingleEditionArtwork = () => {
     const { artwork, timerState } = this.props
@@ -186,12 +205,14 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       }
 
       sale {
+        internalID
         isClosed
         isAuction
         isLiveOpen
         isPreview
         liveStartAt
         endAt
+        slug
         startAt
       }
 
