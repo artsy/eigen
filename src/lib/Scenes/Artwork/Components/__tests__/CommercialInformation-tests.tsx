@@ -211,7 +211,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       <Theme>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkInAuction as any}
-          tracking={{ trackEvent: jest.fn() }}
+          tracking={{ trackEvent: jest.fn() } as any}
         />
       </Theme>
     )
@@ -231,7 +231,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       <Theme>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationSoldArtworkInAuction as any}
-          tracking={{ trackEvent: jest.fn() }}
+          tracking={{ trackEvent: jest.fn() } as any}
         />
       </Theme>
     )
@@ -331,7 +331,7 @@ describe("ArtworkExtraLinks", () => {
       <Theme>
         <CommercialInformationTimerWrapper
           artwork={nonConsignableBiddableArtwork as any}
-          tracking={{ trackEvent: jest.fn() }}
+          tracking={{ trackEvent: jest.fn() } as any}
         />
       </Theme>
     )
