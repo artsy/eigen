@@ -19,6 +19,7 @@ import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { TrackingProp } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
@@ -35,6 +36,7 @@ interface Props {
   artworkBelowTheFold: Artwork_artworkBelowTheFold
   isVisible: boolean
   relay: RelayRefetchProp
+  tracking?: TrackingProp
 }
 
 interface State {
@@ -164,7 +166,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   sections(): ArtworkPageSection[] {
-    const { artworkAboveTheFold, artworkBelowTheFold } = this.props
+    const { artworkAboveTheFold, artworkBelowTheFold, tracking } = this.props
 
     const sections: ArtworkPageSection[] = []
 
@@ -176,7 +178,7 @@ export class Artwork extends React.Component<Props, State> {
 
     sections.push({
       key: "commercialInformation",
-      element: <CommercialInformation artwork={artworkAboveTheFold} />,
+      element: <CommercialInformation artwork={artworkAboveTheFold} tracking={tracking} />,
     })
 
     if (!artworkBelowTheFold) {
@@ -360,6 +362,7 @@ export const ArtworkQueryRenderer: React.SFC<{
   artworkID: string
   isVisible: boolean
   environment?: RelayModernEnvironment
+  tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (
     <RetryErrorBoundary

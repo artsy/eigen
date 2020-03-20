@@ -83,7 +83,12 @@ describe("Artwork", () => {
     // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
     // use suspense and one of the containers in our tree is suspending itself only in tests :|
     <Suspense fallback={() => null}>
-      <ArtworkQueryRenderer isVisible={isVisible} artworkID="ignored" environment={environment} />
+      <ArtworkQueryRenderer
+        isVisible={isVisible}
+        artworkID="ignored"
+        environment={environment}
+        tracking={{ trackEvent: jest.fn() } as any}
+      />
     </Suspense>
   )
 
