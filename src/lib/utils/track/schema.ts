@@ -309,8 +309,7 @@ export enum ActionNames {
   ARAnalyticsSearchCleared = "Cleared input in search screen",
   // dispatch this on search input focus and again any time they type
   ARAnalyticsSearchStartedQuery = "Searched",
-  ARAnalyticsSearchItemSelected = "Selected result from search screen",
-  ARAnalyticsSearchRecentItemSelected = "selected_recent_item_from_search",
+  ARAnalyticsSearchItemSelected = "selected_result_from_search_screen",
 
   /**
    * Collection page events

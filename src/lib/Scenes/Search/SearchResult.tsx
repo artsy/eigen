@@ -34,10 +34,9 @@ export const SearchResult: React.FC<{
           }
         }, 20)
         trackEvent({
-          action_type: displayingRecentResult
-            ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
-            : Schema.ActionNames.ARAnalyticsSearchItemSelected,
+          action_type: Schema.ActionNames.ARAnalyticsSearchItemSelected,
           query: query.current,
+          recent: displayingRecentResult ? "true" : "false",
           selected_object_type: result.displayType,
           selected_object_slug: result.slug,
         })
