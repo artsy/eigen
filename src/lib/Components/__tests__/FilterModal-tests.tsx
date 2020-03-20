@@ -317,7 +317,7 @@ describe("Clearing filters", () => {
 })
 
 describe("Applying filters", () => {
-  it("applies the Price (high to low) filter ", async () => {
+  it("calls the relay method to refetch artworks when a filter is applied", async () => {
     const initialState: ArtworkFilterContextState = {
       selectedSortOption: "Price (high to low)",
       selectedFilters: [{ type: "Price (high to low)", filter: "sort" }],
