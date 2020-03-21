@@ -24,8 +24,8 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
   }
 
   const applyFilters = () => {
-    const { type, filter } = head(state.selectedFilters)
-    dispatch({ type: "applyFilters", payload: [{ type, filter }] })
+    const { filterType, value } = head(state.selectedFilters)
+    dispatch({ type: "applyFilters", payload: [{ filterType, value }] })
     closeModal()
   }
 
@@ -105,7 +105,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
   const selectedOptions = selectedOptionsDisplay()
 
   const selectedOption = (filterType: FilterOption) => {
-    return selectedOptions.find(option => option.filter === filterType)?.type
+    return selectedOptions.find(option => option.filterType === filterType)?.value
   }
 
   return (

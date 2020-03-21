@@ -28,7 +28,7 @@ export const reducer = (
 
       // otherwise remove filters that can only be selected once, e.g. "sort" and merge those with newly applied filters
       const payloadFilters = action.payload
-      sanitizeFilters = filter(previouslyAppliedFilters, prop => prop.filter === "sort")
+      sanitizeFilters = filter(previouslyAppliedFilters, prop => prop.filterType === "sort")
       const appliedFilters = union(differenceWith(previouslyAppliedFilters, sanitizeFilters), payloadFilters)
 
       return {
@@ -41,7 +41,7 @@ export const reducer = (
       const previouslySelectedFilters = artworkFilterState.selectedFilters
       const currentlySelectedFilter = action.payload
       const isFilterAlreadySelected = some(previouslySelectedFilters, currentlySelectedFilter)
-      const selectedFilter: Array<{ type: SortOption; filter: FilterOption }> = []
+      const selectedFilter: Array<{ value: SortOption; filterType: FilterOption }> = []
       const filtersApplied = artworkFilterState.appliedFilters
 
       if (isFilterAlreadySelected) {
@@ -66,13 +66,20 @@ export const reducer = (
   }
 }
 
+const defaultFilterOptions = {
+  sort: "Default",
+}
+
 export const selectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
-  const defaultOptions = [{ filter: "sort", type: "Default" }]
 
-  return defaultOptions.map(defaultOption => {
-    const selected = state.selectedFilters.find(option => option.filter === defaultOption.filter)
-    const applied = state.appliedFilters.find(option => option.filter === defaultOption.filter)
+  const allFilterOptions: FilterOption[] = ["sort"]
+
+  return allFilterOptions.map(item => {
+    const defaultOptionValue = defaultFilterOptions[item]
+    const defaultOption = { filterType: item, value: defaultOptionValue }
+    const selected = state.selectedFilters.find(option => option.filterType === defaultOption.filterType)
+    const applied = state.appliedFilters.find(option => option.filterType === defaultOption.filterType)
 
     return Object.assign(defaultOption, applied, selected)
   })
@@ -87,12 +94,16 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
 }
 
 export interface ArtworkFilterContextState {
-  readonly appliedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
-  readonly selectedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
+  readonly appliedFilters: FilterArray
+  readonly selectedFilters: FilterArray
   readonly applyFilters: boolean
 }
 
-export type FilterArray = ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
+interface FilterData {
+  readonly value: SortOption
+  readonly filterType: FilterOption
+}
+export type FilterArray = ReadonlyArray<FilterData>
 
 interface ResetFilters {
   type: "resetFilters"
@@ -100,12 +111,12 @@ interface ResetFilters {
 
 interface ApplyFilters {
   type: "applyFilters"
-  payload: Array<{ type: SortOption; filter: FilterOption }>
+  payload: FilterArray
 }
 
 interface SelectFilters {
   type: "selectFilters"
-  payload: { type: SortOption; filter: FilterOption }
+  payload: FilterData
 }
 
 export type FilterActions = ResetFilters | ApplyFilters | SelectFilters

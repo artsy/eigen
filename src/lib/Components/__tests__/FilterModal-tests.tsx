@@ -208,7 +208,7 @@ describe("Filter modal navigation flow", () => {
 
   it("only displays a check mark next to the currently selected sort option on the sort screen", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ filter: "sort", type: "Price (high to low)" }],
+      selectedFilters: [{ filterType: "sort", value: "Price (high to low)" }],
       appliedFilters: [],
       applyFilters: false,
     }
@@ -221,7 +221,7 @@ describe("Filter modal navigation flow", () => {
 
   it("displays the currently selected sort option on the filter screen", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ filter: "sort", type: "Price (low to high)" }],
+      selectedFilters: [{ filterType: "sort", value: "Price (low to high)" }],
       appliedFilters: [],
       applyFilters: false,
     }
@@ -256,7 +256,7 @@ describe("Filter modal navigation flow", () => {
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ type: "Price (low to high)", filter: "sort" }],
+      selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
       appliedFilters: [],
       applyFilters: false,
     }
@@ -270,8 +270,8 @@ describe("Filter modal navigation flow", () => {
 describe("Clearing filters", () => {
   it("allows users to clear all filters when selecting clear all", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ type: "Price (low to high)", filter: "sort" }],
-      appliedFilters: [{ type: "Recently added", filter: "sort" }],
+      selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
+      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
       applyFilters: false,
     }
 
@@ -289,8 +289,8 @@ describe("Clearing filters", () => {
 
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ type: "Price (high to low)", filter: "sort" }],
-      appliedFilters: [{ type: "Recently added", filter: "sort" }],
+      selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
+      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
       applyFilters: true,
     }
 

@@ -18,10 +18,10 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
   }
 
   const selectedOptions = selectedOptionsDisplay()
-  const selectedSortOption = selectedOptions.find(option => option.filter === "sort")?.type
+  const selectedSortOption = selectedOptions.find(option => option.filterType === "sort")?.value
 
   const selectSortOption = (selectedOption: SortOption) => {
-    dispatch({ type: "selectFilters", payload: { type: selectedOption, filter: "sort" } })
+    dispatch({ type: "selectFilters", payload: { value: selectedOption, filterType: "sort" } })
   }
 
   return (
