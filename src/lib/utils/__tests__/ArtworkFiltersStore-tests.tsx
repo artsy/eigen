@@ -42,7 +42,7 @@ describe("Reset Filters", () => {
 })
 
 describe("Select Filters", () => {
-  it("the previously and newly selected filter option when selectFilters array is not empty ", () => {
+  it("returns the previously and newly selected filter option when selectFilters array is not empty ", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [],
@@ -63,7 +63,7 @@ describe("Select Filters", () => {
     })
   })
 
-  it("the newly selected filter option is returned when a previously unselected filter is selected", () => {
+  it("returns the newly selected filter option when a previously unselected filter is selected", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [],
@@ -83,19 +83,81 @@ describe("Select Filters", () => {
       selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
     })
   })
-})
 
-describe("Apply Filters", () => {
-  it("returns just the applied filter if nothing was previously selected", () => {
+  it("does not select a filter that is already applied", () => {
     filterState = {
-      applyFilters: true,
+      applyFilters: false,
+      appliedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
+      selectedFilters: [],
+    }
+
+    filterAction = {
+      type: "selectFilters",
+      payload: { value: "Artwork year (descending)", filterType: "sort" },
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: false,
+      appliedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
+      selectedFilters: [],
+    })
+  })
+
+  it("does not select the default filter when the filter is not applied", () => {
+    filterState = {
+      applyFilters: false,
       appliedFilters: [],
       selectedFilters: [],
     }
 
     filterAction = {
+      type: "selectFilters",
+      payload: { value: "Default", filterType: "sort" },
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      selectedFilters: [],
+    })
+  })
+
+  it("does not select the default filter when the filter is not applied, even if there are existing selected filters", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [],
+      selectedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
+    }
+
+    filterAction = {
+      type: "selectFilters",
+      payload: { value: "Default", filterType: "sort" },
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      selectedFilters: [],
+    })
+  })
+})
+
+describe("Apply Filters", () => {
+  it("applies the selected filters", () => {
+    filterState = {
+      applyFilters: true,
+      appliedFilters: [],
+      selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
+    }
+
+    filterAction = {
       type: "applyFilters",
-      payload: [{ value: "Artwork year (descending)", filterType: "sort" }],
     }
 
     const r = reducer(filterState, filterAction)
@@ -116,7 +178,6 @@ describe("Apply Filters", () => {
 
     filterAction = {
       type: "applyFilters",
-      payload: [{ value: "Recently updated", filterType: "sort" }],
     }
 
     const r = reducer(filterState, filterAction)
@@ -124,6 +185,26 @@ describe("Apply Filters", () => {
     expect(r).toEqual({
       applyFilters: true,
       appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      selectedFilters: [],
+    })
+  })
+
+  it("replaces previously applied filters with newly selected ones", () => {
+    filterState = {
+      applyFilters: true,
+      appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
+    }
+
+    filterAction = {
+      type: "applyFilters",
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: true,
+      appliedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
       selectedFilters: [],
     })
   })

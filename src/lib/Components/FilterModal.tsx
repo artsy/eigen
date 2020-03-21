@@ -1,5 +1,4 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import { head } from "lodash"
 import React, { useContext, useState } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -24,8 +23,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
   }
 
   const applyFilters = () => {
-    const { filterType, value } = head(state.selectedFilters)
-    dispatch({ type: "applyFilters", payload: [{ filterType, value }] })
+    dispatch({ type: "applyFilters" })
     closeModal()
   }
 

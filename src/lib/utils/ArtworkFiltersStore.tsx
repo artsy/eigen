@@ -1,4 +1,4 @@
-import { differenceWith, filter, some, union } from "lodash"
+import { filter, find, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
 const filterState: ArtworkFilterContextState = {
@@ -11,25 +11,18 @@ export const reducer = (
   artworkFilterState: ArtworkFilterContextState,
   action: FilterActions
 ): ArtworkFilterContextState => {
-  let sanitizeFilters = []
-
   switch (action.type) {
     case "applyFilters":
-      const previouslyAppliedFilters = artworkFilterState.appliedFilters
+      const filtersToApply = unionBy(
+        artworkFilterState.selectedFilters,
+        artworkFilterState.appliedFilters,
+        "filterType"
+      )
 
-      // if a filter is applied for the first time update state with the newly applied filter
-      if (previouslyAppliedFilters.length < 1) {
-        return {
-          applyFilters: true,
-          appliedFilters: action.payload,
-          selectedFilters: [],
-        }
-      }
-
-      // otherwise remove filters that can only be selected once, e.g. "sort" and merge those with newly applied filters
-      const payloadFilters = action.payload
-      sanitizeFilters = filter(previouslyAppliedFilters, prop => prop.filterType === "sort")
-      const appliedFilters = union(differenceWith(previouslyAppliedFilters, sanitizeFilters), payloadFilters)
+      // Remove default values as those are accounted for when we make the API request.
+      const appliedFilters = filter(filtersToApply, ({ filterType, value }) => {
+        return defaultFilterOptions[filterType] !== value
+      })
 
       return {
         applyFilters: true,
@@ -38,29 +31,30 @@ export const reducer = (
       }
 
     case "selectFilters":
-      const previouslySelectedFilters = artworkFilterState.selectedFilters
-      const currentlySelectedFilter = action.payload
-      const isFilterAlreadySelected = some(previouslySelectedFilters, currentlySelectedFilter)
-      const selectedFilter: Array<{ value: SortOption; filterType: FilterOption }> = []
-      const filtersApplied = artworkFilterState.appliedFilters
+      const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 
-      if (isFilterAlreadySelected) {
-        const mergedFilters = [...previouslySelectedFilters, currentlySelectedFilter]
+      const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
+        const appliedFilter = find(artworkFilterState.appliedFilters, option => option.filterType === filterType)
 
-        return {
-          applyFilters: false,
-          selectedFilters: mergedFilters,
-          appliedFilters: filtersApplied,
+        if (!appliedFilter) {
+          return defaultFilterOptions[filterType] !== value
         }
-      } else {
-        selectedFilter.push(currentlySelectedFilter)
 
-        return {
-          applyFilters: false,
-          selectedFilters: selectedFilter,
-          appliedFilters: filtersApplied,
+        // Don't re-select options that have already been applied.
+        // In the case where the option hasn't been applied, remove the option if it is the default.
+        if (appliedFilter.value === value) {
+          return false
         }
+
+        return true
+      })
+
+      return {
+        applyFilters: false,
+        selectedFilters,
+        appliedFilters: artworkFilterState.appliedFilters,
       }
+
     case "resetFilters":
       return { applyFilters: false, appliedFilters: [], selectedFilters: [] }
   }
@@ -73,16 +67,9 @@ const defaultFilterOptions = {
 export const selectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
-  const allFilterOptions: FilterOption[] = ["sort"]
+  const defaultFilters: FilterArray = [{ filterType: "sort", value: "Default" }]
 
-  return allFilterOptions.map(item => {
-    const defaultOptionValue = defaultFilterOptions[item]
-    const defaultOption = { filterType: item, value: defaultOptionValue }
-    const selected = state.selectedFilters.find(option => option.filterType === defaultOption.filterType)
-    const applied = state.appliedFilters.find(option => option.filterType === defaultOption.filterType)
-
-    return Object.assign(defaultOption, applied, selected)
-  })
+  return unionBy(state.selectedFilters, state.appliedFilters, defaultFilters, "filterType")
 }
 
 export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
@@ -111,7 +98,6 @@ interface ResetFilters {
 
 interface ApplyFilters {
   type: "applyFilters"
-  payload: FilterArray
 }
 
 interface SelectFilters {
