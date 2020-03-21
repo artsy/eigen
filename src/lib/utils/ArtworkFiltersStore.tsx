@@ -1,10 +1,9 @@
 import { differenceWith, filter, some, union } from "lodash"
-import React, { createContext, Dispatch, Reducer, useReducer } from "react"
+import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
 const filterState: ArtworkFilterContextState = {
   appliedFilters: [],
   selectedFilters: [],
-  selectedSortOption: "Default",
   applyFilters: false,
 }
 
@@ -24,7 +23,6 @@ export const reducer = (
           applyFilters: true,
           appliedFilters: action.payload,
           selectedFilters: [],
-          selectedSortOption: artworkFilterState.selectedSortOption,
         }
       }
 
@@ -37,7 +35,6 @@ export const reducer = (
         applyFilters: true,
         appliedFilters,
         selectedFilters: [],
-        selectedSortOption: artworkFilterState.selectedSortOption,
       }
 
     case "selectFilters":
@@ -54,7 +51,6 @@ export const reducer = (
           applyFilters: false,
           selectedFilters: mergedFilters,
           appliedFilters: filtersApplied,
-          selectedSortOption: currentlySelectedFilter.type,
         }
       } else {
         selectedFilter.push(currentlySelectedFilter)
@@ -63,12 +59,23 @@ export const reducer = (
           applyFilters: false,
           selectedFilters: selectedFilter,
           appliedFilters: filtersApplied,
-          selectedSortOption: currentlySelectedFilter.type,
         }
       }
     case "resetFilters":
-      return { applyFilters: false, appliedFilters: [], selectedFilters: [], selectedSortOption: "Default" }
+      return { applyFilters: false, appliedFilters: [], selectedFilters: [] }
   }
+}
+
+export const selectedOptionsDisplay = (): FilterArray => {
+  const { state } = useContext(ArtworkFilterContext)
+  const defaultOptions = [{ filter: "sort", type: "Default" }]
+
+  return defaultOptions.map(defaultOption => {
+    const selected = state.selectedFilters.find(option => option.filter === defaultOption.filter)
+    const applied = state.appliedFilters.find(option => option.filter === defaultOption.filter)
+
+    return Object.assign(defaultOption, applied, selected)
+  })
 }
 
 export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
@@ -82,9 +89,10 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
 export interface ArtworkFilterContextState {
   readonly appliedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
   readonly selectedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
-  readonly selectedSortOption: SortOption
   readonly applyFilters: boolean
 }
+
+export type FilterArray = ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
 
 interface ResetFilters {
   type: "resetFilters"
@@ -116,14 +124,4 @@ export type SortOption =
   | "Artwork year (descending)"
   | "Artwork year (ascending)"
 
-export type FilterOption = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"
-
-export enum ArtworkSorts {
-  "Default" = "-decayed_merch",
-  "Price (high to low)" = "sold,-has_price,-prices",
-  "Price (low to high)" = "sold,-has_price,prices",
-  "Recently updated" = "-partner_updated_at",
-  "Recently added" = "-published_at",
-  "Artwork year (descending)" = "-year",
-  "Artwork year (ascending)" = "year",
-}
+export type FilterOption = "sort"

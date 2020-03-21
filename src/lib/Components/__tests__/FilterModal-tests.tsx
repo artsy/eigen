@@ -30,7 +30,6 @@ jest.unmock("react-relay")
 beforeEach(() => {
   mockNavigator = new MockNavigator()
   state = {
-    selectedSortOption: "Default",
     selectedFilters: [],
     appliedFilters: [],
     applyFilters: false,
@@ -144,7 +143,6 @@ describe("Filter modal navigation flow", () => {
 
   xit("allows users to navigate back to filter screen from sort screen ", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Default",
       selectedFilters: [],
       appliedFilters: [],
       applyFilters: false,
@@ -190,7 +188,6 @@ describe("Filter modal navigation flow", () => {
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (low to high)",
       selectedFilters: [],
       appliedFilters: [],
       applyFilters: false,
@@ -207,8 +204,7 @@ describe("Filter modal navigation flow", () => {
 
   it("only displays a check mark next to the currently selected sort option on the sort screen", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (high to low)",
-      selectedFilters: [],
+      selectedFilters: [{ filter: "sort", type: "Price (high to low)" }],
       appliedFilters: [],
       applyFilters: false,
     }
@@ -221,20 +217,17 @@ describe("Filter modal navigation flow", () => {
 
   it("displays the currently selected sort option on the filter screen", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (low to high)",
-      selectedFilters: [],
+      selectedFilters: [{ filter: "sort", type: "Price (low to high)" }],
       appliedFilters: [],
       applyFilters: false,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
-
     expect(filterScreen.find(CurrentOption).text()).toEqual("Price (low to high)")
   })
 
   it("shows the default sort option on the filter screen", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Default",
       selectedFilters: [],
       appliedFilters: [],
       applyFilters: false,
@@ -247,7 +240,6 @@ describe("Filter modal navigation flow", () => {
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (low to high)",
       selectedFilters: [],
       appliedFilters: [],
       applyFilters: false,
@@ -260,7 +252,6 @@ describe("Filter modal navigation flow", () => {
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (low to high)",
       selectedFilters: [{ type: "Price (low to high)", filter: "sort" }],
       appliedFilters: [],
       applyFilters: false,
@@ -275,7 +266,6 @@ describe("Filter modal navigation flow", () => {
 describe("Clearing filters", () => {
   it("allows users to clear all filters when selecting clear all", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (low to high)",
       selectedFilters: [{ type: "Price (low to high)", filter: "sort" }],
       appliedFilters: [{ type: "Recently added", filter: "sort" }],
       applyFilters: false,
@@ -295,7 +285,6 @@ describe("Clearing filters", () => {
 
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (high to low)",
       selectedFilters: [{ type: "Price (high to low)", filter: "sort" }],
       appliedFilters: [{ type: "Recently added", filter: "sort" }],
       applyFilters: true,

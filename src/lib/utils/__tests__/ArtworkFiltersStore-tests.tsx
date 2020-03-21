@@ -12,7 +12,6 @@ describe("Reset Filters", () => {
     filterState = {
       appliedFilters: [{ type: "Recently updated", filter: "sort" }],
       selectedFilters: [{ type: "Artwork year (descending)", filter: "sort" }],
-      selectedSortOption: "Default",
       applyFilters: true,
     }
 
@@ -22,7 +21,6 @@ describe("Reset Filters", () => {
       appliedFilters: [],
       applyFilters: false,
       selectedFilters: [],
-      selectedSortOption: "Default",
     })
   })
 
@@ -30,7 +28,6 @@ describe("Reset Filters", () => {
     filterState = {
       appliedFilters: [{ type: "Price (low to high)", filter: "sort" }],
       selectedFilters: [{ type: "Artwork year (descending)", filter: "sort" }],
-      selectedSortOption: "Artwork year (descending)",
       applyFilters: false,
     }
 
@@ -40,7 +37,6 @@ describe("Reset Filters", () => {
       appliedFilters: [],
       applyFilters: false,
       selectedFilters: [],
-      selectedSortOption: "Default",
     })
   })
 })
@@ -51,7 +47,6 @@ describe("Select Filters", () => {
       applyFilters: false,
       appliedFilters: [],
       selectedFilters: [{ type: "Artwork year (descending)", filter: "sort" }],
-      selectedSortOption: "Recently added",
     }
 
     filterAction = {
@@ -65,7 +60,6 @@ describe("Select Filters", () => {
       applyFilters: false,
       appliedFilters: [],
       selectedFilters: [{ type: "Recently added", filter: "sort" }],
-      selectedSortOption: "Recently added",
     })
   })
 
@@ -74,7 +68,6 @@ describe("Select Filters", () => {
       applyFilters: false,
       appliedFilters: [],
       selectedFilters: [],
-      selectedSortOption: "Artwork year (descending)",
     }
 
     filterAction = {
@@ -88,7 +81,6 @@ describe("Select Filters", () => {
       applyFilters: false,
       appliedFilters: [],
       selectedFilters: [{ type: "Artwork year (descending)", filter: "sort" }],
-      selectedSortOption: "Artwork year (descending)",
     })
   })
 })
@@ -99,7 +91,6 @@ describe("Apply Filters", () => {
       applyFilters: true,
       appliedFilters: [],
       selectedFilters: [],
-      selectedSortOption: "Artwork year (descending)",
     }
 
     filterAction = {
@@ -113,7 +104,6 @@ describe("Apply Filters", () => {
       applyFilters: true,
       appliedFilters: [{ type: "Artwork year (descending)", filter: "sort" }],
       selectedFilters: [],
-      selectedSortOption: "Artwork year (descending)",
     })
   })
 
@@ -122,7 +112,6 @@ describe("Apply Filters", () => {
       applyFilters: true,
       appliedFilters: [{ type: "Recently updated", filter: "sort" }],
       selectedFilters: [{ type: "Recently updated", filter: "sort" }],
-      selectedSortOption: "Recently updated",
     }
 
     filterAction = {
@@ -136,7 +125,6 @@ describe("Apply Filters", () => {
       applyFilters: true,
       appliedFilters: [{ type: "Recently updated", filter: "sort" }],
       selectedFilters: [],
-      selectedSortOption: "Recently updated",
     })
   })
 })

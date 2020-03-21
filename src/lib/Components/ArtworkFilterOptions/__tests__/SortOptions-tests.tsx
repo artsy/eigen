@@ -1,39 +1,93 @@
-import { Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
+import { mount } from "enzyme"
 import React from "react"
-import * as renderer from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
-import { SortOptionsScreen as SortOptions } from "../SortOptions"
+import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
+import { InnerOptionListItem, SortOptionsScreen as SortOptions } from "../SortOptions"
 
 describe("Sort Options Screen", () => {
   let mockNavigator: MockNavigator
-  let state: ArtworkFilterContextState
 
   beforeEach(() => {
     mockNavigator = new MockNavigator()
-    state = {
-      selectedSortOption: "Default",
-      selectedFilters: [],
-      appliedFilters: [],
-      applyFilters: false,
-    }
   })
 
-  it("renders the correct number of sort options", () => {
-    const root = renderer.create(
+  const MockSortScreen = ({ initialState }) => {
+    return (
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
-            state,
+            state: initialState,
             dispatch: null,
           }}
         >
           <SortOptions navigator={mockNavigator as any} />
         </ArtworkFilterContext.Provider>
       </Theme>
-    ).root
+    )
+  }
 
-    expect(root.findAllByType(OptionListItem)).toHaveLength(7)
+  const selectedSortOption = component => {
+    return component.find(InnerOptionListItem).filterWhere(item => item.find(Box).length > 0)
+  }
+
+  it("renders the correct number of sort options", () => {
+    const state = {
+      selectedFilters: [],
+      appliedFilters: [],
+      applyFilters: false,
+    }
+
+    const component = mount(<MockSortScreen initialState={state} />)
+    expect(component.find(OptionListItem)).toHaveLength(7)
+  })
+
+  describe("selectedSortOption", () => {
+    it("returns the default option if there are no selected or applied filters", () => {
+      const state = {
+        selectedFilters: [],
+        appliedFilters: [],
+        applyFilters: false,
+      }
+
+      const component = mount(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(component)
+      expect(selectedOption.text()).toContain("Default")
+    })
+
+    it("prefers an applied filter over the default filter", () => {
+      const state = {
+        selectedFilters: [],
+        appliedFilters: [{ filter: "sort", type: "Recently added" }],
+        applyFilters: false,
+      }
+
+      const component = mount(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(component)
+      expect(selectedOption.text()).toContain("Recently added")
+    })
+    it("prefers the selected filter over the default filter", () => {
+      const state = {
+        selectedFilters: [{ filter: "sort", type: "Recently added" }],
+        appliedFilters: [],
+        applyFilters: false,
+      }
+
+      const component = mount(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(component)
+      expect(selectedOption.text()).toContain("Recently added")
+    })
+    it("prefers the selected filter over an applied filter", () => {
+      const state = {
+        selectedFilters: [{ filter: "sort", type: "Recently added" }],
+        appliedFilters: [{ filter: "sort", type: "Recently updated" }],
+        applyFilters: false,
+      }
+
+      const component = mount(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(component)
+      expect(selectedOption.text()).toContain("Recently added")
+    })
   })
 })
