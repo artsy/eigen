@@ -3,7 +3,7 @@ import { mount } from "enzyme"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
-import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
 import { InnerOptionListItem, SortOptionsScreen as SortOptions } from "../SortOptions"
 
 describe("Sort Options Screen", () => {
@@ -45,7 +45,7 @@ describe("Sort Options Screen", () => {
 
   describe("selectedSortOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const state = {
+      const state: ArtworkFilterContextState = {
         selectedFilters: [],
         appliedFilters: [],
         applyFilters: false,
@@ -57,9 +57,9 @@ describe("Sort Options Screen", () => {
     })
 
     it("prefers an applied filter over the default filter", () => {
-      const state = {
+      const state: ArtworkFilterContextState = {
         selectedFilters: [],
-        appliedFilters: [{ filter: "sort", type: "Recently added" }],
+        appliedFilters: [{ filterType: "sort", value: "Recently added" }],
         applyFilters: false,
       }
 
@@ -68,8 +68,8 @@ describe("Sort Options Screen", () => {
       expect(selectedOption.text()).toContain("Recently added")
     })
     it("prefers the selected filter over the default filter", () => {
-      const state = {
-        selectedFilters: [{ filter: "sort", type: "Recently added" }],
+      const state: ArtworkFilterContextState = {
+        selectedFilters: [{ filterType: "sort", value: "Recently added" }],
         appliedFilters: [],
         applyFilters: false,
       }
@@ -79,9 +79,9 @@ describe("Sort Options Screen", () => {
       expect(selectedOption.text()).toContain("Recently added")
     })
     it("prefers the selected filter over an applied filter", () => {
-      const state = {
-        selectedFilters: [{ filter: "sort", type: "Recently added" }],
-        appliedFilters: [{ filter: "sort", type: "Recently updated" }],
+      const state: ArtworkFilterContextState = {
+        selectedFilters: [{ filterType: "sort", value: "Recently added" }],
+        appliedFilters: [{ filterType: "sort", value: "Recently updated" }],
         applyFilters: false,
       }
 

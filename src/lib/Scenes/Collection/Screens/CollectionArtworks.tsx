@@ -26,9 +26,9 @@ export const filterArtworksParams = (appliedFilters: FilterArray) => {
   }
 
   appliedFilters.forEach(appliedFilterOption => {
-    const paramMapping = filterTypeToParam[appliedFilterOption.filter]
-    const paramFromFilterType = paramMapping[appliedFilterOption.type]
-    filterParams[appliedFilterOption.filter] = paramFromFilterType
+    const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
+    const paramFromFilterType = paramMapping[appliedFilterOption.value]
+    filterParams[appliedFilterOption.filterType] = paramFromFilterType
   })
 
   return filterParams

@@ -74,7 +74,7 @@ describe("filterArtworksParams", () => {
   })
 
   it("returns the value of appliedFilter", () => {
-    const appliedFilters: FilterArray = [{ filter: "sort", type: "Recently added" }]
+    const appliedFilters: FilterArray = [{ filterType: "sort", value: "Recently added" }]
     expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-published_at" })
   })
 })
