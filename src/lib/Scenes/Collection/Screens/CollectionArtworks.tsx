@@ -22,7 +22,7 @@ const filterTypeToParam = {
 export const filterArtworksParams = (appliedFilters: FilterArray) => {
   // Default params
   const filterParams = {
-    sort: "-decayed-merch",
+    sort: "-decayed_merch",
   }
 
   appliedFilters.forEach(appliedFilterOption => {

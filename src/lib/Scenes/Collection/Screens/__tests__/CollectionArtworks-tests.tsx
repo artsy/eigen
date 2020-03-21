@@ -70,7 +70,7 @@ describe("CollectionArtworks", () => {
 describe("filterArtworksParams", () => {
   it("returns the default", () => {
     const appliedFilters = []
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed-merch" })
+    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch" })
   })
 
   it("returns the value of appliedFilter", () => {
