@@ -34,7 +34,7 @@
 #import <Extraction/UIView+ARSpinner.h>
 
 
-@interface AROnboardingViewController () <UINavigationControllerDelegate>
+@interface AROnboardingViewController () <UINavigationControllerDelegate, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic) UIImageView *backgroundView;
 @property (nonatomic) UIScreenEdgePanGestureRecognizer *screenSwipeGesture;
@@ -597,10 +597,8 @@
     }];
 }
 
-- (void)apple
-{
-    NSLog(@"Here is where I would sign in with apple if I knew how");
-}
+
+
 
 - (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
@@ -647,6 +645,7 @@
     }
 }
 
+
 - (void)loginWithFacebookCredentialToken:(NSString *)token
 {
     __weak typeof(self) wself = self;
@@ -675,6 +674,62 @@
                                                [sself displayNetworkFailureError];
                                                [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                            }];
+}
+
+
+#pragma mark -
+#pragma mark Apple Dance
+
+- (void)apple
+{
+    __weak typeof(self) wself = self;
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+
+    if (@available(ios 13, *)) {
+        [ARAuthProviders getTokenForAppleWithDelegate: wself];
+    }
+
+//    ^(NSString *token, NSString *email, NSString *name) {
+//        __strong typeof (wself) sself = wself;
+//        [sself appleSuccessWithToken:token email:email name:name];
+//
+//    } failure:^(NSError *error) {
+//        __strong typeof (wself) sself = wself;
+//        [sself displayError:@"There was a problem authenticating with Apple"];
+//        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+//    }];
+}
+
+- (ASPresentationAnchor)presentationAnchorForAuthorizationController:(ASAuthorizationController *)controller  API_AVAILABLE(ios(13.0)) {
+    return self.view.window;
+}
+
+- (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization  API_AVAILABLE(ios(13.0)){
+    
+    if ([authorization.credential isKindOfClass: [ASAuthorizationAppleIDCredential class]]) {
+        // TODO: Name and email only shared on initial sign up or if user has removed app manually
+        // Handle case where they are null
+        ASAuthorizationAppleIDCredential *appleIdCredential = authorization.credential;
+        NSPersonNameComponentsFormatter *nameFormatter = [[NSPersonNameComponentsFormatter alloc] init];
+        NSString *nameString = [nameFormatter stringFromPersonNameComponents:appleIdCredential.fullName];
+        [self appleSuccessWithToken:appleIdCredential.user email:appleIdCredential.email name:nameString];
+    } else if ([authorization.credential isKindOfClass: [ASAuthorizationSingleSignOnCredential class]]) {
+        NSLog(@"Not clear what this is for");
+    } else {
+        NSLog(@"Unrecognized credential type");
+    }
+    NSLog(@"Did complete with authorization");
+}
+
+- (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error  API_AVAILABLE(ios(13.0)){
+    NSLog(@"Did complete with error %@", error.localizedDescription);
+    [self displayError:@"There was a problem authenticating with Apple"];
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+}
+
+- (void)appleSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
+{
+    NSLog(@"Here is where I would handle getting an apple token, if I knew how");
 }
 
 #pragma mark -
