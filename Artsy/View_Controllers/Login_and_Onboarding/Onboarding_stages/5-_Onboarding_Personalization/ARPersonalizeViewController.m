@@ -162,14 +162,13 @@
         case AROnboardingStagePersonalizeEmail:
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your email address" withLargeLayout:self.useLargeLayout];
-            [self.headerView addHelpText:@"If you don't have an Artsy account yet we'll get one set up"
+            [self.headerView addHelpText:@"Log in with your email. If you don't have an Artsy account yet, we'll get one set up for you."
                          withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForEmailWithLargeLayout:self.useLargeLayout];
             self.onboardingTextFields.emailField.delegate = self;
             [self.onboardingTextFields.emailField becomeFirstResponder];
-            [self addFacebookSignInButton];
-            [self addAppleSignInButton];
+            [self addThirdPartySignInButtons];
             break;
         case AROnboardingStateAcceptConditions:
             [self.onboardingNavigationItems disableNextStep];
@@ -324,23 +323,15 @@
 
 }
 
-- (void)addAppleSignInButton
+- (void)addThirdPartySignInButtons
 {
     [self addButtons];
-    [self.onboardingButtonsView setupForAppleWithLargeLayout:self.useLargeLayout];
-    [self.onboardingButtonsView.actionButton addTarget:self
-                                                        action:@selector(appleSignInTapped:)
-                                              forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)addFacebookSignInButton
-{
-    [self addButtons];
-    [self.onboardingButtonsView setupForFacebookWithLargeLayout:self.useLargeLayout];
+    [self.onboardingButtonsView setupForThirdPartyLoginsWithLargeLayout:self.useLargeLayout];
     
-    [self.onboardingButtonsView.actionButton addTarget:self
-                                                        action:@selector(facebookSignInTapped:)
-                                              forControlEvents:UIControlEventTouchUpInside];
+    [self.onboardingButtonsView.appleButton addTarget:self action:@selector(appleSignInTapped:)
+                                                forControlEvents:UIControlEventTouchUpInside];
+    [self.onboardingButtonsView.facebookButton addTarget:self action:@selector(facebookSignInTapped:)
+                                                forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)addForgotPasswordButton
