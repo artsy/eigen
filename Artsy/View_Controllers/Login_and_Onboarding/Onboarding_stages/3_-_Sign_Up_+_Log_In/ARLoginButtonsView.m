@@ -25,6 +25,11 @@
     return self;
 }
 
+
+- (void)setupForAppleWithLargeLayout:(BOOL)useLargeLayout {
+    NSLog(@"This is where I would set up an apple button if I knew how");
+}
+
 - (void)setupForFacebookWithLargeLayout:(BOOL)useLargeLayout
 {
 

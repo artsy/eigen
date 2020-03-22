@@ -118,7 +118,7 @@
     
     // Yes I am just as confused as you are
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self showViews];
+        [self showViews];
     });
 }
 
@@ -168,7 +168,8 @@
             [self.onboardingTextFields setupForEmailWithLargeLayout:self.useLargeLayout];
             self.onboardingTextFields.emailField.delegate = self;
             [self.onboardingTextFields.emailField becomeFirstResponder];
-            [self addFacebookButton];
+            [self addFacebookSignInButton];
+            [self addAppleSignInButton];
             break;
         case AROnboardingStateAcceptConditions:
             [self.onboardingNavigationItems disableNextStep];
@@ -322,13 +323,23 @@
     }
 
 }
-- (void)addFacebookButton
+
+- (void)addAppleSignInButton
+{
+    [self addButtons];
+    [self.onboardingButtonsView setupForAppleWithLargeLayout:self.useLargeLayout];
+    [self.onboardingButtonsView.actionButton addTarget:self
+                                                        action:@selector(appleSignInTapped:)
+                                              forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)addFacebookSignInButton
 {
     [self addButtons];
     [self.onboardingButtonsView setupForFacebookWithLargeLayout:self.useLargeLayout];
     
     [self.onboardingButtonsView.actionButton addTarget:self
-                                                        action:@selector(facebookTapped:)
+                                                        action:@selector(facebookSignInTapped:)
                                               forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -916,10 +927,16 @@
     [self.delegate backTapped];
 }
 
-- (void)facebookTapped:(id)sender
+- (void)facebookSignInTapped:(id)sender
 {
     self.comingBack = YES;
-    [self.delegate personaliseFacebookTapped];
+    [self.delegate personalizeFacebookSignInTapped];
+}
+
+- (void)appleSignInTapped:(id)sender
+{
+    self.comingBack = YES;
+    [self.delegate personalizeAppleSignInTapped];
 }
 
 - (void)followableItemClicked:(id<ARFollowable>)item

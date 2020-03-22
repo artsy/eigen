@@ -47,6 +47,7 @@
 @property (nonatomic, strong, readwrite) NSString *email;
 @property (nonatomic, strong, readwrite) NSString *password;
 @property (nonatomic, nonnull, strong, readwrite) UITextField *tempTextField;
+@property (nonatomic, assign, readwrite) BOOL shouldPresentApple;
 @property (nonatomic, assign, readwrite) BOOL shouldPresentFacebook;
 
 @end
@@ -62,6 +63,7 @@
     }
 
     self.navigationBarHidden = YES;
+    self.shouldPresentApple = NO;
     self.shouldPresentFacebook = NO;
     self.delegate = self;
     _followedItemsDuringOnboarding = [[NSMutableSet alloc] init];
@@ -357,9 +359,15 @@
     [self accountExistsForEmail:email];
 }
 
-- (void)personaliseFacebookTapped
+- (void)personalizeFacebookSignInTapped
 {
     self.shouldPresentFacebook = YES;
+    [self presentPersonalizationAcceptConditions];
+}
+
+- (void)personalizeAppleSignInTapped
+{
+    self.shouldPresentApple = YES;
     [self presentPersonalizationAcceptConditions];
 }
 
@@ -388,6 +396,8 @@
 {
     if (self.shouldPresentFacebook) {
          [self fb];
+    } else if (self.shouldPresentApple) {
+        [self apple];
     } else {
         [self createUserWithName:self.name email:self.email password:self.password];
     }
@@ -587,6 +597,11 @@
     }];
 }
 
+- (void)apple
+{
+    NSLog(@"Here is where I would sign in with apple if I knew how");
+}
+
 - (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
     __weak typeof(self) wself = self;
@@ -668,6 +683,7 @@
 - (void)displayError:(NSString *)errorMessage
 {
     if (self.state == AROnboardingStateAcceptConditions) {
+        self.shouldPresentApple = NO;
         self.shouldPresentFacebook = NO;
         // This is hacky. But the top bar isn't visible so the user doesn't know they can pop back with swipe.
         // We pop back to the email view controller because the user can tap next from here to the

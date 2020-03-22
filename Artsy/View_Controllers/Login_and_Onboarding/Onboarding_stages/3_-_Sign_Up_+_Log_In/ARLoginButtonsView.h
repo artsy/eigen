@@ -7,6 +7,7 @@
 
 - (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout; // includes forget password button
 - (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout; // includes back button
+- (void)setupForAppleWithLargeLayout:(BOOL)useLargeLayout;
 - (void)setupForFacebookWithLargeLayout:(BOOL)useLargeLayout;
 
 @end
