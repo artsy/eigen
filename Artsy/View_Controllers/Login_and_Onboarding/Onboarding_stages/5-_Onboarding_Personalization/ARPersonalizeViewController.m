@@ -312,7 +312,6 @@
     
     [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.onboardingButtonsView constrainHeight:@"30"];
     [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:self.useLargeLayout ? @"5" : @"20"];
     
     if (self.useLargeLayout) {
@@ -327,7 +326,7 @@
 {
     [self addButtons];
     [self.onboardingButtonsView setupForThirdPartyLoginsWithLargeLayout:self.useLargeLayout];
-    
+
     [self.onboardingButtonsView.appleButton addTarget:self action:@selector(appleSignInTapped:)
                                                 forControlEvents:UIControlEventTouchUpInside];
     [self.onboardingButtonsView.facebookButton addTarget:self action:@selector(facebookSignInTapped:)

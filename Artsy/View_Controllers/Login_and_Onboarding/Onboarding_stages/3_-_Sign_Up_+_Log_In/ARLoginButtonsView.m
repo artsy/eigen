@@ -43,38 +43,36 @@
     
     [containerView addSubview:titleLabel];
     
-    UIButton *appleSignInButton = [[UIButton alloc] init];
     UIImage *appleImage = [UIImage imageNamed:@"apple-login"];
-    [appleSignInButton setImage:appleImage forState:UIControlStateNormal];
+    [self.appleButton setImage:appleImage forState:UIControlStateNormal];
 
-    [containerView addSubview:appleSignInButton];
+    [containerView addSubview:self.appleButton];
     
-    [appleSignInButton alignLeadingEdgeWithView:containerView predicate:@"0"];
-    [appleSignInButton alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:titleLabel predicate:@"8"];
-    [appleSignInButton constrainWidth:@"50"];
-    [appleSignInButton constrainHeight:@"50"];
+    [self.appleButton alignLeadingEdgeWithView:containerView predicate:@"0"];
+    [self.appleButton alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:titleLabel predicate:@"8"];
+    [self.appleButton constrainWidth:@"50"];
+    [self.appleButton constrainHeight:@"50"];
+    [self.appleButton alignBottomEdgeWithView:containerView predicate:@"0"];
     
-    UIButton *facebookSignInButton = [[UIButton alloc] init];
     UIImage *facebookImage = [UIImage imageNamed:@"facebook-login"];
-    [facebookSignInButton setImage:facebookImage forState:UIControlStateNormal];
+    [self.facebookButton setImage:facebookImage forState:UIControlStateNormal];
 
-    [containerView addSubview:facebookSignInButton];
+    [containerView addSubview:self.facebookButton];
 
-    [facebookSignInButton alignAttribute:NSLayoutAttributeLeading toAttribute:NSLayoutAttributeTrailing ofView:appleSignInButton predicate:@"12"];
-    [facebookSignInButton alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:titleLabel predicate:@"8"];
-    [facebookSignInButton constrainWidth:@"50"];
-    [facebookSignInButton constrainHeight:@"50"];
+    [self.facebookButton alignAttribute:NSLayoutAttributeLeading toAttribute:NSLayoutAttributeTrailing ofView:self.appleButton predicate:@"12"];
+    [self.facebookButton alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:titleLabel predicate:@"8"];
+    [self.facebookButton constrainWidth:@"50"];
+    [self.facebookButton constrainHeight:@"50"];
+    [self.facebookButton alignBottomEdgeWithView:containerView predicate:@"0"];
+    [self.facebookButton alignTrailingEdgeWithView:containerView predicate:@"0"];
 
-    [self.actionButton addSubview:containerView];
+    [self addSubview:containerView];
     
-    [containerView alignCenterWithView:self.actionButton];
-    [containerView constrainWidth:@"112"];
-    [containerView constrainHeightToView:self.actionButton predicate:@"0"];
+    [containerView alignCenterWithView:self];
+    [containerView alignBottomEdgeWithView:self predicate:@"0"];
     
-    [titleLabel constrainHeightToView:containerView predicate:@"0"];
+    [titleLabel alignTopEdgeWithView:containerView predicate:@"0"];
     [titleLabel constrainWidthToView:containerView predicate:@"0"];
-    
-    containerView.userInteractionEnabled = NO;
 }
 
 - (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout
