@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, selectedOptionsDisplay, SortOption } from "../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, SortOption, useSelectedOptionsDisplay } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
@@ -17,7 +17,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
     navigator.pop()
   }
 
-  const selectedOptions = selectedOptionsDisplay()
+  const selectedOptions = useSelectedOptionsDisplay()
   const selectedSortOption = selectedOptions.find(option => option.filterType === "sort")?.value
 
   const selectSortOption = (selectedOption: SortOption) => {

@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, FilterOption, selectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterOption, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { SortOptionsScreen as SortOptions } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -100,7 +100,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
     closeModal()
   }
 
-  const selectedOptions = selectedOptionsDisplay()
+  const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedOption = (filterType: FilterOption) => {
     return selectedOptions.find(option => option.filterType === filterType)?.value
