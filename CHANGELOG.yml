@@ -1,22 +1,29 @@
 upcoming:
-  version: 6.3.3
+  version: 6.4.0
   date: TBD
   dev:
-    - Fixes problem where artist follows on Artist page weren't being tracked - ash
-    - Reduce number of images for initial render of for-you page - david
-    - Fixes WSOD on home feed with artworks that have missing images - ash
-    - Upgrade relay - david
-    - Fix bug in relay data management for below-the-fold content on Artwork page - david
+    -
   user_facing:
-    - Fix bug where the Fair page scroll view would jump around while scrolling - david
-    - Fix bug where the `Artists` tab scroll view would jump around while scrolling - david
-    - Replace for-you artwork carousel with horizontal rail - david
-    - Refresh for-you header styling - david
-    - All new fair cards - ash
-    - Add a sale-level toggle to the request lot condition report feature - yuki
-    - Improve loading UX on Artist page - david
+    -
 
 releases:
+  - version: 6.3.3
+    date: Mar 23, 2020
+    dev:
+      - Fixes problem where artist follows on Artist page weren't being tracked - ash
+      - Reduce number of images for initial render of for-you page - david
+      - Fixes WSOD on home feed with artworks that have missing images - ash
+      - Upgrade relay - david
+      - Fix bug in relay data management for below-the-fold content on Artwork page - david
+    user_facing:
+      - Fix bug where the Fair page scroll view would jump around while scrolling - david
+      - Fix bug where the `Artists` tab scroll view would jump around while scrolling - david
+      - Replace for-you artwork carousel with horizontal rail - david
+      - Refresh for-you header styling - david
+      - All new fair cards - ash
+      - Add a sale-level toggle to the request lot condition report feature - yuki
+      - Improve loading UX on Artist page - david
+
   - version: 6.3.2
     date: Mar 4, 2020
     dev:
