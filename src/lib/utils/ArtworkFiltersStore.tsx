@@ -64,7 +64,7 @@ const defaultFilterOptions = {
   sort: "Default",
 }
 
-export const selectedOptionsDisplay = (): FilterArray => {
+export const useSelectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
   const defaultFilters: FilterArray = [{ filterType: "sort", value: "Default" }]
