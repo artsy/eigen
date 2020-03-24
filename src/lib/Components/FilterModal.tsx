@@ -1,9 +1,10 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { head } from "lodash"
 import React, { useContext, useState } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, FilterOption, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext } from "../utils/ArtworkFiltersStore"
 import { SortOptionsScreen as SortOptions } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -23,7 +24,8 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
   }
 
   const applyFilters = () => {
-    dispatch({ type: "applyFilters" })
+    const { type, filter } = head(state.selectedFilters)
+    dispatch({ type: "applyFilters", payload: [{ type, filter }] })
     closeModal()
   }
 
@@ -75,10 +77,10 @@ interface FilterOptionsProps {
   navigator: NavigatorIOS
 }
 
-type FilterOptions = Array<{ filterType: FilterOption; filterText: string; onTap: () => void }>
+type FilterOptions = Array<{ type: string; onTap: () => void }>
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
   const handleNavigationToSortScreen = () => {
     navigator.push({
       component: SortOptions,
@@ -86,8 +88,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
   }
   const [filterOptions] = useState<FilterOptions>([
     {
-      filterText: "Sort by",
-      filterType: "sort",
+      type: "Sort by",
       onTap: handleNavigationToSortScreen,
     },
   ])
@@ -98,12 +99,6 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
 
   const handleTappingCloseIcon = () => {
     closeModal()
-  }
-
-  const selectedOptions = useSelectedOptionsDisplay()
-
-  const selectedOption = (filterType: FilterOption) => {
-    return selectedOptions.find(option => option.filterType === filterType)?.value
   }
 
   return (
@@ -124,7 +119,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
         </ClearAllButton>
       </Flex>
       <Flex>
-        <FlatList<{ onTap: () => void; filterText: string; filterType: FilterOption }>
+        <FlatList<{ onTap: () => void; type: string }>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (
@@ -134,10 +129,10 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
                   <OptionListItem>
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                       <Serif size="3t" color="black100">
-                        {item.filterText}
+                        {item.type}
                       </Serif>
                       <Flex flexDirection="row">
-                        <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
+                        <CurrentOption size="3">{state.selectedSortOption}</CurrentOption>
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
                       </Flex>
                     </Flex>
