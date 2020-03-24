@@ -2,13 +2,9 @@ import { Theme } from "@artsy/palette"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
 import { Artwork as GridItem } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import {
-  CollectionArtworksFragmentContainer as CollectionArtworks,
-  filterArtworksParams,
-} from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { FilterArray } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
@@ -64,17 +60,5 @@ describe("CollectionArtworks", () => {
     wrapper.update()
     expect(wrapper.find(GridItem).length).toBe(6)
     expect(wrapper.html()).toMatchSnapshot()
-  })
-})
-
-describe("filterArtworksParams", () => {
-  it("returns the default", () => {
-    const appliedFilters = []
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch" })
-  })
-
-  it("returns the value of appliedFilter", () => {
-    const appliedFilters: FilterArray = [{ filterType: "sort", value: "Recently added" }]
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-published_at" })
   })
 })

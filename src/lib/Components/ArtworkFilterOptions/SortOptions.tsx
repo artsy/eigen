@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, SortOption, useSelectedOptionsDisplay } from "../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, SortOption } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface SortOptionsScreenProps {
@@ -11,17 +11,14 @@ interface SortOptionsScreenProps {
 }
 
 export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleBackNavigation = () => {
     navigator.pop()
   }
 
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedSortOption = selectedOptions.find(option => option.filterType === "sort")?.value
-
   const selectSortOption = (selectedOption: SortOption) => {
-    dispatch({ type: "selectFilters", payload: { value: selectedOption, filterType: "sort" } })
+    dispatch({ type: "selectFilters", payload: { type: selectedOption, filter: "sort" } })
   }
 
   return (
@@ -50,7 +47,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
                       <SortSelection color="black100" size="3t">
                         {item}
                       </SortSelection>
-                      {item === selectedSortOption && (
+                      {item === state.selectedSortOption && (
                         <Box mb={0.1}>
                           <CheckIcon fill="black100" />
                         </Box>
