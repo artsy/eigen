@@ -3,7 +3,36 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { get } from "lib/utils/get"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { ArtworkFilterContext, ArtworkSorts } from "../../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterArray } from "../../../utils/ArtworkFiltersStore"
+
+enum ArtworkSorts {
+  "Default" = "-decayed_merch",
+  "Price (high to low)" = "sold,-has_price,-prices",
+  "Price (low to high)" = "sold,-has_price,prices",
+  "Recently updated" = "-partner_updated_at",
+  "Recently added" = "-published_at",
+  "Artwork year (descending)" = "-year",
+  "Artwork year (ascending)" = "year",
+}
+
+const filterTypeToParam = {
+  sort: ArtworkSorts,
+}
+
+export const filterArtworksParams = (appliedFilters: FilterArray) => {
+  // Default params
+  const filterParams = {
+    sort: "-decayed_merch",
+  }
+
+  appliedFilters.forEach(appliedFilterOption => {
+    const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
+    const paramFromFilterType = paramMapping[appliedFilterOption.value]
+    filterParams[appliedFilterOption.filterType] = paramFromFilterType
+  })
+
+  return filterParams
+}
 
 const PAGE_SIZE = 10
 export const CollectionArtworks: React.FC<{
@@ -12,6 +41,8 @@ export const CollectionArtworks: React.FC<{
 }> = ({ collection, relay }) => {
   const artworks = get(collection, p => p.collectionArtworks)
   const { state } = useContext(ArtworkFilterContext)
+
+  const filterParams = filterArtworksParams(state.appliedFilters)
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -22,9 +53,7 @@ export const CollectionArtworks: React.FC<{
             throw new Error("Collection/CollectionArtworks sort: " + error.message)
           }
         },
-        {
-          sort: ArtworkSorts[state.selectedSortOption],
-        }
+        filterParams
       )
     }
   }, [state.appliedFilters])

@@ -1,10 +1,9 @@
-import { differenceWith, filter, some, union } from "lodash"
-import React, { createContext, Dispatch, Reducer, useReducer } from "react"
+import { filter, find, unionBy } from "lodash"
+import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
 const filterState: ArtworkFilterContextState = {
   appliedFilters: [],
   selectedFilters: [],
-  selectedSortOption: "Default",
   applyFilters: false,
 }
 
@@ -12,63 +11,67 @@ export const reducer = (
   artworkFilterState: ArtworkFilterContextState,
   action: FilterActions
 ): ArtworkFilterContextState => {
-  let sanitizeFilters = []
-
   switch (action.type) {
     case "applyFilters":
-      const previouslyAppliedFilters = artworkFilterState.appliedFilters
+      const filtersToApply = unionBy(
+        artworkFilterState.selectedFilters,
+        artworkFilterState.appliedFilters,
+        "filterType"
+      )
 
-      // if a filter is applied for the first time update state with the newly applied filter
-      if (previouslyAppliedFilters.length < 1) {
-        return {
-          applyFilters: true,
-          appliedFilters: action.payload,
-          selectedFilters: [],
-          selectedSortOption: artworkFilterState.selectedSortOption,
-        }
-      }
-
-      // otherwise remove filters that can only be selected once, e.g. "sort" and merge those with newly applied filters
-      const payloadFilters = action.payload
-      sanitizeFilters = filter(previouslyAppliedFilters, prop => prop.filter === "sort")
-      const appliedFilters = union(differenceWith(previouslyAppliedFilters, sanitizeFilters), payloadFilters)
+      // Remove default values as those are accounted for when we make the API request.
+      const appliedFilters = filter(filtersToApply, ({ filterType, value }) => {
+        return defaultFilterOptions[filterType] !== value
+      })
 
       return {
         applyFilters: true,
         appliedFilters,
         selectedFilters: [],
-        selectedSortOption: artworkFilterState.selectedSortOption,
       }
 
     case "selectFilters":
-      const previouslySelectedFilters = artworkFilterState.selectedFilters
-      const currentlySelectedFilter = action.payload
-      const isFilterAlreadySelected = some(previouslySelectedFilters, currentlySelectedFilter)
-      const selectedFilter: Array<{ type: SortOption; filter: FilterOption }> = []
-      const filtersApplied = artworkFilterState.appliedFilters
+      // First we update our potential "selectedFilters" based on the option that was selected in the UI
+      const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 
-      if (isFilterAlreadySelected) {
-        const mergedFilters = [...previouslySelectedFilters, currentlySelectedFilter]
+      // Then we have to remove any "invalid" choices.
+      const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
+        const appliedFilter = find(artworkFilterState.appliedFilters, option => option.filterType === filterType)
 
-        return {
-          applyFilters: false,
-          selectedFilters: mergedFilters,
-          appliedFilters: filtersApplied,
-          selectedSortOption: currentlySelectedFilter.type,
+        // Don't re-select options that have already been applied.
+        // In the case where the option hasn't been applied, remove the option if it is the default.
+        if (!appliedFilter) {
+          return defaultFilterOptions[filterType] !== value
         }
-      } else {
-        selectedFilter.push(currentlySelectedFilter)
 
-        return {
-          applyFilters: false,
-          selectedFilters: selectedFilter,
-          appliedFilters: filtersApplied,
-          selectedSortOption: currentlySelectedFilter.type,
+        if (appliedFilter.value === value) {
+          return false
         }
+
+        return true
+      })
+
+      return {
+        applyFilters: false,
+        selectedFilters,
+        appliedFilters: artworkFilterState.appliedFilters,
       }
+
     case "resetFilters":
-      return { applyFilters: false, appliedFilters: [], selectedFilters: [], selectedSortOption: "Default" }
+      return { applyFilters: false, appliedFilters: [], selectedFilters: [] }
   }
+}
+
+const defaultFilterOptions = {
+  sort: "Default",
+}
+
+export const useSelectedOptionsDisplay = (): FilterArray => {
+  const { state } = useContext(ArtworkFilterContext)
+
+  const defaultFilters: FilterArray = [{ filterType: "sort", value: "Default" }]
+
+  return unionBy(state.selectedFilters, state.appliedFilters, defaultFilters, "filterType")
 }
 
 export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
@@ -80,11 +83,16 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
 }
 
 export interface ArtworkFilterContextState {
-  readonly appliedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
-  readonly selectedFilters: ReadonlyArray<{ readonly type: SortOption; readonly filter: FilterOption }>
-  readonly selectedSortOption: SortOption
+  readonly appliedFilters: FilterArray
+  readonly selectedFilters: FilterArray
   readonly applyFilters: boolean
 }
+
+interface FilterData {
+  readonly value: SortOption
+  readonly filterType: FilterOption
+}
+export type FilterArray = ReadonlyArray<FilterData>
 
 interface ResetFilters {
   type: "resetFilters"
@@ -92,12 +100,11 @@ interface ResetFilters {
 
 interface ApplyFilters {
   type: "applyFilters"
-  payload: Array<{ type: SortOption; filter: FilterOption }>
 }
 
 interface SelectFilters {
   type: "selectFilters"
-  payload: { type: SortOption; filter: FilterOption }
+  payload: FilterData
 }
 
 export type FilterActions = ResetFilters | ApplyFilters | SelectFilters
@@ -116,14 +123,4 @@ export type SortOption =
   | "Artwork year (descending)"
   | "Artwork year (ascending)"
 
-export type FilterOption = "sort" | "medium" | "waysToBuy" | "priceRange" | "size" | "color" | "timePeriod"
-
-export enum ArtworkSorts {
-  "Default" = "-decayed_merch",
-  "Price (high to low)" = "sold,-has_price,-prices",
-  "Price (low to high)" = "sold,-has_price,prices",
-  "Recently updated" = "-partner_updated_at",
-  "Recently added" = "-published_at",
-  "Artwork year (descending)" = "-year",
-  "Artwork year (ascending)" = "year",
-}
+export type FilterOption = "sort"
