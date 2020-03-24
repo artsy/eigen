@@ -158,7 +158,7 @@
     "lint-staged": "6.1.1",
     "metro-react-native-babel-preset": "0.49.0",
     "node-fetch": "2.6.0",
-    "patch-package": "^6.2.1",
+    "patch-package": "6.2.1",
     "postinstall-prepare": "1.0.1",
     "prettier": "1.19.1",
     "pull-lock": "1.0.0",
