@@ -308,9 +308,8 @@ describe("Clearing filters", () => {
 describe("Applying filters", () => {
   it("calls the relay method to refetch artworks when a filter is applied", async () => {
     const initialState: ArtworkFilterContextState = {
-      selectedSortOption: "Price (high to low)",
-      selectedFilters: [{ type: "Price (high to low)", filter: "sort" }],
-      appliedFilters: [{ type: "Price (high to low)", filter: "sort" }],
+      selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
+      appliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
       applyFilters: true,
     }
 
