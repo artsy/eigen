@@ -331,20 +331,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
-+ (NSURLRequest *)newTwitterOAuthRequestWithToken:(NSString *)token andSecret:(NSString *)secret
-{
-    NSDictionary *params = @{
-        @"oauth_provider" : @"twitter",
-        @"oauth_token" : token,
-        @"oauth_token_secret" : secret,
-        @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
-        @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
-        @"grant_type" : @"oauth_token",
-        @"scope" : @"offline_access"
-    };
-    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
-}
-
 
 #pragma mark -
 #pragma mark XApp
@@ -403,19 +389,6 @@ static NSString *hostFromString(NSString *string)
         @"name" : name,
         @"agreed_to_receive_emails": @YES,
         @"accepted_terms_of_service": @YES
-    };
-
-    return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
-}
-
-+ (NSURLRequest *)newCreateUserViaTwitterRequestWithToken:(NSString *)token secret:(NSString *)secret email:(NSString *)email name:(NSString *)name
-{
-    NSDictionary *params = @{
-        @"provider" : @"twitter",
-        @"oauth_token" : token,
-        @"oauth_token_secret" : secret,
-        @"email" : email,
-        @"name" : name
     };
 
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];

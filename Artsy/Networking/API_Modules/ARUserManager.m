@@ -402,7 +402,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              NSError *error;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
-                 ARErrorLog(@"Couldn't create user model from fresh Facebook user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+                 ARErrorLog(@"Couldn't create user model from fresh Apple user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
                  failure(error, JSON);
                  return;
              }

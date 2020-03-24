@@ -258,8 +258,15 @@
                     ARAnalyticsClass: ARPersonalizeViewController.class,
                     ARAnalyticsDetails: @[
                         @{
+                             ARAnalyticsEventName: ARAnalyticsOnboardingConnectWithApple,
+                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(appleSignInTapped:)),
+                             ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                 return (controller.state == AROnboardingStagePersonalizeEmail);
+                             }
+                        },
+                        @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingConnectWithFacebook,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(facebookTapped:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(facebookSignInTapped:)),
                             ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
                                 return (controller.state == AROnboardingStagePersonalizeEmail);
                             }

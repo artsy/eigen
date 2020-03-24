@@ -27,13 +27,6 @@
                               gotUser:(void (^)(User *))success
                 authenticationFailure:(void (^)(NSError *error))authFail
                        networkFailure:(void (^)(NSError *))networkFailure;
-+ (void)stubAndLoginWithTwitterToken;
-+ (void)stubbedLoginWithTwitterToken:(NSString *)token
-                              secret:(NSString *)secret
-              successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                             gotUser:(void (^)(User *))success
-               authenticationFailure:(void (^)(NSError *error))authFail
-                      networkFailure:(void (^)(NSError *))networkFailure;
 + (NSString *)userDataPath;
 
 @end

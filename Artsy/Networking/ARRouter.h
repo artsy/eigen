@@ -34,7 +34,6 @@
 
 + (void)setAuthToken:(NSString *)token;
 + (NSURLRequest *)newOAuthRequestWithUsername:(NSString *)username password:(NSString *)password;
-+ (NSURLRequest *)newTwitterOAuthRequestWithToken:(NSString *)token andSecret:(NSString *)secret;
 + (NSURLRequest *)newAppleOAuthRequestWithToken:(NSString *)token;
 + (NSURLRequest *)newFacebookOAuthRequestWithToken:(NSString *)token;
 
@@ -48,7 +47,6 @@
 + (NSURLRequest *)newCreateUserRequestWithName:(NSString *)name email:(NSString *)email password:(NSString *)password;
 + (NSURLRequest *)newCreateUserViaAppleRequestWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name;
 + (NSURLRequest *)newCreateUserViaFacebookRequestWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name;
-+ (NSURLRequest *)newCreateUserViaTwitterRequestWithToken:(NSString *)token secret:(NSString *)secret email:(NSString *)email name:(NSString *)name;
 
 #pragma mark - User
 

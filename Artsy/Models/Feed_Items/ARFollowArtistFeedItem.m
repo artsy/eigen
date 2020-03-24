@@ -41,13 +41,6 @@
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
-    //    NSString *twitterKey = @"com.apple.UIKit.activity.PostToTwitter";
-    //    if ([activityType isEqualToString:twitterKey]) {
-    //        return [NSString stringWithFormat:@"%@ on @artsy %@", self.artist.name, self.artist.publicURL];
-    //
-    //    } else {
-    //        return [NSString stringWithFormat:@"Check out this amazing artist I found on Artsy, %@. Isn't he just great? You can see his works at %@", self.artist.name, self.artist.publicURL];
-    //    }
     return nil;
 }
 
