@@ -43,7 +43,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
 }))
 
 jest.mock("lib/Components/Bidding/Context/TimeOffsetProvider", () => {
-  class TimeOffsetProvider extends require("React").Component {
+  class TimeOffsetProvider extends require("react").Component {
     static childContextTypes = {
       timeOffsetInMilliSeconds: () => true,
     }
