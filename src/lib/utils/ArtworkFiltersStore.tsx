@@ -31,17 +31,19 @@ export const reducer = (
       }
 
     case "selectFilters":
+      // First we update our potential "selectedFilters" based on the option that was selected in the UI
       const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 
+      // Then we have to remove any "invalid" choices.
       const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
         const appliedFilter = find(artworkFilterState.appliedFilters, option => option.filterType === filterType)
 
+        // Don't re-select options that have already been applied.
+        // In the case where the option hasn't been applied, remove the option if it is the default.
         if (!appliedFilter) {
           return defaultFilterOptions[filterType] !== value
         }
 
-        // Don't re-select options that have already been applied.
-        // In the case where the option hasn't been applied, remove the option if it is the default.
         if (appliedFilter.value === value) {
           return false
         }
