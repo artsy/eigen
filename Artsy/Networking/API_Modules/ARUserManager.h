@@ -58,6 +58,12 @@ extern NSString *const ARUserSessionStartedNotification;
          authenticationFailure:(void (^)(NSError *error))authenticationFailure
                 networkFailure:(void (^)(NSError *error))networkFailure;
 
+- (void)loginWithAppleToken:(NSString *)token
+     successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
+                    gotUser:(void (^)(User *currentUser))gotUser
+      authenticationFailure:(void (^)(NSError *error))authenticationFailure
+             networkFailure:(void (^)(NSError *error))networkFailure;
+
 - (void)createUserWithName:(NSString *)name
                      email:(NSString *)email
                   password:(NSString *)password
@@ -77,6 +83,11 @@ extern NSString *const ARUserSessionStartedNotification;
                                success:(void (^)(User *user))success
                                failure:(void (^)(NSError *error, id JSON))failure;
 
+- (void)createUserViaAppleWithToken:(NSString *)token
+                              email:(NSString *)email
+                               name:(NSString *)name
+                            success:(void (^)(User *user))success
+                            failure:(void (^)(NSError *error, id JSON))failure;
 
 - (void)sendPasswordResetForEmail:(NSString *)email
                           success:(void (^)(void))success

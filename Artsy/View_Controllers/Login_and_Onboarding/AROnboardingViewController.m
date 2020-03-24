@@ -597,9 +597,6 @@
     }];
 }
 
-
-
-
 - (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
     __weak typeof(self) wself = self;
@@ -688,16 +685,6 @@
     if (@available(ios 13, *)) {
         [ARAuthProviders getTokenForAppleWithDelegate: wself];
     }
-
-//    ^(NSString *token, NSString *email, NSString *name) {
-//        __strong typeof (wself) sself = wself;
-//        [sself appleSuccessWithToken:token email:email name:name];
-//
-//    } failure:^(NSError *error) {
-//        __strong typeof (wself) sself = wself;
-//        [sself displayError:@"There was a problem authenticating with Apple"];
-//        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-//    }];
 }
 
 - (ASPresentationAnchor)presentationAnchorForAuthorizationController:(ASAuthorizationController *)controller  API_AVAILABLE(ios(13.0)) {
@@ -712,13 +699,16 @@
         ASAuthorizationAppleIDCredential *appleIdCredential = authorization.credential;
         NSPersonNameComponentsFormatter *nameFormatter = [[NSPersonNameComponentsFormatter alloc] init];
         NSString *nameString = [nameFormatter stringFromPersonNameComponents:appleIdCredential.fullName];
-        [self appleSuccessWithToken:appleIdCredential.user email:appleIdCredential.email name:nameString];
+        NSString *idTokenString = [[NSString alloc] initWithData:appleIdCredential.identityToken encoding:NSUTF8StringEncoding];
+        [self appleSuccessWithToken:idTokenString email:appleIdCredential.email name:nameString];
+        return;
     } else if ([authorization.credential isKindOfClass: [ASAuthorizationSingleSignOnCredential class]]) {
         NSLog(@"Not clear what this is for");
+        return;
     } else {
         NSLog(@"Unrecognized credential type");
+        return;
     }
-    NSLog(@"Did complete with authorization");
 }
 
 - (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error  API_AVAILABLE(ios(13.0)){
@@ -729,7 +719,74 @@
 
 - (void)appleSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
-    NSLog(@"Here is where I would handle getting an apple token, if I knew how");
+    __weak typeof(self) wself = self;
+    if (email && ![email isEqualToString:@""]) {
+        [[ARUserManager sharedManager] createUserViaAppleWithToken:token
+                                                                email:email
+                                                                 name:name
+                                                              success:^(User *user) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  // we've created a user, now let's log them in
+                                                                  sself.state = AROnboardingStagePersonalizeName; // at stage of having all their details
+                                                                  [sself loginWithAppleCredentialToken:token];
+                                                              }
+                                                              failure:^(NSError *error, id JSON) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
+                                                                      if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
+                                                                          // this Apple account is already an artsy account
+                                                                          // let's log them in
+                                                                          [sself loginWithAppleCredentialToken:token];
+                                                                          return;
+                                                                      } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
+                                                                                 || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
+                                                                          // there's already a user with this email
+                                                                          __strong typeof (wself) sself = wself;
+                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+
+                                                                          return;
+                                                                      }
+                                                                  }
+
+                                                                  // something else went wrong
+                                                                  ARErrorLog(@"Couldn't link Apple account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+                                                                  [sself displayError:@"Couldn't link Apple account"];
+                                                                  [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                              }];
+    } else {
+        // provide popup warning asking the user to use a Apple account with email
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    }
+}
+
+- (void)loginWithAppleCredentialToken:(NSString *)token {
+      __weak typeof(self) wself = self;
+        [[ARUserManager sharedManager] loginWithAppleToken:token
+                                       successWithCredentials:nil
+                                                      gotUser:^(User *currentUser) {
+                                                          __strong typeof (wself) sself = wself;
+                                                          // we've logged them in, let's wrap up
+                                                          [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                          if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
+                                                              [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+                                                              [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"apple"}];
+                                                              [sself finishAccountCreation];
+                                                          } else if (sself.state == AROnboardingStagePersonalizeName) {
+                                                              [sself presentPersonalizationQuestionnaires];
+                                                          }
+                                                      }
+                                        authenticationFailure:^(NSError *error) {
+                                            __strong typeof (wself) sself = wself;
+                                            [sself displayError:@"There was a problem authenticating with Apple"];
+                                            [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                        }
+                                               networkFailure:^(NSError *error) {
+                                                   // TODO: handle this
+                                                   __strong typeof (wself) sself = wself;
+                                                   [sself displayNetworkFailureError];
+                                                   [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                               }];
 }
 
 #pragma mark -

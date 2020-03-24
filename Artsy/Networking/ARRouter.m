@@ -304,6 +304,20 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
++ (NSURLRequest *)newAppleOAuthRequestWithToken:(NSString *)token
+{
+    NSDictionary *params = @{
+        @"oauth_provider" : @"apple",
+        @"oauth_token" : token,
+        @"id_token": token,
+        @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
+        @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
+        @"grant_type" : @"oauth_token",
+        @"scope" : @"offline_access"
+    };
+    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
+}
+
 + (NSURLRequest *)newFacebookOAuthRequestWithToken:(NSString *)token
 {
     NSDictionary *params = @{
@@ -359,6 +373,20 @@ static NSString *hostFromString(NSString *string)
     NSDictionary *params = @{
         @"email" : email,
         @"password" : password,
+        @"name" : name,
+        @"agreed_to_receive_emails": @YES,
+        @"accepted_terms_of_service": @YES
+    };
+    return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
+}
+
++ (NSURLRequest *)newCreateUserViaAppleRequestWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
+{
+    NSDictionary *params = @{
+        @"provider" : @"apple",
+        @"oauth_token" : token,
+        @"id_token": token,
+        @"email" : email,
         @"name" : name,
         @"agreed_to_receive_emails": @YES,
         @"accepted_terms_of_service": @YES
