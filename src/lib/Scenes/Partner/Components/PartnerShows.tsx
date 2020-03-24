@@ -9,8 +9,8 @@ import {
 } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useContext, useMemo, useState } from "react"
-import { ImageBackground, NativeModules, TouchableWithoutFeedback } from "react-native"
+import React, { useContext, useMemo, useRef, useState } from "react"
+import { ImageBackground, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
@@ -60,6 +60,7 @@ export const PartnerShows: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const navRef = useRef()
 
   const hasRecentShows = partner.recentShows.edges.length > 0
 
@@ -80,7 +81,18 @@ export const PartnerShows: React.FC<{
     if (isViewingRoomsEnabled) {
       result.push({
         key: "viewing_rooms",
-        content: <Button onPress={() => console.log("HI THERE")}>Viewing Room</Button>,
+        content: (
+          <Button
+            onPress={() =>
+              SwitchBoard.presentNavigationViewController(
+                navRef.current,
+                "/viewing-room/this-is-a-test-viewing-room-id"
+              )
+            }
+          >
+            Viewing Room
+          </Button>
+        ),
       })
     }
 
@@ -129,33 +141,35 @@ export const PartnerShows: React.FC<{
   const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
 
   return (
-    <StickyTabPageFlatList
-      data={sections}
-      // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
-      onEndReachedThreshold={tabIsActive ? 1 : 0}
-      // render up to the first chunk on initial mount
-      initialNumToRender={sections.findIndex(section => section.key.startsWith("chunk")) + 1}
-      windowSize={tabIsActive ? 5 : 1}
-      onEndReached={() => {
-        if (isLoadingMore || !relay.hasMore()) {
-          return
-        }
-        setIsLoadingMore(true)
-        relay.loadMore(PAGE_SIZE, error => {
-          if (error) {
-            // FIXME: Handle error
-            console.error("PartnerShows.tsx", error.message)
+    <View style={{ flex: 1 }} ref={navRef}>
+      <StickyTabPageFlatList
+        data={sections}
+        // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
+        onEndReachedThreshold={tabIsActive ? 1 : 0}
+        // render up to the first chunk on initial mount
+        initialNumToRender={sections.findIndex(section => section.key.startsWith("chunk")) + 1}
+        windowSize={tabIsActive ? 5 : 1}
+        onEndReached={() => {
+          if (isLoadingMore || !relay.hasMore()) {
+            return
           }
-          setIsLoadingMore(false)
-        })
-      }}
-      refreshing={isLoadingMore}
-      ListFooterComponent={() => (
-        <Flex alignItems="center" justifyContent="center" height={space(6)}>
-          {isLoadingMore ? <Spinner /> : null}
-        </Flex>
-      )}
-    />
+          setIsLoadingMore(true)
+          relay.loadMore(PAGE_SIZE, error => {
+            if (error) {
+              // FIXME: Handle error
+              console.error("PartnerShows.tsx", error.message)
+            }
+            setIsLoadingMore(false)
+          })
+        }}
+        refreshing={isLoadingMore}
+        ListFooterComponent={() => (
+          <Flex alignItems="center" justifyContent="center" height={space(6)}>
+            {isLoadingMore ? <Spinner /> : null}
+          </Flex>
+        )}
+      />
+    </View>
   )
 }
 

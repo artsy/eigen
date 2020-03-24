@@ -49,6 +49,7 @@ import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocati
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
+import { ViewingRoom } from "./Scenes/ViewingRoom"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -400,3 +401,4 @@ AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
 AppRegistry.registerComponent("Collection", () => Collection)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
 AppRegistry.registerComponent("FullFeaturedArtistList", () => FullFeaturedArtistList)
+AppRegistry.registerComponent("ViewingRoom", () => ViewingRoom)
