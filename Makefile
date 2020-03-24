@@ -179,7 +179,8 @@ flip_table:
 	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 	rm -rf $TMPDIR/RelayFindGraphQLTags-*
 	rm -rf .jest
-	rm -fr $TMPDIR/metro*
+	rm -rf $TMPDIR/metro*
+	rm -rf .metro
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets

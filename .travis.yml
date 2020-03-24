@@ -12,7 +12,6 @@ cache:
     # Danger Swift plugins, like Yams
     - .build
     - node_modules
-    - .jest/cache
 
 install:
   # Grab the latest Danger JS from npm
@@ -24,5 +23,4 @@ install:
 script:
   # Run the Dangerfile.swift
   - swift run danger-swift ci
-  - yarn ci
   - yarn danger ci --verbose

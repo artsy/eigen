@@ -158,7 +158,7 @@
     "lint-staged": "6.1.1",
     "metro-react-native-babel-preset": "0.49.0",
     "node-fetch": "2.6.0",
-    "patch-package": "6.1.2",
+    "patch-package": "^6.2.1",
     "postinstall-prepare": "1.0.1",
     "prettier": "1.19.1",
     "pull-lock": "1.0.0",
@@ -186,35 +186,6 @@
     "typescript-styled-plugin": "0.13.0",
     "vscode-apollo-relay": "1.5.0"
   },
-  "jest": {
-    "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "moduleNameMapper": {
-      "^lib/(.*)": "<rootDir>/src/lib/$1"
-    },
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/*tests.(ts|tsx|js)"
-    ],
-    "testEnvironment": "jsdom",
-    "testURL": "http://localhost/",
-    "setupFilesAfterEnv": [
-      "./src/setupJest.ts"
-    ],
-    "cacheDirectory": ".jest/cache",
-    "transform": {
-      "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$": "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
-      "node_modules/react-native/.+\\.(js|tsx?)$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
-      ".*(ts|tsx|js|jsx)$": "babel-jest",
-      "\\.graphql$": "jest-raw-loader"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!(react-native(-.*)?)/)"
-    ]
-  },
   "lint-staged": {
     "*.@(ts|tsx)": [
       "tslint -c tslint.json --fix",
@@ -224,15 +195,6 @@
     "*.@(json|md)": [
       "yarn prettier-write --"
     ]
-  },
-  "config": {
-    "react-native-storybook-loader": {
-      "searchDir": [
-        "./src"
-      ],
-      "pattern": "**/*.story.tsx",
-      "outputFile": "./storybook/storyLoader.js"
-    }
   },
   "prettier": {
     "printWidth": 120,
