@@ -14,6 +14,7 @@ extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsLotConditionReport;
 extern NSString *const AROptionsFilterCollectionsArtworks;
+extern NSString *const AROptionsViewingRooms;
 
 @interface AROptions : NSObject
 
