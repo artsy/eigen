@@ -297,6 +297,7 @@ describe("Clearing filters", () => {
 
     applyButton.props().onPress()
 
+    // After applying, we reset the selectedFilters
     expect(applyButton.text()).toContain("Apply")
   })
 })
