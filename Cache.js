@@ -39,7 +39,7 @@ class Cache {
     const tarballPath = path.join(this.tmpdir, key)
     const out = fs.createWriteStream(tarballPath)
     console.log("creating tarball at", tarballPath)
-    pack.pipe(zlib.createGzip()).pipe(out)
+    pack.pipe(out)
     await new Promise((resolve, reject) => {
       out.on("close", resolve)
       pack.on("error", reject)
@@ -65,7 +65,6 @@ class Cache {
       console.log("unarchiving")
       const startUnpack = Date.now()
       fs.createReadStream(tarballPath)
-        .pipe(zlib.createGunzip())
         .pipe(tar.extract("."))
         .on("finish", () => {
           console.log("took", (Date.now() - startUnpack).toFixed(1) + "s")
