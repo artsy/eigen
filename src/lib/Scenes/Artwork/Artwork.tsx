@@ -1,6 +1,7 @@
 import { Box, Separator, space, Spacer, Theme } from "@artsy/palette"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
+import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
@@ -34,6 +35,7 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 interface Props {
   artworkAboveTheFold: Artwork_artworkAboveTheFold
   artworkBelowTheFold: Artwork_artworkBelowTheFold
+  me: Artwork_me
   isVisible: boolean
   relay: RelayRefetchProp
   tracking?: TrackingProp
@@ -166,7 +168,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   sections(): ArtworkPageSection[] {
-    const { artworkAboveTheFold, artworkBelowTheFold, tracking } = this.props
+    const { artworkAboveTheFold, artworkBelowTheFold, me, tracking } = this.props
 
     const sections: ArtworkPageSection[] = []
 
@@ -178,7 +180,7 @@ export class Artwork extends React.Component<Props, State> {
 
     sections.push({
       key: "commercialInformation",
-      element: <CommercialInformation artwork={artworkAboveTheFold} tracking={tracking} />,
+      element: <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />,
     })
 
     if (!artworkBelowTheFold) {
@@ -347,6 +349,11 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkHistory_artwork
       }
     `,
+    me: graphql`
+      fragment Artwork_me on Me {
+        ...CommercialInformation_me
+      }
+    `
   },
   graphql`
     query ArtworkRefetchQuery($artworkID: String!) {
@@ -378,6 +385,9 @@ export const ArtworkQueryRenderer: React.SFC<{
                       artwork(id: $artworkID) {
                         ...Artwork_artworkAboveTheFold
                       }
+                      me {
+                        ...Artwork_me
+                      }
                     }
                   `,
                   variables: { artworkID },
@@ -399,6 +409,7 @@ export const ArtworkQueryRenderer: React.SFC<{
                       <ArtworkContainer
                         artworkAboveTheFold={above.artwork}
                         artworkBelowTheFold={below?.artwork ?? null}
+                        me={above.me}
                         {...others}
                       />
                     )

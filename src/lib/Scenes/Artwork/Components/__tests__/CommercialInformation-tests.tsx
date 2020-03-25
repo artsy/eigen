@@ -20,7 +20,10 @@ describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationArtwork as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(component.text()).toContain("Contact for price")
@@ -40,7 +43,10 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={workInEndedAuction as any} />
+        <CommercialInformationTimerWrapper
+          artwork={workInEndedAuction as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
 
@@ -58,7 +64,10 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationArtworkClosedAuction as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkClosedAuction as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(component.text()).toContain("Contact for price")
@@ -109,7 +118,10 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationArtworkNoData as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkNoData as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(component.text()).not.toContain("Contact for price")
@@ -125,7 +137,10 @@ describe("CommercialInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationArtworkNonCommercial as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkNonCommercial as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(
@@ -140,7 +155,10 @@ describe("CommercialInformation", () => {
   it("renders consign with Artsy text", () => {
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationArtwork as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(
@@ -187,7 +205,10 @@ describe("CommercialInformation", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={artworkWithEditionSets as any} />
+        <CommercialInformationTimerWrapper
+          artwork={artworkWithEditionSets as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
 
@@ -211,6 +232,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       <Theme>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkInAuction as any}
+          me={{ identityVerified: false } as any}
           tracking={{ trackEvent: jest.fn() } as any}
         />
       </Theme>
@@ -231,6 +253,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       <Theme>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationSoldArtworkInAuction as any}
+          me={{ identityVerified: false } as any}
           tracking={{ trackEvent: jest.fn() } as any}
         />
       </Theme>
@@ -243,7 +266,10 @@ describe("CommercialInformation buttons and coundtown timer", () => {
   it("doesn't render CountDownTimer or BidButton when not in auction", () => {
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={CommercialInformationAcquierableArtwork as any} />
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationAcquierableArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(component.find(Countdown).length).toEqual(0)
@@ -275,7 +301,10 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={inquireableArtwork as any} />
+        <CommercialInformationTimerWrapper
+          artwork={inquireableArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(0)
@@ -295,7 +324,10 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={acquireableArtwork as any} />
+        <CommercialInformationTimerWrapper
+          artwork={acquireableArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
@@ -315,7 +347,7 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper artwork={offerableArtwork as any} />
+        <CommercialInformationTimerWrapper artwork={offerableArtwork as any} me={{ identityVerified: false } as any} />
       </Theme>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
@@ -331,6 +363,7 @@ describe("ArtworkExtraLinks", () => {
       <Theme>
         <CommercialInformationTimerWrapper
           artwork={nonConsignableBiddableArtwork as any}
+          me={{ identityVerified: false } as any}
           tracking={{ trackEvent: jest.fn() } as any}
         />
       </Theme>

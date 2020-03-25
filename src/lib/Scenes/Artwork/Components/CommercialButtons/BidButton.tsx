@@ -1,9 +1,11 @@
 import { Button, color, Sans } from "@artsy/palette"
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
+import { BidButton_me } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React from "react"
+import { Text } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
 
@@ -11,13 +13,20 @@ export const PREDICTION_URL = "https://live.artsy.net"
 
 export interface BidButtonProps {
   artwork: BidButton_artwork
+  me: BidButton_me
   auctionState: AuctionTimerState
   relay: RelayProp
 }
 
-const watchOnly = sale => sale.isRegistrationClosed && !(sale?.registrationStatus?.qualifiedForBidding)
+const watchOnly = sale => sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
 const getMyLotStanding = artwork => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
 const getHasBid = myLotStanding => !!(myLotStanding && myLotStanding.mostRecentBid)
+
+const IdentityVerificationRequiredMessage = props => (
+  <Sans mt="1" size="3" color="black60" pb="1" textAlign="center" {...props}>
+    Identity verification required to bid.{" "}
+  </Sans>
+)
 
 @track()
 export class BidButton extends React.Component<BidButtonProps> {
@@ -59,18 +68,27 @@ export class BidButton extends React.Component<BidButtonProps> {
     SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
   }
 
-  renderIsPreview(registrationStatus: BidButton_artwork['sale']['registrationStatus']) {
+  renderIsPreview(
+    registrationStatus: BidButton_artwork["sale"]["registrationStatus"],
+    needsIdentityVerification: boolean
+  ) {
     return (
       <>
         {!registrationStatus && (
-          <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
-            Register to bid
-          </Button>
+          <>
+            <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
+              Register to bid
+            </Button>
+            {needsIdentityVerification && <IdentityVerificationRequiredMessage />}
+          </>
         )}
         {registrationStatus && !registrationStatus.qualifiedForBidding && (
-          <Button width={100} block size="large" mt={1} disabled>
-            Registration pending
-          </Button>
+          <>
+            <Button width={100} block size="large" mt={1} disabled>
+              Registration pending
+            </Button>
+            {needsIdentityVerification && <IdentityVerificationRequiredMessage />}
+          </>
         )}
         {registrationStatus?.qualifiedForBidding && (
           <Button width={100} block size="large" mt={1} disabled>
@@ -99,7 +117,7 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 
   render() {
-    const { artwork, auctionState } = this.props
+    const { artwork, auctionState, me } = this.props
     const { sale, saleArtwork } = artwork
     const { registrationStatus } = sale
 
@@ -109,6 +127,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     }
 
     const qualifiedForBidding = registrationStatus?.qualifiedForBidding
+    const needsIdentityVerification = sale.requireIdentityVerification && !me.identityVerified
 
     /**
      * NOTE: This is making an incorrect assumption that there could only ever
@@ -119,20 +138,32 @@ export class BidButton extends React.Component<BidButtonProps> {
     const hasBid = getHasBid(myLotStanding)
 
     if (auctionState === AuctionTimerState.PREVIEW) {
-      return this.renderIsPreview(registrationStatus)
+      return this.renderIsPreview(registrationStatus, needsIdentityVerification)
     } else if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
       return this.renderIsLiveOpen()
     } else if (registrationStatus && !qualifiedForBidding) {
       return (
-        <Button width={100} block size="large" disabled>
-          Registration pending
-        </Button>
+        <>
+          <Button width={100} block size="large" disabled>
+            Registration pending
+          </Button>
+          {needsIdentityVerification && <IdentityVerificationRequiredMessage />}
+        </>
       )
     } else if (sale.isRegistrationClosed && !qualifiedForBidding) {
       return (
         <Button width={100} block size="large" disabled>
           Registration closed
         </Button>
+      )
+    } else if (needsIdentityVerification) {
+      return (
+        <>
+          <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
+            Register to bid
+          </Button>
+          <IdentityVerificationRequiredMessage />
+        </>
       )
     } else {
       const myLastMaxBid = hasBid && myLotStanding.mostRecentBid.maxBid.cents
@@ -162,6 +193,7 @@ export const BidButtonFragmentContainer = createFragmentContainer(BidButton, {
         isLiveOpen
         isClosed
         isRegistrationClosed
+        requireIdentityVerification
       }
       myLotStanding(live: true) {
         mostRecentBid {
@@ -175,6 +207,11 @@ export const BidButtonFragmentContainer = createFragmentContainer(BidButton, {
           cents
         }
       }
+    }
+  `,
+  me: graphql`
+    fragment BidButton_me on Me {
+      identityVerified
     }
   `,
 })

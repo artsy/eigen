@@ -16,6 +16,7 @@ export const ArtworkFromAuctionPreview = {
     isLiveOpen: false,
     isClosed: false,
     isRegistrationClosed: false,
+    requireIdentityVerification: false,
   },
   saleArtwork: {
     increments: [
@@ -39,6 +40,7 @@ export const ArtworkFromTimedAuctionRegistrationOpen = {
     isLiveOpen: false,
     isClosed: false,
     isRegistrationClosed: false,
+    requireIdentityVerification: false,
   },
   saleArtwork: {
     increments: [
@@ -62,6 +64,7 @@ export const ArtworkFromTimedAuctionRegistrationClosed = {
     isLiveOpen: false,
     isClosed: false,
     isRegistrationClosed: true,
+    requireIdentityVerification: false,
   },
   saleArtwork: {
     increments: [
@@ -85,6 +88,7 @@ export const ArtworkFromLiveAuctionRegistrationOpen = {
     isLiveOpen: true,
     isClosed: false,
     isRegistrationClosed: false,
+    requireIdentityVerification: false,
     liveStartAt: DateTime.fromMillis(Date.now())
       .minus({ minutes: 1 })
       .toISO(),
@@ -115,6 +119,7 @@ export const ArtworkFromLiveAuctionRegistrationClosed = {
     isLiveOpen: true,
     isClosed: false,
     isRegistrationClosed: true,
+    requireIdentityVerification: false,
     liveStartAt: DateTime.fromMillis(Date.now())
       .minus({ minutes: 1 })
       .toISO(),
@@ -144,6 +149,7 @@ export const ArtworkFromClosedAuction = {
     isLiveOpen: false,
     isClosed: true,
     isRegistrationClosed: false,
+    requireIdentityVerification: false,
   },
   saleArtwork: {
     increments: [

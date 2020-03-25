@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dee2de6a697e978ccde951c51d7c9ffd */
+/* @relayHash 0480092b6bbc46a779e626dc7c21f660 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -348,6 +348,7 @@ fragment BidButton_artwork on Artwork {
     isLiveOpen
     isClosed
     isRegistrationClosed
+    requireIdentityVerification
     id
   }
   myLotStanding(live: true) {
@@ -1018,6 +1019,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "isRegistrationClosed",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "requireIdentityVerification",
                 "args": null,
                 "storageKey": null
               },
@@ -1909,7 +1917,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "ab54cfe883da85adc5472a1cf02ddb34",
+    "id": "a8dfe84d8e2609d39ddcbb78b4f01339",
     "text": null,
     "metadata": {}
   }

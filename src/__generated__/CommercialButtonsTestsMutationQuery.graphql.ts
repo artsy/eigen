@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9d0b9e5a43dbb8db2d0de3201e8036de */
+/* @relayHash 07665c27895a5ca0aa8996bcae9c2a2d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,6 +33,7 @@ export type CommercialButtonsTestsMutationQueryRawResponse = {
             readonly isPreview: boolean | null;
             readonly isLiveOpen: boolean | null;
             readonly isRegistrationClosed: boolean | null;
+            readonly requireIdentityVerification: boolean | null;
         }) | null;
         readonly internalID: string;
         readonly saleMessage: string | null;
@@ -81,6 +82,7 @@ fragment BidButton_artwork on Artwork {
     isLiveOpen
     isClosed
     isRegistrationClosed
+    requireIdentityVerification
     id
   }
   myLotStanding(live: true) {
@@ -313,6 +315,13 @@ return {
                 "name": "isRegistrationClosed",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "requireIdentityVerification",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -399,7 +408,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsMutationQuery",
-    "id": "f4424de5817b644a056282abf5cd2bee",
+    "id": "4860cc58123f8220e879e725f17bc406",
     "text": null,
     "metadata": {}
   }

@@ -14,6 +14,7 @@ export type BidButton_artwork = {
         readonly isLiveOpen: boolean | null;
         readonly isClosed: boolean | null;
         readonly isRegistrationClosed: boolean | null;
+        readonly requireIdentityVerification: boolean | null;
     } | null;
     readonly myLotStanding: ReadonlyArray<{
         readonly mostRecentBid: {
@@ -117,6 +118,13 @@ return {
           "name": "isRegistrationClosed",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "requireIdentityVerification",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -182,5 +190,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ec09ef9d1708154bd5abdb12518bcf64';
+(node as any).hash = '156fcfc4be3111c9e9bc130b3fafeeb2';
 export default node;

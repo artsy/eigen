@@ -1,5 +1,6 @@
 import { Button, Spacer } from "@artsy/palette"
 import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
+import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -11,6 +12,7 @@ import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOffer
 
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
+  me: CommercialButtons_me
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
@@ -31,7 +33,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
   }
 
   render() {
-    const { artwork, auctionState } = this.props
+    const { artwork, me, auctionState } = this.props
     const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, isForSale } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
 
@@ -40,12 +42,12 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         <>
           {isBuyNowable && noEditions ? (
             <>
-              <BidButton artwork={artwork} auctionState={auctionState} />
+              <BidButton artwork={artwork} me={me} auctionState={auctionState} />
               <Spacer mb={1} />
               <BuyNowButton variant="secondaryOutline" artwork={artwork} editionSetID={this.props.editionSetID} />
             </>
           ) : (
-            <BidButton artwork={artwork} auctionState={auctionState} />
+            <BidButton artwork={artwork} me={me} auctionState={auctionState} />
           )}
         </>
       )
@@ -96,4 +98,9 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       ...MakeOfferButton_artwork
     }
   `,
+  me: graphql`
+    fragment CommercialButtons_me on Me {
+      ...BidButton_me
+    }
+  `
 })

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a340639683502d19e6105814c0fd93a6 */
+/* @relayHash 40990709be52ddcab3f24f69d10f1a76 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -8,6 +8,9 @@ export type BidButtonTestsQueryVariables = {};
 export type BidButtonTestsQueryResponse = {
     readonly artwork: {
         readonly " $fragmentRefs": FragmentRefs<"BidButton_artwork">;
+    } | null;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"BidButton_me">;
     } | null;
 };
 export type BidButtonTestsQueryRawResponse = {
@@ -23,6 +26,7 @@ export type BidButtonTestsQueryRawResponse = {
             readonly isLiveOpen: boolean | null;
             readonly isClosed: boolean | null;
             readonly isRegistrationClosed: boolean | null;
+            readonly requireIdentityVerification: boolean | null;
             readonly id: string | null;
         }) | null;
         readonly myLotStanding: ReadonlyArray<{
@@ -41,6 +45,10 @@ export type BidButtonTestsQueryRawResponse = {
         }) | null;
         readonly id: string | null;
     }) | null;
+    readonly me: ({
+        readonly identityVerified: boolean | null;
+        readonly id: string | null;
+    }) | null;
 };
 export type BidButtonTestsQuery = {
     readonly response: BidButtonTestsQueryResponse;
@@ -54,6 +62,10 @@ export type BidButtonTestsQuery = {
 query BidButtonTestsQuery {
   artwork(id: "auction_artwork") {
     ...BidButton_artwork
+    id
+  }
+  me {
+    ...BidButton_me
     id
   }
 }
@@ -70,6 +82,7 @@ fragment BidButton_artwork on Artwork {
     isLiveOpen
     isClosed
     isRegistrationClosed
+    requireIdentityVerification
     id
   }
   myLotStanding(live: true) {
@@ -86,6 +99,10 @@ fragment BidButton_artwork on Artwork {
     }
     id
   }
+}
+
+fragment BidButton_me on Me {
+  identityVerified
 }
 */
 
@@ -141,6 +158,22 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "BidButton_artwork",
+            "args": null
+          }
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "BidButton_me",
             "args": null
           }
         ]
@@ -219,6 +252,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "requireIdentityVerification",
+                "args": null,
+                "storageKey": null
+              },
               (v2/*: any*/)
             ]
           },
@@ -285,17 +325,36 @@ return {
           },
           (v2/*: any*/)
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "identityVerified",
+            "args": null,
+            "storageKey": null
+          },
+          (v2/*: any*/)
+        ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "BidButtonTestsQuery",
-    "id": "e7747d2e2e0f06cb72388e3869d50387",
+    "id": "4e56442e91b7dae53dbb45ffc5bf52cd",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8ae58427a014f2412339549684c8c2a6';
+(node as any).hash = '505afd431c2e9bde73b4098d823cc4a1';
 export default node;
