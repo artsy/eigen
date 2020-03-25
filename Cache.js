@@ -39,13 +39,20 @@ class Cache {
     const pack = tar.pack(".", { entries: paths })
     const tarballPath = path.join(this.tmpdir, key)
     const out = fs.createWriteStream(tarballPath)
-    console.log("creating tarball at", tarballPath)
+    console.log("tar-fs creating tarball at", tarballPath)
     pack.pipe(out)
     await new Promise((resolve, reject) => {
       out.on("close", resolve)
       pack.on("error", reject)
     })
     console.log("took", (Date.now() - startPack).toFixed(1) + "s")
+    console.log("tar creating tarball at", tarballPath)
+    const startPackTar = Date.now()
+    const result = spawnSync('tar', ['cf', tarballPath, ...paths])
+    if (result.status !== 0) {
+      throw new Error("tar failed")
+    }
+    console.log("took", (Date.now() - startPackTar).toFixed(1) + "s")
     console.log("uploading...")
     const startUpload = Date.now()
     await this.cache.putObject(key, tarballPath)
