@@ -2,7 +2,7 @@ upcoming:
   version: 6.4.0
   date: TBD
   dev:
-    -
+    - Added shell for Galleries development of Viewing Rooms - ash
   user_facing:
     -
 
