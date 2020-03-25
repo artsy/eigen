@@ -56,6 +56,12 @@ commands:
           key: v2-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
+      - run:
+          name: Test custom cache save
+          command: node Cache.js save
+      - run:
+          name: Test custom cache restore
+          command: node Cache.js restore
   generate-query-map:
     steps:
       - restore_cache:
