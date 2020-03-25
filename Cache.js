@@ -66,12 +66,20 @@ class Cache {
 }
 
 module.exports.Cache = Cache
-
-switch (process.argv[2]) {
-  case "save":
-    new Cache().save("node_modules_test", ["node_modules"])
-    break
-  case "restore":
-    new Cache().restore("node_modules_test")
-    break
+async function run() {
+  try {
+    switch (process.argv[2]) {
+      case "save":
+        await new Cache().save("node_modules_test", ["node_modules"])
+        break
+      case "restore":
+        await new Cache().restore("node_modules_test")
+        break
+    }
+  } catch (e) {
+    console.error(e)
+    process.exit(1)
+  }
 }
+
+run()

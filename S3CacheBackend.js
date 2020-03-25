@@ -66,8 +66,8 @@ class S3CacheBackend {
  * @type {S3Config}
  */
 const defaultConfig = {
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID_2,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_2,
   bucket: process.env.GUDETAMA_S3_BUCKET_NAME,
 }
 
