@@ -50,6 +50,7 @@ class Cache {
     const startPackTar = Date.now()
     const result = spawnSync('tar', ['cf', tarballPath, ...paths])
     if (result.status !== 0) {
+      console.error(result.output.toString())
       throw new Error("tar failed")
     }
     console.log("took", (Date.now() - startPackTar).toFixed(1) + "s")
