@@ -47,7 +47,7 @@ class Cache {
     })
     console.log("took", (Date.now() - startPack).toFixed(1) + "s")
     console.log("does node_modules still exist", fs.existsSync('node_modules/react'))
-    console.log("tar creating tarball at", tarballPath)
+    console.log("tar creating tarball at", tarballPath, ['cf', tarballPath, ...paths])
     const startPackTar = Date.now()
     const result = spawnSync('tar', ['cf', tarballPath, ...paths])
     if (result.status !== 0) {
