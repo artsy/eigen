@@ -15,9 +15,7 @@ export interface BidButtonProps {
   relay: RelayProp
 }
 
-const registrationWasAttempted = sale => !!sale.registrationStatus
-const isRegisteredToBid = sale => registrationWasAttempted(sale) && sale.registrationStatus.qualifiedForBidding
-const watchOnly = sale => sale.isRegistrationClosed && !isRegisteredToBid(sale)
+const watchOnly = sale => sale.isRegistrationClosed && !(sale?.registrationStatus?.qualifiedForBidding)
 const getMyLotStanding = artwork => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
 const getHasBid = myLotStanding => !!(myLotStanding && myLotStanding.mostRecentBid)
 
@@ -61,26 +59,24 @@ export class BidButton extends React.Component<BidButtonProps> {
     SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
   }
 
-  renderIsPreview(registrationAttempted: boolean, registeredToBid: boolean) {
+  renderIsPreview(registrationStatus: BidButton_artwork['sale']['registrationStatus']) {
     return (
       <>
-        {!registrationAttempted && (
+        {!registrationStatus && (
           <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
             Register to bid
           </Button>
         )}
-        {registrationAttempted &&
-          !registeredToBid && (
-            <Button width={100} block size="large" mt={1} disabled>
-              Registration pending
-            </Button>
-          )}
-        {registrationAttempted &&
-          registeredToBid && (
-            <Button width={100} block size="large" mt={1} disabled>
-              Registration complete
-            </Button>
-          )}
+        {registrationStatus && !registrationStatus.qualifiedForBidding && (
+          <Button width={100} block size="large" mt={1} disabled>
+            Registration pending
+          </Button>
+        )}
+        {registrationStatus?.qualifiedForBidding && (
+          <Button width={100} block size="large" mt={1} disabled>
+            Registration complete
+          </Button>
+        )}
       </>
     )
   }
@@ -105,13 +101,14 @@ export class BidButton extends React.Component<BidButtonProps> {
   render() {
     const { artwork, auctionState } = this.props
     const { sale, saleArtwork } = artwork
+    const { registrationStatus } = sale
 
-    if (sale && sale.isClosed) {
+    // TODO: Do we need a nil check against +sale+?
+    if (sale?.isClosed) {
       return null
     }
 
-    const registrationAttempted = registrationWasAttempted(sale)
-    const registeredToBid = isRegisteredToBid(sale)
+    const qualifiedForBidding = registrationStatus?.qualifiedForBidding
 
     /**
      * NOTE: This is making an incorrect assumption that there could only ever
@@ -122,16 +119,16 @@ export class BidButton extends React.Component<BidButtonProps> {
     const hasBid = getHasBid(myLotStanding)
 
     if (auctionState === AuctionTimerState.PREVIEW) {
-      return this.renderIsPreview(registrationAttempted, registeredToBid)
+      return this.renderIsPreview(registrationStatus)
     } else if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
       return this.renderIsLiveOpen()
-    } else if (registrationAttempted && !registeredToBid) {
+    } else if (registrationStatus && !qualifiedForBidding) {
       return (
         <Button width={100} block size="large" disabled>
           Registration pending
         </Button>
       )
-    } else if (sale.isRegistrationClosed && !registeredToBid) {
+    } else if (sale.isRegistrationClosed && !qualifiedForBidding) {
       return (
         <Button width={100} block size="large" disabled>
           Registration closed
