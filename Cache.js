@@ -7,6 +7,7 @@ const path = require("path")
 const rimraf = require("rimraf")
 const tar = require("tar-fs")
 const zlib = require("zlib")
+const { spawnSync } = require("child_process")
 const { S3CacheBackend } = require("./S3CacheBackend")
 
 /**
@@ -61,13 +62,20 @@ class Cache {
     const startDownload = Date.now()
     console.log("downloading")
     if (await this.cache.getObject(key, tarballPath)) {
-      console.log("took", (Date.now() - startDownload).toFixed(1) + "s")
-      console.log("unarchiving")
+      console.log("took", (Date.now() - startDownload).toFixed(1) + "ms")
+      console.log("unarchiving with tar-fs")
       const startUnpack = Date.now()
       fs.createReadStream(tarballPath)
         .pipe(tar.extract("."))
         .on("finish", () => {
-          console.log("took", (Date.now() - startUnpack).toFixed(1) + "s")
+          console.log("took", (Date.now() - startUnpack).toFixed(1) + "ms")
+          console.log("unarchiving with tar")
+          const startUnpackTar = Date.now()
+          const result = spawnSync("tar", ["xf", tarballPath, "-C", process.cwd()])
+          if (result.status !== 0) {
+            throw new Error("tar spawn failed")
+          }
+          console.log("took", (Date.now() - startUnpackTar).toFixed(1) + "ms")
         })
       return true
     }
