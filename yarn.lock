@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/palette@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-7.3.0.tgz#ac79fe03640b0e76d4134123adc357e0aade16e1"
-  integrity sha512-JHd/YWBvsXVsM7INMNtz3gcopX9dsqcfoP0Vc5UyN2hxSaD46L2aKaKqRahVtgAEKoLpQcBTRPwoZkUlTymjBA==
+"@artsy/palette@7.4.2":
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-7.4.2.tgz#40d9cb3a36b2a6a3c3fd629aa79c3045d33a0092"
+  integrity sha512-3V7kZT2YXrvP4ySvxpSmPIpRSrgDnXPIdSUaawwszNT0j2bpSeyxGw3Fif539TRcbHLJ7XJPOaj8YjT56AtK6g==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
