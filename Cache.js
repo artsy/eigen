@@ -34,6 +34,7 @@ class Cache {
    * @returns {Promise<void>}
    */
   async save(key, paths) {
+    const startPack = Date.now()
     const pack = tar.pack(".", { entries: paths })
     const tarballPath = path.join(this.tmpdir, key)
     const out = fs.createWriteStream(tarballPath)
@@ -43,8 +44,11 @@ class Cache {
       out.on("close", resolve)
       pack.on("error", reject)
     })
+    console.log("took", (Date.now() - startPack).toFixed(1) + "s")
     console.log("uploading...")
+    const startUpload = Date.now()
     await this.cache.putObject(key, tarballPath)
+    console.log("took", (Date.now() - startUpload).toFixed(1) + "s")
   }
 
   /**
@@ -54,11 +58,18 @@ class Cache {
    */
   async restore(key) {
     const tarballPath = path.join(this.tmpdir, key)
+    const startDownload = Date.now()
+    console.log("downloading")
     if (await this.cache.getObject(key, tarballPath)) {
-      console.log("yay downloaded file to", tarballPath, fs.statSync(tarballPath))
+      console.log("took", (Date.now() - startDownload).toFixed(1) + "s")
+      console.log("unarchiving")
+      const startUnpack = Date.now()
       fs.createReadStream(tarballPath)
         .pipe(zlib.createGunzip())
         .pipe(tar.extract("."))
+        .on("close", () => {
+          console.log("took", (Date.now() - startUnpack).toFixed(1) + "s")
+        })
       return true
     }
     return false
