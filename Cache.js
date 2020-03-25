@@ -36,7 +36,7 @@ class Cache {
    */
   async save(key, paths) {
     const startPack = Date.now()
-    const pack = tar.pack(".", { entries: paths })
+    const pack = tar.pack(".", { entries: paths.slice(0) })
     const tarballPath = path.join(this.tmpdir, key)
     const out = fs.createWriteStream(tarballPath)
     console.log("tar-fs creating tarball at", tarballPath)
