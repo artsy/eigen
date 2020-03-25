@@ -1,4 +1,4 @@
-import { Box, Separator, Serif } from "@artsy/palette"
+import { Box, Separator, Serif, Theme } from "@artsy/palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
@@ -19,7 +19,7 @@ export class ViewingRoom extends React.Component<Props> {
 
     sections.push({
       key: "header",
-      element: <ViewingRoomHeader artwork="https://media.giphy.com/media/2wS9xmYJNsFUTzcNKU/giphy.gif" />,
+      element: <ViewingRoomHeader artwork="http://placekitten.com/800/1200" />,
       excludePadding: true,
     })
 
@@ -41,16 +41,18 @@ export class ViewingRoom extends React.Component<Props> {
 
   render() {
     return (
-      <FlatList<ViewingRoomPageSection>
-        data={this.sections()}
-        ItemSeparatorComponent={() => (
-          <Box px={2} mx={2} my={3}>
-            <Separator />
-          </Box>
-        )}
-        contentInset={{ bottom: 40 }}
-        renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
-      />
+      <Theme>
+        <FlatList<ViewingRoomPageSection>
+          data={this.sections()}
+          ItemSeparatorComponent={() => (
+            <Box px={2} mx={2} my={3}>
+              <Separator />
+            </Box>
+          )}
+          contentInset={{ bottom: 40 }}
+          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+        />
+      </Theme>
     )
   }
 }
