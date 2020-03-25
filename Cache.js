@@ -67,7 +67,7 @@ class Cache {
       fs.createReadStream(tarballPath)
         .pipe(zlib.createGunzip())
         .pipe(tar.extract("."))
-        .on("close", () => {
+        .on("finish", () => {
           console.log("took", (Date.now() - startUnpack).toFixed(1) + "s")
         })
       return true
