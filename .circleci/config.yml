@@ -136,7 +136,7 @@ commands:
             - v5-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
-          command: ls Pods || bundle exec pod install
+          command: bundle exec pod install
       - run:
           name: Update echo
           command: ls Artsy/App/Echo.json || make update_echo
