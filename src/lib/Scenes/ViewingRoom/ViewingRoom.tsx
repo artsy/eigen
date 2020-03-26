@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Sans, Serif, Theme } from "@artsy/palette"
 import React from "react"
-import { FlatList } from "react-native"
+import { Alert, FlatList } from "react-native"
+import { ViewingRoomArtworkRail } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
 
 interface Props {
@@ -37,6 +38,12 @@ export class ViewingRoom extends React.Component<Props> {
     })
 
     sections.push({
+      key: "artworkRail",
+      element: <ViewingRoomArtworkRail />,
+      excludePadding: true,
+    })
+
+    sections.push({
       key: "pullQuote",
       element: (
         <Sans size="8" textAlign="center">
@@ -50,7 +57,7 @@ export class ViewingRoom extends React.Component<Props> {
       key: "viewWorksButton",
       element: (
         <Flex width="100%">
-          <Button block onPress={() => alert("nice job pressing that button")}>
+          <Button block onPress={() => Alert.alert("nice job pressing that button")}>
             View works (5)
           </Button>
         </Flex>
