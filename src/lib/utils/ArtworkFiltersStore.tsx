@@ -83,12 +83,16 @@ export const reducer = (
 
 const defaultFilterOptions = {
   sort: "Default",
+  medium: "All",
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
-  const defaultFilters: FilterArray = [{ filterType: "sort", value: "Default" }]
+  const defaultFilters: FilterArray = [
+    { filterType: "sort", value: "Default" },
+    { filterType: "medium", value: "All" },
+  ]
 
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
 }
@@ -109,7 +113,7 @@ export interface ArtworkFilterContextState {
 }
 
 interface FilterData {
-  readonly value: SortOption
+  readonly value: SortOption | MediumOption
   readonly filterType: FilterOption
 }
 export type FilterArray = ReadonlyArray<FilterData>
@@ -138,6 +142,17 @@ interface ArtworkFilterContext {
   dispatch: Dispatch<FilterActions>
 }
 
+export type MediumOption =
+  | "All"
+  | "Painting"
+  | "Photography"
+  | "Sculpture"
+  | "Prints & multiples"
+  | "Works on paper"
+  | "Film & video"
+  | "Design"
+  | "Jewelry"
+
 export type SortOption =
   | "Default"
   | "Price (low to high)"
@@ -147,4 +162,4 @@ export type SortOption =
   | "Artwork year (descending)"
   | "Artwork year (ascending)"
 
-export type FilterOption = "sort"
+export type FilterOption = "sort" | "medium"

@@ -4,6 +4,7 @@ import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback,
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { ArtworkFilterContext, FilterOption, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import { MediumOptionsScreen as MediumOptions } from "./ArtworkFilterOptions/MediumOptions"
 import { SortOptionsScreen as SortOptions } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -80,16 +81,21 @@ type FilterOptions = Array<{ filterType: FilterOption; filterText: string; onTap
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
-  const handleNavigationToSortScreen = () => {
+  const navigateToNextFilterScreen = (filterOption: FilterOption) => {
     navigator.push({
-      component: SortOptions,
+      component: filterOption === "sort" ? SortOptions : MediumOptions,
     })
   }
   const [filterOptions] = useState<FilterOptions>([
     {
       filterText: "Sort by",
       filterType: "sort",
-      onTap: handleNavigationToSortScreen,
+      onTap: () => navigateToNextFilterScreen("sort"),
+    },
+    {
+      filterText: "Medium",
+      filterType: "medium",
+      onTap: () => navigateToNextFilterScreen("medium"),
     },
   ])
 
