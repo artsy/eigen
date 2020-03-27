@@ -221,6 +221,10 @@ jobs:
             then
               circleci step halt
             fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /Users/distiller/project
       - checkout
       - attach_workspace:
           at: .
