@@ -33,9 +33,10 @@ describe("Sort Options Screen", () => {
   }
 
   it("renders the correct number of sort options", () => {
-    const state = {
+    const state: ArtworkFilterContextState = {
       selectedFilters: [],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
@@ -48,6 +49,7 @@ describe("Sort Options Screen", () => {
       const state: ArtworkFilterContextState = {
         selectedFilters: [],
         appliedFilters: [],
+        previouslyAppliedFilters: [],
         applyFilters: false,
       }
 
@@ -60,6 +62,7 @@ describe("Sort Options Screen", () => {
       const state: ArtworkFilterContextState = {
         selectedFilters: [],
         appliedFilters: [{ filterType: "sort", value: "Recently added" }],
+        previouslyAppliedFilters: [{ filterType: "sort", value: "Recently added" }],
         applyFilters: false,
       }
 
@@ -67,10 +70,12 @@ describe("Sort Options Screen", () => {
       const selectedOption = selectedSortOption(component)
       expect(selectedOption.text()).toContain("Recently added")
     })
+
     it("prefers the selected filter over the default filter", () => {
       const state: ArtworkFilterContextState = {
         selectedFilters: [{ filterType: "sort", value: "Recently added" }],
         appliedFilters: [],
+        previouslyAppliedFilters: [],
         applyFilters: false,
       }
 
@@ -78,10 +83,12 @@ describe("Sort Options Screen", () => {
       const selectedOption = selectedSortOption(component)
       expect(selectedOption.text()).toContain("Recently added")
     })
+
     it("prefers the selected filter over an applied filter", () => {
       const state: ArtworkFilterContextState = {
         selectedFilters: [{ filterType: "sort", value: "Recently added" }],
         appliedFilters: [{ filterType: "sort", value: "Recently updated" }],
+        previouslyAppliedFilters: [{ filterType: "sort", value: "Recently updated" }],
         applyFilters: false,
       }
 

@@ -16,9 +16,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {
-    if (!state.appliedFilters) {
-      dispatch({ type: "resetFilters" })
-    }
+    dispatch({ type: "resetFilters" })
     closeModal()
   }
 
@@ -31,6 +29,9 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
     const selectedFiltersSum = state.selectedFilters.length
     return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
   }
+
+  const isApplyButtonEnabled =
+    state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
 
   return (
     <>
@@ -51,7 +52,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                 />
                 <Box p={2}>
                   <ApplyButton
-                    disabled={state.selectedFilters.length < 1}
+                    disabled={!isApplyButtonEnabled}
                     onPress={applyFilters}
                     block
                     width={100}
@@ -93,7 +94,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
   ])
 
   const clearAllFilters = () => {
-    dispatch({ type: "resetFilters" })
+    dispatch({ type: "clearAll" })
   }
 
   const handleTappingCloseIcon = () => {

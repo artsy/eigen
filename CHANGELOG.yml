@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Added shell for Galleries development of Viewing Rooms - ash
+    - Fixes Clear All functionality in collections filtering - sweir27
   user_facing:
     -
 

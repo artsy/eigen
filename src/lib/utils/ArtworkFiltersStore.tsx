@@ -4,6 +4,7 @@ import React, { createContext, Dispatch, Reducer, useContext, useReducer } from 
 const filterState: ArtworkFilterContextState = {
   appliedFilters: [],
   selectedFilters: [],
+  previouslyAppliedFilters: [],
   applyFilters: false,
 }
 
@@ -15,7 +16,7 @@ export const reducer = (
     case "applyFilters":
       const filtersToApply = unionBy(
         artworkFilterState.selectedFilters,
-        artworkFilterState.appliedFilters,
+        artworkFilterState.previouslyAppliedFilters,
         "filterType"
       )
 
@@ -28,6 +29,7 @@ export const reducer = (
         applyFilters: true,
         appliedFilters,
         selectedFilters: [],
+        previouslyAppliedFilters: appliedFilters,
       }
 
     case "selectFilters":
@@ -55,10 +57,27 @@ export const reducer = (
         applyFilters: false,
         selectedFilters,
         appliedFilters: artworkFilterState.appliedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+      }
+
+    case "clearAll":
+      return {
+        applyFilters: false,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: [],
+        previouslyAppliedFilters: [],
       }
 
     case "resetFilters":
-      return { applyFilters: false, appliedFilters: [], selectedFilters: [] }
+      // We call this when we need to re-set to our initial state. Since previouslyAppliedFilters
+      // is only used while in the filter modal, when we close out we need to re-set that back
+      // to equal appliedFilters.
+      return {
+        applyFilters: false,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: [],
+        previouslyAppliedFilters: artworkFilterState.appliedFilters,
+      }
   }
 }
 
@@ -71,7 +90,7 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
 
   const defaultFilters: FilterArray = [{ filterType: "sort", value: "Default" }]
 
-  return unionBy(state.selectedFilters, state.appliedFilters, defaultFilters, "filterType")
+  return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
 }
 
 export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
@@ -85,6 +104,7 @@ export const ArtworkFilterGlobalStateProvider = ({ children }) => {
 export interface ArtworkFilterContextState {
   readonly appliedFilters: FilterArray
   readonly selectedFilters: FilterArray
+  readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
 }
 
@@ -107,7 +127,11 @@ interface SelectFilters {
   payload: FilterData
 }
 
-export type FilterActions = ResetFilters | ApplyFilters | SelectFilters
+interface ClearAllFilters {
+  type: "clearAll"
+}
+
+export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState

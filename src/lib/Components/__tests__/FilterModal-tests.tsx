@@ -36,6 +36,7 @@ beforeEach(() => {
   state = {
     selectedFilters: [],
     appliedFilters: [],
+    previouslyAppliedFilters: [],
     applyFilters: false,
   }
   NativeModules.Emission = {
@@ -149,6 +150,7 @@ describe("Filter modal navigation flow", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
@@ -194,6 +196,7 @@ describe("Filter modal navigation flow", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
@@ -210,6 +213,7 @@ describe("Filter modal navigation flow", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [{ filterType: "sort", value: "Price (high to low)" }],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
     const sortScreen = mount(<MockSortScreen initialState={initialState} />)
@@ -223,6 +227,7 @@ describe("Filter modal navigation flow", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [{ filterType: "sort", value: "Price (low to high)" }],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
@@ -234,6 +239,7 @@ describe("Filter modal navigation flow", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
@@ -246,6 +252,7 @@ describe("Filter modal navigation flow", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
@@ -258,6 +265,7 @@ describe("Filter modal navigation flow", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
@@ -272,6 +280,7 @@ describe("Clearing filters", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
       appliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
       applyFilters: false,
     }
 
@@ -287,10 +296,34 @@ describe("Clearing filters", () => {
     expect(filterScreen.find(CurrentOption).text()).toEqual("Default")
   })
 
+  it("enables the apply button when clearing all if no other options are selected", () => {
+    const initialState: ArtworkFilterContextState = {
+      selectedFilters: [],
+      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      applyFilters: false,
+    }
+
+    const filterModal = mount(<MockFilterModalNavigator initialState={initialState} />)
+
+    expect(filterModal.find(CurrentOption).text()).toEqual("Recently added")
+    expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
+
+    filterModal
+      .find(ClearAllButton)
+      .props()
+      .onPress()
+
+    filterModal.update()
+    expect(filterModal.find(CurrentOption).text()).toEqual("Default")
+    expect(filterModal.find(ApplyButton).props().disabled).toEqual(false)
+  })
+
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
       appliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
       applyFilters: true,
     }
 
@@ -311,6 +344,7 @@ describe("Applying filters", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
       appliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
       applyFilters: true,
     }
 
