@@ -19,11 +19,13 @@ export const reducer = (
         artworkFilterState.previouslyAppliedFilters,
         "filterType"
       )
+      console.log("filtersToApply", filtersToApply)
 
       // Remove default values as those are accounted for when we make the API request.
       const appliedFilters = filter(filtersToApply, ({ filterType, value }) => {
         return defaultFilterOptions[filterType] !== value
       })
+      console.log("appliedFilters -> appliedFilters", appliedFilters)
 
       return {
         applyFilters: true,
@@ -152,6 +154,9 @@ export type MediumOption =
   | "Film & video"
   | "Design"
   | "Jewelry"
+  | "Drawing"
+  | "Installation"
+  | "Performance art"
 
 export type SortOption =
   | "Default"

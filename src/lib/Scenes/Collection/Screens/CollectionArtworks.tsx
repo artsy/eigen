@@ -15,14 +15,31 @@ enum ArtworkSorts {
   "Artwork year (ascending)" = "year",
 }
 
+enum MediumFilters {
+  "All" = "*",
+  "Painting" = "painting",
+  "Photography" = "photography",
+  "Sculpture" = "sculpture",
+  "Prints & multiples" = "prints",
+  "Works on paper" = "work-on-paper",
+  "Film & video" = "film-slash-video",
+  "Design" = "design",
+  "Jewelry" = "jewelry",
+  "Drawing" = "drawing",
+  "Installation" = "installation",
+  "Performance art" = "performance-art",
+}
+
 const filterTypeToParam = {
   sort: ArtworkSorts,
+  medium: MediumFilters,
 }
 
 export const filterArtworksParams = (appliedFilters: FilterArray) => {
   // Default params
   const filterParams = {
     sort: "-decayed_merch",
+    medium: "*",
   }
 
   appliedFilters.forEach(appliedFilterOption => {
@@ -70,11 +87,28 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String", defaultValue: "" }
           sort: { type: "String", defaultValue: "-decayed_merch" }
+          medium: { type: "String", defaultValue: "*" }
         ) {
         slug
         id
-        collectionArtworks: artworksConnection(sort: $sort, first: $count, after: $cursor)
-          @connection(key: "Collection_collectionArtworks") {
+        collectionArtworks: artworksConnection(
+          first: $count
+          after: $cursor
+          sort: $sort
+          medium: $medium
+          aggregations: [MEDIUM]
+        ) @connection(key: "Collection_collectionArtworks") {
+          counts {
+            total
+          }
+          aggregations {
+            slice
+            counts {
+              value
+              name
+              count
+            }
+          }
           edges {
             node {
               id
@@ -103,12 +137,19 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         count,
         cursor,
         sort: fragmentVariables.sort,
+        medium: fragmentVariables.medium,
       }
     },
     query: graphql`
-      query CollectionArtworksInfiniteScrollGridQuery($id: String!, $count: Int!, $cursor: String, $sort: String) {
+      query CollectionArtworksInfiniteScrollGridQuery(
+        $id: String!
+        $count: Int!
+        $cursor: String
+        $sort: String
+        $medium: String
+      ) {
         marketingCollection(slug: $id) {
-          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor, sort: $sort)
+          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium)
         }
       }
     `,

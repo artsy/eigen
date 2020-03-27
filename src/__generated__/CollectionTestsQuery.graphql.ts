@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 587414ebe4801b44728a8a7439b04e0b */
+/* @relayHash f52a5624288d47dd3592218bfb416759 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,7 +79,18 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment CollectionArtworks_collection on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10, after: "") {
+  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM]) {
+    counts {
+      total
+    }
+    aggregations {
+      slice
+      counts {
+        value
+        name
+        count
+      }
+    }
     edges {
       node {
         id
@@ -203,8 +214,20 @@ v5 = [
   },
   {
     "kind": "Literal",
+    "name": "aggregations",
+    "value": [
+      "MEDIUM"
+    ]
+  },
+  {
+    "kind": "Literal",
     "name": "first",
     "value": 10
+  },
+  {
+    "kind": "Literal",
+    "name": "medium",
+    "value": "*"
   },
   (v4/*: any*/)
 ],
@@ -420,11 +443,73 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(after:\"\",first:10,sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(after:\"\",aggregations:[\"MEDIUM\"],first:10,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v5/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "total",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "aggregations",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtworksAggregationResults",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "slice",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "counts",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "AggregationCount",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "value",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v6/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "count",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -671,7 +756,9 @@ return {
             "handle": "connection",
             "key": "Collection_collectionArtworks",
             "filters": [
-              "sort"
+              "sort",
+              "medium",
+              "aggregations"
             ]
           },
           {
@@ -814,7 +901,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "e1b5b69ea909e7587affc27d3002ed44",
+    "id": "f3e6f17b0a279e9cf67e2e020bf480b5",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -846,6 +933,18 @@ return {
           "nullable": true
         },
         "marketingCollection.image.id": (v14/*: any*/),
+        "marketingCollection.collectionArtworks.counts": {
+          "type": "FilterArtworksCounts",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "marketingCollection.collectionArtworks.aggregations": {
+          "type": "ArtworksAggregationResults",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
         "marketingCollection.collectionArtworks.edges": {
           "type": "ArtworkEdgeInterface",
           "enumValues": null,
@@ -864,11 +963,50 @@ return {
         "marketingCollection.query.artistIDs": (v13/*: any*/),
         "marketingCollection.query.id": (v14/*: any*/),
         "marketingCollection.image.edges.node": (v16/*: any*/),
+        "marketingCollection.collectionArtworks.counts.total": {
+          "type": "FormattedNumber",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "marketingCollection.collectionArtworks.aggregations.slice": {
+          "type": "ArtworkAggregation",
+          "enumValues": [
+            "COLOR",
+            "DIMENSION_RANGE",
+            "FOLLOWED_ARTISTS",
+            "MAJOR_PERIOD",
+            "MEDIUM",
+            "MERCHANDISABLE_ARTISTS",
+            "GALLERY",
+            "INSTITUTION",
+            "PARTNER_CITY",
+            "PERIOD",
+            "PRICE_RANGE",
+            "TOTAL"
+          ],
+          "plural": false,
+          "nullable": true
+        },
+        "marketingCollection.collectionArtworks.aggregations.counts": {
+          "type": "AggregationCount",
+          "enumValues": null,
+          "plural": true,
+          "nullable": true
+        },
         "marketingCollection.collectionArtworks.edges.node": (v16/*: any*/),
         "marketingCollection.artworksConnection.merchandisableArtists.internalID": (v9/*: any*/),
         "marketingCollection.artworksConnection.merchandisableArtists.id": (v9/*: any*/),
         "marketingCollection.image.edges.node.image": (v17/*: any*/),
         "marketingCollection.image.edges.node.id": (v14/*: any*/),
+        "marketingCollection.collectionArtworks.aggregations.counts.value": (v10/*: any*/),
+        "marketingCollection.collectionArtworks.aggregations.counts.name": (v10/*: any*/),
+        "marketingCollection.collectionArtworks.aggregations.counts.count": {
+          "type": "Int",
+          "enumValues": null,
+          "plural": false,
+          "nullable": false
+        },
         "marketingCollection.collectionArtworks.edges.node.id": (v9/*: any*/),
         "marketingCollection.collectionArtworks.edges.cursor": (v10/*: any*/),
         "marketingCollection.collectionArtworks.pageInfo.hasNextPage": {

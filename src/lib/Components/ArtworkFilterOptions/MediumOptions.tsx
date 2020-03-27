@@ -3,12 +3,7 @@ import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import {
-  ArtworkFilterContext,
-  MediumOption,
-  SortOption,
-  useSelectedOptionsDisplay,
-} from "../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, MediumOption, useSelectedOptionsDisplay } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
 interface MediumOptionsScreenProps {
@@ -44,6 +39,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
       </FilterHeader>
       <Flex mb={120}>
         <FlatList<MediumOption>
+          initialNumToRender={12}
           keyExtractor={(_item, index) => String(index)}
           data={mediumFilterOptions}
           renderItem={({ item }) => (
@@ -101,6 +97,9 @@ const mediumFilterOptions: MediumOption[] = [
   "Film & video",
   "Design",
   "Jewelry",
+  "Drawing",
+  "Installation",
+  "Performance art",
 ]
 
 export const MediumOptionListItemRow = styled(TouchableOpacity)``

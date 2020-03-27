@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3413b40e4d43e9ca47e953333efe4ad2 */
+/* @relayHash 5c5d324aa420d9303dc55f42f0623085 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -84,7 +84,18 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment CollectionArtworks_collection on MarketingCollection {
   slug
   id
-  collectionArtworks: artworksConnection(sort: "-decayed_merch", first: 10, after: "") {
+  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM]) {
+    counts {
+      total
+    }
+    aggregations {
+      slice
+      counts {
+        value
+        name
+        count
+      }
+    }
     edges {
       node {
         id
@@ -222,8 +233,20 @@ v6 = [
   },
   {
     "kind": "Literal",
+    "name": "aggregations",
+    "value": [
+      "MEDIUM"
+    ]
+  },
+  {
+    "kind": "Literal",
     "name": "first",
     "value": 10
+  },
+  {
+    "kind": "Literal",
+    "name": "medium",
+    "value": "*"
   },
   (v5/*: any*/)
 ],
@@ -379,11 +402,73 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(after:\"\",first:10,sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(after:\"\",aggregations:[\"MEDIUM\"],first:10,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v6/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "total",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "aggregations",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtworksAggregationResults",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "slice",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "counts",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "AggregationCount",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "value",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v7/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "count",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -630,7 +715,9 @@ return {
             "handle": "connection",
             "key": "Collection_collectionArtworks",
             "filters": [
-              "sort"
+              "sort",
+              "medium",
+              "aggregations"
             ]
           },
           {
@@ -773,7 +860,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "307224accfe78efef112fe528224e180",
+    "id": "27ac1ad91fbfb36cea1e0fec633f27fe",
     "text": null,
     "metadata": {}
   }
