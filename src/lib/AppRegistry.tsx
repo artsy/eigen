@@ -1,16 +1,13 @@
 import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
-import { Container as RelayContainer } from "react-relay"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/"
 import { ArtistQueryRenderer } from "./Containers/Artist"
-import BidFlow from "./Containers/BidFlow"
-import RegistrationFlow from "./Containers/RegistrationFlow"
+import { BidFlowRenderer } from "./Containers/BidFlow"
+import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
 import {
-  BidderFlowRendererProps,
-  BidFlowRenderer,
   CityBMWListRenderer,
   CityFairListRenderer,
   CitySavedListRenderer,
@@ -22,7 +19,6 @@ import {
   GeneRenderer,
   InboxRenderer,
   InquiryRenderer,
-  RegistrationFlowRenderer,
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
@@ -198,25 +194,13 @@ interface BidderFlowProps {
   intent: BidderFlowIntent
 }
 
-interface BidderFlow {
-  queryRenderer: React.ComponentType<BidderFlowRendererProps>
-  container: RelayContainer<any>
-}
-
-const BidderFlows: { [BidderFlowIntent: string]: BidderFlow } = {
-  bid: {
-    queryRenderer: BidFlowRenderer,
-    container: BidFlow,
-  },
-  register: {
-    queryRenderer: RegistrationFlowRenderer,
-    container: RegistrationFlow,
-  },
-}
-
 const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
-  const { queryRenderer: Renderer, container: Container } = BidderFlows[intent]
-  return <Renderer {...restProps} render={renderWithLoadProgress(Container)} />
+  switch (intent) {
+    case "bid":
+      return <BidFlowRenderer {...restProps} />
+    case "register":
+      return <RegistrationFlowRenderer {...restProps} />
+  }
 }
 
 interface FairProps {

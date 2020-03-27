@@ -8,17 +8,14 @@ import Fair from "../Scenes/Fair"
 import { Home } from "../Scenes/Home/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Show from "../Scenes/Show"
-import BidFlow from "./BidFlow"
 import Conversation from "./Conversation"
 import Gene from "./Gene"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
-import RegistrationFlow from "./RegistrationFlow"
 import WorksForYou from "./WorksForYou"
 
 export default {
   Artwork,
-  BidFlow,
   CitySavedList,
   CityBMWList,
   CitySectionList,
@@ -31,7 +28,6 @@ export default {
   Inquiry,
   MyProfile,
   Partner,
-  RegistrationFlow,
   Show,
   WorksForYou,
 }

@@ -2,12 +2,6 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 // tslint:disable:no-unused-expression
-import BidFlow from "../Containers/BidFlow"
-BidFlow
-
-import RegistrationFlow from "../Containers/RegistrationFlow"
-RegistrationFlow
-
 import Conversation from "../Containers/Conversation"
 Conversation
 
@@ -25,7 +19,6 @@ Inbox
 // tslint:enable:no-unused-expression
 
 import { EventStatus, ShowSorts } from "__generated__/CitySectionListQuery.graphql"
-import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
 import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
 import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
 import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
@@ -39,7 +32,6 @@ import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQue
 import { QueryRenderersGeneQuery } from "__generated__/QueryRenderersGeneQuery.graphql"
 import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
 import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
-import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderersRegistrationFlowQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
@@ -50,77 +42,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-export interface BidderFlowRendererProps extends RendererProps {
-  artworkID?: string
-  saleID: string
-}
-
-export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, saleID }) => {
-  return (
-    <QueryRenderer<QueryRenderersRegistrationFlowQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersRegistrationFlowQuery($saleID: String!) {
-          sale(id: $saleID) {
-            name
-            ...RegistrationFlow_sale
-          }
-          me {
-            ...RegistrationFlow_me
-          }
-        }
-      `}
-      cacheConfig={{ force: true }} // We want to always fetch latest sale registration status, CC info, etc.
-      variables={{
-        saleID,
-      }}
-      render={render}
-    />
-  )
-}
-
-export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, artworkID, saleID }) => {
-  // TODO: artworkID can be nil, so omit that part of the query if it is.
-  return (
-    <QueryRenderer<QueryRenderersBidFlowQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersBidFlowQuery($artworkID: String!, $saleID: String!) {
-          artwork(id: $artworkID) {
-            sale_artwork: saleArtwork(saleID: $saleID) {
-              ...BidFlow_sale_artwork
-            }
-          }
-          me {
-            ...BidFlow_me
-          }
-        }
-      `}
-      cacheConfig={{ force: true }} // We want to always fetch latest bid increments.
-      variables={{
-        artworkID,
-        saleID,
-      }}
-      render={({ props, error, retry }) => {
-        if (props) {
-          // Note that we need to flatten the query above before passing into the BidFlow component.
-          // i.e.: the `sale_artwork` is nested within `artwork`, but we want the sale_artwork itself as a prop.
-          return render({
-            props: {
-              sale_artwork: props.artwork.sale_artwork,
-              me: props.me,
-            },
-            error,
-            retry,
-          })
-        } else {
-          render({ props, error, retry })
-        }
-      }}
-    />
-  )
 }
 
 interface ConversationRendererProps extends RendererProps {

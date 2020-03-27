@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0ce7ca86fc9cbde529c3cb6f6339b24e */
+/* @relayHash 499e58accd2cf77816d14b9d2dbb3deb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersBidFlowQueryVariables = {
+export type BidFlowQueryVariables = {
     artworkID: string;
     saleID: string;
 };
-export type QueryRenderersBidFlowQueryResponse = {
+export type BidFlowQueryResponse = {
     readonly artwork: {
         readonly sale_artwork: {
             readonly " $fragmentRefs": FragmentRefs<"BidFlow_sale_artwork">;
@@ -18,15 +18,15 @@ export type QueryRenderersBidFlowQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"BidFlow_me">;
     } | null;
 };
-export type QueryRenderersBidFlowQuery = {
-    readonly response: QueryRenderersBidFlowQueryResponse;
-    readonly variables: QueryRenderersBidFlowQueryVariables;
+export type BidFlowQuery = {
+    readonly response: BidFlowQueryResponse;
+    readonly variables: BidFlowQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersBidFlowQuery(
+query BidFlowQuery(
   $artworkID: String!
   $saleID: String!
 ) {
@@ -156,7 +156,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersBidFlowQuery",
+    "name": "BidFlowQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -208,7 +208,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersBidFlowQuery",
+    "name": "BidFlowQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -440,12 +440,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersBidFlowQuery",
-    "id": "1f1940617b5b7da42b458b1880dac5a1",
+    "name": "BidFlowQuery",
+    "id": "ede3d5d49bccebe50e263ec437040d19",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3ec3ffc863425fc2bd60a4aed520770d';
+(node as any).hash = 'd0fc36c2f7a45a3e35dead25f2fa9bf3';
 export default node;

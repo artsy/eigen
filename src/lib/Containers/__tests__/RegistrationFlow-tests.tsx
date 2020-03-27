@@ -3,9 +3,9 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
-import RegistrationFlow from "../RegistrationFlow"
 
 import { Theme } from "@artsy/palette"
+import { RegistrationFlowFragmentContainer } from "../RegistrationFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
@@ -32,7 +32,7 @@ it("renders properly with credit card", () => {
   const bg = renderer
     .create(
       <Theme>
-        <RegistrationFlow
+        <RegistrationFlowFragmentContainer
           me={
             {
               has_credit_cards: true,
@@ -52,7 +52,7 @@ it("renders properly without credit card", () => {
   const bg = renderer
     .create(
       <Theme>
-        <RegistrationFlow
+        <RegistrationFlowFragmentContainer
           me={
             {
               has_credit_cards: false,
