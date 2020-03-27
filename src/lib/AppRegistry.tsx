@@ -6,6 +6,7 @@ import Consignments from "./Components/Consignments"
 import Containers from "./Containers/"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
+import { ConversationRenderer } from "./Containers/Conversation"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
 import {
   CityBMWListRenderer,
@@ -14,7 +15,6 @@ import {
   CitySectionListRenderer,
   CollectionFullFeaturedArtistListRenderer,
   CollectionRenderer,
-  ConversationRenderer,
   FairRenderer,
   GeneRenderer,
   InboxRenderer,
@@ -157,7 +157,7 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
     context_screen_owner_id: props.conversationID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
-})(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
+})(ConversationRenderer)
 
 const MyProfile = Containers.MyProfile
 

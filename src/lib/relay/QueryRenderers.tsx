@@ -2,9 +2,6 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 // tslint:disable:no-unused-expression
-import Conversation from "../Containers/Conversation"
-Conversation
-
 import Gene from "../Containers/Gene"
 Gene
 
@@ -26,7 +23,6 @@ import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionL
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersCollectionFullFeaturedArtistListQuery } from "__generated__/QueryRenderersCollectionFullFeaturedArtistListQuery.graphql"
 import { QueryRenderersCollectionQuery } from "__generated__/QueryRenderersCollectionQuery.graphql"
-import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQuery.graphql"
 import { QueryRenderersGeneQuery } from "__generated__/QueryRenderersGeneQuery.graphql"
@@ -42,31 +38,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface ConversationRendererProps extends RendererProps {
-  conversationID: string
-  cursor?: string
-  count?: number
-}
-
-export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ render, conversationID }) => {
-  return (
-    <QueryRenderer<QueryRenderersConversationQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersConversationQuery($conversationID: String!) {
-          me {
-            ...Conversation_me
-          }
-        }
-      `}
-      variables={{
-        conversationID,
-      }}
-      render={render}
-    />
-  )
 }
 
 export const ForYouRenderer: React.SFC<RendererProps> = ({ render }) => {
