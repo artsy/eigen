@@ -74,7 +74,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
         [self showSentryBreadcrumbs],
-    
+
         [self generateEchoContents],
     ]];
 
