@@ -22,14 +22,25 @@ const watchOnly = sale => sale.isRegistrationClosed && !sale?.registrationStatus
 const getMyLotStanding = artwork => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
 const getHasBid = myLotStanding => !!(myLotStanding && myLotStanding.mostRecentBid)
 
-const IdentityVerificationRequiredMessage = props => (
-  <Sans mt="1" size="3" color="black60" pb="1" textAlign="center" {...props}>
+const IdentityVerificationRequiredMessage = ({ onPress, ...remainderProps }) => (
+  <Sans mt="1" size="3" color="black60" pb="1" textAlign="center" {...remainderProps}>
     Identity verification required to bid.{" "}
+    <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
+      FAQ
+    </Text>
   </Sans>
 )
 
 @track()
 export class BidButton extends React.Component<BidButtonProps> {
+  @track({
+    action_name: Schema.ActionNames.IdentityVerificationFAQ,
+    action_type: Schema.ActionTypes.Tap,
+  })
+  redirectToIdentityVerificationFAQ() {
+    SwitchBoard.presentNavigationViewController(this, `/identity-verification-faq`)
+  }
+
   @track({
     action_name: Schema.ActionNames.RegisterToBid,
     action_type: Schema.ActionTypes.Tap,
@@ -79,7 +90,9 @@ export class BidButton extends React.Component<BidButtonProps> {
             <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
               Register to bid
             </Button>
-            {needsIdentityVerification && <IdentityVerificationRequiredMessage />}
+            {needsIdentityVerification && (
+              <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
+            )}
           </>
         )}
         {registrationStatus && !registrationStatus.qualifiedForBidding && (
@@ -87,7 +100,9 @@ export class BidButton extends React.Component<BidButtonProps> {
             <Button width={100} block size="large" mt={1} disabled>
               Registration pending
             </Button>
-            {needsIdentityVerification && <IdentityVerificationRequiredMessage />}
+            {needsIdentityVerification && (
+              <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
+            )}
           </>
         )}
         {registrationStatus?.qualifiedForBidding && (
@@ -147,7 +162,9 @@ export class BidButton extends React.Component<BidButtonProps> {
           <Button width={100} block size="large" disabled>
             Registration pending
           </Button>
-          {needsIdentityVerification && <IdentityVerificationRequiredMessage />}
+          {needsIdentityVerification && (
+            <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
+          )}
         </>
       )
     } else if (sale.isRegistrationClosed && !qualifiedForBidding) {
@@ -162,7 +179,7 @@ export class BidButton extends React.Component<BidButtonProps> {
           <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
             Register to bid
           </Button>
-          <IdentityVerificationRequiredMessage />
+          <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
         </>
       )
     } else {

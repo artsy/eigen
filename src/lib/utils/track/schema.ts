@@ -180,6 +180,7 @@ export enum ActionNames {
   ArtworkUnsave = "artworkUnsave",
   AskASpecialist = "askASpecialist",
   AuctionsFAQ = "auctionsFAQ",
+  IdentityVerificationFAQ = "identityVerificationFAQ",
   Bid = "bid",
   ConditionsOfSale = "conditionsOfSale",
   ConsignWithArtsy = "consignWithArtsy",
