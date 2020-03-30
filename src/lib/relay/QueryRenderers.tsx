@@ -2,8 +2,6 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 // tslint:disable:no-unused-expression
-import Gene from "../Containers/Gene"
-Gene
 
 import WorksForYou from "../Containers/WorksForYou"
 WorksForYou
@@ -24,7 +22,6 @@ import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderers
 import { QueryRenderersCollectionFullFeaturedArtistListQuery } from "__generated__/QueryRenderersCollectionFullFeaturedArtistListQuery.graphql"
 import { QueryRenderersCollectionQuery } from "__generated__/QueryRenderersCollectionQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
-import { QueryRenderersGeneQuery } from "__generated__/QueryRenderersGeneQuery.graphql"
 import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
 import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
@@ -37,33 +34,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface GeneRendererProps extends RendererProps {
-  geneID: string
-  medium?: string
-  price_range?: string
-}
-
-export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, medium, price_range }) => {
-  return (
-    <QueryRenderer<QueryRenderersGeneQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersGeneQuery($geneID: String!, $medium: String, $price_range: String) {
-          gene(id: $geneID) {
-            ...Gene_gene @arguments(medium: $medium, priceRange: $price_range)
-          }
-        }
-      `}
-      variables={{
-        geneID,
-        medium,
-        price_range,
-      }}
-      render={render}
-    />
-  )
 }
 
 interface WorksForYouRendererProps extends RendererProps {

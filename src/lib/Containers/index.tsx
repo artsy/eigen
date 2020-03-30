@@ -8,7 +8,6 @@ import Fair from "../Scenes/Fair"
 import { Home } from "../Scenes/Home/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Show from "../Scenes/Show"
-import Gene from "./Gene"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
 import WorksForYou from "./WorksForYou"
@@ -19,7 +18,6 @@ export default {
   CityBMWList,
   CitySectionList,
   CityFairList,
-  Gene,
   Fair,
   Home,
   Inbox,

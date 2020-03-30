@@ -7,6 +7,7 @@ import Containers from "./Containers/"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
 import { ConversationRenderer } from "./Containers/Conversation"
+import { GeneRenderer } from "./Containers/Gene"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
 import {
   CityBMWListRenderer,
@@ -16,7 +17,6 @@ import {
   CollectionFullFeaturedArtistListRenderer,
   CollectionRenderer,
   FairRenderer,
-  GeneRenderer,
   InboxRenderer,
   InquiryRenderer,
   ShowRenderer,
@@ -111,19 +111,9 @@ const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
   }
 })(({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
-  return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
+  return <GeneRenderer {...initialProps} />
 })
 
-// FIXME: This isn't being used
-// const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
-//   const initialProps = { saleID }
-//   return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
-// }
-
-// TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
-//
-//     this.renderFetched = data => <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
-//
 // FIXME: Is this really still being used?
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props => (
   <WorksForYouRenderer
