@@ -60,22 +60,22 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v3-query_map-{{ checksum ".manifests/query_map" }}
+            - v4-query_map-{{ checksum ".manifests/query_map" }}
       - run:
           name: Compile query map
           command: ls data/complete.queryMap.json || yarn relay
       - save_cache:
-          key: v3-query_map-{{ checksum ".manifests/query_map" }}
+          key: v4-query_map-{{ checksum ".manifests/query_map" }}
           paths:
             - data/complete.queryMap.json
   test-js:
     steps:
       - restore_cache:
           keys:
-            - v3-jest-{{ .Branch }}
+            - v4-jest-{{ .Branch }}
       - restore_cache:
           keys:
-            - v3-js_test_results-{{ checksum ".manifests/js_test_results" }}
+            - v4-js_test_results-{{ checksum ".manifests/js_test_results" }}
       - run:
           name: Run TypeScript check
           command: ls test-results.json || yarn type-check
@@ -86,30 +86,30 @@ commands:
           name: Run jest tests
           command: ls test-results.json || yarn jest --outputFile test-results.json --json --ci --forceExit --runInBand
       - save_cache:
-          key: v3-js_test_results-{{ checksum ".manifests/js_test_results" }}
+          key: v4-js_test_results-{{ checksum ".manifests/js_test_results" }}
           paths:
             - test-results.json
       - save_cache:
-          key: v3-jest-{{ .Branch }}
+          key: v4-jest-{{ .Branch }}
           paths:
             - .jest
   bundle-js:
     steps:
       - restore_cache:
           keys:
-            - v4-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v5-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v4-metro-{{ checksum ".manifests/js_transform" }}
+            - v5-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
           command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci
       - save_cache:
-          key: v4-metro-{{ checksum ".manifests/js_transform" }}
+          key: v5-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .metro
       - save_cache:
-          key: v4-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v5-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - emission/Pod/Assets/Emission.js
             - emission/Pod/Assets/Emission.map.js
