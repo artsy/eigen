@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Directly track lotViewed instead of using legacy `session` tracking - bhoggard & dleve123
+    - Adds filtering by artwork medium to Collections - ashleyjelks
   user_facing:
     - Adds <ArtistConsignButton> to Artist page - chris
     - Show verification text and FAQ link in auctions - brian
