@@ -79,12 +79,11 @@ interface FilterOptionsProps {
 
 type FilterOptions = Array<{ filterType: FilterOption; filterText: string; onTap: () => void }>
 
-const FilterScreenComponents = {
-  sort: SortOptions,
-  medium: MediumOptions,
-}
-
 export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
+  const FilterScreenComponents = {
+    sort: SortOptions,
+    medium: MediumOptions,
+  }
   const { dispatch } = useContext(ArtworkFilterContext)
   const navigateToNextFilterScreen = (filterOption: FilterOption) => {
     navigator.push({

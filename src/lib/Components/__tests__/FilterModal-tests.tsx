@@ -115,7 +115,7 @@ describe("Filter modal navigation flow", () => {
         </ArtworkFilterContext.Provider>
       </Theme>
     )
-    const instance = filterScreen.root.findByType(TouchableOptionListItemRow)
+    const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[0]
 
     act(() => instance.props.onPress())
 
@@ -145,7 +145,6 @@ describe("Filter modal navigation flow", () => {
 
     expect(getNextScreenTitle(nextScreen)).toEqual("Sort")
   })
-
   xit("allows users to navigate back to filter screen from sort screen ", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [],
@@ -232,7 +231,12 @@ describe("Filter modal navigation flow", () => {
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
-    expect(filterScreen.find(CurrentOption).text()).toEqual("Price (low to high)")
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(0)
+        .text()
+    ).toEqual("Price (low to high)")
   })
 
   it("shows the default sort option on the filter screen", () => {
@@ -245,7 +249,12 @@ describe("Filter modal navigation flow", () => {
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
 
-    expect(filterScreen.find(CurrentOption).text()).toEqual("Default")
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(0)
+        .text()
+    ).toEqual("Default")
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
@@ -286,14 +295,25 @@ describe("Clearing filters", () => {
 
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
 
-    expect(filterScreen.find(CurrentOption).text()).toEqual("Price (low to high)")
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(0)
+        .text()
+    ).toEqual("Price (low to high)")
 
     filterScreen
       .find(ClearAllButton)
+      .at(0)
       .props()
       .onPress()
 
-    expect(filterScreen.find(CurrentOption).text()).toEqual("Default")
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(0)
+        .text()
+    ).toEqual("Default")
   })
 
   it("enables the apply button when clearing all if no other options are selected", () => {
@@ -306,17 +326,33 @@ describe("Clearing filters", () => {
 
     const filterModal = mount(<MockFilterModalNavigator initialState={initialState} />)
 
-    expect(filterModal.find(CurrentOption).text()).toEqual("Recently added")
+    expect(
+      filterModal
+        .find(CurrentOption)
+        .at(0)
+        .text()
+    ).toEqual("Recently added")
     expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
 
     filterModal
       .find(ClearAllButton)
+      .at(0)
       .props()
       .onPress()
 
     filterModal.update()
-    expect(filterModal.find(CurrentOption).text()).toEqual("Default")
-    expect(filterModal.find(ApplyButton).props().disabled).toEqual(false)
+    expect(
+      filterModal
+        .find(CurrentOption)
+        .at(0)
+        .text()
+    ).toEqual("Default")
+    expect(
+      filterModal
+        .find(ApplyButton)
+        .at(0)
+        .props().disabled
+    ).toEqual(false)
   })
 
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
