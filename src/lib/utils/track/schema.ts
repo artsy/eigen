@@ -149,7 +149,6 @@ export enum ActionTypes {
    */
   Tap = "tap",
   Swipe = "swipe",
-  Session = "session",
 
   /**
    * Events / results

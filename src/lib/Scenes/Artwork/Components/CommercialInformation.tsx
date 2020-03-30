@@ -85,11 +85,11 @@ export class CommercialInformation extends React.Component<CommercialInformation
 
     if (artworkIsInActiveAuction) {
       this.props.tracking.trackEvent({
-        action_name: Schema.ActionNames.LotViewed,
-        action_type: Schema.ActionTypes.Session,
-        context_module: null,
+        action_type: Schema.ActionNames.LotViewed,
+        artwork_id: artwork.internalID,
+        artwork_slug: artwork.slug,
         sale_id: artwork.sale.internalID,
-        sale_slug: artwork.sale.slug,
+        auction_slug: artwork.sale.slug,
       })
     }
   }
@@ -195,6 +195,8 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       availability
       saleMessage
       isForSale
+      internalID
+      slug
 
       artists {
         isConsignable
