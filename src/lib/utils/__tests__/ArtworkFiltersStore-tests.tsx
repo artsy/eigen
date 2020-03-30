@@ -3,24 +3,66 @@ import { ArtworkFilterContextState, FilterActions, reducer } from "lib/utils/Art
 let filterState: ArtworkFilterContextState
 let filterAction: FilterActions
 
-describe("Reset Filters", () => {
-  filterAction = {
-    type: "resetFilters",
-  }
-
-  it("returns empty arrays/default state values ", () => {
+describe("Clear All Filters", () => {
+  it("clears out the previouslyAppliedFilters if nothing has been applied", () => {
     filterState = {
-      appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
-      selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
-      applyFilters: true,
+      appliedFilters: [],
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
     }
 
-    const r = reducer(filterState, filterAction)
+    const r = reducer(filterState, {
+      type: "clearAll",
+    })
 
     expect(r).toEqual({
       appliedFilters: [],
       applyFilters: false,
       selectedFilters: [],
+      previouslyAppliedFilters: [],
+    })
+  })
+
+  it("clears out the previouslyAppliedFilters and selectedFilters", () => {
+    filterState = {
+      appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      applyFilters: true,
+    }
+
+    const r = reducer(filterState, {
+      type: "clearAll",
+    })
+
+    expect(r).toEqual({
+      appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      applyFilters: false,
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+    })
+  })
+})
+
+describe("Reset Filters", () => {
+  it("returns empty arrays/default state values ", () => {
+    filterState = {
+      appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      applyFilters: true,
+    }
+
+    const r = reducer(filterState, {
+      type: "resetFilters",
+    })
+
+    expect(r).toEqual({
+      appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      applyFilters: false,
+      selectedFilters: [],
+      previouslyAppliedFilters: [{ value: "Recently updated", filterType: "sort" }],
     })
   })
 
@@ -29,14 +71,18 @@ describe("Reset Filters", () => {
       appliedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
       selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
       applyFilters: false,
+      previouslyAppliedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
     }
 
-    const r = reducer(filterState, filterAction)
+    const r = reducer(filterState, {
+      type: "resetFilters",
+    })
 
     expect(r).toEqual({
-      appliedFilters: [],
+      appliedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
       applyFilters: false,
       selectedFilters: [],
+      previouslyAppliedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
     })
   })
 })
@@ -46,6 +92,7 @@ describe("Select Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
     }
 
@@ -59,6 +106,7 @@ describe("Select Filters", () => {
     expect(r).toEqual({
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [{ value: "Recently added", filterType: "sort" }],
     })
   })
@@ -67,6 +115,7 @@ describe("Select Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [],
     }
 
@@ -80,6 +129,7 @@ describe("Select Filters", () => {
     expect(r).toEqual({
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
     })
   })
@@ -88,6 +138,7 @@ describe("Select Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
+      previouslyAppliedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
       selectedFilters: [],
     }
 
@@ -101,6 +152,7 @@ describe("Select Filters", () => {
     expect(r).toEqual({
       applyFilters: false,
       appliedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
+      previouslyAppliedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
       selectedFilters: [],
     })
   })
@@ -109,6 +161,7 @@ describe("Select Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [],
     }
 
@@ -122,6 +175,7 @@ describe("Select Filters", () => {
     expect(r).toEqual({
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [],
     })
   })
@@ -130,6 +184,7 @@ describe("Select Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [{ filterType: "sort", value: "Artwork year (descending)" }],
     }
 
@@ -143,6 +198,7 @@ describe("Select Filters", () => {
     expect(r).toEqual({
       applyFilters: false,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [],
     })
   })
@@ -153,6 +209,7 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: true,
       appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
     }
 
@@ -165,6 +222,7 @@ describe("Apply Filters", () => {
     expect(r).toEqual({
       applyFilters: true,
       appliedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
       selectedFilters: [],
     })
   })
@@ -173,6 +231,7 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: true,
       appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently updated", filterType: "sort" }],
       selectedFilters: [{ value: "Recently updated", filterType: "sort" }],
     }
 
@@ -185,6 +244,7 @@ describe("Apply Filters", () => {
     expect(r).toEqual({
       applyFilters: true,
       appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently updated", filterType: "sort" }],
       selectedFilters: [],
     })
   })
@@ -193,6 +253,7 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: true,
       appliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently updated", filterType: "sort" }],
       selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
     }
 
@@ -205,6 +266,7 @@ describe("Apply Filters", () => {
     expect(r).toEqual({
       applyFilters: true,
       appliedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
       selectedFilters: [],
     })
   })
