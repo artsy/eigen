@@ -24,7 +24,6 @@ import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderers
 import { QueryRenderersCollectionFullFeaturedArtistListQuery } from "__generated__/QueryRenderersCollectionFullFeaturedArtistListQuery.graphql"
 import { QueryRenderersCollectionQuery } from "__generated__/QueryRenderersCollectionQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
-import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQuery.graphql"
 import { QueryRenderersGeneQuery } from "__generated__/QueryRenderersGeneQuery.graphql"
 import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
 import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
@@ -38,23 +37,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-export const ForYouRenderer: React.SFC<RendererProps> = ({ render }) => {
-  return (
-    <QueryRenderer<QueryRenderersForYouQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersForYouQuery {
-          forYou: homePage {
-            ...ForYou_forYou
-          }
-        }
-      `}
-      variables={{}}
-      render={render}
-    />
-  )
 }
 
 interface GeneRendererProps extends RendererProps {

@@ -1,12 +1,15 @@
 import React from "react"
 import { FlatList, RefreshControl, ViewProperties } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import FairsRail from "./Components/FairsRail"
 
 import { Spacer } from "@artsy/palette"
 import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
+import { ForYouQuery } from "__generated__/ForYouQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact, flatten, zip } from "lodash"
 import { ArtworkRailFragmentContainer } from "./Components/ArtworkRail"
 
@@ -145,3 +148,20 @@ export const ForYouFragmentContainer = createRefetchContainer(
     }
   `
 )
+
+export const ForYouRenderer: React.SFC = () => {
+  return (
+    <QueryRenderer<ForYouQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ForYouQuery {
+          forYou: homePage {
+            ...ForYou_forYou
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(ForYouFragmentContainer)}
+    />
+  )
+}

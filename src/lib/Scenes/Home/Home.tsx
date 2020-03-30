@@ -11,10 +11,10 @@ import { options } from "lib/options"
 import { Router } from "lib/utils/router"
 
 import WorksForYou from "lib/Containers/WorksForYou"
-import { ForYouFragmentContainer } from "./Components/ForYou/ForYou"
+import { ForYouRenderer } from "./Components/ForYou/ForYou"
 import Sales from "./Components/Sales"
 
-import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
+import { WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import { SalesRenderer } from "lib/Scenes/Home/Components/Sales/Relay/SalesRenderer"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
@@ -141,7 +141,7 @@ export class Home extends React.Component<Props, State> {
               />
             </Tab>
             <Tab tabLabel=" For you">
-              <ForYouRenderer render={renderWithLoadProgress(ForYouFragmentContainer)} />
+              <ForYouRenderer />
             </Tab>
             <Tab tabLabel=" Auctions">
               <SalesRenderer render={renderWithLoadProgress(SalesTrampoline as any)} />
