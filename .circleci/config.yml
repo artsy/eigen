@@ -3,7 +3,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@1.1.6
+  node: circleci/node@2.0.0
   queue: eddiewebb/queue@1.0.110
 
 commands:
@@ -164,7 +164,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "12.13.1"
+      tag: "12.13"
     steps:
       - checkout
       - generate-checksums
@@ -179,7 +179,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "12.13.1"
+      tag: "12.13"
     steps:
       - checkout
       - generate-checksums
