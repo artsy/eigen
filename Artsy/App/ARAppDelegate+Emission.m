@@ -33,10 +33,8 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
-#import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
-#import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <SDWebImage/SDImageCache.h>
@@ -283,9 +281,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     };
 
 #pragma mark - Native Module: Events/Analytics
-
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
-
         NSMutableDictionary *properties = [info mutableCopy];
         if (info[@"action_type"] ) {
             // Track event
@@ -296,26 +292,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             [properties removeObjectForKey:@"context_screen"];
             [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
-
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-//            // TODO: Nav Notifications
-//            if ([info[@"name"] isEqual:@"Follow artist"] && [fromViewController isKindOfClass:[ARArtistComponentViewController class]]) {
-//                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-//                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
-//            }
-        });
     };
-
-#pragma mark - Native Module: WorksForYou
-
-    emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
-// TODO: Nav Notifications
-//        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
-    };
-
-#pragma mark - Native Module: WorksForYou
-
 }
 
 - (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions
@@ -427,18 +404,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 @end
 
 @implementation ARFavoritesComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface ARWorksForYouComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARWorksForYouComponentViewController (ARRootViewController)
 
 - (BOOL)isRootNavViewController
 {

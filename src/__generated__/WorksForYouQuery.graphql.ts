@@ -1,15 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8435f60e600e1ec443f7fd03722b2489 */
+/* @relayHash 2cf409466e6d6b3e195585f6c87c290b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type WorksForYouQueryVariables = {
-    count: number;
-    cursor?: string | null;
-};
+export type WorksForYouQueryVariables = {};
 export type WorksForYouQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"WorksForYou_query">;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"WorksForYou_me">;
+    } | null;
 };
 export type WorksForYouQuery = {
     readonly response: WorksForYouQueryResponse;
@@ -19,11 +18,11 @@ export type WorksForYouQuery = {
 
 
 /*
-query WorksForYouQuery(
-  $count: Int!
-  $cursor: String
-) {
-  ...WorksForYou_query_1G22uz
+query WorksForYouQuery {
+  me {
+    ...WorksForYou_me
+    id
+  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -91,55 +90,34 @@ fragment Notification_notification on FollowedArtistsArtworksGroup {
   }
 }
 
-fragment WorksForYou_query_1G22uz on Query {
-  me {
-    followsAndSaves {
-      notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor) {
-        pageInfo {
-          hasNextPage
-          endCursor
+fragment WorksForYou_me on Me {
+  followsAndSaves {
+    notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: 10) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          ...Notification_notification
+          __typename
         }
-        edges {
-          node {
-            id
-            ...Notification_notification
-            __typename
-          }
-          cursor
-        }
+        cursor
       }
     }
-    id
   }
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
-  }
-],
+var v0 = {
+  "kind": "Literal",
+  "name": "first",
+  "value": 10
+},
 v1 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
-  {
-    "kind": "Variable",
-    "name": "first",
-    "variableName": "count"
-  },
+  (v0/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
@@ -174,21 +152,21 @@ return {
     "name": "WorksForYouQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "FragmentSpread",
-        "name": "WorksForYou_query",
-        "args": [
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
           {
-            "kind": "Variable",
-            "name": "count",
-            "variableName": "count"
-          },
-          {
-            "kind": "Variable",
-            "name": "cursor",
-            "variableName": "cursor"
+            "kind": "FragmentSpread",
+            "name": "WorksForYou_me",
+            "args": null
           }
         ]
       }
@@ -197,7 +175,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "WorksForYouQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
@@ -221,7 +199,7 @@ return {
                 "kind": "LinkedField",
                 "alias": "notifications",
                 "name": "bundledArtworksByArtistConnection",
-                "storageKey": null,
+                "storageKey": "bundledArtworksByArtistConnection(first:10,sort:\"PUBLISHED_AT_DESC\")",
                 "args": (v1/*: any*/),
                 "concreteType": "FollowedArtistsArtworksGroupConnection",
                 "plural": false,
@@ -290,11 +268,7 @@ return {
                             "name": "artworksConnection",
                             "storageKey": "artworksConnection(first:10)",
                             "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "first",
-                                "value": 10
-                              }
+                              (v0/*: any*/)
                             ],
                             "concreteType": "ArtworkConnection",
                             "plural": false,
@@ -582,11 +556,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouQuery",
-    "id": "f3068de8ac199b537d65536800356e8a",
+    "id": "dd542c197b9bd7657dffee7c040673dd",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c715fda7c6ab7289bac8b5119c548cf1';
+(node as any).hash = '1f73c5f63d1e9164537c24a9948b6dd6';
 export default node;

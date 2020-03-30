@@ -3,7 +3,6 @@
 #import "ARFeedTimeline.h"
 #import <Emission/AREmission.h>
 #import <Emission/ARHomeComponentViewController.h>
-#import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
@@ -59,7 +58,7 @@
     for (int i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
         _badgeCounts[i] = 0;
     }
-    
+
     BOOL shouldOpenOnForYouTab = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding;
     ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:shouldOpenOnForYouTab ? ARHomeTabForYou : ARHomeTabArtists emission:nil];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
@@ -94,7 +93,7 @@
     if (_localDiscoveryNavigationController) {
         return _localDiscoveryNavigationController;
     }
-    
+
     AREigenMapContainerViewController *mapVC = [[AREigenMapContainerViewController alloc] init];
     _localDiscoveryNavigationController = [[ARNavigationController alloc] initWithRootViewController:mapVC];
     return _localDiscoveryNavigationController;
@@ -125,12 +124,6 @@
     return _favoritesNavigationController;
 }
 
-- (ARNavigationController *)worksForYouNavigationControllerWithSelectedArtist:(NSString *)artistID
-{
-    ARWorksForYouComponentViewController *worksForYouComponentVC = [[ARWorksForYouComponentViewController alloc] initWithSelectedArtist:artistID];
-    return [[ARNavigationController alloc] initWithRootViewController:worksForYouComponentVC];
-}
-
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
     return (ARNavigationController *)[self navigationControllerAtIndex:index parameters:nil];
@@ -156,7 +149,7 @@
                 return [self messagingNavigationController];
             }
             return [self favoritesNavigationController];
-        
+
         case ARTopTabControllerIndexLocalDiscovery:
             if (showLocalDiscovery) {
                 return [self localDiscoveryNavigationController];

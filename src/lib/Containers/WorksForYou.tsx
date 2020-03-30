@@ -1,18 +1,21 @@
 import { Box, Flex, Separator, Theme } from "@artsy/palette"
-import { WorksForYou_query } from "__generated__/WorksForYou_query.graphql"
+import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
+import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import { PAGE_SIZE } from "lib/data/constants"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { get } from "lib/utils/get"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList, NativeModules, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { postEvent } from "../NativeModules/Events"
 
 interface Props {
   relay: RelayPaginationProp
-  query: WorksForYou_query
+  me: WorksForYou_me
 }
 
 interface State {
@@ -74,13 +77,13 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   render() {
-    const notifications = get(this.props, props => props.query.me.followsAndSaves.notifications.edges)
+    const notifications = get(this.props, props => props.me.followsAndSaves.notifications.edges)
     /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
     return (
       <Theme>
-        <FlatList<WorksForYou_query["me"]["followsAndSaves"]["notifications"]["edges"][0]>
+        <FlatList<WorksForYou_me["followsAndSaves"]["notifications"]["edges"][0]>
           data={this.state.width === null ? [] : notifications}
           keyExtractor={item => item.node.id}
           refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
@@ -123,29 +126,27 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 }
 
-const WorksForYouContainer = createPaginationContainer(
+export const WorksForYouContainer = createPaginationContainer(
   WorksForYou,
   {
-    query: graphql`
-      fragment WorksForYou_query on Query
+    me: graphql`
+      fragment WorksForYou_me on Me
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String" }
           sort: { type: "ArtworkSorts" }
         ) {
-        me {
-          followsAndSaves {
-            notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
-              @connection(key: "WorksForYou_notifications") {
-              pageInfo {
-                hasNextPage
-                endCursor
-              }
-              edges {
-                node {
-                  id
-                  ...Notification_notification
-                }
+        followsAndSaves {
+          notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
+            @connection(key: "WorksForYou_notifications") {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            edges {
+              node {
+                id
+                ...Notification_notification
               }
             }
           }
@@ -156,7 +157,7 @@ const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.query.me.followsAndSaves.notifications
+      return props.me.followsAndSaves.notifications
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -174,11 +175,28 @@ const WorksForYouContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query WorksForYouQuery($count: Int!, $cursor: String) {
-        ...WorksForYou_query @arguments(count: $count, cursor: $cursor)
+      query WorksForYouPaginationQuery($count: Int!, $cursor: String) {
+        me {
+          ...WorksForYou_me @arguments(count: $count, cursor: $cursor)
+        }
       }
     `,
   }
 )
 
-export default WorksForYouContainer
+export const WorksForYouRenderer: React.FC = () => {
+  return (
+    <QueryRenderer<WorksForYouQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query WorksForYouQuery {
+          me {
+            ...WorksForYou_me
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(WorksForYouContainer)}
+    />
+  )
+}

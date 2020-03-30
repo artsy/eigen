@@ -31,7 +31,6 @@
 
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
@@ -316,11 +315,11 @@ static ARTopMenuViewController *_sharedManager = nil;
             return [self rootNavigationControllerAtIndex:tabIndex.integerValue parameters:parameters].rootViewController;
         }];
     }
-    
+
     [switchboard registerPathCallbackAtPath:@"/works-for-you" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
         return [self rootNavigationControllerHomeWithTab:ARHomeTabArtists].rootViewController;
     }];
-    
+
     [switchboard registerPathCallbackAtPath:@"/auctions" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
         return [self rootNavigationControllerHomeWithTab:ARHomeTabAuctions].rootViewController;
     }];
@@ -433,21 +432,21 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)updateButtons;
 {
     NSArray *buttons = [self buttons];
-    
+
     self.tabContentView.buttons = buttons;
     [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexHome animated:NO];
-    
+
     UIView *buttonContainer = self.buttonContainer;
     BOOL regularHorizontalSizeClass = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
-    
+
     for (ARNavigationTabButton *button in buttons) {
         [buttonContainer addSubview:button];
     }
-    
+
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
     [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
         [button alignCenterYWithView:buttonContainer predicate:@"0"];
-        
+
         NSString *marginToContainerEdges = regularHorizontalSizeClass ? @"0" : @"20";
         NSString *marginBetweenButtons = regularHorizontalSizeClass ? @"100" : @"0";
         if (index == 0) {
@@ -455,7 +454,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         } else {
             [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:marginBetweenButtons]];
         }
-        
+
         if (index == buttons.count - 1 && !regularHorizontalSizeClass) {
             [buttonContainer alignTrailingEdgeWithView:button predicate:@"20"];
         }
@@ -581,7 +580,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         [self presentViewController:viewController animated:animated completion:completion];
         return;
     }
-    
+
     if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
         [self presentRootViewController:viewController animated:NO];
     } else {
@@ -648,7 +647,7 @@ static ARTopMenuViewController *_sharedManager = nil;
     if (presentableController.viewControllers.count > 1) {
         [presentableController popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
     }
-    
+
     /// If app is launching and hasn't yet set a tab, it's not ready to forceSet a view controller
     BOOL appIsLaunching = self.selectedTabIndex < 0;
     if (!alreadySelectedTab && !appIsLaunching) {

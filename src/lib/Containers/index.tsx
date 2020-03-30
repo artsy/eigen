@@ -10,7 +10,6 @@ import MyProfile from "../Scenes/Settings/MyProfile"
 import Show from "../Scenes/Show"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
-import WorksForYou from "./WorksForYou"
 
 export default {
   Artwork,
@@ -25,5 +24,4 @@ export default {
   MyProfile,
   Partner,
   Show,
-  WorksForYou,
 }

@@ -8,7 +8,6 @@
 #import "ARStubbedBrowseNetworkModel.h"
 #import "ARSwitchBoard.h"
 
-#import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>

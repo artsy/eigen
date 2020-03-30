@@ -3,9 +3,6 @@ import { graphql, QueryRenderer } from "react-relay"
 
 // tslint:disable:no-unused-expression
 
-import WorksForYou from "../Containers/WorksForYou"
-WorksForYou
-
 import Inquiry from "../Containers/Inquiry"
 Inquiry
 
@@ -25,7 +22,6 @@ import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.g
 import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
 import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
-import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import { Dimensions } from "react-native"
 import { defaultEnvironment as environment } from "./createEnvironment"
@@ -34,25 +30,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface WorksForYouRendererProps extends RendererProps {
-  selectedArtist?: string
-}
-
-export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ render }) => {
-  return (
-    <QueryRenderer<QueryRenderersWorksForYouQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersWorksForYouQuery {
-          ...WorksForYou_query
-        }
-      `}
-      variables={{}}
-      render={render}
-    />
-  )
 }
 
 interface InquiryRendererProps extends RendererProps {

@@ -20,7 +20,6 @@ import {
   InboxRenderer,
   InquiryRenderer,
   ShowRenderer,
-  WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
@@ -113,19 +112,6 @@ const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
   const initialProps = { geneID, medium, price_range }
   return <GeneRenderer {...initialProps} />
 })
-
-// FIXME: Is this really still being used?
-const WorksForYou: React.SFC<{ selectedArtist: string }> = props => (
-  <WorksForYouRenderer
-    {...props}
-    render={renderWithLoadProgress(
-      query => (
-        <Containers.WorksForYou query={query as any} />
-      ),
-      props
-    )}
-  />
-)
 
 interface InquiryProps {
   artworkID: string
@@ -342,7 +328,6 @@ AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
 AppRegistry.registerComponent("Home", () => Home)
 AppRegistry.registerComponent("Gene", () => Gene)
-AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
