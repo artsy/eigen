@@ -94,11 +94,11 @@ const mediumFilterOptions: MediumOption[] = [
   "Sculpture",
   "Prints & multiples",
   "Works on paper",
-  "Film & video",
   "Design",
-  "Jewelry",
   "Drawing",
   "Installation",
+  "Film & video",
+  "Jewelry",
   "Performance art",
 ]
 
