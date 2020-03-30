@@ -3,6 +3,8 @@ upcoming:
   date: TBD
   dev:
     - Directly track lotViewed instead of using legacy `session` tracking - bhoggard & dleve123
+    - Added shell for Galleries development of Viewing Rooms - ash
+    - Fixes Clear All functionality in collections filtering - sweir27
     - Adds filtering by artwork medium to Collections - ashleyjelks
   user_facing:
     - Adds ArtistConsignButton to Artist page - chris
