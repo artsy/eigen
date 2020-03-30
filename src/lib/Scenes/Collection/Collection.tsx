@@ -1,6 +1,7 @@
 import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ZeroArtworks } from "lib/Scenes/Collection/Screens/ZeroArtworksScreen"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component } from "react"
 import { Dimensions, FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
@@ -61,7 +62,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     })
   }
 
-  renderItem = ({ item: { type } }) => {
+  renderItem = ({ item: { type } }, artworksCount: number) => {
+    console.log("Collection -> renderItem -> artworksCount", artworksCount)
+    if (artworksCount === 0) {
+      return <ZeroArtworks />
+    }
+
     switch (type) {
       case "collectionFeaturedArtists":
         return (
@@ -120,10 +126,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     viewabilityConfig={this.viewabilityConfig}
                     keyExtractor={(_item, index) => String(index)}
                     data={sections}
-                    ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
+                    ListHeaderComponent={
+                      value.state.artworksCount !== 0 && <CollectionHeader collection={this.props.collection} />
+                    }
                     renderItem={item => (
                       <Box px={2} pb={2}>
-                        {this.renderItem(item)}
+                        {this.renderItem(item, value.state.artworksCount)}
                       </Box>
                     )}
                   />

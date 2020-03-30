@@ -6,6 +6,7 @@ const filterState: ArtworkFilterContextState = {
   selectedFilters: [],
   previouslyAppliedFilters: [],
   applyFilters: false,
+  artworksCount: null,
 }
 
 export const reducer = (
@@ -32,6 +33,7 @@ export const reducer = (
         appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: appliedFilters,
+        artworksCount: artworkFilterState.artworksCount,
       }
 
     case "selectFilters":
@@ -60,6 +62,7 @@ export const reducer = (
         selectedFilters,
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        artworksCount: artworkFilterState.artworksCount,
       }
 
     case "clearAll":
@@ -68,6 +71,7 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: [],
+        artworksCount: artworkFilterState.artworksCount,
       }
 
     case "resetFilters":
@@ -79,6 +83,15 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
+        artworksCount: artworkFilterState.artworksCount,
+      }
+    case "artworksCount":
+      return {
+        applyFilters: artworkFilterState.applyFilters,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        artworksCount: action.payload,
       }
   }
 }
@@ -112,6 +125,7 @@ export interface ArtworkFilterContextState {
   readonly selectedFilters: FilterArray
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
+  readonly artworksCount: number
 }
 
 interface FilterData {
@@ -137,7 +151,11 @@ interface ClearAllFilters {
   type: "clearAll"
 }
 
-export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters
+interface ArtworksCount {
+  type: "artworksCount"
+  payload: number
+}
+export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters | ArtworksCount
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState

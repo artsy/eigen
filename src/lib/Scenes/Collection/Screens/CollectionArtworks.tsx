@@ -57,7 +57,7 @@ export const CollectionArtworks: React.FC<{
   relay: RelayPaginationProp
 }> = ({ collection, relay }) => {
   const artworks = get(collection, p => p.collectionArtworks)
-  const { state } = useContext(ArtworkFilterContext)
+  const { state, dispatch } = useContext(ArtworkFilterContext)
 
   const filterParams = filterArtworksParams(state.appliedFilters)
 
@@ -66,6 +66,7 @@ export const CollectionArtworks: React.FC<{
       relay.refetchConnection(
         PAGE_SIZE,
         error => {
+          console.log("error", error)
           if (error) {
             throw new Error("Collection/CollectionArtworks sort: " + error.message)
           }
@@ -74,6 +75,13 @@ export const CollectionArtworks: React.FC<{
       )
     }
   }, [state.appliedFilters])
+
+  const total = artworks?.counts?.total
+
+  if (total === 0) {
+    dispatch({ type: "artworksCount", payload: total })
+    return null
+  }
 
   return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
 }
