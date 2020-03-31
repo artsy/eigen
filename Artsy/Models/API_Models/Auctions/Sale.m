@@ -21,7 +21,6 @@
 
 @implementation Sale
 
-// TODO: Make sure all properties being parsed correctly
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
