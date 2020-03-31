@@ -8,6 +8,7 @@ import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
 import { ConversationRenderer } from "./Containers/Conversation"
 import { GeneRenderer } from "./Containers/Gene"
+import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
 import {
   CityBMWListRenderer,
@@ -18,7 +19,6 @@ import {
   CollectionRenderer,
   FairRenderer,
   InboxRenderer,
-  InquiryRenderer,
   ShowRenderer,
 } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
@@ -122,7 +122,7 @@ const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
     context_screen_owner_slug: props.artworkID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
   }
-})(props => <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />)
+})(props => <InquiryRenderer {...props} />)
 
 interface ConversationProps {
   conversationID: string

@@ -3,9 +3,6 @@ import { graphql, QueryRenderer } from "react-relay"
 
 // tslint:disable:no-unused-expression
 
-import Inquiry from "../Containers/Inquiry"
-Inquiry
-
 import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
@@ -20,7 +17,6 @@ import { QueryRenderersCollectionFullFeaturedArtistListQuery } from "__generated
 import { QueryRenderersCollectionQuery } from "__generated__/QueryRenderersCollectionQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
-import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import { Dimensions } from "react-native"
@@ -30,29 +26,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface InquiryRendererProps extends RendererProps {
-  artworkID: string
-}
-
-export const InquiryRenderer: React.SFC<InquiryRendererProps> = ({ render, artworkID }) => {
-  return (
-    <QueryRenderer<QueryRenderersInquiryQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersInquiryQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            ...Inquiry_artwork
-          }
-        }
-      `}
-      variables={{
-        artworkID,
-      }}
-      render={render}
-    />
-  )
 }
 
 export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {

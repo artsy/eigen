@@ -9,7 +9,6 @@ import { Home } from "../Scenes/Home/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Show from "../Scenes/Show"
 import Inbox from "./Inbox"
-import Inquiry from "./Inquiry"
 
 export default {
   Artwork,
@@ -20,7 +19,6 @@ export default {
   Fair,
   Home,
   Inbox,
-  Inquiry,
   MyProfile,
   Partner,
   Show,

@@ -1,9 +1,12 @@
 import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
+import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Dimensions, NativeModules } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { BottomAlignedButton } from "../Components/Consignments/Components/BottomAlignedButton"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
@@ -226,7 +229,7 @@ export class Inquiry extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(Inquiry, {
+export const InquiryFragmentContainer = createFragmentContainer(Inquiry, {
   artwork: graphql`
     fragment Inquiry_artwork on Artwork {
       slug
@@ -239,3 +242,22 @@ export default createFragmentContainer(Inquiry, {
     }
   `,
 })
+
+export const InquiryRenderer: React.SFC<{ artworkID: string }> = ({ artworkID }) => {
+  return (
+    <QueryRenderer<InquiryQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query InquiryQuery($artworkID: String!) {
+          artwork(id: $artworkID) {
+            ...Inquiry_artwork
+          }
+        }
+      `}
+      variables={{
+        artworkID,
+      }}
+      render={renderWithLoadProgress(InquiryFragmentContainer)}
+    />
+  )
+}
