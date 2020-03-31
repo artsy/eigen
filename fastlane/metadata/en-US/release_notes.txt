@@ -1,6 +1,3 @@
-This update includes a number of bug fixes and improvements, including:
-
-• Improved home feed, including more details about fairs and artists.
-• Performance improvements throughout the app, which should make using the app feel snappy.
+This update includes a number of small bug fixes and improvements.
 
 Have feedback? Email us at support@artsy.net
