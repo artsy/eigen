@@ -11,6 +11,8 @@ export type CommercialInformation_artwork = {
     readonly availability: string | null;
     readonly saleMessage: string | null;
     readonly isForSale: boolean | null;
+    readonly internalID: string;
+    readonly slug: string;
     readonly artists: ReadonlyArray<{
         readonly isConsignable: boolean | null;
     } | null> | null;
@@ -39,7 +41,22 @@ export type CommercialInformation_artwork$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "CommercialInformation_artwork",
   "type": "Artwork",
@@ -95,6 +112,8 @@ const node: ReaderFragment = {
       "args": null,
       "storageKey": null
     },
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -140,13 +159,7 @@ const node: ReaderFragment = {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "internalID",
-          "args": null,
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -189,13 +202,7 @@ const node: ReaderFragment = {
           "args": null,
           "storageKey": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "slug",
-          "args": null,
-          "storageKey": null
-        },
+        (v1/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -232,5 +239,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'cde2acaf4ab5f56073f54622768c5430';
+})();
+(node as any).hash = '8b3b0397d3657eee1a69d5faa2e4f8d3';
 export default node;

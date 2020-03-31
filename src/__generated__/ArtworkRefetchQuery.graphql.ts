@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1db12dfbcb1f9d1812bc579b3a195689 */
+/* @relayHash dee2de6a697e978ccde951c51d7c9ffd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -413,6 +413,8 @@ fragment CommercialInformation_artwork on Artwork {
   availability
   saleMessage
   isForSale
+  internalID
+  slug
   artists {
     isConsignable
     id
@@ -1907,7 +1909,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "a50c25cc429ba41006e2081b31bf8fe1",
+    "id": "ab54cfe883da85adc5472a1cf02ddb34",
     "text": null,
     "metadata": {}
   }
