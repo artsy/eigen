@@ -21,6 +21,7 @@
 
 @implementation Sale
 
+// TODO: Make sure all properties being parsed correctly
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
@@ -35,6 +36,7 @@
         ar_keypath(Sale.new, saleDescription) : @"description",
         ar_keypath(Sale.new, saleState) : @"auction_state",
         ar_keypath(Sale.new, startDate) : @"start_at",
+        ar_keypath(Sale.new, requireIdentityVerification) : @"require_identity_verification",
     };
 }
 

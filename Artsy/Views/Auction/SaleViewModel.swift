@@ -41,6 +41,10 @@ class SaleViewModel: NSObject {
         self.lotStandings = lotStandings
     }
 
+    var requireIdentityVerification: Bool {
+        return sale.requireIdentityVerification
+    }
+
     var auctionState: ARAuctionState {
         return sale.auctionStateWithBidders(bidders)
     }

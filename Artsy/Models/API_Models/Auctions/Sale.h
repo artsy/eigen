@@ -31,6 +31,7 @@ typedef enum: NSUInteger {
 
 @property (nonatomic, readonly) BOOL isAuction;
 @property (nonatomic, readonly) BOOL requireBidderApproval;
+@property (nonatomic, readonly) BOOL requireIdentityVerification;
 
 - (BOOL)shouldShowLiveInterface;
 - (NSString *)bannerImageURLString;
