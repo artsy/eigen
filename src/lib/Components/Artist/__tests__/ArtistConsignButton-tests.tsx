@@ -1,8 +1,9 @@
+import { Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -28,7 +29,11 @@ describe("ArtistConsignButton", () => {
       variables={{ id: "alex-katz" }}
       render={({ props, error }) => {
         if (props) {
-          return <ArtistConsignButtonFragmentContainer artist={props.artist} context={null as any} />
+          return (
+            <Theme>
+              <ArtistConsignButtonFragmentContainer artist={props.artist} />
+            </Theme>
+          )
         } else if (error) {
           console.log(error)
         }
@@ -108,7 +113,7 @@ describe("ArtistConsignButton", () => {
           data: response,
         })
       })
-      tree.root.findByType(TouchableWithoutFeedback).props.onPress()
+      tree.root.findByType(TouchableOpacity).props.onPress()
       expect(trackEvent).toHaveBeenCalledWith({
         context_page: "Artist",
         context_page_owner_id: response.artist.internalID,
@@ -156,7 +161,7 @@ describe("ArtistConsignButton", () => {
           data: response,
         })
       })
-      tree.root.findByType(TouchableWithoutFeedback).props.onPress()
+      tree.root.findByType(TouchableOpacity).props.onPress()
       expect(trackEvent).toHaveBeenCalledWith({
         context_page: "Artist",
         context_page_owner_id: response.artist.internalID,

@@ -56,7 +56,7 @@ class ArtistAbout extends React.Component<Props> {
   consignButton() {
     return (
       <>
-        <ArtistConsignButton artist={this.props.artist} context={this} />
+        <ArtistConsignButton artist={this.props.artist} />
         <Spacer mb={3} />
       </>
     )

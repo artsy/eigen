@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7f1bb57a132b71d8187da933742004eb */
+/* @relayHash d78d87b7c53a3699d755446b598fdb08 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -83,7 +83,7 @@ fragment ArtistConsignButton_artist on Artist {
   slug
   name
   image {
-    cropped(width: 75, height: 66) {
+    cropped(width: 66, height: 66) {
       url
     }
   }
@@ -512,7 +512,7 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "cropped",
-                "storageKey": "cropped(height:66,width:75)",
+                "storageKey": "cropped(height:66,width:66)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -522,7 +522,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "width",
-                    "value": 75
+                    "value": 66
                   }
                 ],
                 "concreteType": "CroppedImageUrl",
@@ -770,7 +770,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistBelowTheFoldQuery",
-    "id": "7f89f67d53d9f1f108d03df9d255c215",
+    "id": "ac253aeb550888b6b5e561837286c242",
     "text": null,
     "metadata": {}
   }

@@ -1,5 +1,5 @@
-import { BorderBox, Box, Button, color, Flex, Sans } from "@artsy/palette"
-import React from "react"
+import { BorderBox, Box, Button, Flex, Sans } from "@artsy/palette"
+import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -8,19 +8,29 @@ import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_ar
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
-import { TouchableWithoutFeedback } from "react-native"
+import { TouchableOpacity } from "react-native"
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist
-  context: React.Component<any>
 }
 
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
-  const { isInMicrofunnel, imageURL, headline } = getData(props)
   const tracking = useTracking()
+  const buttonRef = useRef()
+
+  const {
+    artist: {
+      targetSupply: { isInMicrofunnel },
+      name,
+      image,
+    },
+  } = props
+  const imageURL = image?.cropped?.url
+  const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
 
   return (
-    <TouchableWithoutFeedback
+    <TouchableOpacity
+      ref={buttonRef}
       onPress={() => {
         tracking.trackEvent({
           context_page: Schema.PageNames.ArtistPage,
@@ -32,22 +42,22 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
           destination_path: Router.ConsignmentsStartSubmission,
         })
 
-        SwitchBoard.presentNavigationViewController(props.context, Router.ConsignmentsStartSubmission)
+        SwitchBoard.presentNavigationViewController(buttonRef.current, Router.ConsignmentsStartSubmission)
       }}
     >
       <BorderBox p={1}>
         <Flex alignItems="center" flexDirection="row">
           {isInMicrofunnel && imageURL && (
-            <Box>
+            <Box pr={2}>
               <Image source={{ uri: imageURL }} />
             </Box>
           )}
-          <Flex flexDirection="column" justifyContent="center" pl={1}>
+          <Flex justifyContent="center">
             <Sans size="3t" weight="medium">
               {headline}
             </Sans>
             <Box top="-2px" position="relative">
-              <Sans size="3t" color={color("black60")}>
+              <Sans size="3t" color="black60">
                 Consign with Artsy
               </Sans>
             </Box>
@@ -59,26 +69,8 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
           </Flex>
         </Flex>
       </BorderBox>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   )
-}
-
-function getData(props) {
-  const {
-    artist: {
-      targetSupply: { isInMicrofunnel },
-      name,
-      image,
-    },
-  } = props
-  const imageURL = image?.cropped?.url
-  const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
-
-  return {
-    isInMicrofunnel,
-    imageURL,
-    headline,
-  }
 }
 
 export const ArtistConsignButtonFragmentContainer = createFragmentContainer(ArtistConsignButton, {
@@ -91,7 +83,7 @@ export const ArtistConsignButtonFragmentContainer = createFragmentContainer(Arti
       slug
       name
       image {
-        cropped(width: 75, height: 66) {
+        cropped(width: 66, height: 66) {
           url
         }
       }

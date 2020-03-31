@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3979245d191cbd7612b9dc0c183f2243 */
+/* @relayHash 020a66e100c1afb25228c6c0f21e78f5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ fragment ArtistConsignButton_artist on Artist {
   slug
   name
   image {
-    cropped(width: 75, height: 66) {
+    cropped(width: 66, height: 66) {
       url
     }
   }
@@ -153,7 +153,7 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "cropped",
-                "storageKey": "cropped(height:66,width:75)",
+                "storageKey": "cropped(height:66,width:66)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -163,7 +163,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "width",
-                    "value": 75
+                    "value": 66
                   }
                 ],
                 "concreteType": "CroppedImageUrl",
@@ -194,7 +194,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistConsignButtonTestsQuery",
-    "id": "0697963fde07aba92a19e000f10991ea",
+    "id": "c90bc21b145b79c0bdedf5df08e72af1",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
