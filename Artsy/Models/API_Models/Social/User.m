@@ -33,7 +33,8 @@
         ar_keypath(User.new, receiveFollowArtistsEmail) : @"receive_follow_artists_email",
         ar_keypath(User.new, receiveFollowArtistsEmailAll) : @"receive_follow_artists_email_all",
         ar_keypath(User.new, receiveFollowUsersEmail) : @"receive_follow_users_email",
-        ar_keypath(User.new, priceRange) : @"price_range"
+        ar_keypath(User.new, priceRange) : @"price_range",
+        ar_keypath(User.new, identityVerified) : @"identity_verified",
     };
 }
 
