@@ -274,6 +274,7 @@ jobs:
     macos:
       xcode: "11.3.0"
     steps:
+      - checkout
       - install-gems
       - await-previous-builds:
           branch: app_store_submission
