@@ -59,6 +59,17 @@ class AuctionTitleViewSpec: QuickSpec {
 
                 expect(subject).to( haveValidSnapshot() )
             }
+
+            it("looks good with a sale and user requiring identity verification") {
+                let saleDict : [String: Any] = [
+                    "name" : "The 🎉 Sale",
+                    "requireIdentityVerification": true,
+                ]
+                let idVerifySale = try! Sale(dictionary: saleDict, error: Void())
+                let idVerifyViewModel = Test_SaleViewModel(sale: idVerifySale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                let subject = AuctionTitleView(viewModel: idVerifyViewModel, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true, titleTextAlignment: .left)
+                expect(subject).to( haveValidSnapshot() )
+            }
         }
         describe("with the registration button having side insets") {
             beforeEach {

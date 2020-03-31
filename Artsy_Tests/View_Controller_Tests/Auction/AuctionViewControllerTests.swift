@@ -496,9 +496,6 @@ class Test_SaleViewModel: SaleViewModel {
         super.init(sale: sale, saleArtworks: saleArtworks, promotedSaleArtworks: promotedSaleArtworks, bidders: bidders, lotStandings: lotStandings)
 
     }
-
-//    override init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [LotStanding] = []) {
-//        //    }
 }
 
 class Test_AuctionNetworkModel: AuctionNetworkModelType {
