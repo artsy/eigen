@@ -386,6 +386,19 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
             showRegister()
         }
     }
+
+    func userDidPressIdentityFAQ(_ titleView: AuctionTitleView) {
+        let showIdentityFAQ = {
+            let identityFAQPath = "/identity-verification-faq"
+            let viewController = ARSwitchBoard.sharedInstance().loadPath(identityFAQPath)
+            self.ar_TopMenuViewController()?.push(viewController, animated: true)
+        }
+        if let _ = presentedViewController {
+            dismiss(animated: true, completion: showIdentityFAQ)
+        } else {
+            showIdentityFAQ()
+        }
+    }
 }
 
 fileprivate typealias EmbeddedModelCallbacks = AuctionViewController
