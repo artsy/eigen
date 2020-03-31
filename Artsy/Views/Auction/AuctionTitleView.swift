@@ -180,19 +180,22 @@ private extension AuctionTitleView {
         let faqRange = (identityVerificationAttributedString.string as NSString).range(of: "FAQ")
         identityVerificationAttributedString.addAttribute(NSAttributedString.Key.underlineStyle, value:  NSUnderlineStyle.single.rawValue, range: faqRange)
 
+        let showIdentityVerification = !User.current().identityVerified && viewModel.requireIdentityVerification
         let registrationLabel = ARSerifLabel().then {
-            $0.attributedText = !User.current().identityVerified && viewModel.requireIdentityVerification ? identityVerificationAttributedString : NSAttributedString(string: "Registration required to bid")
+            $0.attributedText = showIdentityVerification ? identityVerificationAttributedString : NSAttributedString(string: "Registration required to bid")
             $0.font = UIFont.serifFont(withSize: 16)
             $0.textColor = .artsyGraySemibold()
         }
         container.addSubview(registrationLabel)
 
-        let showFAQButton = UIButton()
-        showFAQButton.setTitle("   ", for: .normal)
-        showFAQButton.addTarget(self, action: #selector(AuctionTitleView.userDidPressIdentityFAQ), for: .touchUpInside)
-        container.addSubview(showFAQButton)
-        showFAQButton.alignTop("0", bottom: "0", toView: registrationLabel)
-        showFAQButton.alignTrailingEdge(withView: registrationLabel, predicate: "0")
+        if showIdentityVerification {
+            let showFAQButton = UIButton()
+            showFAQButton.setTitle("   ", for: .normal)
+            showFAQButton.addTarget(self, action: #selector(AuctionTitleView.userDidPressIdentityFAQ), for: .touchUpInside)
+            container.addSubview(showFAQButton)
+            showFAQButton.alignTop("0", bottom: "0", toView: registrationLabel)
+            showFAQButton.alignTrailingEdge(withView: registrationLabel, predicate: "0")
+        }
 
         // Centre both horizontally
         registerButton.alignCenterX(withView: container, predicate: "0")

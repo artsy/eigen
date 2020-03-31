@@ -16,6 +16,7 @@ class AuctionTitleViewSpec: QuickSpec {
         var fullWidth: Bool!
 
         beforeEach {
+            ARUserManager.stubAndLoginWithUsername()
             viewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [qualifiedBidder], lotStandings: [])
         }
 
@@ -76,6 +77,7 @@ class AuctionTitleViewSpec: QuickSpec {
 }
 
 class Test_AuctionTitleViewDelegate: AuctionTitleViewDelegate {
+    @objc func userDidPressIdentityFAQ(_ titleView: AuctionTitleView) { }
     @objc func userDidPressInfo(_ titleView: AuctionTitleView) { }
     @objc func userDidPressRegister(_ titleView: AuctionTitleView) { }
 }
