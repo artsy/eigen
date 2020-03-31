@@ -11,6 +11,9 @@ it("renders properly", () => {
     is_display_auction_link: true,
     articles: [],
     related_artists: [],
+    targetSupply: {
+      isInMicrofunnel: false,
+    },
   }
   const about = renderer
     .create(
