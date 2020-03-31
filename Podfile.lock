@@ -417,7 +417,7 @@ PODS:
   - Specta (1.0.5)
   - SSFadingScrollView (1.1.0)
   - Starscream (3.0.4)
-  - Stripe (14.0.0)
+  - Stripe (14.0.1)
   - SwiftyJSON (4.0.0)
   - Then (2.3.0)
   - tipsi-stripe (7.5.0):
@@ -812,7 +812,7 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
-  Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
+  Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   tipsi-stripe: 8aaaa6f5e4cfea5c35be3affbb616c4e6cfafa5f
