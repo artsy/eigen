@@ -188,9 +188,11 @@ private extension AuctionTitleView {
         container.addSubview(registrationLabel)
 
         let showFAQButton = UIButton()
+        showFAQButton.setTitle("   ", for: .normal)
         showFAQButton.addTarget(self, action: #selector(AuctionTitleView.userDidPressIdentityFAQ), for: .touchUpInside)
         container.addSubview(showFAQButton)
-        showFAQButton.align(toView: registrationLabel)
+        showFAQButton.alignTop("0", bottom: "0", toView: registrationLabel)
+        showFAQButton.alignTrailingEdge(withView: registrationLabel, predicate: "0")
 
         // Centre both horizontally
         registerButton.alignCenterX(withView: container, predicate: "0")
