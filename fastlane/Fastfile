@@ -158,6 +158,7 @@ lane :promote_beta do
 
   # Apple's API returns truncated version/build numbers (eg: 2020.03.19.18 becomes 2020.3.19.18)
   # So we re-compute this based on the same information as the :ship_beta lane.
+  root = File.expand_path('..', __dir__)
   readme_yaml = File.read('../CHANGELOG.yml')
   readme_data = YAML.safe_load(readme_yaml)
   latest_version = readme_data['upcoming']['version']
