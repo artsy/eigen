@@ -611,6 +611,18 @@
     [ARUserManager identifyAnalyticsUser];
     [ARAnalytics incrementUserProperty:ARAnalyticsAppUsageCountProperty byInt:1];
 
+    switch ([[[[UIApplication sharedApplication] keyWindow] traitCollection] userInterfaceStyle]) {
+        case UIUserInterfaceStyleUnspecified:
+            [ARAnalytics setUserProperty:@"user interface style" toValue:@"unspecified"];
+            break;
+        case UIUserInterfaceStyleLight:
+            [ARAnalytics setUserProperty:@"user interface style" toValue:@"light"];
+            break;
+        case UIUserInterfaceStyleDark:
+            [ARAnalytics setUserProperty:@"user interface style" toValue:@"dark"];
+            break;
+    }
+
     if (ARAppStatus.isRunningTests == NO) {
         // Skipping ARAnalytics because Adjust has its own expectations
         // around event names being < 6 chars
