@@ -2,9 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (3.0.0)
-    RubyInline (3.12.4)
+    RubyInline (3.12.5)
       ZenTest (~> 4.3)
-    ZenTest (4.11.2)
+    ZenTest (4.12.0)
     activesupport (4.2.11.1)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -70,7 +70,7 @@ GEM
       nap (~> 1.0)
     cocoapods-deintegrate (1.0.4)
     cocoapods-downloader (1.2.2)
-    cocoapods-keys (2.1.0)
+    cocoapods-keys (2.2.0)
       dotenv
       osx_keychain
     cocoapods-plugins (1.0.0)

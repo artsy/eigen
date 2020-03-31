@@ -43,7 +43,7 @@ commands:
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
-            scripts/generate-manifest.js .manifests/cocoapods '^Podfile'
+            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
   install-node-modules:
     steps:
       - restore_cache:
