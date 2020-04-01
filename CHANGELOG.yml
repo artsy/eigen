@@ -31,6 +31,7 @@ releases:
       - All new fair cards - ash
       - Add a sale-level toggle to the request lot condition report feature - yuki
       - Improve loading UX on Artist page - david
+      - Display 'Identity verification required' for auctions that require it - yuki
 
   - version: 6.3.2
     date: Mar 4, 2020

@@ -1,5 +1,6 @@
 import { Box, Sans, Spacer } from "@artsy/palette"
 import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
+import { CommercialInformation_me } from "__generated__/CommercialInformation_me.graphql"
 import {
   AuctionTimerState,
   Countdown,
@@ -23,6 +24,7 @@ import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInfor
 
 interface CommercialInformationProps {
   artwork: CommercialInformation_artwork
+  me: CommercialInformation_me
   timerState?: AuctionTimerState
   label?: string
   duration?: moment.Duration
@@ -148,7 +150,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
   }
 
   render() {
-    const { artwork, timerState } = this.props
+    const { artwork, me, timerState } = this.props
     const { editionSetID } = this.state
     const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
 
@@ -164,7 +166,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
           {canTakeCommercialAction && !isInClosedAuction && (
             <>
               {!hidesPriceInformation && <Spacer mb={2} />}
-              <CommercialButtons artwork={artwork} auctionState={timerState} editionSetID={editionSetID} />
+              <CommercialButtons artwork={artwork} me={me} auctionState={timerState} editionSetID={editionSetID} />
             </>
           )}
           {isBiddableInAuction && (
@@ -225,4 +227,9 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
       ...AuctionPrice_artwork
     }
   `,
+  me: graphql`
+    fragment CommercialInformation_me on Me {
+      ...CommercialButtons_me
+    }
+  `
 })

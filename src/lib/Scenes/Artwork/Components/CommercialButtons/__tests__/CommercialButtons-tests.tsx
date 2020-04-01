@@ -59,6 +59,7 @@ describe("CommercialButtons", () => {
       isInquireable: true,
       isForSale: true,
     }
+
     const commercialButtons = await relayComponent({
       artwork,
     })
@@ -111,6 +112,7 @@ describe("CommercialButtons", () => {
         isLiveOpen: false,
         isClosed: false,
         isRegistrationClosed: false,
+        requireIdentityVerification: false,
       },
       saleArtwork: {
         increments: [
@@ -222,6 +224,7 @@ describe("CommercialButtons", () => {
         isOpen: true,
         isLiveOpen: false,
         isRegistrationClosed: false,
+        requireIdentityVerification: false,
       },
       saleArtwork: {
         increments: [{ cents: 320000, display: "€3,200" }],
@@ -261,6 +264,7 @@ describe("CommercialButtons", () => {
         isOpen: true,
         isLiveOpen: false,
         isRegistrationClosed: false,
+        requireIdentityVerification: false,
       },
       saleArtwork: {
         increments: [{ cents: 320000, display: "€3,200" }],

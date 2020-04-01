@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1406a5fb83076ce3128a795c580b9a6f */
+/* @relayHash 661233a5a951a42f138234fe0f2fc440 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,6 +10,9 @@ export type ArtworkAboveTheFoldQueryVariables = {
 export type ArtworkAboveTheFoldQueryResponse = {
     readonly artwork: {
         readonly " $fragmentRefs": FragmentRefs<"Artwork_artworkAboveTheFold">;
+    } | null;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"Artwork_me">;
     } | null;
 };
 export type ArtworkAboveTheFoldQuery = {
@@ -25,6 +28,10 @@ query ArtworkAboveTheFoldQuery(
 ) {
   artwork(id: $artworkID) {
     ...Artwork_artworkAboveTheFold
+    id
+  }
+  me {
+    ...Artwork_me
     id
   }
 }
@@ -136,6 +143,10 @@ fragment Artwork_artworkAboveTheFold on Artwork {
   availability
 }
 
+fragment Artwork_me on Me {
+  ...CommercialInformation_me
+}
+
 fragment AuctionPrice_artwork on Artwork {
   sale {
     internalID
@@ -180,6 +191,7 @@ fragment BidButton_artwork on Artwork {
     isLiveOpen
     isClosed
     isRegistrationClosed
+    requireIdentityVerification
     id
   }
   myLotStanding(live: true) {
@@ -196,6 +208,10 @@ fragment BidButton_artwork on Artwork {
     }
     id
   }
+}
+
+fragment BidButton_me on Me {
+  identityVerified
 }
 
 fragment BuyNowButton_artwork on Artwork {
@@ -221,6 +237,10 @@ fragment CommercialButtons_artwork on Artwork {
   ...BuyNowButton_artwork
   ...BidButton_artwork
   ...MakeOfferButton_artwork
+}
+
+fragment CommercialButtons_me on Me {
+  ...BidButton_me
 }
 
 fragment CommercialEditionSetInformation_artwork on Artwork {
@@ -271,6 +291,10 @@ fragment CommercialInformation_artwork on Artwork {
   ...CommercialEditionSetInformation_artwork
   ...ArtworkExtraLinks_artwork
   ...AuctionPrice_artwork
+}
+
+fragment CommercialInformation_me on Me {
+  ...CommercialButtons_me
 }
 
 fragment CommercialPartnerInformation_artwork on Artwork {
@@ -452,6 +476,22 @@ return {
             "args": null
           }
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "Artwork_me",
+            "args": null
+          }
+        ]
       }
     ]
   },
@@ -626,6 +666,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "isRegistrationClosed",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "requireIdentityVerification",
                 "args": null,
                 "storageKey": null
               },
@@ -1084,17 +1131,36 @@ return {
             "storageKey": null
           }
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "identityVerified",
+            "args": null,
+            "storageKey": null
+          },
+          (v2/*: any*/)
+        ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "b3a3949eb7813ecaa3b485d34e15b821",
+    "id": "828d2c1f49df48c39a108aa86a3bfd2a",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c346c86fa8221804db4e2442f518e1e8';
+(node as any).hash = 'ab8df2123e04578ceb7ac3bf21eed61a';
 export default node;

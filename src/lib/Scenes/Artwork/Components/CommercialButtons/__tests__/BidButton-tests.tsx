@@ -17,7 +17,9 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { merge as _merge } from "lodash"
 import { Settings } from "luxon"
 import React from "react"
+import { View } from "react-native"
 import { graphql } from "react-relay"
+
 import { BidButtonFragmentContainer as BidButton } from "../BidButton"
 
 jest.unmock("react-relay")
@@ -26,6 +28,11 @@ const merge: (...args: object[]) => any = _merge
 
 const realNow = Settings.now
 const realDefaultZone = Settings.defaultZoneName
+
+const meFixture: BidButtonTestsQueryRawResponse['me'] = {
+  id: 'id',
+  identityVerified: false,
+}
 
 describe("BidButton", () => {
   beforeAll(() => {
@@ -38,11 +45,13 @@ describe("BidButton", () => {
     Settings.defaultZoneName = realDefaultZone
   })
 
-  const getWrapper = async (response, auctionState) => {
+  const getWrapper = async (artwork, me, auctionState) => {
     return await renderRelayTree({
       Component: (props: any) => (
         <Theme>
-          <BidButton {...props} auctionState={auctionState} />
+          <View>
+            <BidButton {...props} auctionState={auctionState} />
+          </View>
         </Theme>
       ),
       query: graphql`
@@ -50,39 +59,88 @@ describe("BidButton", () => {
           artwork(id: "auction_artwork") {
             ...BidButton_artwork
           }
+          me {
+            ...BidButton_me
+          }
         }
       `,
-      mockData: {
-        artwork: response,
-      } as BidButtonTestsQueryRawResponse,
+      mockData: { artwork, me } as BidButtonTestsQueryRawResponse,
     })
   }
 
   describe("for closed auction", () => {
     it("does not display anything", async () => {
-      const wrapper = await getWrapper(ArtworkFromClosedAuction, "hasEnded")
+      const wrapper = await getWrapper(ArtworkFromClosedAuction, meFixture, "hasEnded")
 
-      expect(wrapper.html()).toBe(null)
+      expect(wrapper.text()).toBe("")
     })
   })
 
   describe("for auction preview", () => {
     it("and not registered bidder", async () => {
-      const wrapper = await getWrapper(ArtworkFromAuctionPreview, AuctionTimerState.PREVIEW)
+      const wrapper = await getWrapper(ArtworkFromAuctionPreview, meFixture, AuctionTimerState.PREVIEW)
 
       expect(wrapper.text()).toContain("Register to bid")
     })
 
+    it("displays 'Identity verification is required' if the sale requires identity verification but the user is not verified", async () => {
+      const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, {
+        sale: { requireIdentityVerification: true },
+      })
+      const me = { identityVerified: false }
+
+      const wrapper = await getWrapper(artworkWithIDVRequired, me, AuctionTimerState.PREVIEW)
+
+      expect(wrapper.text()).toContain("Register to bid")
+      expect(wrapper.text()).toContain("Identity verification required to bid.")
+    })
+
+    it("does not display 'Identity verification is required' if the sale requires identity verification and the user is verified", async () => {
+      const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, {
+        sale: { requireIdentityVerification: true },
+      })
+      const me = { identityVerified: true }
+
+      const wrapper = await getWrapper(artworkWithIDVRequired, me, AuctionTimerState.PREVIEW)
+
+      expect(wrapper.text()).toContain("Register to bid")
+      expect(wrapper.text()).not.toContain("Identity verification required to bid.")
+    })
+
     it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.PREVIEW)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.PREVIEW)
 
       expect(wrapper.text()).toContain("Registration pending")
     })
 
+    it("displays 'Identity verification is required' if the sale requires identity verification and the user is registered but not verified", async () => {
+      const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval, {
+        sale: { requireIdentityVerification: true },
+      })
+      const me = { identityVerified: false }
+
+      const wrapper = await getWrapper(artworkWithIDVRequired, me, AuctionTimerState.PREVIEW)
+
+      expect(wrapper.text()).toContain("Registration pending")
+      expect(wrapper.text()).toContain("Identity verification required to bid.")
+    })
+
+    it("does not display 'Identity verification is required' if the sale requires identity verification and the user is registered and verified", async () => {
+      const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval, {
+        sale: { requireIdentityVerification: true },
+      })
+      const me = { identityVerified: true }
+
+      const wrapper = await getWrapper(artworkWithIDVRequired, me, AuctionTimerState.PREVIEW)
+
+      expect(wrapper.text()).toContain("Registration pending")
+      expect(wrapper.text()).not.toContain("Identity verification required to bid.")
+    })
+
     it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromAuctionPreview, RegisteredBidder)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.PREVIEW)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.PREVIEW)
 
       expect(wrapper.text()).toContain("Registration complete")
     })
@@ -91,88 +149,136 @@ describe("BidButton", () => {
   describe("for open, timed auction", () => {
     it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.CLOSING)
 
       expect(wrapper.text()).toContain("Bid")
     })
 
     it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationClosed, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.CLOSING)
 
       expect(wrapper.text()).toContain("Registration closed")
     })
 
     it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, BidderPendingApproval)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.CLOSING)
 
       expect(wrapper.text()).toContain("Registration pending")
     })
 
     it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegisteredBidder)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.CLOSING)
 
       expect(wrapper.text()).toContain("Bid")
     })
 
     it("with registered bidder with bids", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegistedBidderWithBids)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.CLOSING)
 
       expect(wrapper.text()).toContain("Increase max bid")
+    })
+
+    describe("and sale requires identity verification", () => {
+      const lotWithIDVRequired = merge({}, ArtworkFromTimedAuctionRegistrationOpen, {
+        sale: { requireIdentityVerification: true },
+      })
+
+      it("displays 'Register to bid' if the user is not verified", async () => {
+        const me = { identityVerified: false }
+
+        const wrapper = await getWrapper(lotWithIDVRequired, me, AuctionTimerState.CLOSING)
+
+        expect(wrapper.text()).toContain("Register to bid")
+        expect(wrapper.text()).toContain("Identity verification required to bid.")
+      })
+
+      it("displays 'Bid' if the user is verified", async () => {
+        const me = { identityVerified: true }
+
+        const wrapper = await getWrapper(lotWithIDVRequired, me, AuctionTimerState.CLOSING)
+
+        expect(wrapper.text()).toContain("Bid")
+        expect(wrapper.text()).not.toContain("Identity verification required to bid.")
+      })
     })
   })
 
   describe("for open, live auction during pre-bidding", () => {
     it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
 
       expect(wrapper.text()).toContain("Bid")
     })
 
     it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationClosed, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
 
       expect(wrapper.text()).toContain("Registration closed")
     })
 
     it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, BidderPendingApproval)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
 
       expect(wrapper.text()).toContain("Registration pending")
     })
 
     it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegisteredBidder)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
 
       expect(wrapper.text()).toContain("Bid")
     })
 
     it("with registered bidder with bids", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegistedBidderWithBids)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
 
       expect(wrapper.text()).toContain("Increase max bid")
+    })
+
+    describe("and sale requires identity verification", () => {
+      const lotWithIDVRequired = merge({}, ArtworkFromTimedAuctionRegistrationOpen, {
+        sale: { requireIdentityVerification: true },
+      })
+
+      it("displays 'Register to bid' if the user is not verified", async () => {
+        const me = { identityVerified: false }
+
+        const wrapper = await getWrapper(lotWithIDVRequired, me, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+
+        expect(wrapper.text()).toContain("Register to bid")
+        expect(wrapper.text()).toContain("Identity verification required to bid.")
+      })
+
+      it("displays 'Bid' if the user is verified", async () => {
+        const me = { identityVerified: true }
+
+        const wrapper = await getWrapper(lotWithIDVRequired, me, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+
+        expect(wrapper.text()).toContain("Bid")
+        expect(wrapper.text()).not.toContain("Identity verification required to bid.")
+      })
     })
   })
 
   describe("for live auction", () => {
     it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
 
       expect(wrapper.find(Button).text()).toContain("Enter live bidding")
     })
 
     it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
 
       expect(wrapper.text()).toContain("Registration closed")
       expect(wrapper.find(Button).text()).toContain("Watch live bidding")
@@ -180,14 +286,14 @@ describe("BidButton", () => {
 
     it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, BidderPendingApproval)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
 
       expect(wrapper.find(Button).text()).toContain("Enter live bidding")
     })
 
     it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, RegisteredBidder)
-      const wrapper = await getWrapper(artwork, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
 
       expect(wrapper.find(Button).text()).toContain("Enter live bidding")
     })
