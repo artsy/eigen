@@ -16,7 +16,6 @@ import {
   CityFairListRenderer,
   CitySavedListRenderer,
   CitySectionListRenderer,
-  FairRenderer,
   ShowRenderer,
 } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
@@ -33,6 +32,7 @@ import {
   FairExhibitorsRenderer,
   FairMoreInfoRenderer,
 } from "./Scenes/Fair"
+import { FairRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import { Home } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
@@ -153,14 +153,6 @@ const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
     case "register":
       return <RegistrationFlowRenderer {...restProps} />
   }
-}
-
-interface FairProps {
-  fairID: string
-}
-
-const Fair: React.SFC<FairProps> = ({ fairID }) => {
-  return <FairRenderer fairID={fairID} render={renderWithLoadProgress(Containers.Fair, { fairID })} />
 }
 
 interface ShowProps {
@@ -314,7 +306,7 @@ AppRegistry.registerComponent("PartnerLocations", () => PartnerLocations)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
-AppRegistry.registerComponent("Fair", () => Fair)
+AppRegistry.registerComponent("Fair", () => FairRenderer)
 AppRegistry.registerComponent("FairMoreInfo", () => FairMoreInfoRenderer)
 AppRegistry.registerComponent("FairBooth", () => FairBooth)
 AppRegistry.registerComponent("FairArtists", () => FairArtists)

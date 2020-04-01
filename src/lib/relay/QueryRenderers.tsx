@@ -7,7 +7,6 @@ import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCit
 import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
-import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import { defaultEnvironment as environment } from "./createEnvironment"
@@ -16,27 +15,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface FairRendererProps extends RendererProps {
-  fairID: string
-}
-
-export const FairRenderer: React.SFC<FairRendererProps> = ({ render, fairID }) => {
-  return (
-    <QueryRenderer<QueryRenderersFairQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersFairQuery($fairID: String!) {
-          fair(id: $fairID) {
-            ...Fair_fair
-          }
-        }
-      `}
-      variables={{ fairID }}
-      render={render}
-    />
-  )
 }
 
 interface ShowRendererProps extends RendererProps {

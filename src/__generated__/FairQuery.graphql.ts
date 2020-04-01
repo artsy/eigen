@@ -1,26 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash af968bd90cf4fc6273dc5239333234dc */
+/* @relayHash ace64370e5456a940c4b07490ae1c122 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersFairQueryVariables = {
+export type FairQueryVariables = {
     fairID: string;
 };
-export type QueryRenderersFairQueryResponse = {
+export type FairQueryResponse = {
     readonly fair: {
         readonly " $fragmentRefs": FragmentRefs<"Fair_fair">;
     } | null;
 };
-export type QueryRenderersFairQuery = {
-    readonly response: QueryRenderersFairQueryResponse;
-    readonly variables: QueryRenderersFairQueryVariables;
+export type FairQuery = {
+    readonly response: FairQueryResponse;
+    readonly variables: FairQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersFairQuery(
+query FairQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
@@ -350,7 +350,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersFairQuery",
+    "name": "FairQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -375,7 +375,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersFairQuery",
+    "name": "FairQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -1124,12 +1124,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersFairQuery",
-    "id": "fe8faf6915127947dded311474e6d51a",
+    "name": "FairQuery",
+    "id": "c3464c63d6d675a256e236fd77d4e67e",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '01761a06b9e03e92a7051ed4665bc2a7';
+(node as any).hash = '88617e47aae3f01b3fc85bbf0e42277a';
 export default node;
