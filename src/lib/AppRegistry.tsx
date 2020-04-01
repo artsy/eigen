@@ -16,7 +16,6 @@ import {
   CityFairListRenderer,
   CitySavedListRenderer,
   CitySectionListRenderer,
-  ShowRenderer,
 } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
@@ -42,6 +41,7 @@ import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocati
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
+import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoom } from "./Scenes/ViewingRoom"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
@@ -153,14 +153,6 @@ const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
     case "register":
       return <RegistrationFlowRenderer {...restProps} />
   }
-}
-
-interface ShowProps {
-  showID: string
-}
-
-const Show: React.SFC<ShowProps> = ({ showID }) => {
-  return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.Show, { showID })} />
 }
 
 interface ShowArtistsProps {
@@ -314,7 +306,7 @@ AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
 AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
 AppRegistry.registerComponent("FairBMWArtActivation", () => FairBMWArtActivation)
 AppRegistry.registerComponent("Search", () => SearchWithTracking)
-AppRegistry.registerComponent("Show", () => Show)
+AppRegistry.registerComponent("Show", () => ShowRenderer)
 AppRegistry.registerComponent("ShowArtists", () => ShowArtists)
 AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)
 AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)

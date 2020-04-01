@@ -7,7 +7,6 @@ import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCit
 import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
-import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import { defaultEnvironment as environment } from "./createEnvironment"
 
@@ -15,27 +14,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface ShowRendererProps extends RendererProps {
-  showID: string
-}
-
-export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) => {
-  return (
-    <QueryRenderer<QueryRenderersShowQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersShowQuery($showID: String!) {
-          show(id: $showID) {
-            ...Show_show
-          }
-        }
-      `}
-      variables={{ showID }}
-      render={render}
-    />
-  )
 }
 
 interface CityBMWListProps extends RendererProps {
