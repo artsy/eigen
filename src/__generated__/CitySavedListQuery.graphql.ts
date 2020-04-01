@@ -1,12 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a1b5ca9738c0d6a61fa5d172cba3012c */
+/* @relayHash 0cbad4189586507f6fda3002aa3db6c7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CitySavedListQueryVariables = {
-    count: number;
-    cursor?: string | null;
     citySlug: string;
 };
 export type CitySavedListQueryResponse = {
@@ -21,20 +19,18 @@ export type CitySavedListQuery = {
 
 /*
 query CitySavedListQuery(
-  $count: Int!
-  $cursor: String
   $citySlug: String!
 ) {
-  ...CitySavedList_viewer_1G22uz
+  ...CitySavedList_viewer
 }
 
-fragment CitySavedList_viewer_1G22uz on Query {
+fragment CitySavedList_viewer on Query {
   city(slug: $citySlug) {
     name
   }
   me {
     followsAndSaves {
-      shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor) {
+      shows: showsConnection(first: 20, status: RUNNING_AND_UPCOMING, city: $citySlug, after: "") {
         edges {
           node {
             slug
@@ -97,18 +93,6 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -123,9 +107,9 @@ v1 = {
 },
 v2 = [
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "after",
-    "variableName": "cursor"
+    "value": ""
   },
   {
     "kind": "Variable",
@@ -133,9 +117,9 @@ v2 = [
     "variableName": "citySlug"
   },
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "first",
-    "variableName": "count"
+    "value": 20
   },
   {
     "kind": "Literal",
@@ -176,18 +160,7 @@ return {
       {
         "kind": "FragmentSpread",
         "name": "CitySavedList_viewer",
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "count",
-            "variableName": "count"
-          },
-          {
-            "kind": "Variable",
-            "name": "cursor",
-            "variableName": "cursor"
-          }
-        ]
+        "args": null
       }
     ]
   },
@@ -498,11 +471,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySavedListQuery",
-    "id": "dd922620c574c3eed75338d9a2edf71d",
+    "id": "473d0a856fb30db1264b961984a00c47",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '9401e69a80235cc60cc783cfda8f1216';
+(node as any).hash = 'c0ff211bc4b50a815f9fbf1dc017a19f';
 export default node;

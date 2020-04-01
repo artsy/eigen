@@ -1,36 +1,40 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c387041c586a448a653288e9a485a2c0 */
+/* @relayHash 6a877985034850b6908bdf176c86ae40 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersCitySavedListQueryVariables = {
+export type CitySavedListPaginationQueryVariables = {
+    count: number;
+    cursor?: string | null;
     citySlug: string;
 };
-export type QueryRenderersCitySavedListQueryResponse = {
+export type CitySavedListPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"CitySavedList_viewer">;
 };
-export type QueryRenderersCitySavedListQuery = {
-    readonly response: QueryRenderersCitySavedListQueryResponse;
-    readonly variables: QueryRenderersCitySavedListQueryVariables;
+export type CitySavedListPaginationQuery = {
+    readonly response: CitySavedListPaginationQueryResponse;
+    readonly variables: CitySavedListPaginationQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCitySavedListQuery(
+query CitySavedListPaginationQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
 ) {
-  ...CitySavedList_viewer
+  ...CitySavedList_viewer_1G22uz
 }
 
-fragment CitySavedList_viewer on Query {
+fragment CitySavedList_viewer_1G22uz on Query {
   city(slug: $citySlug) {
     name
   }
   me {
     followsAndSaves {
-      shows: showsConnection(first: 20, status: RUNNING_AND_UPCOMING, city: $citySlug, after: "") {
+      shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor) {
         edges {
           node {
             slug
@@ -93,6 +97,18 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -107,9 +123,9 @@ v1 = {
 },
 v2 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "after",
-    "value": ""
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
@@ -117,9 +133,9 @@ v2 = [
     "variableName": "citySlug"
   },
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "first",
-    "value": 20
+    "variableName": "count"
   },
   {
     "kind": "Literal",
@@ -152,7 +168,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCitySavedListQuery",
+    "name": "CitySavedListPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -160,13 +176,24 @@ return {
       {
         "kind": "FragmentSpread",
         "name": "CitySavedList_viewer",
-        "args": null
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "count",
+            "variableName": "count"
+          },
+          {
+            "kind": "Variable",
+            "name": "cursor",
+            "variableName": "cursor"
+          }
+        ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCitySavedListQuery",
+    "name": "CitySavedListPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -470,12 +497,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersCitySavedListQuery",
-    "id": "0017c446e560a44ffaa61810564a6e41",
+    "name": "CitySavedListPaginationQuery",
+    "id": "8ec440301c9a5eb6bcc2c60a91d5fb8b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '813d4c45450089cde8c35bf2de4fa9ee';
+(node as any).hash = '6e15a7a6caef0ac0b8bd02329356fe61';
 export default node;

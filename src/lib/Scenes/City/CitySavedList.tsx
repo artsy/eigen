@@ -1,10 +1,14 @@
 import { Theme } from "@artsy/palette"
 import { CitySavedList_viewer } from "__generated__/CitySavedList_viewer.graphql"
+import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp, RelayProp } from "react-relay"
+import { CityFairListContainer } from "./CityFairList"
 import { EventList } from "./Components/EventList"
 
 interface Props {
@@ -74,7 +78,7 @@ class CitySavedList extends React.Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
+export const CitySavedListContainer = createPaginationContainer(
   CitySavedList,
   {
     viewer: graphql`
@@ -150,9 +154,27 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query CitySavedListQuery($count: Int!, $cursor: String, $citySlug: String!) {
+      query CitySavedListPaginationQuery($count: Int!, $cursor: String, $citySlug: String!) {
         ...CitySavedList_viewer @arguments(count: $count, cursor: $cursor)
       }
     `,
   }
 )
+
+interface CitySavedListProps {
+  citySlug: string
+}
+export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ citySlug }) => {
+  return (
+    <QueryRenderer<CitySavedListQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query CitySavedListQuery($citySlug: String!) {
+          ...CitySavedList_viewer
+        }
+      `}
+      variables={{ citySlug }}
+      render={renderWithLoadProgress(CityFairListContainer)}
+    />
+  )
+}

@@ -2,7 +2,6 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { EventStatus, ShowSorts } from "__generated__/CitySectionListQuery.graphql"
-import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
@@ -12,24 +11,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface CitySavedListProps extends RendererProps {
-  citySlug: string
-}
-export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ render, citySlug }) => {
-  return (
-    <QueryRenderer<QueryRenderersCitySavedListQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersCitySavedListQuery($citySlug: String!) {
-          ...CitySavedList_viewer
-        }
-      `}
-      variables={{ citySlug }}
-      render={render}
-    />
-  )
 }
 
 interface CitySectionListProps extends RendererProps {

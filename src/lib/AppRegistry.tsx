@@ -11,13 +11,14 @@ import { GeneRenderer } from "./Containers/Gene"
 import { InboxRenderer } from "./Containers/Inbox"
 import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
-import { CitySavedListRenderer, CitySectionListRenderer } from "./relay/QueryRenderers"
+import { CitySectionListRenderer } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityBMWListRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
+import { CitySavedListRenderer } from "./Scenes/City/CitySavedList"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import {
@@ -232,23 +233,6 @@ const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) 
   return <FairBMWArtActivationRenderer fairID={fairID} />
 }
 
-interface CitySavedListProps {
-  citySlug: string
-}
-const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
-  return (
-    <CitySavedListRenderer
-      citySlug={citySlug}
-      render={renderWithLoadProgress(
-        props => (
-          <Containers.CitySavedList viewer={props as any} citySlug={citySlug} />
-        ),
-        { citySlug }
-      )}
-    />
-  )
-}
-
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
 }
@@ -294,7 +278,7 @@ AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
 AppRegistry.registerComponent("CityBMWList", () => CityBMWListRenderer)
 AppRegistry.registerComponent("CityFairList", () => CityFairListRenderer)
-AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
+AppRegistry.registerComponent("CitySavedList", () => CitySavedListRenderer)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
 AppRegistry.registerComponent("Collection", () => CollectionRenderer)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
