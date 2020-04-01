@@ -1,7 +1,7 @@
 import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
-import Conversation from "../Conversation"
+import { ConversationFragmentContainer } from "../Conversation"
 
 jest.unmock("react-tracking")
 
@@ -20,7 +20,7 @@ jest.mock("@react-native-community/netinfo", () => {
 })
 
 it("looks correct when rendered", () => {
-  const conversation = shallow(<Conversation me={props as any} />).dive()
+  const conversation = shallow(<ConversationFragmentContainer me={props as any} />).dive()
   const instance = conversation.dive().instance()
 
   // Assumes decent connectivity
@@ -30,48 +30,13 @@ it("looks correct when rendered", () => {
 })
 
 it("displays a connectivity banner when network is down", () => {
-  const conversation = shallow(<Conversation me={props as any} />).dive()
+  const conversation = shallow(<ConversationFragmentContainer me={props as any} />).dive()
   const instance = conversation.dive().instance()
 
   // Assumes decent connectivity
   instance.handleConnectivityChange(false)
 
   expect(conversation).toMatchSnapshot()
-})
-
-it("sends message when composer is submitted", async () => {
-  function sendMessage() {
-    return new Promise((resolve, reject) => {
-      // TODO: The following commented areas are not being used
-      // const onMessageSent = text => {
-      //   expect(text).toEqual("Hello world")
-      //   resolve(true)
-      // }
-
-      setTimeout(reject, 1000)
-
-      // const conversation = shallow(
-      //   <Conversation
-      //     me={props}
-      //     onMessageSent={onMessageSent}
-      //     relay={{
-      //       environment: {},
-      //     }}
-      //   />
-      // ).dive()
-
-      // const instance = conversation.instance()
-      // instance.composer.setState({ text: "Hello world" })
-      // instance.composer.submitText()
-      // TODO(luc): fix composer so it's not undefined anymore. enzyme.shallow doesn't
-      // call ref callbacks
-      resolve(true)
-    })
-  }
-
-  return sendMessage().then(successful => {
-    expect(successful).toBeTruthy()
-  })
 })
 
 const props = {

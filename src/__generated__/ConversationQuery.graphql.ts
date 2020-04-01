@@ -1,26 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6d8aee7aca42fefdf8d9e0c7a24a724f */
+/* @relayHash 2c2a90acc660917b1906a2f76cdb5b67 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersConversationQueryVariables = {
+export type ConversationQueryVariables = {
     conversationID: string;
 };
-export type QueryRenderersConversationQueryResponse = {
+export type ConversationQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"Conversation_me">;
     } | null;
 };
-export type QueryRenderersConversationQuery = {
-    readonly response: QueryRenderersConversationQueryResponse;
-    readonly variables: QueryRenderersConversationQueryVariables;
+export type ConversationQuery = {
+    readonly response: ConversationQueryResponse;
+    readonly variables: ConversationQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersConversationQuery(
+query ConversationQuery(
   $conversationID: String!
 ) {
   me {
@@ -263,7 +263,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersConversationQuery",
+    "name": "ConversationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -288,7 +288,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersConversationQuery",
+    "name": "ConversationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -658,12 +658,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersConversationQuery",
-    "id": "d2a7a133084755a737564ee88a1d3894",
+    "name": "ConversationQuery",
+    "id": "83e1d230b94e76a748b04140984ab9e0",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'fe5889d5a36fd2a36e81e4d6f595a8b1';
+(node as any).hash = 'd45464a0b4ebc0c7eb45f4c296c8efb6';
 export default node;

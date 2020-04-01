@@ -1,8 +1,11 @@
 import NetInfo from "@react-native-community/netinfo"
 import { Conversation_me } from "__generated__/Conversation_me.graphql"
+import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { View } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import ConnectivityBanner from "../Components/ConnectivityBanner"
 import Composer from "../Components/Inbox/Conversations/Composer"
@@ -164,7 +167,7 @@ export class Conversation extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(Conversation, {
+export const ConversationFragmentContainer = createFragmentContainer(Conversation, {
   me: graphql`
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
@@ -183,3 +186,24 @@ export default createFragmentContainer(Conversation, {
     }
   `,
 })
+
+export const ConversationRenderer: React.SFC<{
+  conversationID: string
+}> = ({ conversationID }) => {
+  return (
+    <QueryRenderer<ConversationQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ConversationQuery($conversationID: String!) {
+          me {
+            ...Conversation_me
+          }
+        }
+      `}
+      variables={{
+        conversationID,
+      }}
+      render={renderWithLoadProgress(ConversationFragmentContainer)}
+    />
+  )
+}

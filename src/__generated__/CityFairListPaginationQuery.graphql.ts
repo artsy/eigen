@@ -1,36 +1,40 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 25a223913abb86e231e4665fb509979b */
+/* @relayHash 66e0af57d929ef8fb03dfc52e5606fd7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersCityFairListQueryVariables = {
+export type CityFairListPaginationQueryVariables = {
+    count: number;
+    cursor?: string | null;
     citySlug: string;
 };
-export type QueryRenderersCityFairListQueryResponse = {
+export type CityFairListPaginationQueryResponse = {
     readonly city: {
         readonly " $fragmentRefs": FragmentRefs<"CityFairList_city">;
     } | null;
 };
-export type QueryRenderersCityFairListQuery = {
-    readonly response: QueryRenderersCityFairListQueryResponse;
-    readonly variables: QueryRenderersCityFairListQueryVariables;
+export type CityFairListPaginationQuery = {
+    readonly response: CityFairListPaginationQueryResponse;
+    readonly variables: CityFairListPaginationQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCityFairListQuery(
+query CityFairListPaginationQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
 ) {
   city(slug: $citySlug) {
-    ...CityFairList_city
+    ...CityFairList_city_1G22uz
   }
 }
 
-fragment CityFairList_city on City {
+fragment CityFairList_city_1G22uz on City {
   slug
-  fairs: fairsConnection(first: 20, after: "", status: CURRENT, sort: START_AT_ASC) {
+  fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
         internalID
@@ -82,6 +86,18 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -103,14 +119,14 @@ v2 = {
 },
 v3 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "after",
-    "value": ""
+    "variableName": "cursor"
   },
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "first",
-    "value": 20
+    "variableName": "count"
   },
   {
     "kind": "Literal",
@@ -148,7 +164,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCityFairListQuery",
+    "name": "CityFairListPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -165,7 +181,18 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CityFairList_city",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
+            ]
           }
         ]
       }
@@ -173,7 +200,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCityFairListQuery",
+    "name": "CityFairListPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -190,7 +217,7 @@ return {
             "kind": "LinkedField",
             "alias": "fairs",
             "name": "fairsConnection",
-            "storageKey": "fairsConnection(after:\"\",first:20,sort:\"START_AT_ASC\",status:\"CURRENT\")",
+            "storageKey": null,
             "args": (v3/*: any*/),
             "concreteType": "FairConnection",
             "plural": false,
@@ -447,12 +474,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersCityFairListQuery",
-    "id": "7666b9950428a8696037134e848d383d",
+    "name": "CityFairListPaginationQuery",
+    "id": "b2ec75f9ace3de0f54ce7426ae7eb6e5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '0c133553ee090f49b2897e3fe7cca243';
+(node as any).hash = 'adb3f7c25528f635d78a6440fb4eab9e';
 export default node;

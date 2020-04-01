@@ -10,18 +10,16 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { options } from "lib/options"
 import { Router } from "lib/utils/router"
 
-import WorksForYou from "lib/Containers/WorksForYou"
-import { ForYouFragmentContainer } from "./Components/ForYou/ForYou"
+import { ForYouRenderer } from "./Components/ForYou/ForYou"
 import Sales from "./Components/Sales"
 
-import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import { SalesRenderer } from "lib/Scenes/Home/Components/Sales/Relay/SalesRenderer"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
-import { QueryRenderersWorksForYouQueryResponse } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { SalesRendererQueryResponse } from "__generated__/SalesRendererQuery.graphql"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"
+import { WorksForYouRenderer } from "lib/Containers/WorksForYou"
 
 const TabBarContainer = styled.View``
 
@@ -62,7 +60,6 @@ const screenSchemaForCurrentTab = currentSelectedTab => {
  *
  * TODO: See if it’s possible to refactor things such that this is no longer necessary.
  */
-const WorksForYouTrampoline: React.FC<QueryRenderersWorksForYouQueryResponse> = query => <WorksForYou query={query} />
 const SalesTrampoline: React.FC<SalesRendererQueryResponse> = query => <Sales query={query} />
 
 // This kills two birds with one stone:
@@ -135,13 +132,10 @@ export class Home extends React.Component<Props, State> {
       A thin space has been added in front of the tab label names to compensate for trailing space added by the
       wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
             <Tab tabLabel=" Artists">
-              <WorksForYouRenderer
-                render={renderWithLoadProgress(WorksForYouTrampoline as any)}
-                selectedArtist={this.props.selectedArtist}
-              />
+              <WorksForYouRenderer />
             </Tab>
             <Tab tabLabel=" For you">
-              <ForYouRenderer render={renderWithLoadProgress(ForYouFragmentContainer)} />
+              <ForYouRenderer />
             </Tab>
             <Tab tabLabel=" Auctions">
               <SalesRenderer render={renderWithLoadProgress(SalesTrampoline as any)} />

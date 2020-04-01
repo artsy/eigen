@@ -1,24 +1,24 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 28d21371608308c8d68447de05063979 */
+/* @relayHash 4fbf0aad8b6f3ef729d67310d54216c6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersForYouQueryVariables = {};
-export type QueryRenderersForYouQueryResponse = {
+export type ForYouQueryVariables = {};
+export type ForYouQueryResponse = {
     readonly forYou: {
         readonly " $fragmentRefs": FragmentRefs<"ForYou_forYou">;
     } | null;
 };
-export type QueryRenderersForYouQuery = {
-    readonly response: QueryRenderersForYouQueryResponse;
-    readonly variables: QueryRenderersForYouQueryVariables;
+export type ForYouQuery = {
+    readonly response: ForYouQueryResponse;
+    readonly variables: ForYouQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersForYouQuery {
+query ForYouQuery {
   forYou: homePage {
     ...ForYou_forYou
   }
@@ -274,7 +274,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersForYouQuery",
+    "name": "ForYouQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -299,7 +299,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersForYouQuery",
+    "name": "ForYouQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -673,12 +673,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersForYouQuery",
-    "id": "499e0883206afdb5fa7259edf7daa6e6",
+    "name": "ForYouQuery",
+    "id": "e3d76480c06529de043e720c806613a3",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '7b73e6512452bb11a8e6e0444cb760f5';
+(node as any).hash = 'b2f4a15d79b22ceaacc221cb74a06292';
 export default node;

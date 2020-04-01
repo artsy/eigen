@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 339fa6de8d9a6a8f72e3a5efe8239f42 */
+/* @relayHash 7064038e473173332ea36dcf66dba669 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersRegistrationFlowQueryVariables = {
+export type RegistrationFlowQueryVariables = {
     saleID: string;
 };
-export type QueryRenderersRegistrationFlowQueryResponse = {
+export type RegistrationFlowQueryResponse = {
     readonly sale: {
         readonly name: string | null;
         readonly " $fragmentRefs": FragmentRefs<"RegistrationFlow_sale">;
@@ -16,15 +16,15 @@ export type QueryRenderersRegistrationFlowQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"RegistrationFlow_me">;
     } | null;
 };
-export type QueryRenderersRegistrationFlowQuery = {
-    readonly response: QueryRenderersRegistrationFlowQueryResponse;
-    readonly variables: QueryRenderersRegistrationFlowQueryVariables;
+export type RegistrationFlowQuery = {
+    readonly response: RegistrationFlowQueryResponse;
+    readonly variables: RegistrationFlowQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersRegistrationFlowQuery(
+query RegistrationFlowQuery(
   $saleID: String!
 ) {
   sale(id: $saleID) {
@@ -94,7 +94,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersRegistrationFlowQuery",
+    "name": "RegistrationFlowQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -136,7 +136,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersRegistrationFlowQuery",
+    "name": "RegistrationFlowQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -210,12 +210,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersRegistrationFlowQuery",
-    "id": "a2a1384808bdca6155d1ef92432247ab",
+    "name": "RegistrationFlowQuery",
+    "id": "15f2216cc42348be950cd859a9f01644",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'bce11602f08e3a5b15eae2a068725187';
+(node as any).hash = 'af83c19448e31ceffd514ab56c5e7b95';
 export default node;

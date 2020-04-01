@@ -16,11 +16,11 @@ beforeAll(() => {
 
 describe("with notifications", () => {
   it("updates the notification count", () => {
-    const query = notificationsResponse().query
+    const me = notificationsResponse().query.me
     renderer
       .create(
         <Theme>
-          <WorksForYou query={query as any} relay={null} />
+          <WorksForYou me={me as any} relay={null} />
         </Theme>
       )
       .toJSON()
@@ -28,28 +28,28 @@ describe("with notifications", () => {
   })
 
   it("lays out correctly on small screens", () => {
-    const query = notificationsResponse().query
-    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 100 })
+    const me = notificationsResponse().query.me
+    const component = renderWithLayout(<WorksForYou me={me as any} relay={null} />, { width: 100 })
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
-    const query = notificationsResponse().query
-    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 700 })
+    const me = notificationsResponse().query.me
+    const component = renderWithLayout(<WorksForYou me={me as any} relay={null} />, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })
 
 describe("without notifications", () => {
   it("lays out correctly on small screens", () => {
-    const query = emptyStateResponse().query
-    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 100 })
+    const me = emptyStateResponse().query.me
+    const component = renderWithLayout(<WorksForYou me={me as any} relay={null} />, { width: 100 })
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
-    const query = emptyStateResponse().query
-    const component = renderWithLayout(<WorksForYou query={query as any} relay={null} />, { width: 700 })
+    const me = emptyStateResponse().query.me
+    const component = renderWithLayout(<WorksForYou me={me as any} relay={null} />, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })

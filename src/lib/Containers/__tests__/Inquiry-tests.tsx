@@ -1,15 +1,15 @@
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
-import Inquiry from "../Inquiry"
 
 import { Theme } from "@artsy/palette"
+import { InquiryFragmentContainer } from "../Inquiry"
 
 it("renders correctly", () => {
   const tree = renderer
     .create(
       <Theme>
-        <Inquiry artwork={inquiryProps as any} />
+        <InquiryFragmentContainer artwork={inquiryProps as any} />
       </Theme>
     )
     .toJSON()

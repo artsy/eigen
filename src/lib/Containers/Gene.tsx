@@ -1,12 +1,15 @@
 import { Button, Theme } from "@artsy/palette"
 import { Gene_gene } from "__generated__/Gene_gene.graphql"
+import { GeneQuery } from "__generated__/GeneQuery.graphql"
 import colors from "lib/data/colors"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import About from "../Components/Gene/About"
 import Header from "../Components/Gene/Header"
@@ -333,7 +336,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createPaginationContainer(
+export const GeneFragmentContainer = createPaginationContainer(
   Gene,
   {
     gene: graphql`
@@ -400,7 +403,14 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query GeneQuery($id: ID!, $count: Int!, $cursor: String, $sort: String, $medium: String, $price_range: String) {
+      query GenePaginationQuery(
+        $id: ID!
+        $count: Int!
+        $cursor: String
+        $sort: String
+        $medium: String
+        $price_range: String
+      ) {
         node(id: $id) {
           ... on Gene {
             ...Gene_gene
@@ -411,3 +421,30 @@ export default createPaginationContainer(
     `,
   }
 )
+
+interface GeneRendererProps {
+  geneID: string
+  medium?: string
+  price_range?: string
+}
+
+export const GeneRenderer: React.SFC<GeneRendererProps> = ({ geneID, medium, price_range }) => {
+  return (
+    <QueryRenderer<GeneQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query GeneQuery($geneID: String!, $medium: String, $price_range: String) {
+          gene(id: $geneID) {
+            ...Gene_gene @arguments(medium: $medium, priceRange: $price_range)
+          }
+        }
+      `}
+      variables={{
+        geneID,
+        medium,
+        price_range,
+      }}
+      render={renderWithLoadProgress(GeneFragmentContainer)}
+    />
+  )
+}

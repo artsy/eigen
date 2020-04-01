@@ -44,7 +44,6 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 
-#import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 
 // Views

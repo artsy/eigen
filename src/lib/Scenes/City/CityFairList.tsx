@@ -1,13 +1,15 @@
 import { Box, Separator, Serif, Theme } from "@artsy/palette"
 import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
-import { CityFairListQueryVariables } from "__generated__/CityFairListQuery.graphql"
+import { CityFairListQuery, CityFairListQueryVariables } from "__generated__/CityFairListQuery.graphql"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { TabFairItemRow } from "./Components/TabFairItemRow"
 
 interface Props extends Pick<CityFairListQueryVariables, "citySlug"> {
@@ -86,7 +88,7 @@ class CityFairList extends React.Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
+export const CityFairListContainer = createPaginationContainer(
   CityFairList,
   {
     city: graphql`
@@ -154,7 +156,7 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query CityFairListQuery($count: Int!, $cursor: String, $citySlug: String!) {
+      query CityFairListPaginationQuery($count: Int!, $cursor: String, $citySlug: String!) {
         city(slug: $citySlug) {
           ...CityFairList_city @arguments(count: $count, cursor: $cursor)
         }
@@ -162,3 +164,23 @@ export default createPaginationContainer(
     `,
   }
 )
+
+interface CityFairListProps {
+  citySlug: string
+}
+export const CityFairListRenderer: React.SFC<CityFairListProps> = ({ citySlug }) => {
+  return (
+    <QueryRenderer<CityFairListQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query CityFairListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CityFairList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={renderWithLoadProgress(CityFairListContainer)}
+    />
+  )
+}

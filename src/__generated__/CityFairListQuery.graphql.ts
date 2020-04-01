@@ -1,12 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9347ab14def7cdc602e14e9a3db6a196 */
+/* @relayHash 003dc1b6e6b89fc9dd97b87c2593c06a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CityFairListQueryVariables = {
-    count: number;
-    cursor?: string | null;
     citySlug: string;
 };
 export type CityFairListQueryResponse = {
@@ -23,18 +21,16 @@ export type CityFairListQuery = {
 
 /*
 query CityFairListQuery(
-  $count: Int!
-  $cursor: String
   $citySlug: String!
 ) {
   city(slug: $citySlug) {
-    ...CityFairList_city_1G22uz
+    ...CityFairList_city
   }
 }
 
-fragment CityFairList_city_1G22uz on City {
+fragment CityFairList_city on City {
   slug
-  fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC) {
+  fairs: fairsConnection(first: 20, after: "", status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
         internalID
@@ -86,18 +82,6 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -119,14 +103,14 @@ v2 = {
 },
 v3 = [
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "after",
-    "variableName": "cursor"
+    "value": ""
   },
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "first",
-    "variableName": "count"
+    "value": 20
   },
   {
     "kind": "Literal",
@@ -181,18 +165,7 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CityFairList_city",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "count",
-                "variableName": "count"
-              },
-              {
-                "kind": "Variable",
-                "name": "cursor",
-                "variableName": "cursor"
-              }
-            ]
+            "args": null
           }
         ]
       }
@@ -217,7 +190,7 @@ return {
             "kind": "LinkedField",
             "alias": "fairs",
             "name": "fairsConnection",
-            "storageKey": null,
+            "storageKey": "fairsConnection(after:\"\",first:20,sort:\"START_AT_ASC\",status:\"CURRENT\")",
             "args": (v3/*: any*/),
             "concreteType": "FairConnection",
             "plural": false,
@@ -475,11 +448,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CityFairListQuery",
-    "id": "1381befaf61cac38d7102f134d1fb3e0",
+    "id": "5228db5e584dd64dc02a8a9e133bc75f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '67a71dd0b56ee5d2552a6e45579f8921';
+(node as any).hash = '0aa8d3d3cf18e78b54ef26373f7e18e3';
 export default node;

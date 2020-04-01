@@ -1,13 +1,16 @@
 import { Flex, Theme } from "@artsy/palette"
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
+import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Components/Inbox/ActiveBids"
 import Conversations, { Conversations as ConversationsRef } from "lib/Components/Inbox/Conversations"
 import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { get } from "lib/utils/get"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { RefreshControl } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
 interface Props {
@@ -96,7 +99,7 @@ export class Inbox extends React.Component<Props, State> {
 //        ...Conversations_me @relay(mask: false)
 //        ...ActiveBids_me @relay(mask: false)
 //
-export default createRefetchContainer(
+export const InboxContainer = createRefetchContainer(
   Inbox,
   {
     me: graphql`
@@ -126,3 +129,20 @@ export default createRefetchContainer(
     }
   `
 )
+
+export const InboxRenderer: React.SFC = () => {
+  return (
+    <QueryRenderer<InboxQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query InboxQuery {
+          me {
+            ...Inbox_me
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(InboxContainer)}
+    />
+  )
+}

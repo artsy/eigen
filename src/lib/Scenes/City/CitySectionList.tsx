@@ -1,11 +1,19 @@
 import { Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
-import { CitySectionListQueryVariables } from "__generated__/CitySectionListQuery.graphql"
+import {
+  CitySectionListQuery,
+  CitySectionListQueryVariables,
+  EventStatus,
+  PartnerShowPartnerType,
+  ShowSorts,
+} from "__generated__/CitySectionListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp, RelayProp } from "react-relay"
 import { BucketKey } from "../Map/bucketCityResults"
 import { EventList } from "./Components/EventList"
 
@@ -104,7 +112,7 @@ class CitySectionList extends React.Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
+export const CitySectionListContainer = createPaginationContainer(
   CitySectionList,
   {
     city: graphql`
@@ -187,7 +195,7 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query CitySectionListQuery(
+      query CitySectionListPaginationQuery(
         $count: Int!
         $cursor: String
         $citySlug: String!
@@ -211,3 +219,61 @@ export default createPaginationContainer(
     `,
   }
 )
+
+interface CitySectionListProps {
+  citySlug: string
+  section: BucketKey
+}
+export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
+  const variables: {
+    citySlug: string
+    partnerType?: PartnerShowPartnerType
+    status?: EventStatus
+    dayThreshold?: number
+    sort?: ShowSorts
+  } = { citySlug }
+
+  switch (section) {
+    case "museums":
+      variables.partnerType = "MUSEUM"
+      variables.status = "RUNNING"
+      variables.sort = "PARTNER_ASC"
+      break
+    case "galleries":
+      variables.partnerType = "GALLERY"
+      variables.status = "RUNNING"
+      variables.sort = "PARTNER_ASC"
+      break
+    case "closing":
+      variables.status = "CLOSING_SOON"
+      variables.sort = "END_AT_ASC"
+      variables.dayThreshold = 7
+      break
+    case "opening":
+      variables.status = "UPCOMING"
+      variables.sort = "START_AT_ASC"
+      variables.dayThreshold = 14
+  }
+
+  return (
+    <QueryRenderer<CitySectionListQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query CitySectionListQuery(
+          $citySlug: String!
+          $partnerType: PartnerShowPartnerType
+          $status: EventStatus
+          $dayThreshold: Int
+          $sort: ShowSorts
+        ) {
+          city(slug: $citySlug) {
+            ...CitySectionList_city
+              @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
+          }
+        }
+      `}
+      variables={variables}
+      render={renderWithLoadProgress(CitySectionListContainer)}
+    />
+  )
+}

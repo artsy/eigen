@@ -1,33 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a5befc5e668dc7533b08c7c843a3cf75 */
+/* @relayHash c0ad3e045c8b1f24f376e47b27565109 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type EventStatus = "CLOSED" | "CLOSING_SOON" | "CURRENT" | "RUNNING" | "RUNNING_AND_UPCOMING" | "UPCOMING" | "%future added value";
 export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
 export type ShowSorts = "END_AT_ASC" | "END_AT_DESC" | "FEATURED_ASC" | "FEATURED_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "SORTABLE_NAME_ASC" | "SORTABLE_NAME_DESC" | "START_AT_ASC" | "START_AT_DESC" | "UPDATED_AT_ASC" | "UPDATED_AT_DESC" | "%future added value";
-export type QueryRenderersCitySectionListQueryVariables = {
+export type CitySectionListPaginationQueryVariables = {
+    count: number;
+    cursor?: string | null;
     citySlug: string;
     partnerType?: PartnerShowPartnerType | null;
     status?: EventStatus | null;
     dayThreshold?: number | null;
     sort?: ShowSorts | null;
 };
-export type QueryRenderersCitySectionListQueryResponse = {
+export type CitySectionListPaginationQueryResponse = {
     readonly city: {
         readonly " $fragmentRefs": FragmentRefs<"CitySectionList_city">;
     } | null;
 };
-export type QueryRenderersCitySectionListQuery = {
-    readonly response: QueryRenderersCitySectionListQueryResponse;
-    readonly variables: QueryRenderersCitySectionListQueryVariables;
+export type CitySectionListPaginationQuery = {
+    readonly response: CitySectionListPaginationQueryResponse;
+    readonly variables: CitySectionListPaginationQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCitySectionListQuery(
+query CitySectionListPaginationQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
   $partnerType: PartnerShowPartnerType
   $status: EventStatus
@@ -35,13 +39,13 @@ query QueryRenderersCitySectionListQuery(
   $sort: ShowSorts
 ) {
   city(slug: $citySlug) {
-    ...CitySectionList_city_2xWq6T
+    ...CitySectionList_city_3BpxDU
   }
 }
 
-fragment CitySectionList_city_2xWq6T on City {
+fragment CitySectionList_city_3BpxDU on City {
   name
-  shows: showsConnection(includeStubShows: true, first: 20, sort: $sort, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
+  shows: showsConnection(includeStubShows: true, first: $count, sort: $sort, after: $cursor, partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
     pageInfo {
       endCursor
       hasNextPage
@@ -92,6 +96,18 @@ fragment CitySectionList_city_2xWq6T on City {
 
 const node: ConcreteRequest = (function(){
 var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
   {
     "kind": "LocalArgument",
     "name": "citySlug",
@@ -159,15 +175,15 @@ v6 = {
 },
 v7 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "after",
-    "value": ""
+    "variableName": "cursor"
   },
   (v2/*: any*/),
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "first",
-    "value": 20
+    "variableName": "count"
   },
   {
     "kind": "Literal",
@@ -203,7 +219,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCitySectionListQuery",
+    "name": "CitySectionListPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -221,6 +237,16 @@ return {
             "kind": "FragmentSpread",
             "name": "CitySectionList_city",
             "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              },
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
@@ -233,7 +259,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCitySectionListQuery",
+    "name": "CitySectionListPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -474,12 +500,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersCitySectionListQuery",
-    "id": "d63c1f2ea07ae174fa360a2f02ab6e5b",
+    "name": "CitySectionListPaginationQuery",
+    "id": "0b462f7d0e98231e7edb7256109173cf",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '29b6753f868977bf8e981a81bca35503';
+(node as any).hash = 'ff4164b2e2e4710f73ecfc8db61b2dd0';
 export default node;

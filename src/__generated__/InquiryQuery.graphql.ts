@@ -1,26 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d978dd7b3ccbaea6b09d033848a4bfea */
+/* @relayHash 44e458af06524e6d35f4855dfe5c0311 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersInquiryQueryVariables = {
+export type InquiryQueryVariables = {
     artworkID: string;
 };
-export type QueryRenderersInquiryQueryResponse = {
+export type InquiryQueryResponse = {
     readonly artwork: {
         readonly " $fragmentRefs": FragmentRefs<"Inquiry_artwork">;
     } | null;
 };
-export type QueryRenderersInquiryQuery = {
-    readonly response: QueryRenderersInquiryQueryResponse;
-    readonly variables: QueryRenderersInquiryQueryVariables;
+export type InquiryQuery = {
+    readonly response: InquiryQueryResponse;
+    readonly variables: InquiryQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersInquiryQuery(
+query InquiryQuery(
   $artworkID: String!
 ) {
   artwork(id: $artworkID) {
@@ -79,7 +79,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersInquiryQuery",
+    "name": "InquiryQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -104,7 +104,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersInquiryQuery",
+    "name": "InquiryQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -202,12 +202,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersInquiryQuery",
-    "id": "805f0d50e32c8f27909c2ec8a1f7ded9",
+    "name": "InquiryQuery",
+    "id": "8756ca1278c6602e3d356a54e4e39724",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '820a207464d113a1f04a3c89649aa9b8';
+(node as any).hash = '1585091bd37bd4e98eb4aee91d287462';
 export default node;

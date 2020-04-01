@@ -1,37 +1,26 @@
 import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
-import { Container as RelayContainer } from "react-relay"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/"
 import { ArtistQueryRenderer } from "./Containers/Artist"
-import BidFlow from "./Containers/BidFlow"
-import RegistrationFlow from "./Containers/RegistrationFlow"
-import {
-  BidderFlowRendererProps,
-  BidFlowRenderer,
-  CityBMWListRenderer,
-  CityFairListRenderer,
-  CitySavedListRenderer,
-  CitySectionListRenderer,
-  CollectionFullFeaturedArtistListRenderer,
-  CollectionRenderer,
-  ConversationRenderer,
-  FairRenderer,
-  GeneRenderer,
-  InboxRenderer,
-  InquiryRenderer,
-  RegistrationFlowRenderer,
-  ShowRenderer,
-  WorksForYouRenderer,
-} from "./relay/QueryRenderers"
+import { BidFlowRenderer } from "./Containers/BidFlow"
+import { ConversationRenderer } from "./Containers/Conversation"
+import { GeneRenderer } from "./Containers/Gene"
+import { InboxRenderer } from "./Containers/Inbox"
+import { InquiryRenderer } from "./Containers/Inquiry"
+import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
+import { CityBMWListRenderer } from "./Scenes/City/CityBMWList"
+import { CityFairListRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
-import { CollectionContainer } from "./Scenes/Collection/Collection"
-import { CollectionFeaturedArtistsContainer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import { CitySavedListRenderer } from "./Scenes/City/CitySavedList"
+import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
+import { CollectionRenderer } from "./Scenes/Collection/Collection"
+import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -40,17 +29,17 @@ import {
   FairExhibitorsRenderer,
   FairMoreInfoRenderer,
 } from "./Scenes/Fair"
+import { FairRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import { Home } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
-import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { PartnerRenderer } from "./Scenes/Partner"
 import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
+import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoom } from "./Scenes/ViewingRoom"
-import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
@@ -100,7 +89,7 @@ const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLoca
 
 const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})(props => <InboxRenderer {...props} render={renderWithLoadProgress(Containers.Inbox, props)} />)
+})(props => <InboxRenderer {...props} />)
 
 interface GeneProps {
   geneID: string
@@ -115,31 +104,8 @@ const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
   }
 })(({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
-  return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
+  return <GeneRenderer {...initialProps} />
 })
-
-// FIXME: This isn't being used
-// const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
-//   const initialProps = { saleID }
-//   return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
-// }
-
-// TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
-//
-//     this.renderFetched = data => <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
-//
-// FIXME: Is this really still being used?
-const WorksForYou: React.SFC<{ selectedArtist: string }> = props => (
-  <WorksForYouRenderer
-    {...props}
-    render={renderWithLoadProgress(
-      query => (
-        <Containers.WorksForYou query={query as any} />
-      ),
-      props
-    )}
-  />
-)
 
 interface InquiryProps {
   artworkID: string
@@ -150,7 +116,7 @@ const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
     context_screen_owner_slug: props.artworkID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
   }
-})(props => <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />)
+})(props => <InquiryRenderer {...props} />)
 
 interface ConversationProps {
   conversationID: string
@@ -161,31 +127,9 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
     context_screen_owner_id: props.conversationID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
-})(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
+})(ConversationRenderer)
 
 const MyProfile = Containers.MyProfile
-
-interface CollectionProps {
-  collectionID: string
-}
-
-const Collection: React.SFC<CollectionProps> = ({ collectionID }) => {
-  return (
-    <CollectionRenderer
-      collectionID={collectionID}
-      render={renderWithLoadProgress(CollectionContainer, { collectionID })}
-    />
-  )
-}
-
-const FullFeaturedArtistList: React.SFC<CollectionProps> = ({ collectionID }) => {
-  return (
-    <CollectionFullFeaturedArtistListRenderer
-      collectionID={collectionID}
-      render={renderWithLoadProgress(CollectionFeaturedArtistsContainer, { collectionID })}
-    />
-  )
-}
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow
@@ -198,41 +142,13 @@ interface BidderFlowProps {
   intent: BidderFlowIntent
 }
 
-interface BidderFlow {
-  queryRenderer: React.ComponentType<BidderFlowRendererProps>
-  container: RelayContainer<any>
-}
-
-const BidderFlows: { [BidderFlowIntent: string]: BidderFlow } = {
-  bid: {
-    queryRenderer: BidFlowRenderer,
-    container: BidFlow,
-  },
-  register: {
-    queryRenderer: RegistrationFlowRenderer,
-    container: RegistrationFlow,
-  },
-}
-
 const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
-  const { queryRenderer: Renderer, container: Container } = BidderFlows[intent]
-  return <Renderer {...restProps} render={renderWithLoadProgress(Container)} />
-}
-
-interface FairProps {
-  fairID: string
-}
-
-const Fair: React.SFC<FairProps> = ({ fairID }) => {
-  return <FairRenderer fairID={fairID} render={renderWithLoadProgress(Containers.Fair, { fairID })} />
-}
-
-interface ShowProps {
-  showID: string
-}
-
-const Show: React.SFC<ShowProps> = ({ showID }) => {
-  return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.Show, { showID })} />
+  switch (intent) {
+    case "bid":
+      return <BidFlowRenderer {...restProps} />
+    case "register":
+      return <RegistrationFlowRenderer {...restProps} />
+  }
 }
 
 interface ShowArtistsProps {
@@ -254,29 +170,6 @@ interface ShowMoreInfoProps {
 }
 const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoRenderer showID={showID} />
-}
-
-interface CityFairListProps {
-  citySlug: string
-}
-const CityFairList: React.SFC<CityFairListProps> = ({ citySlug }) => {
-  return (
-    <CityFairListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityFairList, { citySlug })} />
-  )
-}
-
-interface CitySectionListProps {
-  citySlug: string
-  section: BucketKey
-}
-const CitySectionList: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
-  return (
-    <CitySectionListRenderer
-      citySlug={citySlug}
-      section={section}
-      render={renderWithLoadProgress(Containers.CitySectionList, { citySlug, section })}
-    />
-  )
 }
 
 interface FairBoothProps {
@@ -317,37 +210,11 @@ const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsRenderer fairID={fairID} />
 }
 
-interface CityBMWListProps {
-  citySlug: string
-}
-const CityBMWList: React.SFC<CityBMWListProps> = ({ citySlug }) => {
-  return (
-    <CityBMWListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityBMWList, { citySlug })} />
-  )
-}
-
 interface FairBMWArtActivationProps {
   fairID: string
 }
 const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
   return <FairBMWArtActivationRenderer fairID={fairID} />
-}
-
-interface CitySavedListProps {
-  citySlug: string
-}
-const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
-  return (
-    <CitySavedListRenderer
-      citySlug={citySlug}
-      render={renderWithLoadProgress(
-        props => (
-          <Containers.CitySavedList viewer={props as any} citySlug={citySlug} />
-        ),
-        { citySlug }
-      )}
-    />
-  )
 }
 
 interface SearchWithTrackingProps {
@@ -368,7 +235,6 @@ AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
 AppRegistry.registerComponent("Home", () => Home)
 AppRegistry.registerComponent("Gene", () => Gene)
-AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
@@ -379,7 +245,7 @@ AppRegistry.registerComponent("PartnerLocations", () => PartnerLocations)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
-AppRegistry.registerComponent("Fair", () => Fair)
+AppRegistry.registerComponent("Fair", () => FairRenderer)
 AppRegistry.registerComponent("FairMoreInfo", () => FairMoreInfoRenderer)
 AppRegistry.registerComponent("FairBooth", () => FairBooth)
 AppRegistry.registerComponent("FairArtists", () => FairArtists)
@@ -387,18 +253,18 @@ AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
 AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
 AppRegistry.registerComponent("FairBMWArtActivation", () => FairBMWArtActivation)
 AppRegistry.registerComponent("Search", () => SearchWithTracking)
-AppRegistry.registerComponent("Show", () => Show)
+AppRegistry.registerComponent("Show", () => ShowRenderer)
 AppRegistry.registerComponent("ShowArtists", () => ShowArtists)
 AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)
 AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
-AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
-AppRegistry.registerComponent("CityFairList", () => CityFairList)
-AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
-AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
-AppRegistry.registerComponent("Collection", () => Collection)
+AppRegistry.registerComponent("CityBMWList", () => CityBMWListRenderer)
+AppRegistry.registerComponent("CityFairList", () => CityFairListRenderer)
+AppRegistry.registerComponent("CitySavedList", () => CitySavedListRenderer)
+AppRegistry.registerComponent("CitySectionList", () => CitySectionListRenderer)
+AppRegistry.registerComponent("Collection", () => CollectionRenderer)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
-AppRegistry.registerComponent("FullFeaturedArtistList", () => FullFeaturedArtistList)
+AppRegistry.registerComponent("FullFeaturedArtistList", () => CollectionFullFeaturedArtistListRenderer)
 AppRegistry.registerComponent("ViewingRoom", () => ViewingRoom)

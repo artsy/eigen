@@ -1,90 +1,94 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e7353ded6ccc23d27aabf7b97e39b6f4 */
+/* @relayHash 6a877985034850b6908bdf176c86ae40 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersCityBMWListQueryVariables = {
+export type CitySavedListPaginationQueryVariables = {
+    count: number;
+    cursor?: string | null;
     citySlug: string;
 };
-export type QueryRenderersCityBMWListQueryResponse = {
-    readonly city: {
-        readonly " $fragmentRefs": FragmentRefs<"CityBMWList_city">;
-    } | null;
+export type CitySavedListPaginationQueryResponse = {
+    readonly " $fragmentRefs": FragmentRefs<"CitySavedList_viewer">;
 };
-export type QueryRenderersCityBMWListQuery = {
-    readonly response: QueryRenderersCityBMWListQueryResponse;
-    readonly variables: QueryRenderersCityBMWListQueryVariables;
+export type CitySavedListPaginationQuery = {
+    readonly response: CitySavedListPaginationQueryResponse;
+    readonly variables: CitySavedListPaginationQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCityBMWListQuery(
+query CitySavedListPaginationQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
 ) {
-  city(slug: $citySlug) {
-    ...CityBMWList_city
-  }
+  ...CitySavedList_viewer_1G22uz
 }
 
-fragment CityBMWList_city on City {
-  name
-  slug
-  sponsoredContent {
-    shows: showsConnection(first: 20, status: RUNNING, after: "", sort: PARTNER_ASC) {
-      edges {
-        node {
-          slug
-          internalID
-          id
-          name
-          status
-          href
-          is_followed: isFollowed
-          isStubShow
-          exhibition_period: exhibitionPeriod
-          cover_image: coverImage {
-            url
-          }
-          location {
-            coordinates {
-              lat
-              lng
-            }
+fragment CitySavedList_viewer_1G22uz on Query {
+  city(slug: $citySlug) {
+    name
+  }
+  me {
+    followsAndSaves {
+      shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor) {
+        edges {
+          node {
+            slug
+            internalID
             id
-          }
-          type
-          start_at: startAt
-          end_at: endAt
-          partner {
-            __typename
-            ... on Partner {
-              name
-              type
-              profile {
-                image {
-                  url(version: "square")
+            name
+            isStubShow
+            status
+            href
+            is_followed: isFollowed
+            exhibition_period: exhibitionPeriod
+            cover_image: coverImage {
+              url
+            }
+            location {
+              coordinates {
+                lat
+                lng
+              }
+              id
+            }
+            type
+            start_at: startAt
+            end_at: endAt
+            partner {
+              __typename
+              ... on Partner {
+                name
+                type
+                profile {
+                  image {
+                    url(version: "square")
+                  }
+                  id
                 }
+              }
+              ... on Node {
+                id
+              }
+              ... on ExternalPartner {
                 id
               }
             }
-            ... on Node {
-              id
-            }
-            ... on ExternalPartner {
-              id
-            }
+            __typename
           }
-          __typename
+          cursor
         }
-        cursor
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
       }
     }
+    id
   }
 }
 */
@@ -93,69 +97,67 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
   }
 ],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "slug",
-    "variableName": "citySlug"
-  }
-],
-v2 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v4 = [
+v2 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "after",
-    "value": ""
+    "variableName": "cursor"
   },
   {
-    "kind": "Literal",
+    "kind": "Variable",
+    "name": "city",
+    "variableName": "citySlug"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 20
-  },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "PARTNER_ASC"
+    "variableName": "count"
   },
   {
     "kind": "Literal",
     "name": "status",
-    "value": "RUNNING"
+    "value": "RUNNING_AND_UPCOMING"
   }
 ],
-v5 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -166,24 +168,24 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCityBMWListQuery",
+    "name": "CitySavedListPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "city",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "City",
-        "plural": false,
-        "selections": [
+        "kind": "FragmentSpread",
+        "name": "CitySavedList_viewer",
+        "args": [
           {
-            "kind": "FragmentSpread",
-            "name": "CityBMWList_city",
-            "args": null
+            "kind": "Variable",
+            "name": "count",
+            "variableName": "count"
+          },
+          {
+            "kind": "Variable",
+            "name": "cursor",
+            "variableName": "cursor"
           }
         ]
       }
@@ -191,7 +193,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCityBMWListQuery",
+    "name": "CitySavedListPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -199,28 +201,44 @@ return {
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "slug",
+            "variableName": "citySlug"
+          }
+        ],
         "concreteType": "City",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
+          (v1/*: any*/)
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "sponsoredContent",
+            "name": "followsAndSaves",
             "storageKey": null,
             "args": null,
-            "concreteType": "CitySponsoredContent",
+            "concreteType": "FollowsAndSaves",
             "plural": false,
             "selections": [
               {
                 "kind": "LinkedField",
                 "alias": "shows",
                 "name": "showsConnection",
-                "storageKey": "showsConnection(after:\"\",first:20,sort:\"PARTNER_ASC\",status:\"RUNNING\")",
-                "args": (v4/*: any*/),
-                "concreteType": "ShowConnection",
+                "storageKey": null,
+                "args": (v2/*: any*/),
+                "concreteType": "FollowedShowConnection",
                 "plural": false,
                 "selections": [
                   {
@@ -229,7 +247,7 @@ return {
                     "name": "edges",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "ShowEdge",
+                    "concreteType": "FollowedShowEdge",
                     "plural": true,
                     "selections": [
                       {
@@ -241,7 +259,13 @@ return {
                         "concreteType": "Show",
                         "plural": false,
                         "selections": [
-                          (v3/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "slug",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -249,8 +273,15 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v5/*: any*/),
-                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v1/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "isStubShow",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -269,13 +300,6 @@ return {
                             "kind": "ScalarField",
                             "alias": "is_followed",
                             "name": "isFollowed",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "isStubShow",
                             "args": null,
                             "storageKey": null
                           },
@@ -338,10 +362,10 @@ return {
                                   }
                                 ]
                               },
-                              (v5/*: any*/)
+                              (v3/*: any*/)
                             ]
                           },
-                          (v6/*: any*/),
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": "start_at",
@@ -365,14 +389,14 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/),
                               (v5/*: any*/),
+                              (v3/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  (v2/*: any*/),
-                                  (v6/*: any*/),
+                                  (v1/*: any*/),
+                                  (v4/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -406,14 +430,14 @@ return {
                                           }
                                         ]
                                       },
-                                      (v5/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   }
                                 ]
                               }
                             ]
                           },
-                          (v7/*: any*/)
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -456,28 +480,29 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "shows",
                 "name": "showsConnection",
-                "args": (v4/*: any*/),
+                "args": (v2/*: any*/),
                 "handle": "connection",
-                "key": "CityBMWList_shows",
+                "key": "CitySavedList_shows",
                 "filters": [
                   "status",
-                  "sort"
+                  "city"
                 ]
               }
             ]
-          }
+          },
+          (v3/*: any*/)
         ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersCityBMWListQuery",
-    "id": "154ce9c7c4d8db71cd98361081b6bc14",
+    "name": "CitySavedListPaginationQuery",
+    "id": "8ec440301c9a5eb6bcc2c60a91d5fb8b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '7617b5ea5121adf4c2d8c05cc88c2828';
+(node as any).hash = '6e15a7a6caef0ac0b8bd02329356fe61';
 export default node;
