@@ -26,6 +26,8 @@ typedef NS_ENUM(NSInteger, ARCollectorLevel) {
 @property (nonatomic, readonly) BOOL receiveFollowArtistsEmail;
 @property (nonatomic, readonly) BOOL receiveFollowArtistsEmailAll;
 @property (nonatomic, readonly) BOOL receiveFollowUsersEmail;
+@property (nonatomic, readonly) BOOL identityVerified;
+
 
 + (User *)currentUser;
 + (BOOL)isLocalTemporaryUser;

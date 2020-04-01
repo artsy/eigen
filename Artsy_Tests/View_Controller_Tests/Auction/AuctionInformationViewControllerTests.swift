@@ -31,6 +31,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         }
 
         func commonSetup() {
+            ARUserManager.stubAndLoginWithUsername()
             informationController = AuctionInformationViewController(saleViewModel: saleViewModel)
             navigationController = ARSerifNavigationViewController(rootViewController: informationController)
 

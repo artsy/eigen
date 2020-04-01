@@ -16,6 +16,7 @@ class AuctionTitleViewSpec: QuickSpec {
         var fullWidth: Bool!
 
         beforeEach {
+            ARUserManager.stubAndLoginWithUsername()
             viewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [qualifiedBidder], lotStandings: [])
         }
 
@@ -58,6 +59,39 @@ class AuctionTitleViewSpec: QuickSpec {
 
                 expect(subject).to( haveValidSnapshot() )
             }
+
+            it("looks good with a sale and user requiring identity verification") {
+                let saleDict : [String: Any] = [
+                    "name" : "The 🎉 Sale",
+                    "requireIdentityVerification": true,
+                ]
+                let idVerifySale = try! Sale(dictionary: saleDict, error: Void())
+                let idVerifyViewModel = Test_SaleViewModel(sale: idVerifySale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                let subject = AuctionTitleView(viewModel: idVerifyViewModel, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true, titleTextAlignment: .left)
+                expect(subject).to( haveValidSnapshot() )
+            }
+
+            it("looks good with a sale and user who has already been identity-verified") {
+                // Overrides the earlier call to ARUserManager.stubAndLoginWithUsername()
+                // A bit of a leaky abstraction, but I'm not interested in refactoring ARUserManager+Stubs.m right now.
+                OHHTTPStubs.removeAllStubs()
+                ARUserManager.stubAccessToken(ARUserManager.stubAccessToken(), expiresIn: ARUserManager.stubAccessTokenExpiresIn())
+                OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me", withResponse:[
+                        "id": ARUserManager.stubUserID(),
+                        "name": ARUserManager.stubUserName(),
+                        "email": ARUserManager.stubUserEmail(),
+                        "identity_verified": true
+                    ])
+                ARUserManager.stubbedLogin(withUsername: ARUserManager.stubUserEmail(), password: ARUserManager.stubUserPassword(), successWithCredentials: nil, gotUser: nil, authenticationFailure: nil, networkFailure: nil)
+                let saleDict : [String: Any] = [
+                    "name" : "The 🎉 Sale",
+                    "requireIdentityVerification": true,
+                ]
+                let idVerifySale = try! Sale(dictionary: saleDict, error: Void())
+                let idVerifyViewModel = Test_SaleViewModel(sale: idVerifySale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                let subject = AuctionTitleView(viewModel: idVerifyViewModel, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true, titleTextAlignment: .left)
+                expect(subject).to( haveValidSnapshot() )
+            }
         }
         describe("with the registration button having side insets") {
             beforeEach {
@@ -76,6 +110,7 @@ class AuctionTitleViewSpec: QuickSpec {
 }
 
 class Test_AuctionTitleViewDelegate: AuctionTitleViewDelegate {
+    @objc func userDidPressIdentityFAQ(_ titleView: AuctionTitleView) { }
     @objc func userDidPressInfo(_ titleView: AuctionTitleView) { }
     @objc func userDidPressRegister(_ titleView: AuctionTitleView) { }
 }
