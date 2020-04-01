@@ -1,27 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a3d4df1b566a139fd810982cbb0a4f41 */
+/* @relayHash 3413b40e4d43e9ca47e953333efe4ad2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersCollectionQueryVariables = {
+export type CollectionQueryVariables = {
     collectionID: string;
     screenWidth?: number | null;
 };
-export type QueryRenderersCollectionQueryResponse = {
+export type CollectionQueryResponse = {
     readonly collection: {
         readonly " $fragmentRefs": FragmentRefs<"Collection_collection">;
     } | null;
 };
-export type QueryRenderersCollectionQuery = {
-    readonly response: QueryRenderersCollectionQueryResponse;
-    readonly variables: QueryRenderersCollectionQueryVariables;
+export type CollectionQuery = {
+    readonly response: CollectionQueryResponse;
+    readonly variables: CollectionQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCollectionQuery(
+query CollectionQuery(
   $collectionID: String!
 ) {
   collection: marketingCollection(slug: $collectionID) {
@@ -249,7 +249,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCollectionQuery",
+    "name": "CollectionQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -280,7 +280,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCollectionQuery",
+    "name": "CollectionQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -772,12 +772,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersCollectionQuery",
-    "id": "112b721917a4d098429575ec1b872958",
+    "name": "CollectionQuery",
+    "id": "307224accfe78efef112fe528224e180",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '1feb45547aa6127fe5f740c3c3e5a0ce';
+(node as any).hash = '21671a8cacc2deeef19e2d7f22a0f96e';
 export default node;

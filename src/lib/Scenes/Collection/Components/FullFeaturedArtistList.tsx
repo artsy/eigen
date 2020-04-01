@@ -1,9 +1,12 @@
 import { Box, color, Sans, Theme } from "@artsy/palette"
 import { FullFeaturedArtistList_collection } from "__generated__/FullFeaturedArtistList_collection.graphql"
+import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { FlatList, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { Dimensions, FlatList, ViewProperties } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
@@ -85,3 +88,25 @@ const HeaderContainer = styled(Box)`
   padding-top: 25px;
   padding-bottom: 25px;
 `
+
+export const CollectionFullFeaturedArtistListRenderer: React.SFC<{ collectionID: string }> = ({ collectionID }) => (
+  <QueryRenderer<FullFeaturedArtistListQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query FullFeaturedArtistListQuery($collectionID: String!, $screenWidth: Int) {
+        collection: marketingCollection(slug: $collectionID) {
+          ...FullFeaturedArtistList_collection @arguments(screenWidth: $screenWidth)
+        }
+      }
+    `}
+    variables={{
+      collectionID,
+      screenWidth: Dimensions.get("screen").width,
+    }}
+    cacheConfig={{
+      // Bypass Relay cache on retries.
+      force: true,
+    }}
+    render={renderWithLoadProgress(CollectionFeaturedArtistsContainer)}
+  />
+)

@@ -16,8 +16,6 @@ import {
   CityFairListRenderer,
   CitySavedListRenderer,
   CitySectionListRenderer,
-  CollectionFullFeaturedArtistListRenderer,
-  CollectionRenderer,
   FairRenderer,
   ShowRenderer,
 } from "./relay/QueryRenderers"
@@ -25,8 +23,8 @@ import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
-import { CollectionContainer } from "./Scenes/Collection/Collection"
-import { CollectionFeaturedArtistsContainer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import { CollectionRenderer } from "./Scenes/Collection/Collection"
+import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -136,28 +134,6 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 })(ConversationRenderer)
 
 const MyProfile = Containers.MyProfile
-
-interface CollectionProps {
-  collectionID: string
-}
-
-const Collection: React.SFC<CollectionProps> = ({ collectionID }) => {
-  return (
-    <CollectionRenderer
-      collectionID={collectionID}
-      render={renderWithLoadProgress(CollectionContainer, { collectionID })}
-    />
-  )
-}
-
-const FullFeaturedArtistList: React.SFC<CollectionProps> = ({ collectionID }) => {
-  return (
-    <CollectionFullFeaturedArtistListRenderer
-      collectionID={collectionID}
-      render={renderWithLoadProgress(CollectionFeaturedArtistsContainer, { collectionID })}
-    />
-  )
-}
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow
@@ -357,7 +333,7 @@ AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
 AppRegistry.registerComponent("CityFairList", () => CityFairList)
 AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
-AppRegistry.registerComponent("Collection", () => Collection)
+AppRegistry.registerComponent("Collection", () => CollectionRenderer)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
-AppRegistry.registerComponent("FullFeaturedArtistList", () => FullFeaturedArtistList)
+AppRegistry.registerComponent("FullFeaturedArtistList", () => CollectionFullFeaturedArtistListRenderer)
 AppRegistry.registerComponent("ViewingRoom", () => ViewingRoom)

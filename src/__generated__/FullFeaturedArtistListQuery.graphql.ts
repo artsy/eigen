@@ -1,27 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f66d1efef90272662445bf6d82275c60 */
+/* @relayHash 61649f9c122ee3a7963acb744290647e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersCollectionFullFeaturedArtistListQueryVariables = {
+export type FullFeaturedArtistListQueryVariables = {
     collectionID: string;
     screenWidth?: number | null;
 };
-export type QueryRenderersCollectionFullFeaturedArtistListQueryResponse = {
+export type FullFeaturedArtistListQueryResponse = {
     readonly collection: {
         readonly " $fragmentRefs": FragmentRefs<"FullFeaturedArtistList_collection">;
     } | null;
 };
-export type QueryRenderersCollectionFullFeaturedArtistListQuery = {
-    readonly response: QueryRenderersCollectionFullFeaturedArtistListQueryResponse;
-    readonly variables: QueryRenderersCollectionFullFeaturedArtistListQueryVariables;
+export type FullFeaturedArtistListQuery = {
+    readonly response: FullFeaturedArtistListQueryResponse;
+    readonly variables: FullFeaturedArtistListQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCollectionFullFeaturedArtistListQuery(
+query FullFeaturedArtistListQuery(
   $collectionID: String!
 ) {
   collection: marketingCollection(slug: $collectionID) {
@@ -96,7 +96,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCollectionFullFeaturedArtistListQuery",
+    "name": "FullFeaturedArtistListQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -127,7 +127,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCollectionFullFeaturedArtistListQuery",
+    "name": "FullFeaturedArtistListQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -295,12 +295,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersCollectionFullFeaturedArtistListQuery",
-    "id": "30abb422233dc599fb80a330b1c9d780",
+    "name": "FullFeaturedArtistListQuery",
+    "id": "fd83790930111a8388c3ff3c05d79c44",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3e7891a8ccdf6b7a416c1d116c06d4bb';
+(node as any).hash = '36f017be3605345afa7bca38e1d295ba';
 export default node;

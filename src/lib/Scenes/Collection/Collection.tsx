@@ -1,7 +1,10 @@
 import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
+import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component } from "react"
-import { FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { Dimensions, FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
 import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
@@ -188,3 +191,29 @@ export const CollectionContainer = createFragmentContainer(Collection, {
     }
   `,
 })
+
+interface CollectionRendererProps {
+  collectionID: string
+}
+
+export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collectionID }) => (
+  <QueryRenderer<CollectionQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query CollectionQuery($collectionID: String!, $screenWidth: Int) {
+        collection: marketingCollection(slug: $collectionID) {
+          ...Collection_collection @arguments(screenWidth: $screenWidth)
+        }
+      }
+    `}
+    variables={{
+      collectionID,
+      screenWidth: Dimensions.get("screen").width,
+    }}
+    cacheConfig={{
+      // Bypass Relay cache on retries.
+      force: true,
+    }}
+    render={renderWithLoadProgress(CollectionContainer)}
+  />
+)

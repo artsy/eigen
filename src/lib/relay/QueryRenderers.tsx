@@ -7,12 +7,9 @@ import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCit
 import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
-import { QueryRenderersCollectionFullFeaturedArtistListQuery } from "__generated__/QueryRenderersCollectionFullFeaturedArtistListQuery.graphql"
-import { QueryRenderersCollectionQuery } from "__generated__/QueryRenderersCollectionQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
-import { Dimensions } from "react-native"
 import { defaultEnvironment as environment } from "./createEnvironment"
 
 export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"]
@@ -20,57 +17,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 interface RendererProps {
   render: RenderCallback
 }
-
-interface CollectionRendererProps extends RendererProps {
-  collectionID: string
-}
-
-export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collectionID, render }) => (
-  <QueryRenderer<QueryRenderersCollectionQuery>
-    environment={environment}
-    query={graphql`
-      query QueryRenderersCollectionQuery($collectionID: String!, $screenWidth: Int) {
-        collection: marketingCollection(slug: $collectionID) {
-          ...Collection_collection @arguments(screenWidth: $screenWidth)
-        }
-      }
-    `}
-    variables={{
-      collectionID,
-      screenWidth: Dimensions.get("screen").width,
-    }}
-    cacheConfig={{
-      // Bypass Relay cache on retries.
-      force: true,
-    }}
-    render={render}
-  />
-)
-
-export const CollectionFullFeaturedArtistListRenderer: React.SFC<CollectionRendererProps> = ({
-  collectionID,
-  render,
-}) => (
-  <QueryRenderer<QueryRenderersCollectionFullFeaturedArtistListQuery>
-    environment={environment}
-    query={graphql`
-      query QueryRenderersCollectionFullFeaturedArtistListQuery($collectionID: String!, $screenWidth: Int) {
-        collection: marketingCollection(slug: $collectionID) {
-          ...FullFeaturedArtistList_collection @arguments(screenWidth: $screenWidth)
-        }
-      }
-    `}
-    variables={{
-      collectionID,
-      screenWidth: Dimensions.get("screen").width,
-    }}
-    cacheConfig={{
-      // Bypass Relay cache on retries.
-      force: true,
-    }}
-    render={render}
-  />
-)
 
 interface FairRendererProps extends RendererProps {
   fairID: string
