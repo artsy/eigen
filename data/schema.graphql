@@ -676,9 +676,10 @@ type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInt
   # A list of genes associated with an artist
   genes: [Gene]
   gender: String
-  href: String
   hasMetadata: Boolean
+  highlights: ArtistHighlights
   hometown: String
+  href: String
   image: Image
   imageUrl: String
   initials(length: Int = 3): String
@@ -737,7 +738,7 @@ type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInt
   # Use this attribute to sort by when sorting a collection of Artists
   sortableID: String
   statuses: ArtistStatuses
-  highlights: ArtistHighlights
+  targetSupply: ArtistTargetSupply
   years: String
   marketingCollections(size: Int): [MarketingCollection]
 }
@@ -942,6 +943,36 @@ type ArtistStatuses {
     minShowCount: Int = 15
   ): Boolean
   shows: Boolean
+}
+
+type ArtistTargetSupply {
+  # Returns whether an artist is in within the microfunnel list.
+  isInMicrofunnel: Boolean
+  microfunnel: ArtistTargetSupplyMicrofunnel
+}
+
+type ArtistTargetSupplyMicrofunnel {
+  metadata: ArtistTargetSupplyMicrofunnelMetadata
+  artworks(
+    # Randomize the order of artworks for display purposes.
+    randomize: Boolean
+  ): [ArtistTargetSupplyMicrofunnelArtwork]
+}
+
+type ArtistTargetSupplyMicrofunnelArtwork {
+  artwork: Artwork
+  realizedPrice: String
+}
+
+type ArtistTargetSupplyMicrofunnelMetadata {
+  highestRealized: String
+  realized: String
+  recentlySoldArtworkIDs: [String]
+  roundedUniqueVisitors: String
+  roundedViews: String
+  str: String
+  uniqueVisitors: String
+  views: String
 }
 
 type Artwork implements Node & Searchable & Sellable {
@@ -3024,8 +3055,25 @@ type ConditionReportRequest {
 
 # Consignment Offer
 type ConsignmentOffer {
+  commissionPercentWhole: Int
+  createdById: ID
+  currency: String
+  deadlineToConsign: String
+  highEstimateCents: Int
+
   # Uniq ID for this submission
   id: ID!
+  insuranceInfo: String
+  lowEstimateCents: Int
+  notes: String
+  offerType: String
+  otherFeesInfo: String
+  partnerInfo: String
+  photographyInfo: String
+  saleDate: String
+  saleName: String
+  shippingInfo: String
+  state: String
 }
 
 # Consignment Submission
@@ -3052,6 +3100,7 @@ type ConsignmentSubmission {
   locationState: String
   medium: String
   minimumPriceDollars: Int
+  offers(gravityPartnerId: ID!): [ConsignmentOffer!]!
   provenance: String
   signature: Boolean
   state: ConsignmentSubmissionStateAggregation
