@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2a1f65132344b88288b7d24edb76787c */
+/* @relayHash 507c038ec62a2de4a3a818bff510c6de */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -8,8 +8,6 @@ export type EventStatus = "CLOSED" | "CLOSING_SOON" | "CURRENT" | "RUNNING" | "R
 export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
 export type ShowSorts = "END_AT_ASC" | "END_AT_DESC" | "FEATURED_ASC" | "FEATURED_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "SORTABLE_NAME_ASC" | "SORTABLE_NAME_DESC" | "START_AT_ASC" | "START_AT_DESC" | "UPDATED_AT_ASC" | "UPDATED_AT_DESC" | "%future added value";
 export type CitySectionListQueryVariables = {
-    count: number;
-    cursor?: string | null;
     citySlug: string;
     partnerType?: PartnerShowPartnerType | null;
     status?: EventStatus | null;
@@ -30,8 +28,6 @@ export type CitySectionListQuery = {
 
 /*
 query CitySectionListQuery(
-  $count: Int!
-  $cursor: String
   $citySlug: String!
   $partnerType: PartnerShowPartnerType
   $status: EventStatus
@@ -39,13 +35,13 @@ query CitySectionListQuery(
   $sort: ShowSorts
 ) {
   city(slug: $citySlug) {
-    ...CitySectionList_city_3BpxDU
+    ...CitySectionList_city_2xWq6T
   }
 }
 
-fragment CitySectionList_city_3BpxDU on City {
+fragment CitySectionList_city_2xWq6T on City {
   name
-  shows: showsConnection(includeStubShows: true, first: $count, sort: $sort, after: $cursor, partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
+  shows: showsConnection(includeStubShows: true, first: 20, sort: $sort, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
     pageInfo {
       endCursor
       hasNextPage
@@ -96,18 +92,6 @@ fragment CitySectionList_city_3BpxDU on City {
 
 const node: ConcreteRequest = (function(){
 var v0 = [
-  {
-    "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
-  },
   {
     "kind": "LocalArgument",
     "name": "citySlug",
@@ -175,15 +159,15 @@ v6 = {
 },
 v7 = [
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "after",
-    "variableName": "cursor"
+    "value": ""
   },
   (v2/*: any*/),
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "first",
-    "variableName": "count"
+    "value": 20
   },
   {
     "kind": "Literal",
@@ -237,16 +221,6 @@ return {
             "kind": "FragmentSpread",
             "name": "CitySectionList_city",
             "args": [
-              {
-                "kind": "Variable",
-                "name": "count",
-                "variableName": "count"
-              },
-              {
-                "kind": "Variable",
-                "name": "cursor",
-                "variableName": "cursor"
-              },
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
@@ -501,11 +475,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySectionListQuery",
-    "id": "dc9f6e5ffced10ac45b852617df1d0ab",
+    "id": "1865accf6fc780d084c0aac5f62ddbc1",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '5f1ad237d6580e779eb949eb1a893e92';
+(node as any).hash = 'd91f814a85791dd3edc09fdb47ffd3cb';
 export default node;

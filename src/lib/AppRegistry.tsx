@@ -11,7 +11,6 @@ import { GeneRenderer } from "./Containers/Gene"
 import { InboxRenderer } from "./Containers/Inbox"
 import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
-import { CitySectionListRenderer } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -19,6 +18,7 @@ import { CityBMWListRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import { CitySavedListRenderer } from "./Scenes/City/CitySavedList"
+import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import {
@@ -33,7 +33,6 @@ import { FairRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import { Home } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
-import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import { PartnerRenderer } from "./Scenes/Partner"
 import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
@@ -41,7 +40,6 @@ import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoom } from "./Scenes/ViewingRoom"
-import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
@@ -174,20 +172,6 @@ const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoRenderer showID={showID} />
 }
 
-interface CitySectionListProps {
-  citySlug: string
-  section: BucketKey
-}
-const CitySectionList: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
-  return (
-    <CitySectionListRenderer
-      citySlug={citySlug}
-      section={section}
-      render={renderWithLoadProgress(Containers.CitySectionList, { citySlug, section })}
-    />
-  )
-}
-
 interface FairBoothProps {
   fairBoothID: string
 }
@@ -279,7 +263,7 @@ AppRegistry.registerComponent("CityPicker", () => CityPicker)
 AppRegistry.registerComponent("CityBMWList", () => CityBMWListRenderer)
 AppRegistry.registerComponent("CityFairList", () => CityFairListRenderer)
 AppRegistry.registerComponent("CitySavedList", () => CitySavedListRenderer)
-AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
+AppRegistry.registerComponent("CitySectionList", () => CitySectionListRenderer)
 AppRegistry.registerComponent("Collection", () => CollectionRenderer)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
 AppRegistry.registerComponent("FullFeaturedArtistList", () => CollectionFullFeaturedArtistListRenderer)
