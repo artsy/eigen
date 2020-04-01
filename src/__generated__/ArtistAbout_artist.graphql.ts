@@ -23,7 +23,7 @@ export type ArtistAbout_artist = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Biography_artist">;
+    readonly " $fragmentRefs": FragmentRefs<"Biography_artist" | "ArtistConsignButton_artist">;
     readonly " $refType": "ArtistAbout_artist";
 };
 export type ArtistAbout_artist$data = ArtistAbout_artist;
@@ -165,8 +165,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "Biography_artist",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ArtistConsignButton_artist",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'ec3f668b972f9b12c46d83fbd49c8504';
+(node as any).hash = 'f83a9812ee25ef6aeb7eb17e2e269837';
 export default node;

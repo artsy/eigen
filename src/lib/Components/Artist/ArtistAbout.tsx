@@ -11,6 +11,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import { CaretButton } from "../Buttons/CaretButton"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
+import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "./ArtistConsignButton"
 
 interface Props {
   artist: ArtistAbout_artist
@@ -33,6 +34,7 @@ class ArtistAbout extends React.Component<Props> {
         <Box>
           <Biography artist={this.props.artist as any} />
           {this.auctionResults()}
+          {this.consignButton()}
           <Separator />
         </Box>
       )
@@ -49,6 +51,15 @@ class ArtistAbout extends React.Component<Props> {
         </>
       )
     }
+  }
+
+  consignButton() {
+    return (
+      <>
+        <ArtistConsignButton artist={this.props.artist} />
+        <Spacer mb={3} />
+      </>
+    )
   }
 
   articles() {
@@ -84,6 +95,7 @@ export default createFragmentContainer(ArtistAbout, {
       is_display_auction_link: isDisplayAuctionLink
       slug
       ...Biography_artist
+      ...ArtistConsignButton_artist
       related {
         artists: artistsConnection(first: 16) {
           edges {

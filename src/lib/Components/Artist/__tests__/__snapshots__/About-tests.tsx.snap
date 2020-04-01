@@ -9,6 +9,9 @@ exports[`renders properly 1`] = `
       "id": "banksy",
       "is_display_auction_link": true,
       "related_artists": Array [],
+      "targetSupply": Object {
+        "isInMicrofunnel": false,
+      },
     }
   }
 />

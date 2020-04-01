@@ -169,6 +169,7 @@ export enum ActionNames {
   ArtistUnfollow = "artistUnfollow",
   ArtistWorks = "artistWorks",
   ArtistShows = "artistShows",
+  ArtistConsignGetStarted = "Get Started",
 
   /**
    * Artwork Page Events
@@ -327,6 +328,7 @@ export enum ContextModules {
   AboutTheWork = "AboutTheWork",
   AboutTheWorkFromSpecialist = "AboutTheWorkFromSpecialist",
   ArtistBiography = "ArtistBiography",
+  ArtistConsignment = "ArtistConsignment",
   ArtistInsights = "ArtistInsights",
   ArtworkActions = "ArtworkActions",
   ArtworkDetails = "ArtworkDetails",

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 722f6ac0589aab4b76b459090cfa2783 */
+/* @relayHash d78d87b7c53a3699d755446b598fdb08 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,6 +54,7 @@ fragment ArtistAbout_artist on Artist {
   is_display_auction_link: isDisplayAuctionLink
   slug
   ...Biography_artist
+  ...ArtistConsignButton_artist
   related {
     artists: artistsConnection(first: 16) {
       edges {
@@ -70,6 +71,20 @@ fragment ArtistAbout_artist on Artist {
         ...Articles_articles
         id
       }
+    }
+  }
+}
+
+fragment ArtistConsignButton_artist on Artist {
+  targetSupply {
+    isInMicrofunnel
+  }
+  internalID
+  slug
+  name
+  image {
+    cropped(width: 66, height: 66) {
+      url
     }
   }
 }
@@ -209,21 +224,21 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
@@ -248,7 +263,7 @@ v7 = {
   "value": 10
 },
 v8 = [
-  (v5/*: any*/)
+  (v3/*: any*/)
 ],
 v9 = [
   {
@@ -269,9 +284,9 @@ v9 = [
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
-          (v2/*: any*/),
           (v4/*: any*/),
+          (v2/*: any*/),
+          (v5/*: any*/),
           {
             "kind": "ScalarField",
             "alias": "is_fair_booth",
@@ -296,7 +311,7 @@ v9 = [
             "args": null,
             "storageKey": null
           },
-          (v5/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": "exhibition_period",
@@ -334,7 +349,7 @@ v9 = [
                 "args": null,
                 "storageKey": null
               },
-              (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -363,7 +378,7 @@ v9 = [
                 "args": null,
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v4/*: any*/)
             ]
           }
         ]
@@ -461,6 +476,72 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "targetSupply",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtistTargetSupply",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isInMicrofunnel",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
+          (v3/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "image",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "cropped",
+                "storageKey": "cropped(height:66,width:66)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "height",
+                    "value": 66
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "width",
+                    "value": 66
+                  }
+                ],
+                "concreteType": "CroppedImageUrl",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "related",
             "storageKey": null,
             "args": null,
@@ -500,9 +581,9 @@ return {
                         "concreteType": "Artist",
                         "plural": false,
                         "selections": [
-                          (v3/*: any*/),
                           (v4/*: any*/),
                           (v5/*: any*/),
+                          (v3/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -575,7 +656,7 @@ return {
                     "concreteType": "Article",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": "thumbnail_title",
@@ -583,7 +664,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -593,8 +674,8 @@ return {
                         "concreteType": "Author",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
-                          (v3/*: any*/)
+                          (v3/*: any*/),
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -647,7 +728,7 @@ return {
             "plural": false,
             "selections": (v9/*: any*/)
           },
-          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "kind": "Condition",
             "passingValue": false,
@@ -689,7 +770,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistBelowTheFoldQuery",
-    "id": "7e4f77da11d9a515b2b34c2edbb9255d",
+    "id": "ac253aeb550888b6b5e561837286c242",
     "text": null,
     "metadata": {}
   }
