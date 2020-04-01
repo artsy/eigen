@@ -1,24 +1,24 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5fef901fe37741e9ba81fbf8a8cf07d6 */
+/* @relayHash 1e8659f874fc336544ad3ce60ad52d64 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersInboxQueryVariables = {};
-export type QueryRenderersInboxQueryResponse = {
+export type InboxQueryVariables = {};
+export type InboxQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"Inbox_me">;
     } | null;
 };
-export type QueryRenderersInboxQuery = {
-    readonly response: QueryRenderersInboxQueryResponse;
-    readonly variables: QueryRenderersInboxQueryVariables;
+export type InboxQuery = {
+    readonly response: InboxQueryResponse;
+    readonly variables: InboxQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersInboxQuery {
+query InboxQuery {
   me {
     ...Inbox_me
     id
@@ -215,7 +215,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersInboxQuery",
+    "name": "InboxQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -240,7 +240,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersInboxQuery",
+    "name": "InboxQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -633,12 +633,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersInboxQuery",
-    "id": "20155a74d046ff93262bbea24c186cf0",
+    "name": "InboxQuery",
+    "id": "276c65a008dc56b67f2bb0a0241f4f8f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'ce5f976e5f8f2b9a1c45e7241a60c8a0';
+(node as any).hash = 'fbd625829be2f33d14e383e1f4b8280c';
 export default node;

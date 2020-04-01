@@ -8,6 +8,7 @@ import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
 import { ConversationRenderer } from "./Containers/Conversation"
 import { GeneRenderer } from "./Containers/Gene"
+import { InboxRenderer } from "./Containers/Inbox"
 import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
 import {
@@ -18,7 +19,6 @@ import {
   CollectionFullFeaturedArtistListRenderer,
   CollectionRenderer,
   FairRenderer,
-  InboxRenderer,
   ShowRenderer,
 } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
@@ -95,7 +95,7 @@ const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLoca
 
 const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})(props => <InboxRenderer {...props} render={renderWithLoadProgress(Containers.Inbox, props)} />)
+})(props => <InboxRenderer {...props} />)
 
 interface GeneProps {
   geneID: string

@@ -5,7 +5,7 @@ import { Environment } from "relay-runtime"
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 import * as renderer from "react-test-renderer"
 
-import Inbox, { Inbox as ActualInbox } from "../Inbox"
+import { Inbox as ActualInbox, InboxContainer } from "../Inbox"
 
 import { Theme } from "@artsy/palette"
 
@@ -20,7 +20,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Theme>
-        <Inbox me={meProps() as any} isVisible={true} />
+        <InboxContainer me={meProps() as any} isVisible={true} />
       </Theme>
     )
     .toJSON()
@@ -36,7 +36,7 @@ it("shows empty state if there's no data", () => {
 
 it("Shows a zero state when there are no bids/conversations", () => {
   const tree = JSON.stringify(
-    renderWithLayout(<Inbox me={emptyMeProps as any} isVisible={true} />, { width: 768, height: 1024 })
+    renderWithLayout(<InboxContainer me={emptyMeProps as any} isVisible={true} />, { width: 768, height: 1024 })
   )
   // Taken from the title in ZeroStateInbox
   expect(tree).toContain("Buying art on Artsy is simple")

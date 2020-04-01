@@ -8,7 +8,6 @@ import Fair from "../Scenes/Fair"
 import { Home } from "../Scenes/Home/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Show from "../Scenes/Show"
-import Inbox from "./Inbox"
 
 export default {
   Artwork,
@@ -18,7 +17,6 @@ export default {
   CityFairList,
   Fair,
   Home,
-  Inbox,
   MyProfile,
   Partner,
   Show,

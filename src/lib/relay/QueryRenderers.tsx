@@ -1,12 +1,6 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
-// tslint:disable:no-unused-expression
-
-import Inbox from "../Containers/Inbox"
-Inbox
-// tslint:enable:no-unused-expression
-
 import { EventStatus, ShowSorts } from "__generated__/CitySectionListQuery.graphql"
 import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
 import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
@@ -16,7 +10,6 @@ import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderers
 import { QueryRenderersCollectionFullFeaturedArtistListQuery } from "__generated__/QueryRenderersCollectionFullFeaturedArtistListQuery.graphql"
 import { QueryRenderersCollectionQuery } from "__generated__/QueryRenderersCollectionQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
-import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import { Dimensions } from "react-native"
@@ -26,23 +19,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
-  return (
-    <QueryRenderer<QueryRenderersInboxQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersInboxQuery {
-          me {
-            ...Inbox_me
-          }
-        }
-      `}
-      variables={{}}
-      render={render}
-    />
-  )
 }
 
 interface CollectionRendererProps extends RendererProps {
