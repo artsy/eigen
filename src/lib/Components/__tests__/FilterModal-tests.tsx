@@ -1,4 +1,4 @@
-import { CheckIcon, Sans, Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -8,11 +8,7 @@ import { NativeModules } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { act, create } from "react-test-renderer"
 import * as renderer from "react-test-renderer"
-import {
-  ArrowLeftIconContainer,
-  SortOptionListItemRow,
-  SortOptionsScreen,
-} from "../../../lib/Components/ArtworkFilterOptions/SortOptions"
+import { ArrowLeftIconContainer } from "../../../lib/Components/ArtworkFilterOptions/SortOptions"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
   ApplyButton,
@@ -84,23 +80,6 @@ const MockFilterScreen = ({ initialState }) => {
   )
 }
 
-const MockSortScreen = ({ initialState }) => {
-  const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
-  return (
-    <Theme>
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
-        <SortOptionsScreen navigator={mockNavigator as any} />
-      </ArtworkFilterContext.Provider>
-    </Theme>
-  )
-}
-
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
     const filterScreen = create(
@@ -115,6 +94,8 @@ describe("Filter modal navigation flow", () => {
         </ArtworkFilterContext.Provider>
       </Theme>
     )
+
+    // the first row item takes users to the Medium navigation route
     const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[0]
 
     act(() => instance.props.onPress())
@@ -145,15 +126,55 @@ describe("Filter modal navigation flow", () => {
 
     expect(getNextScreenTitle(nextScreen)).toEqual("Sort")
   })
-  xit("allows users to navigate back to filter screen from sort screen ", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-    }
 
-    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
+  it("allows users to navigate forward to medium screen from filter screen", () => {
+    const filterScreen = create(
+      <Theme>
+        <ArtworkFilterContext.Provider
+          value={{
+            state,
+            dispatch: null,
+          }}
+        >
+          <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
+        </ArtworkFilterContext.Provider>
+      </Theme>
+    )
+
+    // the second row item takes users to the Medium navigation route
+    const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[1]
+
+    act(() => instance.props.onPress())
+
+    const nextRoute = mockNavigator.nextRoute()
+
+    const nextScreen = renderer.create(
+      <Theme>
+        <ArtworkFilterContext.Provider
+          value={{
+            state,
+            dispatch: null,
+          }}
+        >
+          {React.createElement(nextRoute.component, {
+            ...nextRoute.passProps,
+            nextScreen: true,
+            navigator: MockNavigator,
+            relay: {
+              environment: null,
+            },
+          })}
+        </ArtworkFilterContext.Provider>
+      </Theme>
+    )
+
+    const getNextScreenTitle = component => component.root.findByType(Sans).props.children
+
+    expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
+  })
+
+  xit("allows users to navigate back to filter screen from sort screen ", () => {
+    const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
     filterScreen
       .find(TouchableOptionListItemRow)
@@ -192,14 +213,7 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-    }
-
-    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
+    const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
     filterScreen
       .find(CloseIconContainer)
@@ -207,30 +221,18 @@ describe("Filter modal navigation flow", () => {
       .onPress()
     expect(closeModalMock).toHaveBeenCalled()
   })
+})
 
-  it("only displays a check mark next to the currently selected sort option on the sort screen", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ filterType: "sort", value: "Price (high to low)" }],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-    }
-    const sortScreen = mount(<MockSortScreen initialState={initialState} />)
-
-    const selectedRow = sortScreen.find(SortOptionListItemRow).at(2)
-    expect(selectedRow.text()).toEqual("Price (high to low)")
-    expect(selectedRow.find(CheckIcon)).toHaveLength(1)
-  })
-
+describe("Filter modal states", () => {
   it("displays the currently selected sort option on the filter screen", () => {
-    const initialState: ArtworkFilterContextState = {
+    state = {
       selectedFilters: [{ filterType: "sort", value: "Price (low to high)" }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
+    const filterScreen = mount(<MockFilterScreen initialState={state} />)
     expect(
       filterScreen
         .find(CurrentOption)
@@ -239,15 +241,44 @@ describe("Filter modal navigation flow", () => {
     ).toEqual("Price (low to high)")
   })
 
-  it("shows the default sort option on the filter screen", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [],
+  it("displays the currently selected medium option on the filter screen", () => {
+    state = {
+      selectedFilters: [{ filterType: "medium", value: "Performance art" }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
+    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(1)
+        .text()
+    ).toEqual("Performance art")
+  })
+
+  it("displays the filter screen apply button correctly when no filters are selected", () => {
+    const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
+
+    expect(filterScreen.find(ApplyButton).props().disabled).toEqual(true)
+  })
+
+  it("displays the filter screen apply button correctly when filters are selected", () => {
+    state = {
+      selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+    }
+
+    const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
+
+    expect(filterScreen.find(ApplyButton).props().disabled).toEqual(false)
+  })
+
+  it("displays both default medium and sort filters on the Filter modal", () => {
+    const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
     expect(
       filterScreen
@@ -255,45 +286,27 @@ describe("Filter modal navigation flow", () => {
         .at(0)
         .text()
     ).toEqual("Default")
+
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(1)
+        .text()
+    ).toEqual("All")
   })
 
-  it("displays the filter screen apply button correctly when no filters are selected", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [],
+  it("displays both selected medium and sort filters on the Filter modal", () => {
+    state = {
+      selectedFilters: [
+        { filterType: "medium", value: "Drawing" },
+        { filterType: "sort", value: "Price (low to high)" },
+      ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
-    const filterScreen = mount(<MockFilterModalNavigator initialState={initialState} />)
-
-    expect(filterScreen.find(ApplyButton).props().disabled).toEqual(true)
-  })
-
-  it("displays the filter screen apply button correctly when filters are selected", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-    }
-
-    const filterScreen = mount(<MockFilterModalNavigator initialState={initialState} />)
-
-    expect(filterScreen.find(ApplyButton).props().disabled).toEqual(false)
-  })
-})
-
-describe("Clearing filters", () => {
-  it("allows users to clear all filters when selecting clear all", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
-      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      applyFilters: false,
-    }
-
-    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
+    const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
     expect(
       filterScreen
@@ -301,6 +314,45 @@ describe("Clearing filters", () => {
         .at(0)
         .text()
     ).toEqual("Price (low to high)")
+
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(1)
+        .text()
+    ).toEqual("Drawing")
+
+    expect(filterScreen.find(CurrentOption)).toHaveLength(2)
+  })
+})
+
+describe("Clearing filters", () => {
+  it("allows users to clear all filters when selecting clear all", () => {
+    state = {
+      selectedFilters: [
+        { value: "Price (low to high)", filterType: "sort" },
+        { value: "Sculpture", filterType: "medium" },
+      ],
+      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      applyFilters: false,
+    }
+
+    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(0)
+        .text()
+    ).toEqual("Price (low to high)")
+
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(1)
+        .text()
+    ).toEqual("Sculpture")
 
     filterScreen
       .find(ClearAllButton)
@@ -314,17 +366,23 @@ describe("Clearing filters", () => {
         .at(0)
         .text()
     ).toEqual("Default")
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(1)
+        .text()
+    ).toEqual("All")
   })
 
   it("enables the apply button when clearing all if no other options are selected", () => {
-    const initialState: ArtworkFilterContextState = {
+    state = {
       selectedFilters: [],
       appliedFilters: [{ value: "Recently added", filterType: "sort" }],
       previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
       applyFilters: false,
     }
 
-    const filterModal = mount(<MockFilterModalNavigator initialState={initialState} />)
+    const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
 
     expect(
       filterModal
@@ -341,12 +399,19 @@ describe("Clearing filters", () => {
       .onPress()
 
     filterModal.update()
+
     expect(
       filterModal
         .find(CurrentOption)
         .at(0)
         .text()
     ).toEqual("Default")
+    expect(
+      filterModal
+        .find(CurrentOption)
+        .at(1)
+        .text()
+    ).toEqual("All")
     expect(
       filterModal
         .find(ApplyButton)
@@ -356,17 +421,20 @@ describe("Clearing filters", () => {
   })
 
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
-    const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
+    state = {
+      selectedFilters: [
+        { value: "Price (high to low)", filterType: "sort" },
+        { value: "Works on paper", filterType: "medium" },
+      ],
       appliedFilters: [{ value: "Recently added", filterType: "sort" }],
       previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
       applyFilters: true,
     }
 
-    const filterModal = mount(<MockFilterModalNavigator initialState={initialState} />)
+    const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
     const applyButton = filterModal.find(ApplyButton)
 
-    expect(applyButton.text()).toContain("Apply (1)")
+    expect(applyButton.text()).toContain("Apply (2)")
 
     applyButton.props().onPress()
 
@@ -377,7 +445,7 @@ describe("Clearing filters", () => {
 
 describe("Applying filters", () => {
   it("calls the relay method to refetch artworks when a filter is applied", async () => {
-    const initialState: ArtworkFilterContextState = {
+    state = {
       selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
       appliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
       previouslyAppliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
@@ -400,7 +468,7 @@ describe("Applying filters", () => {
             <Theme>
               <ArtworkFilterContext.Provider
                 value={{
-                  state: initialState,
+                  state,
                   dispatch: null,
                 }}
               >

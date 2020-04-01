@@ -1,25 +1,40 @@
-import { Box, Theme } from "@artsy/palette"
+import { Box, CheckIcon, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
-import React from "react"
+import React, { Dispatch } from "react"
+import { act, create } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
-import { InnerOptionListItem, MediumOptionsScreen as MediumOptions } from "../MediumOptions"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  FilterActions,
+  reducer,
+} from "../../../utils/ArtworkFiltersStore"
+import { InnerOptionListItem, MediumOptionListItemRow, MediumOptionsScreen as MediumOptions } from "../MediumOptions"
 
 describe("Medium Options Screen", () => {
+  let state: ArtworkFilterContextState
   let mockNavigator: MockNavigator
 
   beforeEach(() => {
     mockNavigator = new MockNavigator()
+    state = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+    }
   })
 
   const MockMediumScreen = ({ initialState }) => {
+    const [filterState, dispatch] = React.useReducer(reducer, initialState)
+
     return (
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
-            state: initialState,
-            dispatch: null,
+            state: filterState,
+            dispatch,
           }}
         >
           <MediumOptions navigator={mockNavigator as any} />
@@ -33,21 +48,20 @@ describe("Medium Options Screen", () => {
   }
 
   it("renders the correct number of medium options", () => {
-    const state: ArtworkFilterContextState = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-    }
-
     const component = mount(<MockMediumScreen initialState={state} />)
 
     expect(component.find(OptionListItem)).toHaveLength(12)
   })
 
   describe("selecting a Medium filter", () => {
+    it("displays the default medium if no selected filters", () => {
+      const component = mount(<MockMediumScreen initialState={state} />)
+      const selectedOption = selectedMediumOption(component)
+      expect(selectedOption.text()).toContain("All")
+    })
+
     it("displays a medium filter option when selected", () => {
-      const state: ArtworkFilterContextState = {
+      state = {
         selectedFilters: [{ filterType: "medium", value: "Photography" }],
         appliedFilters: [],
         previouslyAppliedFilters: [],
@@ -60,20 +74,50 @@ describe("Medium Options Screen", () => {
     })
 
     it("allows only one medium filter to be selected at a time", () => {
-      const state: ArtworkFilterContextState = {
-        selectedFilters: [
-          { filterType: "medium", value: "Jewelry" },
-          { filterType: "medium", value: "Prints & multiples" },
-        ],
+      const initialState: ArtworkFilterContextState = {
+        selectedFilters: [{ filterType: "medium", value: "Sculpture" }],
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
       }
 
-      const component = mount(<MockMediumScreen initialState={state} />)
-      const selectedOption = selectedMediumOption(component)
-      expect(selectedOption.text()).toContain("Jewelry")
-      expect(selectedOption).toHaveLength(1)
+      const mediumScreen = mount(<MockMediumScreen initialState={initialState} />)
+
+      const selectedRow = mediumScreen.find(MediumOptionListItemRow).at(3)
+      expect(selectedRow.text()).toEqual("Sculpture")
+      expect(selectedRow.find(CheckIcon)).toHaveLength(1)
+    })
+
+    it("allows only one medium filter to be selected at a time when several medium options are tapped", () => {
+      const dispatch: Dispatch<FilterActions> = () => {
+        return {
+          type: "selectFilters",
+          payload: { value: "All", filterType: "medium" },
+        }
+      }
+      const mediumScreen = create(
+        <Theme>
+          <ArtworkFilterContext.Provider
+            value={{
+              state,
+              dispatch,
+            }}
+          >
+            <MediumOptions navigator={mockNavigator as any} />
+          </ArtworkFilterContext.Provider>
+        </Theme>
+      ).root
+
+      const firstMediumOptionInstance = mediumScreen.findAllByType(MediumOptionListItemRow)[0]
+      const secondMediumOptionInstance = mediumScreen.findAllByType(MediumOptionListItemRow)[1]
+      const thirdMediumOptionInstance = mediumScreen.findAllByType(MediumOptionListItemRow)[3]
+      const selectedOptionIcon = mediumScreen.findAllByType(CheckIcon)
+
+      act(() => firstMediumOptionInstance.props.onPress())
+      act(() => secondMediumOptionInstance.props.onPress())
+      act(() => thirdMediumOptionInstance.props.onPress())
+
+      expect(selectedOptionIcon).toHaveLength(1)
     })
   })
 })

@@ -28,6 +28,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
 
   const getApplyButtonCount = () => {
     const selectedFiltersSum = state.selectedFilters.length
+
     return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
   }
 
