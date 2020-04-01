@@ -1,12 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8fc2b8f5c2b7d9f37b71136b94f188c8 */
+/* @relayHash 3ad2bddebc1c96a5914127b100f21606 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CityBMWListQueryVariables = {
-    count: number;
-    cursor?: string | null;
     citySlug: string;
 };
 export type CityBMWListQueryResponse = {
@@ -23,20 +21,18 @@ export type CityBMWListQuery = {
 
 /*
 query CityBMWListQuery(
-  $count: Int!
-  $cursor: String
   $citySlug: String!
 ) {
   city(slug: $citySlug) {
-    ...CityBMWList_city_1G22uz
+    ...CityBMWList_city
   }
 }
 
-fragment CityBMWList_city_1G22uz on City {
+fragment CityBMWList_city on City {
   name
   slug
   sponsoredContent {
-    shows: showsConnection(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC) {
+    shows: showsConnection(first: 20, status: RUNNING, after: "", sort: PARTNER_ASC) {
       edges {
         node {
           slug
@@ -97,18 +93,6 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -137,14 +121,14 @@ v3 = {
 },
 v4 = [
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "after",
-    "variableName": "cursor"
+    "value": ""
   },
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "first",
-    "variableName": "count"
+    "value": 20
   },
   {
     "kind": "Literal",
@@ -199,18 +183,7 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CityBMWList_city",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "count",
-                "variableName": "count"
-              },
-              {
-                "kind": "Variable",
-                "name": "cursor",
-                "variableName": "cursor"
-              }
-            ]
+            "args": null
           }
         ]
       }
@@ -245,7 +218,7 @@ return {
                 "kind": "LinkedField",
                 "alias": "shows",
                 "name": "showsConnection",
-                "storageKey": null,
+                "storageKey": "showsConnection(after:\"\",first:20,sort:\"PARTNER_ASC\",status:\"RUNNING\")",
                 "args": (v4/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
@@ -500,11 +473,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CityBMWListQuery",
-    "id": "7154edc58bfe6b799eefd223afc23050",
+    "id": "95170e7a9b4269b77c13756333de51c3",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '98cb9414ec7a4e9b18a815b66b00eb3e';
+(node as any).hash = 'eda53f43b2ca24a871dddb92266ac877';
 export default node;

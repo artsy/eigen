@@ -1,11 +1,13 @@
 import { Theme } from "@artsy/palette"
 import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
-import { CityBMWListQueryVariables } from "__generated__/CityBMWListQuery.graphql"
+import { CityBMWListQuery, CityBMWListQueryVariables } from "__generated__/CityBMWListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp, RelayProp } from "react-relay"
 import { EventList } from "./Components/EventList"
 
 interface Props extends Pick<CityBMWListQueryVariables, "citySlug"> {
@@ -71,7 +73,7 @@ class CityBMWList extends React.Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
+export const CityBMWListContainer = createPaginationContainer(
   CityBMWList,
   {
     city: graphql`
@@ -143,7 +145,7 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query CityBMWListQuery($count: Int!, $cursor: String, $citySlug: String!) {
+      query CityBMWListPaginationQuery($count: Int!, $cursor: String, $citySlug: String!) {
         city(slug: $citySlug) {
           ...CityBMWList_city @arguments(count: $count, cursor: $cursor)
         }
@@ -151,3 +153,23 @@ export default createPaginationContainer(
     `,
   }
 )
+
+interface CityBMWListProps {
+  citySlug: string
+}
+export const CityBMWListRenderer: React.SFC<CityBMWListProps> = ({ citySlug }) => {
+  return (
+    <QueryRenderer<CityBMWListQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query CityBMWListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CityBMWList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={renderWithLoadProgress(CityBMWListContainer)}
+    />
+  )
+}

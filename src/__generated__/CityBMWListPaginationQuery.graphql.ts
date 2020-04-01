@@ -1,38 +1,42 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e7353ded6ccc23d27aabf7b97e39b6f4 */
+/* @relayHash 5a6990de11037cc95ec6e2e63b24ebe7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type QueryRenderersCityBMWListQueryVariables = {
+export type CityBMWListPaginationQueryVariables = {
+    count: number;
+    cursor?: string | null;
     citySlug: string;
 };
-export type QueryRenderersCityBMWListQueryResponse = {
+export type CityBMWListPaginationQueryResponse = {
     readonly city: {
         readonly " $fragmentRefs": FragmentRefs<"CityBMWList_city">;
     } | null;
 };
-export type QueryRenderersCityBMWListQuery = {
-    readonly response: QueryRenderersCityBMWListQueryResponse;
-    readonly variables: QueryRenderersCityBMWListQueryVariables;
+export type CityBMWListPaginationQuery = {
+    readonly response: CityBMWListPaginationQueryResponse;
+    readonly variables: CityBMWListPaginationQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCityBMWListQuery(
+query CityBMWListPaginationQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
 ) {
   city(slug: $citySlug) {
-    ...CityBMWList_city
+    ...CityBMWList_city_1G22uz
   }
 }
 
-fragment CityBMWList_city on City {
+fragment CityBMWList_city_1G22uz on City {
   name
   slug
   sponsoredContent {
-    shows: showsConnection(first: 20, status: RUNNING, after: "", sort: PARTNER_ASC) {
+    shows: showsConnection(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC) {
       edges {
         node {
           slug
@@ -93,6 +97,18 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -121,14 +137,14 @@ v3 = {
 },
 v4 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "after",
-    "value": ""
+    "variableName": "cursor"
   },
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "first",
-    "value": 20
+    "variableName": "count"
   },
   {
     "kind": "Literal",
@@ -166,7 +182,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCityBMWListQuery",
+    "name": "CityBMWListPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -183,7 +199,18 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CityBMWList_city",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
+            ]
           }
         ]
       }
@@ -191,7 +218,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCityBMWListQuery",
+    "name": "CityBMWListPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -218,7 +245,7 @@ return {
                 "kind": "LinkedField",
                 "alias": "shows",
                 "name": "showsConnection",
-                "storageKey": "showsConnection(after:\"\",first:20,sort:\"PARTNER_ASC\",status:\"RUNNING\")",
+                "storageKey": null,
                 "args": (v4/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
@@ -472,12 +499,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "QueryRenderersCityBMWListQuery",
-    "id": "154ce9c7c4d8db71cd98361081b6bc14",
+    "name": "CityBMWListPaginationQuery",
+    "id": "a9e56b57b30e9225774262564fd62589",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '7617b5ea5121adf4c2d8c05cc88c2828';
+(node as any).hash = '03218d5204e271d08f4156a09ded1d0e';
 export default node;

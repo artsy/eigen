@@ -2,7 +2,6 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { EventStatus, ShowSorts } from "__generated__/CitySectionListQuery.graphql"
-import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
 import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
 import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
@@ -14,26 +13,6 @@ export type RenderCallback = React.ComponentProps<typeof QueryRenderer>["render"
 
 interface RendererProps {
   render: RenderCallback
-}
-
-interface CityBMWListProps extends RendererProps {
-  citySlug: string
-}
-export const CityBMWListRenderer: React.SFC<CityBMWListProps> = ({ render, citySlug }) => {
-  return (
-    <QueryRenderer<QueryRenderersCityBMWListQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersCityBMWListQuery($citySlug: String!) {
-          city(slug: $citySlug) {
-            ...CityBMWList_city
-          }
-        }
-      `}
-      variables={{ citySlug }}
-      render={render}
-    />
-  )
 }
 
 interface CityFairListProps extends RendererProps {

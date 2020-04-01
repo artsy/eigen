@@ -11,15 +11,11 @@ import { GeneRenderer } from "./Containers/Gene"
 import { InboxRenderer } from "./Containers/Inbox"
 import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
-import {
-  CityBMWListRenderer,
-  CityFairListRenderer,
-  CitySavedListRenderer,
-  CitySectionListRenderer,
-} from "./relay/QueryRenderers"
+import { CityFairListRenderer, CitySavedListRenderer, CitySectionListRenderer } from "./relay/QueryRenderers"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
+import { CityBMWListRenderer } from "./Scenes/City/CityBMWList"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
@@ -237,15 +233,6 @@ const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsRenderer fairID={fairID} />
 }
 
-interface CityBMWListProps {
-  citySlug: string
-}
-const CityBMWList: React.SFC<CityBMWListProps> = ({ citySlug }) => {
-  return (
-    <CityBMWListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityBMWList, { citySlug })} />
-  )
-}
-
 interface FairBMWArtActivationProps {
   fairID: string
 }
@@ -313,7 +300,7 @@ AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
-AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
+AppRegistry.registerComponent("CityBMWList", () => CityBMWListRenderer)
 AppRegistry.registerComponent("CityFairList", () => CityFairList)
 AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
