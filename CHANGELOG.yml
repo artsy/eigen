@@ -6,6 +6,7 @@ upcoming:
   user_facing:
     - Adds <ArtistConsignButton> to Artist page - chris
     - Show verification text and FAQ link in auctions - brian
+    - Non-IDV new bidder registering through typical registration form sees information about identity verification - yuki
 
 releases:
   - version: 6.4.0
