@@ -1,14 +1,20 @@
 upcoming:
-  version: 6.4.0
+  version: 6.4.1
   date: TBD
   dev:
-    - Added shell for Galleries development of Viewing Rooms - ash
-    - Fixes Clear All functionality in collections filtering - sweir27
     - Directly track lotViewed instead of using legacy `session` tracking - bhoggard & dleve123
   user_facing:
     -
 
 releases:
+  - version: 6.4.0
+    date: Apr 1, 2020
+    dev:
+      - Added shell for Galleries development of Viewing Rooms - ash
+      - Fixes Clear All functionality in collections filtering - sweir27
+    user_facing:
+      -
+
   - version: 6.3.3
     date: Mar 23, 2020
     dev:
