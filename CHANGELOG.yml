@@ -5,6 +5,7 @@ upcoming:
     - Directly track lotViewed instead of using legacy `session` tracking - bhoggard & dleve123
   user_facing:
     - Adds <ArtistConsignButton> to Artist page - chris
+    - Show verification text and FAQ link in auctions - brian
 
 releases:
   - version: 6.4.0

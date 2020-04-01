@@ -3,6 +3,7 @@ import UIKit
 @objc protocol AuctionTitleViewDelegate: class {
     func userDidPressInfo(_ titleView: AuctionTitleView)
     func userDidPressRegister(_ titleView: AuctionTitleView)
+    func userDidPressIdentityFAQ(_ titleView: AuctionTitleView)
 }
 
 class AuctionTitleView: UIView {
@@ -53,6 +54,10 @@ extension UserInteraction {
 
     @objc func userDidPressRegister() {
         delegate?.userDidPressRegister(self)
+    }
+
+    @objc func userDidPressIdentityFAQ() {
+        delegate?.userDidPressIdentityFAQ(self)
     }
 }
 
@@ -171,12 +176,26 @@ private extension AuctionTitleView {
         }
         container.addSubview(registerButton)
 
+        let identityVerificationAttributedString = NSMutableAttributedString(string: "Identity verification required to bid. FAQ")
+        let faqRange = (identityVerificationAttributedString.string as NSString).range(of: "FAQ")
+        identityVerificationAttributedString.addAttribute(NSAttributedString.Key.underlineStyle, value:  NSUnderlineStyle.single.rawValue, range: faqRange)
+
+        let showIdentityVerification = !User.current().identityVerified && viewModel.requireIdentityVerification
         let registrationLabel = ARSerifLabel().then {
-            $0.text = "Registration required to bid"
+            $0.attributedText = showIdentityVerification ? identityVerificationAttributedString : NSAttributedString(string: "Registration required to bid")
             $0.font = UIFont.serifFont(withSize: 16)
             $0.textColor = .artsyGraySemibold()
         }
         container.addSubview(registrationLabel)
+
+        if showIdentityVerification {
+            let showFAQButton = UIButton()
+            showFAQButton.setTitle("   ", for: .normal)
+            showFAQButton.addTarget(self, action: #selector(AuctionTitleView.userDidPressIdentityFAQ), for: .touchUpInside)
+            container.addSubview(showFAQButton)
+            showFAQButton.alignTop("0", bottom: "0", toView: registrationLabel)
+            showFAQButton.alignTrailingEdge(withView: registrationLabel, predicate: "0")
+        }
 
         // Centre both horizontally
         registerButton.alignCenterX(withView: container, predicate: "0")
