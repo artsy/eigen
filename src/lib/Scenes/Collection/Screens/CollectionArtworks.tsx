@@ -4,6 +4,7 @@ import { get } from "lib/utils/get"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { ArtworkFilterContext, FilterArray } from "../../../utils/ArtworkFiltersStore"
+import { CollectionZeroState } from "./CollectionZeroState"
 
 enum ArtworkSorts {
   "Default" = "-decayed_merch",
@@ -57,23 +58,31 @@ export const CollectionArtworks: React.FC<{
   relay: RelayPaginationProp
 }> = ({ collection, relay }) => {
   const artworks = get(collection, p => p.collectionArtworks)
+  const artworksTotal = artworks?.counts?.total || 0
   const { state } = useContext(ArtworkFilterContext)
 
   const filterParams = filterArtworksParams(state.appliedFilters)
 
+  const refetchArtworks = (params = null) => {
+    relay.refetchConnection(
+      PAGE_SIZE,
+      error => {
+        if (error) {
+          throw new Error("Collection/CollectionArtworks sort: " + error.message)
+        }
+      },
+      params
+    )
+  }
   useEffect(() => {
     if (state.applyFilters) {
-      relay.refetchConnection(
-        PAGE_SIZE,
-        error => {
-          if (error) {
-            throw new Error("Collection/CollectionArtworks sort: " + error.message)
-          }
-        },
-        filterParams
-      )
+      refetchArtworks(filterParams)
     }
   }, [state.appliedFilters])
+
+  if (artworksTotal === 0) {
+    return <CollectionZeroState clearAllFilters={refetchArtworks} />
+  }
 
   return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
 }
