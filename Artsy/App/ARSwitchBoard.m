@@ -48,6 +48,8 @@
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARPrivacyRequestComponentViewController.h>
 #import <Emission/ARCollectionFullFeaturedArtistListComponentViewController.h>
+#import <Emission/ARAuctionsComponentViewController.h>
+#import <Emission/ARWorksForYouComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -319,6 +321,14 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/city-save/:city_slug" handler:JLRouteParams {
         return [[ARCitySavedListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"]];
+    }];
+
+    [self.routes addRoute:@"/auctions" handler:JLRouteParams {
+        return [[ARAuctionsComponentViewController alloc] init];
+    }];
+
+    [self.routes addRoute:@"/works-for-you" handler:JLRouteParams {
+        return [[ARWorksForYouComponentViewController alloc] init];
     }];
 
     [self registerEchoRouteForKey:@"ARBrowseCategoriesRoute" handler:JLRouteParams {
