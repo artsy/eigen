@@ -10,6 +10,7 @@ export type Registration_sale = {
     readonly live_start_at: string | null;
     readonly name: string | null;
     readonly start_at: string | null;
+    readonly requireIdentityVerification: boolean | null;
     readonly " $refType": "Registration_sale";
 };
 export type Registration_sale$data = Registration_sale;
@@ -68,8 +69,15 @@ const node: ReaderFragment = {
       "name": "startAt",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "requireIdentityVerification",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'ee874611434f57e7bd676bc60ed9565b';
+(node as any).hash = '87d8938cb35a159630b79a4a96417b16';
 export default node;

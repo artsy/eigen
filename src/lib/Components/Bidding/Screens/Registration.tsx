@@ -1,7 +1,7 @@
 import { Box, Button, Sans, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { NativeModules, View, ViewProperties } from "react-native"
+import { NativeModules, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import stripe from "tipsi-stripe"
@@ -16,7 +16,6 @@ import { Modal } from "lib/Components/Modal"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Checkbox } from "../Components/Checkbox"
-import { Container } from "../Components/Containers"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
@@ -50,6 +49,14 @@ interface RegistrationState {
   requiresPaymentInformation: boolean
   errorModalVisible: boolean
   errorModalDetailText: string
+}
+
+const needsIdentityVerification = (sale: Registration_sale, me: Registration_me) => {
+  return sale.requireIdentityVerification && !me.identityVerified
+}
+
+const Hint = props => {
+  return <Sans mt="5" mx="4" size="3t" textAlign="center" {...props} />
 }
 
 @screenTrack({
@@ -287,22 +294,24 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   render() {
-    const { live_start_at, end_at, is_preview, start_at } = this.props.sale
-    const { isLoading } = this.state
+    const { sale, me } = this.props
+    const { live_start_at, end_at, is_preview, start_at } = sale
+    const { isLoading, requiresPaymentInformation } = this.state
 
     return (
       <BiddingThemeProvider>
-        <Container m={0}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}>
           <View>
             <Flex alignItems="center">
               <Title mb={3}>Register to bid</Title>
+
               <Timer liveStartsAt={live_start_at} endsAt={end_at} isPreview={is_preview} startsAt={start_at} />
               <Serif size="4t" weight="semibold" my={5} mx={6} textAlign="center">
-                {this.props.sale.name}
+                {sale.name}
               </Serif>
             </Flex>
 
-            {this.state.requiresPaymentInformation ? (
+            {requiresPaymentInformation && (
               <>
                 <PaymentInfo
                   navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
@@ -312,14 +321,21 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                   creditCardFormParams={this.state.creditCardFormParams}
                   creditCardToken={this.state.creditCardToken}
                 />
-                <Sans mt="5" size="3t" color="black60" textAlign="center">
-                  A valid credit card is required for bidding.
-                </Sans>
+                <Hint>A valid credit card is required.</Hint>
               </>
-            ) : (
-              <Sans mx={6} size="4t" color="black60" textAlign="center">
-                To complete your registration, please confirm that you agree to the Conditions of Sale.
-              </Sans>
+            )}
+
+            {needsIdentityVerification(sale, me) && (
+              <>
+                <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
+                <Hint mt="4">
+                  After you register, you’ll receive an email with a link to complete identity verification.
+                </Hint>
+              </>
+            )}
+
+            {!requiresPaymentInformation && !needsIdentityVerification(sale, me) && (
+              <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>
             )}
 
             <Modal
@@ -355,7 +371,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </Button>
             </Box>
           </View>
-        </Container>
+        </ScrollView>
       </BiddingThemeProvider>
     )
   }
@@ -370,11 +386,13 @@ export const RegistrationScreen = createFragmentContainer(Registration, {
       live_start_at: liveStartAt
       name
       start_at: startAt
+      requireIdentityVerification
     }
   `,
   me: graphql`
     fragment Registration_me on Me {
       has_credit_cards: hasCreditCards
+      identityVerified
     }
   `,
 })
