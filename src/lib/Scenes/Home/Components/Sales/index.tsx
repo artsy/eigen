@@ -1,7 +1,10 @@
 import { Sales_query } from "__generated__/Sales_query.graphql"
+import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { RefreshControl, SectionList, StyleSheet } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
 import { ZeroState } from "./Components/ZeroState"
@@ -86,7 +89,7 @@ class Sales extends React.Component<Props, State> {
   }
 }
 
-export default createRefetchContainer(
+export const SalesFragmentContainer = createRefetchContainer(
   Sales,
   {
     query: graphql`
@@ -118,3 +121,18 @@ const SectionListStyles = StyleSheet.create({
     display: "flex",
   },
 })
+
+export function SalesRenderer() {
+  return (
+    <QueryRenderer<SalesRendererQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query SalesRendererQuery {
+          ...Sales_query
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(SalesFragmentContainer)}
+    />
+  )
+}

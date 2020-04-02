@@ -11,6 +11,7 @@ import { GeneRenderer } from "./Containers/Gene"
 import { InboxRenderer } from "./Containers/Inbox"
 import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
+import { WorksForYouRenderer } from "./Containers/WorksForYou"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -31,6 +32,7 @@ import {
 } from "./Scenes/Fair"
 import { FairRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
+import { SalesRenderer } from "./Scenes/Home/Components/Sales"
 import { Home } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { PartnerRenderer } from "./Scenes/Partner"
@@ -229,8 +231,8 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithT
   return <Search {...props} />
 })
 
-AppRegistry.registerComponent("Auctions", () => null)
-AppRegistry.registerComponent("WorksForYou", () => null)
+AppRegistry.registerComponent("Auctions", () => SalesRenderer)
+AppRegistry.registerComponent("WorksForYou", () => WorksForYouRenderer)
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
 AppRegistry.registerComponent("Artwork", () => Artwork)
