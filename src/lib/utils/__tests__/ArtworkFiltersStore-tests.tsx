@@ -271,3 +271,30 @@ describe("Apply Filters", () => {
     })
   })
 })
+
+describe("clearZeroState", () => {
+  it("resets the artwork filter when artworks are in zero state", () => {
+    filterState = {
+      applyFilters: true,
+      appliedFilters: [
+        { value: "Recently updated", filterType: "sort" },
+        { value: "Jewelry", filterType: "medium" },
+      ],
+      previouslyAppliedFilters: [{ value: "Recently updated", filterType: "sort" }],
+      selectedFilters: [{ value: "Artwork year (descending)", filterType: "sort" }],
+    }
+
+    filterAction = {
+      type: "clearZeroState",
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [],
+    })
+  })
+})

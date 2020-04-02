@@ -1,69 +1,74 @@
 import { Theme } from "@artsy/palette"
-import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
-import { Artwork as GridItem } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import {
+  CollectionFixture,
+  ZeroStateCollectionFixture,
+} from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import {
   CollectionArtworksFragmentContainer as CollectionArtworks,
   filterArtworksParams,
 } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
-import { ScrollView } from "react-native"
-import { graphql, RelayPaginationProp } from "react-relay"
+import { graphql } from "react-relay"
+import { CollectionZeroState } from "../CollectionZeroState"
+
+let state: ArtworkFilterContextState
 
 jest.unmock("react-relay")
 
-describe("CollectionArtworks", () => {
-  const getWrapper = async (marketingCollection: Omit<CollectionArtworks_collection, " $fragmentRefs">) =>
-    await renderRelayTree({
-      Component: (props: any) => {
-        return (
-          <Theme>
-            <CollectionArtworks
-              collection={{ ...marketingCollection }}
-              relay={{ environment: {} } as RelayPaginationProp}
-              {...props}
-            />
-          </Theme>
-        )
-      },
-      query: graphql`
-        query CollectionArtworksTestsQuery @raw_response_type {
-          marketingCollection(slug: "street-art-now") {
-            slug
-            id
-            collectionArtworks: artworksConnection(first: 6) {
-              edges {
-                node {
-                  id
-                }
-              }
-              ...InfiniteScrollArtworksGrid_connection
-            }
-          }
-        }
-      `,
-      mockData: marketingCollection,
-    })
+beforeEach(() => {
+  state = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+  }
+})
 
-  xit("renders collection artworks", async () => {
-    // TODO: Fix failing test
-    const wrapper = await getWrapper(CollectionFixture as any)
-    wrapper
-      .find(ScrollView)
-      .at(1)
-      .props()
-      .onLayout({
-        nativeEvent: {
-          layout: { width: 768 },
-        },
-      })
-    await flushPromiseQueue()
-    wrapper.update()
-    expect(wrapper.find(GridItem).length).toBe(6)
-    expect(wrapper.html()).toMatchSnapshot()
+const getWrapper = async marketingCollection => {
+  return await renderRelayTree({
+    Component: () => {
+      return (
+        <Theme>
+          <ArtworkFilterContext.Provider
+            value={{
+              state,
+              dispatch: null,
+            }}
+          >
+            <CollectionArtworks collection={{ ...marketingCollection }} />
+          </ArtworkFilterContext.Provider>
+        </Theme>
+      )
+    },
+    query: graphql`
+      query CollectionArtworksTestsQuery @raw_response_type {
+        marketingCollection(slug: "street-art-now") {
+          ...CollectionArtworks_collection
+        }
+      }
+    `,
+    mockData: { marketingCollection },
+  })
+}
+
+describe("CollectionArtworks", () => {
+  it("returns zero state component when there are no artworks to display", async () => {
+    const wrapper = await getWrapper(ZeroStateCollectionFixture)
+
+    expect(wrapper.find(CollectionZeroState)).toHaveLength(1)
+    expect(wrapper.text()).toEqual(
+      "There aren't any works available that meet the following critera at this time. Change your filter criteria to view more works.Clear all filters"
+    )
+  })
+
+  it("returns artworks", async () => {
+    const wrapper = await getWrapper(CollectionFixture)
+
+    expect(wrapper.find(InfiniteScrollArtworksGrid)).toHaveLength(1)
   })
 })
 

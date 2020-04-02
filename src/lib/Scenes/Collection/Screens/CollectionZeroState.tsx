@@ -1,7 +1,7 @@
 import { color, Flex, Serif } from "@artsy/palette"
 import React, { useContext } from "react"
 import { TouchableOpacity } from "react-native"
-import styled from "styled-components"
+import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 
 interface CollectionZeroStateProps {
