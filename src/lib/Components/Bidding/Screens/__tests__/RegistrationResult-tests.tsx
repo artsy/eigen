@@ -21,10 +21,24 @@ describe("Registration result component", () => {
   it("renders registration pending properly", () => {
     const tree = renderer.create(
       <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification={false} />
       </BiddingThemeProvider>
     )
     expect(extractText(tree.root)).toMatch("Registration pending")
+    expect(extractText(tree.root)).toMatch("Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email ")
+    expect(extractText(tree.root)).not.toMatch("This auction requires Artsy to verify your identity before bidding.")
+  })
+
+  it("renders registration pending with an explanation about IDV", () => {
+    const tree = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification />
+      </BiddingThemeProvider>
+    )
+
+    expect(extractText(tree.root)).toMatch("Registration pending")
+    expect(extractText(tree.root)).toMatch("This auction requires Artsy to verify your identity before bidding.")
+    expect(extractText(tree.root)).not.toMatch("Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email ")
   })
 
   it("does not render the icon when the registration status is pending", () => {
@@ -52,7 +66,22 @@ describe("Registration result component", () => {
         <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
       </BiddingThemeProvider>
     )
-    expect(extractText(tree.root)).toMatch("An error occured")
+
+    expect(extractText(tree.root)).toMatch("An error occurred")
+    expect(extractText(tree.root)).toMatch("Please contact")
+    expect(extractText(tree.root)).toMatch("with any questions.")
+  })
+
+  it("renders an error screen when the status is a network error", () => {
+    const tree = renderer
+      .create(
+        <BiddingThemeProvider>
+          <RegistrationResult status={RegistrationStatus.RegistrationStatusNetworkError} />
+        </BiddingThemeProvider>
+      )
+
+    expect(extractText(tree.root)).toMatch("An error occurred")
+    expect(extractText(tree.root)).toMatch("Please\ncheck your internet connection\nand try again.")
   })
 
   it("renders registration error and mailto link properly", async () => {

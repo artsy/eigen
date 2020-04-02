@@ -1,5 +1,7 @@
+import { Button, Sans } from "@artsy/palette"
 import React from "react"
 import { View } from "react-native"
+import { blockRegex } from "simple-markdown"
 
 import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
@@ -9,12 +11,13 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
 
-import { Button } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema, screenTrack } from "../../../utils/track"
+import { defaultRules } from "lib/utils/renderMarkdown"
+import { Schema, screenTrack } from "lib/utils/track"
 
 interface RegistrationResultProps {
   status: RegistrationStatus
+  needsIdentityVerification?: boolean
 }
 
 export enum RegistrationStatus {
@@ -27,12 +30,13 @@ export enum RegistrationStatus {
 const Icons = {
   RegistrationStatusComplete: require("../../../../../images/circle-check-green.png"),
   RegistrationStatusPending: require("../../../../../images/circle-exclamation.png"),
+  RegistrationStatusNetworkError: require("../../../../../images/circle-x-red.png"),
   RegistrationStatusError: require("../../../../../images/circle-x-red.png"),
 }
 
 const registrationCompleteMessage = {
   title: "Registration complete",
-  description: "Thank you for registering. You’re now eligible\n" + "to bid on works in this sale.",
+  description: "Thank you for registering. You’re now eligible to bid on works in this sale.",
 }
 
 const registrationPendingMessage = {
@@ -43,8 +47,18 @@ const registrationPendingMessage = {
     "In the meantime, you can still view works and watch lots you’re interested in.",
 }
 
+const registrationPendingDueToUnverifiedStatusMessage = {
+  title: "Registration pending",
+  description:
+    "This auction requires Artsy to verify your identity before bidding.\n" +
+    "\n" +
+    "For details about identity verification, please see the FAQ or contact [verification@artsy.net](mailto:verification@artsy.net).\n" +
+    "\n" +
+    "A link to complete identity verification has been sent to your email.",
+}
+
 const registrationErrorMessage = {
-  title: "An error occured",
+  title: "An error occurred",
   description: "Please contact [support@artsy.net](mailto:support@artsy.net)\n" + "with any questions.",
 }
 
@@ -52,6 +66,19 @@ const registrationNetworkErrorMessage = {
   title: "An error occurred",
   description: "Please\ncheck your internet connection\nand try again.",
 }
+
+const markdownRules = defaultRules(false, {
+  paragraph: {
+    match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
+    react: (node, output, state) => {
+      return (
+        <Sans size="4" key={state.key} textAlign="center">
+          {output(node.content, state)}
+        </Sans>
+      )
+    },
+  },
+})
 
 const resultEnumToPageName = (result: RegistrationStatus) => {
   let pageName: Schema.PageNames
@@ -61,6 +88,7 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
       break
     case RegistrationStatus.RegistrationStatusPending:
       pageName = Schema.PageNames.BidFlowRegistrationResultPending
+      break
     default:
       pageName = Schema.PageNames.BidFlowRegistrationResultError
   }
@@ -77,7 +105,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
   }
 
   render() {
-    const status = this.props.status
+    const { status, needsIdentityVerification } = this.props
     let title: string
     let msg: string
 
@@ -87,12 +115,18 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
         msg = registrationCompleteMessage.description
         break
       case RegistrationStatus.RegistrationStatusPending:
-        title = registrationPendingMessage.title
-        msg = registrationPendingMessage.description
+        if (needsIdentityVerification) {
+          title = registrationPendingDueToUnverifiedStatusMessage.title
+          msg = registrationPendingDueToUnverifiedStatusMessage.description
+        } else {
+          title = registrationPendingMessage.title
+          msg = registrationPendingMessage.description
+        }
         break
       case RegistrationStatus.RegistrationStatusNetworkError:
         title = registrationNetworkErrorMessage.title
         msg = registrationNetworkErrorMessage.description
+        break
       default:
         title = registrationErrorMessage.title
         msg = registrationErrorMessage.description
@@ -108,7 +142,9 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
               <Title mt={2} mb={4}>
                 {title}
               </Title>
-              <Markdown mb={5}>{msg}</Markdown>
+              <Markdown rules={markdownRules} mb={5}>
+                {msg}
+              </Markdown>
             </Flex>
           </View>
           <Button variant="secondaryOutline" onPress={this.exitBidFlow} block width={100}>

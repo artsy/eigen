@@ -275,6 +275,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       title: "",
       passProps: {
         status,
+        needsIdentityVerification: needsIdentityVerification(this.props.sale, this.props.me)
       },
     })
 

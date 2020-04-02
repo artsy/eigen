@@ -313,7 +313,10 @@ describe("when pressing register button", () => {
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusError })
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusError,
+      needsIdentityVerification: false,
+    })
   })
 
   it("shows the error screen with the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
@@ -404,7 +407,10 @@ describe("when pressing register button", () => {
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusNetworkError })
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusNetworkError,
+      needsIdentityVerification: false,
+    })
   })
 
   it("displays an error message on a creditCardMutation failure", () => {
@@ -511,7 +517,10 @@ describe("when pressing register button", () => {
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusNetworkError })
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusNetworkError,
+      needsIdentityVerification: false,
+    })
   })
 
   it("displays an error message on a bidderMutation failure", () => {
@@ -535,7 +544,10 @@ describe("when pressing register button", () => {
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusError })
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusError,
+      needsIdentityVerification: false,
+    })
   })
 
   it("displays an error message on a network failure", () => {
@@ -558,7 +570,10 @@ describe("when pressing register button", () => {
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusNetworkError })
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusNetworkError,
+      needsIdentityVerification: false,
+    })
   })
 
   it("displays the pending result when the bidder is not qualified_for_bidding", () => {
@@ -575,7 +590,6 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findAllByType(Button)[1].instance.props.onPress()
-
     jest.runAllTicks()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
@@ -583,7 +597,41 @@ describe("when pressing register button", () => {
     })
 
     expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusPending })
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusPending,
+      needsIdentityVerification: false,
+    })
+  })
+
+  it("displays the pending result with needsIdentityVerification: true when the sale requires identity verification", () => {
+    const propsWithIDVSale = {
+      ...initialPropsForUserWithCreditCard,
+      sale: {
+        ...sale,
+        requireIdentityVerification: true,
+      },
+    }
+
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
+      return null
+    }) as any
+
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <Registration {...propsWithIDVSale} />
+      </BiddingThemeProvider>
+    )
+
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findAllByType(Button)[1].instance.props.onPress()
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusPending,
+      needsIdentityVerification: true,
+    })
   })
 
   it("displays the completed result when the bidder is qualified_for_bidding", () => {
@@ -608,7 +656,10 @@ describe("when pressing register button", () => {
     })
 
     expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusComplete })
+    expect(nextStep.passProps).toEqual({
+      status: RegistrationStatus.RegistrationStatusComplete,
+      needsIdentityVerification: false,
+    })
   })
 })
 
@@ -650,6 +701,7 @@ const sale: Partial<Registration_sale> = {
   name: "Phillips New Now",
   start_at: "2018-06-11T01:00:00+00:00",
   is_preview: true,
+  requireIdentityVerification: false,
 }
 
 const mockRequestResponses = {

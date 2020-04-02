@@ -11,14 +11,10 @@ interface OurReactRule extends Partial<ParserRule> {
   react?: ReactNodeOutput
 }
 
+type MarkdownRules = Partial<{ [k in keyof SimpleMarkdown.DefaultRules]: OurReactRule }>
+
 // just to get better intellisense when creating the rules
-function createReactRules(
-  rules: Partial<
-    {
-      [k in keyof SimpleMarkdown.DefaultRules]: OurReactRule
-    }
-  >
-): ParserRules {
+function createReactRules(rules: MarkdownRules): ParserRules {
   const result: any = {}
   for (const key of Object.keys(SimpleMarkdown.defaultRules)) {
     if (rules[key]) {
@@ -37,7 +33,7 @@ function createReactRules(
 // https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
 //
 // Default rules: https://github.com/Khan/simple-markdown/blob/f1a75785703832bbff146d0b98e76cd7ac74b8e8/simple-markdown.js#L806
-export function defaultRules(modal: boolean = false): ParserRules {
+export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRules = {}): ParserRules {
   return createReactRules({
     link: {
       react: (node, output, state) => {
@@ -209,6 +205,7 @@ export function defaultRules(modal: boolean = false): ParserRules {
     hr: {
       react: () => <Separator mb={2}></Separator>,
     },
+    ...roleOverrides
   })
 }
 

@@ -12,6 +12,7 @@ upcoming:
     - Adds a Zero Artworks screen to handle filters that return no results - ashleyjelks
     - Reorganized home screen - ash
     - Adds analytics tracking to collections artwork filters - ashleyjelks
+    - Non-IDV bidder should see copy about identity verification on the registration result screen - yuki
 
 releases:
   - version: 6.4.0
