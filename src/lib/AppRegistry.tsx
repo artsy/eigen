@@ -229,6 +229,8 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithT
   return <Search {...props} />
 })
 
+AppRegistry.registerComponent("Auctions", () => null)
+AppRegistry.registerComponent("WorksForYou", () => null)
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
 AppRegistry.registerComponent("Artwork", () => Artwork)
