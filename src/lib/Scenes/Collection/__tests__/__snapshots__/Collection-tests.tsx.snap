@@ -14,7 +14,7 @@ exports[`Collection renders a snapshot 1`] = `
         collection={
           Object {
             "__fragmentOwner": Object {
-              "identifier": "e1b5b69ea909e7587affc27d3002ed44{}",
+              "identifier": "f3e6f17b0a279e9cf67e2e020bf480b5{}",
               "node": Object {
                 "fragment": Object {
                   "argumentDefinitions": Array [],
@@ -195,8 +195,20 @@ exports[`Collection renders a snapshot 1`] = `
                             },
                             Object {
                               "kind": "Literal",
+                              "name": "aggregations",
+                              "value": Array [
+                                "MEDIUM",
+                              ],
+                            },
+                            Object {
+                              "kind": "Literal",
                               "name": "first",
                               "value": 10,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "medium",
+                              "value": "*",
                             },
                             Object {
                               "kind": "Literal",
@@ -209,6 +221,74 @@ exports[`Collection renders a snapshot 1`] = `
                           "name": "artworksConnection",
                           "plural": false,
                           "selections": Array [
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "FilterArtworksCounts",
+                              "kind": "LinkedField",
+                              "name": "counts",
+                              "plural": false,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "total",
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
+                            Object {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "ArtworksAggregationResults",
+                              "kind": "LinkedField",
+                              "name": "aggregations",
+                              "plural": true,
+                              "selections": Array [
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "slice",
+                                  "storageKey": null,
+                                },
+                                Object {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "AggregationCount",
+                                  "kind": "LinkedField",
+                                  "name": "counts",
+                                  "plural": true,
+                                  "selections": Array [
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "value",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "name",
+                                      "storageKey": null,
+                                    },
+                                    Object {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "count",
+                                      "storageKey": null,
+                                    },
+                                  ],
+                                  "storageKey": null,
+                                },
+                              ],
+                              "storageKey": null,
+                            },
                             Object {
                               "alias": null,
                               "args": null,
@@ -524,7 +604,7 @@ exports[`Collection renders a snapshot 1`] = `
                               "storageKey": null,
                             },
                           ],
-                          "storageKey": "artworksConnection(after:\\"\\",first:10,sort:\\"-decayed_merch\\")",
+                          "storageKey": "artworksConnection(after:\\"\\",aggregations:[\\"MEDIUM\\"],first:10,medium:\\"*\\",sort:\\"-decayed_merch\\")",
                         },
                         Object {
                           "alias": "collectionArtworks",
@@ -536,8 +616,20 @@ exports[`Collection renders a snapshot 1`] = `
                             },
                             Object {
                               "kind": "Literal",
+                              "name": "aggregations",
+                              "value": Array [
+                                "MEDIUM",
+                              ],
+                            },
+                            Object {
+                              "kind": "Literal",
                               "name": "first",
                               "value": 10,
+                            },
+                            Object {
+                              "kind": "Literal",
+                              "name": "medium",
+                              "value": "*",
                             },
                             Object {
                               "kind": "Literal",
@@ -547,6 +639,8 @@ exports[`Collection renders a snapshot 1`] = `
                           ],
                           "filters": Array [
                             "sort",
+                            "medium",
+                            "aggregations",
                           ],
                           "handle": "connection",
                           "key": "Collection_collectionArtworks",
@@ -732,7 +826,7 @@ exports[`Collection renders a snapshot 1`] = `
                   ],
                 },
                 "params": Object {
-                  "id": "e1b5b69ea909e7587affc27d3002ed44",
+                  "id": "f3e6f17b0a279e9cf67e2e020bf480b5",
                   "metadata": Object {
                     "relayTestingSelectionTypeInfo": Object {
                       "marketingCollection": Object {
@@ -836,6 +930,67 @@ exports[`Collection renders a snapshot 1`] = `
                         "nullable": true,
                         "plural": false,
                         "type": "FilterArtworksConnection",
+                      },
+                      "marketingCollection.collectionArtworks.aggregations": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "ArtworksAggregationResults",
+                      },
+                      "marketingCollection.collectionArtworks.aggregations.counts": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": true,
+                        "type": "AggregationCount",
+                      },
+                      "marketingCollection.collectionArtworks.aggregations.counts.count": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "Int",
+                      },
+                      "marketingCollection.collectionArtworks.aggregations.counts.name": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.aggregations.counts.value": Object {
+                        "enumValues": null,
+                        "nullable": false,
+                        "plural": false,
+                        "type": "String",
+                      },
+                      "marketingCollection.collectionArtworks.aggregations.slice": Object {
+                        "enumValues": Array [
+                          "COLOR",
+                          "DIMENSION_RANGE",
+                          "FOLLOWED_ARTISTS",
+                          "MAJOR_PERIOD",
+                          "MEDIUM",
+                          "MERCHANDISABLE_ARTISTS",
+                          "GALLERY",
+                          "INSTITUTION",
+                          "PARTNER_CITY",
+                          "PERIOD",
+                          "PRICE_RANGE",
+                          "TOTAL",
+                        ],
+                        "nullable": true,
+                        "plural": false,
+                        "type": "ArtworkAggregation",
+                      },
+                      "marketingCollection.collectionArtworks.counts": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FilterArtworksCounts",
+                      },
+                      "marketingCollection.collectionArtworks.counts.total": Object {
+                        "enumValues": null,
+                        "nullable": true,
+                        "plural": false,
+                        "type": "FormattedNumber",
                       },
                       "marketingCollection.collectionArtworks.edges": Object {
                         "enumValues": null,

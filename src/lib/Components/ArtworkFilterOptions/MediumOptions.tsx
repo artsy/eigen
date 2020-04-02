@@ -3,14 +3,14 @@ import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, SortOption, useSelectedOptionsDisplay } from "../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, MediumOption, useSelectedOptionsDisplay } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
-interface SortOptionsScreenProps {
+interface MediumOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator }) => {
+export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navigator }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
 
   const handleBackNavigation = () => {
@@ -18,46 +18,47 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedSortOption = selectedOptions.find(option => option.filterType === "sort")?.value
+  const selectedMediumOption = selectedOptions.find(option => option.filterType === "medium")?.value
 
-  const selectSortOption = (selectedOption: SortOption) => {
-    dispatch({ type: "selectFilters", payload: { value: selectedOption, filterType: "sort" } })
+  const selectMediumOption = (selectedOption: MediumOption) => {
+    dispatch({ type: "selectFilters", payload: { value: selectedOption, filterType: "medium" } })
   }
 
   return (
     <Flex flexGrow={1}>
-      <SortHeader>
+      <FilterHeader>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <ArrowLeftIconContainer onPress={() => handleBackNavigation()}>
             <ArrowLeftIcon fill="black100" />
           </ArrowLeftIconContainer>
         </Flex>
         <Sans mt={2} weight="medium" size="4" color="black100">
-          Sort
+          Medium
         </Sans>
         <Box></Box>
-      </SortHeader>
+      </FilterHeader>
       <Flex mb={120}>
-        <FlatList<SortOption>
+        <FlatList<MediumOption>
+          initialNumToRender={12}
           keyExtractor={(_item, index) => String(index)}
-          data={options}
+          data={mediumFilterOptions}
           renderItem={({ item }) => (
             <Box>
               {
-                <SortOptionListItemRow onPress={() => selectSortOption(item)}>
+                <MediumOptionListItemRow onPress={() => selectMediumOption(item)}>
                   <OptionListItem>
                     <InnerOptionListItem>
-                      <SortSelection color="black100" size="3t">
+                      <MediumSelection color="black100" size="3t">
                         {item}
-                      </SortSelection>
-                      {item === selectedSortOption && (
+                      </MediumSelection>
+                      {item === selectedMediumOption && (
                         <Box mb={0.1}>
                           <CheckIcon fill="black100" />
                         </Box>
                       )}
                     </InnerOptionListItem>
                   </OptionListItem>
-                </SortOptionListItemRow>
+                </MediumOptionListItemRow>
               }
             </Box>
           )}
@@ -67,18 +68,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
     </Flex>
   )
 }
-
-const options: SortOption[] = [
-  "Default",
-  "Price (low to high)",
-  "Price (high to low)",
-  "Recently updated",
-  "Recently added",
-  "Artwork year (descending)",
-  "Artwork year (ascending)",
-]
-
-export const SortHeader = styled(Flex)`
+export const FilterHeader = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   padding-right: ${space(2)};
@@ -97,5 +87,20 @@ export const InnerOptionListItem = styled(Flex)`
   padding: ${space(2)}px;
 `
 
-export const SortOptionListItemRow = styled(TouchableOpacity)``
-export const SortSelection = styled(Serif)``
+const mediumFilterOptions: MediumOption[] = [
+  "All",
+  "Painting",
+  "Photography",
+  "Sculpture",
+  "Prints & multiples",
+  "Works on paper",
+  "Design",
+  "Drawing",
+  "Installation",
+  "Film & video",
+  "Jewelry",
+  "Performance art",
+]
+
+export const MediumOptionListItemRow = styled(TouchableOpacity)``
+export const MediumSelection = styled(Serif)``

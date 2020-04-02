@@ -1,16 +1,23 @@
-import { Box, Theme } from "@artsy/palette"
+import { Box, CheckIcon, Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
-import { InnerOptionListItem, SortOptionsScreen as SortOptions } from "../SortOptions"
+import { InnerOptionListItem, SortOptionListItemRow, SortOptionsScreen as SortOptions } from "../SortOptions"
 
 describe("Sort Options Screen", () => {
   let mockNavigator: MockNavigator
+  let state: ArtworkFilterContextState
 
   beforeEach(() => {
     mockNavigator = new MockNavigator()
+    state = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+    }
   })
 
   const MockSortScreen = ({ initialState }) => {
@@ -33,33 +40,19 @@ describe("Sort Options Screen", () => {
   }
 
   it("renders the correct number of sort options", () => {
-    const state: ArtworkFilterContextState = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-    }
-
     const component = mount(<MockSortScreen initialState={state} />)
     expect(component.find(OptionListItem)).toHaveLength(7)
   })
 
   describe("selectedSortOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const state: ArtworkFilterContextState = {
-        selectedFilters: [],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-      }
-
       const component = mount(<MockSortScreen initialState={state} />)
       const selectedOption = selectedSortOption(component)
       expect(selectedOption.text()).toContain("Default")
     })
 
     it("prefers an applied filter over the default filter", () => {
-      const state: ArtworkFilterContextState = {
+      state = {
         selectedFilters: [],
         appliedFilters: [{ filterType: "sort", value: "Recently added" }],
         previouslyAppliedFilters: [{ filterType: "sort", value: "Recently added" }],
@@ -72,7 +65,7 @@ describe("Sort Options Screen", () => {
     })
 
     it("prefers the selected filter over the default filter", () => {
-      const state: ArtworkFilterContextState = {
+      state = {
         selectedFilters: [{ filterType: "sort", value: "Recently added" }],
         appliedFilters: [],
         previouslyAppliedFilters: [],
@@ -85,7 +78,7 @@ describe("Sort Options Screen", () => {
     })
 
     it("prefers the selected filter over an applied filter", () => {
-      const state: ArtworkFilterContextState = {
+      state = {
         selectedFilters: [{ filterType: "sort", value: "Recently added" }],
         appliedFilters: [{ filterType: "sort", value: "Recently updated" }],
         previouslyAppliedFilters: [{ filterType: "sort", value: "Recently updated" }],
@@ -96,5 +89,18 @@ describe("Sort Options Screen", () => {
       const selectedOption = selectedSortOption(component)
       expect(selectedOption.text()).toContain("Recently added")
     })
+  })
+
+  it("allows only one sort filter to be selected at a time", () => {
+    state = {
+      selectedFilters: [{ filterType: "sort", value: "Price (high to low)" }],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+    }
+    const sortScreen = mount(<MockSortScreen initialState={state} />)
+    const selectedRow = sortScreen.find(SortOptionListItemRow).at(2)
+    expect(selectedRow.text()).toEqual("Price (high to low)")
+    expect(selectedRow.find(CheckIcon)).toHaveLength(1)
   })
 })
