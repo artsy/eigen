@@ -4,18 +4,18 @@ import "react-native"
 
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 
-import Sales from "../index"
+import { SalesFragmentContainer } from "../index"
 
 jest.mock("../Components/ZeroState/index.html", () => "")
 jest.mock("../Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
-  const auctions = shallow(<Sales {...props} query={{ salesConnection: { edges: [] } } as any} />)
+  const auctions = shallow(<SalesFragmentContainer {...props} query={{ salesConnection: { edges: [] } } as any} />)
   expect(auctions.find("ZeroState").length).toEqual(1)
 })
 
 it("looks correct when rendered", () => {
-  const auctions = renderWithLayout(<Sales {...props as any} />, { width: 1000 })
+  const auctions = renderWithLayout(<SalesFragmentContainer {...(props as any)} />, { width: 1000 })
   expect(auctions).toMatchSnapshot()
 })
 

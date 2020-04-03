@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ForYou_forYou = {
+export type Home_homePage = {
     readonly artwork_modules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
@@ -15,12 +15,12 @@ export type ForYou_forYou = {
     readonly fairs_module: {
         readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairs_module">;
     } | null;
-    readonly " $refType": "ForYou_forYou";
+    readonly " $refType": "Home_homePage";
 };
-export type ForYou_forYou$data = ForYou_forYou;
-export type ForYou_forYou$key = {
-    readonly " $data"?: ForYou_forYou$data;
-    readonly " $fragmentRefs": FragmentRefs<"ForYou_forYou">;
+export type Home_homePage$data = Home_homePage;
+export type Home_homePage$key = {
+    readonly " $data"?: Home_homePage$data;
+    readonly " $fragmentRefs": FragmentRefs<"Home_homePage">;
 };
 
 
@@ -35,7 +35,7 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "ForYou_forYou",
+  "name": "Home_homePage",
   "type": "HomePage",
   "metadata": null,
   "argumentDefinitions": [],
@@ -128,5 +128,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a25a19593af63a0cb5c8acdfdd2062cf';
+(node as any).hash = '1a3903d4148146e3daf0afbf77b32935';
 export default node;

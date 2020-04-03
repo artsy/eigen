@@ -1,26 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4fbf0aad8b6f3ef729d67310d54216c6 */
+/* @relayHash 53db2220fe573268745c9c7f460e813a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ForYouQueryVariables = {};
-export type ForYouQueryResponse = {
-    readonly forYou: {
-        readonly " $fragmentRefs": FragmentRefs<"ForYou_forYou">;
+export type HomeQueryVariables = {};
+export type HomeQueryResponse = {
+    readonly homePage: {
+        readonly " $fragmentRefs": FragmentRefs<"Home_homePage">;
     } | null;
 };
-export type ForYouQuery = {
-    readonly response: ForYouQueryResponse;
-    readonly variables: ForYouQueryVariables;
+export type HomeQuery = {
+    readonly response: HomeQueryResponse;
+    readonly variables: HomeQueryVariables;
 };
 
 
 
 /*
-query ForYouQuery {
-  forYou: homePage {
-    ...ForYou_forYou
+query HomeQuery {
+  homePage {
+    ...Home_homePage
   }
 }
 
@@ -145,7 +145,7 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
   }
 }
 
-fragment ForYou_forYou on HomePage {
+fragment Home_homePage on HomePage {
   artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES], exclude: [FOLLOWED_ARTISTS, GENERIC_GENES]) {
     id
     ...ArtworkRail_rail
@@ -274,14 +274,14 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ForYouQuery",
+    "name": "HomeQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": "forYou",
+        "alias": null,
         "name": "homePage",
         "storageKey": null,
         "args": null,
@@ -290,7 +290,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "ForYou_forYou",
+            "name": "Home_homePage",
             "args": null
           }
         ]
@@ -299,12 +299,12 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ForYouQuery",
+    "name": "HomeQuery",
     "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": "forYou",
+        "alias": null,
         "name": "homePage",
         "storageKey": null,
         "args": null,
@@ -673,12 +673,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ForYouQuery",
-    "id": "e3d76480c06529de043e720c806613a3",
+    "name": "HomeQuery",
+    "id": "304115ac79e6a4baa44f4ec8f34e8227",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b2f4a15d79b22ceaacc221cb74a06292';
+(node as any).hash = '115a28da1d2b917014db1d340de4aa7f';
 export default node;

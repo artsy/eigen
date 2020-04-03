@@ -32,12 +32,12 @@ import {
 } from "./Scenes/Fair"
 import { FairRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
-import { SalesRenderer } from "./Scenes/Home/Components/Sales"
-import { Home } from "./Scenes/Home/Home"
+import { HomeRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { PartnerRenderer } from "./Scenes/Partner"
 import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
+import { SalesRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import { ShowRenderer } from "./Scenes/Show/Show"
@@ -237,7 +237,7 @@ AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
 AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
-AppRegistry.registerComponent("Home", () => Home)
+AppRegistry.registerComponent("Home", () => HomeRenderer)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
