@@ -33,6 +33,7 @@ export class Fade extends React.Component<FadeProps, FadeState> {
     Animated.timing(this.visibility, {
       toValue: nextProps.show ? 1 : 0,
       duration: nextProps.duration,
+      useNativeDriver: true,
     }).start(() => this.setState({ visible: nextProps.show }))
   }
 

@@ -61,8 +61,8 @@ export class ArtistRail extends Component<Props, State> {
       const duration = Animation.duration.followedArtist
       const easing = Animation.easing
       Animated.parallel([
-        Animated.timing(opacity, { duration, easing, toValue: 0 }),
-        Animated.timing(translateY, { duration, easing, toValue: Animation.yDelta }),
+        Animated.timing(opacity, { duration, easing, toValue: 0, useNativeDriver: true }),
+        Animated.timing(translateY, { duration, easing, toValue: Animation.yDelta, useNativeDriver: true }),
       ]).start(resolve)
     })
   }
@@ -73,8 +73,8 @@ export class ArtistRail extends Component<Props, State> {
       const duration = Animation.duration.suggestedArtist
       const easing = Animation.easing
       Animated.parallel([
-        Animated.timing(opacity, { duration, easing, toValue: 1 }),
-        Animated.timing(translateY, { duration, easing, toValue: 0 }),
+        Animated.timing(opacity, { duration, easing, toValue: 1, useNativeDriver: true }),
+        Animated.timing(translateY, { duration, easing, toValue: 0, useNativeDriver: true }),
       ]).start(resolve)
     })
   }
