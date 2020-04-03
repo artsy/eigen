@@ -106,7 +106,7 @@ export const ConversationsContainer = createPaginationContainer(
   {
     me: graphql`
       fragment Conversations_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 30 }, cursor: { type: "String", defaultValue: "" }) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
           @connection(key: "Conversations_conversations") {
           pageInfo {

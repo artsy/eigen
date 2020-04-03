@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3d8baf58adcb7dd37dbca3ed4d4513cd */
+/* @relayHash cd713f7b1cd8041fe327103b56838c83 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -103,7 +103,7 @@ fragment ConversationSnippet_conversation on Conversation {
 }
 
 fragment Conversations_me on Me {
-  conversations: conversationsConnection(first: 30, after: "") {
+  conversations: conversationsConnection(first: 10, after: "") {
     pageInfo {
       endCursor
       hasNextPage
@@ -190,7 +190,7 @@ v5 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 30
+    "value": 10
   }
 ],
 v6 = {
@@ -436,7 +436,7 @@ return {
             "kind": "LinkedField",
             "alias": "conversations",
             "name": "conversationsConnection",
-            "storageKey": "conversationsConnection(after:\"\",first:30)",
+            "storageKey": "conversationsConnection(after:\"\",first:10)",
             "args": (v5/*: any*/),
             "concreteType": "ConversationConnection",
             "plural": false,
@@ -634,7 +634,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxRefetchQuery",
-    "id": "9095de61fd6295401c02465f07c9a1ec",
+    "id": "40f77f166c1419e9d9882fb99570f087",
     "text": null,
     "metadata": {}
   }
