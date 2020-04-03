@@ -3,7 +3,7 @@ import "react-native"
 
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 
-import { Conversations } from "../"
+import { Conversations } from "../Conversations"
 
 const devices = {
   "iPhone 4": { width: 320, height: 480 },

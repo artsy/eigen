@@ -48,7 +48,7 @@ const node: ReaderFragment = {
       "kind": "LocalArgument",
       "name": "count",
       "type": "Int",
-      "defaultValue": 10
+      "defaultValue": 30
     },
     {
       "kind": "LocalArgument",
@@ -151,5 +151,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f94ea260dabae5258e248c73490ad685';
+(node as any).hash = 'd80754f3eaaf2ba22f966cbe8384208e';
 export default node;
