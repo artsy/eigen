@@ -10,7 +10,7 @@ exports[`Collection renders a snapshot 1`] = `
 >
   <RCTScrollView
     ListHeaderComponent={
-      <ForwardRef(Relay(CollectionHeader))
+      <Relay(CollectionHeader)
         collection={
           Object {
             "__fragmentOwner": Object {

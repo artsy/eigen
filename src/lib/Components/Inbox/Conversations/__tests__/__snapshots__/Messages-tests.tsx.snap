@@ -3,7 +3,7 @@
 exports[`looks correct when rendered 1`] = `
 <RCTScrollView
   ListFooterComponent={
-    <ForwardRef
+    <Styled(ActivityIndicator)
       animating={false}
       color="#999999"
       hidesWhenStopped={true}

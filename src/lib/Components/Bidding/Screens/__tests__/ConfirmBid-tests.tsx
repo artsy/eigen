@@ -328,7 +328,7 @@ describe("when pressing bid button", () => {
         component.root.findByType(Checkbox).props.onPress()
         findPlaceBidButton(component).props.onPress()
 
-        await waitUntil(() => !!nextStep)
+        await waitUntil(() => nextStep)
 
         expect(nextStep.component).toEqual(BidResultScreen)
         expect(nextStep.passProps).toEqual(
@@ -395,14 +395,7 @@ describe("polling to verify bid position", () => {
       })
 
       findPlaceBidButton(component).props.onPress()
-      await waitUntil(() => {
-        if (!nextStep) {
-          jest.runOnlyPendingTimers()
-          jest.runAllTicks()
-          return false
-        }
-        return true
-      })
+      await waitUntil(() => nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -423,14 +416,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      await waitUntil(() => {
-        if (!nextStep) {
-          jest.runOnlyPendingTimers()
-          jest.runAllTicks()
-          return false
-        }
-        return true
-      })
+      await waitUntil(() => nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -451,7 +437,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      await waitUntil(() => !!nextStep)
+      await waitUntil(() => nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -472,7 +458,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      await waitUntil(() => !!nextStep)
+      await waitUntil(() => nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -493,7 +479,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      await waitUntil(() => !!nextStep)
+      await waitUntil(() => nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -582,7 +568,7 @@ describe("polling to verify bid position", () => {
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      await waitUntil(() => !!nextStep)
+      await waitUntil(() => nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
@@ -821,7 +807,7 @@ describe("ConfirmBid for unqualified user", () => {
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
       fillOutFormAndSubmit(component)
-      await waitUntil(() => !!nextStep)
+      await waitUntil(() => nextStep)
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
