@@ -475,6 +475,8 @@ PODS:
   - ReactiveObjC (2.1.2)
   - RNCAsyncStorage (1.6.3):
     - React
+  - RNCPicker (1.3.0):
+    - React
   - RNReanimated (1.4.0):
     - React
   - RNSentry (1.3.2):
@@ -593,6 +595,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `node_modules/react-native/ReactCommon`)
   - ReactiveObjC
   - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
+  - "RNCPicker (from `node_modules/@react-native-community/picker`)"
   - RNReanimated (from `node_modules/react-native-reanimated`)
   - "RNSentry (from `node_modules/@sentry/react-native`)"
   - RNSVG (from `node_modules/react-native-svg`)
@@ -763,6 +766,8 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native/ReactCommon
   RNCAsyncStorage:
     :path: "node_modules/@react-native-community/async-storage"
+  RNCPicker:
+    :path: "node_modules/@react-native-community/picker"
   RNReanimated:
     :path: node_modules/react-native-reanimated
   RNSentry:
@@ -906,6 +911,7 @@ SPEC CHECKSUMS:
   ReactCommon: d22162ab8f1358c53dfcd0f9c4d82d38facdbc48
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
+  RNCPicker: 7d06ee91dff65b0bcd400ca00039051d5ddcb938
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSentry: 2ec85f3e314c6a650b1c51b30ff764b6103ed7e2
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c

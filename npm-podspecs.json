@@ -118,5 +118,8 @@
   },
   "RNCAsyncStorage": {
     "path": "node_modules/@react-native-community/async-storage"
+  },
+  "RNCPicker": {
+    "path": "node_modules/@react-native-community/picker"
   }
 }
