@@ -41,29 +41,18 @@ exports[`renders correctly with a show 1`] = `
         ]
       }
     >
-      <View
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
         style={
           Array [
             Object {
-              "display": "flex",
+              "borderRadius": 2,
+              "height": 80,
+              "width": 80,
             },
           ]
         }
-      >
-        <AROpaqueImageView
-          imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
-          style={
-            Array [
-              Object {
-                "alignSelf": "center",
-                "borderRadius": 2,
-                "height": 80,
-                "width": 80,
-              },
-            ]
-          }
-        />
-      </View>
+      />
       <View
         justifyContent="flex-start"
         ml={1}
@@ -76,7 +65,6 @@ exports[`renders correctly with a show 1`] = `
             },
             Object {
               "flex": 1,
-              "overflow": "hidden",
             },
           ]
         }
@@ -243,29 +231,18 @@ exports[`renders correctly with an artwork 1`] = `
         ]
       }
     >
-      <View
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
         style={
           Array [
             Object {
-              "display": "flex",
+              "borderRadius": 2,
+              "height": 80,
+              "width": 80,
             },
           ]
         }
-      >
-        <AROpaqueImageView
-          imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
-          style={
-            Array [
-              Object {
-                "alignSelf": "center",
-                "borderRadius": 2,
-                "height": 80,
-                "width": 80,
-              },
-            ]
-          }
-        />
-      </View>
+      />
       <View
         justifyContent="flex-start"
         ml={1}
@@ -278,7 +255,6 @@ exports[`renders correctly with an artwork 1`] = `
             },
             Object {
               "flex": 1,
-              "overflow": "hidden",
             },
           ]
         }

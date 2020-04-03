@@ -2,38 +2,28 @@
 
 exports[`messaging inbox looks correct when rendered 1`] = `
 <View>
-  <View
+  <Text
+    fontFamily="ReactNativeAGaramondPro-Regular"
+    fontSize="32px"
+    lineHeight="38px"
     m={2}
     style={
       Array [
         Object {
-          "display": "flex",
+          "fontFamily": "ReactNativeAGaramondPro-Regular",
+          "fontSize": 32,
+          "lineHeight": 38,
           "marginBottom": 20,
           "marginLeft": 20,
           "marginRight": 20,
           "marginTop": 20,
         },
+        Object {},
       ]
     }
   >
-    <Text
-      fontFamily="ReactNativeAGaramondPro-Regular"
-      fontSize="32px"
-      lineHeight="38px"
-      style={
-        Array [
-          Object {
-            "fontFamily": "ReactNativeAGaramondPro-Regular",
-            "fontSize": 32,
-            "lineHeight": 38,
-          },
-          Object {},
-        ]
-      }
-    >
-      Messages
-    </Text>
-  </View>
+    Messages
+  </Text>
   <RCTScrollView
     ItemSeparatorComponent={[Function]}
     data={
@@ -118,7 +108,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
     onScrollEndDrag={[Function]}
     removeClippedSubviews={false}
     renderItem={[Function]}
-    scrollEventThrottle={500}
+    scrollEventThrottle={50}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
@@ -169,29 +159,18 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 ]
               }
             >
-              <View
+              <AROpaqueImageView
+                imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
                 style={
                   Array [
                     Object {
-                      "display": "flex",
+                      "borderRadius": 2,
+                      "height": 80,
+                      "width": 80,
                     },
                   ]
                 }
-              >
-                <AROpaqueImageView
-                  imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
-                  style={
-                    Array [
-                      Object {
-                        "alignSelf": "center",
-                        "borderRadius": 2,
-                        "height": 80,
-                        "width": 80,
-                      },
-                    ]
-                  }
-                />
-              </View>
+              />
               <View
                 justifyContent="flex-start"
                 ml={1}
@@ -204,7 +183,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     },
                     Object {
                       "flex": 1,
-                      "overflow": "hidden",
                     },
                   ]
                 }
@@ -371,29 +349,18 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 ]
               }
             >
-              <View
+              <AROpaqueImageView
+                imageURL="https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg"
                 style={
                   Array [
                     Object {
-                      "display": "flex",
+                      "borderRadius": 2,
+                      "height": 80,
+                      "width": 80,
                     },
                   ]
                 }
-              >
-                <AROpaqueImageView
-                  imageURL="https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg"
-                  style={
-                    Array [
-                      Object {
-                        "alignSelf": "center",
-                        "borderRadius": 2,
-                        "height": 80,
-                        "width": 80,
-                      },
-                    ]
-                  }
-                />
-              </View>
+              />
               <View
                 justifyContent="flex-start"
                 ml={1}
@@ -406,7 +373,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     },
                     Object {
                       "flex": 1,
-                      "overflow": "hidden",
                     },
                   ]
                 }
@@ -524,50 +490,4 @@ exports[`messaging inbox looks correct when rendered 1`] = `
 </View>
 `;
 
-exports[`messaging inbox looks correct when rendered without messages 1`] = `
-<View>
-  <View
-    m={2}
-    style={
-      Array [
-        Object {
-          "display": "flex",
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 20,
-        },
-      ]
-    }
-  />
-  <RCTScrollView
-    ItemSeparatorComponent={[Function]}
-    data={Array []}
-    disableVirtualization={false}
-    getItem={[Function]}
-    getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
-    onContentSizeChange={[Function]}
-    onEndReached={[Function]}
-    onEndReachedThreshold={2}
-    onLayout={[Function]}
-    onMomentumScrollEnd={[Function]}
-    onScroll={[Function]}
-    onScrollBeginDrag={[Function]}
-    onScrollEndDrag={[Function]}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={500}
-    stickyHeaderIndices={Array []}
-    updateCellsBatchingPeriod={50}
-    viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
-  >
-    <View />
-  </RCTScrollView>
-</View>
-`;
+exports[`messaging inbox looks correct when rendered without messages 1`] = `null`;
