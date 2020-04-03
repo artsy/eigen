@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0f36ae9c158a22d98c1c80531ded8790 */
+/* @relayHash f74cb50c46b2c284e685b16387ce3e5d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SalesRendererQueryVariables = {};
 export type SalesRendererQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"Sales_query">;
+    readonly " $fragmentRefs": FragmentRefs<"Sales_data">;
 };
 export type SalesRendererQuery = {
     readonly response: SalesRendererQueryResponse;
@@ -17,7 +17,7 @@ export type SalesRendererQuery = {
 
 /*
 query SalesRendererQuery {
-  ...Sales_query
+  ...Sales_data
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -109,7 +109,7 @@ fragment SaleListItem_sale on Sale {
   }
 }
 
-fragment Sales_query on Query {
+fragment Sales_data on Query {
   salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
     edges {
       node {
@@ -191,7 +191,7 @@ return {
     "selections": [
       {
         "kind": "FragmentSpread",
-        "name": "Sales_query",
+        "name": "Sales_data",
         "args": null
       }
     ]
@@ -569,11 +569,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SalesRendererQuery",
-    "id": "9837881bbf02bb16ea04d724a69761cb",
+    "id": "18f285e763d26ec0daa4598e3609daec",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'aa48dd8704172d3d3f07388648a86454';
+(node as any).hash = 'c002f1cec40170556275d039fece1921';
 export default node;

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dd5ab9e7ebd0c4b0c648de622087b105 */
+/* @relayHash c9c7115d10a8070b62b6030503546ed9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -156,6 +156,16 @@ fragment Home_homePage on HomePage {
   }
   fairsModule {
     ...FairsRail_fairsModule
+  }
+  salesModule {
+    ...SalesRail_salesModule
+  }
+}
+
+fragment SalesRail_salesModule on HomePageSalesModule {
+  results {
+    id
+    slug
   }
 }
 */
@@ -665,6 +675,30 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "salesModule",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "HomePageSalesModule",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "results",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Sale",
+                "plural": true,
+                "selections": [
+                  (v0/*: any*/),
+                  (v4/*: any*/)
+                ]
+              }
+            ]
           }
         ]
       }
@@ -673,7 +707,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "693950e75b2f1d2897e5d46ac2f0ae4e",
+    "id": "1c47d74fe47e6efe35ff05f9a302ee10",
     "text": null,
     "metadata": {}
   }

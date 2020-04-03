@@ -10,7 +10,7 @@ jest.mock("../Components/ZeroState/index.html", () => "")
 jest.mock("../Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
-  const auctions = shallow(<SalesFragmentContainer {...props} query={{ salesConnection: { edges: [] } } as any} />)
+  const auctions = shallow(<SalesFragmentContainer {...props} data={{ salesConnection: { edges: [] } } as any} />)
   expect(auctions.find("ZeroState").length).toEqual(1)
 })
 
@@ -27,7 +27,7 @@ const props = {
     loadMore: jest.fn(),
     refetch: jest.fn(),
   },
-  query: {
+  data: {
     salesConnection: {
       edges: [
         {

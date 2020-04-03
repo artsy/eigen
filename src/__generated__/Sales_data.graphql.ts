@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Sales_query = {
+export type Sales_data = {
     readonly salesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -13,19 +13,19 @@ export type Sales_query = {
         } | null> | null;
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_query">;
-    readonly " $refType": "Sales_query";
+    readonly " $refType": "Sales_data";
 };
-export type Sales_query$data = Sales_query;
-export type Sales_query$key = {
-    readonly " $data"?: Sales_query$data;
-    readonly " $fragmentRefs": FragmentRefs<"Sales_query">;
+export type Sales_data$data = Sales_data;
+export type Sales_data$key = {
+    readonly " $data"?: Sales_data$data;
+    readonly " $fragmentRefs": FragmentRefs<"Sales_data">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Sales_query",
+  "name": "Sales_data",
   "type": "Query",
   "metadata": null,
   "argumentDefinitions": [],
@@ -103,5 +103,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c69fdf7f4fd289f56a4bff2f9bd5f82d';
+(node as any).hash = '97d955c6370f41dc92b8f45c9c09686c';
 export default node;

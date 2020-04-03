@@ -3,7 +3,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
+import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import { extractText } from "lib/tests/extractText"
 import FairsRail from "../FairsRail"
 
@@ -14,7 +14,7 @@ const artworkNode = {
     image: { url: "https://example.com/image.jpg" },
   },
 }
-const fairsModule: Omit<FairsRail_fairs_module, " $refType"> = {
+const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
   results: [
     {
       id: "the-fair",
@@ -59,7 +59,7 @@ it("looks correct when rendered", () => {
   const tree = renderer
     .create(
       <Theme>
-        <FairsRail fairs_module={fairsModule as any} />
+        <FairsRail fairsModule={fairsModule as any} />
       </Theme>
     )
     .toJSON()
@@ -78,7 +78,7 @@ it("looks correct when rendered with fairs missing artworks", () => {
     renderer
       .create(
         <Theme>
-          <FairsRail fairs_module={fairsModule as any} />
+          <FairsRail fairsModule={fairsModule as any} />
         </Theme>
       )
       .toJSON()
@@ -92,7 +92,7 @@ describe("location", () => {
     fairsCopy.results[0].location.city = "New Yawk"
     const tree = renderer.create(
       <Theme>
-        <FairsRail fairs_module={fairsCopy as any} />
+        <FairsRail fairsModule={fairsCopy as any} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
@@ -106,7 +106,7 @@ describe("location", () => {
     fairsCopy.results[0].location.country = "Canada"
     const tree = renderer.create(
       <Theme>
-        <FairsRail fairs_module={fairsCopy as any} />
+        <FairsRail fairsModule={fairsCopy as any} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(

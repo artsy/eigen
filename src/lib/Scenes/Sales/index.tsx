@@ -1,5 +1,5 @@
 import { Box, Flex, Sans, Separator } from "@artsy/palette"
-import { Sales_query } from "__generated__/Sales_query.graphql"
+import { Sales_data } from "__generated__/Sales_data.graphql"
 import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -12,7 +12,7 @@ import { ZeroState } from "./Components/ZeroState"
 
 interface Props {
   relay: RelayRefetchProp
-  query: Sales_query
+  data: Sales_data
 }
 
 interface State {
@@ -25,7 +25,7 @@ class Sales extends React.Component<Props, State> {
   }
 
   get data() {
-    const sales = this.props.query.salesConnection.edges.map(({ node }) => node)
+    const sales = this.props.data.salesConnection.edges.map(({ node }) => node)
     const liveAuctions = sales.filter(a => !!a.live_start_at)
     const timedAuctions = sales.filter(a => !a.live_start_at)
 
@@ -51,7 +51,10 @@ class Sales extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.props.query.salesConnection.edges.length === 0) {
+    console.log({ relay: this.props.relay, thing: this.props.data })
+    return null
+
+    if (this.props.data.salesConnection.edges.length === 0) {
       return <ZeroState />
     }
 
@@ -68,7 +71,7 @@ class Sales extends React.Component<Props, State> {
         renderItem: props => <SaleList {...props} />,
       },
       {
-        data: [{ data: this.props.query }],
+        data: [{ data: this.props.data }],
         title: "Lots by Artists You Follow",
         renderItem: props => {
           return <LotsByFollowedArtists title={props.section.title} query={props.item.data} />
@@ -97,11 +100,20 @@ class Sales extends React.Component<Props, State> {
   }
 }
 
+const SectionListStyles = StyleSheet.create({
+  contentContainer: {
+    justifyContent: "space-between",
+    paddingTop: 2,
+    padding: 10,
+    display: "flex",
+  },
+})
+
 export const SalesFragmentContainer = createRefetchContainer(
   Sales,
   {
-    query: graphql`
-      fragment Sales_query on Query {
+    data: graphql`
+      fragment Sales_data on Query {
         salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
           edges {
             node {
@@ -116,27 +128,18 @@ export const SalesFragmentContainer = createRefetchContainer(
   },
   graphql`
     query SalesQuery {
-      ...Sales_query
+      ...Sales_data
     }
   `
 )
 
-const SectionListStyles = StyleSheet.create({
-  contentContainer: {
-    justifyContent: "space-between",
-    paddingTop: 2,
-    padding: 10,
-    display: "flex",
-  },
-})
-
-export function SalesRenderer() {
+export const SalesRenderer: React.FC = () => {
   return (
     <QueryRenderer<SalesRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
         query SalesRendererQuery {
-          ...Sales_query
+          ...Sales_data
         }
       `}
       variables={{}}

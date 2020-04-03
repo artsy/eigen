@@ -4,6 +4,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 
 import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import FairsRail from "./Components/FairsRail"
+import SalesRail from "./Components/SalesRail"
 
 import { ArtsyLogoIcon, Box, Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
@@ -57,6 +58,7 @@ export class Home extends React.Component<Props, State> {
   render() {
     const { homePage } = this.props
     const artworkModules = homePage.artworkModules || []
+    const salesModule = homePage.salesModule
     const artistModules = homePage.artistModules && homePage.artistModules.concat()
     const fairsModule = homePage.fairsModule
 
@@ -86,6 +88,10 @@ export class Home extends React.Component<Props, State> {
         type: "fairs",
         data: fairsModule,
       } as const,
+      {
+        type: "sales",
+        data: salesModule,
+      } as const,
       ...interleavedArtworkArtists,
     ]
 
@@ -106,6 +112,8 @@ export class Home extends React.Component<Props, State> {
                   return <ArtistRail rail={item.data} />
                 case "fairs":
                   return <FairsRail fairsModule={item.data} />
+                case "sales":
+                  return <SalesRail salesModule={item.data} />
               }
             }}
             ListHeaderComponent={
@@ -162,6 +170,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         }
         fairsModule {
           ...FairsRail_fairsModule
+        }
+        salesModule {
+          ...SalesRail_salesModule
         }
       }
     `,

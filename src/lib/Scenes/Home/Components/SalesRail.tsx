@@ -1,5 +1,5 @@
 import { Flex, Sans } from "@artsy/palette"
-import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
+import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
 import React, { Component } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -11,69 +11,55 @@ import Switchboard from "lib/NativeModules/SwitchBoard"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import { concat, take } from "lodash"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 const ARTWORKS_HEIGHT = 180
 
 interface Props {
-  fairsModule: FairsRail_fairsModule
+  salesModule: SalesRail_salesModule
 }
 
-type FairItem = FairsRail_fairsModule["results"][0]
+type Sale = SalesRail_salesModule["results"][0]
 
-export class FairsRail extends Component<Props, null> {
+export class FairsRail extends Component<Props> {
   render() {
     return (
       <View>
         <Flex pl="2" pr="2">
-          <SectionTitle title="Recommended Art Fairs" />
+          <SectionTitle
+            title="Auctions"
+            subtitle="Upcoming timed and live auctions on Artsy"
+            onPress={() => SwitchBoard.presentNavigationViewController(this, "/auctions")}
+          />
         </Flex>
 
-        <CardRailFlatList<FairItem>
-          data={this.props.fairsModule.results}
+        <CardRailFlatList<Sale>
+          data={this.props.salesModule.results}
           renderItem={({ item: result }) => {
             // Fairs are expected to always have >= 2 artworks and a hero image.
             // We can make assumptions about this in UI layout, but should still
             // be cautious to avoid crashes if this assumption is broken.
-            const artworkImageURLs = take(
-              concat(
-                [result.image.url],
-                result.followedArtistArtworks.edges.map(edge => edge.node.image.url),
-                result.otherArtworks.edges.map(edge => edge.node.image.url)
-              ),
-              3
-            )
-            const location = result.location?.city || result.location?.country
             return (
               <CardRailCard
                 key={result.slug}
-                onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}?entity=fair`)}
+                onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}`)}
               >
                 <View>
                   <ArtworkImageContainer>
-                    <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                    <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={null} />
                     <Division />
                     <View>
-                      <ImageView
-                        width={ARTWORKS_HEIGHT / 2}
-                        height={ARTWORKS_HEIGHT / 2}
-                        imageURL={artworkImageURLs[1]}
-                      />
+                      <ImageView width={ARTWORKS_HEIGHT / 2} height={ARTWORKS_HEIGHT / 2} imageURL={null} />
                       <Division horizontal />
-                      <ImageView
-                        width={ARTWORKS_HEIGHT / 2}
-                        height={ARTWORKS_HEIGHT / 2}
-                        imageURL={artworkImageURLs[2]}
-                      />
+                      <ImageView width={ARTWORKS_HEIGHT / 2} height={ARTWORKS_HEIGHT / 2} imageURL={null} />
                     </View>
                   </ArtworkImageContainer>
                   <MetadataContainer>
                     <Sans numberOfLines={1} weight="medium" size="3t">
-                      {result.name}
+                      Title
                     </Sans>
                     <Sans numberOfLines={1} size="3t" color="black60" data-test-id="subtitle">
-                      {result.exhibitionPeriod}
-                      {Boolean(location) && `  •  ${location}`}
+                      TBD
                     </Sans>
                   </MetadataContainer>
                 </View>
@@ -107,41 +93,11 @@ const MetadataContainer = styled.View`
 `
 
 export default createFragmentContainer(FairsRail, {
-  fairsModule: graphql`
-    fragment FairsRail_fairsModule on HomePageFairsModule {
+  salesModule: graphql`
+    fragment SalesRail_salesModule on HomePageSalesModule {
       results {
         id
         slug
-        profile {
-          slug
-        }
-        name
-        exhibitionPeriod
-        image {
-          url(version: "large")
-        }
-        location {
-          city
-          country
-        }
-        followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
-          edges {
-            node {
-              image {
-                url(version: "large")
-              }
-            }
-          }
-        }
-        otherArtworks: filterArtworksConnection(first: 2) {
-          edges {
-            node {
-              image {
-                url(version: "large")
-              }
-            }
-          }
-        }
       }
     }
   `,

@@ -15,6 +15,9 @@ export type Home_homePage = {
     readonly fairsModule: {
         readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairsModule">;
     } | null;
+    readonly salesModule: {
+        readonly " $fragmentRefs": FragmentRefs<"SalesRail_salesModule">;
+    } | null;
     readonly " $refType": "Home_homePage";
 };
 export type Home_homePage$data = Home_homePage;
@@ -123,9 +126,25 @@ return {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "salesModule",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "HomePageSalesModule",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "SalesRail_salesModule",
+          "args": null
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = 'fe04eb145a09f7df09bead0b8dd30ccf';
+(node as any).hash = '956700f93d4aedc5552c1b72c30b37ee';
 export default node;
