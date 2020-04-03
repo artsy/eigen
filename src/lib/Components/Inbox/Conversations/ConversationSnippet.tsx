@@ -25,7 +25,6 @@ const ImageView = styled(OpaqueImageView)`
   width: 80px;
   height: 80px;
   border-radius: 2px;
-  align-self: center;
 `
 
 export interface Props {
@@ -85,10 +84,8 @@ export class ConversationSnippet extends React.Component<Props> {
       <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
         <Flex px={2} py={1}>
           <Flex flexDirection="row">
-            <Flex>
-              <ImageView imageURL={imageURL} />
-            </Flex>
-            <Flex ml={1} style={{ overflow: "hidden", flex: 1 }} justifyContent="flex-start">
+            <ImageView imageURL={imageURL} />
+            <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
               <Flex flexDirection="row" style={{ flex: 0, alignItems: "center" }}>
                 <Sans size="3t" weight="medium" ellipsizeMode="tail" numberOfLines={1} style={{ flex: 1 }}>
                   {partnerName}
