@@ -263,7 +263,7 @@ export const ZeroStateCollectionFixture = {
     },
     edges: [],
     aggregations: null,
-    counts: null,
+    counts: { total: 0 },
   },
 }
 export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"] = {

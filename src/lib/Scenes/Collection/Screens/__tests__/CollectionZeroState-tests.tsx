@@ -24,7 +24,7 @@ beforeEach(() => {
     applyFilters: false,
   }
   props = {
-    clearAllFilters: jest.fn(),
+    refetchArtworks: jest.fn(),
   }
 })
 
@@ -57,6 +57,6 @@ describe("Collection Zero State", () => {
       .props()
       .onPress()
 
-    expect(props.clearAllFilters).toHaveBeenCalled()
+    expect(props.refetchArtworks).toHaveBeenCalled()
   })
 })

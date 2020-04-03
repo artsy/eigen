@@ -81,7 +81,7 @@ export const reducer = (
 
     case "resetToInitialState":
       // We call this when a user has filtered artworks and the result returns 0 artworks.
-      // When this action is dispatched we reset the state to its intial state
+      // When this action is dispatched we reset the state to the initial state values
       return {
         appliedFilters: [],
         selectedFilters: [],

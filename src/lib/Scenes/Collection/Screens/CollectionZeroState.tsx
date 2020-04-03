@@ -5,24 +5,24 @@ import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 
 interface CollectionZeroStateProps {
-  clearAllFilters: () => void
+  refetchArtworks: () => void
 }
 
 export const CollectionZeroState: React.SFC<CollectionZeroStateProps> = props => {
   const { dispatch } = useContext(ArtworkFilterContext)
 
-  const clearAllFilters = () => {
-    props.clearAllFilters()
+  const refetchArtworks = () => {
+    props.refetchArtworks()
     dispatch({ type: "resetToInitialState" })
   }
 
   return (
     <ZeroStateContainer>
       <ZeroStateMessage size="4">
-        There aren't any works available that meet the following critera at this time. Change your filter criteria to
+        There aren't any works available that meet the following criteria at this time. Change your filter criteria to
         view more works.
       </ZeroStateMessage>
-      <TouchableOpacity onPress={clearAllFilters}>
+      <TouchableOpacity onPress={refetchArtworks}>
         <ZeroStateClearAllMessage size="4">Clear all filters</ZeroStateClearAllMessage>
       </TouchableOpacity>
     </ZeroStateContainer>
