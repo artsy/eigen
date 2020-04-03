@@ -131,6 +131,13 @@ target 'Artsy' do
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode'
 
+  flipper_version = '~> 0.33.1'
+  pod 'FlipperKit', flipper_version, :configuration => 'Debug'
+  pod 'FlipperKit/FlipperKitLayoutPlugin', flipper_version, :configuration => 'Debug'
+  pod 'FlipperKit/SKIOSNetworkPlugin', flipper_version, :configuration => 'Debug'
+  pod 'FlipperKit/FlipperKitUserDefaultsPlugin', flipper_version, :configuration => 'Debug'
+  pod 'FlipperKit/FlipperKitReactPlugin', flipper_version, :configuration => 'Debug'
+
   target 'Artsy Tests' do
     inherit! :search_paths
 
@@ -151,6 +158,15 @@ target 'Artsy' do
 end
 
 post_install do |installer|
+  # This is needed for Flipper
+  installer.pods_project.targets.each do |target|
+    if target.name == 'YogaKit'
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '4.1'
+      end
+    end
+  end
+
   # So we can show some of this stuff in the Admin panel
   emission_podspec_json = installer.pod_targets.find { |f| f.name == "Emission" }.specs[0].to_json
   File.write("Pods/Local Podspecs/Emission.podspec.json", emission_podspec_json)
