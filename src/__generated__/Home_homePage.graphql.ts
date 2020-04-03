@@ -4,16 +4,16 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Home_homePage = {
-    readonly artwork_modules: ReadonlyArray<{
+    readonly artworkModules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
     } | null> | null;
-    readonly artist_modules: ReadonlyArray<{
+    readonly artistModules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtistRail_rail">;
     } | null> | null;
-    readonly fairs_module: {
-        readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairs_module">;
+    readonly fairsModule: {
+        readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairsModule">;
     } | null;
     readonly " $refType": "Home_homePage";
 };
@@ -42,7 +42,7 @@ return {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": "artwork_modules",
+      "alias": null,
       "name": "artworkModules",
       "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
       "args": [
@@ -93,7 +93,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "artist_modules",
+      "alias": null,
       "name": "artistModules",
       "storageKey": null,
       "args": null,
@@ -110,7 +110,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "fairs_module",
+      "alias": null,
       "name": "fairsModule",
       "storageKey": null,
       "args": null,
@@ -119,7 +119,7 @@ return {
       "selections": [
         {
           "kind": "FragmentSpread",
-          "name": "FairsRail_fairs_module",
+          "name": "FairsRail_fairsModule",
           "args": null
         }
       ]
@@ -127,5 +127,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0cc76ab100c15fa929de037db45069da';
+(node as any).hash = 'fe04eb145a09f7df09bead0b8dd30ccf';
 export default node;

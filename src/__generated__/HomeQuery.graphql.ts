@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fe6134f0d919bf340fa0ce7d413e9727 */
+/* @relayHash dd5ab9e7ebd0c4b0c648de622087b105 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -102,7 +102,7 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   }
 }
 
-fragment FairsRail_fairs_module on HomePageFairsModule {
+fragment FairsRail_fairsModule on HomePageFairsModule {
   results {
     id
     slug
@@ -146,16 +146,16 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
 }
 
 fragment Home_homePage on HomePage {
-  artwork_modules: artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, CURRENT_FAIRS, FOLLOWED_GENES], exclude: [GENERIC_GENES, LIVE_AUCTIONS]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, CURRENT_FAIRS, FOLLOWED_GENES], exclude: [GENERIC_GENES, LIVE_AUCTIONS]) {
     id
     ...ArtworkRail_rail
   }
-  artist_modules: artistModules {
+  artistModules {
     id
     ...ArtistRail_rail
   }
-  fairs_module: fairsModule {
-    ...FairsRail_fairs_module
+  fairsModule {
+    ...FairsRail_fairsModule
   }
 }
 */
@@ -313,7 +313,7 @@ return {
         "selections": [
           {
             "kind": "LinkedField",
-            "alias": "artwork_modules",
+            "alias": null,
             "name": "artworkModules",
             "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
             "args": [
@@ -480,7 +480,7 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "artist_modules",
+            "alias": null,
             "name": "artistModules",
             "storageKey": null,
             "args": null,
@@ -567,7 +567,7 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "fairs_module",
+            "alias": null,
             "name": "fairsModule",
             "storageKey": null,
             "args": null,
@@ -673,7 +673,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "d4fe6c9975e40be281984e1579c4ad88",
+    "id": "693950e75b2f1d2897e5d46ac2f0ae4e",
     "text": null,
     "metadata": {}
   }

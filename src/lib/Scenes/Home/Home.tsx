@@ -5,7 +5,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import FairsRail from "./Components/FairsRail"
 
-import { ArtsyLogoIcon, Box, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -56,9 +56,9 @@ export class Home extends React.Component<Props, State> {
 
   render() {
     const { homePage } = this.props
-    const artworkModules = homePage.artwork_modules || []
-    const artistModules = homePage.artist_modules && homePage.artist_modules.concat()
-    const fairsModule = homePage.fairs_module
+    const artworkModules = homePage.artworkModules || []
+    const artistModules = homePage.artistModules && homePage.artistModules.concat()
+    const fairsModule = homePage.fairsModule
 
     const interleavedArtworkArtists = compact(
       flatten(
@@ -105,7 +105,7 @@ export class Home extends React.Component<Props, State> {
                 case "artist":
                   return <ArtistRail rail={item.data} />
                 case "fairs":
-                  return <FairsRail fairs_module={item.data} />
+                  return <FairsRail fairsModule={item.data} />
               }
             }}
             ListHeaderComponent={
@@ -137,7 +137,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   {
     homePage: graphql`
       fragment Home_homePage on HomePage {
-        artwork_modules: artworkModules(
+        artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
           order: [
@@ -148,21 +148,20 @@ export const HomeFragmentContainer = createRefetchContainer(
             RELATED_ARTISTS
             FOLLOWED_GALLERIES
             SAVED_WORKS
-            LIVE_AUCTIONS
             CURRENT_FAIRS
             FOLLOWED_GENES
           ]
-          exclude: [GENERIC_GENES]
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS]
         ) {
           id
           ...ArtworkRail_rail
         }
-        artist_modules: artistModules {
+        artistModules {
           id
           ...ArtistRail_rail
         }
-        fairs_module: fairsModule {
-          ...FairsRail_fairs_module
+        fairsModule {
+          ...FairsRail_fairsModule
         }
       }
     `,

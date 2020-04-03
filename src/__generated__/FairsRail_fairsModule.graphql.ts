@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FairsRail_fairs_module = {
+export type FairsRail_fairsModule = {
     readonly results: ReadonlyArray<{
         readonly id: string;
         readonly slug: string;
@@ -38,12 +38,12 @@ export type FairsRail_fairs_module = {
             } | null> | null;
         } | null;
     } | null>;
-    readonly " $refType": "FairsRail_fairs_module";
+    readonly " $refType": "FairsRail_fairsModule";
 };
-export type FairsRail_fairs_module$data = FairsRail_fairs_module;
-export type FairsRail_fairs_module$key = {
-    readonly " $data"?: FairsRail_fairs_module$data;
-    readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairs_module">;
+export type FairsRail_fairsModule$data = FairsRail_fairsModule;
+export type FairsRail_fairsModule$key = {
+    readonly " $data"?: FairsRail_fairsModule$data;
+    readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairsModule">;
 };
 
 
@@ -112,7 +112,7 @@ v3 = [
 ];
 return {
   "kind": "Fragment",
-  "name": "FairsRail_fairs_module",
+  "name": "FairsRail_fairsModule",
   "type": "HomePageFairsModule",
   "metadata": null,
   "argumentDefinitions": [],
@@ -220,5 +220,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1db234393ab9c46ebcff9bf56deede11';
+(node as any).hash = '6c3862b312527f8f324068e8be8f7af1';
 export default node;

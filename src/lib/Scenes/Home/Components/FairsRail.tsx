@@ -1,5 +1,5 @@
 import { Flex, Sans } from "@artsy/palette"
-import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
+import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsNodule.graphql"
 import React, { Component } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -16,10 +16,10 @@ import { concat, take } from "lodash"
 const ARTWORKS_HEIGHT = 180
 
 interface Props {
-  fairs_module: FairsRail_fairs_module
+  fairsModule: FairsRail_fairsModule
 }
 
-type FairItem = FairsRail_fairs_module["results"][0]
+type FairItem = FairsRail_fairsModule["results"][0]
 
 export class FairsRail extends Component<Props, null> {
   render() {
@@ -30,7 +30,7 @@ export class FairsRail extends Component<Props, null> {
         </Flex>
 
         <CardRailFlatList<FairItem>
-          data={this.props.fairs_module.results}
+          data={this.props.fairsModule.results}
           renderItem={({ item: result }) => {
             // Fairs are expected to always have >= 2 artworks and a hero image.
             // We can make assumptions about this in UI layout, but should still
@@ -107,8 +107,8 @@ const MetadataContainer = styled.View`
 `
 
 export default createFragmentContainer(FairsRail, {
-  fairs_module: graphql`
-    fragment FairsRail_fairs_module on HomePageFairsModule {
+  fairsModule: graphql`
+    fragment FairsRail_fairsModule on HomePageFairsModule {
       results {
         id
         slug
