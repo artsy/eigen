@@ -72,13 +72,18 @@ export class Conversations extends Component<Props, State> {
   render() {
     const conversations = get(this.props, ({ me }) => me.conversations.edges.map(edge => edge.node), [])
 
+    if (conversations.length === 0) {
+      return null
+    }
+
     return (
       <View>
-        <Flex m={2}>{conversations.length > 0 && <Serif size="8">Messages</Serif>}</Flex>
+        <Serif m={2} size="8">
+          Messages
+        </Serif>
         <FlatList
           data={conversations}
-          keyExtractor={(_item, index) => String(index)}
-          scrollEventThrottle={500}
+          keyExtractor={item => item.internalID}
           ItemSeparatorComponent={() => <Spacer mb={1} />}
           renderItem={({ item }) => {
             return (
