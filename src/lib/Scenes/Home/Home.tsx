@@ -142,7 +142,7 @@ export const HomeFragmentContainer = createRefetchContainer(
             CURRENT_FAIRS
             FOLLOWED_GENES
           ]
-          exclude: [FOLLOWED_ARTISTS, GENERIC_GENES]
+          exclude: [GENERIC_GENES]
         ) {
           id
           ...ArtworkRail_rail

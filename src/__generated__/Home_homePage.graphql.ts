@@ -44,13 +44,12 @@ return {
       "kind": "LinkedField",
       "alias": "artwork_modules",
       "name": "artworkModules",
-      "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\",\"GENERIC_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
+      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
       "args": [
         {
           "kind": "Literal",
           "name": "exclude",
           "value": [
-            "FOLLOWED_ARTISTS",
             "GENERIC_GENES"
           ]
         },
@@ -128,5 +127,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1a3903d4148146e3daf0afbf77b32935';
+(node as any).hash = 'f7b5e14765605c53a686225bc95fed33';
 export default node;
