@@ -74,7 +74,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
         [self showSentryBreadcrumbs],
-    
+
         [self generateEchoContents],
     ]];
 
@@ -121,7 +121,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)generateCollections
 {
     return [self tappableCellDataWithTitle:@"Show Collection" selection:^{
-        AREigenCollectionComponentViewController *viewController = [[AREigenCollectionComponentViewController alloc] initWithCollectionID:@"street-art"];
+        AREigenCollectionComponentViewController *viewController = [[AREigenCollectionComponentViewController alloc] initWithCollectionID:@"photography"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
