@@ -5,7 +5,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import FairsRail from "./Components/FairsRail"
 
-import { Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -108,6 +108,16 @@ export class Home extends React.Component<Props, State> {
                   return <FairsRail fairs_module={item.data} />
               }
             }}
+            ListHeaderComponent={
+              <View>
+                <Box mb={1} mt={2}>
+                  <Flex alignItems="center">
+                    <ArtsyLogoIcon scale={0.75} />
+                  </Flex>
+                </Box>
+                <Separator />
+              </View>
+            }
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
             style={{ overflow: "visible" }}

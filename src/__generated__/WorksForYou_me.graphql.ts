@@ -62,7 +62,7 @@ const node: ReaderFragment = {
       "kind": "LocalArgument",
       "name": "sort",
       "type": "ArtworkSorts",
-      "defaultValue": null
+      "defaultValue": "PARTNER_UPDATED_AT_DESC"
     }
   ],
   "selections": [
@@ -79,12 +79,12 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "alias": "notifications",
           "name": "__WorksForYou_notifications_connection",
-          "storageKey": "__WorksForYou_notifications_connection(sort:\"PUBLISHED_AT_DESC\")",
+          "storageKey": null,
           "args": [
             {
-              "kind": "Literal",
+              "kind": "Variable",
               "name": "sort",
-              "value": "PUBLISHED_AT_DESC"
+              "variableName": "sort"
             }
           ],
           "concreteType": "FollowedArtistsArtworksGroupConnection",
@@ -169,5 +169,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'df8101cf7ace7a2deed7a6208d826e82';
+(node as any).hash = 'd3a0c5b20271f978227e08f6a76574e5';
 export default node;

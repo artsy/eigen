@@ -1,9 +1,10 @@
+import { Box, Flex, Sans, Separator } from "@artsy/palette"
 import { Sales_query } from "__generated__/Sales_query.graphql"
 import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { RefreshControl, SectionList, StyleSheet } from "react-native"
+import { RefreshControl, SectionList, StyleSheet, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
@@ -41,7 +42,6 @@ class Sales extends React.Component<Props, State> {
       {},
       error => {
         if (error) {
-          // FIXME: Handle error
           console.error("Sales/index.tsx", error.message)
         }
         this.setState({ isRefreshing: false })
@@ -77,14 +77,22 @@ class Sales extends React.Component<Props, State> {
     ]
 
     return (
-      <SectionList
-        contentContainerStyle={SectionListStyles.contentContainer}
-        stickySectionHeadersEnabled={false}
-        sections={sections}
-        keyExtractor={item => item.id}
-        renderItem={() => undefined}
-        refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-      />
+      <View>
+        <Box mb={1} mt={2}>
+          <Flex alignItems="center">
+            <Sans size="4">New Works for You</Sans>
+          </Flex>
+        </Box>
+        <Separator />
+        <SectionList
+          contentContainerStyle={SectionListStyles.contentContainer}
+          stickySectionHeadersEnabled={false}
+          sections={sections}
+          keyExtractor={item => item.id}
+          renderItem={() => undefined}
+          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+        />
+      </View>
     )
   }
 }

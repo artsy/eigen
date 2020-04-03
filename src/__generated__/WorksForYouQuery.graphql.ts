@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2cf409466e6d6b3e195585f6c87c290b */
+/* @relayHash c953f1ac076be5944faba19cddf2651a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,7 +92,7 @@ fragment Notification_notification on FollowedArtistsArtworksGroup {
 
 fragment WorksForYou_me on Me {
   followsAndSaves {
-    notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: 10) {
+    notifications: bundledArtworksByArtistConnection(sort: PARTNER_UPDATED_AT_DESC, first: 10) {
       pageInfo {
         hasNextPage
         endCursor
@@ -121,7 +121,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "PUBLISHED_AT_DESC"
+    "value": "PARTNER_UPDATED_AT_DESC"
   }
 ],
 v2 = {
@@ -199,7 +199,7 @@ return {
                 "kind": "LinkedField",
                 "alias": "notifications",
                 "name": "bundledArtworksByArtistConnection",
-                "storageKey": "bundledArtworksByArtistConnection(first:10,sort:\"PUBLISHED_AT_DESC\")",
+                "storageKey": "bundledArtworksByArtistConnection(first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
                 "args": (v1/*: any*/),
                 "concreteType": "FollowedArtistsArtworksGroupConnection",
                 "plural": false,
@@ -556,7 +556,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouQuery",
-    "id": "dd542c197b9bd7657dffee7c040673dd",
+    "id": "a2c7637c577f07dc3d6e93fb9f6a8f4d",
     "text": null,
     "metadata": {}
   }

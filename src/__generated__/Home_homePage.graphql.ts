@@ -44,13 +44,14 @@ return {
       "kind": "LinkedField",
       "alias": "artwork_modules",
       "name": "artworkModules",
-      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
+      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
       "args": [
         {
           "kind": "Literal",
           "name": "exclude",
           "value": [
-            "GENERIC_GENES"
+            "GENERIC_GENES",
+            "LIVE_AUCTIONS"
           ]
         },
         {
@@ -74,7 +75,6 @@ return {
             "RELATED_ARTISTS",
             "FOLLOWED_GALLERIES",
             "SAVED_WORKS",
-            "LIVE_AUCTIONS",
             "CURRENT_FAIRS",
             "FOLLOWED_GENES"
           ]
@@ -127,5 +127,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f7b5e14765605c53a686225bc95fed33';
+(node as any).hash = '0cc76ab100c15fa929de037db45069da';
 export default node;
