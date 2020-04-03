@@ -4,6 +4,7 @@ exports[`renders correctly with a show 1`] = `
 <View
   accessible={true}
   focusable={true}
+  isTVSelectable={true}
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -11,53 +12,31 @@ exports[`renders correctly with a show 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Object {
-        "height": 120,
-        "marginLeft": 20,
-        "marginRight": 20,
-      },
-    ]
-  }
+  style={null}
 >
   <View
+    px={2}
+    py={1}
     style={
       Array [
         Object {
-          "flexBasis": 0,
-          "flexDirection": "row",
-          "flexGrow": 1,
-          "flexShrink": 1,
-          "maxWidth": 708,
+          "display": "flex",
+          "paddingBottom": 10,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 10,
         },
+        null,
       ]
     }
   >
-    <AROpaqueImageView
-      imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
-      style={
-        Array [
-          Object {
-            "alignSelf": "center",
-            "borderRadius": 2,
-            "height": 80,
-            "width": 80,
-          },
-        ]
-      }
-    />
     <View
+      flexDirection="row"
       style={
         Array [
           Object {
-            "alignSelf": "center",
-            "flexBasis": 0,
-            "flexDirection": "column",
-            "flexGrow": 1,
-            "flexShrink": 1,
-            "marginLeft": 10,
-            "maxHeight": 70,
+            "display": "flex",
+            "flexDirection": "row",
           },
         ]
       }
@@ -66,45 +45,79 @@ exports[`renders correctly with a show 1`] = `
         style={
           Array [
             Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
+              "display": "flex",
             },
           ]
         }
       >
-        <Text
+        <AROpaqueImageView
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
           style={
             Array [
               Object {
-                "color": "black",
-                "fontSize": 11,
-                "textAlign": "left",
-              },
-              undefined,
-              Object {},
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
+                "alignSelf": "center",
+                "borderRadius": 2,
+                "height": 80,
+                "width": 80,
               },
             ]
           }
-        >
-          ACA GALLERIES
-        </Text>
+        />
+      </View>
+      <View
+        justifyContent="flex-start"
+        ml={1}
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "justifyContent": "flex-start",
+              "marginLeft": 10,
+            },
+            Object {
+              "flex": 1,
+              "overflow": "hidden",
+            },
+          ]
+        }
+      >
         <View
+          flexDirection="row"
           style={
             Array [
               Object {
-                "flexBasis": 0,
+                "display": "flex",
                 "flexDirection": "row",
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "justifyContent": "flex-end",
+              },
+              Object {
+                "alignItems": "center",
+                "flex": 0,
               },
             ]
           }
         >
+          <Text
+            ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="20px"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+                Object {
+                  "flex": 1,
+                },
+              ]
+            }
+          >
+            ACA Galleries
+          </Text>
           <View
             style={
               Array [
@@ -112,110 +125,80 @@ exports[`renders correctly with a show 1`] = `
                   "backgroundColor": "#6e1fff",
                   "borderRadius": 4,
                   "height": 8,
-                  "marginBottom": 3,
-                  "marginLeft": 4,
-                  "marginTop": 3,
+                  "marginLeft": 10,
                   "width": 8,
                 },
               ]
             }
           />
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
-            },
-          ]
-        }
-      >
         <Text
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="14px"
+          lineHeight="20px"
           numberOfLines={1}
           style={
             Array [
               Object {
-                "color": "black",
-                "fontSize": 16,
-                "textAlign": "left",
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 14,
+                "lineHeight": 20,
               },
               Object {},
-              Object {
-                "fontFamily": "ReactNativeAGaramondPro-Regular",
-              },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "black",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 16,
-                },
-              ]
-            }
-          >
-            Catty Fair
-          </Text>
+          Catty Fair
+        </Text>
+        <Text
+          color="black60"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize="14px"
+          lineHeight="24px"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 14,
+                "lineHeight": 24,
+              },
+              Object {},
+            ]
+          }
+        >
+          Karl and Anna... Fab!
+        </Text>
+        <Text
+          color="black60"
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+                "textAlign": "right",
+              },
+              Object {},
+              Object {
+                "flex": 0,
+              },
+            ]
+          }
+          textAlign="right"
+        >
+          a year ago
         </Text>
       </View>
-      <Text
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "black",
-              "fontSize": 16,
-              "textAlign": "left",
-            },
-            Object {},
-            Object {
-              "fontFamily": "ReactNativeAGaramondPro-Regular",
-            },
-          ]
-        }
-      >
-        Karl and Anna... Fab!
-      </Text>
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#cccccc",
-              "fontSize": 11,
-              "textAlign": "left",
-            },
-            Object {},
-            Object {
-              "fontFamily": "AvantGardeGothicITC",
-            },
-          ]
-        }
-      >
-        A YEAR AGO
-      </Text>
     </View>
   </View>
-  <View
-    style={
-      Array [
-        Object {
-          "alignSelf": "center",
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-          "width": 708,
-        },
-      ]
-    }
-  />
 </View>
 `;
 
@@ -223,6 +206,7 @@ exports[`renders correctly with an artwork 1`] = `
 <View
   accessible={true}
   focusable={true}
+  isTVSelectable={true}
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -230,53 +214,31 @@ exports[`renders correctly with an artwork 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Object {
-        "height": 120,
-        "marginLeft": 20,
-        "marginRight": 20,
-      },
-    ]
-  }
+  style={null}
 >
   <View
+    px={2}
+    py={1}
     style={
       Array [
         Object {
-          "flexBasis": 0,
-          "flexDirection": "row",
-          "flexGrow": 1,
-          "flexShrink": 1,
-          "maxWidth": 708,
+          "display": "flex",
+          "paddingBottom": 10,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 10,
         },
+        null,
       ]
     }
   >
-    <AROpaqueImageView
-      imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
-      style={
-        Array [
-          Object {
-            "alignSelf": "center",
-            "borderRadius": 2,
-            "height": 80,
-            "width": 80,
-          },
-        ]
-      }
-    />
     <View
+      flexDirection="row"
       style={
         Array [
           Object {
-            "alignSelf": "center",
-            "flexBasis": 0,
-            "flexDirection": "column",
-            "flexGrow": 1,
-            "flexShrink": 1,
-            "marginLeft": 10,
-            "maxHeight": 70,
+            "display": "flex",
+            "flexDirection": "row",
           },
         ]
       }
@@ -285,45 +247,79 @@ exports[`renders correctly with an artwork 1`] = `
         style={
           Array [
             Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
+              "display": "flex",
             },
           ]
         }
       >
-        <Text
+        <AROpaqueImageView
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
           style={
             Array [
               Object {
-                "color": "black",
-                "fontSize": 11,
-                "textAlign": "left",
-              },
-              undefined,
-              Object {},
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
+                "alignSelf": "center",
+                "borderRadius": 2,
+                "height": 80,
+                "width": 80,
               },
             ]
           }
-        >
-          ACA GALLERIES
-        </Text>
+        />
+      </View>
+      <View
+        justifyContent="flex-start"
+        ml={1}
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "justifyContent": "flex-start",
+              "marginLeft": 10,
+            },
+            Object {
+              "flex": 1,
+              "overflow": "hidden",
+            },
+          ]
+        }
+      >
         <View
+          flexDirection="row"
           style={
             Array [
               Object {
-                "flexBasis": 0,
+                "display": "flex",
                 "flexDirection": "row",
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "justifyContent": "flex-end",
+              },
+              Object {
+                "alignItems": "center",
+                "flex": 0,
               },
             ]
           }
         >
+          <Text
+            ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="20px"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                },
+                Object {},
+                Object {
+                  "flex": 1,
+                },
+              ]
+            }
+          >
+            ACA Galleries
+          </Text>
           <View
             style={
               Array [
@@ -331,135 +327,80 @@ exports[`renders correctly with an artwork 1`] = `
                   "backgroundColor": "#6e1fff",
                   "borderRadius": 4,
                   "height": 8,
-                  "marginBottom": 3,
-                  "marginLeft": 4,
-                  "marginTop": 3,
+                  "marginLeft": 10,
                   "width": 8,
                 },
               ]
             }
           />
         </View>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
-            },
-          ]
-        }
-      >
         <Text
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="14px"
+          lineHeight="20px"
           numberOfLines={1}
           style={
             Array [
               Object {
-                "color": "black",
-                "fontSize": 16,
-                "textAlign": "left",
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 14,
+                "lineHeight": 20,
               },
               Object {},
-              Object {
-                "fontFamily": "ReactNativeAGaramondPro-Regular",
-              },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "black",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 16,
-                },
-              ]
-            }
-          >
-            Bradley Theodore · 
-          </Text>
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "black",
-                  "fontFamily": "ReactNativeAGaramondPro-Italic",
-                  "fontSize": 16,
-                },
-              ]
-            }
-          >
-            Karl and Anna Face Off (Diptych), 
-          </Text>
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "black",
-                  "fontFamily": "ReactNativeAGaramondPro-Regular",
-                  "fontSize": 16,
-                },
-              ]
-            }
-          >
-            2016
-          </Text>
+          Inquiry on 
+          Bradley Theodore
+        </Text>
+        <Text
+          color="black60"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize="14px"
+          lineHeight="24px"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 14,
+                "lineHeight": 24,
+              },
+              Object {},
+            ]
+          }
+        >
+          Karl and Anna... Fab!
+        </Text>
+        <Text
+          color="black60"
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+                "textAlign": "right",
+              },
+              Object {},
+              Object {
+                "flex": 0,
+              },
+            ]
+          }
+          textAlign="right"
+        >
+          a year ago
         </Text>
       </View>
-      <Text
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "black",
-              "fontSize": 16,
-              "textAlign": "left",
-            },
-            Object {},
-            Object {
-              "fontFamily": "ReactNativeAGaramondPro-Regular",
-            },
-          ]
-        }
-      >
-        Karl and Anna... Fab!
-      </Text>
-      <Text
-        style={
-          Array [
-            Object {
-              "color": "#cccccc",
-              "fontSize": 11,
-              "textAlign": "left",
-            },
-            Object {},
-            Object {
-              "fontFamily": "AvantGardeGothicITC",
-            },
-          ]
-        }
-      >
-        A YEAR AGO
-      </Text>
     </View>
   </View>
-  <View
-    style={
-      Array [
-        Object {
-          "alignSelf": "center",
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-          "width": 708,
-        },
-      ]
-    }
-  />
 </View>
 `;

@@ -2,26 +2,32 @@
 
 exports[`messaging inbox looks correct when rendered 1`] = `
 <View>
-  <View>
+  <View
+    m={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+        },
+      ]
+    }
+  >
     <Text
+      fontFamily="ReactNativeAGaramondPro-Regular"
+      fontSize="32px"
+      lineHeight="38px"
       style={
         Array [
           Object {
-            "color": "black",
-            "fontSize": 30,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "marginBottom": -10,
-              "marginTop": 20,
-            },
-          ],
-          Object {
             "fontFamily": "ReactNativeAGaramondPro-Regular",
+            "fontSize": 32,
+            "lineHeight": 38,
           },
+          Object {},
         ]
       }
     >
@@ -29,6 +35,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
     </Text>
   </View>
   <RCTScrollView
+    ItemSeparatorComponent={[Function]}
     data={
       Array [
         Object {
@@ -102,6 +109,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
     maxToRenderPerBatch={10}
     numColumns={1}
     onContentSizeChange={[Function]}
+    onEndReached={[Function]}
     onEndReachedThreshold={2}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}
@@ -124,6 +132,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
         <View
           accessible={true}
           focusable={true}
+          isTVSelectable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -131,53 +140,31 @@ exports[`messaging inbox looks correct when rendered 1`] = `
           onResponderTerminate={[Function]}
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
-          style={
-            Array [
-              Object {
-                "height": 120,
-                "marginLeft": 20,
-                "marginRight": 20,
-              },
-            ]
-          }
+          style={null}
         >
           <View
+            px={2}
+            py={1}
             style={
               Array [
                 Object {
-                  "flexBasis": 0,
-                  "flexDirection": "row",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "maxWidth": 708,
+                  "display": "flex",
+                  "paddingBottom": 10,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "paddingTop": 10,
                 },
+                null,
               ]
             }
           >
-            <AROpaqueImageView
-              imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
-              style={
-                Array [
-                  Object {
-                    "alignSelf": "center",
-                    "borderRadius": 2,
-                    "height": 80,
-                    "width": 80,
-                  },
-                ]
-              }
-            />
             <View
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "alignSelf": "center",
-                    "flexBasis": 0,
-                    "flexDirection": "column",
-                    "flexGrow": 1,
-                    "flexShrink": 1,
-                    "marginLeft": 10,
-                    "maxHeight": 70,
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
                 ]
               }
@@ -186,167 +173,159 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
-                      "flexBasis": 0,
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "flexShrink": 1,
+                      "display": "flex",
                     },
                   ]
                 }
               >
-                <Text
+                <AROpaqueImageView
+                  imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
                   style={
                     Array [
                       Object {
-                        "color": "black",
-                        "fontSize": 11,
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {},
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                    ]
-                  }
-                >
-                  ACA GALLERIES
-                </Text>
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "flexBasis": 0,
-                        "flexDirection": "row",
-                        "flexGrow": 1,
-                        "flexShrink": 1,
-                        "justifyContent": "flex-end",
+                        "alignSelf": "center",
+                        "borderRadius": 2,
+                        "height": 80,
+                        "width": 80,
                       },
                     ]
                   }
                 />
               </View>
               <View
+                justifyContent="flex-start"
+                ml={1}
                 style={
                   Array [
                     Object {
-                      "flexBasis": 0,
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "flexShrink": 1,
+                      "display": "flex",
+                      "justifyContent": "flex-start",
+                      "marginLeft": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "overflow": "hidden",
                     },
                   ]
                 }
               >
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
+                <View
+                  flexDirection="row"
                   style={
                     Array [
                       Object {
-                        "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
+                        "display": "flex",
+                        "flexDirection": "row",
                       },
-                      Object {},
                       Object {
-                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "alignItems": "center",
+                        "flex": 0,
                       },
                     ]
                   }
                 >
                   <Text
+                    ellipsizeMode="tail"
+                    fontFamily="Unica77LL-Medium"
+                    fontSize="14px"
+                    lineHeight="20px"
+                    numberOfLines={1}
                     style={
                       Array [
                         Object {
-                          "color": "black",
-                          "fontFamily": "ReactNativeAGaramondPro-Regular",
-                          "fontSize": 16,
+                          "fontFamily": "Unica77LL-Medium",
+                          "fontSize": 14,
+                          "lineHeight": 20,
+                        },
+                        Object {},
+                        Object {
+                          "flex": 1,
                         },
                       ]
                     }
                   >
-                    Bradley Theodore · 
+                    ACA Galleries
                   </Text>
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontFamily": "ReactNativeAGaramondPro-Italic",
-                          "fontSize": 16,
-                        },
-                      ]
-                    }
-                  >
-                    Karl and Anna Face Off (Diptych), 
-                  </Text>
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontFamily": "ReactNativeAGaramondPro-Regular",
-                          "fontSize": 16,
-                        },
-                      ]
-                    }
-                  >
-                    2016
-                  </Text>
+                </View>
+                <Text
+                  ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="20px"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 20,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  Inquiry on 
+                  Bradley Theodore
+                </Text>
+                <Text
+                  color="black60"
+                  ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Regular"
+                  fontSize="14px"
+                  lineHeight="24px"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#666",
+                        "fontFamily": "Unica77LL-Regular",
+                        "fontSize": 14,
+                        "lineHeight": 24,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  Karl and Anna... Fab!
+                </Text>
+                <Text
+                  color="black60"
+                  fontFamily="Unica77LL-Regular"
+                  fontSize="12px"
+                  lineHeight="16px"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#666",
+                        "fontFamily": "Unica77LL-Regular",
+                        "fontSize": 12,
+                        "lineHeight": 16,
+                        "textAlign": "right",
+                      },
+                      Object {},
+                      Object {
+                        "flex": 0,
+                      },
+                    ]
+                  }
+                  textAlign="right"
+                >
+                  a few seconds ago
                 </Text>
               </View>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontSize": 16,
-                      "textAlign": "left",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
-                    },
-                  ]
-                }
-              >
-                Karl and Anna... Fab!
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#cccccc",
-                      "fontSize": 11,
-                      "textAlign": "left",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "AvantGardeGothicITC",
-                    },
-                  ]
-                }
-              >
-                A FEW SECONDS AGO
-              </Text>
             </View>
           </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "alignSelf": "center",
-                  "backgroundColor": "#e5e5e5",
-                  "height": 1,
-                  "width": 708,
-                },
-              ]
-            }
-          />
         </View>
+        <View
+          mb={1}
+          style={
+            Array [
+              Object {
+                "marginBottom": 10,
+              },
+            ]
+          }
+        />
       </View>
       <View
         onLayout={[Function]}
@@ -355,6 +334,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
         <View
           accessible={true}
           focusable={true}
+          isTVSelectable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -362,53 +342,31 @@ exports[`messaging inbox looks correct when rendered 1`] = `
           onResponderTerminate={[Function]}
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
-          style={
-            Array [
-              Object {
-                "height": 120,
-                "marginLeft": 20,
-                "marginRight": 20,
-              },
-            ]
-          }
+          style={null}
         >
           <View
+            px={2}
+            py={1}
             style={
               Array [
                 Object {
-                  "flexBasis": 0,
-                  "flexDirection": "row",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "maxWidth": 708,
+                  "display": "flex",
+                  "paddingBottom": 10,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "paddingTop": 10,
                 },
+                null,
               ]
             }
           >
-            <AROpaqueImageView
-              imageURL="https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg"
-              style={
-                Array [
-                  Object {
-                    "alignSelf": "center",
-                    "borderRadius": 2,
-                    "height": 80,
-                    "width": 80,
-                  },
-                ]
-              }
-            />
             <View
+              flexDirection="row"
               style={
                 Array [
                   Object {
-                    "alignSelf": "center",
-                    "flexBasis": 0,
-                    "flexDirection": "column",
-                    "flexGrow": 1,
-                    "flexShrink": 1,
-                    "marginLeft": 10,
-                    "maxHeight": 70,
+                    "display": "flex",
+                    "flexDirection": "row",
                   },
                 ]
               }
@@ -417,166 +375,148 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
-                      "flexBasis": 0,
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "flexShrink": 1,
+                      "display": "flex",
                     },
                   ]
                 }
               >
-                <Text
+                <AROpaqueImageView
+                  imageURL="https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg"
                   style={
                     Array [
                       Object {
-                        "color": "black",
-                        "fontSize": 11,
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {},
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                    ]
-                  }
-                >
-                  DAVID KRUT PROJECTS
-                </Text>
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "flexBasis": 0,
-                        "flexDirection": "row",
-                        "flexGrow": 1,
-                        "flexShrink": 1,
-                        "justifyContent": "flex-end",
+                        "alignSelf": "center",
+                        "borderRadius": 2,
+                        "height": 80,
+                        "width": 80,
                       },
                     ]
                   }
                 />
               </View>
               <View
+                justifyContent="flex-start"
+                ml={1}
                 style={
                   Array [
                     Object {
-                      "flexBasis": 0,
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "flexShrink": 1,
+                      "display": "flex",
+                      "justifyContent": "flex-start",
+                      "marginLeft": 10,
+                    },
+                    Object {
+                      "flex": 1,
+                      "overflow": "hidden",
                     },
                   ]
                 }
               >
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
+                <View
+                  flexDirection="row"
                   style={
                     Array [
                       Object {
-                        "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
+                        "display": "flex",
+                        "flexDirection": "row",
                       },
-                      Object {},
                       Object {
-                        "fontFamily": "ReactNativeAGaramondPro-Regular",
+                        "alignItems": "center",
+                        "flex": 0,
                       },
                     ]
                   }
                 >
                   <Text
+                    ellipsizeMode="tail"
+                    fontFamily="Unica77LL-Medium"
+                    fontSize="14px"
+                    lineHeight="20px"
+                    numberOfLines={1}
                     style={
                       Array [
                         Object {
-                          "color": "black",
-                          "fontFamily": "ReactNativeAGaramondPro-Regular",
-                          "fontSize": 16,
+                          "fontFamily": "Unica77LL-Medium",
+                          "fontSize": 14,
+                          "lineHeight": 20,
+                        },
+                        Object {},
+                        Object {
+                          "flex": 1,
                         },
                       ]
                     }
                   >
-                    Aida Muluneh · 
+                    David Krut Projects
                   </Text>
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontFamily": "ReactNativeAGaramondPro-Italic",
-                          "fontSize": 16,
-                        },
-                      ]
-                    }
-                  >
-                    Darkness Give Way to Light, 
-                  </Text>
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontFamily": "ReactNativeAGaramondPro-Regular",
-                          "fontSize": 16,
-                        },
-                      ]
-                    }
-                  >
-                    2016
-                  </Text>
+                </View>
+                <Text
+                  ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="20px"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 20,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  Inquiry on 
+                  Aida Muluneh
+                </Text>
+                <Text
+                  color="black60"
+                  ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Regular"
+                  fontSize="14px"
+                  lineHeight="24px"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#666",
+                        "fontFamily": "Unica77LL-Regular",
+                        "fontSize": 14,
+                        "lineHeight": 24,
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
+                </Text>
+                <Text
+                  color="black60"
+                  fontFamily="Unica77LL-Regular"
+                  fontSize="12px"
+                  lineHeight="16px"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#666",
+                        "fontFamily": "Unica77LL-Regular",
+                        "fontSize": 12,
+                        "lineHeight": 16,
+                        "textAlign": "right",
+                      },
+                      Object {},
+                      Object {
+                        "flex": 0,
+                      },
+                    ]
+                  }
+                  textAlign="right"
+                >
+                  a few seconds ago
                 </Text>
               </View>
-              <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontSize": 16,
-                      "textAlign": "left",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "ReactNativeAGaramondPro-Regular",
-                    },
-                  ]
-                }
-              >
-                Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "color": "#cccccc",
-                      "fontSize": 11,
-                      "textAlign": "left",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "AvantGardeGothicITC",
-                    },
-                  ]
-                }
-              >
-                A FEW SECONDS AGO
-              </Text>
             </View>
           </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "alignSelf": "center",
-                  "backgroundColor": "#e5e5e5",
-                  "height": 1,
-                  "width": 708,
-                },
-              ]
-            }
-          />
         </View>
       </View>
     </View>
@@ -586,8 +526,22 @@ exports[`messaging inbox looks correct when rendered 1`] = `
 
 exports[`messaging inbox looks correct when rendered without messages 1`] = `
 <View>
-  <View />
+  <View
+    m={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+        },
+      ]
+    }
+  />
   <RCTScrollView
+    ItemSeparatorComponent={[Function]}
     data={Array []}
     disableVirtualization={false}
     getItem={[Function]}
@@ -598,6 +552,7 @@ exports[`messaging inbox looks correct when rendered without messages 1`] = `
     maxToRenderPerBatch={10}
     numColumns={1}
     onContentSizeChange={[Function]}
+    onEndReached={[Function]}
     onEndReachedThreshold={2}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}

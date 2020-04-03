@@ -2,8 +2,22 @@
 
 exports[`looks correct for iPad in landscape mode when the user has no conversations 1`] = `
 <View>
-  <View />
+  <View
+    m={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 8,
+          "marginLeft": 8,
+          "marginRight": 8,
+          "marginTop": 8,
+        },
+      ]
+    }
+  />
   <RCTScrollView
+    ItemSeparatorComponent={[Function]}
     data={Array []}
     disableVirtualization={false}
     getItem={[Function]}
@@ -14,6 +28,7 @@ exports[`looks correct for iPad in landscape mode when the user has no conversat
     maxToRenderPerBatch={10}
     numColumns={1}
     onContentSizeChange={[Function]}
+    onEndReached={[Function]}
     onEndReachedThreshold={2}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}
@@ -35,8 +50,22 @@ exports[`looks correct for iPad in landscape mode when the user has no conversat
 
 exports[`looks correct for iPad in portrait mode when the user has no conversations 1`] = `
 <View>
-  <View />
+  <View
+    m={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 8,
+          "marginLeft": 8,
+          "marginRight": 8,
+          "marginTop": 8,
+        },
+      ]
+    }
+  />
   <RCTScrollView
+    ItemSeparatorComponent={[Function]}
     data={Array []}
     disableVirtualization={false}
     getItem={[Function]}
@@ -47,6 +76,7 @@ exports[`looks correct for iPad in portrait mode when the user has no conversati
     maxToRenderPerBatch={10}
     numColumns={1}
     onContentSizeChange={[Function]}
+    onEndReached={[Function]}
     onEndReachedThreshold={2}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}
@@ -68,8 +98,22 @@ exports[`looks correct for iPad in portrait mode when the user has no conversati
 
 exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
 <View>
-  <View />
+  <View
+    m={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 8,
+          "marginLeft": 8,
+          "marginRight": 8,
+          "marginTop": 8,
+        },
+      ]
+    }
+  />
   <RCTScrollView
+    ItemSeparatorComponent={[Function]}
     data={Array []}
     disableVirtualization={false}
     getItem={[Function]}
@@ -80,6 +124,7 @@ exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
     maxToRenderPerBatch={10}
     numColumns={1}
     onContentSizeChange={[Function]}
+    onEndReached={[Function]}
     onEndReachedThreshold={2}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}
@@ -101,8 +146,22 @@ exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
 
 exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
 <View>
-  <View />
+  <View
+    m={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 8,
+          "marginLeft": 8,
+          "marginRight": 8,
+          "marginTop": 8,
+        },
+      ]
+    }
+  />
   <RCTScrollView
+    ItemSeparatorComponent={[Function]}
     data={Array []}
     disableVirtualization={false}
     getItem={[Function]}
@@ -113,6 +172,7 @@ exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
     maxToRenderPerBatch={10}
     numColumns={1}
     onContentSizeChange={[Function]}
+    onEndReached={[Function]}
     onEndReachedThreshold={2}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}
@@ -134,8 +194,22 @@ exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
 
 exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
 <View>
-  <View />
+  <View
+    m={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 8,
+          "marginLeft": 8,
+          "marginRight": 8,
+          "marginTop": 8,
+        },
+      ]
+    }
+  />
   <RCTScrollView
+    ItemSeparatorComponent={[Function]}
     data={Array []}
     disableVirtualization={false}
     getItem={[Function]}
@@ -146,6 +220,7 @@ exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
     maxToRenderPerBatch={10}
     numColumns={1}
     onContentSizeChange={[Function]}
+    onEndReached={[Function]}
     onEndReachedThreshold={2}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}

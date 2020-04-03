@@ -9,7 +9,9 @@ import { Inbox as ActualInbox, InboxContainer } from "../Inbox"
 
 import { Theme } from "@artsy/palette"
 
-jest.mock("../../Components/Inbox/Conversations", () => "Conversations")
+jest.mock("../../Components/Inbox/Conversations/Conversations", () => ({
+  ConversationsContainer: () => "Conversations",
+}))
 
 const emptyMeProps = {
   lot_standings: [],
