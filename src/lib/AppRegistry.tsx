@@ -3,7 +3,6 @@ import { AppRegistry, View, YellowBox } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import Consignments from "./Components/Consignments"
-import Containers from "./Containers/"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
 import { ConversationRenderer } from "./Containers/Conversation"
@@ -37,6 +36,7 @@ import { PartnerRenderer } from "./Scenes/Partner"
 import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { Search } from "./Scenes/Search"
+import { MyProfile } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoom } from "./Scenes/ViewingRoom"
@@ -129,8 +129,6 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
 })(ConversationRenderer)
-
-const MyProfile = Containers.MyProfile
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow

@@ -1,7 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import MyProfile from "../MyProfile"
+import { MyProfile } from "../MyProfile"
 
 jest.mock("../LoggedInUserInfo")
 
