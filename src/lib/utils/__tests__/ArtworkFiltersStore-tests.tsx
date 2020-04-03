@@ -272,7 +272,7 @@ describe("Apply Filters", () => {
   })
 })
 
-describe("clearZeroState", () => {
+describe("resetToInitialState", () => {
   it("resets the artwork filter when artworks are in zero state", () => {
     filterState = {
       applyFilters: true,
@@ -285,7 +285,7 @@ describe("clearZeroState", () => {
     }
 
     filterAction = {
-      type: "clearZeroState",
+      type: "resetToInitialState",
     }
 
     const r = reducer(filterState, filterAction)

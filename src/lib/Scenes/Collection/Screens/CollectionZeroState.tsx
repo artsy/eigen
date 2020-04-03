@@ -13,7 +13,7 @@ export const CollectionZeroState: React.SFC<CollectionZeroStateProps> = props =>
 
   const clearAllFilters = () => {
     props.clearAllFilters()
-    dispatch({ type: "clearZeroState" })
+    dispatch({ type: "resetToInitialState" })
   }
 
   return (

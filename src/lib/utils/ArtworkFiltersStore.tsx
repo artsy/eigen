@@ -79,7 +79,7 @@ export const reducer = (
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
       }
 
-    case "clearZeroState":
+    case "resetToInitialState":
       // We call this when a user has filtered artworks and the result returns 0 artworks.
       // When this action is dispatched we reset the state to its intial state
       return {
@@ -145,11 +145,11 @@ interface ClearAllFilters {
   type: "clearAll"
 }
 
-interface ClearZeroState {
-  type: "clearZeroState"
+interface ResetToInitialState {
+  type: "resetToInitialState"
 }
 
-export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters | ClearZeroState
+export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters | ResetToInitialState
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState
