@@ -3,7 +3,6 @@ import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graph
 import { FairArtists_fair } from "__generated__/FairArtists_fair.graphql"
 import { FairArtistsRendererQuery } from "__generated__/FairArtistsRendererQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
-import { PAGE_SIZE } from "lib/data/constants"
 import { Schema, screenTrack } from "lib/utils/track"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 import React from "react"
@@ -73,7 +72,7 @@ export class FairArtists extends React.Component<Props, State> {
     if (!relay.hasMore() || relay.isLoading()) {
       return
     }
-    relay.loadMore(PAGE_SIZE, _error => {
+    relay.loadMore(100, _error => {
       // FIXME: Handle error?
     })
   }
