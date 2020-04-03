@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7064038e473173332ea36dcf66dba669 */
+/* @relayHash 14d571d1d761fe430b63403e7a8fe087 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,6 +48,7 @@ fragment RegistrationFlow_sale on Sale {
 
 fragment Registration_me on Me {
   has_credit_cards: hasCreditCards
+  identityVerified
 }
 
 fragment Registration_sale on Sale {
@@ -57,6 +58,7 @@ fragment Registration_sale on Sale {
   live_start_at: liveStartAt
   name
   start_at: startAt
+  requireIdentityVerification
 }
 */
 
@@ -184,6 +186,13 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "requireIdentityVerification",
+            "args": null,
+            "storageKey": null
+          },
           (v3/*: any*/)
         ]
       },
@@ -203,6 +212,13 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "identityVerified",
+            "args": null,
+            "storageKey": null
+          },
           (v3/*: any*/)
         ]
       }
@@ -211,7 +227,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "RegistrationFlowQuery",
-    "id": "15f2216cc42348be950cd859a9f01644",
+    "id": "be5b942a5a52bc7d8e49bb2dada4ad5f",
     "text": null,
     "metadata": {}
   }

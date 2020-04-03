@@ -1,24 +1,16 @@
 import React, { Component } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import styled from "styled-components/native"
 
-import { FlatList, View } from "react-native"
-import { LargeHeadline } from "../Typography"
+import { ActivityIndicator, FlatList, View } from "react-native"
 
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import Spinner from "../../Spinner"
 import ConversationSnippet from "./ConversationSnippet"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { Flex, Serif, Spacer } from "@artsy/palette"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { get } from "lib/utils/get"
-
-const Headline = styled(LargeHeadline)`
-  margin-top: 20px;
-  margin-bottom: -10px;
-`
 
 interface Props {
   me: Conversations_me
@@ -39,7 +31,7 @@ export class Conversations extends Component<Props, State> {
   fetchData = () => {
     const { relay } = this.props
 
-    if (!relay.isLoading()) {
+    if (relay.hasMore() && !relay.isLoading()) {
       this.setState({
         isLoading: true,
       })
@@ -80,16 +72,19 @@ export class Conversations extends Component<Props, State> {
   render() {
     const conversations = get(this.props, ({ me }) => me.conversations.edges.map(edge => edge.node), [])
 
+    if (conversations.length === 0) {
+      return null
+    }
+
     return (
       <View>
-        <View>
-          {this.props.headerView}
-          {conversations.length > 0 && <Headline>Messages</Headline>}
-        </View>
+        <Serif m={2} size="8">
+          Messages
+        </Serif>
         <FlatList
           data={conversations}
-          keyExtractor={(_item, index) => String(index)}
-          scrollEventThrottle={500}
+          keyExtractor={item => item.internalID}
+          ItemSeparatorComponent={() => <Spacer mb={1} />}
           renderItem={({ item }) => {
             return (
               <ConversationSnippet
@@ -98,15 +93,20 @@ export class Conversations extends Component<Props, State> {
               />
             )
           }}
-          onScroll={isCloseToBottom(this.fetchData)} // TODO: Investiate why onEndReached fires erroniously
+          onEndReached={this.fetchData}
+          onEndReachedThreshold={2}
         />
-        {this.state.isLoading && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+        {this.props.relay.hasMore() && this.state.isLoading && (
+          <Flex p={3} alignItems="center">
+            <ActivityIndicator />
+          </Flex>
+        )}
       </View>
     )
   }
 }
 
-export default createPaginationContainer(
+export const ConversationsContainer = createPaginationContainer(
   Conversations,
   {
     me: graphql`

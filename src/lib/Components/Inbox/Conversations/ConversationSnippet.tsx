@@ -4,81 +4,27 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
 
-import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
-
-import { Dimensions, TouchableWithoutFeedback } from "react-native"
+import { TouchableHighlight } from "react-native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
-import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
+import { color, Flex, Sans } from "@artsy/palette"
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
-
-const isPad = Dimensions.get("window").width > 700
-
-const VerticalLayout = styled.View`
-  flex: 1;
-  flex-direction: column;
-`
-
-const HorizontalLayout = styled.View`
-  flex: 1;
-  flex-direction: row;
-`
-
-const Card = styled.View`
-  height: 120px;
-  margin-left: 20px;
-  margin-right: 20px;
-`
-
-const CardContent = styled(HorizontalLayout)`
-  max-width: 708;
-`
-
-const TextPreview = styled(VerticalLayout)`
-  margin-left: 10;
-  max-height: 70px;
-  align-self: center;
-`
-
-const DateHeading = styled(HorizontalLayout)`
-  justify-content: flex-end;
-`
 
 const UnreadIndicator = styled.View`
   height: 8;
   width: 8;
   border-radius: 4;
+  margin-left: 10;
   background-color: ${Colors.PurpleRegular};
-  margin-left: 4;
-  margin-top: 3;
-  margin-bottom: 3;
-`
-
-const Subtitle = styled.Text`
-  font-family: ${Fonts.GaramondRegular};
-  font-size: 16px;
-  color: black;
-`
-
-const Title = styled(Subtitle)`
-  font-family: ${Fonts.GaramondItalic};
 `
 
 const ImageView = styled(OpaqueImageView)`
   width: 80px;
   height: 80px;
   border-radius: 2px;
-  align-self: center;
-`
-
-const SeparatorLine = styled.View`
-  height: 1;
-  background-color: ${Colors.GrayRegular};
-  width: 100%;
-  ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
 export interface Props {
@@ -90,32 +36,14 @@ const track: Track<Props, null, Schema.Entity> = _track
 
 @track()
 export class ConversationSnippet extends React.Component<Props> {
-  renderTitleForItem(item) {
+  renderTitleForItem(item: ConversationSnippet_conversation["items"][0]["item"]) {
     if (item.__typename === "Artwork") {
-      const artworkTitle = `${item.title.trim()}, `
-      const artworkDate = `${item.date}`
-      const artworkArtist = `${item.artistNames} · `
-
-      return (
-        <HorizontalLayout>
-          <P>
-            <Subtitle>{artworkArtist}</Subtitle>
-            <Title>{artworkTitle}</Title>
-            <Subtitle>{artworkDate}</Subtitle>
-          </P>
-        </HorizontalLayout>
-      )
+      return <>Inquiry on {item.artistNames}</>
     }
 
     if (item.__typename === "Show") {
       const name = item.fair ? item.fair.name : item.name
-      return (
-        <HorizontalLayout>
-          <P>
-            <Subtitle>{name}</Subtitle>
-          </P>
-        </HorizontalLayout>
-      )
+      return name
     }
   }
 
@@ -141,7 +69,7 @@ export class ConversationSnippet extends React.Component<Props> {
 
     const item = conversation.items[0].item
 
-    let imageURL
+    let imageURL: string
     if (item.__typename === "Artwork") {
       imageURL = item.image && item.image.url
     } else if (item.__typename === "Show") {
@@ -153,23 +81,32 @@ export class ConversationSnippet extends React.Component<Props> {
     const conversationText = conversation.lastMessage && conversation.lastMessage.replace(/\n/g, " ")
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
-      <TouchableWithoutFeedback onPress={() => this.conversationSelected()}>
-        <Card>
-          <CardContent>
+      <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
+        <Flex px={2} py={1}>
+          <Flex flexDirection="row">
             <ImageView imageURL={imageURL} />
-            <TextPreview>
-              <HorizontalLayout>
-                <SmallHeadline>{partnerName}</SmallHeadline>
-                <DateHeading>{conversation.unread && <UnreadIndicator />}</DateHeading>
-              </HorizontalLayout>
-              {this.renderTitleForItem(item)}
-              {!!conversationText && <P>{conversationText}</P>}
-              <MetadataText>{date}</MetadataText>
-            </TextPreview>
-          </CardContent>
-          <SeparatorLine />
-        </Card>
-      </TouchableWithoutFeedback>
+            <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
+              <Flex flexDirection="row" style={{ flex: 0, alignItems: "center" }}>
+                <Sans size="3t" weight="medium" ellipsizeMode="tail" numberOfLines={1} style={{ flex: 1 }}>
+                  {partnerName}
+                </Sans>
+                {conversation.unread && <UnreadIndicator />}
+              </Flex>
+              <Sans size="3t" ellipsizeMode="tail" numberOfLines={1} weight="medium">
+                {this.renderTitleForItem(item)}
+              </Sans>
+              {!!conversationText && (
+                <Sans size="3" ellipsizeMode="tail" numberOfLines={1} color="black60">
+                  {conversationText}
+                </Sans>
+              )}
+              <Sans textAlign="right" size="2" color="black60" style={{ flex: 0 }}>
+                {date}
+              </Sans>
+            </Flex>
+          </Flex>
+        </Flex>
+      </TouchableHighlight>
     )
   }
 }

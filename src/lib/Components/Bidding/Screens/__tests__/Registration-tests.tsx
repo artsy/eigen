@@ -1,4 +1,5 @@
 import { Button, Sans, Serif } from "@artsy/palette"
+import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
@@ -54,13 +55,33 @@ it("renders properly for a user without a credit card", () => {
   )
 
   expect(component.toJSON()).toMatchSnapshot()
-  expect(component.root.findAllByType(Sans)[4].props.children).toEqual("A valid credit card is required for bidding.")
+  expect(component.root.findAllByType(Sans)[4].props.children).toEqual("A valid credit card is required.")
 })
 
 it("renders properly for a user with a credit card", () => {
   const component = renderer.create(
     <BiddingThemeProvider>
       <Registration {...initialPropsForUserWithCreditCard} />
+    </BiddingThemeProvider>
+  )
+
+  expect(component.toJSON()).toMatchSnapshot()
+  expect(component.root.findAllByType(Sans)[2].props.children).toEqual(
+    "To complete your registration, please confirm that you agree to the Conditions of Sale."
+  )
+})
+
+it("renders properly for a verified user with a credit card", () => {
+  const component = renderer.create(
+    <BiddingThemeProvider>
+      <Registration
+        {...initialProps}
+        sale={{ ...sale, requireIdentityVerification: true }}
+        me={{
+          has_credit_cards: true,
+          identityVerified: true,
+        }}
+      />
     </BiddingThemeProvider>
   )
 
@@ -120,6 +141,42 @@ it("shows no option for entering payment information if the user has a credit ca
 
   expect(component.root.findAllByType(Checkbox).length).toEqual(1)
   expect(component.root.findAllByType(BidInfoRow).length).toEqual(0)
+})
+
+describe("when the sale requires identity verification", () => {
+  const propsWithIDVSale = {
+    ...initialProps,
+    sale: {
+      ...sale,
+      requireIdentityVerification: true,
+    },
+  }
+
+  it("displays information about IDV if the user is not verified", () => {
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: false } as any} />
+      </BiddingThemeProvider>
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+    expect(component.root.findAllByType(Sans)[5].props.children).toEqual(
+      "This auction requires Artsy to verify your identity before bidding."
+    )
+  })
+
+  it("does not display information about IDV if the user is verified", () => {
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: true } as any} />
+      </BiddingThemeProvider>
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+    expect(component.root.findAllByType(Sans).map(({ props }) => props.children)).not.toContain(
+      "This auction requires Artsy to verify your identity before bidding."
+    )
+  })
 })
 
 describe("when pressing register button", () => {
@@ -586,6 +643,11 @@ const stripeToken = {
   extra: null,
 }
 
+const me: Partial<Registration_me> = {
+  has_credit_cards: false,
+  identityVerified: false,
+}
+
 const sale: Partial<Registration_sale> = {
   slug: "sale-id",
   live_start_at: "2029-06-11T01:00:00+00:00",
@@ -641,13 +703,9 @@ const initialProps = {
 const initialPropsForUserWithCreditCard = {
   ...initialProps,
   me: {
+    ...me,
     has_credit_cards: true,
   },
 } as any
 
-const initialPropsForUserWithoutCreditCard = {
-  ...initialProps,
-  me: {
-    has_credit_cards: false,
-  },
-} as any
+const initialPropsForUserWithoutCreditCard = { ...initialProps, me } as any
