@@ -53,24 +53,6 @@
 // demo
 #import "ARDemoSplashViewController.h"
 
-//#if DEBUG
-//#import <FlipperKit/FlipperClient.h>
-//#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
-//#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
-//#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
-//#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
-//#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-//static void InitializeFlipper(UIApplication *application) {
-//  FlipperClient *client = [FlipperClient sharedClient];
-//  SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
-//  [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
-//  [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
-//  [client addPlugin:[FlipperKitReactPlugin new]];
-//  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
-//  [client start];
-//}
-//#endif
-
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
@@ -235,9 +217,6 @@ static ARAppDelegate *_sharedInstance = nil;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     /// Make sure we set up here so there is an ARTopMenuViewController for routing when launching from a universal link
-//    #if DEBUG
-//    InitializeFlipper(application);
-//    #endif
     [self setupForAppLaunch];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
