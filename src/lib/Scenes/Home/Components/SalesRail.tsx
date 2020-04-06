@@ -22,7 +22,7 @@ interface Props {
 
 type Sale = SalesRail_salesModule["results"][0]
 
-export class FairsRail extends Component<Props> {
+export class SalesRail extends Component<Props> {
   render() {
     return (
       <View>
@@ -101,7 +101,7 @@ const MetadataContainer = styled.View`
   margin: 15px 15px 13px;
 `
 
-export const SalesRailFragmentContainer = createFragmentContainer(FairsRail, {
+export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
   salesModule: graphql`
     fragment SalesRail_salesModule on HomePageSalesModule {
       results {

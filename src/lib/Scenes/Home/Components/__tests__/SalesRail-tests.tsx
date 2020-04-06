@@ -63,7 +63,7 @@ it("doesn't throw when rendered", () => {
   ).not.toThrow()
 })
 
-it("looks correct when rendered with fairs missing artworks", () => {
+it("looks correct when rendered with sales missing artworks", () => {
   const salesCopy = cloneDeep(salesModule)
   salesCopy.results.forEach(result => {
     // @ts-ignore
