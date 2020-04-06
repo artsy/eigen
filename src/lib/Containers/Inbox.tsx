@@ -2,7 +2,10 @@ import { Flex, Theme } from "@artsy/palette"
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Components/Inbox/ActiveBids"
-import Conversations, { Conversations as ConversationsRef } from "lib/Components/Inbox/Conversations"
+import {
+  Conversations as ConversationsRef,
+  ConversationsContainer,
+} from "lib/Components/Inbox/Conversations/Conversations"
 import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { get } from "lib/utils/get"
@@ -35,7 +38,7 @@ export class Inbox extends React.Component<Props, State> {
     fetchingData: false,
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps: Props) {
     if (newProps.isVisible) {
       this.fetchData()
     }
@@ -69,9 +72,9 @@ export class Inbox extends React.Component<Props, State> {
     return hasBids || hasConversations ? (
       <Theme>
         <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-          <ActiveBids me={this.props.me as any} componentRef={activeBids => (this.activeBids = activeBids)} />
-          <Conversations
-            me={this.props.me as any}
+          <ActiveBids me={this.props.me} componentRef={activeBids => (this.activeBids = activeBids)} />
+          <ConversationsContainer
+            me={this.props.me}
             componentRef={conversations => (this.conversations = conversations)}
           />
         </Container>
@@ -141,6 +144,7 @@ export const InboxRenderer: React.SFC = () => {
           }
         }
       `}
+      cacheConfig={{ force: true }}
       variables={{}}
       render={renderWithLoadProgress(InboxContainer)}
     />

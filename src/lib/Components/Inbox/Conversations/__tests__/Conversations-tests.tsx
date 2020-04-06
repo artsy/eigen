@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 import { getTextTree } from "lib/utils/getTestWrapper"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
-import { Conversations } from "../"
+import { Conversations } from "../Conversations"
 
 import { Theme } from "@artsy/palette"
 
