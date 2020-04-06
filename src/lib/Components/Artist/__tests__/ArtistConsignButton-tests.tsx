@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Button, Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
@@ -105,7 +105,7 @@ describe("ArtistConsignButton", () => {
       expect(image).toHaveLength(0)
     })
 
-    it("tracks clicks", async () => {
+    it("tracks clicks on outer container", async () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
@@ -114,6 +114,26 @@ describe("ArtistConsignButton", () => {
         })
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
+      expect(trackEvent).toHaveBeenCalledWith({
+        context_page: "Artist",
+        context_page_owner_id: response.artist.internalID,
+        context_page_owner_slug: response.artist.slug,
+        context_page_owner_type: "Artist",
+        context_module: "ArtistConsignment",
+        subject: "Get Started",
+        destination_path: "/consign/submission",
+      })
+    })
+
+    it("tracks clicks on inner button", async () => {
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: response,
+        })
+      })
+      tree.root.findByType(Button).props.onPress()
       expect(trackEvent).toHaveBeenCalledWith({
         context_page: "Artist",
         context_page_owner_id: response.artist.internalID,
@@ -153,7 +173,7 @@ describe("ArtistConsignButton", () => {
       expect(extractText(tree.root)).toContain("Sell art from your collection")
     })
 
-    it("tracks clicks", async () => {
+    it("tracks clicks on outer container", async () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
@@ -162,6 +182,26 @@ describe("ArtistConsignButton", () => {
         })
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
+      expect(trackEvent).toHaveBeenCalledWith({
+        context_page: "Artist",
+        context_page_owner_id: response.artist.internalID,
+        context_page_owner_slug: response.artist.slug,
+        context_page_owner_type: "Artist",
+        context_module: "ArtistConsignment",
+        subject: "Get Started",
+        destination_path: "/consign/submission",
+      })
+    })
+
+    it("tracks clicks on inner button", async () => {
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: response,
+        })
+      })
+      tree.root.findByType(Button).props.onPress()
       expect(trackEvent).toHaveBeenCalledWith({
         context_page: "Artist",
         context_page_owner_id: response.artist.internalID,

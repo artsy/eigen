@@ -28,23 +28,22 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
   const imageURL = image?.cropped?.url
   const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
 
-  return (
-    <TouchableOpacity
-      ref={buttonRef}
-      onPress={() => {
-        tracking.trackEvent({
-          context_page: Schema.PageNames.ArtistPage,
-          context_page_owner_id: props.artist.internalID,
-          context_page_owner_slug: props.artist.slug,
-          context_page_owner_type: Schema.OwnerEntityTypes.Artist,
-          context_module: Schema.ContextModules.ArtistConsignment,
-          subject: Schema.ActionNames.ArtistConsignGetStarted,
-          destination_path: Router.ConsignmentsStartSubmission,
-        })
+  const onConsignButtonPress = () => {
+    tracking.trackEvent({
+      context_page: Schema.PageNames.ArtistPage,
+      context_page_owner_id: props.artist.internalID,
+      context_page_owner_slug: props.artist.slug,
+      context_page_owner_type: Schema.OwnerEntityTypes.Artist,
+      context_module: Schema.ContextModules.ArtistConsignment,
+      subject: Schema.ActionNames.ArtistConsignGetStarted,
+      destination_path: Router.ConsignmentsStartSubmission,
+    })
 
-        SwitchBoard.presentNavigationViewController(buttonRef.current, Router.ConsignmentsStartSubmission)
-      }}
-    >
+    SwitchBoard.presentNavigationViewController(buttonRef.current, Router.ConsignmentsStartSubmission)
+  }
+
+  return (
+    <TouchableOpacity ref={buttonRef} onPress={onConsignButtonPress}>
       <BorderBox p={1}>
         <Flex alignItems="center" flexDirection="row">
           {isInMicrofunnel && imageURL && (
@@ -62,7 +61,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
               </Sans>
             </Box>
             <Box>
-              <Button size="small" variant="secondaryGray">
+              <Button size="small" variant="secondaryGray" onPress={onConsignButtonPress}>
                 Get started
               </Button>
             </Box>

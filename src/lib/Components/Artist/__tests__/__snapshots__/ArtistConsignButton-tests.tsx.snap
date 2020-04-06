@@ -137,6 +137,7 @@ exports[`ArtistConsignButton Top 20 Artist ('Microfunnel') Button renders a snap
             }
           >
             <View
+              onPress={[Function]}
               px={1}
               size="small"
               style={
