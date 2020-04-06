@@ -4,16 +4,11 @@ import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 
-interface CollectionZeroStateProps {
-  refetchArtworks: () => void
-}
-
-export const CollectionZeroState: React.SFC<CollectionZeroStateProps> = props => {
+export const CollectionZeroState: React.SFC = () => {
   const { dispatch } = useContext(ArtworkFilterContext)
 
   const refetchArtworks = () => {
-    props.refetchArtworks()
-    dispatch({ type: "resetToInitialState" })
+    dispatch({ type: "clearFiltersZeroState" })
   }
 
   return (

@@ -272,7 +272,7 @@ describe("Apply Filters", () => {
   })
 })
 
-describe("resetToInitialState", () => {
+describe("clearFiltersZeroState", () => {
   it("resets the artwork filter when artworks are in zero state", () => {
     filterState = {
       applyFilters: true,
@@ -285,13 +285,13 @@ describe("resetToInitialState", () => {
     }
 
     filterAction = {
-      type: "resetToInitialState",
+      type: "clearFiltersZeroState",
     }
 
     const r = reducer(filterState, filterAction)
 
     expect(r).toEqual({
-      applyFilters: false,
+      applyFilters: true,
       appliedFilters: [],
       previouslyAppliedFilters: [],
       selectedFilters: [],
