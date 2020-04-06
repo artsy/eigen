@@ -2,7 +2,7 @@ import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { CollectionContainer, FilterArtworkButton, FilterArtworkButtonContainer } from "../Collection"
 
 jest.unmock("react-relay")
